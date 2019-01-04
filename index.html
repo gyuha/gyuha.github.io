@@ -234,6 +234,82 @@
           
           
             <article class="post-preview">
+              <a href="https://gyuha.github.io/post/2019-01-04-ubuntu-1804-static-ip/">
+                <h2 class="post-title">2019 01 04 Ubuntu 1804 Static Ip</h2>
+                
+                
+              </a>
+
+              <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on January 4, 2019
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;1&nbsp;minutes
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;197&nbsp;words
+  
+  신규하
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  Ubuntu 18.04에서 netplan을 사용한 static ip 설정 17.10부터 네트워크 인터페이스 설정이 netplan이라는 새로운 네트워크 설정이 생겼다. 기존에 인터페이스 설정(/etc/network/interfaces)보다는 간결해 보입니다.
+변경 할 파일은 아래와 같습니다.
+sudo vi /etc/netplan/50-cloud-init.yaml 기본적으로 dhcp로 설치 했을 경우 아래와 같이 나옵니다.
+network:ethernets:enp4s0f2:addresses:[]dhcp4:trueversion:2 그 내용을 아래와 같이 ip와 정보를 넣고 설정 해 주면 됩니다.
+network:ethernets:enp4s0f2:dhcp4:noaddresses:[192.168.1.200/24]gateway4:192.168.1.1nameservers:addresses:[1.1.1.1,8.8.8.8,8.8.4.4]version:2 그리고 변경 된 내용을 아래와 같이 적용 합니다.
+sudo netplan apply 변경된 내용을 ifconfig로 확인 하면 됩니다.
+$ ifconfig enp4s0f2: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt; mtu 1500 inet 192.
+                  <a href="https://gyuha.github.io/post/2019-01-04-ubuntu-1804-static-ip/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+            </article>
+          
+            <article class="post-preview">
+              <a href="https://gyuha.github.io/post/2019-01-04-ubuntu-server-labtop-cover/">
+                <h2 class="post-title">2019 01 04 Ubuntu Server Labtop Cover</h2>
+                
+                
+              </a>
+
+              <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on January 4, 2019
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;1&nbsp;minutes
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;153&nbsp;words
+  
+  신규하
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  우분투 노트북 서버 사용시 커버를 덮어도 잠들지 않도록 하기 먼저 터미널에서 아래와 같은 파일을 열어 줍니다.
+sudo vi /etc/systemd/logind.conf 파일에서 #HandleLidSwitch=suspend로 되어 있는 곳의 샵(#) 주석을 제거 하고 HandleLidSwitch=ignore 이렇게 변경해 줍니다.
+# This file is part of systemd. # # systemd is free software; you can redistribute it and/or modify it # under the terms of the GNU Lesser General Public License as published by # the Free Software Foundation; either version 2.
+                  <a href="https://gyuha.github.io/post/2019-01-04-ubuntu-server-labtop-cover/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+            </article>
+          
+            <article class="post-preview">
               <a href="https://gyuha.github.io/post/2018-11-23-windows10-subsystem-openssh/">
                 <h2 class="post-title">Windows 10 subsystem Ubuntu에서 ssh 설치 하기</h2>
                 
@@ -493,7 +569,7 @@ $ serverless create -t aws-nodejs -p hello-lambda Serverless: Generating boilerp
 
           &nbsp;&bull;&nbsp;&copy;
           
-            2018
+            2019
           
 
           

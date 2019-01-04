@@ -7,18 +7,26 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title>Hugo를 사용한 Github 블로그.. - Gyuha Blog</title>
-  <meta property="og:title" content="Hugo를 사용한 Github 블로그.." />
-  <meta name="twitter:title" content="Hugo를 사용한 Github 블로그.." />
-  <meta name="description" content="hugo 설치 하기  Install Hugo를 보고 하면 됩니다.  전 ubuntu를 쓰고 있는 관계로.. 간단하게..
-sudo apt install hugo 이렇게 하면 간단하게 설치가 되네요..
-사이트 만들기 $ hugo new site blog Congratulations! Your new Hugo site is created in /home/gyuha/workspace/temp/blog. Just a few more steps and you&#39;re ready to go: 1. Download a theme into the same-named folder. Choose a theme from https://themes.gohugo.io/, or create your own with the &#34;hugo new theme &lt;THEMENAME&gt;&#34; command.">
-  <meta property="og:description" content="hugo 설치 하기  Install Hugo를 보고 하면 됩니다.  전 ubuntu를 쓰고 있는 관계로.. 간단하게..
-sudo apt install hugo 이렇게 하면 간단하게 설치가 되네요..
-사이트 만들기 $ hugo new site blog Congratulations! Your new Hugo site is created in /home/gyuha/workspace/temp/blog. Just a few more steps and you&#39;re ready to go: 1. Download a theme into the same-named folder. Choose a theme from https://themes.gohugo.io/, or create your own with the &#34;hugo new theme &lt;THEMENAME&gt;&#34; command.">
-  <meta name="twitter:description" content="hugo 설치 하기  Install Hugo를 보고 하면 됩니다.  전 ubuntu를 쓰고 있는 관계로.. 간단하게..
-sudo apt install hugo 이렇게 하면 간단하게 설치가 되네요..
-사이트 만들기 $ hugo new site blog Congratulations! Your new Hugo site is created in …">
+  <title>2019 01 04 Ubuntu 1804 Static Ip - Gyuha Blog</title>
+  <meta property="og:title" content="2019 01 04 Ubuntu 1804 Static Ip" />
+  <meta name="twitter:title" content="2019 01 04 Ubuntu 1804 Static Ip" />
+  <meta name="description" content="Ubuntu 18.04에서 netplan을 사용한 static ip 설정 17.10부터 네트워크 인터페이스 설정이 netplan이라는 새로운 네트워크 설정이 생겼다. 기존에 인터페이스 설정(/etc/network/interfaces)보다는 간결해 보입니다.
+변경 할 파일은 아래와 같습니다.
+sudo vi /etc/netplan/50-cloud-init.yaml 기본적으로 dhcp로 설치 했을 경우 아래와 같이 나옵니다.
+network:ethernets:enp4s0f2:addresses:[]dhcp4:trueversion:2 그 내용을 아래와 같이 ip와 정보를 넣고 설정 해 주면 됩니다.
+network:ethernets:enp4s0f2:dhcp4:noaddresses:[192.168.1.200/24]gateway4:192.168.1.1nameservers:addresses:[1.1.1.1,8.8.8.8,8.8.4.4]version:2 그리고 변경 된 내용을 아래와 같이 적용 합니다.
+sudo netplan apply 변경된 내용을 ifconfig로 확인 하면 됩니다.
+$ ifconfig enp4s0f2: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt; mtu 1500 inet 192.">
+  <meta property="og:description" content="Ubuntu 18.04에서 netplan을 사용한 static ip 설정 17.10부터 네트워크 인터페이스 설정이 netplan이라는 새로운 네트워크 설정이 생겼다. 기존에 인터페이스 설정(/etc/network/interfaces)보다는 간결해 보입니다.
+변경 할 파일은 아래와 같습니다.
+sudo vi /etc/netplan/50-cloud-init.yaml 기본적으로 dhcp로 설치 했을 경우 아래와 같이 나옵니다.
+network:ethernets:enp4s0f2:addresses:[]dhcp4:trueversion:2 그 내용을 아래와 같이 ip와 정보를 넣고 설정 해 주면 됩니다.
+network:ethernets:enp4s0f2:dhcp4:noaddresses:[192.168.1.200/24]gateway4:192.168.1.1nameservers:addresses:[1.1.1.1,8.8.8.8,8.8.4.4]version:2 그리고 변경 된 내용을 아래와 같이 적용 합니다.
+sudo netplan apply 변경된 내용을 ifconfig로 확인 하면 됩니다.
+$ ifconfig enp4s0f2: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt; mtu 1500 inet 192.">
+  <meta name="twitter:description" content="Ubuntu 18.04에서 netplan을 사용한 static ip 설정 17.10부터 네트워크 인터페이스 설정이 netplan이라는 새로운 네트워크 설정이 생겼다. 기존에 인터페이스 설정(/etc/network/interfaces)보다는 간결해 보입니다.
+변경 할 파일은 아래와 같습니다.
+sudo vi …">
   <meta name="author" content="신규하"/><script type="application/ld+json">
 {
     "@context": "http://schema.org",
@@ -54,8 +62,8 @@ sudo apt install hugo 이렇게 하면 간단하게 설치가 되네요..
         "@type": "ListItem",
         "position": 3,
         "item": {
-          "@id": "https://gyuha.github.io/post/2018-11-07-hugo-github/",
-          "name": "Hugo를 사용한 github 블로그.."
+          "@id": "https://gyuha.github.io/post/2019-01-04-ubuntu-1804-static-ip/",
+          "name": "2019 01 04 ubuntu 1804 static ip"
         }
     }]
 }
@@ -66,17 +74,21 @@ sudo apt install hugo 이렇게 하면 간단하게 설치가 되네요..
   "author": {
     "name" : "신규하"
   },
-  "headline": "Hugo를 사용한 Github 블로그..",
-  "description" : "hugo 설치 하기  Install Hugo를 보고 하면 됩니다.  전 ubuntu를 쓰고 있는 관계로.. 간단하게..
-sudo apt install hugo 이렇게 하면 간단하게 설치가 되네요..
-사이트 만들기 $ hugo new site blog Congratulations! Your new Hugo site is created in /home/gyuha/workspace/temp/blog. Just a few more steps and you&amp;#39;re ready to go: 1. Download a theme into the same-named folder. Choose a theme from https://themes.gohugo.io/, or create your own with the &amp;#34;hugo new theme &amp;lt;THEMENAME&amp;gt;&amp;#34; command.",
+  "headline": "2019 01 04 Ubuntu 1804 Static Ip",
+  "description" : "Ubuntu 18.04에서 netplan을 사용한 static ip 설정 17.10부터 네트워크 인터페이스 설정이 netplan이라는 새로운 네트워크 설정이 생겼다. 기존에 인터페이스 설정(/etc/network/interfaces)보다는 간결해 보입니다.
+변경 할 파일은 아래와 같습니다.
+sudo vi /etc/netplan/50-cloud-init.yaml 기본적으로 dhcp로 설치 했을 경우 아래와 같이 나옵니다.
+network:ethernets:enp4s0f2:addresses:[]dhcp4:trueversion:2 그 내용을 아래와 같이 ip와 정보를 넣고 설정 해 주면 됩니다.
+network:ethernets:enp4s0f2:dhcp4:noaddresses:[192.168.1.200/24]gateway4:192.168.1.1nameservers:addresses:[1.1.1.1,8.8.8.8,8.8.4.4]version:2 그리고 변경 된 내용을 아래와 같이 적용 합니다.
+sudo netplan apply 변경된 내용을 ifconfig로 확인 하면 됩니다.
+$ ifconfig enp4s0f2: flags=4163&amp;lt;UP,BROADCAST,RUNNING,MULTICAST&amp;gt; mtu 1500 inet 192.",
   "inLanguage" : "en",
-  "wordCount": 379,
-  "datePublished" : "2018-11-07T00:20:56",
-  "dateModified" : "2018-11-07T00:20:56",
+  "wordCount": 197,
+  "datePublished" : "2019-01-04T10:30:30",
+  "dateModified" : "2019-01-04T10:30:30",
   "image" : "https://gyuha.github.io/img/avatar-icon.png",
-  "keywords" : [ "go, blog, github" ],
-  "mainEntityOfPage" : "https://gyuha.github.io/post/2018-11-07-hugo-github/",
+  "keywords" : [ "" ],
+  "mainEntityOfPage" : "https://gyuha.github.io/post/2019-01-04-ubuntu-1804-static-ip/",
   "publisher" : {
     "@type": "Organization",
     "name" : "https://gyuha.github.io/",
@@ -90,18 +102,22 @@ sudo apt install hugo 이렇게 하면 간단하게 설치가 되네요..
 }
 </script>
 
-<meta property="og:title" content="Hugo를 사용한 Github 블로그.." />
-<meta property="og:description" content="hugo 설치 하기  Install Hugo를 보고 하면 됩니다.  전 ubuntu를 쓰고 있는 관계로.. 간단하게..
-sudo apt install hugo 이렇게 하면 간단하게 설치가 되네요..
-사이트 만들기 $ hugo new site blog Congratulations! Your new Hugo site is created in /home/gyuha/workspace/temp/blog. Just a few more steps and you&#39;re ready to go: 1. Download a theme into the same-named folder. Choose a theme from https://themes.gohugo.io/, or create your own with the &#34;hugo new theme &lt;THEMENAME&gt;&#34; command.">
+<meta property="og:title" content="2019 01 04 Ubuntu 1804 Static Ip" />
+<meta property="og:description" content="Ubuntu 18.04에서 netplan을 사용한 static ip 설정 17.10부터 네트워크 인터페이스 설정이 netplan이라는 새로운 네트워크 설정이 생겼다. 기존에 인터페이스 설정(/etc/network/interfaces)보다는 간결해 보입니다.
+변경 할 파일은 아래와 같습니다.
+sudo vi /etc/netplan/50-cloud-init.yaml 기본적으로 dhcp로 설치 했을 경우 아래와 같이 나옵니다.
+network:ethernets:enp4s0f2:addresses:[]dhcp4:trueversion:2 그 내용을 아래와 같이 ip와 정보를 넣고 설정 해 주면 됩니다.
+network:ethernets:enp4s0f2:dhcp4:noaddresses:[192.168.1.200/24]gateway4:192.168.1.1nameservers:addresses:[1.1.1.1,8.8.8.8,8.8.4.4]version:2 그리고 변경 된 내용을 아래와 같이 적용 합니다.
+sudo netplan apply 변경된 내용을 ifconfig로 확인 하면 됩니다.
+$ ifconfig enp4s0f2: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt; mtu 1500 inet 192.">
 <meta property="og:image" content="https://gyuha.github.io/img/avatar-icon.png" />
-<meta property="og:url" content="https://gyuha.github.io/post/2018-11-07-hugo-github/" />
+<meta property="og:url" content="https://gyuha.github.io/post/2019-01-04-ubuntu-1804-static-ip/" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Gyuha Blog" />
-  <meta name="twitter:title" content="Hugo를 사용한 Github 블로그.." />
-  <meta name="twitter:description" content="hugo 설치 하기  Install Hugo를 보고 하면 됩니다.  전 ubuntu를 쓰고 있는 관계로.. 간단하게..
-sudo apt install hugo 이렇게 하면 간단하게 설치가 되네요..
-사이트 만들기 $ hugo new site blog Congratulations! Your new Hugo site is created in …">
+  <meta name="twitter:title" content="2019 01 04 Ubuntu 1804 Static Ip" />
+  <meta name="twitter:description" content="Ubuntu 18.04에서 netplan을 사용한 static ip 설정 17.10부터 네트워크 인터페이스 설정이 netplan이라는 새로운 네트워크 설정이 생겼다. 기존에 인터페이스 설정(/etc/network/interfaces)보다는 간결해 보입니다.
+변경 할 파일은 아래와 같습니다.
+sudo vi …">
   <meta name="twitter:image" content="https://gyuha.github.io/img/avatar-icon.png" />
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@gyuha" />
@@ -112,7 +128,7 @@ sudo apt install hugo 이렇게 하면 간단하게 설치가 되네요..
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@gyuha" />
   <meta name="twitter:creator" content="@gyuha" />
-  <meta property="og:url" content="https://gyuha.github.io/post/2018-11-07-hugo-github/" />
+  <meta property="og:url" content="https://gyuha.github.io/post/2019-01-04-ubuntu-1804-static-ip/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Gyuha Blog" />
 
@@ -270,7 +286,7 @@ sudo apt install hugo 이렇게 하면 간단하게 설치가 되네요..
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <div class="post-heading">
               
-                <h1>Hugo를 사용한 Github 블로그..</h1>
+                <h1>2019 01 04 Ubuntu 1804 Static Ip</h1>
               
               
               
@@ -278,13 +294,13 @@ sudo apt install hugo 이렇게 하면 간단하게 설치가 되네요..
                 <span class="post-meta">
   
   
-  <i class="fas fa-calendar"></i>&nbsp;Posted on November 7, 2018
+  <i class="fas fa-calendar"></i>&nbsp;Posted on January 4, 2019
   
   
-    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;2&nbsp;minutes
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;1&nbsp;minutes
   
   
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;379&nbsp;words
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;197&nbsp;words
   
   신규하
   
@@ -308,128 +324,57 @@ sudo apt install hugo 이렇게 하면 간단하게 설치가 되네요..
       <article role="main" class="blog-post">
         
 
-<h2 id="hugo-설치-하기">hugo 설치 하기</h2>
+<h1 id="ubuntu-18-04에서-netplan을-사용한-static-ip-설정">Ubuntu 18.04에서 netplan을 사용한 static ip 설정</h1>
 
-<ul>
-<li><a href="https://gohugo.io/getting-started/installing/">Install Hugo</a>를 보고 하면 됩니다.</li>
-</ul>
+<p>17.10부터 네트워크 인터페이스 설정이 <code>netplan</code>이라는 새로운 네트워크 설정이 생겼다. 기존에 인터페이스 설정(/etc/network/interfaces)보다는 간결해 보입니다.</p>
 
-<p>전 ubuntu를 쓰고 있는 관계로.. 간단하게..</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo apt install hugo</code></pre></div>
-<p>이렇게 하면 간단하게 설치가 되네요..</p>
+<p>변경 할 파일은 아래와 같습니다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo vi /etc/netplan/50-cloud-init.yaml</code></pre></div>
+<p>기본적으로 dhcp로 설치 했을 경우 아래와 같이 나옵니다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-yml" data-lang="yml">network<span class="p">:</span><span class="w">
+</span><span class="w">    </span>ethernets<span class="p">:</span><span class="w">
+</span><span class="w">        </span>enp4s0f2<span class="p">:</span><span class="w">
+</span><span class="w">        	</span>addresses<span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+</span><span class="w">            </span>dhcp4<span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="w">   </span>version<span class="p">:</span><span class="w"> </span><span class="m">2</span></code></pre></div>
+<p>그 내용을 아래와 같이 ip와 정보를 넣고 설정 해 주면 됩니다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-yml" data-lang="yml">network<span class="p">:</span><span class="w">
+</span><span class="w">    </span>ethernets<span class="p">:</span><span class="w">
+</span><span class="w">        </span>enp4s0f2<span class="p">:</span><span class="w">
+</span><span class="w">            </span>dhcp4<span class="p">:</span><span class="w"> </span>no<span class="w">
+</span><span class="w">            </span>addresses<span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="m">192.168</span>.<span class="m">1.200</span>/<span class="m">24</span><span class="p">]</span><span class="w">
+</span><span class="w">            </span>gateway4<span class="p">:</span><span class="w"> </span><span class="m">192.168</span>.<span class="m">1.1</span><span class="w">
+</span><span class="w">            </span>nameservers<span class="p">:</span><span class="w">
+</span><span class="w">                    </span>addresses<span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="m">1.1</span>.<span class="m">1.1</span><span class="p">,</span><span class="m">8.8</span>.<span class="m">8.8</span><span class="p">,</span><span class="m">8.8</span>.<span class="m">4.4</span><span class="p">]</span><span class="w">
+</span><span class="w">    </span>version<span class="p">:</span><span class="w"> </span><span class="m">2</span></code></pre></div>
+<p>그리고 변경 된 내용을 아래와 같이 적용 합니다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo netplan apply</code></pre></div>
+<p>변경된 내용을 <code>ifconfig</code>로 확인 하면 됩니다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ ifconfig
+enp4s0f2: <span class="nv">flags</span><span class="o">=</span><span class="m">4163</span>&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu <span class="m">1500</span>
+        inet <span class="m">192</span>.168.1.200  netmask <span class="m">255</span>.255.255.0  broadcast <span class="m">192</span>.168.1.255
+        inet6 fe80::290:f5ff:fee7:6e10  prefixlen <span class="m">64</span>  scopeid 0x20&lt;link&gt;
+        ether <span class="m">00</span>:90:f5:e7:6e:10  txqueuelen <span class="m">1000</span>  <span class="o">(</span>Ethernet<span class="o">)</span>
+        RX packets <span class="m">89208</span>  bytes <span class="m">132983451</span> <span class="o">(</span><span class="m">132</span>.9 MB<span class="o">)</span>
+        RX errors <span class="m">0</span>  dropped <span class="m">9</span>  overruns <span class="m">0</span>  frame <span class="m">0</span>
+        TX packets <span class="m">55318</span>  bytes <span class="m">4234704</span> <span class="o">(</span><span class="m">4</span>.2 MB<span class="o">)</span>
+        TX errors <span class="m">0</span>  dropped <span class="m">0</span> overruns <span class="m">0</span>  carrier <span class="m">0</span>  collisions <span class="m">0</span>
 
-<h2 id="사이트-만들기">사이트 만들기</h2>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ hugo new site blog
-Congratulations! Your new Hugo site is created in /home/gyuha/workspace/temp/blog.
+lo: <span class="nv">flags</span><span class="o">=</span><span class="m">73</span>&lt;UP,LOOPBACK,RUNNING&gt;  mtu <span class="m">65536</span>
+        inet <span class="m">127</span>.0.0.1  netmask <span class="m">255</span>.0.0.0
+        inet6 ::1  prefixlen <span class="m">128</span>  scopeid 0x10&lt;host&gt;
+        loop  txqueuelen <span class="m">1000</span>  <span class="o">(</span>Local Loopback<span class="o">)</span>
+        RX packets <span class="m">252</span>  bytes <span class="m">19812</span> <span class="o">(</span><span class="m">19</span>.8 KB<span class="o">)</span>
+        RX errors <span class="m">0</span>  dropped <span class="m">0</span>  overruns <span class="m">0</span>  frame <span class="m">0</span>
+        TX packets <span class="m">252</span>  bytes <span class="m">19812</span> <span class="o">(</span><span class="m">19</span>.8 KB<span class="o">)</span>
+        TX errors <span class="m">0</span>  dropped <span class="m">0</span> overruns <span class="m">0</span>  carrier <span class="m">0</span>  collisions <span class="m">0</span></code></pre></div>
+<p>그런데.. dhcp4가 <code>true</code>이다가.. 끌때는 <code>no</code>로 변경 되어서.. 오타인가 찾아 봤는데..</p>
 
-Just a few more steps and you<span class="err">&#39;</span>re ready to go:
+<p>모두 그렇게 사용하고 있네요.. 흠&hellip;..</p>
 
-<span class="m">1</span>. Download a theme into the same-named folder.
-   Choose a theme from https://themes.gohugo.io/, or
-   create your own with the <span class="s2">&#34;hugo new theme &lt;THEMENAME&gt;&#34;</span> command.
-<span class="m">2</span>. Perhaps you want to add some content. You can add single files
-   with <span class="s2">&#34;hugo new &lt;SECTIONNAME&gt;/&lt;FILENAME&gt;.&lt;FORMAT&gt;&#34;</span>.
-<span class="m">3</span>. Start the built-in live server via <span class="s2">&#34;hugo server&#34;</span>.
-
-Visit https://gohugo.io/ <span class="k">for</span> quickstart guide and full documentation.
-$ <span class="nb">cd</span> blog</code></pre></div>
-<h2 id="사이트-실행해-보기">사이트 실행해 보기</h2>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ hugo server
-ERROR <span class="m">2018</span>/11/07 <span class="m">00</span>:33:28 port <span class="m">1313</span> already in use, attempting to use an available port
-
-                   <span class="p">|</span> EN  
-+------------------+----+
-  Pages            <span class="p">|</span>  <span class="m">3</span>  
-  Paginator pages  <span class="p">|</span>  <span class="m">0</span>  
-  Non-page files   <span class="p">|</span>  <span class="m">0</span>  
-  Static files     <span class="p">|</span>  <span class="m">0</span>  
-  Processed images <span class="p">|</span>  <span class="m">0</span>  
-  Aliases          <span class="p">|</span>  <span class="m">0</span>  
-  Sitemaps         <span class="p">|</span>  <span class="m">1</span>  
-  Cleaned          <span class="p">|</span>  <span class="m">0</span>  
-
-Total in <span class="m">10</span> ms
-Watching <span class="k">for</span> changes in /home/gyuha/workspace/temp/blog/<span class="o">{</span>content,data,layouts,static<span class="o">}</span>
-Watching <span class="k">for</span> config changes in /home/gyuha/workspace/temp/blog/config.toml
-Serving pages from memory
-Running in Fast Render Mode. For full rebuilds on change: hugo server --disableFastRender
-Web Server is available at http://localhost:1313/ <span class="o">(</span><span class="nb">bind</span> address <span class="m">127</span>.0.0.1<span class="o">)</span>
-Press Ctrl+C to stop</code></pre></div>
-<p>웹브라우저에서 <a href="http://localhost:1313">http://localhost:1313</a> 으로 실행 해 보면 아무것도 안 나온다..</p>
-
-<h2 id="테마-설치-하기">테마 설치 하기</h2>
-
-<p>이 사이트에서 사용한 스킨을 설치해 보겠습니다.</p>
-
-<p>먼저 <code>git init</code>으로 초기화를 해 주고 테마를 받습니다.</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">git init
-<span class="nb">cd</span> themes
-git submodule add https://github.com/halogenica/beautifulhugo.git beautifulhugo
-<span class="nb">cd</span> ..</code></pre></div>
-<p>다시 <code>hugo server</code>를 해 보면.. 아직도 아무것도 나오지 않습니다.</p>
-
-<p>설정 데이터가 없어서 그럽니다.</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">cp themes/beautifulhugo/exampleSite/config.toml .
-hugo server -D</code></pre></div>
-<p>이렇게 하고 <a href="http://localhost:1313으로">http://localhost:1313으로</a> 실행하면 정상적으로 사이트가 나오는 것을 확인 할 수 있습니다.</p>
-
-<p>그리고, <code>-D</code> 옵션을 넣어 줘야 갱신된 글이 보입니다.</p>
-
-<p><code>config.toml</code>을 내가 원하는 형태로 수정해 줍니다.</p>
-
-<h2 id="새글-추가-하기">새글 추가 하기</h2>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">hugo new post/2018-11-11-start-blog.md</code></pre></div>
-<p>위와 같이 추가 하면 새 글이 추가 됩니다.</p>
-
-<h2 id="github에-올리기">GitHub에 올리기</h2>
-
-<ul>
-<li><a href="https://gohugo.io/hosting-and-deployment/hosting-on-github/">Host on GitHub</a>를 참고 하면 됩니다.</li>
-</ul>
-
-<h2 id="makefile">Makefile</h2>
-
-<p>위 과정을 매번 치기 귀찮아서.. makefile로 만들어 봤음&hellip;</p>
-<div class="highlight"><pre class="chroma"><code class="language-makefile" data-lang="makefile"><span class="nv">HUGO</span> <span class="o">=</span> hugo
-<span class="nv">COMMIT_MESSAGE</span> <span class="o">=</span> <span class="s2">&#34;rebuilding site </span><span class="k">$(</span>shell date +%Y-%m-%d<span class="k">)</span><span class="s2">&#34;</span>
+<p>이상하지만 잘 동작 합니다. -_-;;;</p>
 
 
-<span class="nf">run</span><span class="o">:</span>
-	<span class="k">$(</span>HUGO<span class="k">)</span> server -D
-
-<span class="nf">clone</span><span class="o">:</span>
-	rm -rf public
-	git clone https://github.com/&lt;USERNAME<span class="p">|</span>ORGANIZATION&gt;/&lt;USERNAME<span class="p">|</span>ORGANIZATION&gt;.github.io.git
-	mv gyuha.github.io public
-
-<span class="nf">new</span><span class="o">:</span>
-	<span class="k">$(</span>HUGO<span class="k">)</span> new post/<span class="k">$(</span>shell date +%Y-%m-%d<span class="k">)</span>-<span class="k">$(</span>title<span class="k">)</span>.md
-
-<span class="nf">deploy</span><span class="o">:</span>
-	<span class="nb">echo</span> <span class="s2">&#34;\033[0;32mDeploying updates to GitHub...\033[0m&#34;</span>
-
-	<span class="c1"># Build the project.
-</span><span class="c1"></span>	<span class="k">$(</span>HUGO<span class="k">)</span> -D
-
-	<span class="nb">cd</span> ./public <span class="o">&amp;&amp;</span> git add . <span class="o">&amp;&amp;</span> git commit -m <span class="k">$(</span>COMMIT_MESSAGE<span class="k">)</span> <span class="o">&amp;&amp;</span> git push
-</code></pre></div>
-<hr />
-
-<ul>
-<li>참고 소스 : <a href="https://github.com/gyuha/blog">https://github.com/gyuha/blog</a></li>
-</ul>
-
-
-        
-          <div class="blog-tags">
-            
-              <a href="https://gyuha.github.io//tags/go/">go</a>&nbsp;
-            
-              <a href="https://gyuha.github.io//tags/blog/">blog</a>&nbsp;
-            
-              <a href="https://gyuha.github.io//tags/github/">github</a>&nbsp;
-            
-          </div>
         
 
         
@@ -442,49 +387,49 @@ hugo server -D</code></pre></div>
     <ul class="share">
       
       <li>
-        <a href="//twitter.com/share?url=https%3a%2f%2fgyuha.github.io%2fpost%2f2018-11-07-hugo-github%2f&amp;text=Hugo%eb%a5%bc%20%ec%82%ac%ec%9a%a9%ed%95%9c%20Github%20%eb%b8%94%eb%a1%9c%ea%b7%b8..&amp;via=gyuha" target="_blank" title="Share on Twitter">
+        <a href="//twitter.com/share?url=https%3a%2f%2fgyuha.github.io%2fpost%2f2019-01-04-ubuntu-1804-static-ip%2f&amp;text=2019%2001%2004%20Ubuntu%201804%20Static%20Ip&amp;via=gyuha" target="_blank" title="Share on Twitter">
           <i class="fab fa-twitter"></i>
         </a>
       </li>
   
       
       <li>
-        <a href="//plus.google.com/share?url=https%3a%2f%2fgyuha.github.io%2fpost%2f2018-11-07-hugo-github%2f" target="_blank" title="Share on Google Plus">
+        <a href="//plus.google.com/share?url=https%3a%2f%2fgyuha.github.io%2fpost%2f2019-01-04-ubuntu-1804-static-ip%2f" target="_blank" title="Share on Google Plus">
           <i class="fab fa-google-plus"></i>
         </a>
       </li>
   
       
       <li>
-        <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fgyuha.github.io%2fpost%2f2018-11-07-hugo-github%2f" target="_blank" title="Share on Facebook">
+        <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fgyuha.github.io%2fpost%2f2019-01-04-ubuntu-1804-static-ip%2f" target="_blank" title="Share on Facebook">
           <i class="fab fa-linkedin"></i>
         </a>
       </li>
   
       
       <li>
-        <a href="//reddit.com/submit?url=https%3a%2f%2fgyuha.github.io%2fpost%2f2018-11-07-hugo-github%2f&amp;title=Hugo%eb%a5%bc%20%ec%82%ac%ec%9a%a9%ed%95%9c%20Github%20%eb%b8%94%eb%a1%9c%ea%b7%b8.." target="_blank" title="Share on Reddit">
+        <a href="//reddit.com/submit?url=https%3a%2f%2fgyuha.github.io%2fpost%2f2019-01-04-ubuntu-1804-static-ip%2f&amp;title=2019%2001%2004%20Ubuntu%201804%20Static%20Ip" target="_blank" title="Share on Reddit">
           <i class="fab fa-reddit"></i>
         </a>
       </li>
   
       
       <li>
-        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fgyuha.github.io%2fpost%2f2018-11-07-hugo-github%2f&amp;title=Hugo%eb%a5%bc%20%ec%82%ac%ec%9a%a9%ed%95%9c%20Github%20%eb%b8%94%eb%a1%9c%ea%b7%b8.." target="_blank" title="Share on LinkedIn">
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fgyuha.github.io%2fpost%2f2019-01-04-ubuntu-1804-static-ip%2f&amp;title=2019%2001%2004%20Ubuntu%201804%20Static%20Ip" target="_blank" title="Share on LinkedIn">
           <i class="fab fa-linkedin"></i>
         </a>
       </li>
   
       
       <li>
-        <a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fgyuha.github.io%2fpost%2f2018-11-07-hugo-github%2f&amp;title=Hugo%eb%a5%bc%20%ec%82%ac%ec%9a%a9%ed%95%9c%20Github%20%eb%b8%94%eb%a1%9c%ea%b7%b8.." target="_blank" title="Share on StumbleUpon">
+        <a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fgyuha.github.io%2fpost%2f2019-01-04-ubuntu-1804-static-ip%2f&amp;title=2019%2001%2004%20Ubuntu%201804%20Static%20Ip" target="_blank" title="Share on StumbleUpon">
           <i class="fab fa-stumbleupon"></i>
         </a>
       </li>
   
       
       <li>
-        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fgyuha.github.io%2fpost%2f2018-11-07-hugo-github%2f&amp;description=Hugo%eb%a5%bc%20%ec%82%ac%ec%9a%a9%ed%95%9c%20Github%20%eb%b8%94%eb%a1%9c%ea%b7%b8.." target="_blank" title="Share on Pinterest">
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fgyuha.github.io%2fpost%2f2019-01-04-ubuntu-1804-static-ip%2f&amp;description=2019%2001%2004%20Ubuntu%201804%20Static%20Ip" target="_blank" title="Share on Pinterest">
           <i class="fab fa-pinterest"></i>
         </a>
       </li>
@@ -505,13 +450,9 @@ hugo server -D</code></pre></div>
         <ul class="pager blog-pager">
           
             <li class="previous">
-              <a href="https://gyuha.github.io/post/2018-11-06-typescript-webpack-serverless/" data-toggle="tooltip" data-placement="top" title="Typescript Webpack Serverless 구성하기">&larr; Previous Post</a>
+              <a href="https://gyuha.github.io/post/2019-01-04-ubuntu-server-labtop-cover/" data-toggle="tooltip" data-placement="top" title="2019 01 04 Ubuntu Server Labtop Cover">&larr; Previous Post</a>
             </li>
           
-          
-            <li class="next">
-              <a href="https://gyuha.github.io/post/2018-11-13-express-typescript-webpack/" data-toggle="tooltip" data-placement="top" title="Express Typescript Webpack">Next Post &rarr;</a>
-            </li>
           
         </ul>
       
@@ -521,12 +462,12 @@ hugo server -D</code></pre></div>
         
           
           <div class="disqus-comments">                  
-            <button id="show-comments" class="btn btn-default" type="button">Show <span class="disqus-comment-count" data-disqus-url="https://gyuha.github.io/post/2018-11-07-hugo-github">comments</span></button>
+            <button id="show-comments" class="btn btn-default" type="button">Show <span class="disqus-comment-count" data-disqus-url="https://gyuha.github.io/post/2019-01-04-ubuntu-1804-static-ip">comments</span></button>
             <div id="disqus_thread"></div>
 
             <script type="text/javascript">
               var disqus_config = function () {
-              this.page.url = 'https:\/\/gyuha.github.io\/post\/2018-11-07-hugo-github';
+              this.page.url = 'https:\/\/gyuha.github.io\/post\/2019-01-04-ubuntu-1804-static-ip';
             };
 
           </script>
