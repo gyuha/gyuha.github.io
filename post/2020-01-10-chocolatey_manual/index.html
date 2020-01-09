@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>윈도우용 패키지 매니저 Chocolatey 사용법 - Gyuha Blog</title>
+  <meta property="og:title" content="윈도우용 패키지 매니저 Chocolatey 사용법" />
+  <meta name="twitter:title" content="윈도우용 패키지 매니저 Chocolatey 사용법" />
+  <meta name="description" content="Chocolatey는 윈도우용 패키지 매니저로, 설치하려는 윈도우용 소프트웨어를 일일이 웹사이트에서 찾아서 설치할 필요 없이 간단하게 커맨드 만으로 윈도우용 소프트웨어를 설치 할 수 있게 해 줍니다.
+Chocolatey 설치 chocolate를 설치 하려면 관리자 권한 cmd나 PowerShell을 실행해서 설치를 해 줘야 합니다.
+cmd 사용시 @powershell -NoProfile -ExecutionPolicy Bypass -Command &#34;iex ((new-object net.webclient).DownloadString(&#39;https://chocolatey.org/install.ps1&#39;))&#34; &amp;&amp; SET PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin powershell 사용시 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString(&#39;https://chocolatey.org/install.ps1&#39;)) 패키지 찾기 아래 웹페이지에 접속해서 검색하시면 됩니다.
+ https://chocolatey.">
+  <meta property="og:description" content="Chocolatey는 윈도우용 패키지 매니저로, 설치하려는 윈도우용 소프트웨어를 일일이 웹사이트에서 찾아서 설치할 필요 없이 간단하게 커맨드 만으로 윈도우용 소프트웨어를 설치 할 수 있게 해 줍니다.
+Chocolatey 설치 chocolate를 설치 하려면 관리자 권한 cmd나 PowerShell을 실행해서 설치를 해 줘야 합니다.
+cmd 사용시 @powershell -NoProfile -ExecutionPolicy Bypass -Command &#34;iex ((new-object net.webclient).DownloadString(&#39;https://chocolatey.org/install.ps1&#39;))&#34; &amp;&amp; SET PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin powershell 사용시 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString(&#39;https://chocolatey.org/install.ps1&#39;)) 패키지 찾기 아래 웹페이지에 접속해서 검색하시면 됩니다.
+ https://chocolatey.">
+  <meta name="twitter:description" content="Chocolatey는 윈도우용 패키지 매니저로, 설치하려는 윈도우용 소프트웨어를 일일이 웹사이트에서 찾아서 설치할 필요 없이 간단하게 커맨드 만으로 윈도우용 소프트웨어를 설치 할 수 있게 해 줍니다.
+Chocolatey 설치 chocolate를 설치 하려면 관리자 권한 cmd나 PowerShell을 실행해서 설치를 해 줘야 합니다.
+cmd …">
+  <meta name="author" content="신규하"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "Gyuha Blog",
+    
+    "url": "https://gyuha.github.io/"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https://gyuha.github.io/"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https://gyuha.github.io/",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https://gyuha.github.io/post/2020-01-10-chocolatey_manual/",
+          "name": "윈도우용 패키지 매니저 chocolatey 사용법"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "신규하"
+  },
+  "headline": "윈도우용 패키지 매니저 Chocolatey 사용법",
+  "description" : "Chocolatey는 윈도우용 패키지 매니저로, 설치하려는 윈도우용 소프트웨어를 일일이 웹사이트에서 찾아서 설치할 필요 없이 간단하게 커맨드 만으로 윈도우용 소프트웨어를 설치 할 수 있게 해 줍니다.
+Chocolatey 설치 chocolate를 설치 하려면 관리자 권한 cmd나 PowerShell을 실행해서 설치를 해 줘야 합니다.
+cmd 사용시 @powershell -NoProfile -ExecutionPolicy Bypass -Command &amp;#34;iex ((new-object net.webclient).DownloadString(&amp;#39;https://chocolatey.org/install.ps1&amp;#39;))&amp;#34; &amp;amp;&amp;amp; SET PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin powershell 사용시 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString(&amp;#39;https://chocolatey.org/install.ps1&amp;#39;)) 패키지 찾기 아래 웹페이지에 접속해서 검색하시면 됩니다.
+ https://chocolatey.",
+  "inLanguage" : "en",
+  "wordCount": 856,
+  "datePublished" : "2020-01-10T03:03:39",
+  "dateModified" : "2020-01-10T03:03:39",
+  "image" : "https://gyuha.github.io/img/avatar-icon.png",
+  "keywords" : [ "" ],
+  "mainEntityOfPage" : "https://gyuha.github.io/post/2020-01-10-chocolatey_manual/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https://gyuha.github.io/",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https://gyuha.github.io/img/avatar-icon.png",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+<meta property="og:title" content="윈도우용 패키지 매니저 Chocolatey 사용법" />
+<meta property="og:description" content="Chocolatey는 윈도우용 패키지 매니저로, 설치하려는 윈도우용 소프트웨어를 일일이 웹사이트에서 찾아서 설치할 필요 없이 간단하게 커맨드 만으로 윈도우용 소프트웨어를 설치 할 수 있게 해 줍니다.
+Chocolatey 설치 chocolate를 설치 하려면 관리자 권한 cmd나 PowerShell을 실행해서 설치를 해 줘야 합니다.
+cmd 사용시 @powershell -NoProfile -ExecutionPolicy Bypass -Command &#34;iex ((new-object net.webclient).DownloadString(&#39;https://chocolatey.org/install.ps1&#39;))&#34; &amp;&amp; SET PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin powershell 사용시 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString(&#39;https://chocolatey.org/install.ps1&#39;)) 패키지 찾기 아래 웹페이지에 접속해서 검색하시면 됩니다.
+ https://chocolatey.">
+<meta property="og:image" content="https://gyuha.github.io/img/avatar-icon.png" />
+<meta property="og:url" content="https://gyuha.github.io/post/2020-01-10-chocolatey_manual/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Gyuha Blog" />
+  <meta name="twitter:title" content="윈도우용 패키지 매니저 Chocolatey 사용법" />
+  <meta name="twitter:description" content="Chocolatey는 윈도우용 패키지 매니저로, 설치하려는 윈도우용 소프트웨어를 일일이 웹사이트에서 찾아서 설치할 필요 없이 간단하게 커맨드 만으로 윈도우용 소프트웨어를 설치 할 수 있게 해 줍니다.
+Chocolatey 설치 chocolate를 설치 하려면 관리자 권한 cmd나 PowerShell을 실행해서 설치를 해 줘야 합니다.
+cmd …">
+  <meta name="twitter:image" content="https://gyuha.github.io/img/avatar-icon.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@gyuha" />
+  <meta name="twitter:creator" content="@gyuha" />
+  <link href='https://gyuha.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="https://gyuha.github.io/img/avatar-icon.png" />
+  <meta name="twitter:image" content="https://gyuha.github.io/img/avatar-icon.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@gyuha" />
+  <meta name="twitter:creator" content="@gyuha" />
+  <meta property="og:url" content="https://gyuha.github.io/post/2020-01-10-chocolatey_manual/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Gyuha Blog" />
+
+  <meta name="generator" content="Hugo 0.40.1" />
+  <link rel="alternate" href="https://gyuha.github.io/index.xml" type="application/rss+xml" title="Gyuha Blog">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://gyuha.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="https://gyuha.github.io/css/highlight.min.css" /><link rel="stylesheet" href="https://gyuha.github.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://gyuha.github.io/">Gyuha Blog</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+
+        
+
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="avatar-container">
+        <div class="avatar-img-border">
+          <a title="Gyuha Blog" href="https://gyuha.github.io/">
+            <img class="avatar-img" src="https://gyuha.github.io/img/avatar-icon.png" alt="Gyuha Blog" />
+          </a>
+        </div>
+      </div>
+    
+
+  </div>
+</nav>
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search Gyuha Blog</h4>
+        </div>
+        <div class="modal-body">
+          <gcse:search></gcse:search>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+  
+  
+  
+
+
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+              
+                <h1>윈도우용 패키지 매니저 Chocolatey 사용법</h1>
+              
+              
+              
+              
+                <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on January 10, 2020
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;5&nbsp;minutes
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;856&nbsp;words
+  
+  신규하
+  
+  
+</span>
+
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        
+
+<p>Chocolatey는 윈도우용 패키지 매니저로, 설치하려는 윈도우용 소프트웨어를 일일이 웹사이트에서 찾아서 설치할 필요 없이 간단하게 커맨드 만으로 윈도우용 소프트웨어를 설치 할 수 있게 해 줍니다.</p>
+
+<h1 id="chocolatey-설치">Chocolatey 설치</h1>
+
+<p>chocolate를 설치 하려면 관리자 권한 cmd나 PowerShell을 실행해서 설치를 해 줘야 합니다.</p>
+
+<h2 id="cmd-사용시">cmd 사용시</h2>
+<div class="highlight"><pre class="chroma"><code class="language-batch" data-lang="batch"><span class="p">@</span>powershell -NoProfile -ExecutionPolicy Bypass -Command <span class="s2">&#34;iex ((new-object net.webclient).DownloadString(&#39;https://chocolatey.org/install.ps1&#39;))&#34;</span> <span class="p">&amp;&amp;</span> <span class="k">SET</span> <span class="nv">PATH</span><span class="p">=</span><span class="nv">%PATH%</span>;<span class="nv">%ALLUSERSPROFILE%</span>\chocolatey\bin</code></pre></div>
+<h2 id="powershell-사용시">powershell 사용시</h2>
+<div class="highlight"><pre class="chroma"><code class="language-batch" data-lang="batch">Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString(&#39;https://chocolatey.org/install.ps1&#39;))</code></pre></div>
+<h1 id="패키지-찾기">패키지  찾기</h1>
+
+<p>아래 웹페이지에 접속해서 검색하시면 됩니다.</p>
+
+<blockquote>
+<p><a href="https://chocolatey.org/packages">https://chocolatey.org/packages</a></p>
+</blockquote>
+
+<p>또는 cmd에서 <code>search</code> 나  <code>list</code> 명령어로 검색을 할 수 있습니다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-batch" data-lang="batch"><span class="p">&gt;</span> choco search googlechrome
+Chocolatey v0.10.15
+GoogleChrome 79.0.3945.117 [Approved] Downloads cached for licensed users
+vivaldi.install 2.10.1745.23
+... 생략
+10 packages found.</code></pre></div>
+<p>예로 구글크롬 웹브라우저를 검색해 보면  10개의 패키지가 나옵니다. 그냥 chrome을 검색하면 백여개가 넘는 패키지가 목록이 나오게 됩니다.</p>
+
+<p>여기서 정확하게 필요한 패키지만을 보기 위해서는 <code>-e</code> 또는 <code>--exact</code> 옵션을 넣어 줘야 합니다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-batch" data-lang="batch"><span class="p">&gt;</span> choco search googlechrome -e
+Chocolatey v0.10.15
+GoogleChrome 79.0.3945.117 [Approved] Downloads cached for licensed users
+1 packages found.</code></pre></div>
+<p>그리고, 간혹 특정 버전의 패키지를 설치 해야 할 경우가 있습니다. 그럴 경우 버전을 확인하기 위해서는 <code>-a</code>, <code>--all</code>  옵션을 넣어 주면 버전 정보를 확인 할 수 있습니다.</p>
+
+<h1 id="패키지-상세-정보-보기">패키지 상세 정보 보기</h1>
+
+<p><code>info</code> 명령어을 사요하거나 search에서 <code>-v</code>옵션을 추가해 주면 됩니다.</p>
+
+<p>그런데 <code>info</code> 명령어 search에서 -e 옵션이 붙은 것처럼 동작을 하게 됩니다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-batch" data-lang="batch"><span class="p">&gt;</span> choco info googlechrome
+Chocolatey v0.10.15
+GoogleChrome 79.0.3945.117 [Approved] Downloads cached for licensed users
+ <span class="k">Title</span><span class="p">:</span> <span class="nl">Google</span><span class="c1"> Chrome | Published: 2020-01-07</span>
+ Package approved as a trusted package on 1 08 2020 01<span class="p">:</span><span class="nl">22</span><span class="c1">:22.</span>
+... 생략</code></pre></div>
+<p>또는</p>
+<div class="highlight"><pre class="chroma"><code class="language-batch" data-lang="batch"><span class="p">&gt;</span> choco search googlechrome -ev
+Chocolatey v0.10.15
+GoogleChrome 79.0.3945.117 [Approved] Downloads cached for licensed users
+ <span class="k">Title</span><span class="p">:</span> <span class="nl">Google</span><span class="c1"> Chrome | Published: 2020-01-07</span>
+ Package approved as a trusted package on 1 08 2020 01<span class="p">:</span><span class="nl">22</span><span class="c1">:22.</span>
+... 생략</code></pre></div>
+<p>여기서 <code>-ev</code> 로 옵션을 줬는데, 이건 <code>-e -v</code>를 하나로 요약한 형식입니다.</p>
+
+<h1 id="패키지-설치-하기">패키지 설치 하기</h1>
+
+<p><code>install</code> 명령을 이용해서 설치하고 싶은 패키지를 아래와 같이 설치 합니다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-batch" data-lang="batch"><span class="p">&gt;</span> choco install bandizip
+Chocolatey v0.10.15
+Installing the following packages:
+bandizip
+... 생략
+Note: If you don&#39;t run this script, the installation will fail.
+Note: To confirm automatically next time, use &#39;-y&#39; or consider:
+choco feature enable -n allowGlobalConfirmation
+Do you want to run the script?([Y]es/[A]ll - yes to all/[N]o/[P]rint)<span class="p">:</span></code></pre></div>
+<p>명령어 프롬프트가 나오면 y를 눌러주면 간단하게 설치가 완료 됩니다.</p>
+
+<p>설치 시 자동으로 y를 누르고 싶다면 <code>-y</code> 옵션을 넣어 주면 됩니다. 그리고 강제로 설치하고 싶다면 <code>-f</code>를 넣어 주면 됩니다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-batch" data-lang="batch"><span class="p">&gt;</span> choco install -yf bandizip</code></pre></div>
+<p>혹시 특정 버전을 설치하고 싶다면 <code>--version</code> 옵션을 이용해서 해당 버전을 설치 할 수 있습니다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-batch" data-lang="batch">choco install bandizip --version=6.24</code></pre></div>
+<h1 id="패키지-삭제-하기">패키지 삭제 하기</h1>
+
+<p>chocolatey는 설치된 패키지도 <code>uninstall</code> 명령어를 이용해서 편하게 삭제가 가능 합니다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-batch" data-lang="batch"><span class="p">&gt;</span> choco uninstall bandizip
+Chocolatey v0.10.15
+Uninstalling the following packages:
+bandizip
+... 생략
+Do you want to run the script?([Y]es/[A]ll - yes to all/[N]o/[P]rint)<span class="p">:</span> </code></pre></div>
+<p>명령어 프롬프트가 나오면 y를 눌러주면 삭제가 됩니다.</p>
+
+<p><code>y</code>키를 누르기 귀찮다면 설치 할 때와 같이 <code>-yf</code>를 누르시면 바로 삭제가 가능 합니다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-batch" data-lang="batch"><span class="p">&gt;</span> choco uninstall -yf bandizip</code></pre></div>
+<h1 id="choco로-설치된-패키지-목록-확인하기">choco로 설치된 패키지 목록 확인하기</h1>
+
+<p><code>search</code> 또는 <code>list</code>명령로 확인 가능 합니다. 뒤에 <code>-l</code> 옵션을 주면 로컬에 설치된 패키지의 목록을 출력 해 줍니다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-batch" data-lang="batch"><span class="p">&gt;</span> choco search -l
+bandizip 6.25
+... 생략
+zeal 0.6.1
+zeal.install 0.6.1
+62 packages installed.</code></pre></div>
+<p>또는 <code>clist</code> 명령어를 사용해서도 조회가 가능 합니다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-batch" data-lang="batch"><span class="p">&gt;</span> clist -l</code></pre></div>
+<p><code>clist</code> 명령은 <code>choco search</code>를 와 같은 역할을 합니다.</p>
+
+<h1 id="패키지-업데이트-하기">패키지 업데이트 하기</h1>
+
+<p><code>upgrade</code> 명령어를 통해서 패키지를  최신 버전으로 업데이트가 가능 합니다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-batch" data-lang="batch"><span class="p">&gt;</span> choco upgrade bandizip</code></pre></div>
+<p>혹시, choco를 통해서 설치한 프로그램을 모두 업데이트 하고 싶다면 패키지 이름 대신 <code>all</code>을 넣어 주면 됩니다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-batch" data-lang="batch"><span class="p">&gt;</span> choco upgrade all</code></pre></div>
+<h1 id="chocolatey-설치부터-패키지-설치까지-한방-스크립트">chocolatey 설치부터 패키지 설치까지 한방 스크립트</h1>
+
+<p><code>choco_install.bat</code>라는 파일을 만들고 아래의 내용을 복사해서 넣어 주세요.</p>
+
+<p>그리고, 뒷 부분에 설치하고 싶은 패키지를  넣어 주시면 됩니다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-batch" data-lang="batch"><span class="p">@</span><span class="k">echo</span> off
+<span class="k">CLS</span>
+<span class="k">ECHO</span> **************************************
+<span class="k">ECHO</span> * Start Chocolatey Batch
+<span class="k">ECHO</span> **************************************
+
+<span class="p">:</span><span class="c1">::::::::::::::::::::::::::::::::::::::::</span>
+<span class="p">:</span><span class="c1">: 체크 및 관리자 권한 가져 오기</span>
+NET FILE 1<span class="p">&gt;</span>NUL 2<span class="p">&gt;</span>NUL
+<span class="k">if</span> &#39;<span class="nv">%errorlevel%</span>&#39; <span class="o">==</span> &#39;0&#39; <span class="p">(</span> <span class="k">goto</span> <span class="nl">gotPrivileges</span><span class="c1"> </span><span class="p">)</span> <span class="k">else</span> <span class="p">(</span> <span class="k">goto</span> <span class="nl">getPrivileges</span><span class="c1"> </span><span class="p">)</span>
+
+<span class="p">:</span><span class="nl">getPrivileges</span>
+<span class="p">:</span><span class="c1">::::::::::::::::::::::::::::::::::::::::</span>
+<span class="p">:</span><span class="c1">: UAC를 사용해서 관리자 권한으로 전환</span>
+<span class="k">if</span> &#39;<span class="nv">%1</span>&#39;<span class="o">==</span>&#39;ELEV&#39; <span class="p">(</span><span class="k">shift</span> <span class="p">&amp;</span> <span class="k">goto</span> <span class="nl">gotPrivileges</span><span class="p">)</span>  
+<span class="k">ECHO</span>.
+<span class="k">ECHO</span> **************************************
+<span class="k">ECHO</span> * Use UAC, switch to admin
+<span class="k">ECHO</span> **************************************
+
+<span class="k">setlocal</span> DisableDelayedExpansion
+<span class="k">set</span> <span class="s2">&#34;batchPath=</span><span class="nv">%~0</span><span class="s2">&#34;</span>
+<span class="k">setlocal</span> EnableDelayedExpansion
+<span class="k">ECHO</span> Set UAC = CreateObject<span class="se">^(</span><span class="s2">&#34;Shell.Application&#34;</span><span class="se">^)</span> <span class="p">&gt;</span> <span class="s2">&#34;</span><span class="nv">%temp%</span><span class="s2">\OEgetPrivileges.vbs&#34;</span>
+<span class="k">ECHO</span> UAC.ShellExecute <span class="s2">&#34;</span><span class="nv">!batchPath!</span><span class="s2">&#34;</span>, <span class="s2">&#34;ELEV&#34;</span>, <span class="s2">&#34;&#34;</span>, <span class="s2">&#34;runas&#34;</span>, 1 <span class="p">&gt;&gt;</span> <span class="s2">&#34;</span><span class="nv">%temp%</span><span class="s2">\OEgetPrivileges.vbs&#34;</span>
+<span class="s2">&#34;</span><span class="nv">%temp%</span><span class="s2">\OEgetPrivileges.vbs&#34;</span>
+<span class="k">exit</span> /B
+
+
+<span class="p">:</span><span class="nl">gotPrivileges</span>
+<span class="p">:</span><span class="c1">::::::::::::::::::::::::::::::::::::::::</span>
+<span class="p">:</span><span class="c1">: 시작 하기</span>
+<span class="k">setlocal</span> <span class="p">&amp;</span> <span class="k">pushd</span> .
+
+WHERE choco 1<span class="p">&gt;</span>NUL 2<span class="p">&gt;</span>NUL
+<span class="k">if</span> &#39;<span class="nv">%errorlevel%</span>&#39; <span class="o">==</span> &#39;0&#39; <span class="p">(</span> <span class="k">goto</span> <span class="nl">chocoInstalled</span><span class="c1"> </span><span class="p">)</span> <span class="k">else</span> <span class="p">(</span> <span class="k">goto</span> <span class="nl">chocoMissing</span><span class="c1"> </span><span class="p">)</span>
+
+<span class="p">:</span><span class="nl">chocoMissing</span>
+<span class="p">:</span><span class="c1">:::::::::::::::::::::::::::</span>
+<span class="p">:</span><span class="c1">: Chocolatey가 없을 경우 설치</span>
+<span class="p">:</span><span class="c1">:::::::::::::::::::::::::::</span>
+<span class="k">ECHO</span>.
+choice /M <span class="s2">&#34;Chocolatey not found. Install now?&#34;</span>
+<span class="k">IF</span> &#39;<span class="nv">%errorlevel%</span>&#39; <span class="o">==</span> &#39;2&#39; <span class="k">exit</span> /B
+<span class="k">ECHO</span>.
+<span class="k">ECHO</span> **************************************
+<span class="k">ECHO</span> * Chocolatey install
+<span class="k">ECHO</span> **************************************
+
+<span class="p">@</span>powershell -NoProfile -ExecutionPolicy Bypass -Command <span class="s2">&#34;iex ((new-object net.webclient).DownloadString(&#39;https://chocolatey.org/install.ps1&#39;))&#34;</span> <span class="p">&amp;&amp;</span> <span class="k">SET</span> <span class="nv">PATH</span><span class="p">=</span><span class="nv">%PATH%</span>;<span class="nv">%ALLUSERSPROFILE%</span>\chocolatey\bin
+
+<span class="p">:</span><span class="nl">chocoInstalled</span>
+<span class="k">ECHO</span>.
+<span class="k">ECHO</span> **************************************
+<span class="k">ECHO</span> * Packages install
+<span class="k">ECHO</span> **************************************
+
+<span class="p">@</span><span class="k">echo</span> on
+
+<span class="p">:</span><span class="c1">: 항상 자동으로 yes를 선택하도록 설정</span>
+choco feature enable --name=allowGlobalConfirmation
+
+<span class="p">:</span><span class="c1">: 먼저 기존 패키지 업데이트</span>
+choco upgrade all -y
+
+<span class="p">:</span><span class="c1">: 사용할 어플리케이션 설치</span>
+<span class="k">set</span> <span class="nv">choco_install</span><span class="p">=</span>choco install -fy
+<span class="nv">%choco_install%</span> bandizip 
+<span class="nv">%choco_install%</span> firefox
+<span class="nv">%choco_install%</span> googlechrome
+<span class="nv">%choco_install%</span> vcredist140
+<span class="nv">%choco_install%</span> vcredist2012
+<span class="nv">%choco_install%</span> directx
+<span class="nv">%choco_install%</span> dotnetfx
+<span class="nv">%choco_install%</span> javaruntime
+<span class="nv">%choco_install%</span> everything
+<span class="nv">%choco_install%</span> wox
+<span class="nv">%choco_install%</span> qbittorrent
+<span class="nv">%choco_install%</span> f.lux
+<span class="nv">%choco_install%</span> typora
+<span class="nv">%choco_install%</span> freefilesync
+<span class="nv">%choco_install%</span> calibre
+<span class="nv">%choco_install%</span> notion
+<span class="nv">%choco_install%</span> vlc
+<span class="nv">%choco_install%</span> krita
+<span class="nv">%choco_install%</span> paint.net
+<span class="nv">%choco_install%</span> jbs
+<span class="nv">%choco_install%</span> ditto
+<span class="nv">%choco_install%</span> ccleaner.portable
+<span class="nv">%choco_install%</span> git.install --params <span class="s2">&#34;/GitAndUnixToolsOnPath /NoShellIntegration /NoGuiHereIntegration /WindowsTerminal&#34;</span>
+
+<span class="p">:</span><span class="c1">: 항상 자동으로 yes를 선택하는 옵션 끄기</span>
+choco feature disable --name=allowGlobalConfirmation
+
+<span class="p">:</span><span class="c1">: 업데이트 된 설정 다시 읽기</span>
+RefreshEnv.cmd
+
+pause</code></pre></div>
+<p><code>choco_install.bat</code> 파일을 실행했을때 관리자 권한이 아니면 관리자 권한을 부여해서 실행하게 됩니다.</p>
+
+<p>컴퓨터 설치를 자주 하시게 되는 분들은 위와 같이 파일을 하나 설정해 둔다면 유용하게 사용 할 수 있을 것이라고 생각 됩니다.</p>
+
+
+        
+
+        
+            <hr/>
+            <section id="social-share">
+              <ul class="list-inline footer-links">
+                
+
+<div class="share-box" aria-hidden="true">
+    <ul class="share">
+      
+      <li>
+        <a href="//twitter.com/share?url=https%3a%2f%2fgyuha.github.io%2fpost%2f2020-01-10-chocolatey_manual%2f&amp;text=%ec%9c%88%eb%8f%84%ec%9a%b0%ec%9a%a9%20%ed%8c%a8%ed%82%a4%ec%a7%80%20%eb%a7%a4%eb%8b%88%ec%a0%80%20Chocolatey%20%ec%82%ac%ec%9a%a9%eb%b2%95&amp;via=gyuha" target="_blank" title="Share on Twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//plus.google.com/share?url=https%3a%2f%2fgyuha.github.io%2fpost%2f2020-01-10-chocolatey_manual%2f" target="_blank" title="Share on Google Plus">
+          <i class="fab fa-google-plus"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fgyuha.github.io%2fpost%2f2020-01-10-chocolatey_manual%2f" target="_blank" title="Share on Facebook">
+          <i class="fab fa-linkedin"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//reddit.com/submit?url=https%3a%2f%2fgyuha.github.io%2fpost%2f2020-01-10-chocolatey_manual%2f&amp;title=%ec%9c%88%eb%8f%84%ec%9a%b0%ec%9a%a9%20%ed%8c%a8%ed%82%a4%ec%a7%80%20%eb%a7%a4%eb%8b%88%ec%a0%80%20Chocolatey%20%ec%82%ac%ec%9a%a9%eb%b2%95" target="_blank" title="Share on Reddit">
+          <i class="fab fa-reddit"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fgyuha.github.io%2fpost%2f2020-01-10-chocolatey_manual%2f&amp;title=%ec%9c%88%eb%8f%84%ec%9a%b0%ec%9a%a9%20%ed%8c%a8%ed%82%a4%ec%a7%80%20%eb%a7%a4%eb%8b%88%ec%a0%80%20Chocolatey%20%ec%82%ac%ec%9a%a9%eb%b2%95" target="_blank" title="Share on LinkedIn">
+          <i class="fab fa-linkedin"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fgyuha.github.io%2fpost%2f2020-01-10-chocolatey_manual%2f&amp;title=%ec%9c%88%eb%8f%84%ec%9a%b0%ec%9a%a9%20%ed%8c%a8%ed%82%a4%ec%a7%80%20%eb%a7%a4%eb%8b%88%ec%a0%80%20Chocolatey%20%ec%82%ac%ec%9a%a9%eb%b2%95" target="_blank" title="Share on StumbleUpon">
+          <i class="fab fa-stumbleupon"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fgyuha.github.io%2fpost%2f2020-01-10-chocolatey_manual%2f&amp;description=%ec%9c%88%eb%8f%84%ec%9a%b0%ec%9a%a9%20%ed%8c%a8%ed%82%a4%ec%a7%80%20%eb%a7%a4%eb%8b%88%ec%a0%80%20Chocolatey%20%ec%82%ac%ec%9a%a9%eb%b2%95" target="_blank" title="Share on Pinterest">
+          <i class="fab fa-pinterest"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+  
+              </ul>
+            </section>
+        
+
+        
+          
+          
+        
+      </article>
+
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://gyuha.github.io/post/2019-12-19-typescript-default-import/" data-toggle="tooltip" data-placement="top" title="Typescript에서 default import 개선..">&larr; Previous Post</a>
+            </li>
+          
+          
+        </ul>
+      
+
+
+      
+        
+          
+          <div class="disqus-comments">                  
+            <button id="show-comments" class="btn btn-default" type="button">Show <span class="disqus-comment-count" data-disqus-url="https://gyuha.github.io/post/2020-01-10-chocolatey_manual">comments</span></button>
+            <div id="disqus_thread"></div>
+
+            <script type="text/javascript">
+              var disqus_config = function () {
+              this.page.url = 'https:\/\/gyuha.github.io\/post\/2020-01-10-chocolatey_manual';
+            };
+
+          </script>
+          </div>
+          
+        
+        
+      
+
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="https://www.facebook.com/gyuha.shin" title="Facebook">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/gyuha" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://gitlab.com/nicegyuha" title="GitLab">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-gitlab fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/gyuha" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          <li>
+            
+            <a href="https://gyuha.github.io/index.xml" title="RSS">
+            
+              <span class="fa-stack fa-lg">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              <a href="https://gyuha.github.io">신규하</a>
+            
+          
+
+          &nbsp;&bull;&nbsp;&copy;
+          
+            2020
+          
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://gyuha.github.io/">Gyuha Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.40.1</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/contrib/auto-render.min.js" integrity="sha384-dq1/gEHSxPZQ7DdrM82ID4YVol9BYyU7GbWlIwnwyPzotpoc57wDw/guX8EaYGPx" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://gyuha.github.io/js/main.js"></script>
+<script src="https://gyuha.github.io/js/highlight.min.js"></script>
+<script> hljs.initHighlightingOnLoad(); </script>
+<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script> renderMathInElement(document.body); </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script>
+<script src="https://gyuha.github.io/js/load-photoswipe.js"></script>
+
+
+<script>
+  (function() {
+    var cx = '005985772651516842402:vl-thbjw_8a';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-128878421-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-128878421-1');
+</script>
+
+
+
+
+
+<script type="text/javascript">
+$(function(){
+  $('#show-comments').on('click', function(){
+    var disqus_shortname = 'gyuha-blog';
+      
+    (function() {
+      var disqus = document.createElement('script'); 
+      disqus.type = 'text/javascript'; 
+      disqus.async = true;
+      disqus.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(disqus);
+    })();
+      
+    $(this).hide(); 
+    });
+  });
+      
+</script>
+<script id="dsq-count-scr" src="//gyuha-blog.disqus.com/count.js" async></script>
+
+
+
+
+  </body>
+</html>
+
