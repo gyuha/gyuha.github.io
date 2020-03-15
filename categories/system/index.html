@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System  | Gyuha Blog</title>
+  <meta name="description" content="Gyuha blog 'System'을 한 번 살펴보세요.">
+  <meta property="og:title" content="System">
+  
+  <meta property="og:type" content="website">
+  
+  <meta property="og:description" content="Gyuha blog 'System'을 한 번 살펴보세요.">
+  <meta property="og:url" content="https://gyuha.github.io/categories/system/">
+  <meta property="og:site_name" content="Gyuha Blog">
+  
+  <meta property="og:image" content="https://gyuha.github.io/images/thumbnail.png">
+  
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="canonical" href="https://gyuha.github.io/categories/system/">
+  <link rel="alternate" type="application/rss" href="https://gyuha.github.io/categories/system/index.xml" title="Gyuha Blog" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/agate.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap">
+  <link rel="stylesheet" href="/css/styles.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+  <script type="text/javascript">
+  function toggle_visibility(id) {
+    var e = document.getElementById(id);
+    if (e.className === 'menu')
+      e.className = 'menu hidden';
+    else
+      e.className = 'menu';
+  }
+  </script>
+</head>
+<body>
+  <div class="navbar">    
+    <div class="logo">
+      <a href="/">
+        <img src="/images/logo.png" height="34px" />
+      </a>
+    </div>
+    <div class="burger">
+      <button onclick="toggle_visibility('menu')">
+        <i class="fa fa-bars" aria-hidden="true"></i> 메뉴
+      </button>
+    </div>
+    <div id="menu" class="menu hidden">
+      <ul>
+        <li><a href="/">#Gyuha Blog</a></li>
+        <li><a href="/categories">#카테고리</a></li>
+        <li><a href="/tags">#태그</a></li>
+        
+      </ul>
+      <input class="search" id="search-input" type="search" placeholder="검색어" value="">
+    </div>
+  </div>
+  <div class="container">    
+<div class="container">
+  
+  <div class="post">
+  <div class="post-title">
+    <a href="https://gyuha.github.io/post/2019-01-04-ubuntu-1804-kimchi-install/" title="우분투 18.04에서 kimchi 설치 하기">
+      <img src="/images/post-title-icon.png" />
+      <div class="post-meta">
+        <time>2019년 01월 04일 17시 04분</time>
+        <h1>우분투 18.04에서 kimchi 설치 하기</h1>
+      </div>
+    </a>
+  </div>
+  
+  <div>
+    우분투 18.04에서 kimchi 설치 하기 Bridge Network 설치하기 전 kvm을 개발로 쓰면서 bridge network 형태로 자주 사용해서 먼저 bridge network를 설정 해 줍니다.
+kimchi를 설치 이후에 설정으로 추가해 주면&hellip; 문제가 발생하면서 네트워크가 불능이 되어 버립니다.
+그래서 미리 설정을 해 줍니다.
+먼저 bridge-utils를 설치 해 줍니다.
+sudo apt install bridge-utils 그리고, /etc/netplan/50-cloud-init.yaml을 수정해 줍니다.
+sudo vi /etc/netplan/50-cloud-init.yaml 아래와 같이 입력 합니다.
+network:ethernets:enp3s0:dhcp4:falsebridges:br0:interfaces:-enp3s0dhcp4:falseaddresses:-192.168.1.200/24gateway4:192.168.1.200nameservers:addresses:-1.1.1.1-8.8.8.8parameters:forward-delay:0stp:falseoptional:trueversion:2 입력한 내용을 적용 합니다.
+sudo netplan apply 이제 네트워크에 잘 적용이 되었는지 확인 합니다.
+    
+    <a href="/post/2019-01-04-ubuntu-1804-kimchi-install/" class="summary-more">더보기</a>
+    
+  </div>
+</div>
+
+  <hr class="summary-sep" />
+  
+  <div class="post">
+  <div class="post-title">
+    <a href="https://gyuha.github.io/post/2019-01-04-ubuntu-1804-static-ip/" title="Ubuntu 18.04에서 netplan을 사용한 static ip 설정">
+      <img src="/images/post-title-icon.png" />
+      <div class="post-meta">
+        <time>2019년 01월 04일 10시 30분</time>
+        <h1>Ubuntu 18.04에서 netplan을 사용한 static ip 설정</h1>
+      </div>
+    </a>
+  </div>
+  
+  <div>
+    Ubuntu 18.04에서 netplan을 사용한 static ip 설정 17.10부터 네트워크 인터페이스 설정이 netplan이라는 새로운 네트워크 설정이 생겼다. 기존에 인터페이스 설정(/etc/network/interfaces)보다는 간결해 보입니다.
+변경 할 파일은 아래와 같습니다.
+sudo vi /etc/netplan/50-cloud-init.yaml 기본적으로 dhcp로 설치 했을 경우 아래와 같이 나옵니다.
+network:ethernets:enp4s0f2:addresses:[]dhcp4:trueversion:2 그 내용을 아래와 같이 ip와 정보를 넣고 설정 해 주면 됩니다.
+network:ethernets:enp4s0f2:dhcp4:noaddresses:[192.168.1.200/24]gateway4:192.168.1.1nameservers:addresses:[1.1.1.1,8.8.8.8,8.8.4.4]version:2 그리고 변경 된 내용을 아래와 같이 적용 합니다.
+sudo netplan apply 변경된 내용을 ifconfig로 확인 하면 됩니다.
+$ ifconfig enp4s0f2: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt; mtu 1500 inet 192.
+    
+    <a href="/post/2019-01-04-ubuntu-1804-static-ip/" class="summary-more">더보기</a>
+    
+  </div>
+</div>
+
+  <hr class="summary-sep" />
+  
+  <div class="post">
+  <div class="post-title">
+    <a href="https://gyuha.github.io/post/2019-01-04-ubuntu-server-labtop-cover/" title="우분투 노트북 서버 사용시 커버를 덮어도 잠들지 않도록 하기">
+      <img src="/images/post-title-icon.png" />
+      <div class="post-meta">
+        <time>2019년 01월 04일 10시 23분</time>
+        <h1>우분투 노트북 서버 사용시 커버를 덮어도 잠들지 않도록 하기</h1>
+      </div>
+    </a>
+  </div>
+  
+  <div>
+    우분투 노트북 서버 사용시 커버를 덮어도 잠들지 않도록 하기 먼저 터미널에서 아래와 같은 파일을 열어 줍니다.
+sudo vi /etc/systemd/logind.conf 파일에서 #HandleLidSwitch=suspend로 되어 있는 곳의 샵(#) 주석을 제거 하고 HandleLidSwitch=ignore 이렇게 변경해 줍니다.
+# This file is part of systemd. # # systemd is free software; you can redistribute it and/or modify it # under the terms of the GNU Lesser General Public License as published by # the Free Software Foundation; either version 2.
+    
+    <a href="/post/2019-01-04-ubuntu-server-labtop-cover/" class="summary-more">더보기</a>
+    
+  </div>
+</div>
+
+  <hr class="summary-sep" />
+  
+</div>
+<div class="paging">
+  
+  <span class="page">
+    페이지 1 / 1
+  </span>
+  
+</div>
+
+<div class="go-top">
+  <a href="#" class="go-top-button">
+    <i class="fa fa-angle-double-up"></i>
+    <span>위로</span>
+  </a>
+</div>
+<footer class="footer">
+  COPYRIGHT (C) <a href="https://blog.lulab.net">DONGGEUN,BANG (LUBANG).</a><br />
+  ALL RIGHTS RESERVED.
+</footer>
+</body>
+</html>
+
