@@ -99,9 +99,9 @@
 <p>chocolate를 설치 하려면 관리자 권한 cmd나 PowerShell을 실행해서 설치를 해 줘야 합니다.</p>
 
 <h2 id="cmd-사용시">cmd 사용시</h2>
-<div class="highlight"><pre class="chroma"><code class="language-batch" data-lang="batch"><span class="p">@</span>powershell -NoProfile -ExecutionPolicy Bypass -Command <span class="s2">&#34;iex ((new-object net.webclient).DownloadString(&#39;https://chocolatey.org/install.ps1&#39;))&#34;</span> <span class="p">&amp;&amp;</span> <span class="k">SET</span> <span class="nv">PATH</span><span class="p">=</span><span class="nv">%PATH%</span>;<span class="nv">%ALLUSERSPROFILE%</span>\chocolatey\bin</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">@powershell -NoProfile -ExecutionPolicy Bypass -Command <span class="s2">&#34;iex ((new-object net.webclient).DownloadString(&#39;https://chocolatey.org/install.ps1&#39;))&#34;</span> <span class="o">&amp;&amp;</span> SET <span class="nv">PATH</span><span class="o">=</span>%PATH%<span class="p">;</span>%ALLUSERSPROFILE%<span class="se">\c</span>hocolatey<span class="se">\b</span>in</code></pre></div>
 <h2 id="powershell-사용시">powershell 사용시</h2>
-<div class="highlight"><pre class="chroma"><code class="language-batch" data-lang="batch">Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString(&#39;https://chocolatey.org/install.ps1&#39;))</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">Set-ExecutionPolicy Bypass -Scope Process -Force<span class="p">;</span> iex <span class="o">((</span>New-Object System.Net.WebClient<span class="o">)</span>.DownloadString<span class="o">(</span><span class="s1">&#39;https://chocolatey.org/install.ps1&#39;</span><span class="o">))</span></code></pre></div>
 <h1 id="패키지-찾기">패키지  찾기</h1>
 
 <p>아래 웹페이지에 접속해서 검색하시면 됩니다.</p>
@@ -111,19 +111,19 @@
 </blockquote>
 
 <p>또는 cmd에서 <code>search</code> 나  <code>list</code> 명령어로 검색을 할 수 있습니다.</p>
-<div class="highlight"><pre class="chroma"><code class="language-batch" data-lang="batch"><span class="p">&gt;</span> choco search googlechrome
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">&gt; choco search googlechrome
 Chocolatey v0.10.15
-GoogleChrome 79.0.3945.117 [Approved] Downloads cached for licensed users
-vivaldi.install 2.10.1745.23
+GoogleChrome <span class="m">79</span>.0.3945.117 <span class="o">[</span>Approved<span class="o">]</span> Downloads cached <span class="k">for</span> licensed users
+vivaldi.install <span class="m">2</span>.10.1745.23
 ... 생략
-10 packages found.</code></pre></div>
+<span class="m">10</span> packages found.</code></pre></div>
 <p>예로 구글크롬 웹브라우저를 검색해 보면  10개의 패키지가 나옵니다. 그냥 chrome을 검색하면 백여개가 넘는 패키지가 목록이 나오게 됩니다.</p>
 
 <p>여기서 정확하게 필요한 패키지만을 보기 위해서는 <code>-e</code> 또는 <code>--exact</code> 옵션을 넣어 줘야 합니다.</p>
-<div class="highlight"><pre class="chroma"><code class="language-batch" data-lang="batch"><span class="p">&gt;</span> choco search googlechrome -e
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">&gt; choco search googlechrome -e
 Chocolatey v0.10.15
-GoogleChrome 79.0.3945.117 [Approved] Downloads cached for licensed users
-1 packages found.</code></pre></div>
+GoogleChrome <span class="m">79</span>.0.3945.117 <span class="o">[</span>Approved<span class="o">]</span> Downloads cached <span class="k">for</span> licensed users
+<span class="m">1</span> packages found.</code></pre></div>
 <p>그리고, 간혹 특정 버전의 패키지를 설치 해야 할 경우가 있습니다. 그럴 경우 버전을 확인하기 위해서는 <code>-a</code>, <code>--all</code>  옵션을 넣어 주면 버전 정보를 확인 할 수 있습니다.</p>
 
 <h1 id="패키지-상세-정보-보기">패키지 상세 정보 보기</h1>
@@ -131,171 +131,171 @@ GoogleChrome 79.0.3945.117 [Approved] Downloads cached for licensed users
 <p><code>info</code> 명령어을 사요하거나 search에서 <code>-v</code>옵션을 추가해 주면 됩니다.</p>
 
 <p>그런데 <code>info</code> 명령어 search에서 -e 옵션이 붙은 것처럼 동작을 하게 됩니다.</p>
-<div class="highlight"><pre class="chroma"><code class="language-batch" data-lang="batch"><span class="p">&gt;</span> choco info googlechrome
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">&gt; choco info googlechrome
 Chocolatey v0.10.15
-GoogleChrome 79.0.3945.117 [Approved] Downloads cached for licensed users
- <span class="k">Title</span><span class="p">:</span> <span class="nl">Google</span><span class="c1"> Chrome | Published: 2020-01-07</span>
- Package approved as a trusted package on 1 08 2020 01<span class="p">:</span><span class="nl">22</span><span class="c1">:22.</span>
+GoogleChrome <span class="m">79</span>.0.3945.117 <span class="o">[</span>Approved<span class="o">]</span> Downloads cached <span class="k">for</span> licensed users
+ Title: Google Chrome <span class="p">|</span> Published: <span class="m">2020</span>-01-07
+ Package approved as a trusted package on <span class="m">1</span> <span class="m">08</span> <span class="m">2020</span> <span class="m">01</span>:22:22.
 ... 생략</code></pre></div>
 <p>또는</p>
-<div class="highlight"><pre class="chroma"><code class="language-batch" data-lang="batch"><span class="p">&gt;</span> choco search googlechrome -ev
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">&gt; choco search googlechrome -ev
 Chocolatey v0.10.15
-GoogleChrome 79.0.3945.117 [Approved] Downloads cached for licensed users
- <span class="k">Title</span><span class="p">:</span> <span class="nl">Google</span><span class="c1"> Chrome | Published: 2020-01-07</span>
- Package approved as a trusted package on 1 08 2020 01<span class="p">:</span><span class="nl">22</span><span class="c1">:22.</span>
+GoogleChrome <span class="m">79</span>.0.3945.117 <span class="o">[</span>Approved<span class="o">]</span> Downloads cached <span class="k">for</span> licensed users
+ Title: Google Chrome <span class="p">|</span> Published: <span class="m">2020</span>-01-07
+ Package approved as a trusted package on <span class="m">1</span> <span class="m">08</span> <span class="m">2020</span> <span class="m">01</span>:22:22.
 ... 생략</code></pre></div>
 <p>여기서 <code>-ev</code> 로 옵션을 줬는데, 이건 <code>-e -v</code>를 하나로 요약한 형식입니다.</p>
 
 <h1 id="패키지-설치-하기">패키지 설치 하기</h1>
 
 <p><code>install</code> 명령을 이용해서 설치하고 싶은 패키지를 아래와 같이 설치 합니다.</p>
-<div class="highlight"><pre class="chroma"><code class="language-batch" data-lang="batch"><span class="p">&gt;</span> choco install bandizip
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">&gt; choco install bandizip
 Chocolatey v0.10.15
 Installing the following packages:
 bandizip
 ... 생략
-Note: If you don&#39;t run this script, the installation will fail.
-Note: To confirm automatically next time, use &#39;-y&#39; or consider:
-choco feature enable -n allowGlobalConfirmation
-Do you want to run the script?([Y]es/[A]ll - yes to all/[N]o/[P]rint)<span class="p">:</span></code></pre></div>
+Note: If you don<span class="s1">&#39;t run this script, the installation will fail.
+</span><span class="s1">Note: To confirm automatically next time, use &#39;</span>-y<span class="err">&#39;</span> or consider:
+choco feature <span class="nb">enable</span> -n allowGlobalConfirmation
+Do you want to run the script?<span class="o">([</span>Y<span class="o">]</span>es/<span class="o">[</span>A<span class="o">]</span>ll - yes to all/<span class="o">[</span>N<span class="o">]</span>o/<span class="o">[</span>P<span class="o">]</span>rint<span class="o">)</span>:</code></pre></div>
 <p>명령어 프롬프트가 나오면 y를 눌러주면 간단하게 설치가 완료 됩니다.</p>
 
 <p>설치 시 자동으로 y를 누르고 싶다면 <code>-y</code> 옵션을 넣어 주면 됩니다. 그리고 강제로 설치하고 싶다면 <code>-f</code>를 넣어 주면 됩니다.</p>
-<div class="highlight"><pre class="chroma"><code class="language-batch" data-lang="batch"><span class="p">&gt;</span> choco install -yf bandizip</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">&gt; choco install -yf bandizip</code></pre></div>
 <p>혹시 특정 버전을 설치하고 싶다면 <code>--version</code> 옵션을 이용해서 해당 버전을 설치 할 수 있습니다.</p>
-<div class="highlight"><pre class="chroma"><code class="language-batch" data-lang="batch">choco install bandizip --version=6.24</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">choco install bandizip --version<span class="o">=</span><span class="m">6</span>.24</code></pre></div>
 <h1 id="패키지-삭제-하기">패키지 삭제 하기</h1>
 
 <p>chocolatey는 설치된 패키지도 <code>uninstall</code> 명령어를 이용해서 편하게 삭제가 가능 합니다.</p>
-<div class="highlight"><pre class="chroma"><code class="language-batch" data-lang="batch"><span class="p">&gt;</span> choco uninstall bandizip
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">&gt; choco uninstall bandizip
 Chocolatey v0.10.15
 Uninstalling the following packages:
 bandizip
 ... 생략
-Do you want to run the script?([Y]es/[A]ll - yes to all/[N]o/[P]rint)<span class="p">:</span> </code></pre></div>
+Do you want to run the script?<span class="o">([</span>Y<span class="o">]</span>es/<span class="o">[</span>A<span class="o">]</span>ll - yes to all/<span class="o">[</span>N<span class="o">]</span>o/<span class="o">[</span>P<span class="o">]</span>rint<span class="o">)</span>: </code></pre></div>
 <p>명령어 프롬프트가 나오면 y를 눌러주면 삭제가 됩니다.</p>
 
 <p><code>y</code>키를 누르기 귀찮다면 설치 할 때와 같이 <code>-yf</code>를 누르시면 바로 삭제가 가능 합니다.</p>
-<div class="highlight"><pre class="chroma"><code class="language-batch" data-lang="batch"><span class="p">&gt;</span> choco uninstall -yf bandizip</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">&gt; choco uninstall -yf bandizip</code></pre></div>
 <h1 id="choco로-설치된-패키지-목록-확인하기">choco로 설치된 패키지 목록 확인하기</h1>
 
 <p><code>search</code> 또는 <code>list</code>명령로 확인 가능 합니다. 뒤에 <code>-l</code> 옵션을 주면 로컬에 설치된 패키지의 목록을 출력 해 줍니다.</p>
-<div class="highlight"><pre class="chroma"><code class="language-batch" data-lang="batch"><span class="p">&gt;</span> choco search -l
-bandizip 6.25
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">&gt; choco search -l
+bandizip <span class="m">6</span>.25
 ... 생략
-zeal 0.6.1
-zeal.install 0.6.1
-62 packages installed.</code></pre></div>
+zeal <span class="m">0</span>.6.1
+zeal.install <span class="m">0</span>.6.1
+<span class="m">62</span> packages installed.</code></pre></div>
 <p>또는 <code>clist</code> 명령어를 사용해서도 조회가 가능 합니다.</p>
-<div class="highlight"><pre class="chroma"><code class="language-batch" data-lang="batch"><span class="p">&gt;</span> clist -l</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">&gt; clist -l</code></pre></div>
 <p><code>clist</code> 명령은 <code>choco search</code>를 와 같은 역할을 합니다.</p>
 
 <h1 id="패키지-업데이트-하기">패키지 업데이트 하기</h1>
 
 <p><code>upgrade</code> 명령어를 통해서 패키지를  최신 버전으로 업데이트가 가능 합니다.</p>
-<div class="highlight"><pre class="chroma"><code class="language-batch" data-lang="batch"><span class="p">&gt;</span> choco upgrade bandizip</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">&gt; choco upgrade bandizip</code></pre></div>
 <p>혹시, choco를 통해서 설치한 프로그램을 모두 업데이트 하고 싶다면 패키지 이름 대신 <code>all</code>을 넣어 주면 됩니다.</p>
-<div class="highlight"><pre class="chroma"><code class="language-batch" data-lang="batch"><span class="p">&gt;</span> choco upgrade all</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">&gt; choco upgrade all</code></pre></div>
 <h1 id="chocolatey-설치부터-패키지-설치까지-한방-스크립트">chocolatey 설치부터 패키지 설치까지 한방 스크립트</h1>
 
 <p><code>choco_install.bat</code>라는 파일을 만들고 아래의 내용을 복사해서 넣어 주세요.</p>
 
 <p>그리고, 뒷 부분에 설치하고 싶은 패키지를  넣어 주시면 됩니다.</p>
-<div class="highlight"><pre class="chroma"><code class="language-batch" data-lang="batch"><span class="p">@</span><span class="k">echo</span> off
-<span class="k">CLS</span>
-<span class="k">ECHO</span> **************************************
-<span class="k">ECHO</span> * Start Chocolatey Batch
-<span class="k">ECHO</span> **************************************
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">@echo off
+CLS
+ECHO **************************************
+ECHO * Start Chocolatey Batch
+ECHO **************************************
 
-<span class="p">:</span><span class="c1">::::::::::::::::::::::::::::::::::::::::</span>
-<span class="p">:</span><span class="c1">: 체크 및 관리자 권한 가져 오기</span>
-NET FILE 1<span class="p">&gt;</span>NUL 2<span class="p">&gt;</span>NUL
-<span class="k">if</span> &#39;<span class="nv">%errorlevel%</span>&#39; <span class="o">==</span> &#39;0&#39; <span class="p">(</span> <span class="k">goto</span> <span class="nl">gotPrivileges</span><span class="c1"> </span><span class="p">)</span> <span class="k">else</span> <span class="p">(</span> <span class="k">goto</span> <span class="nl">getPrivileges</span><span class="c1"> </span><span class="p">)</span>
+:::::::::::::::::::::::::::::::::::::::::
+:: 체크 및 관리자 권한 가져 오기
+NET FILE <span class="m">1</span>&gt;NUL <span class="m">2</span>&gt;NUL
+<span class="k">if</span> <span class="s1">&#39;%errorlevel%&#39;</span> <span class="o">==</span> <span class="s1">&#39;0&#39;</span> <span class="o">(</span> goto gotPrivileges <span class="o">)</span> <span class="k">else</span> <span class="o">(</span> goto getPrivileges <span class="o">)</span>
 
-<span class="p">:</span><span class="nl">getPrivileges</span>
-<span class="p">:</span><span class="c1">::::::::::::::::::::::::::::::::::::::::</span>
-<span class="p">:</span><span class="c1">: UAC를 사용해서 관리자 권한으로 전환</span>
-<span class="k">if</span> &#39;<span class="nv">%1</span>&#39;<span class="o">==</span>&#39;ELEV&#39; <span class="p">(</span><span class="k">shift</span> <span class="p">&amp;</span> <span class="k">goto</span> <span class="nl">gotPrivileges</span><span class="p">)</span>  
-<span class="k">ECHO</span>.
-<span class="k">ECHO</span> **************************************
-<span class="k">ECHO</span> * Use UAC, switch to admin
-<span class="k">ECHO</span> **************************************
+:getPrivileges
+:::::::::::::::::::::::::::::::::::::::::
+:: UAC를 사용해서 관리자 권한으로 전환
+<span class="k">if</span> <span class="s1">&#39;%1&#39;</span><span class="o">==</span><span class="s1">&#39;ELEV&#39;</span> <span class="o">(</span><span class="nb">shift</span> <span class="p">&amp;</span> goto gotPrivileges<span class="o">)</span>  
+ECHO.
+ECHO **************************************
+ECHO * Use UAC, switch to admin
+ECHO **************************************
 
-<span class="k">setlocal</span> DisableDelayedExpansion
-<span class="k">set</span> <span class="s2">&#34;batchPath=</span><span class="nv">%~0</span><span class="s2">&#34;</span>
-<span class="k">setlocal</span> EnableDelayedExpansion
-<span class="k">ECHO</span> Set UAC = CreateObject<span class="se">^(</span><span class="s2">&#34;Shell.Application&#34;</span><span class="se">^)</span> <span class="p">&gt;</span> <span class="s2">&#34;</span><span class="nv">%temp%</span><span class="s2">\OEgetPrivileges.vbs&#34;</span>
-<span class="k">ECHO</span> UAC.ShellExecute <span class="s2">&#34;</span><span class="nv">!batchPath!</span><span class="s2">&#34;</span>, <span class="s2">&#34;ELEV&#34;</span>, <span class="s2">&#34;&#34;</span>, <span class="s2">&#34;runas&#34;</span>, 1 <span class="p">&gt;&gt;</span> <span class="s2">&#34;</span><span class="nv">%temp%</span><span class="s2">\OEgetPrivileges.vbs&#34;</span>
-<span class="s2">&#34;</span><span class="nv">%temp%</span><span class="s2">\OEgetPrivileges.vbs&#34;</span>
-<span class="k">exit</span> /B
+setlocal DisableDelayedExpansion
+<span class="nb">set</span> <span class="s2">&#34;batchPath=%~0&#34;</span>
+setlocal EnableDelayedExpansion
+ECHO Set <span class="nv">UAC</span> <span class="o">=</span> CreateObject^<span class="o">(</span><span class="s2">&#34;Shell.Application&#34;</span>^<span class="o">)</span> &gt; <span class="s2">&#34;%temp%\OEgetPrivileges.vbs&#34;</span>
+ECHO UAC.ShellExecute <span class="s2">&#34;!batchPath!&#34;</span>, <span class="s2">&#34;ELEV&#34;</span>, <span class="s2">&#34;&#34;</span>, <span class="s2">&#34;runas&#34;</span>, <span class="m">1</span> &gt;&gt; <span class="s2">&#34;%temp%\OEgetPrivileges.vbs&#34;</span>
+<span class="s2">&#34;%temp%\OEgetPrivileges.vbs&#34;</span>
+<span class="nb">exit</span> /B
 
 
-<span class="p">:</span><span class="nl">gotPrivileges</span>
-<span class="p">:</span><span class="c1">::::::::::::::::::::::::::::::::::::::::</span>
-<span class="p">:</span><span class="c1">: 시작 하기</span>
-<span class="k">setlocal</span> <span class="p">&amp;</span> <span class="k">pushd</span> .
+:gotPrivileges
+:::::::::::::::::::::::::::::::::::::::::
+:: 시작 하기
+setlocal <span class="p">&amp;</span> <span class="nb">pushd</span> .
 
-WHERE choco 1<span class="p">&gt;</span>NUL 2<span class="p">&gt;</span>NUL
-<span class="k">if</span> &#39;<span class="nv">%errorlevel%</span>&#39; <span class="o">==</span> &#39;0&#39; <span class="p">(</span> <span class="k">goto</span> <span class="nl">chocoInstalled</span><span class="c1"> </span><span class="p">)</span> <span class="k">else</span> <span class="p">(</span> <span class="k">goto</span> <span class="nl">chocoMissing</span><span class="c1"> </span><span class="p">)</span>
+WHERE choco <span class="m">1</span>&gt;NUL <span class="m">2</span>&gt;NUL
+<span class="k">if</span> <span class="s1">&#39;%errorlevel%&#39;</span> <span class="o">==</span> <span class="s1">&#39;0&#39;</span> <span class="o">(</span> goto chocoInstalled <span class="o">)</span> <span class="k">else</span> <span class="o">(</span> goto chocoMissing <span class="o">)</span>
 
-<span class="p">:</span><span class="nl">chocoMissing</span>
-<span class="p">:</span><span class="c1">:::::::::::::::::::::::::::</span>
-<span class="p">:</span><span class="c1">: Chocolatey가 없을 경우 설치</span>
-<span class="p">:</span><span class="c1">:::::::::::::::::::::::::::</span>
-<span class="k">ECHO</span>.
+:chocoMissing
+::::::::::::::::::::::::::::
+:: Chocolatey가 없을 경우 설치
+::::::::::::::::::::::::::::
+ECHO.
 choice /M <span class="s2">&#34;Chocolatey not found. Install now?&#34;</span>
-<span class="k">IF</span> &#39;<span class="nv">%errorlevel%</span>&#39; <span class="o">==</span> &#39;2&#39; <span class="k">exit</span> /B
-<span class="k">ECHO</span>.
-<span class="k">ECHO</span> **************************************
-<span class="k">ECHO</span> * Chocolatey install
-<span class="k">ECHO</span> **************************************
+IF <span class="s1">&#39;%errorlevel%&#39;</span> <span class="o">==</span> <span class="s1">&#39;2&#39;</span> <span class="nb">exit</span> /B
+ECHO.
+ECHO **************************************
+ECHO * Chocolatey install
+ECHO **************************************
 
-<span class="p">@</span>powershell -NoProfile -ExecutionPolicy Bypass -Command <span class="s2">&#34;iex ((new-object net.webclient).DownloadString(&#39;https://chocolatey.org/install.ps1&#39;))&#34;</span> <span class="p">&amp;&amp;</span> <span class="k">SET</span> <span class="nv">PATH</span><span class="p">=</span><span class="nv">%PATH%</span>;<span class="nv">%ALLUSERSPROFILE%</span>\chocolatey\bin
+@powershell -NoProfile -ExecutionPolicy Bypass -Command <span class="s2">&#34;iex ((new-object net.webclient).DownloadString(&#39;https://chocolatey.org/install.ps1&#39;))&#34;</span> <span class="o">&amp;&amp;</span> SET <span class="nv">PATH</span><span class="o">=</span>%PATH%<span class="p">;</span>%ALLUSERSPROFILE%<span class="se">\c</span>hocolatey<span class="se">\b</span>in
 
-<span class="p">:</span><span class="nl">chocoInstalled</span>
-<span class="k">ECHO</span>.
-<span class="k">ECHO</span> **************************************
-<span class="k">ECHO</span> * Packages install
-<span class="k">ECHO</span> **************************************
+:chocoInstalled
+ECHO.
+ECHO **************************************
+ECHO * Packages install
+ECHO **************************************
 
-<span class="p">@</span><span class="k">echo</span> on
+@echo on
 
-<span class="p">:</span><span class="c1">: 항상 자동으로 yes를 선택하도록 설정</span>
-choco feature enable --name=allowGlobalConfirmation
+:: 항상 자동으로 yes를 선택하도록 설정
+choco feature <span class="nb">enable</span> --name<span class="o">=</span>allowGlobalConfirmation
 
-<span class="p">:</span><span class="c1">: 먼저 기존 패키지 업데이트</span>
+:: 먼저 기존 패키지 업데이트
 choco upgrade all -y
 
-<span class="p">:</span><span class="c1">: 사용할 어플리케이션 설치</span>
-<span class="k">set</span> <span class="nv">choco_install</span><span class="p">=</span>choco install -fy
-<span class="nv">%choco_install%</span> bandizip 
-<span class="nv">%choco_install%</span> firefox
-<span class="nv">%choco_install%</span> googlechrome
-<span class="nv">%choco_install%</span> vcredist140
-<span class="nv">%choco_install%</span> vcredist2012
-<span class="nv">%choco_install%</span> directx
-<span class="nv">%choco_install%</span> dotnetfx
-<span class="nv">%choco_install%</span> javaruntime
-<span class="nv">%choco_install%</span> everything
-<span class="nv">%choco_install%</span> wox
-<span class="nv">%choco_install%</span> qbittorrent
-<span class="nv">%choco_install%</span> f.lux
-<span class="nv">%choco_install%</span> typora
-<span class="nv">%choco_install%</span> freefilesync
-<span class="nv">%choco_install%</span> calibre
-<span class="nv">%choco_install%</span> notion
-<span class="nv">%choco_install%</span> vlc
-<span class="nv">%choco_install%</span> krita
-<span class="nv">%choco_install%</span> paint.net
-<span class="nv">%choco_install%</span> jbs
-<span class="nv">%choco_install%</span> ditto
-<span class="nv">%choco_install%</span> ccleaner.portable
-<span class="nv">%choco_install%</span> git.install --params <span class="s2">&#34;/GitAndUnixToolsOnPath /NoShellIntegration /NoGuiHereIntegration /WindowsTerminal&#34;</span>
+:: 사용할 어플리케이션 설치
+<span class="nb">set</span> <span class="nv">choco_install</span><span class="o">=</span>choco install -fy
+%choco_install% bandizip 
+%choco_install% firefox
+%choco_install% googlechrome
+%choco_install% vcredist140
+%choco_install% vcredist2012
+%choco_install% directx
+%choco_install% dotnetfx
+%choco_install% javaruntime
+%choco_install% everything
+%choco_install% wox
+%choco_install% qbittorrent
+%choco_install% f.lux
+%choco_install% typora
+%choco_install% freefilesync
+%choco_install% calibre
+%choco_install% notion
+%choco_install% vlc
+%choco_install% krita
+%choco_install% paint.net
+%choco_install% jbs
+%choco_install% ditto
+%choco_install% ccleaner.portable
+%choco_install% git.install --params <span class="s2">&#34;/GitAndUnixToolsOnPath /NoShellIntegration /NoGuiHereIntegration /WindowsTerminal&#34;</span>
 
-<span class="p">:</span><span class="c1">: 항상 자동으로 yes를 선택하는 옵션 끄기</span>
-choco feature disable --name=allowGlobalConfirmation
+:: 항상 자동으로 yes를 선택하는 옵션 끄기
+choco feature disable --name<span class="o">=</span>allowGlobalConfirmation
 
-<span class="p">:</span><span class="c1">: 업데이트 된 설정 다시 읽기</span>
+:: 업데이트 된 설정 다시 읽기
 RefreshEnv.cmd
 
 pause</code></pre></div>
