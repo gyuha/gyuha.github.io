@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vscode에서 vue 프로젝트 생성시 ESlint와 Prettier 설정해 주기  | Gyuha Blog</title>
+  <meta name="description" content="Gyuha blog 'Vscode에서 vue 프로젝트 생성시 ESlint와 Prettier 설정해 주기'을 한 번 살펴보세요.">
+  <meta property="og:title" content="Vscode에서 vue 프로젝트 생성시 ESlint와 Prettier 설정해 주기">
+  
+  <meta property="og:type" content="article">
+  <meta property="article:published_time" content="2020-04-19">
+  
+  <meta property="og:description" content="Gyuha blog 'Vscode에서 vue 프로젝트 생성시 ESlint와 Prettier 설정해 주기'을 한 번 살펴보세요.">
+  <meta property="og:url" content="https://gyuha.github.io/post/2020-04-19-vue-typescript-eslint/">
+  <meta property="og:site_name" content="Gyuha Blog">
+  
+  <meta property="og:image" content="https://gyuha.github.io/images/thumbnail.png">
+  
+  
+  <meta property="og:tags" content="vscode">
+  
+  <meta property="og:tags" content="vue">
+  
+  <meta property="og:tags" content="typescript">
+  
+  <meta property="og:tags" content="eslint">
+  
+  <meta property="og:tags" content="tslint">
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="canonical" href="https://gyuha.github.io/post/2020-04-19-vue-typescript-eslint/">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/agate.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap">
+  <link rel="stylesheet" href="/css/styles.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+  <script type="text/javascript">
+  function toggle_visibility(id) {
+    var e = document.getElementById(id);
+    if (e.className === 'menu')
+      e.className = 'menu hidden';
+    else
+      e.className = 'menu';
+  }
+  </script>
+</head>
+<body>
+  <div class="navbar">    
+    <div class="logo">
+      <a href="/">
+        <img src="/images/logo.png" height="34px" />
+      </a>
+    </div>
+    <div class="burger">
+      <button onclick="toggle_visibility('menu')">
+        <i class="fa fa-bars" aria-hidden="true"></i> 메뉴
+      </button>
+    </div>
+    <div id="menu" class="menu hidden">
+      <ul>
+        <li><a href="/">#Gyuha Blog</a></li>
+        <li><a href="/categories">#카테고리</a></li>
+        <li><a href="/tags">#태그</a></li>
+        
+      </ul>
+      <input class="search" id="search-input" type="search" placeholder="검색어" value="">
+    </div>
+  </div>
+  <div class="container">    
+
+<div class="post">
+  <div class="post-title">
+    <a href="https://gyuha.github.io/post/2020-04-19-vue-typescript-eslint/">
+      <img src="/images/post-title-icon.png" />
+      <div class="post-meta">
+        <time>2020년 04월 19일 03시 50분</time>
+        <h1>Vscode에서 vue 프로젝트 생성시 ESlint와 Prettier 설정해 주기</h1>
+      </div>
+    </a>
+  </div>
+  <div class="post-toc">
+    <span class="title">차례</span>
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#vue-프로젝트-생성하기">Vue 프로젝트 생성하기</a></li>
+<li><a href="#vscode-설정하기">VSCode 설정하기</a></li>
+<li><a href="#참고">참고</a></li>
+</ul>
+</nav>
+  </div>
+  <section class="post-content">
+    
+
+<h1 id="vue-프로젝트-생성하기">Vue 프로젝트 생성하기</h1>
+
+<p><img src="/img/2020-04-19-vue-typescript-eslint/vscode-vue.jpg" alt="vscode-vue" /></p>
+
+<p>기존에 사용하던 <a href="https://www.npmjs.com/package/tslint">TSLint가 더이상 지원</a>을 받지 못 하게 되면서, ESlint로 넘어가야 상태가 되었습니다.</p>
+
+<p>여기서는 Vue 프로젝트를 생성하면서 ESlint와 Prettier를 사용하는 세팅을 간단하게 설정하려고 합니다. 사용하는 툴은 vscode입니다.</p>
+
+<p><code>vue create myproject</code> 형태로 기본 프로젝트를 선택 합니다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">&gt; npx vue create myproject
+
+? Please pick a preset: Manually <span class="k">select</span> features
+? Check the features needed <span class="k">for</span> your project:
+ <span class="o">(</span>*<span class="o">)</span> Babel
+ <span class="o">(</span>*<span class="o">)</span> TypeScript
+ <span class="o">(</span> <span class="o">)</span> Progressive Web App <span class="o">(</span>PWA<span class="o">)</span> Support
+ <span class="o">(</span> <span class="o">)</span> Router
+ <span class="o">(</span> <span class="o">)</span> Vuex
+ <span class="o">(</span>*<span class="o">)</span> CSS Pre-processors
+&gt;<span class="o">(</span>*<span class="o">)</span> Linter / Formatter
+ <span class="o">(</span> <span class="o">)</span> Unit Testing
+ <span class="o">(</span> <span class="o">)</span> E2E Testing     
+
+? Use Babel alongside TypeScript <span class="o">(</span>required <span class="k">for</span> modern mode, auto-detected polyfills, transpiling JSX<span class="o">)</span>? <span class="o">(</span>Y/n<span class="o">)</span> Y 
+
+? Pick a CSS pre-processor <span class="o">(</span>PostCSS, Autoprefixer and CSS Modules are supported by default<span class="o">)</span>:
+&gt; Sass/SCSS <span class="o">(</span>with dart-sass<span class="o">)</span>
+  Sass/SCSS <span class="o">(</span>with node-sass<span class="o">)</span>
+  Less
+  Stylus      
+
+? Pick a linter / formatter config:
+  ESLint with error prevention only
+  ESLint + Airbnb config
+  ESLint + Standard config
+&gt;  ESLint + Prettier
+  TSLint <span class="o">(</span>deprecated<span class="o">)</span>    
+
+? Pick additional lint features: <span class="o">(</span>Press &lt;space&gt; to <span class="k">select</span>, &lt;a&gt; to toggle all, &lt;i&gt; to invert selection<span class="o">)</span>
+&gt;<span class="o">(</span>*<span class="o">)</span> Lint on save
+ <span class="o">(</span> <span class="o">)</span> Lint and fix on commit 
+
+? Where <span class="k">do</span> you prefer placing config <span class="k">for</span> Babel, ESLint, etc.? <span class="o">(</span>Use arrow keys<span class="o">)</span>
+&gt; In dedicated config files
+  In package.json                  </code></pre></div>
+<p>여기서 처음 체크 박스에서 Linter / Formatter를 꼭 선택해 주시고, Linter / Formatter는 ESLint + Prettier를 선택해 줍니다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">&gt; <span class="nb">cd</span> myproject
+&gt; code .</code></pre></div>
+<p>그리고 위와 같이 <code>vscode</code>를 실행 해 줍니다.</p>
+
+<h1 id="vscode-설정하기">VSCode 설정하기</h1>
+
+<p>만약 VSCode에는 아래와 같은 확장 프로그램을 설치가 되어 있지 않으면 설치를 해 줍니다.</p>
+
+<ul>
+<li>ESLint</li>
+<li>Prettier - Code formatter</li>
+<li>Vetur</li>
+</ul>
+
+<p>그리고, vscode의 설정에서 아래와 내용을 추가해 줍니다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span>
+  <span class="nt">&#34;[typescript]&#34;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&#34;editor.defaultFormatter&#34;</span><span class="p">:</span> <span class="s2">&#34;esbenp.prettier-vscode&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;editor.formatOnSave&#34;</span><span class="p">:</span> <span class="kc">true</span>
+  <span class="p">},</span>
+  <span class="nt">&#34;[vue]&#34;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&#34;editor.defaultFormatter&#34;</span><span class="p">:</span> <span class="s2">&#34;esbenp.prettier-vscode&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;editor.formatOnSave&#34;</span><span class="p">:</span> <span class="kc">true</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+<p>여기까지 하면 vscode에서 파일을 저장 할 때 알아서 포맷팅을 해 주고 저장을 해 주게 됩니다.</p>
+
+<p>마지막으로 추가로 좀 더 상세한 설정을 하고 싶다면, 프로젝트 루트 폴더에 <code>.prettierrc.json</code>파일을 만들고 상세한 설정을 해 주시면 됩니다. 아래와 같은 형식으로 만들어 주시면 됩니다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span>
+  <span class="nt">&#34;tabWidth&#34;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+  <span class="nt">&#34;semi&#34;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nt">&#34;singleQuote&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&#34;trailingComma&#34;</span><span class="p">:</span> <span class="s2">&#34;es5&#34;</span><span class="p">,</span>
+  <span class="nt">&#34;bracketSpacing&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&#34;arrowParens&#34;</span><span class="p">:</span> <span class="s2">&#34;always&#34;</span>
+<span class="p">}</span></code></pre></div>
+<p>상세한 내용은 아래 링크를 확인 하시면 됩니다.</p>
+
+<ul>
+<li><a href="https://prettier.io/docs/en/options.html">https://prettier.io/docs/en/options.html</a></li>
+</ul>
+
+<h1 id="참고">참고</h1>
+
+<ul>
+<li><a href="https://www.anthonygonzales.dev/blog/setup-eslint-prettier-with-typescript.html">Setup Prettier and ESLint for Typescript</a></li>
+<li><a href="https://prettier.io/">https://prettier.io/</a></li>
+<li><a href="https://velog.io/@kyusung/eslint-config-3">Typescript ESLint 설정하기</a></li>
+<li><a href="https://velog.io/@kyusung/eslint-config-4">ESLint - 4. Prettier 적용</a></li>
+</ul>
+
+  </section>
+  <div class="share">    
+    <a
+      href="//www.facebook.com/sharer.php?src=bm&u=https%3a%2f%2fgyuha.github.io%2fpost%2f2020-04-19-vue-typescript-eslint%2f&t=Vscode%ec%97%90%ec%84%9c%20vue%20%ed%94%84%eb%a1%9c%ec%a0%9d%ed%8a%b8%20%ec%83%9d%ec%84%b1%ec%8b%9c%20ESlint%ec%99%80%20Prettier%20%ec%84%a4%ec%a0%95%ed%95%b4%20%ec%a3%bc%ea%b8%b0"
+      onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"
+      ><i class="fa fa-facebook"></i
+    ></a>
+    <a
+      href="//twitter.com/intent/tweet?url=https%3a%2f%2fgyuha.github.io%2fpost%2f2020-04-19-vue-typescript-eslint%2f&text=Vscode%ec%97%90%ec%84%9c%20vue%20%ed%94%84%eb%a1%9c%ec%a0%9d%ed%8a%b8%20%ec%83%9d%ec%84%b1%ec%8b%9c%20ESlint%ec%99%80%20Prettier%20%ec%84%a4%ec%a0%95%ed%95%b4%20%ec%a3%bc%ea%b8%b0&tw_p=tweetbutton"
+      onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"
+      ><i class="fa fa-twitter"></i
+    ></a>
+    <a
+      href="//getpocket.com/edit?url=https%3a%2f%2fgyuha.github.io%2fpost%2f2020-04-19-vue-typescript-eslint%2f&title=Vscode%ec%97%90%ec%84%9c%20vue%20%ed%94%84%eb%a1%9c%ec%a0%9d%ed%8a%b8%20%ec%83%9d%ec%84%b1%ec%8b%9c%20ESlint%ec%99%80%20Prettier%20%ec%84%a4%ec%a0%95%ed%95%b4%20%ec%a3%bc%ea%b8%b0"
+      onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"
+      ><i class="fa fa-get-pocket"></i
+    ></a>
+    <a
+      href="//plus.google.com/share?url=https%3a%2f%2fgyuha.github.io%2fpost%2f2020-04-19-vue-typescript-eslint%2f"
+      onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"
+      ><i class="fa fa-google-plus"></i
+    ></a>
+  </div>
+  <div class="post-meta-code">
+    <div class="desc">
+      친절한
+      
+      <a href="mailto:">신규하</a>
+      
+      님이
+      <span class="highlight">2020년 04월 19일 03시 50분</span> 
+      에 작성한 글입니다.
+    </div>
+    <div class="desc">
+      
+      <div class="desc">
+        <span class="fixed-desc">_카테고리</span>
+        
+        
+        <a href="https://gyuha.github.io//categories/typescript">#typescript</a>
+        
+      </div>
+      
+      <div class="desc">
+        <span class="fixed-desc">_태그</span>
+        
+        
+        <a href="https://gyuha.github.io/tags/vscode">#vscode</a>
+        
+        <a href="https://gyuha.github.io/tags/vue">#vue</a>
+        
+        <a href="https://gyuha.github.io/tags/typescript">#typescript</a>
+        
+        <a href="https://gyuha.github.io/tags/eslint">#eslint</a>
+        
+        <a href="https://gyuha.github.io/tags/tslint">#tslint</a>
+        
+        
+      </div>
+    </div>
+  </div>  
+  
+  <div class="recommend-articles">
+    다음으로 읽을만한 글입니다.
+    <ul>
+      
+      
+      <li>
+        <a href="https://gyuha.github.io/post/2020-03-15-javascript-arrary/" rel="next">
+          <span>자바스크립트 배열 메서드 정리</span>
+        </a>
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="go-top">
+  <a href="#" class="go-top-button">
+    <i class="fa fa-angle-double-up"></i>
+    <span>위로</span>
+  </a>
+</div>
+<footer class="footer">
+  COPYRIGHT (C) <a href="https://blog.lulab.net">DONGGEUN,BANG (LUBANG).</a><br />
+  ALL RIGHTS RESERVED.
+</footer>
+</body>
+</html>
+
