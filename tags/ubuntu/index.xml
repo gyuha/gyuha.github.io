@@ -23,7 +23,8 @@ kimchi를 설치 이후에 설정으로 추가해 주면&amp;hellip; 문제가 �
 먼저 bridge-utils를 설치 해 줍니다.
 sudo apt install bridge-utils 그리고, /etc/netplan/50-cloud-init.yaml을 수정해 줍니다.
 sudo vi /etc/netplan/50-cloud-init.yaml 아래와 같이 입력 합니다.
-network: ethernets: enp3s0: dhcp4: false bridges: br0: interfaces: - enp3s0 dhcp4: false addresses: - 192.168.1.200/24 gateway4: 192.</description>
+network:ethernets:enp3s0:dhcp4:falsebridges:br0:interfaces:- enp3s0dhcp4:falseaddresses:- 192.168.1.200/24gateway4:192.168.1.200nameservers:addresses:- 1.1.1.1- 8.8.8.8parameters:forward-delay:0stp:falseoptional:trueversion:2입력한 내용을 적용 합니다.
+sudo netplan apply 이제 네트워크에 잘 적용이 되었는지 확인 합니다.</description>
     </item>
     
     <item>

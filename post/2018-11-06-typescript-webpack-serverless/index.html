@@ -30,14 +30,6 @@
   <link rel="stylesheet" href="/css/style.css" />
 </head>
 <body>
-<div id="preloader">
-  <div class="preload-content">
-    <div id="loading-progress"></div>
-  </div>
-</div>
-
-
-
 <header class="header-area">
   <div class="container">
     <div class="row">
@@ -116,105 +108,105 @@
 <h2 id="기본-환경-구성">기본 환경 구성</h2>
 <p>기본적으로 <code>node.js</code>가 설치 되어 있어야 합니다.</p>
 <p>serverless를 설치 합니다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">npm install -g serverless
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">npm install -g serverless
 </code></pre></div><p>그리고, 프로젝트를 생성해 줍니다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ serverless create -t aws-nodejs -p hello-lambda
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ serverless create -t aws-nodejs -p hello-lambda
 Serverless: Generating boilerplate...
-Serverless: Generating boilerplate in <span style="color:#e6db74">&#34;/home/gyuha/workspace/hello-lambda&#34;</span>
+Serverless: Generating boilerplate in <span style="color:#0086d2">&#34;/home/gyuha/workspace/hello-lambda&#34;</span>
  _______                             __
 |   _   .-----.----.--.--.-----.----|  .-----.-----.-----.
 |   |___|  -__|   _|  |  |  -__|   _|  |  -__|__ --|__ --|
-|____   |_____|__|  <span style="color:#ae81ff">\_</span>__/|_____|__| |__|_____|_____|_____|
+|____   |_____|__|  <span style="color:#0086d2">\_</span>__/|_____|__| |__|_____|_____|_____|
 |   |   |             The Serverless Application Framework
 |       |                           serverless.com, v1.32.0
- -------<span style="color:#960050;background-color:#1e0010">&#39;</span>
+ -------&#39;
 
-Serverless: Successfully generated boilerplate <span style="color:#66d9ef">for</span> template: <span style="color:#e6db74">&#34;aws-nodejs&#34;</span>
+Serverless: Successfully generated boilerplate <span style="color:#fb660a;font-weight:bold">for</span> template: <span style="color:#0086d2">&#34;aws-nodejs&#34;</span>
 $ cd hello-lambda
 </code></pre></div><p><code>npm init</code>으로 <code>package.jon</code>을 설정해 주고 필요한 패키지를 설치 해 줍니다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ npm init
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ npm init
 $ npm install --save-dev serverless-webpack serverless-offline ts-loader typescript webpack
 </code></pre></div><h2 id="severless-설정하기">Severless 설정하기</h2>
 <p><code>serverless.yml</code> 파일을 아래와 같이 편집 해 줍니다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">service: aws-nodejs # NOTE</span>: update this with your service name
-
-<span style="color:#66d9ef">provider</span>:
-  <span style="color:#66d9ef">name</span>: aws
-  <span style="color:#66d9ef">runtime</span>: nodejs8<span style="color:#ae81ff">.10</span>
-  <span style="color:#66d9ef">stage</span>: dev
-  <span style="color:#66d9ef">region</span>: ap-northeast<span style="color:#ae81ff">-2</span>
-
-<span style="color:#66d9ef">plugins</span>:
-  - serverless-webpack
-  - serverless-offline
-
-<span style="color:#66d9ef">functions</span>:
-  <span style="color:#66d9ef">hello</span>:
-    <span style="color:#66d9ef">handler</span>: src/server.hello
-    <span style="color:#66d9ef">events</span>:
-     - <span style="color:#66d9ef">http</span>:
-         <span style="color:#66d9ef">path</span>: hello
-         <span style="color:#66d9ef">method</span>: get
-
-</code></pre></div><p>여기서, 주 된 내용은 plugins의 추가와 functions에서 events의 추가 입니다.</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-yaml" data-lang="yaml"><span style="color:#fb660a;font-weight:bold">service: aws-nodejs # NOTE</span>:<span style="color:#888"> </span>update<span style="color:#888"> </span>this<span style="color:#888"> </span>with<span style="color:#888"> </span>your<span style="color:#888"> </span>service<span style="color:#888"> </span>name<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888"></span><span style="color:#fb660a;font-weight:bold">provider</span>:<span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">name</span>:<span style="color:#888"> </span>aws<span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">runtime</span>:<span style="color:#888"> </span>nodejs8<span style="color:#0086f7;font-weight:bold">.10</span><span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">stage</span>:<span style="color:#888"> </span>dev<span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">region</span>:<span style="color:#888"> </span>ap-northeast<span style="color:#0086f7;font-weight:bold">-2</span><span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888"></span><span style="color:#fb660a;font-weight:bold">plugins</span>:<span style="color:#888">
+</span><span style="color:#888">  </span>- serverless-webpack<span style="color:#888">
+</span><span style="color:#888">  </span>- serverless-offline<span style="color:#888">
+</span><span style="color:#888">
+</span><span style="color:#888"></span><span style="color:#fb660a;font-weight:bold">functions</span>:<span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">hello</span>:<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">handler</span>:<span style="color:#888"> </span>src/server.hello<span style="color:#888">
+</span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">events</span>:<span style="color:#888">
+</span><span style="color:#888">     </span>- <span style="color:#fb660a;font-weight:bold">http</span>:<span style="color:#888">
+</span><span style="color:#888">         </span><span style="color:#fb660a;font-weight:bold">path</span>:<span style="color:#888"> </span>hello<span style="color:#888">
+</span><span style="color:#888">         </span><span style="color:#fb660a;font-weight:bold">method</span>:<span style="color:#888"> </span>get<span style="color:#888">
+</span><span style="color:#888">
+</span></code></pre></div><p>여기서, 주 된 내용은 plugins의 추가와 functions에서 events의 추가 입니다.</p>
 <h2 id="typescript과-webpack-설정하기">Typescript과 Webpack 설정하기</h2>
 <p><code>tsconfig.json</code> 파일을 만들고 아래와 같이 입력해 줍니다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
-    <span style="color:#f92672">&#34;compilerOptions&#34;</span>: {
-      <span style="color:#f92672">&#34;module&#34;</span>: <span style="color:#e6db74">&#34;commonjs&#34;</span>,
-      <span style="color:#f92672">&#34;target&#34;</span>: <span style="color:#e6db74">&#34;es6&#34;</span>,
-      <span style="color:#f92672">&#34;sourceMap&#34;</span>: <span style="color:#66d9ef">true</span>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-json" data-lang="json">{
+    <span style="color:#fb660a;font-weight:bold">&#34;compilerOptions&#34;</span>: {
+      <span style="color:#fb660a;font-weight:bold">&#34;module&#34;</span>: <span style="color:#0086d2">&#34;commonjs&#34;</span>,
+      <span style="color:#fb660a;font-weight:bold">&#34;target&#34;</span>: <span style="color:#0086d2">&#34;es6&#34;</span>,
+      <span style="color:#fb660a;font-weight:bold">&#34;sourceMap&#34;</span>: <span style="color:#fb660a;font-weight:bold">true</span>
     },
-    <span style="color:#f92672">&#34;exclude&#34;</span>: [
-      <span style="color:#e6db74">&#34;node_modules&#34;</span>
+    <span style="color:#fb660a;font-weight:bold">&#34;exclude&#34;</span>: [
+      <span style="color:#0086d2">&#34;node_modules&#34;</span>
     ]
   }
-</code></pre></div><p>```webpack.copnfg.js` 파일을 만들고 아래와 같이 입력해 줍니다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="color:#960050;background-color:#1e0010">const</span> <span style="color:#960050;background-color:#1e0010">path</span> <span style="color:#960050;background-color:#1e0010">=</span> <span style="color:#960050;background-color:#1e0010">require(</span><span style="color:#e6db74">&#34;path&#34;</span><span style="color:#960050;background-color:#1e0010">);</span>
+</code></pre></div><p><code>webpack.copnfg.js</code> 파일을 만들고 아래와 같이 입력해 줍니다.</p>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-javascript" data-lang="javascript"><span style="color:#fb660a;font-weight:bold">const</span> path = require(<span style="color:#0086d2">&#34;path&#34;</span>);
 
-<span style="color:#960050;background-color:#1e0010">module.exports</span> <span style="color:#960050;background-color:#1e0010">=</span> {
-  <span style="color:#960050;background-color:#1e0010">entry:</span> <span style="color:#960050;background-color:#1e0010">path.join(__dirname,</span> <span style="color:#f92672">&#34;src/server.ts&#34;</span><span style="color:#960050;background-color:#1e0010">)</span>,
-  <span style="color:#960050;background-color:#1e0010">output:</span> <span style="color:#960050;background-color:#1e0010">{</span>
-    <span style="color:#960050;background-color:#1e0010">libraryTarget:</span> <span style="color:#f92672">&#34;commonjs&#34;</span>,
-    <span style="color:#960050;background-color:#1e0010">filename:</span> <span style="color:#f92672">&#34;src/server.js&#34;</span>,
-    <span style="color:#960050;background-color:#1e0010">path:</span> <span style="color:#960050;background-color:#1e0010">path.resolve(__dirname,</span> <span style="color:#f92672">&#34;dist&#34;</span><span style="color:#960050;background-color:#1e0010">)</span>
-  }<span style="color:#960050;background-color:#1e0010">,</span>
-  <span style="color:#960050;background-color:#1e0010">module:</span> {
-    <span style="color:#960050;background-color:#1e0010">rules:</span> <span style="color:#960050;background-color:#1e0010">[</span>
-      <span style="color:#960050;background-color:#1e0010">{</span>
-        <span style="color:#960050;background-color:#1e0010">test:</span> <span style="color:#960050;background-color:#1e0010">/\.tsx?$/,</span>
-        <span style="color:#960050;background-color:#1e0010">loader:</span> <span style="color:#f92672">&#34;ts-loader&#34;</span>,
-        <span style="color:#960050;background-color:#1e0010">exclude:</span> <span style="color:#960050;background-color:#1e0010">/node_modules/</span>
+module.exports = {
+  entry: path.join(__dirname, <span style="color:#0086d2">&#34;src/server.ts&#34;</span>),
+  output: {
+    libraryTarget: <span style="color:#0086d2">&#34;commonjs&#34;</span>,
+    filename: <span style="color:#0086d2">&#34;src/server.js&#34;</span>,
+    path: path.resolve(__dirname, <span style="color:#0086d2">&#34;dist&#34;</span>)
+  },
+  module: {
+    rules: [
+      {
+        test: <span style="color:#0086d2">/\.tsx?$/</span>,
+        loader: <span style="color:#0086d2">&#34;ts-loader&#34;</span>,
+        exclude: <span style="color:#0086d2">/node_modules/</span>
       }
-    <span style="color:#960050;background-color:#1e0010">]</span>
-  <span style="color:#960050;background-color:#1e0010">},</span>
-  <span style="color:#960050;background-color:#1e0010">resolve:</span> {
-    <span style="color:#960050;background-color:#1e0010">extensions:</span> <span style="color:#960050;background-color:#1e0010">[</span><span style="color:#f92672">&#34;.tsx&#34;</span>, <span style="color:#f92672">&#34;.ts&#34;</span>, <span style="color:#f92672">&#34;.js&#34;</span><span style="color:#960050;background-color:#1e0010">]</span>
+    ]
+  },
+  resolve: {
+    extensions: [<span style="color:#0086d2">&#34;.tsx&#34;</span>, <span style="color:#0086d2">&#34;.ts&#34;</span>, <span style="color:#0086d2">&#34;.js&#34;</span>]
   }
-<span style="color:#960050;background-color:#1e0010">};</span>
+};
 
 </code></pre></div><h2 id="소스-작성-해-주기">소스 작성 해 주기</h2>
 <p><code>src/server.ts</code> 파일을 생성하고 아래과 같이 입력 해 줍니다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">SomeResponse</span> {
-  <span style="color:#a6e22e">statusCode</span>: <span style="color:#66d9ef">number</span>;
-  <span style="color:#a6e22e">body</span>: <span style="color:#66d9ef">string</span>;
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-typescript" data-lang="typescript"><span style="color:#fb660a;font-weight:bold">interface</span> SomeResponse {
+  statusCode: <span style="color:#cdcaa9;font-weight:bold">number</span>;
+  body: <span style="color:#cdcaa9;font-weight:bold">string</span>;
 }
 
-<span style="color:#66d9ef">export</span> <span style="color:#a6e22e">async</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">hello</span> (<span style="color:#a6e22e">event</span>: <span style="color:#66d9ef">any</span>, <span style="color:#a6e22e">context</span>: <span style="color:#66d9ef">any</span>) {
-  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">response</span>: <span style="color:#66d9ef">SomeResponse</span> <span style="color:#f92672">=</span> {
-    <span style="color:#a6e22e">statusCode</span>: <span style="color:#66d9ef">200</span>,
-    <span style="color:#a6e22e">body</span>: <span style="color:#66d9ef">JSON.stringify</span>({
-      <span style="color:#a6e22e">message</span>: <span style="color:#66d9ef">Math.floor</span>(Math.<span style="color:#a6e22e">random</span>() <span style="color:#f92672">*</span> <span style="color:#ae81ff">10</span>)
+<span style="color:#fb660a;font-weight:bold">export</span> async <span style="color:#fb660a;font-weight:bold">function</span> hello (event: <span style="color:#cdcaa9;font-weight:bold">any</span>, context: <span style="color:#cdcaa9;font-weight:bold">any</span>) {
+  <span style="color:#fb660a;font-weight:bold">const</span> response: <span style="color:#cdcaa9;font-weight:bold">SomeResponse</span> = {
+    statusCode: <span style="color:#cdcaa9;font-weight:bold">200</span>,
+    body: <span style="color:#cdcaa9;font-weight:bold">JSON.stringify</span>({
+      message: <span style="color:#cdcaa9;font-weight:bold">Math.floor</span>(Math.random() * <span style="color:#0086f7;font-weight:bold">10</span>)
     })
   };
 
-  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">response</span>
+  <span style="color:#fb660a;font-weight:bold">return</span> response
 };
 </code></pre></div><p>여기까지 완료 하면.. 기본 실행이 구성 됩니다.</p>
 <h2 id="오프라인-실행하기">오프라인 실행하기</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sls offline
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">sls offline
 </code></pre></div><h2 id="배포-하기">배포 하기</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sls deploy
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">sls deploy
 </code></pre></div><hr>
 <p>예제 코드는 <a href="https://github.com/gyuha/serverless-typescript-webpack">serverless-typescript-webpack</a>에서 볼 수 있습니다.</p>
 </section>
@@ -320,7 +312,7 @@ $ npm install --save-dev serverless-webpack serverless-offline ts-loader typescr
               </script>
               All rights reserved
             </p>
-            <p>made with by Gyuha</p>
+            <p>Made with by Gyuha</p>
           </div>
         </div>
       </div>

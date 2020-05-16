@@ -30,14 +30,6 @@
   <link rel="stylesheet" href="/css/style.css" />
 </head>
 <body>
-<div id="preloader">
-  <div class="preload-content">
-    <div id="loading-progress"></div>
-  </div>
-</div>
-
-
-
 <header class="header-area">
   <div class="container">
     <div class="row">
@@ -117,25 +109,25 @@
 <p>기존에 사용하던 <a href="https://www.npmjs.com/package/tslint">TSLint가 더이상 지원</a>을 받지 못 하게 되면서, ESlint로 넘어가야 상태가 되었습니다.</p>
 <p>여기서는 Vue 프로젝트를 생성하면서 ESlint와 Prettier를 사용하는 세팅을 간단하게 설정하려고 합니다. 사용하는 툴은 vscode입니다.</p>
 <p><code>vue create myproject</code> 형태로 기본 프로젝트를 선택 합니다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; npx vue create myproject
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">&gt; npx vue create myproject
 
-? Please pick a preset: Manually <span style="color:#66d9ef">select</span> features
-? Check the features needed <span style="color:#66d9ef">for</span> your project:
- <span style="color:#f92672">(</span>*<span style="color:#f92672">)</span> Babel
- <span style="color:#f92672">(</span>*<span style="color:#f92672">)</span> TypeScript
- <span style="color:#f92672">(</span> <span style="color:#f92672">)</span> Progressive Web App <span style="color:#f92672">(</span>PWA<span style="color:#f92672">)</span> Support
- <span style="color:#f92672">(</span> <span style="color:#f92672">)</span> Router
- <span style="color:#f92672">(</span> <span style="color:#f92672">)</span> Vuex
- <span style="color:#f92672">(</span>*<span style="color:#f92672">)</span> CSS Pre-processors
-&gt;<span style="color:#f92672">(</span>*<span style="color:#f92672">)</span> Linter / Formatter
- <span style="color:#f92672">(</span> <span style="color:#f92672">)</span> Unit Testing
- <span style="color:#f92672">(</span> <span style="color:#f92672">)</span> E2E Testing     
+? Please pick a preset: Manually <span style="color:#fb660a;font-weight:bold">select</span> features
+? Check the features needed <span style="color:#fb660a;font-weight:bold">for</span> your project:
+ (*) Babel
+ (*) TypeScript
+ ( ) Progressive Web App (PWA) Support
+ ( ) Router
+ ( ) Vuex
+ (*) CSS Pre-processors
+<span style="display:block;width:100%;background-color:#282828">&gt;(*) Linter / Formatter
+</span> ( ) Unit Testing
+ ( ) E2E Testing     
 
-? Use Babel alongside TypeScript <span style="color:#f92672">(</span>required <span style="color:#66d9ef">for</span> modern mode, auto-detected polyfills, transpiling JSX<span style="color:#f92672">)</span>? <span style="color:#f92672">(</span>Y/n<span style="color:#f92672">)</span> Y 
+? Use Babel alongside TypeScript (required <span style="color:#fb660a;font-weight:bold">for</span> modern mode, auto-detected polyfills, transpiling JSX)? (Y/n) Y 
 
-? Pick a CSS pre-processor <span style="color:#f92672">(</span>PostCSS, Autoprefixer and CSS Modules are supported by default<span style="color:#f92672">)</span>:
-&gt; Sass/SCSS <span style="color:#f92672">(</span>with dart-sass<span style="color:#f92672">)</span>
-  Sass/SCSS <span style="color:#f92672">(</span>with node-sass<span style="color:#f92672">)</span>
+? Pick a CSS pre-processor (PostCSS, Autoprefixer and CSS Modules are supported by default):
+<span style="display:block;width:100%;background-color:#282828">&gt; Sass/SCSS (with dart-sass)
+</span>  Sass/SCSS (with node-sass)
   Less
   Stylus      
 
@@ -143,18 +135,18 @@
   ESLint with error prevention only
   ESLint + Airbnb config
   ESLint + Standard config
-&gt;  ESLint + Prettier
-  TSLint <span style="color:#f92672">(</span>deprecated<span style="color:#f92672">)</span>    
+<span style="display:block;width:100%;background-color:#282828">&gt; ESLint + Prettier
+</span>  TSLint (deprecated)    
 
-? Pick additional lint features: <span style="color:#f92672">(</span>Press &lt;space&gt; to <span style="color:#66d9ef">select</span>, &lt;a&gt; to toggle all, &lt;i&gt; to invert selection<span style="color:#f92672">)</span>
-&gt;<span style="color:#f92672">(</span>*<span style="color:#f92672">)</span> Lint on save
- <span style="color:#f92672">(</span> <span style="color:#f92672">)</span> Lint and fix on commit 
+? Pick additional lint features: (Press &lt;space&gt; to <span style="color:#fb660a;font-weight:bold">select</span>, &lt;a&gt; to toggle all, &lt;i&gt; to invert selection)
+<span style="display:block;width:100%;background-color:#282828">&gt;(*) Lint on save
+</span> ( ) Lint and fix on commit 
 
-? Where <span style="color:#66d9ef">do</span> you prefer placing config <span style="color:#66d9ef">for</span> Babel, ESLint, etc.? <span style="color:#f92672">(</span>Use arrow keys<span style="color:#f92672">)</span>
+? Where <span style="color:#fb660a;font-weight:bold">do</span> you prefer placing config <span style="color:#fb660a;font-weight:bold">for</span> Babel, ESLint, etc.? (Use arrow keys)
 &gt; In dedicated config files
   In package.json                  
 </code></pre></div><p>여기서 처음 체크 박스에서 Linter / Formatter를 꼭 선택해 주시고, Linter / Formatter는 ESLint + Prettier를 선택해 줍니다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; cd myproject
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">&gt; cd myproject
 &gt; code .
 </code></pre></div><p>그리고 위와 같이 <code>vscode</code>를 실행 해 줍니다.</p>
 <h2 id="vscode-설정하기">VSCode 설정하기</h2>
@@ -165,25 +157,25 @@
 <li><a href="https://marketplace.visualstudio.com/items?itemName=octref.vetur">Vetur</a></li>
 </ul>
 <p>그리고, vscode의 설정에서 아래와 내용을 추가해 줍니다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
-  <span style="color:#f92672">&#34;[typescript]&#34;</span>: {
-    <span style="color:#f92672">&#34;editor.defaultFormatter&#34;</span>: <span style="color:#e6db74">&#34;esbenp.prettier-vscode&#34;</span>,
-    <span style="color:#f92672">&#34;editor.formatOnSave&#34;</span>: <span style="color:#66d9ef">true</span>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-json" data-lang="json">{
+  <span style="color:#fb660a;font-weight:bold">&#34;[typescript]&#34;</span>: {
+    <span style="color:#fb660a;font-weight:bold">&#34;editor.defaultFormatter&#34;</span>: <span style="color:#0086d2">&#34;esbenp.prettier-vscode&#34;</span>,
+    <span style="color:#fb660a;font-weight:bold">&#34;editor.formatOnSave&#34;</span>: <span style="color:#fb660a;font-weight:bold">true</span>
   },
-  <span style="color:#f92672">&#34;[vue]&#34;</span>: {
-    <span style="color:#f92672">&#34;editor.defaultFormatter&#34;</span>: <span style="color:#e6db74">&#34;esbenp.prettier-vscode&#34;</span>,
-    <span style="color:#f92672">&#34;editor.formatOnSave&#34;</span>: <span style="color:#66d9ef">true</span>
+  <span style="color:#fb660a;font-weight:bold">&#34;[vue]&#34;</span>: {
+    <span style="color:#fb660a;font-weight:bold">&#34;editor.defaultFormatter&#34;</span>: <span style="color:#0086d2">&#34;esbenp.prettier-vscode&#34;</span>,
+    <span style="color:#fb660a;font-weight:bold">&#34;editor.formatOnSave&#34;</span>: <span style="color:#fb660a;font-weight:bold">true</span>
   }
 }
 </code></pre></div><p>여기까지 하면 vscode에서 파일을 저장 할 때 알아서 포맷팅을 해 주고 저장을 해 주게 됩니다.</p>
 <p>마지막으로 추가로 좀 더 상세한 설정을 하고 싶다면, 프로젝트 루트 폴더에 <code>.prettierrc.json</code>파일을 만들고 상세한 설정을 해 주시면 됩니다. 아래와 같은 형식으로 만들어 주시면 됩니다.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
-  <span style="color:#f92672">&#34;tabWidth&#34;</span>: <span style="color:#ae81ff">2</span>,
-  <span style="color:#f92672">&#34;semi&#34;</span>: <span style="color:#66d9ef">true</span>,
-  <span style="color:#f92672">&#34;singleQuote&#34;</span>: <span style="color:#66d9ef">false</span>,
-  <span style="color:#f92672">&#34;trailingComma&#34;</span>: <span style="color:#e6db74">&#34;es5&#34;</span>,
-  <span style="color:#f92672">&#34;bracketSpacing&#34;</span>: <span style="color:#66d9ef">false</span>,
-  <span style="color:#f92672">&#34;arrowParens&#34;</span>: <span style="color:#e6db74">&#34;always&#34;</span>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-json" data-lang="json">{
+  <span style="color:#fb660a;font-weight:bold">&#34;tabWidth&#34;</span>: <span style="color:#0086f7;font-weight:bold">2</span>,
+  <span style="color:#fb660a;font-weight:bold">&#34;semi&#34;</span>: <span style="color:#fb660a;font-weight:bold">true</span>,
+  <span style="color:#fb660a;font-weight:bold">&#34;singleQuote&#34;</span>: <span style="color:#fb660a;font-weight:bold">false</span>,
+  <span style="color:#fb660a;font-weight:bold">&#34;trailingComma&#34;</span>: <span style="color:#0086d2">&#34;es5&#34;</span>,
+  <span style="color:#fb660a;font-weight:bold">&#34;bracketSpacing&#34;</span>: <span style="color:#fb660a;font-weight:bold">false</span>,
+  <span style="color:#fb660a;font-weight:bold">&#34;arrowParens&#34;</span>: <span style="color:#0086d2">&#34;always&#34;</span>
 }
 </code></pre></div><p>상세한 내용은 아래 링크를 확인 하시면 됩니다.</p>
 <ul>
@@ -296,7 +288,7 @@
               </script>
               All rights reserved
             </p>
-            <p>made with by Gyuha</p>
+            <p>Made with by Gyuha</p>
           </div>
         </div>
       </div>
