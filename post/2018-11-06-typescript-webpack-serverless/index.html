@@ -108,9 +108,9 @@
 <h2 id="기본-환경-구성">기본 환경 구성</h2>
 <p>기본적으로 <code>node.js</code>가 설치 되어 있어야 합니다.</p>
 <p>serverless를 설치 합니다.</p>
-<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">npm install -g serverless
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">npm install -g serverless
 </code></pre></div><p>그리고, 프로젝트를 생성해 줍니다.</p>
-<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ serverless create -t aws-nodejs -p hello-lambda
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ serverless create -t aws-nodejs -p hello-lambda
 Serverless: Generating boilerplate...
 Serverless: Generating boilerplate in <span style="color:#0086d2">&#34;/home/gyuha/workspace/hello-lambda&#34;</span>
  _______                             __
@@ -124,17 +124,17 @@ Serverless: Generating boilerplate in <span style="color:#0086d2">&#34;/home/gyu
 Serverless: Successfully generated boilerplate <span style="color:#fb660a;font-weight:bold">for</span> template: <span style="color:#0086d2">&#34;aws-nodejs&#34;</span>
 $ cd hello-lambda
 </code></pre></div><p><code>npm init</code>으로 <code>package.jon</code>을 설정해 주고 필요한 패키지를 설치 해 줍니다.</p>
-<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ npm init
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">$ npm init
 $ npm install --save-dev serverless-webpack serverless-offline ts-loader typescript webpack
 </code></pre></div><h2 id="severless-설정하기">Severless 설정하기</h2>
 <p><code>serverless.yml</code> 파일을 아래와 같이 편집 해 줍니다.</p>
-<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-yaml" data-lang="yaml"><span style="color:#fb660a;font-weight:bold">service: aws-nodejs # NOTE</span>:<span style="color:#888"> </span>update<span style="color:#888"> </span>this<span style="color:#888"> </span>with<span style="color:#888"> </span>your<span style="color:#888"> </span>service<span style="color:#888"> </span>name<span style="color:#888">
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-yaml" data-lang="yaml"><span style="color:#fb660a;font-weight:bold">service: aws-nodejs # NOTE</span>:<span style="color:#888"> </span>update this with your service name<span style="color:#888">
 </span><span style="color:#888">
 </span><span style="color:#888"></span><span style="color:#fb660a;font-weight:bold">provider</span>:<span style="color:#888">
 </span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">name</span>:<span style="color:#888"> </span>aws<span style="color:#888">
-</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">runtime</span>:<span style="color:#888"> </span>nodejs8<span style="color:#0086f7;font-weight:bold">.10</span><span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">runtime</span>:<span style="color:#888"> </span>nodejs8.10<span style="color:#888">
 </span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">stage</span>:<span style="color:#888"> </span>dev<span style="color:#888">
-</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">region</span>:<span style="color:#888"> </span>ap-northeast<span style="color:#0086f7;font-weight:bold">-2</span><span style="color:#888">
+</span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">region</span>:<span style="color:#888"> </span>ap-northeast-2<span style="color:#888">
 </span><span style="color:#888">
 </span><span style="color:#888"></span><span style="color:#fb660a;font-weight:bold">plugins</span>:<span style="color:#888">
 </span><span style="color:#888">  </span>- serverless-webpack<span style="color:#888">
@@ -151,7 +151,7 @@ $ npm install --save-dev serverless-webpack serverless-offline ts-loader typescr
 </span></code></pre></div><p>여기서, 주 된 내용은 plugins의 추가와 functions에서 events의 추가 입니다.</p>
 <h2 id="typescript과-webpack-설정하기">Typescript과 Webpack 설정하기</h2>
 <p><code>tsconfig.json</code> 파일을 만들고 아래와 같이 입력해 줍니다.</p>
-<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-json" data-lang="json">{
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-json" data-lang="json">{
     <span style="color:#fb660a;font-weight:bold">&#34;compilerOptions&#34;</span>: {
       <span style="color:#fb660a;font-weight:bold">&#34;module&#34;</span>: <span style="color:#0086d2">&#34;commonjs&#34;</span>,
       <span style="color:#fb660a;font-weight:bold">&#34;target&#34;</span>: <span style="color:#0086d2">&#34;es6&#34;</span>,
@@ -162,7 +162,7 @@ $ npm install --save-dev serverless-webpack serverless-offline ts-loader typescr
     ]
   }
 </code></pre></div><p><code>webpack.copnfg.js</code> 파일을 만들고 아래와 같이 입력해 줍니다.</p>
-<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-javascript" data-lang="javascript"><span style="color:#fb660a;font-weight:bold">const</span> path = require(<span style="color:#0086d2">&#34;path&#34;</span>);
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-javascript" data-lang="javascript"><span style="color:#fb660a;font-weight:bold">const</span> path = require(<span style="color:#0086d2">&#34;path&#34;</span>);
 
 module.exports = {
   entry: path.join(__dirname, <span style="color:#0086d2">&#34;src/server.ts&#34;</span>),
@@ -187,12 +187,12 @@ module.exports = {
 
 </code></pre></div><h2 id="소스-작성-해-주기">소스 작성 해 주기</h2>
 <p><code>src/server.ts</code> 파일을 생성하고 아래과 같이 입력 해 줍니다.</p>
-<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-typescript" data-lang="typescript"><span style="color:#fb660a;font-weight:bold">interface</span> SomeResponse {
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-typescript" data-lang="typescript"><span style="color:#fb660a;font-weight:bold">interface</span> SomeResponse {
   statusCode: <span style="color:#cdcaa9;font-weight:bold">number</span>;
   body: <span style="color:#cdcaa9;font-weight:bold">string</span>;
 }
 
-<span style="color:#fb660a;font-weight:bold">export</span> async <span style="color:#fb660a;font-weight:bold">function</span> hello (event: <span style="color:#cdcaa9;font-weight:bold">any</span>, context: <span style="color:#cdcaa9;font-weight:bold">any</span>) {
+<span style="color:#fb660a;font-weight:bold">export</span> <span style="color:#fb660a;font-weight:bold">async</span> <span style="color:#fb660a;font-weight:bold">function</span> hello (event: <span style="color:#cdcaa9;font-weight:bold">any</span>, context: <span style="color:#cdcaa9;font-weight:bold">any</span>) {
   <span style="color:#fb660a;font-weight:bold">const</span> response: <span style="color:#cdcaa9;font-weight:bold">SomeResponse</span> = {
     statusCode: <span style="color:#cdcaa9;font-weight:bold">200</span>,
     body: <span style="color:#cdcaa9;font-weight:bold">JSON.stringify</span>({
@@ -204,9 +204,9 @@ module.exports = {
 };
 </code></pre></div><p>여기까지 완료 하면.. 기본 실행이 구성 됩니다.</p>
 <h2 id="오프라인-실행하기">오프라인 실행하기</h2>
-<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">sls offline
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">sls offline
 </code></pre></div><h2 id="배포-하기">배포 하기</h2>
-<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">sls deploy
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">sls deploy
 </code></pre></div><hr>
 <p>예제 코드는 <a href="https://github.com/gyuha/serverless-typescript-webpack">serverless-typescript-webpack</a>에서 볼 수 있습니다.</p>
 </section>
@@ -326,7 +326,6 @@ module.exports = {
 <script src="/vendor/bootstrap/bootstrap.min.js"></script>
 <script src="/vendor/native-console.js"></script>
 <script src="/vendor/jquery.easing.1.3.js"></script>
-<script src="/vendor/loading-progress.js"></script>
 <script src="/vendor/jquery.scrollUp.min.js"></script>
 
 
