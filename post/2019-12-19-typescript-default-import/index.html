@@ -68,10 +68,7 @@
 
 <div class="top-area">
   <div class="top-video top-video-small ">
-    <video preload="preload" class="video" autoplay="autoplay" loop="loop" muted>
-      <source src="/video/bg.webp" type="video/webp" />
-      <source src="/video/bg.mp4" type="video/mp4" />
-    </video>
+    <div id="waves" class="video"></div>
     <div class="container">
       <div class="title-message">
         
@@ -99,16 +96,16 @@
 <section class="post-content">
   
   <p>express를 import하면 아래와 같이 import 했을 겁니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-javascript" data-lang="javascript"><span style="color:#fb660a;font-weight:bold">import</span> * as Express from <span style="color:#0086d2">&#39;express&#39;</span>;
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-javascript" data-lang="javascript"><span style="color:#fb660a;font-weight:bold">import</span> * as Express from <span style="color:#0086d2">&#39;express&#39;</span>;
 </code></pre></div><p>하지만 tsconfig.json 파일에 아래 내용을 추가 하면..</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-json" data-lang="json">{
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-json" data-lang="json">{
    <span style="color:#fb660a;font-weight:bold">&#34;compilerOptions&#34;</span>: {
     <span style="color:#fb660a;font-weight:bold">&#34;allowSyntheticDefaultImports&#34;</span>: <span style="color:#fb660a;font-weight:bold">true</span>,
     <span style="color:#fb660a;font-weight:bold">&#34;esModuleInterop&#34;</span>: <span style="color:#fb660a;font-weight:bold">true</span>,
    }
 }
 </code></pre></div><p>이렇게 import가 가능해 집니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-javascript" data-lang="javascript"><span style="color:#fb660a;font-weight:bold">import</span> Express from <span style="color:#0086d2">&#39;express&#39;</span>
+<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-javascript" data-lang="javascript"><span style="color:#fb660a;font-weight:bold">import</span> Express from <span style="color:#0086d2">&#39;express&#39;</span>
 </code></pre></div>
 </section>
 <time>
@@ -229,6 +226,24 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
 <script>
   hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  }) 
 </script>
 
 </body>
