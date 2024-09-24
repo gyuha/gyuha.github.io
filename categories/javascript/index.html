@@ -336,58 +336,7 @@
       scaleMobile: 1.00,
       color: 0x3fa4ff
     })
-  })
-
-  document.addEventListener('DOMContentLoaded', function () {
-    const toc = document.querySelector('#TableOfContents');
-    const content = document.querySelector('.post-content');
-    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
-
-    
-    toc.querySelectorAll('a').forEach(link => {
-      link.classList.add('toc-item');
-    });
-
-    
-    headers.forEach((header, index) => {
-      if (!header.id) {
-        header.id = `section-${index}`;
-      }
-    });
-
-    
-    function highlightTocItem() {
-      const scrollPosition = window.scrollY;
-      const tocItems = toc.querySelectorAll('.toc-item');
-
-      
-      let activeIndex = -1;
-      for (let i = 0; i < headers.length; i++) {
-        if (headers[i].getBoundingClientRect().top >= 0) {
-          activeIndex = i;
-          break;
-        }
-      }
-
-      
-      tocItems.forEach(item => item.classList.remove('active'));
-
-      
-      if (activeIndex !== -1) {
-        const activeHeader = headers[activeIndex];
-        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
-        if (activeLink) {
-          activeLink.classList.add('active');
-        }
-      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight - 10) {
-        
-        tocItems[tocItems.length - 1].classList.add('active');
-      }
-    }
-
-    window.addEventListener('scroll', highlightTocItem);
-    highlightTocItem(); 
-  });  
+  }) 
 </script>
 
 </body>
