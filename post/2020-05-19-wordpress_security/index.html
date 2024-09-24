@@ -119,119 +119,119 @@
 <h2 id="손으로-벌레-잡기">손으로 벌레 잡기</h2>
 <p>위 플러그인을 설치하면 멀웨어나 다양한 형태의 해킹 시도를 감지 할 수 있습니다. 하지만 플러그인 만으로도 잡히지 않는 경우들 있습니다. 이럴때 하나씩 잡아야 합니다.</p>
 <h3 id="의심되는-파일-찾기">의심되는 파일 찾기</h3>
-<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">find . -type f -name <span style="color:#0086d2">&#39;*.php&#39;</span> | xargs grep -l <span style="color:#0086d2">&#34;eval *(&#34;</span>
-find . -type f -name <span style="color:#0086d2">&#39;*.php&#39;</span> | xargs grep -l <span style="color:#0086d2">&#34;base64_decode *(&#34;</span>
-find . -type f -name <span style="color:#0086d2">&#39;*.php&#39;</span> | xargs grep -l <span style="color:#0086d2">&#34;gzinflate *(&#34;</span>
-</code></pre></div><p><a href="https://www.php.net/manual/en/function.eval.php">eval</a>은 함수는 php에서 가변 변수를 사용하게 해주는 함수로 가변 변수를 이용해서 다양한 해킹 시도하는 멀웨어 파일에서 자주 사용 됩니다.  <code>base64_decode</code>와 <code>gzinflate</code>는 함수는 스트링을 난독화 시켜서 사용자가 php파일을 바로 해독하기 어렵도록 해 줍니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>find . -type f -name <span style="color:#0086d2">&#39;*.php&#39;</span> | xargs grep -l <span style="color:#0086d2">&#34;eval *(&#34;</span>
+</span></span><span style="display:flex;"><span>find . -type f -name <span style="color:#0086d2">&#39;*.php&#39;</span> | xargs grep -l <span style="color:#0086d2">&#34;base64_decode *(&#34;</span>
+</span></span><span style="display:flex;"><span>find . -type f -name <span style="color:#0086d2">&#39;*.php&#39;</span> | xargs grep -l <span style="color:#0086d2">&#34;gzinflate *(&#34;</span>
+</span></span></code></pre></div><p><a href="https://www.php.net/manual/en/function.eval.php">eval</a>은 함수는 php에서 가변 변수를 사용하게 해주는 함수로 가변 변수를 이용해서 다양한 해킹 시도하는 멀웨어 파일에서 자주 사용 됩니다.  <code>base64_decode</code>와 <code>gzinflate</code>는 함수는 스트링을 난독화 시켜서 사용자가 php파일을 바로 해독하기 어렵도록 해 줍니다.</p>
 <p>이렇게 3개의 단어를 검색해서 전혀 쓰이지 않을것 같은 파일이나 의심스러운 파일은 수정하거나 삭제해 주는 것이 좋습니다.</p>
-<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">find . -type f -name <span style="color:#0086d2">&#39;*.php&#39;</span>  | grep -i <span style="color:#0086d2">&#39;&lt;iframe&#39;</span>
-</code></pre></div><p>php파일에 iframe이 들어 있는지를 검사합니다.</p>
-<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">find wp-content/uploads -type f -iname <span style="color:#0086d2">&#39;*.jpg&#39;</span> | xargs grep -i php
-</code></pre></div><p>jpg 파일이지만 안에 php가 들어있는 멀웨어 공격을 검사합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>find . -type f -name <span style="color:#0086d2">&#39;*.php&#39;</span>  | grep -i <span style="color:#0086d2">&#39;&lt;iframe&#39;</span>
+</span></span></code></pre></div><p>php파일에 iframe이 들어 있는지를 검사합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>find wp-content/uploads -type f -iname <span style="color:#0086d2">&#39;*.jpg&#39;</span> | xargs grep -i php
+</span></span></code></pre></div><p>jpg 파일이지만 안에 php가 들어있는 멀웨어 공격을 검사합니다.</p>
 <h3 id="업로드-폴더-검사">업로드 폴더 검사</h3>
 <p>업로드 폴더에 올라간 php실행 파일을 찾아 수상한 파일들은 삭제를 해 줍니다.</p>
-<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">find wp-content/uploads -type f -name <span style="color:#0086d2">&#39;*.php&#39;</span>
-</code></pre></div><h3 id="최근에-변경된-파일-찾기">최근에 변경된 파일 찾기</h3>
-<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-bash" data-lang="bash">find . -type f -name <span style="color:#0086d2">&#39;*.php&#39;</span> -mtime -7
-</code></pre></div><p>최근 7일간 php 파일중에서 변경되 파일의 목록을 출력해 줍니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>find wp-content/uploads -type f -name <span style="color:#0086d2">&#39;*.php&#39;</span>
+</span></span></code></pre></div><h3 id="최근에-변경된-파일-찾기">최근에 변경된 파일 찾기</h3>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>find . -type f -name <span style="color:#0086d2">&#39;*.php&#39;</span> -mtime -7
+</span></span></code></pre></div><p>최근 7일간 php 파일중에서 변경되 파일의 목록을 출력해 줍니다.</p>
 <h2 id="htaccess-편집하기">.htaccess 편집하기</h2>
 <p><code>.htaccess</code>를 편집하면 사이트 접근을 제한 할 수 있습니다. 보안 플러그인에서도 <code>.htaccess</code>파일을 편집해 줍니다.</p>
 <p>하지만, 일부는 직접 수정해서 원하는 대로 설정을 할 수 있습니다.</p>
 <h3 id="디렉토리-브라우징-끄기">디렉토리 브라우징 끄기</h3>
 <p>대부분은 빈 index.php 파일을 만들어서 빈 디렉토리의 브라우징을 못 하도록 처리를 해 두긴 하지만, <code>.htaccess</code>파일에서도 이 기능을 끌 수 있습니다.</p>
-<pre><code>Options -Indexes
+<pre tabindex="0"><code>Options -Indexes
 </code></pre><h3 id="wp-configphp-파일을-보호해-주기">wp-config.php 파일을 보호해 주기</h3>
 <p><code>wp-config.php</code>파일에는 사이트의 중요한 정보를 가지고 있습니다. 웹에서 바로 접근을 할 수 없도록 설정해 줍니다. <code>.htaccess</code>파일에 아래의 내용을 추가해 줍니다.</p>
-<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-xml" data-lang="xml"><span style="color:#fb660a;font-weight:bold">&lt;files</span> wp-config.php<span style="color:#fb660a;font-weight:bold">&gt;</span>
-order allow,deny
-deny from all
-<span style="color:#fb660a;font-weight:bold">&lt;/files&gt;</span>
-</code></pre></div><h3 id="xml-rpc파일-접근-끄기">XML-RPC파일 접근 끄기</h3>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">&lt;files</span> wp-config.php<span style="color:#fb660a;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>order allow,deny
+</span></span><span style="display:flex;"><span>deny from all
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">&lt;/files&gt;</span>
+</span></span></code></pre></div><h3 id="xml-rpc파일-접근-끄기">XML-RPC파일 접근 끄기</h3>
 <p>xmlrpc.php 파일은 워드프레스 서드파트 앱에서 사이트를 접근하도록 해 줍니다. 만약에 서드파티 앱을 사용하지 않는다면 이 기능을 꺼 주는게 좋습니다.  <code>.htaccess</code>파일에 아래의 내용을 추가해 줍니다.</p>
-<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-xml" data-lang="xml"><span style="color:#fb660a;font-weight:bold">&lt;Files</span> xmlrpc.php<span style="color:#fb660a;font-weight:bold">&gt;</span>
-order deny,allow
-deny from all
-<span style="color:#fb660a;font-weight:bold">&lt;/Files&gt;</span>
-</code></pre></div><p><a href="https://wordpress.org/plugins/better-wp-security/">iThemes Security</a>에서도 설정이 가능 합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">&lt;Files</span> xmlrpc.php<span style="color:#fb660a;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>order deny,allow
+</span></span><span style="display:flex;"><span>deny from all
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">&lt;/Files&gt;</span>
+</span></span></code></pre></div><p><a href="https://wordpress.org/plugins/better-wp-security/">iThemes Security</a>에서도 설정이 가능 합니다.</p>
 <h3 id="스크립트-인젝션-끄기">스크립트 인젝션 끄기</h3>
 <p>해커가 깆존 php문서에 악성코드를 삽입하지 못 하도록 스크립트 삽입을 허용하지 않습니다. <code>.htaccess</code>파일에 mode_rewrite 부분에 아래의 내용을 추가해 줍니다.</p>
-<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-xml" data-lang="xml"><span style="color:#fb660a;font-weight:bold">&lt;IfModule</span> mod_rewrite.c<span style="color:#fb660a;font-weight:bold">&gt;</span>
-...
-Options +FollowSymLinks
-RewriteEngine On
-RewriteCond %{QUERY_STRING} (&lt;|%3C).*script.*(&gt;|%3E) [NC,OR]
-RewriteCond %{QUERY_STRING} GLOBALS(=|[|%[0-9A-Z]{0,2}) [OR]
-RewriteCond %{QUERY_STRING} _REQUEST(=|[|%[0-9A-Z]{0,2})
-RewriteRule ^(.*)$ index.php [F,L]
-<span style="color:#fb660a;font-weight:bold">&lt;/IfModule&gt;</span>
-</code></pre></div><h3 id="특정-ip에서만-wp-admin-폴더를-접근-허용">특정 ip에서만 wp-admin 폴더를 접근 허용</h3>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">&lt;IfModule</span> mod_rewrite.c<span style="color:#fb660a;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>Options +FollowSymLinks
+</span></span><span style="display:flex;"><span>RewriteEngine On
+</span></span><span style="display:flex;"><span>RewriteCond %{QUERY_STRING} (&lt;|%3C).*script.*(&gt;|%3E) [NC,OR]
+</span></span><span style="display:flex;"><span>RewriteCond %{QUERY_STRING} GLOBALS(=|[|%[0-9A-Z]{0,2}) [OR]
+</span></span><span style="display:flex;"><span>RewriteCond %{QUERY_STRING} _REQUEST(=|[|%[0-9A-Z]{0,2})
+</span></span><span style="display:flex;"><span>RewriteRule ^(.*)$ index.php [F,L]
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">&lt;/IfModule&gt;</span>
+</span></span></code></pre></div><h3 id="특정-ip에서만-wp-admin-폴더를-접근-허용">특정 ip에서만 wp-admin 폴더를 접근 허용</h3>
 <p>wp-admin은 관리자 폴더 입니다. 특정 ip에서만 wp-admin을 접근 할 수 있도록 제한 합니다.</p>
 <p>wp-admin폴더에 <code>.htaccess</code>파일을 만들고 아래 내용을 추가해 줍니다.</p>
-<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-xml" data-lang="xml"><span style="color:#fb660a;font-weight:bold">&lt;Limit</span> GET POST<span style="color:#fb660a;font-weight:bold">&gt;</span>
-order deny,allow
-deny from all
-allow from 1.2.3.4
-allow from 1.2.3.5
-<span style="color:#fb660a;font-weight:bold">&lt;/Limit&gt;</span>
-</code></pre></div><p>기본적으로 접근을 제한하고, 그리고 관리자 메뉴에 접근해야 하는 ip만을 위와 같이 등록해 줍니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">&lt;Limit</span> GET POST<span style="color:#fb660a;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>order deny,allow
+</span></span><span style="display:flex;"><span>deny from all
+</span></span><span style="display:flex;"><span>allow from 1.2.3.4
+</span></span><span style="display:flex;"><span>allow from 1.2.3.5
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">&lt;/Limit&gt;</span>
+</span></span></code></pre></div><p>기본적으로 접근을 제한하고, 그리고 관리자 메뉴에 접근해야 하는 ip만을 위와 같이 등록해 줍니다.</p>
 <h3 id="특정-워드프레스-폴더에서-php-실행-방지하기">특정 워드프레스 폴더에서 php 실행 방지하기</h3>
 <p>몇몇 해커들은 워드프레스 사이트의 업로드 기능을 이용해서 백도어를 설치하는 해킹을 시도 합니다. 이렇게 설치된 파일이 직접 실행이 않도록 <code>/wp-include/</code> ,<code>/wp-content/uploads/</code> 폴더등에서는 php가 실행되지 않도록 처리해 줄 수 있습니다.</p>
 <p><code>/wp-include/</code> 폴더와 <code>/wp-content/uploads</code> 폴더에 <code>.htaccess</code>파일을 생성하고 아래와 같이 넣어 줍니다.</p>
-<div class="highlight"><pre style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-xml" data-lang="xml"><span style="color:#fb660a;font-weight:bold">&lt;Files</span> *.php<span style="color:#fb660a;font-weight:bold">&gt;</span>
-deny from all
-<span style="color:#fb660a;font-weight:bold">&lt;/Files&gt;</span>
-</code></pre></div><h2 id="파일과-폴더의-접근-권한-설정하기">파일과 폴더의 접근 권한 설정하기</h2>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">&lt;Files</span> *.php<span style="color:#fb660a;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>deny from all
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">&lt;/Files&gt;</span>
+</span></span></code></pre></div><h2 id="파일과-폴더의-접근-권한-설정하기">파일과 폴더의 접근 권한 설정하기</h2>
 <p>파일과 폴더에 좀 더 엄격한 접근 권한 설정을 해서 파일이 변경 되지 않도록 방지 합니다.</p>
 <p>각 폴더의 권장하는 권한은 아래와 같습니다.</p>
 <table>
-<thead>
-<tr>
-<th>경로</th>
-<th>권한</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>/</td>
-<td>755</td>
-</tr>
-<tr>
-<td>.htaccess</td>
-<td>444</td>
-</tr>
-<tr>
-<td>wp-includes</td>
-<td>755</td>
-</tr>
-<tr>
-<td>wp-admin</td>
-<td>755</td>
-</tr>
-<tr>
-<td>wp-admin/js</td>
-<td>755</td>
-</tr>
-<tr>
-<td>wp-content</td>
-<td>755</td>
-</tr>
-<tr>
-<td>wp-content/themes</td>
-<td>755</td>
-</tr>
-<tr>
-<td>wp-content/plugins</td>
-<td>755</td>
-</tr>
-<tr>
-<td>wp-content/uploads</td>
-<td>755</td>
-</tr>
-<tr>
-<td>wp-config.php</td>
-<td>444</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">경로</th>
+          <th style="text-align: left">권한</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">/</td>
+          <td style="text-align: left">755</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">.htaccess</td>
+          <td style="text-align: left">444</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">wp-includes</td>
+          <td style="text-align: left">755</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">wp-admin</td>
+          <td style="text-align: left">755</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">wp-admin/js</td>
+          <td style="text-align: left">755</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">wp-content</td>
+          <td style="text-align: left">755</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">wp-content/themes</td>
+          <td style="text-align: left">755</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">wp-content/plugins</td>
+          <td style="text-align: left">755</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">wp-content/uploads</td>
+          <td style="text-align: left">755</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">wp-config.php</td>
+          <td style="text-align: left">444</td>
+      </tr>
+  </tbody>
 </table>
 <h2 id="그외-팁">그외 팁</h2>
 <h3 id="바이러스-검사하기">바이러스 검사하기</h3>
@@ -270,8 +270,8 @@ deny from all
  
 <div class="post-comment">
   <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
+<script>
+    window.disqus_config = function () {
     
     
     
