@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko-KR"><head>
+<html lang="ko-KR"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -9,9 +9,9 @@
   
   <meta property="og:type" content="website" />
   
-  <meta property="og:url" content="https://gyuha.github.io/tags/typescript/" />
+  <meta property="og:url" content="http://localhost:1313/tags/typescript/" />
   <meta property="og:site_name" content="신규하 블로그" />
-   <meta property="og:image" content="https://gyuha.github.io/images/thumbnail.png">  
+   <meta property="og:image" content="http://localhost:1313/images/thumbnail.png">  
 
   
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
@@ -51,7 +51,7 @@
               <form action="https://google.com/search">
                 <input type="search" placeholder='검색어' name="q" class="search">
                 <i class="fa fa-search"></i>
-                <input type="hidden" name="sitesearch" value="https://gyuha.github.io/" />
+                <input type="hidden" name="sitesearch" value="http://localhost:1313/" />
               </form>
               </div>
             </div>
@@ -68,7 +68,7 @@
     <div class="container">
       <div class="title-message">
         
-        <a href="https://gyuha.github.io/tags/typescript/">
+        <a href="http://localhost:1313/tags/typescript/">
           <h1>
             Typescript
           </h1>
@@ -90,7 +90,7 @@
 
 <article class="post">
   <div class="post-title">
-    <a href="https://gyuha.github.io/post/2018-11-06-typescript-webpack-serverless/" title="Typescript Webpack Serverless 구성하기">
+    <a href="http://localhost:1313/post/2018-11-06-typescript-webpack-serverless/" title="Typescript Webpack Serverless 구성하기">
       <div class="post-meta">
         <h2>Typescript Webpack Serverless 구성하기</h2>
         <time>
@@ -99,7 +99,7 @@
         </time>
          
         <i class="far fa-folder"></i>
-        <a href="https://gyuha.github.io//categories/typescript">typescript</a>
+        <a href="http://localhost:1313//categories/typescript">typescript</a>
         
       </div>
     </a>
@@ -291,7 +291,57 @@
       scaleMobile: 1.00,
       color: 0x3fa4ff
     })
-  }) 
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });  
 </script>
 
 </body>
