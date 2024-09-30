@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '윈도우용 패키지 매니저 Chocolatey 사용법'" />
+  <title>윈도우용 패키지 매니저 Chocolatey 사용법  | 신규하 블로그</title>
+  <meta property="og:title" content="윈도우용 패키지 매니저 Chocolatey 사용법" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2020-01-10"> 
+  <meta property="og:url" content="https://gyuha.com/post/2020/2020-01-10-chocolatey_manual/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="windows" />
+  
+  <meta property="og:tags" content="package" />
+  
+  <meta property="og:tags" content="manager" />
+  
+  <meta property="og:tags" content="choco" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action="https://google.com/search">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search"></i>
+                <input type="hidden" name="sitesearch" value="https://gyuha.com/" />
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2020/2020-01-10-chocolatey_manual/">
+          <h1>
+            윈도우용 패키지 매니저 Chocolatey 사용법
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2020/2020-01-10-chocolatey_manual/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Chocolatey는 윈도우용 패키지 매니저로, 설치하려는 윈도우용 소프트웨어를 일일이 웹사이트에서 찾아서 설치할 필요 없이 간단하게 커맨드 만으로 윈도우용 소프트웨어를 설치 할 수 있게 해 줍니다.</p>
+<h2 id="chocolatey-설치">Chocolatey 설치</h2>
+<p>chocolate를 설치 하려면 관리자 권한 cmd나 PowerShell을 실행해서 설치를 해 줘야 합니다.</p>
+<h2 id="cmd-사용시">cmd 사용시</h2>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>@powershell -NoProfile -ExecutionPolicy Bypass -Command <span style="color:#0086d2">&#34;iex ((new-object net.webclient).DownloadString(&#39;https://chocolatey.org/install.ps1&#39;))&#34;</span> &amp;&amp; SET <span style="color:#fb660a">PATH</span>=%PATH%;%ALLUSERSPROFILE%<span style="color:#0086d2">\c</span>hocolatey<span style="color:#0086d2">\b</span>in
+</span></span></code></pre></div><h2 id="powershell-사용시">powershell 사용시</h2>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString(<span style="color:#0086d2">&#39;https://chocolatey.org/install.ps1&#39;</span>))
+</span></span></code></pre></div><h2 id="패키지--찾기">패키지  찾기</h2>
+<p>아래 웹페이지에 접속해서 검색하시면 됩니다.</p>
+<blockquote>
+<p><a href="https://chocolatey.org/packages">https://chocolatey.org/packages</a></p>
+</blockquote>
+<p>또는 cmd에서 <code>search</code> 나  <code>list</code> 명령어로 검색을 할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>&gt; choco search googlechrome
+</span></span><span style="display:flex;"><span>Chocolatey v0.10.15
+</span></span><span style="display:flex;"><span>GoogleChrome 79.0.3945.117 [Approved] Downloads cached <span style="color:#fb660a;font-weight:bold">for</span> licensed users
+</span></span><span style="display:flex;"><span>vivaldi.install 2.10.1745.23
+</span></span><span style="display:flex;"><span>... 생략
+</span></span><span style="display:flex;"><span><span style="color:#0086f7;font-weight:bold">10</span> packages found.
+</span></span></code></pre></div><p>예로 구글크롬 웹브라우저를 검색해 보면  10개의 패키지가 나옵니다. 그냥 chrome을 검색하면 백여개가 넘는 패키지가 목록이 나오게 됩니다.</p>
+<p>여기서 정확하게 필요한 패키지만을 보기 위해서는 <code>-e</code> 또는 <code>--exact</code> 옵션을 넣어 줘야 합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>&gt; choco search googlechrome -e
+</span></span><span style="display:flex;"><span>Chocolatey v0.10.15
+</span></span><span style="display:flex;"><span>GoogleChrome 79.0.3945.117 [Approved] Downloads cached <span style="color:#fb660a;font-weight:bold">for</span> licensed users
+</span></span><span style="display:flex;"><span><span style="color:#0086f7;font-weight:bold">1</span> packages found.
+</span></span></code></pre></div><p>그리고, 간혹 특정 버전의 패키지를 설치 해야 할 경우가 있습니다. 그럴 경우 버전을 확인하기 위해서는 <code>-a</code>, <code>--all</code>  옵션을 넣어 주면 버전 정보를 확인 할 수 있습니다.</p>
+<h2 id="패키지-상세-정보-보기">패키지 상세 정보 보기</h2>
+<p><code>info</code> 명령어을 사요하거나 search에서 <code>-v</code>옵션을 추가해 주면 됩니다.</p>
+<p>그런데 <code>info</code> 명령어 search에서 -e 옵션이 붙은 것처럼 동작을 하게 됩니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>&gt; choco info googlechrome
+</span></span><span style="display:flex;"><span>Chocolatey v0.10.15
+</span></span><span style="display:flex;"><span>GoogleChrome 79.0.3945.117 [Approved] Downloads cached <span style="color:#fb660a;font-weight:bold">for</span> licensed users
+</span></span><span style="display:flex;"><span> Title: Google Chrome | Published: 2020-01-07
+</span></span><span style="display:flex;"><span> Package approved as a trusted package on <span style="color:#0086f7;font-weight:bold">1</span> <span style="color:#0086f7;font-weight:bold">08</span> <span style="color:#0086f7;font-weight:bold">2020</span> 01:22:22.
+</span></span><span style="display:flex;"><span>... 생략
+</span></span></code></pre></div><p>또는</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>&gt; choco search googlechrome -ev
+</span></span><span style="display:flex;"><span>Chocolatey v0.10.15
+</span></span><span style="display:flex;"><span>GoogleChrome 79.0.3945.117 [Approved] Downloads cached <span style="color:#fb660a;font-weight:bold">for</span> licensed users
+</span></span><span style="display:flex;"><span> Title: Google Chrome | Published: 2020-01-07
+</span></span><span style="display:flex;"><span> Package approved as a trusted package on <span style="color:#0086f7;font-weight:bold">1</span> <span style="color:#0086f7;font-weight:bold">08</span> <span style="color:#0086f7;font-weight:bold">2020</span> 01:22:22.
+</span></span><span style="display:flex;"><span>... 생략
+</span></span></code></pre></div><p>여기서 <code>-ev</code> 로 옵션을 줬는데, 이건 <code>-e -v</code>를 하나로 요약한 형식입니다.</p>
+<h2 id="패키지-설치-하기">패키지 설치 하기</h2>
+<p><code>install</code> 명령을 이용해서 설치하고 싶은 패키지를 아래와 같이 설치 합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>&gt; choco install bandizip
+</span></span><span style="display:flex;"><span>Chocolatey v0.10.15
+</span></span><span style="display:flex;"><span>Installing the following packages:
+</span></span><span style="display:flex;"><span>bandizip
+</span></span><span style="display:flex;"><span>... 생략
+</span></span><span style="display:flex;"><span>Note: If you don<span style="color:#0086d2">&#39;t run this script, the installation will fail.
+</span></span></span><span style="display:flex;"><span><span style="color:#0086d2">Note: To confirm automatically next time, use &#39;</span>-y&#39; or consider:
+</span></span><span style="display:flex;"><span>choco feature enable -n allowGlobalConfirmation
+</span></span><span style="display:flex;"><span>Do you want to run the script?([Y]es/[A]ll - yes to all/[N]o/[P]rint):
+</span></span></code></pre></div><p>명령어 프롬프트가 나오면 y를 눌러주면 간단하게 설치가 완료 됩니다.</p>
+<p>설치 시 자동으로 y를 누르고 싶다면 <code>-y</code> 옵션을 넣어 주면 됩니다. 그리고 강제로 설치하고 싶다면 <code>-f</code>를 넣어 주면 됩니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>&gt; choco install -yf bandizip
+</span></span></code></pre></div><p>혹시 특정 버전을 설치하고 싶다면 <code>--version</code> 옵션을 이용해서 해당 버전을 설치 할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>choco install bandizip --version=6.24
+</span></span></code></pre></div><h2 id="패키지-삭제-하기">패키지 삭제 하기</h2>
+<p>chocolatey는 설치된 패키지도 <code>uninstall</code> 명령어를 이용해서 편하게 삭제가 가능 합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>&gt; choco uninstall bandizip
+</span></span><span style="display:flex;"><span>Chocolatey v0.10.15
+</span></span><span style="display:flex;"><span>Uninstalling the following packages:
+</span></span><span style="display:flex;"><span>bandizip
+</span></span><span style="display:flex;"><span>... 생략
+</span></span><span style="display:flex;"><span>Do you want to run the script?([Y]es/[A]ll - yes to all/[N]o/[P]rint): 
+</span></span></code></pre></div><p>명령어 프롬프트가 나오면 y를 눌러주면 삭제가 됩니다.</p>
+<p><code>y</code>키를 누르기 귀찮다면 설치 할 때와 같이 <code>-yf</code>를 누르시면 바로 삭제가 가능 합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>&gt; choco uninstall -yf bandizip
+</span></span></code></pre></div><h2 id="choco로-설치된-패키지-목록-확인하기">choco로 설치된 패키지 목록 확인하기</h2>
+<p><code>search</code> 또는 <code>list</code>명령로 확인 가능 합니다. 뒤에 <code>-l</code> 옵션을 주면 로컬에 설치된 패키지의 목록을 출력 해 줍니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>&gt; choco search -l
+</span></span><span style="display:flex;"><span>bandizip 6.25
+</span></span><span style="display:flex;"><span>... 생략
+</span></span><span style="display:flex;"><span>zeal 0.6.1
+</span></span><span style="display:flex;"><span>zeal.install 0.6.1
+</span></span><span style="display:flex;"><span><span style="color:#0086f7;font-weight:bold">62</span> packages installed.
+</span></span></code></pre></div><p>또는 <code>clist</code> 명령어를 사용해서도 조회가 가능 합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>&gt; clist -l
+</span></span></code></pre></div><p><code>clist</code> 명령은 <code>choco search</code>를 와 같은 역할을 합니다.</p>
+<h2 id="패키지-업데이트-하기">패키지 업데이트 하기</h2>
+<p><code>upgrade</code> 명령어를 통해서 패키지를  최신 버전으로 업데이트가 가능 합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>&gt; choco upgrade bandizip
+</span></span></code></pre></div><p>혹시, choco를 통해서 설치한 프로그램을 모두 업데이트 하고 싶다면 패키지 이름 대신 <code>all</code>을 넣어 주면 됩니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>&gt; choco upgrade all
+</span></span></code></pre></div><h2 id="chocolatey-설치부터-패키지-설치까지-한방-스크립트">chocolatey 설치부터 패키지 설치까지 한방 스크립트</h2>
+<p><code>choco_install.bat</code>라는 파일을 만들고 아래의 내용을 복사해서 넣어 주세요.</p>
+<p>그리고, 뒷 부분에 설치하고 싶은 패키지를  넣어 주시면 됩니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>@echo off
+</span></span><span style="display:flex;"><span>CLS
+</span></span><span style="display:flex;"><span>ECHO **************************************
+</span></span><span style="display:flex;"><span>ECHO * Start Chocolatey Batch
+</span></span><span style="display:flex;"><span>ECHO **************************************
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>:::::::::::::::::::::::::::::::::::::::::
+</span></span><span style="display:flex;"><span>:: 체크 및 관리자 권한 가져 오기
+</span></span><span style="display:flex;"><span>NET FILE 1&gt;NUL 2&gt;NUL
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">if</span> <span style="color:#0086d2">&#39;%errorlevel%&#39;</span> == <span style="color:#0086d2">&#39;0&#39;</span> ( goto gotPrivileges ) <span style="color:#fb660a;font-weight:bold">else</span> ( goto getPrivileges )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>:getPrivileges
+</span></span><span style="display:flex;"><span>:::::::::::::::::::::::::::::::::::::::::
+</span></span><span style="display:flex;"><span>:: UAC를 사용해서 관리자 권한으로 전환
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">if</span> <span style="color:#0086d2">&#39;%1&#39;</span>==<span style="color:#0086d2">&#39;ELEV&#39;</span> (shift &amp; goto gotPrivileges)  
+</span></span><span style="display:flex;"><span>ECHO.
+</span></span><span style="display:flex;"><span>ECHO **************************************
+</span></span><span style="display:flex;"><span>ECHO * Use UAC, switch to admin
+</span></span><span style="display:flex;"><span>ECHO **************************************
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>setlocal DisableDelayedExpansion
+</span></span><span style="display:flex;"><span>set <span style="color:#0086d2">&#34;batchPath=%~0&#34;</span>
+</span></span><span style="display:flex;"><span>setlocal EnableDelayedExpansion
+</span></span><span style="display:flex;"><span>ECHO Set <span style="color:#fb660a">UAC</span> = CreateObject^(<span style="color:#0086d2">&#34;Shell.Application&#34;</span>^) &gt; <span style="color:#0086d2">&#34;%temp%\OEgetPrivileges.vbs&#34;</span>
+</span></span><span style="display:flex;"><span>ECHO UAC.ShellExecute <span style="color:#0086d2">&#34;!batchPath!&#34;</span>, <span style="color:#0086d2">&#34;ELEV&#34;</span>, <span style="color:#0086d2">&#34;&#34;</span>, <span style="color:#0086d2">&#34;runas&#34;</span>, <span style="color:#0086f7;font-weight:bold">1</span> &gt;&gt; <span style="color:#0086d2">&#34;%temp%\OEgetPrivileges.vbs&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#0086d2">&#34;%temp%\OEgetPrivileges.vbs&#34;</span>
+</span></span><span style="display:flex;"><span>exit /B
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>:gotPrivileges
+</span></span><span style="display:flex;"><span>:::::::::::::::::::::::::::::::::::::::::
+</span></span><span style="display:flex;"><span>:: 시작 하기
+</span></span><span style="display:flex;"><span>setlocal &amp; pushd .
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>WHERE choco 1&gt;NUL 2&gt;NUL
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">if</span> <span style="color:#0086d2">&#39;%errorlevel%&#39;</span> == <span style="color:#0086d2">&#39;0&#39;</span> ( goto chocoInstalled ) <span style="color:#fb660a;font-weight:bold">else</span> ( goto chocoMissing )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>:chocoMissing
+</span></span><span style="display:flex;"><span>::::::::::::::::::::::::::::
+</span></span><span style="display:flex;"><span>:: Chocolatey가 없을 경우 설치
+</span></span><span style="display:flex;"><span>::::::::::::::::::::::::::::
+</span></span><span style="display:flex;"><span>ECHO.
+</span></span><span style="display:flex;"><span>choice /M <span style="color:#0086d2">&#34;Chocolatey not found. Install now?&#34;</span>
+</span></span><span style="display:flex;"><span>IF <span style="color:#0086d2">&#39;%errorlevel%&#39;</span> == <span style="color:#0086d2">&#39;2&#39;</span> exit /B
+</span></span><span style="display:flex;"><span>ECHO.
+</span></span><span style="display:flex;"><span>ECHO **************************************
+</span></span><span style="display:flex;"><span>ECHO * Chocolatey install
+</span></span><span style="display:flex;"><span>ECHO **************************************
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@powershell -NoProfile -ExecutionPolicy Bypass -Command <span style="color:#0086d2">&#34;iex ((new-object net.webclient).DownloadString(&#39;https://chocolatey.org/install.ps1&#39;))&#34;</span> &amp;&amp; SET <span style="color:#fb660a">PATH</span>=%PATH%;%ALLUSERSPROFILE%<span style="color:#0086d2">\c</span>hocolatey<span style="color:#0086d2">\b</span>in
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>:chocoInstalled
+</span></span><span style="display:flex;"><span>ECHO.
+</span></span><span style="display:flex;"><span>ECHO **************************************
+</span></span><span style="display:flex;"><span>ECHO * Packages install
+</span></span><span style="display:flex;"><span>ECHO **************************************
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>@echo on
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>:: 항상 자동으로 yes를 선택하도록 설정
+</span></span><span style="display:flex;"><span>choco feature enable --name=allowGlobalConfirmation
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>:: 먼저 기존 패키지 업데이트
+</span></span><span style="display:flex;"><span>choco upgrade all -y
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>:: 사용할 어플리케이션 설치
+</span></span><span style="display:flex;"><span>set <span style="color:#fb660a">choco_install</span>=choco install -fy
+</span></span><span style="display:flex;"><span>%choco_install% bandizip 
+</span></span><span style="display:flex;"><span>%choco_install% firefox
+</span></span><span style="display:flex;"><span>%choco_install% googlechrome
+</span></span><span style="display:flex;"><span>%choco_install% vcredist140
+</span></span><span style="display:flex;"><span>%choco_install% vcredist2012
+</span></span><span style="display:flex;"><span>%choco_install% directx
+</span></span><span style="display:flex;"><span>%choco_install% dotnetfx
+</span></span><span style="display:flex;"><span>%choco_install% javaruntime
+</span></span><span style="display:flex;"><span>%choco_install% everything
+</span></span><span style="display:flex;"><span>%choco_install% wox
+</span></span><span style="display:flex;"><span>%choco_install% qbittorrent
+</span></span><span style="display:flex;"><span>%choco_install% f.lux
+</span></span><span style="display:flex;"><span>%choco_install% typora
+</span></span><span style="display:flex;"><span>%choco_install% freefilesync
+</span></span><span style="display:flex;"><span>%choco_install% calibre
+</span></span><span style="display:flex;"><span>%choco_install% notion
+</span></span><span style="display:flex;"><span>%choco_install% vlc
+</span></span><span style="display:flex;"><span>%choco_install% krita
+</span></span><span style="display:flex;"><span>%choco_install% paint.net
+</span></span><span style="display:flex;"><span>%choco_install% jbs
+</span></span><span style="display:flex;"><span>%choco_install% ditto
+</span></span><span style="display:flex;"><span>%choco_install% ccleaner.portable
+</span></span><span style="display:flex;"><span>%choco_install% git.install --params <span style="color:#0086d2">&#34;/GitAndUnixToolsOnPath /NoShellIntegration /NoGuiHereIntegration /WindowsTerminal&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>:: 항상 자동으로 yes를 선택하는 옵션 끄기
+</span></span><span style="display:flex;"><span>choco feature disable --name=allowGlobalConfirmation
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>:: 업데이트 된 설정 다시 읽기
+</span></span><span style="display:flex;"><span>RefreshEnv.cmd
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>pause
+</span></span></code></pre></div><p><code>choco_install.bat</code> 파일을 실행했을때 관리자 권한이 아니면 관리자 권한을 부여해서 실행하게 됩니다.</p>
+<p>컴퓨터 설치를 자주 하시게 되는 분들은 위와 같이 파일을 하나 설정해 둔다면 유용하게 사용 할 수 있을 것이라고 생각 됩니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2020년 01월 10일 03시 03분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/utillity">utillity</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2019/2019-12-19-typescript-default-import/" rel="prev">
+        <span>Typescript에서 default import 개선..</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2020/2020-03-15-javascript-arrary/" rel="next">
+        <span>자바스크립트 배열 메서드 정리</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#chocolatey-설치">Chocolatey 설치</a></li>
+    <li><a href="#cmd-사용시">cmd 사용시</a></li>
+    <li><a href="#powershell-사용시">powershell 사용시</a></li>
+    <li><a href="#패키지--찾기">패키지  찾기</a></li>
+    <li><a href="#패키지-상세-정보-보기">패키지 상세 정보 보기</a></li>
+    <li><a href="#패키지-설치-하기">패키지 설치 하기</a></li>
+    <li><a href="#패키지-삭제-하기">패키지 삭제 하기</a></li>
+    <li><a href="#choco로-설치된-패키지-목록-확인하기">choco로 설치된 패키지 목록 확인하기</a></li>
+    <li><a href="#패키지-업데이트-하기">패키지 업데이트 하기</a></li>
+    <li><a href="#chocolatey-설치부터-패키지-설치까지-한방-스크립트">chocolatey 설치부터 패키지 설치까지 한방 스크립트</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="https://gyuha.com/tags/windows" class="badge badge-secondary">windows</a>
+    <a href="https://gyuha.com/tags/package" class="badge badge-secondary">package</a>
+    <a href="https://gyuha.com/tags/manager" class="badge badge-secondary">manager</a>
+    <a href="https://gyuha.com/tags/choco" class="badge badge-secondary">choco</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });  
+</script>
+
+</body>
+</html>

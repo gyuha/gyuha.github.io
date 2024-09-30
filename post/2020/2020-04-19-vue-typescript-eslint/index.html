@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Vscode에서 vue 프로젝트 생성시 ESlint와 Prettier 설정해 주기'" />
+  <title>Vscode에서 vue 프로젝트 생성시 ESlint와 Prettier 설정해 주기  | 신규하 블로그</title>
+  <meta property="og:title" content="Vscode에서 vue 프로젝트 생성시 ESlint와 Prettier 설정해 주기" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2020-04-19"> 
+  <meta property="og:url" content="https://gyuha.com/post/2020/2020-04-19-vue-typescript-eslint/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="vscode" />
+  
+  <meta property="og:tags" content="vue" />
+  
+  <meta property="og:tags" content="typescript" />
+  
+  <meta property="og:tags" content="eslint" />
+  
+  <meta property="og:tags" content="tslint" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action="https://google.com/search">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search"></i>
+                <input type="hidden" name="sitesearch" value="https://gyuha.com/" />
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2020/2020-04-19-vue-typescript-eslint/">
+          <h1>
+            Vscode에서 vue 프로젝트 생성시 ESlint와 Prettier 설정해 주기
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2020/2020-04-19-vue-typescript-eslint/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <h2 id="vue-프로젝트-생성하기">Vue 프로젝트 생성하기</h2>
+<p><img src="/img/2020-04-19-vue-typescript-eslint/vscode-vue.jpg" alt="vscode-vue"></p>
+<p>기존에 사용하던 <a href="https://www.npmjs.com/package/tslint">TSLint가 더이상 지원</a>을 받지 못 하게 되면서, ESlint로 넘어가야 상태가 되었습니다.</p>
+<p>여기서는 Vue 프로젝트를 생성하면서 ESlint와 Prettier를 사용하는 세팅을 간단하게 설정하려고 합니다. 사용하는 툴은 vscode입니다.</p>
+<p><code>vue create myproject</code> 형태로 기본 프로젝트를 선택 합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;display:grid;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>&gt; npx vue create myproject
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>? Please pick a preset: Manually <span style="color:#fb660a;font-weight:bold">select</span> features
+</span></span><span style="display:flex;"><span>? Check the features needed <span style="color:#fb660a;font-weight:bold">for</span> your project:
+</span></span><span style="display:flex;"><span> (*) Babel
+</span></span><span style="display:flex;"><span> (*) TypeScript
+</span></span><span style="display:flex;"><span> ( ) Progressive Web App (PWA) Support
+</span></span><span style="display:flex;"><span> ( ) Router
+</span></span><span style="display:flex;"><span> ( ) Vuex
+</span></span><span style="display:flex;"><span> (*) CSS Pre-processors
+</span></span><span style="display:flex; background-color:#282828"><span>&gt;(*) Linter / Formatter
+</span></span><span style="display:flex;"><span> ( ) Unit Testing
+</span></span><span style="display:flex;"><span> ( ) E2E Testing     
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>? Use Babel alongside TypeScript (required <span style="color:#fb660a;font-weight:bold">for</span> modern mode, auto-detected polyfills, transpiling JSX)? (Y/n) Y 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>? Pick a CSS pre-processor (PostCSS, Autoprefixer and CSS Modules are supported by default):
+</span></span><span style="display:flex; background-color:#282828"><span>&gt; Sass/SCSS (with dart-sass)
+</span></span><span style="display:flex;"><span>  Sass/SCSS (with node-sass)
+</span></span><span style="display:flex;"><span>  Less
+</span></span><span style="display:flex;"><span>  Stylus      
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>? Pick a linter / formatter config:
+</span></span><span style="display:flex;"><span>  ESLint with error prevention only
+</span></span><span style="display:flex;"><span>  ESLint + Airbnb config
+</span></span><span style="display:flex;"><span>  ESLint + Standard config
+</span></span><span style="display:flex; background-color:#282828"><span>&gt; ESLint + Prettier
+</span></span><span style="display:flex;"><span>  TSLint (deprecated)    
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>? Pick additional lint features: (Press &lt;space&gt; to <span style="color:#fb660a;font-weight:bold">select</span>, &lt;a&gt; to toggle all, &lt;i&gt; to invert selection)
+</span></span><span style="display:flex; background-color:#282828"><span>&gt;(*) Lint on save
+</span></span><span style="display:flex;"><span> ( ) Lint and fix on commit 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>? Where <span style="color:#fb660a;font-weight:bold">do</span> you prefer placing config <span style="color:#fb660a;font-weight:bold">for</span> Babel, ESLint, etc.? (Use arrow keys)
+</span></span><span style="display:flex;"><span>&gt; In dedicated config files
+</span></span><span style="display:flex;"><span>  In package.json                  
+</span></span></code></pre></div><p>여기서 처음 체크 박스에서 Linter / Formatter를 꼭 선택해 주시고, Linter / Formatter는 ESLint + Prettier를 선택해 줍니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>&gt; cd myproject
+</span></span><span style="display:flex;"><span>&gt; code .
+</span></span></code></pre></div><p>그리고 위와 같이 <code>vscode</code>를 실행 해 줍니다.</p>
+<h2 id="vscode-설정하기">VSCode 설정하기</h2>
+<p>만약 VSCode에는 아래와 같은 확장 프로그램을 설치가 되어 있지 않으면 설치를 해 줍니다.</p>
+<ul>
+<li><a href="https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint">ESLint</a></li>
+<li><a href="https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode">Prettier - Code formatter</a></li>
+<li><a href="https://marketplace.visualstudio.com/items?itemName=octref.vetur">Vetur</a></li>
+</ul>
+<p>그리고, vscode의 설정에서 아래와 내용을 추가해 줍니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">&#34;[typescript]&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">&#34;editor.defaultFormatter&#34;</span>: <span style="color:#0086d2">&#34;esbenp.prettier-vscode&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">&#34;editor.formatOnSave&#34;</span>: <span style="color:#fb660a;font-weight:bold">true</span>
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">&#34;[vue]&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">&#34;editor.defaultFormatter&#34;</span>: <span style="color:#0086d2">&#34;esbenp.prettier-vscode&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">&#34;editor.formatOnSave&#34;</span>: <span style="color:#fb660a;font-weight:bold">true</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>여기까지 하면 vscode에서 파일을 저장 할 때 알아서 포맷팅을 해 주고 저장을 해 주게 됩니다.</p>
+<p>마지막으로 추가로 좀 더 상세한 설정을 하고 싶다면, 프로젝트 루트 폴더에 <code>.prettierrc.json</code>파일을 만들고 상세한 설정을 해 주시면 됩니다. 아래와 같은 형식으로 만들어 주시면 됩니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">&#34;tabWidth&#34;</span>: <span style="color:#0086f7;font-weight:bold">2</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">&#34;semi&#34;</span>: <span style="color:#fb660a;font-weight:bold">true</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">&#34;singleQuote&#34;</span>: <span style="color:#fb660a;font-weight:bold">false</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">&#34;trailingComma&#34;</span>: <span style="color:#0086d2">&#34;es5&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">&#34;bracketSpacing&#34;</span>: <span style="color:#fb660a;font-weight:bold">false</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">&#34;arrowParens&#34;</span>: <span style="color:#0086d2">&#34;always&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>상세한 내용은 아래 링크를 확인 하시면 됩니다.</p>
+<ul>
+<li><a href="https://prettier.io/docs/en/options.html">https://prettier.io/docs/en/options.html</a></li>
+</ul>
+<h2 id="참고">참고</h2>
+<ul>
+<li><a href="https://www.anthonygonzales.dev/blog/setup-eslint-prettier-with-typescript.html">Setup Prettier and ESLint for Typescript</a></li>
+<li><a href="https://prettier.io/">https://prettier.io/</a></li>
+<li><a href="https://velog.io/@kyusung/eslint-config-3">Typescript ESLint 설정하기</a></li>
+<li><a href="https://velog.io/@kyusung/eslint-config-4">ESLint - 4. Prettier 적용</a></li>
+</ul>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2020년 04월 19일 03시 50분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/typescript">typescript</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2020/2020-03-15-javascript-arrary/" rel="prev">
+        <span>자바스크립트 배열 메서드 정리</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2020/2020-05-19-wordpress_security/" rel="next">
+        <span>워드프레스 보안 설정</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#vue-프로젝트-생성하기">Vue 프로젝트 생성하기</a></li>
+    <li><a href="#vscode-설정하기">VSCode 설정하기</a></li>
+    <li><a href="#참고">참고</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="https://gyuha.com/tags/vscode" class="badge badge-secondary">vscode</a>
+    <a href="https://gyuha.com/tags/vue" class="badge badge-secondary">vue</a>
+    <a href="https://gyuha.com/tags/typescript" class="badge badge-secondary">typescript</a>
+    <a href="https://gyuha.com/tags/eslint" class="badge badge-secondary">eslint</a>
+    <a href="https://gyuha.com/tags/tslint" class="badge badge-secondary">tslint</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });  
+</script>
+
+</body>
+</html>

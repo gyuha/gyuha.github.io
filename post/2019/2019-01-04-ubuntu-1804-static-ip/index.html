@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Ubuntu 18.04에서 netplan을 사용한 static ip 설정'" />
+  <title>Ubuntu 18.04에서 netplan을 사용한 static ip 설정  | 신규하 블로그</title>
+  <meta property="og:title" content="Ubuntu 18.04에서 netplan을 사용한 static ip 설정" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2019-01-04"> 
+  <meta property="og:url" content="https://gyuha.com/post/2019/2019-01-04-ubuntu-1804-static-ip/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="ubuntu" />
+  
+  <meta property="og:tags" content="setting" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action="https://google.com/search">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search"></i>
+                <input type="hidden" name="sitesearch" value="https://gyuha.com/" />
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2019/2019-01-04-ubuntu-1804-static-ip/">
+          <h1>
+            Ubuntu 18.04에서 netplan을 사용한 static ip 설정
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2019/2019-01-04-ubuntu-1804-static-ip/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>17.10부터 네트워크 인터페이스 설정이 <code>netplan</code>이라는 새로운 네트워크 설정이 생겼다. 기존에 인터페이스 설정(/etc/network/interfaces)보다는 간결해 보입니다.</p>
+<p>변경 할 파일은 아래와 같습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo vi /etc/netplan/50-cloud-init.yaml
+</span></span></code></pre></div><p>기본적으로 dhcp로 설치 했을 경우 아래와 같이 나옵니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">network</span>:<span style="color:#888">
+</span></span></span><span style="display:flex;"><span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">ethernets</span>:<span style="color:#888">
+</span></span></span><span style="display:flex;"><span><span style="color:#888">        </span><span style="color:#fb660a;font-weight:bold">enp4s0f2</span>:<span style="color:#888">
+</span></span></span><span style="display:flex;"><span><span style="color:#888">        	</span><span style="color:#fb660a;font-weight:bold">addresses</span>:<span style="color:#888"> </span>[]<span style="color:#888">
+</span></span></span><span style="display:flex;"><span><span style="color:#888">            </span><span style="color:#fb660a;font-weight:bold">dhcp4</span>:<span style="color:#888"> </span><span style="color:#fb660a;font-weight:bold">true</span><span style="color:#888">
+</span></span></span><span style="display:flex;"><span><span style="color:#888">   </span><span style="color:#fb660a;font-weight:bold">version</span>:<span style="color:#888"> </span><span style="color:#0086f7;font-weight:bold">2</span><span style="color:#888">
+</span></span></span></code></pre></div><p>그 내용을 아래와 같이 ip와 정보를 넣고 설정 해 주면 됩니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">network</span>:<span style="color:#888">
+</span></span></span><span style="display:flex;"><span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">ethernets</span>:<span style="color:#888">
+</span></span></span><span style="display:flex;"><span><span style="color:#888">        </span><span style="color:#fb660a;font-weight:bold">enp4s0f2</span>:<span style="color:#888">
+</span></span></span><span style="display:flex;"><span><span style="color:#888">            </span><span style="color:#fb660a;font-weight:bold">dhcp4</span>:<span style="color:#888"> </span><span style="color:#fb660a;font-weight:bold">no</span><span style="color:#888">
+</span></span></span><span style="display:flex;"><span><span style="color:#888">            </span><span style="color:#fb660a;font-weight:bold">addresses</span>:<span style="color:#888"> </span>[<span style="color:#0086f7;font-weight:bold">192.168.1.200</span>/24]<span style="color:#888">
+</span></span></span><span style="display:flex;"><span><span style="color:#888">            </span><span style="color:#fb660a;font-weight:bold">gateway4</span>:<span style="color:#888"> </span><span style="color:#0086f7;font-weight:bold">192.168.1.1</span><span style="color:#888">
+</span></span></span><span style="display:flex;"><span><span style="color:#888">            </span><span style="color:#fb660a;font-weight:bold">nameservers</span>:<span style="color:#888">
+</span></span></span><span style="display:flex;"><span><span style="color:#888">                    </span><span style="color:#fb660a;font-weight:bold">addresses</span>:<span style="color:#888"> </span>[<span style="color:#0086f7;font-weight:bold">1.1.1.1</span>,<span style="color:#0086f7;font-weight:bold">8.8.8.8</span>,<span style="color:#0086f7;font-weight:bold">8.8.4.4</span>]<span style="color:#888">
+</span></span></span><span style="display:flex;"><span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">version</span>:<span style="color:#888"> </span><span style="color:#0086f7;font-weight:bold">2</span><span style="color:#888">
+</span></span></span></code></pre></div><p>그리고 변경 된 내용을 아래와 같이 적용 합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo netplan apply
+</span></span></code></pre></div><p>변경된 내용을 <code>ifconfig</code>로 확인 하면 됩니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ ifconfig
+</span></span><span style="display:flex;"><span>enp4s0f2: <span style="color:#fb660a">flags</span>=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu <span style="color:#0086f7;font-weight:bold">1500</span>
+</span></span><span style="display:flex;"><span>        inet 192.168.1.200  netmask 255.255.255.0  broadcast 192.168.1.255
+</span></span><span style="display:flex;"><span>        inet6 fe80::290:f5ff:fee7:6e10  prefixlen <span style="color:#0086f7;font-weight:bold">64</span>  scopeid 0x20&lt;link&gt;
+</span></span><span style="display:flex;"><span>        ether 00:90:f5:e7:6e:10  txqueuelen <span style="color:#0086f7;font-weight:bold">1000</span>  (Ethernet)
+</span></span><span style="display:flex;"><span>        RX packets <span style="color:#0086f7;font-weight:bold">89208</span>  bytes <span style="color:#0086f7;font-weight:bold">132983451</span> (132.9 MB)
+</span></span><span style="display:flex;"><span>        RX errors <span style="color:#0086f7;font-weight:bold">0</span>  dropped <span style="color:#0086f7;font-weight:bold">9</span>  overruns <span style="color:#0086f7;font-weight:bold">0</span>  frame <span style="color:#0086f7;font-weight:bold">0</span>
+</span></span><span style="display:flex;"><span>        TX packets <span style="color:#0086f7;font-weight:bold">55318</span>  bytes <span style="color:#0086f7;font-weight:bold">4234704</span> (4.2 MB)
+</span></span><span style="display:flex;"><span>        TX errors <span style="color:#0086f7;font-weight:bold">0</span>  dropped <span style="color:#0086f7;font-weight:bold">0</span> overruns <span style="color:#0086f7;font-weight:bold">0</span>  carrier <span style="color:#0086f7;font-weight:bold">0</span>  collisions <span style="color:#0086f7;font-weight:bold">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>lo: <span style="color:#fb660a">flags</span>=73&lt;UP,LOOPBACK,RUNNING&gt;  mtu <span style="color:#0086f7;font-weight:bold">65536</span>
+</span></span><span style="display:flex;"><span>        inet 127.0.0.1  netmask 255.0.0.0
+</span></span><span style="display:flex;"><span>        inet6 ::1  prefixlen <span style="color:#0086f7;font-weight:bold">128</span>  scopeid 0x10&lt;host&gt;
+</span></span><span style="display:flex;"><span>        loop  txqueuelen <span style="color:#0086f7;font-weight:bold">1000</span>  (Local Loopback)
+</span></span><span style="display:flex;"><span>        RX packets <span style="color:#0086f7;font-weight:bold">252</span>  bytes <span style="color:#0086f7;font-weight:bold">19812</span> (19.8 KB)
+</span></span><span style="display:flex;"><span>        RX errors <span style="color:#0086f7;font-weight:bold">0</span>  dropped <span style="color:#0086f7;font-weight:bold">0</span>  overruns <span style="color:#0086f7;font-weight:bold">0</span>  frame <span style="color:#0086f7;font-weight:bold">0</span>
+</span></span><span style="display:flex;"><span>        TX packets <span style="color:#0086f7;font-weight:bold">252</span>  bytes <span style="color:#0086f7;font-weight:bold">19812</span> (19.8 KB)
+</span></span><span style="display:flex;"><span>        TX errors <span style="color:#0086f7;font-weight:bold">0</span>  dropped <span style="color:#0086f7;font-weight:bold">0</span> overruns <span style="color:#0086f7;font-weight:bold">0</span>  carrier <span style="color:#0086f7;font-weight:bold">0</span>  collisions <span style="color:#0086f7;font-weight:bold">0</span>
+</span></span></code></pre></div><p>그런데.. dhcp4가 <code>true</code>이다가.. 끌때는 <code>no</code>로 변경 되어서.. 오타인가 찾아 봤는데..</p>
+<p>모두 그렇게 사용하고 있네요.. 흠&hellip;..</p>
+<p>이상하지만 잘 동작 합니다. -_-;;;</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2019년 01월 04일 10시 30분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/system">system</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2019/2019-01-04-ubuntu-server-labtop-cover/" rel="prev">
+        <span>우분투 노트북 서버 사용시 커버를 덮어도 잠들지 않도록 하기</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2019/2019-01-04-ubuntu-1804-kimchi-install/" rel="next">
+        <span>우분투 18.04에서 kimchi 설치 하기</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents"></nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="https://gyuha.com/tags/ubuntu" class="badge badge-secondary">ubuntu</a>
+    <a href="https://gyuha.com/tags/setting" class="badge badge-secondary">setting</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });  
+</script>
+
+</body>
+</html>
