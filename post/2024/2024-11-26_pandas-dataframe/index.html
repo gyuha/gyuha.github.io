@@ -131,6 +131,19 @@
 <p><strong>조건 필터링</strong>: 특정 조건을 만족하는 행을 선택합니다.</p>
 <div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>df[df[<span style="color:#0086d2">&#39;나이&#39;</span>] &gt; <span style="color:#0086f7;font-weight:bold">30</span>]  <span style="color:#080;background-color:#0f140f;font-style:italic"># 나이가 30보다 큰 행 선택</span>
 </span></span></code></pre></div></li>
+<li>
+<p><strong>AND 조건 (<code>&amp;</code>)</strong>: Pandas에서 DataFrame에 대해 다중 조건을 사용하여 필터링할 때는 각 조건을 괄호로 묶고, 조건 사이에 비트 연산자 <code>&amp;</code> (AND) 또는 <code>|</code> (OR)를 사용합니다. <strong>조건을 결합할 때는 반드시 괄호를 사용해야 합니다.</strong>
+예를 들어, 나이가 30보다 크고 도시가 &lsquo;서울&rsquo;인 행을 선택하고 싶다면 다음과 같이 작성할 수 있습니다:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>df[(df[<span style="color:#0086d2">&#39;나이&#39;</span>] &gt; <span style="color:#0086f7;font-weight:bold">30</span>) &amp; (df[<span style="color:#0086d2">&#39;도시&#39;</span>] == <span style="color:#0086d2">&#39;서울&#39;</span>)]
+</span></span></code></pre></div></li>
+<li>
+<p><strong>OR 조건 (<code>|</code>)</strong> :  나이가 30보다 크거나 도시가 &lsquo;부산&rsquo;인 행을 선택하고 싶다면 다음과 같이 작성할 수 있습니다:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>df[(df[<span style="color:#0086d2">&#39;나이&#39;</span>] &gt; <span style="color:#0086f7;font-weight:bold">30</span>) | (df[<span style="color:#0086d2">&#39;도시&#39;</span>] == <span style="color:#0086d2">&#39;부산&#39;</span>)]
+</span></span></code></pre></div></li>
+<li>
+<p><strong>복합 조건</strong>: 여러 조건을 조합하여 사용할 수도 있습니다. 예를 들어, 나이가 30보다 크고 도시가 &lsquo;서울&rsquo;이거나 &lsquo;부산&rsquo;인 행을 선택하려면 다음과 같이 작성할 수 있습니다:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>df[((df[<span style="color:#0086d2">&#39;나이&#39;</span>] &gt; <span style="color:#0086f7;font-weight:bold">30</span>) &amp; (df[<span style="color:#0086d2">&#39;도시&#39;</span>] == <span style="color:#0086d2">&#39;서울&#39;</span>)) | (df[<span style="color:#0086d2">&#39;도시&#39;</span>] == <span style="color:#0086d2">&#39;부산&#39;</span>)]
+</span></span></code></pre></div></li>
 </ul>
 <h3 id="3-데이터-조작">3. 데이터 조작</h3>
 <ul>
