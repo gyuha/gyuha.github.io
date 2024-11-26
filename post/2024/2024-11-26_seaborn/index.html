@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Seaborn을 활용한 데이터 시각화의 편리함'" />
+  <title>Seaborn을 활용한 데이터 시각화의 편리함  | 신규하 블로그</title>
+  <meta property="og:title" content="Seaborn을 활용한 데이터 시각화의 편리함" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2024-11-26"> 
+  <meta property="og:url" content="https://gyuha.com/post/2024/2024-11-26_seaborn/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="seaborn" />
+  
+  <meta property="og:tags" content="python" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action="https://google.com/search">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search"></i>
+                <input type="hidden" name="sitesearch" value="https://gyuha.com/" />
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2024/2024-11-26_seaborn/">
+          <h1>
+            Seaborn을 활용한 데이터 시각화의 편리함
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2024/2024-11-26_seaborn/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>데이터 시각화는 데이터 분석에서 중요한 단계입니다. Python의 Seaborn 라이브러리는 통계적 데이터 시각화를 쉽게 할 수 있도록 도와주는 강력한 도구입니다.</p>
+<p>이 글에서는 Seaborn의 기본 사용법과 함께 추천할 만한 다양한 그래프 유형을 소개하겠습니다.</p>
+<h2 id="1-seaborn-설치">1. Seaborn 설치</h2>
+<p>Seaborn이 설치되어 있지 않다면, 다음 명령어로 설치할 수 있습니다:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install seaborn
+</span></span></code></pre></div><h2 id="2-기본-사용법">2. 기본 사용법</h2>
+<p>Seaborn을 사용하기 위해서는 먼저 라이브러리를 임포트하고, 데이터셋을 준비해야 합니다. 예를 들어, <code>tips</code>라는 내장 데이터셋을 사용할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> seaborn <span style="color:#fb660a;font-weight:bold">as</span> sns
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> matplotlib.pyplot <span style="color:#fb660a;font-weight:bold">as</span> plt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 내장 데이터셋 로드</span>
+</span></span><span style="display:flex;"><span>tips = sns.load_dataset(<span style="color:#0086d2">&#34;tips&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 데이터셋 확인</span>
+</span></span><span style="display:flex;"><span>print(tips.head())
+</span></span></code></pre></div><h2 id="3-기본-플롯">3. 기본 플롯</h2>
+<h3 id="31-산점도-scatter-plot">3.1 산점도 (Scatter Plot)</h3>
+<p>산점도는 두 변수 간의 관계를 시각화하는 데 유용합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 산점도 그리기</span>
+</span></span><span style="display:flex;"><span>sns.scatterplot(data=tips, x=<span style="color:#0086d2">&#34;total_bill&#34;</span>, y=<span style="color:#0086d2">&#34;tip&#34;</span>, hue=<span style="color:#0086d2">&#34;day&#34;</span>)
+</span></span><span style="display:flex;"><span>plt.title(<span style="color:#0086d2">&#34;Total Bill vs Tip&#34;</span>)
+</span></span><span style="display:flex;"><span>plt.show()
+</span></span></code></pre></div><p><img src="/img/2024/seaborn/sns_scatterplot.png" alt="scatterplot"></p>
+<h3 id="32-상자-그림-box-plot">3.2 상자 그림 (Box Plot)</h3>
+<p>상자 그림은 데이터의 분포와 이상치를 시각화합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 상자 그림 그리기</span>
+</span></span><span style="display:flex;"><span>sns.boxplot(data=tips, x=<span style="color:#0086d2">&#34;day&#34;</span>, y=<span style="color:#0086d2">&#34;total_bill&#34;</span>, hue=<span style="color:#0086d2">&#34;sex&#34;</span>)
+</span></span><span style="display:flex;"><span>plt.title(<span style="color:#0086d2">&#34;Total Bill by Day and Sex&#34;</span>)
+</span></span><span style="display:flex;"><span>plt.show()
+</span></span></code></pre></div><p><img src="/img/2024/seaborn/sns_boxplot.png" alt="scatterplot"></p>
+<h3 id="33-히스토그램-histogram">3.3 히스토그램 (Histogram)</h3>
+<p>히스토그램은 데이터의 분포를 시각화합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 히스토그램 그리기</span>
+</span></span><span style="display:flex;"><span>sns.histplot(data=tips, x=<span style="color:#0086d2">&#34;total_bill&#34;</span>, bins=<span style="color:#0086f7;font-weight:bold">30</span>, kde=<span style="color:#fb660a;font-weight:bold">True</span>)
+</span></span><span style="display:flex;"><span>plt.title(<span style="color:#0086d2">&#34;Distribution of Total Bill&#34;</span>)
+</span></span><span style="display:flex;"><span>plt.show()
+</span></span></code></pre></div><p><img src="/img/2024/seaborn/sns_histplot.png" alt="scatterplot"></p>
+<h3 id="34-pairplot">3.4 Pairplot</h3>
+<p><code>pairplot</code>은 데이터셋의 모든 변수 쌍에 대해 산점도를 그려주고, 대각선에는 각 변수의 분포를 보여줍니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># Pairplot 그리기</span>
+</span></span><span style="display:flex;"><span>sns.pairplot(tips, hue=<span style="color:#0086d2">&#34;sex&#34;</span>)
+</span></span><span style="display:flex;"><span>plt.title(<span style="color:#0086d2">&#34;Pairplot of Tips Dataset&#34;</span>)
+</span></span><span style="display:flex;"><span>plt.show()
+</span></span></code></pre></div><p><img src="/img/2024/seaborn/sns_pairplot.png" alt="scatterplot"></p>
+<h2 id="4-추가-추천-그래프">4. 추가 추천 그래프</h2>
+<p>Seaborn은 다양한 유형의 그래프를 지원하여 데이터 시각화를 풍부하게 할 수 있습니다. 아래는 추가로 추천할 만한 그래프 유형입니다.</p>
+<h3 id="41-히트맵-heatmap">4.1 히트맵 (Heatmap)</h3>
+<p>히트맵은 데이터의 상관관계를 시각화하는 데 유용합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 상관 행렬 계산</span>
+</span></span><span style="display:flex;"><span>correlation_matrix = tips.corr()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 히트맵 그리기</span>
+</span></span><span style="display:flex;"><span>sns.heatmap(correlation_matrix, annot=<span style="color:#fb660a;font-weight:bold">True</span>, cmap=<span style="color:#0086d2">&#34;coolwarm&#34;</span>)
+</span></span><span style="display:flex;"><span>plt.title(<span style="color:#0086d2">&#34;Correlation Heatmap&#34;</span>)
+</span></span><span style="display:flex;"><span>plt.show()
+</span></span></code></pre></div><p><img src="/img/2024/seaborn/sns_heatmap.png" alt="scatterplot"></p>
+<h3 id="42-바-플롯-bar-plot">4.2 바 플롯 (Bar Plot)</h3>
+<p>바 플롯은 범주형 데이터의 평균 또는 합계를 시각화하는 데 유용합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 바 플롯 그리기</span>
+</span></span><span style="display:flex;"><span>sns.barplot(data=tips, x=<span style="color:#0086d2">&#34;day&#34;</span>, y=<span style="color:#0086d2">&#34;total_bill&#34;</span>, hue=<span style="color:#0086d2">&#34;sex&#34;</span>)
+</span></span><span style="display:flex;"><span>plt.title(<span style="color:#0086d2">&#34;Average Total Bill by Day and Sex&#34;</span>)
+</span></span><span style="display:flex;"><span>plt.show()
+</span></span></code></pre></div><p><img src="/img/2024/seaborn/sns_barplot.png" alt="scatterplot"></p>
+<h3 id="43-선-그래프-line-plot">4.3 선 그래프 (Line Plot)</h3>
+<p>선 그래프는 시간에 따른 변화를 시각화하는 데 적합합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 예시 데이터 생성</span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> pandas <span style="color:#fb660a;font-weight:bold">as</span> pd
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 날짜 생성</span>
+</span></span><span style="display:flex;"><span>dates = pd.date_range(<span style="color:#0086d2">&#34;2023-01-01&#34;</span>, periods=<span style="color:#0086f7;font-weight:bold">10</span>)
+</span></span><span style="display:flex;"><span>values = [<span style="color:#0086f7;font-weight:bold">1</span>, <span style="color:#0086f7;font-weight:bold">3</span>, <span style="color:#0086f7;font-weight:bold">2</span>, <span style="color:#0086f7;font-weight:bold">5</span>, <span style="color:#0086f7;font-weight:bold">4</span>, <span style="color:#0086f7;font-weight:bold">6</span>, <span style="color:#0086f7;font-weight:bold">7</span>, <span style="color:#0086f7;font-weight:bold">8</span>, <span style="color:#0086f7;font-weight:bold">9</span>, <span style="color:#0086f7;font-weight:bold">10</span>]
+</span></span><span style="display:flex;"><span>data = pd.DataFrame({<span style="color:#0086d2">&#34;Date&#34;</span>: dates, <span style="color:#0086d2">&#34;Values&#34;</span>: values})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 선 그래프 그리기</span>
+</span></span><span style="display:flex;"><span>sns.lineplot(data=data, x=<span style="color:#0086d2">&#34;Date&#34;</span>, y=<span style="color:#0086d2">&#34;Values&#34;</span>)
+</span></span><span style="display:flex;"><span>plt.title(<span style="color:#0086d2">&#34;Line Plot Example&#34;</span>)
+</span></span><span style="display:flex;"><span>plt.xticks(rotation=<span style="color:#0086f7;font-weight:bold">45</span>)
+</span></span><span style="display:flex;"><span>plt.show()
+</span></span></code></pre></div><p><img src="/img/2024/seaborn/sns_lineplot.png" alt="scatterplot"></p>
+<h3 id="44-카운트-플롯-count-plot">4.4 카운트 플롯 (Count Plot)</h3>
+<p>카운트 플롯은 각 범주형 변수의 개수를 시각화합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 카운트 플롯 그리기</span>
+</span></span><span style="display:flex;"><span>sns.countplot(data=tips, x=<span style="color:#0086d2">&#34;day&#34;</span>, hue=<span style="color:#0086d2">&#34;sex&#34;</span>)
+</span></span><span style="display:flex;"><span>plt.title(<span style="color:#0086d2">&#34;Count of Tips by Day and Sex&#34;</span>)
+</span></span><span style="display:flex;"><span>plt.show()
+</span></span></code></pre></div><p><img src="/img/2024/seaborn/sns_countplot.png" alt="scatterplot"></p>
+<h3 id="45-조인트-플롯-joint-plot">4.5 조인트 플롯 (Joint Plot)</h3>
+<p>조인트 플롯은 두 변수 간의 관계를 시각화하고, 각 변수의 분포를 함께 보여줍니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 조인트 플롯 그리기</span>
+</span></span><span style="display:flex;"><span>sns.jointplot(data=tips, x=<span style="color:#0086d2">&#34;total_bill&#34;</span>, y=<span style="color:#0086d2">&#34;tip&#34;</span>, kind=<span style="color:#0086d2">&#34;scatter&#34;</span>, hue=<span style="color:#0086d2">&#34;sex&#34;</span>)
+</span></span><span style="display:flex;"><span>plt.title(<span style="color:#0086d2">&#34;Joint Plot of Total Bill and Tip&#34;</span>)
+</span></span><span style="display:flex;"><span>plt.show()
+</span></span></code></pre></div><p><img src="/img/2024/seaborn/sns_jointplot.png" alt="scatterplot"></p>
+<h3 id="46-바이올린-플롯-violin-plot">4.6 바이올린 플롯 (Violin Plot)</h3>
+<p>바이올린 플롯은 데이터의 분포를 시각화하며, 상자 그림과 밀도 곡선을 결합한 형태입니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 바이올린 플롯 그리기</span>
+</span></span><span style="display:flex;"><span>sns.violinplot(data=tips, x=<span style="color:#0086d2">&#34;day&#34;</span>, y=<span style="color:#0086d2">&#34;total_bill&#34;</span>, hue=<span style="color:#0086d2">&#34;sex&#34;</span>, split=<span style="color:#fb660a;font-weight:bold">True</span>)
+</span></span><span style="display:flex;"><span>plt.title(<span style="color:#0086d2">&#34;Violin Plot of Total Bill by Day and Sex&#34;</span>)
+</span></span><span style="display:flex;"><span>plt.show()
+</span></span></code></pre></div><p><img src="/img/2024/seaborn/sns_violinplot.png" alt="scatterplot"></p>
+<h2 id="결론">결론</h2>
+<p>Seaborn은 데이터 시각화를 간편하게 만들어주는 강력한 도구입니다. 다양한 플롯과 스타일을 통해 데이터를 효과적으로 시각화할 수 있습니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2024년 11월 26일 09시 51분
+</time>
+  
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2024/2024-11-26_pandas-dataframe/" rel="prev">
+        <span>Pandas의 DataFrame에서 자주 사용되는 유용한 메서드들 소개</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-seaborn-설치">1. Seaborn 설치</a></li>
+    <li><a href="#2-기본-사용법">2. 기본 사용법</a></li>
+    <li><a href="#3-기본-플롯">3. 기본 플롯</a>
+      <ul>
+        <li><a href="#31-산점도-scatter-plot">3.1 산점도 (Scatter Plot)</a></li>
+        <li><a href="#32-상자-그림-box-plot">3.2 상자 그림 (Box Plot)</a></li>
+        <li><a href="#33-히스토그램-histogram">3.3 히스토그램 (Histogram)</a></li>
+        <li><a href="#34-pairplot">3.4 Pairplot</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-추가-추천-그래프">4. 추가 추천 그래프</a>
+      <ul>
+        <li><a href="#41-히트맵-heatmap">4.1 히트맵 (Heatmap)</a></li>
+        <li><a href="#42-바-플롯-bar-plot">4.2 바 플롯 (Bar Plot)</a></li>
+        <li><a href="#43-선-그래프-line-plot">4.3 선 그래프 (Line Plot)</a></li>
+        <li><a href="#44-카운트-플롯-count-plot">4.4 카운트 플롯 (Count Plot)</a></li>
+        <li><a href="#45-조인트-플롯-joint-plot">4.5 조인트 플롯 (Joint Plot)</a></li>
+        <li><a href="#46-바이올린-플롯-violin-plot">4.6 바이올린 플롯 (Violin Plot)</a></li>
+      </ul>
+    </li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="https://gyuha.com/tags/seaborn" class="badge badge-secondary">seaborn</a>
+    <a href="https://gyuha.com/tags/python" class="badge badge-secondary">python</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });  
+</script>
+
+</body>
+</html>
