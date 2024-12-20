@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Spring Boot에서 자주 사용되는 애노테이션'" />
+  <title>Spring Boot에서 자주 사용되는 애노테이션  | 신규하 블로그</title>
+  <meta property="og:title" content="Spring Boot에서 자주 사용되는 애노테이션" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2024-12-18"> 
+  <meta property="og:url" content="https://gyuha.com/post/2024/2024-12-18_list_of_useful_annotation_in_spring_boot/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="annotation" />
+  
+  <meta property="og:tags" content="spring" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action="https://google.com/search">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search"></i>
+                <input type="hidden" name="sitesearch" value="https://gyuha.com/" />
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2024/2024-12-18_list_of_useful_annotation_in_spring_boot/">
+          <h1>
+            Spring Boot에서 자주 사용되는 애노테이션
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2024/2024-12-18_list_of_useful_annotation_in_spring_boot/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>이 문서는 Spring Boot 애플리케이션에서 자주 사용되는 애노테이션의 목록입니다.</p>
+<p>자세하고 포괄적인 정보는 공식 Javadocs 및 문서를 참조하십시오.</p>
+<h2 id="핵심-스프링">핵심 스프링</h2>
+<ul>
+<li><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/context/annotation/Bean.html">@Bean</a> - 애노테이션이 붙은 메서드는 Spring IoC 컨테이너에 의해 관리되는 빈을 생성합니다.</li>
+<li><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/context/annotation/Primary.html">@Primary</a> - 후보가 여러 개인 경우 Bean에 우선권을 부여해야 함을 나타냅니다. 단일 값 종속성을 autowire할 수 있습니다.</li>
+<li>스테레오타입 애노테이션
+<ul>
+<li><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/stereotype/Component.html">@Component</a> - 애노테이션이 붙은 클래스를 컴포넌트 스캐닝에 의해 발견되고 애플리케이션 컨텍스트에 로드되는 빈으로 표시합니다.</li>
+<li><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/stereotype/Controller.html">@Controller</a> - 애노테이션이 붙은 클래스를 Spring MVC의 요청 핸들러를 포함하는 빈으로 표시합니다.</li>
+<li><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/RestController.html">@RestController</a> - 애노테이션이 붙은 클래스를 <code>@Controller</code> 빈으로 표시하고 반환된 결과를 메시지로 직렬화하기 위해 <code>@ResponseBody</code>를 추가합니다.</li>
+<li><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/context/annotation/Configuration.html">@Configuration</a> - 애노테이션이 붙은 클래스를 자바 설정으로 표시하여 빈을 정의합니다.</li>
+<li><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/stereotype/Service.html">@Service</a> - 애노테이션이 붙은 클래스를 빈으로 표시합니다(관례상 비즈니스 로직을 포함하는 경우가 많습니다).</li>
+<li><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/stereotype/Repository.html">@Repository</a> - 애노테이션이 붙은 클래스를 빈으로 표시하고(관례상 데이터 접근을 제공하는 경우가 많습니다) <code>SQLException</code>을 <code>DataAccessExceptions</code>로 자동 변환합니다.</li>
+</ul>
+</li>
+</ul>
+<h3 id="빈-상태">빈 상태</h3>
+<ul>
+<li><a href="https://javaee.github.io/javaee-spec/javadocs/javax/annotation/PostConstruct.html">@PostConstruct</a> - 의존성 주입이 완료된 후 초기화를 수행하기 위해 애노테이션이 붙은 메서드를 실행합니다.</li>
+<li><a href="https://javaee.github.io/javaee-spec/javadocs/javax/annotation/PreDestroy.html">@PreDestroy</a> - 빈이 파괴되기 전에 애노테이션이 붙은 메서드를 실행합니다(예: 종료 시).</li>
+</ul>
+<h3 id="설정">설정</h3>
+<ul>
+<li><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/context/annotation/Import.html">@Import</a> - 하나 이상의 자바 설정 클래스 <code>@Configuration</code>를 가져옵니다.</li>
+<li><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/context/annotation/PropertySource.html">@PropertySource</a> - <code>application.properties</code> 파일의 위치를 지정하여 키-값 쌍을 Spring <code>Environment</code>에 추가합니다.</li>
+<li><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/beans/factory/annotation/Value.html">@Value</a> - 애노테이션이 붙은 필드와 매개변수 값이 주입됩니다.</li>
+<li><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/context/annotation/ComponentScan.html">@ComponentScan</a> - 컴포넌트 스캐닝을 구성합니다(<code>@Component</code>, <code>@Service</code> 등).</li>
+</ul>
+<h3 id="빈-속성">빈 속성</h3>
+<ul>
+<li><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/context/annotation/Lazy.html">@Lazy</a> - 애노테이션이 붙은 빈은 첫 사용 시 지연 초기화됩니다.</li>
+<li><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/context/annotation/Profile.html">@Profile</a> - 정의된 프로필이 활성화된 경우에만 빈이 초기화됩니다.</li>
+<li><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/context/annotation/Scope.html">@Scope</a> - 빈 생성 범위를 정의합니다(예: 프로토타입, 싱글톤 등).</li>
+<li><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/context/annotation/DependsOn.html">@DependsOn</a> - 생성 순서 측면에서 다른 빈에 대한 종속성을 명시적으로 정의합니다.</li>
+<li><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/core/annotation/Order.html">@Order</a> - 빈 목록을 주입할 때 정렬 순서를 정의하지만 단일 빈이 예상되는 경우 우선순위를 해결하지는 않습니다.</li>
+<li><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/context/annotation/Primary.html">@Primary</a> - 여러 빈을 자동 주입할 수 있는 경우 애노테이션이 붙은 빈이 선택됩니다.</li>
+<li><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/context/annotation/Conditional.html">@Conditional</a> - 조건이 만족되는 경우에만 애노테이션이 붙은 빈이 생성됩니다.
+<ul>
+<li>Spring Boot에서 추가로 사용 가능:
+<ul>
+<li><a href="https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/autoconfigure/condition/ConditionalOnBean.html">@ConditionalOnBean</a></li>
+<li><a href="https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/autoconfigure/condition/ConditionalOnMissingBean.html">@ConditionalOnMissingBean</a></li>
+<li><a href="https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/autoconfigure/condition/ConditionalOnClass.html">@ConditionalOnClass</a></li>
+<li><a href="https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/autoconfigure/condition/ConditionalOnMissingClass.html">@ConditionalOnMissingClass</a></li>
+<li><a href="https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/autoconfigure/condition/ConditionalOnProperty.html">@ConditionalOnProperty</a></li>
+<li><a href="https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/autoconfigure/condition/ConditionalOnProperty.html">@ConditionalOnMissingProperty</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="빈-주입">빈 주입</h3>
+<ul>
+<li><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/beans/factory/annotation/Autowired.html">@Autowired</a> - 빈이 애노테이션이 붙은 세터, 필드 또는 생성자 매개변수에 주입됩니다.</li>
+<li><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/beans/factory/annotation/Qualifier.html">@Qualifier</a> - 자동 주입 후보를 식별하기 위한 추가 조건으로 빈의 이름을 지정합니다.</li>
+</ul>
+<h3 id="유효성-검사">유효성 검사</h3>
+<ul>
+<li><a href="https://javaee.github.io/javaee-spec/javadocs/javax/validation/Valid.html">@Valid</a> - 속성, 메서드 매개변수 또는 반환 유형을 유효성 검사 대상으로 표시합니다.</li>
+<li><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/validation/annotation/Validated.html">@Validated</a> - 여러 그룹의 유효성 검사를 허용하는 <code>@Valid</code>의 변형입니다(예: 애노테이션이 붙은 클래스의 모든 필드).</li>
+<li><a href="https://javaee.github.io/javaee-spec/javadocs/javax/validation/constraints/NotNull.html">@NotNull</a> - null이 아니어야 합니다.</li>
+<li><a href="https://javaee.github.io/javaee-spec/javadocs/javax/validation/constraints/NotEmpty.html">@NotEmpty</a> - null이 아니고 비어 있지 않아야 합니다.</li>
+<li><a href="https://javaee.github.io/javaee-spec/javadocs/javax/validation/constraints/NotBlank.html">@NotBlank</a> - null이 아니고 최소한 하나의 공백이 아닌 문자가 있어야 합니다.</li>
+<li><a href="https://javaee.github.io/javaee-spec/javadocs/javax/validation/constraints/Digits.html">@Digits</a> - 허용 범위 내의 숫자여야 합니다.</li>
+<li><a href="https://javaee.github.io/javaee-spec/javadocs/javax/validation/constraints/Past.html">@Past</a> - 과거의 순간, 날짜 또는 시간이어야 합니다.</li>
+<li><a href="https://javaee.github.io/javaee-spec/javadocs/javax/validation/constraints/Future.html">@Future</a> - 미래의 순간, 날짜 또는 시간이어야 합니다.</li>
+<li>&hellip;</li>
+</ul>
+<h2 id="스프링-부트">스프링 부트</h2>
+<ul>
+<li><a href="https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/SpringBootConfiguration.html">@SpringBootConfiguration</a> - Spring Boot 애플리케이션 <code>@Configuration</code>을 나타냅니다.</li>
+<li><a href="https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/autoconfigure/EnableAutoConfiguration.html">@EnableAutoConfiguration</a> - 클래스 경로를 기반으로 필요한 빈을 제공하기 위해 애플리케이션 컨텍스트 자동 구성을 활성화합니다.</li>
+<li><a href="https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/context/properties/ConfigurationProperties.html">@ConfigurationProperties</a> - 키 값 속성의 외부 바인딩을 제공합니다.</li>
+<li><a href="https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/context/properties/ConstructorBinding.html">@ConstructorBinding</a> - 세터 대신 생성자를 사용하여 속성을 바인딩합니다.</li>
+<li><a href="https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/context/properties/ConfigurationPropertiesScan.html">@ConfigurationPropertiesScan</a> - <code>@ConfigurationProperties</code> 클래스를 자동으로 감지합니다.</li>
+<li><a href="https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/autoconfigure/SpringBootApplication.html">@SpringBootApplication</a> - <code>@SpringBootConfiguration</code>, <code>@EnableAutoConfiguration</code>, <code>@ConfigurationPropertiesScan</code> 및 <code>@ComponentScan</code>의 조합입니다.</li>
+<li><a href="https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/autoconfigure/domain/EntityScan.html">@EntityScan</a> - 엔티티 클래스를 스캔할 기본 패키지를 구성합니다.</li>
+<li><a href="https://docs.spring.io/spring-data/data-jpa/docs/current/api/org/springframework/data/jpa/repository/config/EnableJpaRepositories.html">@EnableJpaRepositories</a> - JPA 리포지토리의 자동 구성을 활성화합니다.</li>
+<li><a href="https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/autoconfigure/AutoConfiguration.html">@AutoConfiguration</a> - 새로운 자동 구성 클래스를 정의합니다.</li>
+<li><a href="https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/autoconfigure/AutoConfigureBefore.html">@AutoConfigureBefore</a> - 지정된 자동 구성 클래스보다 먼저 자동 구성을 적용합니다.</li>
+<li><a href="https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/autoconfigure/AutoConfigureAfter.html">@AutoConfigureAfter</a> - 지정된 자동 구성 클래스 이후에 자동 구성을 적용합니다.</li>
+</ul>
+<h2 id="스프링-부트-테스트">스프링 부트 테스트</h2>
+<ul>
+<li><a href="https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/test/context/SpringBootTest.html">@SpringBootTest</a> - 애노테이션이 붙은 테스트 클래스는 통합 테스트를 위해 전체 애플리케이션 컨텍스트를 로드합니다.</li>
+<li><a href="https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/test/autoconfigure/web/servlet/WebMvcTest.html">@WebMvcTest</a> - 애노테이션이 붙은 테스트 클래스는 웹 레이어만 로드합니다(서비스 및 데이터 레이어는 무시됨).</li>
+<li><a href="https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/test/autoconfigure/orm/jpa/DataJpaTest.html">@DataJpaTest</a> - 애노테이션이 붙은 클래스는 JPA 구성 요소만 로드합니다.</li>
+<li><a href="https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#features.testing.spring-boot-applications.json-tests">@JsonTest</a> - 애노테이션이 붙은 클래스는 직렬화 및 역직렬화 테스트를 위해 JSON 매퍼만 로드합니다.</li>
+<li><a href="https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/test/mock/mockito/MockBean.html">@MockBean</a> - 애노테이션이 붙은 필드를 모의 객체로 표시하고 애플리케이션 컨텍스트에 빈으로 로드합니다.</li>
+<li><a href="https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/test/mock/mockito/SpyBean.html">@SpyBean</a> - 빈의 부분 모킹을 허용합니다.</li>
+<li><a href="https://www.javadoc.io/doc/org.mockito/mockito-core/latest/org/mockito/Mock.html">@Mock</a> - 애노테이션이 붙은 필드를 모의 객체로 정의합니다.</li>
+</ul>
+<h2 id="스프링-테스트">스프링 테스트</h2>
+<ul>
+<li><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/test/context/ContextConfiguration.html">@ContextConfiguration</a> - 통합 테스트를 위해 애플리케이션 컨텍스트를 로드할 <code>@Configuration</code>을 정의합니다.</li>
+<li><a href="https://junit.org/junit5/docs/current/api/org.junit.jupiter.api/org/junit/jupiter/api/extension/ExtendWith.html">@ExtendWith</a> - 테스트를 실행할 확장을 정의합니다(예: MockitoExtension).</li>
+<li><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/test/context/junit/jupiter/SpringJUnitConfig.html">@SpringJUnitConfig</a> - <code>@ContextConfiguration</code> 및 <code>@ExtendWith(SpringExtension.class)</code>를 결합합니다.</li>
+<li><a href="https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/test/context/TestPropertySource.html">@TestPropertySource</a> - 통합 테스트에 사용되는 속성 파일의 위치를 정의합니다.</li>
+<li><a href="https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/test/annotation/DirtiesContext.html">@DirtiesContext</a> - 애노테이션이 붙은 테스트가 애플리케이션 컨텍스트를 더럽히고 각 테스트 후에 정리됨을 나타냅니다.</li>
+<li><a href="https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/test/context/ActiveProfiles.html">@ActiveProfiles</a> - 테스트 애플리케이션 컨텍스트를 초기화할 때 로드할 활성 빈 정의를 정의합니다.</li>
+<li><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/test/context/jdbc/Sql.html">@Sql</a> - 테스트 전후에 실행할 SQL 스크립트와 문을 정의할 수 있습니다.</li>
+</ul>
+<h2 id="트랜잭션">트랜잭션</h2>
+<ul>
+<li><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/transaction/annotation/EnableTransactionManagement.html">@EnableTransactionManagement</a> - 애노테이션 기반 트랜잭션 선언 <code>@Transactional</code>을 활성화합니다.</li>
+<li><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/transaction/annotation/Transactional.html">@Transactional</a> - 애노테이션이 붙은 메서드는 트랜잭션 방식으로 실행됩니다.</li>
+</ul>
+<h2 id="스프링-jpa-및-하이버네이트">스프링 JPA 및 하이버네이트</h2>
+<ul>
+<li><a href="https://javaee.github.io/javaee-spec/javadocs/javax/persistence/Id.html">@Id</a> - 애노테이션이 붙은 필드를 엔티티의 기본 키로 표시합니다.</li>
+<li><a href="https://javaee.github.io/javaee-spec/javadocs/javax/persistence/GeneratedValue.html">@GeneratedValue</a> - 기본 키의 생성 전략을 제공합니다.</li>
+<li><a href="https://javaee.github.io/javaee-spec/javadocs/javax/persistence/Column.html">@Column</a> - 필드에 대한 추가 구성을 제공합니다(예: 열 이름).</li>
+<li><a href="https://javaee.github.io/javaee-spec/javadocs/javax/persistence/Table.html">@Table</a> - 엔티티에 대한 추가 구성을 제공합니다(예: 테이블 이름).</li>
+<li><a href="https://javaee.github.io/javaee-spec/javadocs/javax/persistence/PersistenceContext.html">@PersistenceContext</a> - <code>EntityManager</code>가 애노테이션이 붙은 세터와 필드에 주입됩니다.</li>
+<li><a href="https://javaee.github.io/javaee-spec/javadocs/javax/persistence/Embedded.html">@Embedded</a> - 애노테이션이 붙은 필드는 <code>Embeddable</code> 클래스의 값으로 인스턴스화됩니다.</li>
+<li><a href="https://javaee.github.io/javaee-spec/javadocs/javax/persistence/Embeddable.html">@Embeddable</a> - 애노테이션이 붙은 클래스의 인스턴스는 엔티티의 일부로 저장됩니다.</li>
+<li><a href="https://javaee.github.io/javaee-spec/javadocs/javax/persistence/EmbeddedId.html">@EmbeddedId</a> - 애노테이션이 붙은 속성을 임베디드 클래스에 의해 매핑된 복합 키로 표시합니다.</li>
+<li><a href="https://javaee.github.io/javaee-spec/javadocs/javax/persistence/AttributeOverride.html">@AttributeOverride</a> - 필드의 기본 매핑을 재정의합니다.</li>
+<li><a href="https://javaee.github.io/javaee-spec/javadocs/javax/persistence/Transient.html">@Transient</a> - 애노테이션이 붙은 필드는 영속적이지 않습니다.</li>
+<li><a href="https://docs.jboss.org/hibernate/orm/5.4/javadocs/org/hibernate/annotations/CreationTimestamp.html">@CreationTimestamp</a> - 애노테이션이 붙은 필드는 엔티티가 처음 저장된 타임스탬프를 포함합니다.</li>
+<li><a href="https://docs.jboss.org/hibernate/orm/5.4/javadocs/org/hibernate/annotations/UpdateTimestamp.html">@UpdateTimestamp</a> - 애노테이션이 붙은 필드는 엔티티가 마지막으로 업데이트된 타임스탬프를 포함합니다.</li>
+<li><a href="https://javaee.github.io/javaee-spec/javadocs/javax/persistence/ManyToOne.html">@ManyToOne</a> - N:1 관계를 나타내며, 애노테이션이 붙은 필드를 포함하는 엔티티는 다른 클래스의 엔티티와 단일 관계를 가지지만 다른 클래스는 여러 관계를 가집니다.</li>
+<li><a href="https://javaee.github.io/javaee-spec/javadocs/javax/persistence/JoinColumn.html">@JoinColumn</a> - 소유 측의 <code>@ManyToOne</code> 또는 <code>@OneToOne</code> 관계에서 엔티티를 조인하는 열을 나타내거나 단방향 <code>@OneToMany</code>를 나타냅니다.</li>
+<li><a href="https://javaee.github.io/javaee-spec/javadocs/javax/persistence/OneToOne.html">@OneToOne</a> - 1:1 관계를 나타냅니다.</li>
+<li><a href="https://javaee.github.io/javaee-spec/javadocs/javax/persistence/MapsId.html">@MapsId</a> - <code>@ManyToOne</code> 또는 <code>@OneToOne</code> 관계의 소유 측 조인 열을 참조하여 참조 및 참조된 엔티티의 기본 키로 만듭니다.</li>
+<li><a href="https://javaee.github.io/javaee-spec/javadocs/javax/persistence/ManyToMany.html">@ManyToMany</a> - N:M 관계를 나타냅니다.</li>
+<li><a href="https://javaee.github.io/javaee-spec/javadocs/javax/persistence/JoinTable.html">@JoinTable</a> - 조인 테이블을 사용한 연관을 지정합니다.</li>
+<li><a href="https://docs.jboss.org/hibernate/orm/5.4/javadocs/org/hibernate/annotations/BatchSize.html">@BatchSize</a> - 애노테이션이 붙은 엔티티 컬렉션을 지연 로드할 크기를 정의합니다.</li>
+<li><a href="https://docs.jboss.org/hibernate/orm/5.4/javadocs/org/hibernate/annotations/FetchMode.html">@FetchMode</a> - 연관에 대한 페치 전략을 정의합니다(예: 단일 서브쿼리로 모든 엔티티 로드).</li>
+</ul>
+<h2 id="스프링-시큐리티">스프링 시큐리티</h2>
+<ul>
+<li><a href="https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/config/annotation/web/configuration/EnableWebSecurity.html">@EnableWebSecurity</a> - 웹 보안을 활성화합니다.</li>
+<li><a href="https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/config/annotation/method/configuration/EnableGlobalMethodSecurity.html">@EnableGlobalMethodSecurity</a> - 메서드 보안을 활성화합니다.</li>
+<li><a href="https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/access/prepost/PreAuthorize.html">@PreAuthorize</a> - SpEL을 사용하여 접근 제어 표현식을 정의하며, 보호된 메서드를 호출하기 전에 평가됩니다.</li>
+<li><a href="https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/access/prepost/PostAuthorize.html">@PostAuthorize</a> - SpEL을 사용하여 접근 제어 표현식을 정의하며, 보호된 메서드를 호출한 후 평가됩니다.</li>
+<li><a href="https://javaee.github.io/javaee-spec/javadocs/javax/annotation/security/RolesAllowed.html">@RolesAllowed</a> - 보호된 메서드를 호출할 수 있는 보안 역할 목록을 지정합니다.</li>
+</ul>
+<h2 id="스프링-aop">스프링 AOP</h2>
+<ul>
+<li><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/context/annotation/EnableAspectJAutoProxy.html">@EnableAspectJAutoProxy</a> - <code>@Aspect</code>로 표시된 구성 요소를 처리하는 지원을 활성화합니다.</li>
+<li><a href="https://javadoc.io/static/org.aspectj/aspectjrt/1.9.5/org/aspectj/lang/annotation/Aspect.html">@Aspect</a> - 애노테이션이 붙은 구성 요소를 포인트컷과 어드바이스를 포함하는 측면으로 선언합니다.</li>
+<li><a href="https://javadoc.io/static/org.aspectj/aspectjrt/1.9.5/org/aspectj/lang/annotation/Before.html">@Before</a> - 호출이 조인 포인트로 전파되기 전에 실행되는 포인트컷을 선언합니다.</li>
+<li><a href="https://javadoc.io/static/org.aspectj/aspectjrt/1.9.5/org/aspectj/lang/annotation/AfterReturning.html">@AfterReturning</a> - 조인 포인트가 성공적으로 결과를 반환하면 실행되는 포인트컷을 선언합니다.</li>
+<li><a href="https://javadoc.io/static/org.aspectj/aspectjrt/1.9.5/org/aspectj/lang/annotation/AfterThrowing.html">@AfterThrowing</a> - 조인 포인트가 예외를 던지면 실행되는 포인트컷을 선언합니다.</li>
+<li><a href="https://javadoc.io/static/org.aspectj/aspectjrt/1.9.5/org/aspectj/lang/annotation/After.html">@After</a> - 조인 포인트가 성공적으로 결과를 반환하거나 예외를 던지면 실행되는 포인트컷을 선언합니다.</li>
+<li><a href="https://javadoc.io/static/org.aspectj/aspectjrt/1.9.5/org/aspectj/lang/annotation/Around.html">@Around</a> - 호출 전에 실행되는 포인트컷을 선언하여 조인 포인트의 실행을 어드바이스에 제어를 넘깁니다.</li>
+</ul>
+<h2 id="유용한-링크">유용한 링크</h2>
+<ul>
+<li><a href="https://docs.spring.io/spring-framework/reference/">Spring 공식 문서</a></li>
+<li><a href="https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/">Spring Boot 참조 가이드</a></li>
+<li><a href="https://docs.spring.io/spring-security/reference/">Spring Security 문서</a></li>
+<li><a href="https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods">Spring Data JPA 문서</a></li>
+<li><a href="https://www.baeldung.com/spring-tutorial">Baeldung Spring 튜토리얼</a></li>
+<li><a href="https://github.com/spring-projects/spring-framework">Spring 깃허브 저장소</a></li>
+</ul>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2024년 12월 18일 10시 04분
+</time>
+  
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2024/2024-12-02_volta/" rel="prev">
+        <span>Volta로 Node.js 및 JavaScript 도구 효율적으로 관리하기</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2024/2024-12-20_usefull_aop/" rel="next">
+        <span>2024 12 20_usefull_aop</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#핵심-스프링">핵심 스프링</a>
+      <ul>
+        <li><a href="#빈-상태">빈 상태</a></li>
+        <li><a href="#설정">설정</a></li>
+        <li><a href="#빈-속성">빈 속성</a></li>
+        <li><a href="#빈-주입">빈 주입</a></li>
+        <li><a href="#유효성-검사">유효성 검사</a></li>
+      </ul>
+    </li>
+    <li><a href="#스프링-부트">스프링 부트</a></li>
+    <li><a href="#스프링-부트-테스트">스프링 부트 테스트</a></li>
+    <li><a href="#스프링-테스트">스프링 테스트</a></li>
+    <li><a href="#트랜잭션">트랜잭션</a></li>
+    <li><a href="#스프링-jpa-및-하이버네이트">스프링 JPA 및 하이버네이트</a></li>
+    <li><a href="#스프링-시큐리티">스프링 시큐리티</a></li>
+    <li><a href="#스프링-aop">스프링 AOP</a></li>
+    <li><a href="#유용한-링크">유용한 링크</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="https://gyuha.com/tags/annotation" class="badge badge-secondary">annotation</a>
+    <a href="https://gyuha.com/tags/spring" class="badge badge-secondary">spring</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });  
+</script>
+
+</body>
+</html>
