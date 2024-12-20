@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Nginx에서 다중 도메인 CORS 설정하기'" />
+  <title>Nginx에서 다중 도메인 CORS 설정하기  | 신규하 블로그</title>
+  <meta property="og:title" content="Nginx에서 다중 도메인 CORS 설정하기" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2024-09-27"> 
+  <meta property="og:url" content="https://gyuha.com/post/2024/2024-09-27-setting-up-multi-domain-cors-in-nginx/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action="https://google.com/search">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search"></i>
+                <input type="hidden" name="sitesearch" value="https://gyuha.com/" />
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2024/2024-09-27-setting-up-multi-domain-cors-in-nginx/">
+          <h1>
+            Nginx에서 다중 도메인 CORS 설정하기
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2024/2024-09-27-setting-up-multi-domain-cors-in-nginx/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Nginx 서버에서 여러 도메인에 대해 CORS(Cross-Origin Resource Sharing)를 설정하는 방법에 대해 알아보겠습니다.</p>
+<p><code>example.co.kr</code> 도메인과 그 서브도메인들에 대한 CORS 설정을 예로 들어 설명하겠습니다.</p>
+<h2 id="cors란">CORS란?</h2>
+<p>CORS는 웹 브라우저에서 실행되는 스크립트가 다른 출처(도메인, 프로토콜, 포트)의 리소스에 접근할 수 있도록 허용하는 메커니즘입니다. 보안상의 이유로 브라우저는 기본적으로 이를 제한하지만, 서버에서 적절한 CORS 헤더를 설정하면 이 제한을 완화할 수 있습니다.</p>
+<h2 id="nginx-설정-살펴보기">Nginx 설정 살펴보기</h2>
+<p>다음은 Nginx에서 CORS를 설정하는 예시 설정입니다:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># CORS 허용 도메인 설정
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span><span style="color:#fb660a;font-weight:bold">map</span> <span style="color:#fb660a">$http_origin</span> <span style="color:#fb660a">$cors_origin</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">default</span> <span style="color:#0086d2">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">&#34;~^https?://([a-z0-9.-]+\\.)?example\\.co\\.kr(:[0-9]+)?$&#34;</span> <span style="color:#fb660a">$http_origin</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">&#34;~^https?://([a-z0-9.-]+\\.)?sample\\.co\\.kr(:[0-9]+)?$&#34;</span> <span style="color:#fb660a">$http_origin</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">server</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">listen</span> <span style="color:#0086f7;font-weight:bold">443</span> <span style="color:#0086d2">ssl</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">server_name</span> <span style="color:#0086d2">api.example.co.kr</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#080;background-color:#0f140f;font-style:italic"># SSL 설정 (생략)
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">location</span> <span style="color:#0086d2">/</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#fb660a;font-weight:bold">add_header</span> <span style="color:#0086d2">&#39;Access-Control-Allow-Origin&#39;</span> <span style="color:#0086d2">&#39;</span><span style="color:#fb660a">$cors_origin&#39;</span> <span style="color:#0086d2">always</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#fb660a;font-weight:bold">add_header</span> <span style="color:#0086d2">&#39;Access-Control-Allow-Methods&#39;</span> <span style="color:#0086d2">&#39;GET,</span> <span style="color:#0086d2">POST,</span> <span style="color:#0086d2">DELETE,</span> <span style="color:#0086d2">PATCH,</span> <span style="color:#0086d2">PUT,</span> <span style="color:#0086d2">OPTIONS&#39;</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#fb660a;font-weight:bold">add_header</span> <span style="color:#0086d2">&#39;Access-Control-Allow-Headers&#39;</span> <span style="color:#0086d2">&#39;Content-Type,</span> <span style="color:#0086d2">Authorization,</span> <span style="color:#0086d2">X-Requested-With,</span> <span style="color:#0086d2">Accept,</span> <span style="color:#0086d2">Access&#39;</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#fb660a;font-weight:bold">add_header</span> <span style="color:#0086d2">&#39;Access-Control-Allow-Credentials&#39;</span> <span style="color:#0086d2">&#39;true&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#fb660a;font-weight:bold">if</span> <span style="color:#0086d2">(</span><span style="color:#fb660a">$request_method</span> = <span style="color:#0086d2">&#39;OPTIONS&#39;)</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#fb660a;font-weight:bold">return</span> <span style="color:#0086f7;font-weight:bold">204</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#080;background-color:#0f140f;font-style:italic"># 프록시 설정 (생략)
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="주요-설정-설명">주요 설정 설명</h2>
+<ol>
+<li>
+<p><strong>CORS 허용 도메인 설정</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">map</span> <span style="color:#fb660a">$http_origin</span> <span style="color:#fb660a">$cors_origin</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">default</span> <span style="color:#0086d2">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">&#34;~^https?://([a-z0-9.-]+\\.)?example\\.co\\.kr(:[0-9]+)?$&#34;</span> <span style="color:#fb660a">$http_origin</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>이 설정은 <code>example.co.kr</code> 도메인과 그 서브도메인들에 대해 CORS를 허용합니다. 정규표현식을 사용하여 유연하게 도메인을 매칭합니다.</p>
+</li>
+<li>
+<p><strong>CORS 헤더 설정</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">add_header</span> <span style="color:#0086d2">&#39;Access-Control-Allow-Origin&#39;</span> <span style="color:#0086d2">&#39;</span><span style="color:#fb660a">$cors_origin&#39;</span> <span style="color:#0086d2">always</span>;
+</span></span></code></pre></div><p><code>$cors_origin</code> 변수를 사용하여 동적으로 허용된 오리진을 설정합니다.</p>
+</li>
+<li>
+<p><strong>허용된 메서드와 헤더</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">add_header</span> <span style="color:#0086d2">&#39;Access-Control-Allow-Methods&#39;</span> <span style="color:#0086d2">&#39;GET,</span> <span style="color:#0086d2">POST,</span> <span style="color:#0086d2">DELETE,</span> <span style="color:#0086d2">PATCH,</span> <span style="color:#0086d2">PUT,</span> <span style="color:#0086d2">OPTIONS&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">add_header</span> <span style="color:#0086d2">&#39;Access-Control-Allow-Headers&#39;</span> <span style="color:#0086d2">&#39;Content-Type,</span> <span style="color:#0086d2">Authorization,</span> <span style="color:#0086d2">X-Requested-With,</span> <span style="color:#0086d2">Accept,</span> <span style="color:#0086d2">Access&#39;</span>;
+</span></span></code></pre></div><p>허용된 HTTP 메서드와 요청 헤더를 지정합니다.</p>
+</li>
+<li>
+<p><strong>Credentials 허용</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">add_header</span> <span style="color:#0086d2">&#39;Access-Control-Allow-Credentials&#39;</span> <span style="color:#0086d2">&#39;true&#39;</span>;
+</span></span></code></pre></div><p>인증 정보(쿠키, HTTP 인증 등)를 포함한 요청을 허용합니다.</p>
+</li>
+<li>
+<p><strong>Preflight 요청 처리</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">if</span> <span style="color:#0086d2">(</span><span style="color:#fb660a">$request_method</span> = <span style="color:#0086d2">&#39;OPTIONS&#39;)</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">return</span> <span style="color:#0086f7;font-weight:bold">204</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>OPTIONS 메서드로 오는 preflight 요청에 대해 204 No Content 응답을 반환합니다.</p>
+</li>
+</ol>
+<h2 id="결론">결론</h2>
+<p>이 설정을 통해 <code>example.co.kr</code> 도메인과 그 서브도메인들에서 오는 CORS 요청을 안전하게 처리할 수 있습니다. 필요에 따라 정규표현식을 수정하여 다른 도메인도 추가할 수 있습니다.</p>
+<p>CORS 설정은 보안과 밀접한 관련이 있으므로, 항상 필요한 도메인만 허용하고 정기적으로 설정을 검토하는 것이 좋습니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2024년 09월 27일 08시 18분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/os">os</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2022/2022-02-26-one-liners-in-javascript/" rel="prev">
+        <span>유용한 한 줄 자바스크립트</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2024/2024-09-30-using-.env-in-fastapi/" rel="next">
+        <span>FastAPI에서 .env 파일 사용하기</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#cors란">CORS란?</a></li>
+    <li><a href="#nginx-설정-살펴보기">Nginx 설정 살펴보기</a></li>
+    <li><a href="#주요-설정-설명">주요 설정 설명</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+    
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });  
+</script>
+
+</body>
+</html>
