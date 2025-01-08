@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Speculation Rules 사이트 로딩 속도 개선하기'" />
+  <title>Speculation Rules 사이트 로딩 속도 개선하기  | 신규하 블로그</title>
+  <meta property="og:title" content="Speculation Rules 사이트 로딩 속도 개선하기" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2025-01-08"> 
+  <meta property="og:url" content="https://gyuha.com/post/2025/2025-01-08_script-type-speculationrules/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="html" />
+  
+  <meta property="og:tags" content="javascript" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action="https://google.com/search">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search"></i>
+                <input type="hidden" name="sitesearch" value="https://gyuha.com/" />
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2025/2025-01-08_script-type-speculationrules/">
+          <h1>
+            Speculation Rules 사이트 로딩 속도 개선하기
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2025/2025-01-08_script-type-speculationrules/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>웹 성능은 사용자 경험(UX)을 결정짓는 핵심 요소 중 하나입니다. 사용자가 페이지에서 다른 페이지로 이동할 때 추가적인 로딩 지연 없이 빠르게 전환할 수 있다면, 더 높은 만족도가 보장됩니다.</p>
+<p>구글 크롬을 중심으로 제안된 Speculation Rules는 브라우저가 사용자 행동을 예상하여 사전에 리소스를 로드해 두는 새로운 방식으로, 향상된 UX를 제공합니다.</p>
+<p>이번 글에서는 보다 자세하게 Speculation Rules의 개념과 활용 방법, 주의 사항 등을 단계별로 살펴보겠습니다.</p>
+<h2 id="1-speculation-rules란">1. Speculation Rules란?</h2>
+<p>Speculation Rules는 브라우저가 미래에 사용자가 페이지나 리소스를 요청할 가능성이 높다고 판단되는 경우, 해당 리소스를 미리 가져오거나(prefetch) 심지어 완전히 렌더링(prerender)하여 준비해 두는 기술입니다.<br>
+대표적인 예로, 사용자가 A 페이지에서 B 페이지로 이동할 것이 거의 확실한 상황에서는 브라우저가 B 페이지를 사전에 로드해둡니다. 사용자가 실제로 B 페이지를 클릭하는 시점에는 이미 모든 데이터가 준비되어 있어, 즉시 표시가 가능합니다.</p>
+<h3 id="기존-기법과-차이점">기존 기법과 차이점</h3>
+<ul>
+<li>
+<p><strong>Resource Hint (prefetch, preload)</strong><br>
+HTML <!-- raw HTML omitted --> 같은 리소스 힌트(Resource Hint)는 요청을 미리 가져오도록 브라우저에 알리는 역할을 합니다. 다만, 개별 리소스 단위로 적용하고, 더 세밀한 제어는 어렵습니다.</p>
+</li>
+<li>
+<p><strong>Speculation Rules</strong></p>
+<p>JSON 형태의 규칙 집합을 통해 브라우저가 보다 총체적(페이 로드 단위)인 관점에서 ‘이러이러한 상황에서 해당 페이지(혹은 리소스)를 미리 로드하라’고 명시합니다.<br>
+자바스크립트와 DOM에서 얻은 정보를 기반으로 클릭 가능성 등을 종합적으로 분석하므로, 더 정교한 사전 로드가 가능합니다.</p>
+</li>
+</ul>
+<h2 id="2-script-typespeculationrules-개요">2. &lt;script type=&ldquo;speculationrules&rdquo;&gt; 개요</h2>
+<p>Speculation Rules는 다음과 같은 형태로 작성합니다:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#fb660a;font-weight:bold">script</span> <span style="color:#ff0086;font-weight:bold">type</span>=<span style="color:#0086d2">&#34;speculationrules&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#0086d2">&#34;prefetch&#34;</span>: [
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#0086d2">&#34;source&#34;</span>: <span style="color:#0086d2">&#34;list&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#0086d2">&#34;urls&#34;</span>: [
+</span></span><span style="display:flex;"><span>        <span style="color:#0086d2">&#34;/users&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#0086d2">&#34;/info&#34;</span>
+</span></span><span style="display:flex;"><span>      ]
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  ],
+</span></span><span style="display:flex;"><span>  <span style="color:#0086d2">&#34;prerender&#34;</span>: [
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#0086d2">&#34;source&#34;</span>: <span style="color:#0086d2">&#34;list&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#0086d2">&#34;urls&#34;</span>: [
+</span></span><span style="display:flex;"><span>        <span style="color:#0086d2">&#34;/main&#34;</span>
+</span></span><span style="display:flex;"><span>      ]
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  ]
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#fb660a;font-weight:bold">script</span>&gt;
+</span></span></code></pre></div><ul>
+<li><strong><code>type=&quot;speculationrules&quot;</code></strong>: JSON 형식의 규칙을 가진 스크립트 파일임을 브라우저에게 알림</li>
+<li><strong>prefetch</strong>: 브라우저가 리소스를 미리 가져오기만 하고, 렌더링은 하지 않음</li>
+<li><strong>prerender</strong>: 브라우저가 페이지를 뒤에서 완전히 렌더링까지 완료해 둠</li>
+</ul>
+<h3 id="json-구조-설명">JSON 구조 설명</h3>
+<ul>
+<li><strong>prefetch</strong>: 해당 리소스를 미리 다운로드하여 네트워크 지연을 최소화 (렌더링은 하지 않음)</li>
+<li><strong>prerender</strong>: 페이지 전체를 미리 불러온 뒤 메모리에 로드된 상태로 대기시켜, 사용자가 이동할 때 즉각적으로 표시</li>
+<li><strong>source</strong>: <code>&quot;list&quot;</code> 외에 <code>&quot;document&quot;</code> 등 다양한 타입이 있을 수 있으며, 이 값에 따라 브라우저가 어떤 방식으로 URL을 해석할지 결정</li>
+<li><strong>urls</strong>: 실제로 미리 처리할 대상 URL 배열</li>
+<li><strong>eagerness</strong>: 브라우저가 Speculation Rules를 얼마나 공격적으로 적용할지를 설정 (예: <code>&quot;conservative&quot;</code>, <code>&quot;eager&quot;</code>)</li>
+</ul>
+<h2 id="3-speculation-rules-동작-원리">3. Speculation Rules 동작 원리</h2>
+<ol>
+<li>
+<p><strong>브라우저 파싱</strong><br>
+브라우저가 HTML 문서를 파싱하며 speculationrules 스크립트를 만나면, 내부의 JSON을 분석합니다.</p>
+</li>
+<li>
+<p><strong>규칙 적용</strong><br>
+JSON의 prefetch, prerender, eagerness 설정에 따라 해당 URL들을 우선순위 큐에 등록합니다.</p>
+</li>
+<li>
+<p><strong>사전 로드(조건부)</strong></p>
+<ul>
+<li>브라우저는 네트워크 상황, 메모리 상황, CPU 리소스 등을 고려하여 과도한 사전 로드를 막으려 할 수 있습니다.</li>
+<li>사용자가 예상 경로를 벗어날 경우에는 해당 사전 로드가 무의미할 수 있음.</li>
+</ul>
+</li>
+<li>
+<p><strong>UX 개선</strong><br>
+실제로 사용자가 사전에 로드된 리소스나 페이지를 요청하면, 이미 브라우저 캐싱 또는 메모리에 준비된 상태이므로 지연 시간이 거의 들지 않습니다.</p>
+</li>
+<li>
+<p>Speculation Rules 설정 옵션</p>
+</li>
+</ol>
+<h3 id="prerender-옵션">prerender 옵션</h3>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">&#34;prerender&#34;</span>: [
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#fb660a;font-weight:bold">&#34;source&#34;</span>: <span style="color:#0086d2">&#34;list&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#fb660a;font-weight:bold">&#34;urls&#34;</span>: [
+</span></span><span style="display:flex;"><span>        <span style="color:#0086d2">&#34;https://example.com/next-page&#34;</span>
+</span></span><span style="display:flex;"><span>      ]
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  ]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong><code>source: &quot;list&quot;</code></strong>: 단순히 사전에 선언한 URL만을 prerender 대상으로 지정</li>
+<li><strong>활용 상황</strong>: 다음 단계로 넘어갈 URL을 이미 파악하고 있거나, ‘다음 버튼’과 같이 사용자가 누를 확률이 매우 높은 경우</li>
+</ul>
+<h3 id="prefetch-옵션">prefetch 옵션</h3>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">&#34;prefetch&#34;</span>: [
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#fb660a;font-weight:bold">&#34;source&#34;</span>: <span style="color:#0086d2">&#34;list&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#fb660a;font-weight:bold">&#34;urls&#34;</span>: [
+</span></span><span style="display:flex;"><span>        <span style="color:#0086d2">&#34;https://example.com/assets/images/banner.jpg&#34;</span>
+</span></span><span style="display:flex;"><span>      ]
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  ]
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li><strong><code>prefetch</code></strong>: 큰 이미지, JS, CSS 파일 등 다음 페이지 로딩에 필요한 리소스를 미리 다운받아 둘 때 사용</li>
+<li><strong>주의점</strong>: 너무 많은 리소스를 무분별하게 prefetch하면, 자원 낭비와 네트워크 혼잡이 발생할 수 있음</li>
+</ul>
+<h3 id="eagerness-옵션">eagerness 옵션</h3>
+<ul>
+<li><strong><code>eagerness</code></strong>: 이 옵션은 사전 로드의 “공격성”을 조절하며, 주요 값은 다음과 같습니다:
+<ul>
+<li><code>&quot;immediate&quot;</code> : 프리패치와 프리랜더를 가능한 한 빠르게 가져옴</li>
+<li><code>&quot;conservative&quot;</code>: 리소스 소모를 최소화하며 신중하게 처리 (예: 마우스다운, 포인터다운)</li>
+<li><code>&quot;eager&quot;</code>: 보다 공격적으로 사전 로드를 수행, 더 많은 자원을 사용 가능 (예: 마우스 커서 오버, 스크롤 시 화면 노출 후 중단)</li>
+<li><code>&quot;moderate&quot;</code> : eager와 conservative 사이 값. (예: 스크롤 시 화면 노출 후 마우스 커서 이동)</li>
+</ul>
+</li>
+<li><strong>활용 상황</strong>: 사용자 경험이 특히 중요한 경우 <code>&quot;eager&quot;</code>를 사용할 수 있지만, 장치 성능과 네트워크 상황을 고려해야 합니다.</li>
+</ul>
+<h2 id="5-speculation-rules의-장점과-단점">5. Speculation Rules의 장점과 단점</h2>
+<h3 id="장점">장점</h3>
+<ol>
+<li><strong>빠른 페이지 전환</strong></li>
+</ol>
+<ul>
+<li>사용자가 이동할 가능성이 높은 페이지를 미리 랜더링해 둔다면, <em>즉각적인 반응성</em>을 제공할 수 있습니다.</li>
+</ul>
+<ol start="2">
+<li><strong>정교한 제어</strong></li>
+</ol>
+<ul>
+<li>JSON 형태의 설정을 통해 어떤 리소스를 얼마만큼 사전에 불러올지 세부적으로 결정할 수 있습니다.</li>
+</ul>
+<ol start="3">
+<li><strong>향상된 UX</strong></li>
+</ol>
+<ul>
+<li>페이지 전환 시 대기 시간이 현저히 감소해 사용자 만족도 상승</li>
+</ul>
+<h3 id="단점">단점</h3>
+<ol>
+<li><strong>호환성 이슈</strong></li>
+</ol>
+<ul>
+<li>모든 브라우저가 지원하지 않습니다. 크롬이 먼저 도입했으며, 다른 브라우저는 도입 계획이 다릅니다.</li>
+</ul>
+<ol start="2">
+<li><strong>과도한 리소스 낭비</strong></li>
+</ol>
+<ul>
+<li>예측이 빗나갔을 때 불필요한 리소스를 미리 로드해 네트워크 트래픽과 메모리 사용량이 증가할 수 있습니다.</li>
+</ul>
+<ol start="3">
+<li><strong>보안, 개인정보 문제</strong></li>
+</ol>
+<ul>
+<li>사전 로딩 시 쿠키나 인증 데이터가 의도치 않게 전송될 수 있습니다. 민감 정보가 없는 리소스 위주로 시도하는 것이 좋습니다.</li>
+</ul>
+<h2 id="6-브라우저-호환성과-주의-사항">6. 브라우저 호환성과 주의 사항</h2>
+<p>Speculation Rules는 아직 크롬 계열 브라우저 중심으로만 비교적 실험적으로 지원됩니다.<br>
+따라서 프로덕션 환경에서 전면적으로 적용하기보다는, 아래와 같은 단계를 거치는 것이 좋습니다:</p>
+<ol>
+<li><strong>Feature Detection</strong>
+<ul>
+<li>사용자 브라우저가 Speculation Rules를 지원하는지 판별하고, 미지원 시 기존 방식(예: <code>rel=&quot;prefetch&quot;</code>)으로 대체</li>
+</ul>
+</li>
+<li><strong>점진적 적용 (Progressive Enhancement)</strong>
+<ul>
+<li>일부분의 페이지나 리소스에서 먼저 Speculation Rules를 적용해 효과를 측정</li>
+</ul>
+</li>
+<li><strong>효과 측정 &amp; 모니터링</strong>
+<ul>
+<li>실제 페이지 전환 속도, 사용자 이동 경로, 리소스 사용량 등을 분석해 Speculation Rules의 효용성을 확인</li>
+</ul>
+</li>
+</ol>
+<h2 id="7-사용-예시">7. 사용 예시</h2>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-html" data-lang="html"><span style="display:flex;"><span><span style="color:#ff0007;background-color:#0f140f;font-weight:bold;font-style:italic">&lt;!DOCTYPE html&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#fb660a;font-weight:bold">html</span> <span style="color:#ff0086;font-weight:bold">lang</span>=<span style="color:#0086d2">&#34;ko&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#fb660a;font-weight:bold">head</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#fb660a;font-weight:bold">meta</span> <span style="color:#ff0086;font-weight:bold">charset</span>=<span style="color:#0086d2">&#34;UTF-8&#34;</span> /&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#fb660a;font-weight:bold">title</span>&gt;Speculation Rules Demo&lt;/<span style="color:#fb660a;font-weight:bold">title</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#fb660a;font-weight:bold">head</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#fb660a;font-weight:bold">body</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#fb660a;font-weight:bold">h1</span>&gt;Speculation Rules 테스트&lt;/<span style="color:#fb660a;font-weight:bold">h1</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#fb660a;font-weight:bold">p</span>&gt;
+</span></span><span style="display:flex;"><span>    아래 버튼을 누르면 다음 페이지로 이동합니다. 다만, 사전에 페이지를
+</span></span><span style="display:flex;"><span>    미리 렌더링해 두어, 클릭 즉시 새 페이지가 뜰 것입니다.
+</span></span><span style="display:flex;"><span>  &lt;/<span style="color:#fb660a;font-weight:bold">p</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#fb660a;font-weight:bold">button</span> <span style="color:#ff0086;font-weight:bold">onclick</span>=<span style="color:#0086d2">&#34;location.href=&#39;next.html&#39;&#34;</span>&gt;다음 페이지로 이동&lt;/<span style="color:#fb660a;font-weight:bold">button</span>&gt;
+</span></span><span style="display:flex;"><span>  <span style="color:#080;background-color:#0f140f;font-style:italic">&lt;!-- Speculation Rules Script --&gt;</span>
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#fb660a;font-weight:bold">script</span> <span style="color:#ff0086;font-weight:bold">type</span>=<span style="color:#0086d2">&#34;speculationrules&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#0086d2">&#34;prerender&#34;</span>: [
+</span></span><span style="display:flex;"><span>      {
+</span></span><span style="display:flex;"><span>        <span style="color:#0086d2">&#34;source&#34;</span>: <span style="color:#0086d2">&#34;list&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#0086d2">&#34;urls&#34;</span>: [<span style="color:#0086d2">&#34;https://example.com/next.html&#34;</span>]
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    ],
+</span></span><span style="display:flex;"><span>    <span style="color:#0086d2">&#34;prefetch&#34;</span>: [
+</span></span><span style="display:flex;"><span>      {
+</span></span><span style="display:flex;"><span>        <span style="color:#0086d2">&#34;source&#34;</span>: <span style="color:#0086d2">&#34;list&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#0086d2">&#34;urls&#34;</span>: [
+</span></span><span style="display:flex;"><span>          <span style="color:#0086d2">&#34;/users&#34;</span>,
+</span></span><span style="display:flex;"><span>          <span style="color:#0086d2">&#34;/info&#34;</span>
+</span></span><span style="display:flex;"><span>        ]
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    ],
+</span></span><span style="display:flex;"><span>    <span style="color:#0086d2">&#34;eagerness&#34;</span>: <span style="color:#0086d2">&#34;eager&#34;</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  &lt;/<span style="color:#fb660a;font-weight:bold">script</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#fb660a;font-weight:bold">body</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#fb660a;font-weight:bold">html</span>&gt;
+</span></span></code></pre></div><p>위 예시는 다음 페이지 next.html을 미리 렌더링(prerender) 해 두고, 필요한 JS/CSS 파일은 미리 다운로드(prefetch)하며, eagerness를 &ldquo;eager&quot;로 설정해 보다 적극적으로 자원을 활용하도록 설정합니다.</p>
+<h2 id="8-문서가-prerendering인지-확인하는-방법">8. 문서가 prerendering인지 확인하는 방법</h2>
+<p>문서의 통계를 위해서 자바스크립트가 실행을 제한 해야 할 경우가 있을 수도 있습니다.
+이런 경우에는 아래와 같은 스크립트를 통해서 제어가 가능 합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">if</span> (document.prerendering) {
+</span></span><span style="display:flex;"><span>  document.addEventListener(<span style="color:#0086d2">&#34;prerenderingchange&#34;</span>, main, { once: <span style="color:#fb660a;font-weight:bold">true</span> });
+</span></span><span style="display:flex;"><span>} <span style="color:#fb660a;font-weight:bold">else</span> {
+</span></span><span style="display:flex;"><span>  main();
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">function</span> main() {
+</span></span><span style="display:flex;"><span>  setTimeout(() =&gt; {
+</span></span><span style="display:flex;"><span>    document.body.append(<span style="color:#0086d2">&#34;Timeout Finished&#34;</span>);
+</span></span><span style="display:flex;"><span>  }, <span style="color:#0086f7;font-weight:bold">1000</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="9-참고">9. 참고</h2>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/prefetch">MDN: Resource Hint 사양</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/speculationrules">MDN: Speculation Rules 사양</a></li>
+<li><a href="https://www.youtube.com/watch?v=LEF4UaM5m4U">YouTube: Speculation Rules 소개</a></li>
+<li><a href="https://uxify.com/blog/post/speculation-rules-api">How to Use Speculation Rules API to Load Web Pages Instantly</a></li>
+</ul>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2025년 01월 08일 11시 13분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/web">web</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2024/2024-12-27_docker-image-optimization/" rel="prev">
+        <span>Docker 이미지 최적화: 더 빠른 배포를 위한 크기 줄이기</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-speculation-rules란">1. Speculation Rules란?</a>
+      <ul>
+        <li><a href="#기존-기법과-차이점">기존 기법과 차이점</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-script-typespeculationrules-개요">2. &lt;script type=&ldquo;speculationrules&rdquo;&gt; 개요</a>
+      <ul>
+        <li><a href="#json-구조-설명">JSON 구조 설명</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-speculation-rules-동작-원리">3. Speculation Rules 동작 원리</a>
+      <ul>
+        <li><a href="#prerender-옵션">prerender 옵션</a></li>
+        <li><a href="#prefetch-옵션">prefetch 옵션</a></li>
+        <li><a href="#eagerness-옵션">eagerness 옵션</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-speculation-rules의-장점과-단점">5. Speculation Rules의 장점과 단점</a>
+      <ul>
+        <li><a href="#장점">장점</a></li>
+        <li><a href="#단점">단점</a></li>
+      </ul>
+    </li>
+    <li><a href="#6-브라우저-호환성과-주의-사항">6. 브라우저 호환성과 주의 사항</a></li>
+    <li><a href="#7-사용-예시">7. 사용 예시</a></li>
+    <li><a href="#8-문서가-prerendering인지-확인하는-방법">8. 문서가 prerendering인지 확인하는 방법</a></li>
+    <li><a href="#9-참고">9. 참고</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="https://gyuha.com/tags/html" class="badge badge-secondary">html</a>
+    <a href="https://gyuha.com/tags/javascript" class="badge badge-secondary">javascript</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });  
+</script>
+
+</body>
+</html>
