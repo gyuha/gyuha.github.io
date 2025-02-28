@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'SVG 아이콘의 인덱스 파일을 생성하는 Vite 플러그인'" />
+  <title>SVG 아이콘의 인덱스 파일을 생성하는 Vite 플러그인  | 신규하 블로그</title>
+  <meta property="og:title" content="SVG 아이콘의 인덱스 파일을 생성하는 Vite 플러그인" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2025-02-28"> 
+  <meta property="og:url" content="https://gyuha.com/post/2025/2025-02-28_vite-plugin-svgr-indexer/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="svg" />
+  
+  <meta property="og:tags" content="react" />
+  
+  <meta property="og:tags" content="typescript" />
+  
+  <meta property="og:tags" content="vite" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action="https://google.com/search">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search"></i>
+                <input type="hidden" name="sitesearch" value="https://gyuha.com/" />
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2025/2025-02-28_vite-plugin-svgr-indexer/">
+          <h1>
+            SVG 아이콘의 인덱스 파일을 생성하는 Vite 플러그인
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2025/2025-02-28_vite-plugin-svgr-indexer/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>SVG 아이콘 폴더를 모니터링하고 자동으로 index.ts 파일을 생성하는 Vite 플러그인입니다.</p>
+<p>이 플러그인은 웹사이트의 기능을 확장하고 관리 효율성을 높이기 위해 필요합니다. 사용자가 원하는 특정 기능들을 쉽게 추가할 수 있도록 도와주며, 설치 후에는 사용자 친화적인 인터페이스를 통해 간편하게 설정 및 활용할 수 있습니다. 특히 svgr을 사용하면 ?react가 붙은 URL을 일일이 import할 필요 없이 손쉽게 SVG 아이콘을 import할 수 있어 매우 유용합니다. 이러한 편리함 덕분에 개발자는 더욱 빠르고 효과적으로 사이트를 개발을 할 수 있습니다.</p>
+<h2 id="설치">설치.</h2>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>npm install vite-plugin-svgr vite-plugin-svgr-indexer --save-dev
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 또는</span>
+</span></span><span style="display:flex;"><span>yarn add vite-plugin-svgr vite-plugin-svgr-indexer -D
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 또는</span>
+</span></span><span style="display:flex;"><span>pnpm add vite-plugin-svgr vite-plugin-svgr-indexer -D
+</span></span></code></pre></div><h2 id="사용-방법">사용 방법</h2>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// vite.config.js / vite.config.ts
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span><span style="color:#fb660a;font-weight:bold">import</span> { defineConfig } from <span style="color:#0086d2">&#39;vite&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> svgr from <span style="color:#0086d2">&#39;vite-plugin-svgr&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> svgrIndexer from <span style="color:#0086d2">&#39;vite-plugin-svgr-indexer&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">export</span> <span style="color:#fb660a;font-weight:bold">default</span> defineConfig({
+</span></span><span style="display:flex;"><span>  plugins: [
+</span></span><span style="display:flex;"><span>    svgr(), <span style="color:#080;background-color:#0f140f;font-style:italic">// 먼저 vite-plugin-svgr 구성
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>    svgrIndexer({
+</span></span><span style="display:flex;"><span>      <span style="color:#080;background-color:#0f140f;font-style:italic">// 모니터링할 SVG 아이콘 디렉토리 경로 (필수)
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>      iconDirs: [<span style="color:#0086d2">&#39;src/assets/icons&#39;</span>],
+</span></span><span style="display:flex;"><span>      <span style="color:#080;background-color:#0f140f;font-style:italic">// 생성할 인덱스 파일 이름 (기본값: &#39;index.ts&#39;)
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>      indexFileName: <span style="color:#0086d2">&#39;index.ts&#39;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#080;background-color:#0f140f;font-style:italic">// 파일 감시 활성화 (기본값: true)
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>      watch: <span style="color:#fb660a;font-weight:bold">true</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#080;background-color:#0f140f;font-style:italic">// 하위 폴더 감시 활성화 (기본값: true)
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>      recursive: <span style="color:#fb660a;font-weight:bold">true</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#080;background-color:#0f140f;font-style:italic">// 컴포넌트 이름에 추가할 접두사 (기본값: &#39;&#39;)
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>      componentPrefix: <span style="color:#0086d2">&#39;Icon&#39;</span>
+</span></span><span style="display:flex;"><span>    }),
+</span></span><span style="display:flex;"><span>  ],
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><h2 id="typescript-지원">TypeScript 지원</h2>
+<p>TypeScript를 사용하는 경우 tsconfig.json에 다음을 추가하세요:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">&#34;compilerOptions&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">&#34;types&#34;</span>: [<span style="color:#0086d2">&#34;vite-plugin-svgr/client&#34;</span>]
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>또는 더 나은 타입 추론을 위한 선언 도우미도 있습니다. vite-env.d.ts에 다음을 추가하세요:</p>
+<pre tabindex="0"><code>/// &lt;reference types=&#34;vite-plugin-svgr/client&#34; /&gt;
+</code></pre><p>이렇게 하면 SVG 임포트에 대한 적절한 타입 정의가 제공됩니다.</p>
+<h2 id="기능">기능</h2>
+<ul>
+<li>지정된 디렉토리의 SVG 파일을 모니터링합니다.</li>
+<li>SVG 파일이 추가, 삭제 또는 수정될 때 자동으로 index.ts 파일을 생성합니다.</li>
+<li>생성된 index.ts 파일은 모든 SVG 파일을 React 컴포넌트로 가져와서 내보냅니다.</li>
+<li>각 하위 디렉토리에 대한 별도의 index.ts 파일을 생성하여 해당 디렉토리의 SVG 파일만 가져옵니다.</li>
+<li>컴포넌트 이름에 접두사 추가를 지원합니다 (예: <code>Icon</code> 접두사: <code>arrow.svg</code> → <code>IconArrow</code>).</li>
+</ul>
+<h2 id="예시">예시</h2>
+<p>SVG 파일 구조:</p>
+<pre tabindex="0"><code>src/assets/icons/
+  ├── arrow.svg
+  ├── close.svg
+  ├── menu.svg
+  └── navigation/
+      ├── back.svg
+      └── forward.svg
+</code></pre><p>메인 디렉토리에 생성된 index.ts:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> IconArrow <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#39;./arrow.svg?react&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> IconClose <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#39;./close.svg?react&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> IconMenu <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#39;./menu.svg?react&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">export</span> {
+</span></span><span style="display:flex;"><span>  IconArrow,
+</span></span><span style="display:flex;"><span>  IconClose,
+</span></span><span style="display:flex;"><span>  IconMenu
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>navigation 하위 디렉토리에 생성된 index.ts:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> IconBack <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#39;./back.svg?react&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> IconForward <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#39;./forward.svg?react&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">export</span> {
+</span></span><span style="display:flex;"><span>  IconBack,
+</span></span><span style="display:flex;"><span>  IconForward
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>React 컴포넌트에서의 사용법</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// 메인 디렉토리에서 가져오기
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span><span style="color:#fb660a;font-weight:bold">import</span> { IconClose, IconMenu } <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#39;./assets/icons&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// 하위 디렉토리에서 가져오기
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span><span style="color:#fb660a;font-weight:bold">import</span> { IconBack } <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#39;./assets/icons/navigation&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">function</span> App() {
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">return</span> (
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#fb660a;font-weight:bold">div</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#fb660a;font-weight:bold">IconClose</span> /&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#fb660a;font-weight:bold">IconMenu</span> /&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#fb660a;font-weight:bold">IconBack</span> /&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#fb660a;font-weight:bold">div</span>&gt;
+</span></span><span style="display:flex;"><span>  );
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2025년 02월 28일 09시 15분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/react">React</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2025/2025-01-17_postgresql-replication/" rel="prev">
+        <span>PostgreSQL Replication과 Connection Pooling 구현하기</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#설치">설치.</a></li>
+    <li><a href="#사용-방법">사용 방법</a></li>
+    <li><a href="#typescript-지원">TypeScript 지원</a></li>
+    <li><a href="#기능">기능</a></li>
+    <li><a href="#예시">예시</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="https://gyuha.com/tags/svg" class="badge badge-secondary">svg</a>
+    <a href="https://gyuha.com/tags/react" class="badge badge-secondary">react</a>
+    <a href="https://gyuha.com/tags/typescript" class="badge badge-secondary">typescript</a>
+    <a href="https://gyuha.com/tags/vite" class="badge badge-secondary">vite</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });  
+</script>
+
+</body>
+</html>
