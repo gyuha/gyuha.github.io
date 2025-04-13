@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '윈도우 git-bash에서 zsh 사용하기'" />
+  <title>윈도우 git-bash에서 zsh 사용하기  | 신규하 블로그</title>
+  <meta property="og:title" content="윈도우 git-bash에서 zsh 사용하기" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2025-04-13"> 
+  <meta property="og:url" content="https://gyuha.com/post/2025/2025-04-13-windows-git-bash-use-zsh/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="windows" />
+  
+  <meta property="og:tags" content="git-bash" />
+  
+  <meta property="og:tags" content="zsh" />
+  
+  <meta property="og:tags" content="terminal" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action="https://google.com/search">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search"></i>
+                <input type="hidden" name="sitesearch" value="https://gyuha.com/" />
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2025/2025-04-13-windows-git-bash-use-zsh/">
+          <h1>
+            윈도우 git-bash에서 zsh 사용하기
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2025/2025-04-13-windows-git-bash-use-zsh/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>윈도우 환경에서 개발을 하다보면 터미널의 기능이 제한적이라는 것을 느끼게 됩니다. 이럴 때 git-bash와 zsh를 함께 사용하면 더 강력한 터미널 환경을 구축할 수 있습니다. 이 글에서는 윈도우 git-bash에서 zsh를 설치하고 설정하는 방법을 알아보겠습니다.</p>
+<h2 id="1-git-bash-설치">1. Git Bash 설치</h2>
+<p>먼저 Git Bash를 설치해야 합니다. <a href="https://git-scm.com/download/win">Git for Windows</a>에서 최신 버전을 다운로드하여 설치합니다.</p>
+<h2 id="2-zsh-설치">2. ZSH 설치</h2>
+<h3 id="21-nerd-font-설치">2.1 Nerd Font 설치</h3>
+<p>ZSH를 사용하기 전에 먼저 Nerd Font를 설치해야 합니다. <a href="https://www.nerdfonts.com/font-downloads">Nerd Fonts</a>에서 원하는 폰트를 다운로드하여 설치합니다. 이 글에서는 <code>D2CodingLigature Nerd Font</code>를 사용합니다.</p>
+<ul>
+<li><a href="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/CommitMono.zip">D2CodingLigature Nerd Font Download</a></li>
+</ul>
+<h3 id="22-zsh-패키지-다운로드">2.2 ZSH 패키지 다운로드</h3>
+<p><a href="https://packages.msys2.org/package/zsh?repo=msys&amp;variant=x86_64">MSYS2 패키지 저장소</a>에서 최신 zsh 패키지를 다운로드합니다. 패키지는 <code>.zst</code> 형식으로 압축되어 있으므로, <a href="https://peazip.github.io/zst-compressed-file-format.html">PeaZip</a>과 같은 압축 해제 프로그램이 필요합니다.</p>
+<h3 id="23-zsh-설치">2.3 ZSH 설치</h3>
+<p>다운로드한 패키지의 내용을 Git Bash 설치 디렉토리(기본값: <code>C:\Program Files\Git</code>)에 압축 해제합니다.</p>
+<h3 id="24-zsh-테스트-및-초기-설정">2.4 ZSH 테스트 및 초기 설정</h3>
+<p>Git Bash를 열고 다음 명령어를 실행합니다:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>zsh
+</span></span></code></pre></div><p>이 단계에서 zsh는 몇 가지 초기 설정을 물어봅니다. 탭 완성, 히스토리 등의 설정을 원하는 대로 구성하면 됩니다.</p>
+<h3 id="25-터미널-설정">2.5 터미널 설정</h3>
+<p><code>~/.minttyrc</code> 파일을 생성하고 다음 내용을 추가합니다:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#fb660a">BoldAsFont</span>=no
+</span></span><span style="display:flex;"><span><span style="color:#fb660a">Font</span>=D2CodingLigature Nerd Font
+</span></span><span style="display:flex;"><span><span style="color:#fb660a">FontHeight</span>=<span style="color:#0086f7;font-weight:bold">14</span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a">Columns</span>=<span style="color:#0086f7;font-weight:bold">180</span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a">Rows</span>=<span style="color:#0086f7;font-weight:bold">46</span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a">ScrollbackLines</span>=<span style="color:#0086f7;font-weight:bold">2000</span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a">BackgroundColour</span>=13,13,13
+</span></span><span style="display:flex;"><span><span style="color:#fb660a">MiddleClickAction</span>=void
+</span></span><span style="display:flex;"><span><span style="color:#fb660a">RightClickAction</span>=paste
+</span></span><span style="display:flex;"><span><span style="color:#fb660a">Language</span>=
+</span></span><span style="display:flex;"><span><span style="color:#fb660a">BellType</span>=<span style="color:#0086f7;font-weight:bold">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a">BellFlash</span>=no
+</span></span><span style="display:flex;"><span><span style="color:#fb660a">Printer</span>=Microsoft Print to PDF
+</span></span><span style="display:flex;"><span><span style="color:#fb660a">Transparency</span>=off
+</span></span><span style="display:flex;"><span><span style="color:#fb660a">CursorBlinks</span>=yes
+</span></span><span style="display:flex;"><span><span style="color:#fb660a">ThemeFile</span>=nord
+</span></span><span style="display:flex;"><span><span style="color:#fb660a">ForegroundColour</span>=178,178,178
+</span></span><span style="display:flex;"><span><span style="color:#fb660a">CursorColour</span>=225,225,225
+</span></span><span style="display:flex;"><span><span style="color:#fb660a">FontSmoothing</span>=full
+</span></span><span style="display:flex;"><span><span style="color:#fb660a">Locale</span>=en_US
+</span></span><span style="display:flex;"><span><span style="color:#fb660a">Charset</span>=UTF-8
+</span></span><span style="display:flex;"><span><span style="color:#fb660a">Term</span>=xterm-256color
+</span></span><span style="display:flex;"><span><span style="color:#fb660a">BoldAsColour</span>=no
+</span></span><span style="display:flex;"><span><span style="color:#fb660a">CursorType</span>=block
+</span></span></code></pre></div><p>이렇게 설정 하면 git-bash의 터미널 창이 이뻐 집니다.</p>
+<h2 id="3-zsh-설정">3. ZSH 설정</h2>
+<h3 id="31-zsh를-기본-셸로-설정">3.1 ZSH를 기본 셸로 설정</h3>
+<p><code>/etc/zsh/zshenv</code> 파일을 편집하여 다음 줄을 파일 시작 부분에 추가합니다:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#fb660a">PATH</span>=/mingw64/bin/usr/bin:/usr/bin:/bin:<span style="color:#fb660a">$PATH</span>
+</span></span></code></pre></div><h3 id="32-git-bash에서-zsh-자동-실행-설정">3.2 Git Bash에서 ZSH 자동 실행 설정</h3>
+<p><code>~/.bashrc</code> 파일을 생성하고 다음 내용을 추가합니다:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># Launch Zsh</span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">if</span> [ -t <span style="color:#0086f7;font-weight:bold">1</span> ]; <span style="color:#fb660a;font-weight:bold">then</span>
+</span></span><span style="display:flex;"><span>exec zsh
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">fi</span>
+</span></span></code></pre></div><p>이제 git-bash를 실행 합니다.</p>
+<h2 id="4-zsh-유틸-설치">4. ZSH 유틸 설치</h2>
+<p>oh-my-zsh를 설치 하면 편하긴 한데. oh-my-zsh가 기본적으로 너무 많은 기능을 가지고 있어서 많이 무겁다는 단점있습니다.
+이 포스트에서는 필요한 유틸만 별도로 설치 합니다.</p>
+<h3 id="41-설치-경로-만들기">4.1 설치 경로 만들기</h3>
+<pre tabindex="0"><code>mkdir -p ~/.zsh/plugins
+mkdir -p ~/.zsh/theme
+</code></pre><h3 id="42-zsh-autosuggestions-설치">4.2 zsh-autosuggestions 설치</h3>
+<p>zsh-autosuggestions는 명령어를 입력할 때 이전에 사용한 명령어를 기반으로 자동 완성을 제안해주는 플러그인입니다. 터미널에서 작업할 때 반복적인 명령어 입력을 크게 줄여주고, 긴 경로나 복잡한 명령어를 쉽게 재사용할 수 있게 해줍니다. 제안된 명령어는 회색으로 표시되며, 오른쪽 화살표 키를 눌러 빠르게 수락할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/plugins/zsh-autosuggestions
+</span></span></code></pre></div><p><code>~/.zshrc</code> 파일에 아래의 내용을 추가 해 줍니다. 마지막에 추가 해 줍니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">if</span> [[ -r <span style="color:#0086d2">&#34;~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh&#34;</span> ]]; <span style="color:#fb660a;font-weight:bold">then</span>
+</span></span><span style="display:flex;"><span>	source <span style="color:#0086d2">&#34;~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">fi</span> 
+</span></span></code></pre></div><h3 id="43-zsh-syntax-highlighting-설치">4.3 zsh-syntax-highlighting 설치</h3>
+<p>zsh-syntax-highlighting은 명령줄에서 입력하는 명령어와 인자에 구문 강조 색상을 적용해주는 ZSH 플러그인입니다. 이 플러그인은 명령어가 올바르게 입력되었는지 실시간으로 시각적 피드백을 제공하며, 명령어를 실행하기 전에 오타나 구문 오류를 식별하는 데 도움을 줍니다. 유효한 명령어는 녹색으로, 존재하지 않는 명령어는 빨간색으로 표시되어 명령어 입력의 정확성을 즉시 확인할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/plugins/zsh-syntax-highlighting
+</span></span></code></pre></div><p><code>~/.zshrc</code> 파일에 아래의 내용을 추가해 줍니다. 이 플러그인은 항상 zshrc 파일의 마지막에 로드되어야 한다는 점을 기억하세요.
+<code>~/.zshrc</code> 파일에 아래의 내용을 추가 해 줍니다. 마지막에 추가 해 줍니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">if</span> [[ -r <span style="color:#0086d2">&#34;~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh&#34;</span> ]]; <span style="color:#fb660a;font-weight:bold">then</span>
+</span></span><span style="display:flex;"><span>	source <span style="color:#0086d2">&#34;~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">fi</span> 
+</span></span></code></pre></div><h3 id="44-zsh-completions-설치">4.4 zsh-completions 설치</h3>
+<p>zsh-completions은 ZSH의 기본 명령어 완성 기능을 대폭 확장해주는 플러그인입니다. 이 플러그인은 수백 개의 추가 명령어, 도구 및 유틸리티에 대한 완성 스크립트를 제공하여 명령어 입력의 효율성과 정확성을 높여줍니다. Git, Docker, npm, pip, kubectl 등과 같은 다양한 개발 도구에 대한 고급 탭 완성 기능을 제공하므로 복잡한 명령어나 옵션을 기억하지 않아도 쉽게 입력할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone https://github.com/zsh-users/zsh-completions.git ~/.zsh/plugins/zsh-completions
+</span></span></code></pre></div><p><code>~/.zshrc</code> 파일에 아래의 내용을 추가해 줍니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">if</span> [[ -d ~/.zsh/plugins/zsh-completions/src ]]; <span style="color:#fb660a;font-weight:bold">then</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a">fpath</span>=(~/.zsh/plugins/zsh-completions/src <span style="color:#fb660a">$fpath</span>)
+</span></span><span style="display:flex;"><span>  autoload -U compinit &amp;&amp; compinit
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">fi</span>
+</span></span></code></pre></div><p>이 설정은 zsh-completions의 완성 스크립트를 ZSH의 함수 경로(fpath)에 추가하고, 완성 시스템(compinit)을 초기화합니다.</p>
+<h2 id="6-powerlevel10k-테마-설치">6. Powerlevel10k 테마 설치</h2>
+<h3 id="61-powerlevel10k-설치">6.1 Powerlevel10k 설치</h3>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone --depth=<span style="color:#0086f7;font-weight:bold">1</span> https://github.com/romkatv/powerlevel10k.git ~/.zsh/theme/powerlevel10k
+</span></span><span style="display:flex;"><span>echo <span style="color:#0086d2">&#39;source ~/.zsh/theme/powerlevel10k/powerlevel10k.zsh-theme&#39;</span> &gt;&gt; ~/.zshrc
+</span></span></code></pre></div><p>git-bash를 다시 시작 하면 Powerlevel10k의 설정이 시작 됩니다.</p>
+<h2 id="7-vs-code에서-zsh-사용하기">7. VS Code에서 ZSH 사용하기</h2>
+<p>VS Code의 <code>settings.json</code> 파일에 다음 설정을 추가합니다:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#0086d2">&#34;terminal.integrated.defaultProfile.windows&#34;</span>: <span style="color:#0086d2">&#34;Git Bash&#34;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#0086d2">&#34;terminal.integrated.fontFamily&#34;</span>: <span style="color:#0086d2">&#34;&#39;D2CodingLigature Nerd Font&#39;&#34;</span>
+</span></span></code></pre></div><h2 id="8-windows-terminal에서-zsh-사용하기">8. Windows Terminal에서 ZSH 사용하기</h2>
+<p>Windows 10/11에서는 Windows Terminal을 통해 더 강력하고 사용자 친화적인 터미널 환경을 구성할 수 있습니다. Windows Terminal에 Git Bash(ZSH)를 추가하여 사용하는 방법은 두 가지가 있습니다.</p>
+<h3 id="81-git-설치-시-windows-terminal-연동-옵션-선택">8.1 Git 설치 시 Windows Terminal 연동 옵션 선택</h3>
+<p>가장 간단한 방법은 Git for Windows를 설치할 때 Windows Terminal 프로필에 Git Bash를 추가하는 옵션을 선택하는 것입니다.</p>
+<ol>
+<li>Git for Windows 설치 프로그램을 실행합니다.</li>
+<li>설치 과정 중 &ldquo;Windows Terminal에 Git Bash 프로필 추가&rdquo; 옵션을 체크합니다.</li>
+<li>설치가 완료되면 Windows Terminal에서 Git Bash를 바로 사용할 수 있습니다.</li>
+</ol>
+<h3 id="82-수동으로-windows-terminal에-git-bash-추가하기">8.2 수동으로 Windows Terminal에 Git Bash 추가하기</h3>
+<p>이미 Git이 설치되어 있다면, Windows Terminal 설정 파일을 직접 수정하여 Git Bash를 추가할 수 있습니다.</p>
+<ol>
+<li>Windows Terminal을 실행한 후, 상단의 드롭다운 메뉴 → 설정을 클릭합니다.</li>
+<li>좌측 하단의 &ldquo;설정 파일 열기&rdquo; 버튼을 클릭하여 JSON 설정 파일을 엽니다.</li>
+<li><code>profiles</code> → <code>list</code> 배열에 다음 코드를 추가합니다:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">&#34;guid&#34;</span>: <span style="color:#0086d2">&#34;{수정필요-GUID}&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">&#34;hidden&#34;</span>: <span style="color:#fb660a;font-weight:bold">false</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">&#34;name&#34;</span>: <span style="color:#0086d2">&#34;Git Bash (ZSH)&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">&#34;commandline&#34;</span>: <span style="color:#0086d2">&#34;C:\\Program Files\\Git\\bin\\bash.exe -li&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">&#34;icon&#34;</span>: <span style="color:#0086d2">&#34;C:\\Program Files\\Git\\mingw64\\share\\git\\git-for-windows.ico&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">&#34;startingDirectory&#34;</span>: <span style="color:#0086d2">&#34;%USERPROFILE%&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ol start="4">
+<li><code>guid</code> 값은 고유해야 합니다. <a href="https://www.guidgenerator.com/online-guid-generator.aspx">온라인 GUID 생성기</a>를 사용하여 새 GUID를 생성하세요.</li>
+<li>Git 설치 경로가 기본값과 다르다면 <code>commandline</code>과 <code>icon</code> 경로를 적절히 수정하세요.</li>
+<li>설정 파일을 저장하고 Windows Terminal을 재시작합니다.</li>
+</ol>
+<p>기본 Profile을 bash로 하고 싶다면, 설정 파일에서</p>
+<p>위에 입력 했던, profile의 id를 <code>defaultProfile</code>에 넣어 주면 된다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#0086d2">&#34;defaultProfile&#34;</span>: <span style="color:#0086d2">&#34;{수정필요-GUID}&#34;</span>,
+</span></span></code></pre></div><p>이제 Windows Terminal의 드롭다운 메뉴에서 &ldquo;Git Bash (ZSH)&ldquo;를 선택하면 Git Bash가 실행되고, 우리가 설정한 ZSH 환경이 자동으로 로드됩니다.</p>
+<p>이제 윈도우에서도 강력한 ZSH 환경을 사용할 수 있습니다. Git Bash와 ZSH의 결합은 개발 생산성을 크게 향상시킬 수 있습니다.</p>
+
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2025년 04월 13일 13시 49분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/system">System</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2025/2025-02-28_vite-plugin-svgr-indexer/" rel="prev">
+        <span>SVG 아이콘의 인덱스 파일을 생성하는 Vite 플러그인</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-git-bash-설치">1. Git Bash 설치</a></li>
+    <li><a href="#2-zsh-설치">2. ZSH 설치</a>
+      <ul>
+        <li><a href="#21-nerd-font-설치">2.1 Nerd Font 설치</a></li>
+        <li><a href="#22-zsh-패키지-다운로드">2.2 ZSH 패키지 다운로드</a></li>
+        <li><a href="#23-zsh-설치">2.3 ZSH 설치</a></li>
+        <li><a href="#24-zsh-테스트-및-초기-설정">2.4 ZSH 테스트 및 초기 설정</a></li>
+        <li><a href="#25-터미널-설정">2.5 터미널 설정</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-zsh-설정">3. ZSH 설정</a>
+      <ul>
+        <li><a href="#31-zsh를-기본-셸로-설정">3.1 ZSH를 기본 셸로 설정</a></li>
+        <li><a href="#32-git-bash에서-zsh-자동-실행-설정">3.2 Git Bash에서 ZSH 자동 실행 설정</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-zsh-유틸-설치">4. ZSH 유틸 설치</a>
+      <ul>
+        <li><a href="#41-설치-경로-만들기">4.1 설치 경로 만들기</a></li>
+        <li><a href="#42-zsh-autosuggestions-설치">4.2 zsh-autosuggestions 설치</a></li>
+        <li><a href="#43-zsh-syntax-highlighting-설치">4.3 zsh-syntax-highlighting 설치</a></li>
+        <li><a href="#44-zsh-completions-설치">4.4 zsh-completions 설치</a></li>
+      </ul>
+    </li>
+    <li><a href="#6-powerlevel10k-테마-설치">6. Powerlevel10k 테마 설치</a>
+      <ul>
+        <li><a href="#61-powerlevel10k-설치">6.1 Powerlevel10k 설치</a></li>
+      </ul>
+    </li>
+    <li><a href="#7-vs-code에서-zsh-사용하기">7. VS Code에서 ZSH 사용하기</a></li>
+    <li><a href="#8-windows-terminal에서-zsh-사용하기">8. Windows Terminal에서 ZSH 사용하기</a>
+      <ul>
+        <li><a href="#81-git-설치-시-windows-terminal-연동-옵션-선택">8.1 Git 설치 시 Windows Terminal 연동 옵션 선택</a></li>
+        <li><a href="#82-수동으로-windows-terminal에-git-bash-추가하기">8.2 수동으로 Windows Terminal에 Git Bash 추가하기</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="https://gyuha.com/tags/windows" class="badge badge-secondary">windows</a>
+    <a href="https://gyuha.com/tags/git-bash" class="badge badge-secondary">git-bash</a>
+    <a href="https://gyuha.com/tags/zsh" class="badge badge-secondary">zsh</a>
+    <a href="https://gyuha.com/tags/terminal" class="badge badge-secondary">terminal</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });  
+</script>
+
+</body>
+</html>
