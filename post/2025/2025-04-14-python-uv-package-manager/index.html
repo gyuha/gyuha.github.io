@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Python의 uv 패키지 매니저'" />
+  <title>Python의 uv 패키지 매니저  | 신규하 블로그</title>
+  <meta property="og:title" content="Python의 uv 패키지 매니저" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2025-04-14"> 
+  <meta property="og:url" content="https://gyuha.com/post/2025/2025-04-14-python-uv-package-manager/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="python" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action="https://google.com/search">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search"></i>
+                <input type="hidden" name="sitesearch" value="https://gyuha.com/" />
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2025/2025-04-14-python-uv-package-manager/">
+          <h1>
+            Python의 uv 패키지 매니저
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2025/2025-04-14-python-uv-package-manager/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <h2 id="1-uv의-등장-배경-왜-새로운-도구가-필요했나">1. uv의 등장 배경: 왜 새로운 도구가 필요했나?</h2>
+<h3 id="11-기존-도구들의-한계">1.1. 기존 도구들의 한계</h3>
+<ul>
+<li><strong>pip의 속도 문제</strong>: 대규모 패키지 설치 시 10분 이상 소요되는 경우 빈번(uv는 동일 작업을 10초 내 완료)</li>
+<li><strong>환경 관리의 복잡성</strong>: venv + pip + pip-tools + virtualenvwrapper 조합 필요</li>
+<li><strong>의존성 해결 충돌</strong>: 복잡한 의존성 그래프에서 종종 ResolutionError 발생</li>
+<li><strong>멀티플랫폼 지원 부족</strong>: Windows 환경에서의 성능 저하 문제</li>
+</ul>
+<h3 id="12-astral팀의-접근-방식">1.2. Astral팀의 접근 방식</h3>
+<ul>
+<li><strong>Rust 기반 구현</strong>: 메모리 안정성과 네이티브 성능 확보</li>
+<li><strong>병렬 처리 최적화</strong>: 의존성 해결과 패키지 다운로드를 동시 진행</li>
+<li><strong>유니버설 바이너리</strong>: 별도 Python 설치 없이 독립 실행 가능</li>
+</ul>
+<h3 id="13-성능-벤치마크-django-프로젝트-기준">1.3. 성능 벤치마크 (Django 프로젝트 기준)</h3>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">작업</th>
+          <th style="text-align: left">pip</th>
+          <th style="text-align: left">poetry</th>
+          <th style="text-align: left">uv</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">초기 설치</td>
+          <td style="text-align: left">142s</td>
+          <td style="text-align: left">98s</td>
+          <td style="text-align: left"><strong>12s</strong></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">재설치</td>
+          <td style="text-align: left">89s</td>
+          <td style="text-align: left">64s</td>
+          <td style="text-align: left"><strong>0.8s</strong></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">잠금파일 생성</td>
+          <td style="text-align: left">32s</td>
+          <td style="text-align: left">28s</td>
+          <td style="text-align: left"><strong>3s</strong></td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="2-설치-방법">2. 설치 방법</h2>
+<p><code>uv</code>는 다양한 방법으로 설치할 수 있습니다. 아래는 OS별 설치 방법과 pip를 사용하는 방법입니다.</p>
+<h3 id="21-windows">2.1. Windows</h3>
+<p>Windows에서 <code>uv</code>를 설치하려면 PowerShell을 사용합니다:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>❯ powershell -ExecutionPolicy ByPass -c <span style="color:#0086d2">&#34;irm https://astral.sh/uv/install.ps1 | iex&#34;</span>
+</span></span></code></pre></div><h3 id="22-macoslinux">2.2. macOS/Linux</h3>
+<p>macOS 또는 Linux에서는 다음 명령어를 사용하여 설치할 수 있습니다:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ curl -LsSf https://astral.sh/uv/install.sh | sh
+</span></span></code></pre></div><h3 id="23-pip를-사용한-설치">2.3. pip를 사용한 설치</h3>
+<p>Python의 <code>pip</code>를 사용하여 설치할 수도 있습니다:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ pip install uv
+</span></span></code></pre></div><p>설치 후 <code>uv</code> 명령어가 제대로 작동하는지 확인하려면 다음 명령어를 실행하세요:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ uv --version
+</span></span></code></pre></div><p>개인적으로는 python을 설치 하고 pip로 uv를 설치하는 것을 추천 합니다.
+vscode에서 Jupter Notebook 같이 자동으로 pip를 통해서 설치하는 경우가 있는데. python의 pip를 통하면 편하게 설치가 됩니다.</p>
+<h2 id="3-셀-통합-설정">3. 셀 통합 설정</h2>
+<p><code>uv</code>는 다양한 셸 환경에서 자동 완성 및 편리한 명령어 사용을 지원합니다. 아래는 OS별 셸 통합 설정 방법입니다.</p>
+<h4 id="31-windows-powershell">3.1. Windows (PowerShell)</h4>
+<p>PowerShell에서 <code>uv</code> 자동 완성을 설정하려면 다음 명령어를 실행하세요:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>❯ mkdir -Force <span style="color:#fb660a">$PROFILE</span>.CurrentUserAllHosts
+</span></span><span style="display:flex;"><span>❯ uv generate-completion powershell &gt; <span style="color:#fb660a">$PROFILE</span>.CurrentUserAllHosts\uv.ps1
+</span></span></code></pre></div><p>PowerShell을 다시 시작하면 자동 완성이 활성화됩니다.</p>
+<h4 id="32-macoslinux-zsh">3.2. macOS/Linux (Zsh)</h4>
+<p>Zsh에서 <code>uv</code> 자동 완성을 설정하려면 다음 명령어를 실행하세요:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ mkdir -p ~/.zsh/completions
+</span></span><span style="display:flex;"><span>❯ uv generate-completion zsh &gt; ~/.zsh/completions/_uv
+</span></span></code></pre></div><p>그런 다음 <code>~/.zshrc</code> 파일에 다음 줄을 추가합니다:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#fb660a">fpath</span>=(~/.zsh/completions <span style="color:#fb660a">$fpath</span>)
+</span></span><span style="display:flex;"><span>autoload -U compinit &amp;&amp; compinit
+</span></span></code></pre></div><p>Zsh를 다시 시작하거나 <code>source ~/.zshrc</code>를 실행하여 설정을 적용합니다.</p>
+<h4 id="33-macoslinux-bash">3.3. macOS/Linux (Bash)</h4>
+<p>Bash에서 <code>uv</code> 자동 완성을 설정하려면 다음 명령어를 실행하세요:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ mkdir -p ~/.bash_completion.d
+</span></span><span style="display:flex;"><span>❯ uv --generate-completion bash &gt; ~/.bash_completion.d/uv
+</span></span></code></pre></div><p>그런 다음 <code>~/.bashrc</code> 파일에 다음 줄을 추가합니다:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">if</span> [ -f ~/.bash_completion.d/uv ]; <span style="color:#fb660a;font-weight:bold">then</span>
+</span></span><span style="display:flex;"><span>  . ~/.bash_completion.d/uv
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">fi</span>
+</span></span></code></pre></div><p>Bash를 다시 시작하거나 <code>source ~/.bashrc</code>를 실행하여 설정을 적용합니다.</p>
+<hr>
+<h2 id="4-패키지-관리-하기">4. 패키지 관리 하기</h2>
+<h3 id="41-파이썬-버전-설치하기">4.1. 파이썬 버전 설치하기</h3>
+<p>특정 Python 버전을 설치하거나 변경하려면 다음을 실행하세요:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ uv python install 3.12.10
+</span></span></code></pre></div><p>설치된 Python 버전을 확인하려면:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ uv python list
+</span></span></code></pre></div><p>현재 폴더에 가상환경 폴더를 설치 하려면 아래와 같이 합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ uv venv --python 3.12.10
+</span></span><span style="display:flex;"><span>Using CPython 3.12.10
+</span></span><span style="display:flex;"><span>Creating virtual environment at: .venv
+</span></span><span style="display:flex;"><span>Activate with: source .venv/Scripts/activate
+</span></span></code></pre></div><p>이렇게 하면 현재 폴더에 <code>.venv</code>폴더가 생성 되고 python 가상 환경 설정이 들어 갑니다.</p>
+<h3 id="42-프로젝트-생성하기">4.2. 프로젝트 생성하기</h3>
+<p>가상 환경을 설정 하려면 아래와 같이 init 명령를 통해서 프로젝트 초기 설정을 할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ uv init uv-project
+</span></span><span style="display:flex;"><span>❯ cd uv-project
+</span></span><span style="display:flex;"><span>❯ uv venv 
+</span></span><span style="display:flex;"><span>❯ source .venv/Scripts/activate
+</span></span></code></pre></div><p>uv-project 폴더가 생성되고, 내부 구조는 대략 다음과 같습니다:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ tree -a
+</span></span><span style="display:flex;"><span>.
+</span></span><span style="display:flex;"><span>├── .python-version
+</span></span><span style="display:flex;"><span>├── .gitignore
+</span></span><span style="display:flex;"><span>├── .venv
+</span></span><span style="display:flex;"><span>├── pyproject.toml
+</span></span><span style="display:flex;"><span>├── hello.py
+</span></span><span style="display:flex;"><span>└── README.md
+</span></span></code></pre></div><ul>
+<li>.python-version을 통해 <strong>파이썬 버전</strong>이 고정됩니다</li>
+<li>pyproject.toml 은 <strong>의존성 및 프로젝트 메타데이터</strong>를 정의하는 핵심 파일입니다.</li>
+<li>.venv 폴더는 아직 보이지 않을 수 있는데, 의존성을 추가하면 자동으로 생성됩니다.</li>
+</ul>
+<p>혹시 현재 폴더에 아래와 같이 설정 하시면 됩니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ uv init
+</span></span><span style="display:flex;"><span>❯ uv venv 
+</span></span><span style="display:flex;"><span>❯ source .venv/Scripts/activate
+</span></span></code></pre></div><h2 id="5-패키지-관리">5. 패키지 관리</h2>
+<h3 id="51-패키지-설치-하기">5.1. 패키지 설치 하기</h3>
+<p>uv add로 패키지를 설치 할 수 있습니다. 한번에 여러개의 패키지를 설치 하려면 뒤에 붙여서 패키지명을 적어 주면 됩니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ uv add scipy six
+</span></span><span style="display:flex;"><span>Resolved <span style="color:#0086f7;font-weight:bold">4</span> packages in 152ms
+</span></span><span style="display:flex;"><span>Prepared <span style="color:#0086f7;font-weight:bold">3</span> packages in 1.50s
+</span></span><span style="display:flex;"><span>░░░░░░░░░░░░░░░░░░░░ [0/3] Installing 
+</span></span><span style="display:flex;"><span>Installed <span style="color:#0086f7;font-weight:bold">3</span> packages in 527ms
+</span></span><span style="display:flex;"><span> + <span style="color:#fb660a">numpy</span>==2.2.4
+</span></span><span style="display:flex;"><span> + <span style="color:#fb660a">scipy</span>==1.15.2
+</span></span><span style="display:flex;"><span> + <span style="color:#fb660a">six</span>==1.17.0
+</span></span></code></pre></div><p>설치가 완료 되면 <code>pyproject.toml</code>파일을 확인 해 보면 설치된 패키지가 기록 된 것을 확인 할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ cat pyproject.toml
+</span></span><span style="display:flex;"><span>[project]
+</span></span><span style="display:flex;"><span><span style="color:#fb660a">name</span> = <span style="color:#0086d2">&#34;uv&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a">version</span> = <span style="color:#0086d2">&#34;0.1.0&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a">description</span> = <span style="color:#0086d2">&#34;Add your description here&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a">readme</span> = <span style="color:#0086d2">&#34;README.md&#34;</span>
+</span></span><span style="display:flex;"><span>requires-python = <span style="color:#0086d2">&#34;&gt;=3.12&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a">dependencies</span> = [
+</span></span><span style="display:flex;"><span>    <span style="color:#0086d2">&#34;scipy&gt;=1.15.2&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#0086d2">&#34;six&gt;=1.17.0&#34;</span>,
+</span></span><span style="display:flex;"><span>]
+</span></span></code></pre></div><h3 id="52-기존-requirementstxt-파일에서-설치-하기">5.2. 기존 requirements.txt 파일에서 설치 하기</h3>
+<p>기존 python 프로젝트 라면 requirements.txt 파일이 있을 겁니다.
+그 파일을 기준으로 패키지를 설치 하려면 아래와 같이 사용 하시면 됩니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ uv add -r requirements.txt
+</span></span></code></pre></div><p>혹시, 다른 uv 사용자가 아닌 분을 배려 해서 requirements.txt 파일을 만들고 싶다면 uv pip 명령어를 통해서 파일을 만들 수도 있습니다</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ uv pip freeze &gt; requirements.txt
+</span></span></code></pre></div><h3 id="53-패키지-삭제-하기">5.3. 패키지 삭제 하기</h3>
+<p>환경과 <code>pyproject.toml</code> 파일에서 의존성을 제거하려면 <code>uv remove</code> 명령어를 사용할 수 있습니다. 이 명령어는 해당 패키지와 그 하위 의존성들을 모두 제거합니다:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ uv remove scikit-learn
+</span></span></code></pre></div><h2 id="6-스크립트-실행하기">6. 스크립트 실행하기</h2>
+<p>필요한 의존성을 설치한 후에는 평소처럼 Python 스크립트 작업을 시작할 수 있습니다. UV는 Python 코드를 실행하는 몇 가지 다른 방법을 제공합니다:</p>
+<p>Python 스크립트를 직접 실행하려면 일반적인 <code>python script.py</code> 구문 대신 <code>uv run</code> 명령 다음에 스크립트 이름을 사용하면 됩니다:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ uv run hello.py
+</span></span></code></pre></div><p><code>run</code> 명령은 스크립트가 프로젝트를 위해 UV가 생성한 가상 환경 내에서 실행되도록 보장합니다.</p>
+<h2 id="7-uv에서-잠금-파일이란-무엇입니까">7. UV에서 잠금 파일이란 무엇입니까?</h2>
+<p>잠금 파일(uv.lock)은 UV의 종속성 관리에서 필수적인 부분입니다. 종속성을 설치하기 위해 uv add 명령을 실행하면 UV가 uv.lock 파일을 생성하고 업데이트합니다. 이 잠금 파일은 다음과 같은 몇 가지 중요한 용도로 사용됩니다.</p>
+<p>설치된 모든 종속성과 하위 종속성의 정확한 버전을 기록합니다.
+서로 다른 환경에서 종속성 버전을 &ldquo;잠금&quot;하여 재현 가능한 빌드를 보장합니다.
+일관된 패키지 버전을 유지 관리하여 &ldquo;종속성 지옥&quot;을 방지하는 데 도움이 됩니다.
+UV가 종속성을 다시 해결하는 대신 잠긴 버전을 사용할 수 있으므로 설치 속도가 빨라집니다.
+UV는 잠금 파일을 자동으로 관리하므로 수동으로 편집할 필요가 없습니다. 잠금 파일은 모든 개발자가 동일한 종속성 버전을 사용할 수 있도록 버전 제어에 커밋되어야 합니다.</p>
+<h3 id="잠금-파일과-requirementstxt의-차이점">잠금 파일과 requirements.txt의 차이점</h3>
+<p>잠금 파일과 requirements.txt은 모두 종속성을 추적하는 역할을 하지만 고유한 목적과 사용 사례가 있습니다. 잠금 파일에는 정확한 패키지 버전과 전체 종속성 트리에 대한 자세한 정보가 포함되어 있어 개발 전반에 걸쳐 일관된 환경을 보장합니다. Requirements.txt 파일은 더 간단하고, 일반적으로 직접 종속성만 나열하며, Python 도구에서 널리 지원됩니다.</p>
+<p>잠금 파일은 재현 가능한 빌드를 유지 관리하고 종속성 충돌을 방지하기 위해 개발에 필수적입니다. Requirements.txt 파일은 배포 시나리오 또는 UV를 사용하지 않을 수 있는 사용자와 코드를 공유할 때 더 적합합니다. 또한 UV의 잠금 파일 형식을 지원하지 않는 도구 및 서비스와의 호환성을 위해 필요합니다.</p>
+<p>배포를 위한 requirements.txt 생성하는 동안 개발용 UV의 잠금 파일을 사용하여 두 파일을 모두 유지 관리할 수 있습니다. UV 잠금 파일에서 requirements.txt 생성하려면 다음 명령을 사용합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>❯ uv export -o requirements.txt
+</span></span></code></pre></div><p>이렇게 하면 잠금 파일을 기반으로 고정된 버전이 있는 텍스트 파일이 생성되므로 프로젝트의 종속성을 표준 형식으로 쉽게 공유하면서 개발 중에 UV의 고급 종속성 관리의 이점을 계속 활용할 수 있습니다.</p>
+
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2025년 04월 14일 21시 35분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/python">python</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2025/2025-04-13-windows-git-bash-use-zsh/" rel="prev">
+        <span>윈도우 git-bash에서 zsh 사용하기</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-uv의-등장-배경-왜-새로운-도구가-필요했나">1. uv의 등장 배경: 왜 새로운 도구가 필요했나?</a>
+      <ul>
+        <li><a href="#11-기존-도구들의-한계">1.1. 기존 도구들의 한계</a></li>
+        <li><a href="#12-astral팀의-접근-방식">1.2. Astral팀의 접근 방식</a></li>
+        <li><a href="#13-성능-벤치마크-django-프로젝트-기준">1.3. 성능 벤치마크 (Django 프로젝트 기준)</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-설치-방법">2. 설치 방법</a>
+      <ul>
+        <li><a href="#21-windows">2.1. Windows</a></li>
+        <li><a href="#22-macoslinux">2.2. macOS/Linux</a></li>
+        <li><a href="#23-pip를-사용한-설치">2.3. pip를 사용한 설치</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-셀-통합-설정">3. 셀 통합 설정</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#4-패키지-관리-하기">4. 패키지 관리 하기</a>
+      <ul>
+        <li><a href="#41-파이썬-버전-설치하기">4.1. 파이썬 버전 설치하기</a></li>
+        <li><a href="#42-프로젝트-생성하기">4.2. 프로젝트 생성하기</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-패키지-관리">5. 패키지 관리</a>
+      <ul>
+        <li><a href="#51-패키지-설치-하기">5.1. 패키지 설치 하기</a></li>
+        <li><a href="#52-기존-requirementstxt-파일에서-설치-하기">5.2. 기존 requirements.txt 파일에서 설치 하기</a></li>
+        <li><a href="#53-패키지-삭제-하기">5.3. 패키지 삭제 하기</a></li>
+      </ul>
+    </li>
+    <li><a href="#6-스크립트-실행하기">6. 스크립트 실행하기</a></li>
+    <li><a href="#7-uv에서-잠금-파일이란-무엇입니까">7. UV에서 잠금 파일이란 무엇입니까?</a>
+      <ul>
+        <li><a href="#잠금-파일과-requirementstxt의-차이점">잠금 파일과 requirements.txt의 차이점</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="https://gyuha.com/tags/python" class="badge badge-secondary">python</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });  
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
