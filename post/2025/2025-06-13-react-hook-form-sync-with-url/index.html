@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Next.js에서 react-hook-form과 URL을 우아하게 동기화하는 법 🚀'" />
+  <title>Next.js에서 react-hook-form과 URL을 우아하게 동기화하는 법 🚀  | 신규하 블로그</title>
+  <meta property="og:title" content="Next.js에서 react-hook-form과 URL을 우아하게 동기화하는 법 🚀" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2025-06-13"> 
+  <meta property="og:url" content="https://gyuha.com/post/2025/2025-06-13-react-hook-form-sync-with-url/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="next.js" />
+  
+  <meta property="og:tags" content="react-hook-form" />
+  
+  <meta property="og:tags" content="typescript" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action="https://google.com/search">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search"></i>
+                <input type="hidden" name="sitesearch" value="https://gyuha.com/" />
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2025/2025-06-13-react-hook-form-sync-with-url/">
+          <h1>
+            Next.js에서 react-hook-form과 URL을 우아하게 동기화하는 법 🚀
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2025/2025-06-13-react-hook-form-sync-with-url/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>이번 포스트에서는 Next.js 프로젝트를 진행하면서 유용하게 사용할 수 있는 자작 커스텀 훅, <code>useFormUrlSync</code>에 대해 이야기하고자 합니다.</p>
+<p>검색 필터나 정렬 기능이 있는 페이지를 개발할 때 이러한 경험이 있으실 겁니다. 사용자가 필터 값을 설정하고 검색 결과 페이지에서 특정 아이템을 클릭했다가 뒤로 가기 버튼을 누르면, 설정했던 필터 값들이 전부 초기화되는 상황 말입니다. 사용자 입장에서는 매우 불편한 순간이 아닐 수 없습니다.</p>
+<p>이러한 문제를 해결하는 가장 효과적인 방법은 폼(Form)의 상태를 URL 쿼리 파라미터(Query Parameter)에 실시간으로 동기화하는 것입니다. 이렇게 하면 사용자가 설정한 필터 값이 URL에 그대로 남아, 페이지를 새로고침하거나 링크를 공유해도 동일한 상태가 유지됩니다.</p>
+<p>이번 글에서는 이 기능을 구현하는 <code>useFormUrlSync</code> 커스텀 훅을 만들고, 사용법을 자세히 알아보겠습니다.</p>
+<h2 id="왜-url과의-동기화가-필요합니까-">왜 URL과의 동기화가 필요합니까? 🤔</h2>
+<p>본격적으로 코드를 살펴보기 전에, 왜 폼 상태를 URL과 동기화해야 하는지 짚고 넘어갈 필요가 있습니다.</p>
+<ul>
+<li><strong>향상된 사용자 경험 (UX)</strong>: 사용자가 뒤로 가기/앞으로 가기 버튼을 사용해도 필터링된 상태가 그대로 유지됩니다.</li>
+<li><strong>공유 가능한 링크</strong>: 필터나 검색 조건이 포함된 URL을 다른 사람에게 그대로 공유할 수 있습니다.</li>
+<li><strong>북마크 가능</strong>: 사용자는 특정 검색 결과 페이지를 북마크하고 나중에 다시 방문할 수 있습니다.</li>
+</ul>
+<p>이 모든 것이 사소해 보일 수 있지만, 잘 만들어진 웹 애플리케이션의 디테일을 결정하는 중요한 요소입니다.</p>
+<h2 id="useformurlsync-전체-코드-훑어보기-"><code>useFormUrlSync</code> 전체 코드 훑어보기 🧐</h2>
+<p>먼저 우리가 만들 커스텀 훅의 전체 코드를 살펴보겠습니다. Next.js(App Router 기준) 환경과 <code>react-hook-form</code> 라이브러리를 사용한다는 점을 참고해 주시기 바랍니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> <span style="color:#fb660a;font-weight:bold">type</span> { AliasAny } <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#34;@/types/alias.types&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> { isNumber } <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#34;es-toolkit/compat&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> { useRouter, useSearchParams } <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#34;next/navigation&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> { useCallback, useEffect, useRef } <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#34;react&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> { <span style="color:#fb660a;font-weight:bold">type</span> DefaultValues, <span style="color:#fb660a;font-weight:bold">type</span> FieldValues, <span style="color:#fb660a;font-weight:bold">type</span> UseFormProps, <span style="color:#fb660a;font-weight:bold">type</span> UseFormReturn, useForm } <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#34;react-hook-form&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// ... (훅의 상세 코드는 이전과 동일) ...
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">export</span> <span style="color:#fb660a;font-weight:bold">function</span> useFormUrlSync&lt;<span style="color:#fb660a;font-weight:bold">T</span> <span style="color:#ff0086;font-weight:bold">extends</span> <span style="color:#ff0086;font-weight:bold">FieldValues</span>&gt;(options: <span style="color:#cdcaa9;font-weight:bold">UseFormUrlSyncOptions</span>&lt;<span style="color:#fb660a;font-weight:bold">T</span>&gt;): UseFormReturn&lt;<span style="color:#fb660a;font-weight:bold">T</span>&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> router = useRouter();
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> searchParams = useSearchParams();
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> { excludeFromUrl = [], replace = <span style="color:#fb660a;font-weight:bold">true</span>, defaultValues, ...formOptions } = options;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> isUpdatingFromUrl = useRef(<span style="color:#fb660a;font-weight:bold">false</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> getUrlValues = useCallback(() =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">return</span> extractInitialValuesFromUrl&lt;<span style="color:#fb660a;font-weight:bold">T</span>&gt;(searchParams, excludeFromUrl <span style="color:#fb660a;font-weight:bold">as</span> (<span style="color:#fb660a;font-weight:bold">keyof</span> T)[]);
+</span></span><span style="display:flex;"><span>  }, [searchParams, excludeFromUrl]);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> initialValues = {
+</span></span><span style="display:flex;"><span>    ...defaultValues,
+</span></span><span style="display:flex;"><span>    ...getUrlValues(),
+</span></span><span style="display:flex;"><span>  } <span style="color:#fb660a;font-weight:bold">as</span> DefaultValues&lt;<span style="color:#fb660a;font-weight:bold">T</span>&gt;;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> form = useForm({
+</span></span><span style="display:flex;"><span>    ...formOptions,
+</span></span><span style="display:flex;"><span>    defaultValues: <span style="color:#cdcaa9;font-weight:bold">initialValues</span>,
+</span></span><span style="display:flex;"><span>  });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> { watch, reset, getValues } = form;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> updateUrl = useCallback(
+</span></span><span style="display:flex;"><span>    (values: <span style="color:#cdcaa9;font-weight:bold">T</span>) =&gt; {
+</span></span><span style="display:flex;"><span>      <span style="color:#fb660a;font-weight:bold">const</span> params = createUrlParamsFromValues(values, searchParams, excludeFromUrl <span style="color:#fb660a;font-weight:bold">as</span> (<span style="color:#fb660a;font-weight:bold">keyof</span> T)[]);
+</span></span><span style="display:flex;"><span>      <span style="color:#fb660a;font-weight:bold">const</span> newSearchString = params.toString();
+</span></span><span style="display:flex;"><span>      <span style="color:#fb660a;font-weight:bold">const</span> currentSearchString = <span style="color:#fb660a;font-weight:bold">new</span> URLSearchParams(window.location.search).toString();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#fb660a;font-weight:bold">if</span> (newSearchString !== currentSearchString) {
+</span></span><span style="display:flex;"><span>        <span style="color:#fb660a;font-weight:bold">const</span> newUrl = <span style="color:#0086d2">`</span><span style="color:#0086d2">${</span>window.location.pathname<span style="color:#0086d2">}</span><span style="color:#0086d2">?</span><span style="color:#0086d2">${</span>newSearchString<span style="color:#0086d2">}</span><span style="color:#0086d2">`</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#fb660a;font-weight:bold">if</span> (replace) {
+</span></span><span style="display:flex;"><span>          router.replace(newUrl, { scroll: <span style="color:#cdcaa9;font-weight:bold">false</span> });
+</span></span><span style="display:flex;"><span>        } <span style="color:#fb660a;font-weight:bold">else</span> {
+</span></span><span style="display:flex;"><span>          router.push(newUrl, { scroll: <span style="color:#cdcaa9;font-weight:bold">false</span> });
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    [router, searchParams, excludeFromUrl, replace],
+</span></span><span style="display:flex;"><span>  );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  useEffect(() =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">const</span> subscription = watch(values =&gt; {
+</span></span><span style="display:flex;"><span>      <span style="color:#fb660a;font-weight:bold">if</span> (isUpdatingFromUrl.current) {
+</span></span><span style="display:flex;"><span>        <span style="color:#fb660a;font-weight:bold">return</span>;
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>      updateUrl(values <span style="color:#fb660a;font-weight:bold">as</span> T);
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">return</span> () =&gt; subscription.unsubscribe();
+</span></span><span style="display:flex;"><span>  }, [watch, updateUrl]);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  useEffect(() =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">const</span> urlValues = getUrlValues();
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">const</span> currentFormValues = getValues();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">const</span> relevantFormValues: <span style="color:#cdcaa9;font-weight:bold">Partial</span>&lt;<span style="color:#fb660a;font-weight:bold">T</span>&gt; = {};
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">for</span> (<span style="color:#fb660a;font-weight:bold">const</span> key <span style="color:#fb660a;font-weight:bold">in</span> urlValues) {
+</span></span><span style="display:flex;"><span>      <span style="color:#fb660a;font-weight:bold">if</span> (Object.prototype.hasOwnProperty.call(urlValues, key)) {
+</span></span><span style="display:flex;"><span>        relevantFormValues[key <span style="color:#fb660a;font-weight:bold">as</span> <span style="color:#fb660a;font-weight:bold">keyof</span> T] = currentFormValues[key <span style="color:#fb660a;font-weight:bold">as</span> <span style="color:#fb660a;font-weight:bold">keyof</span> T];
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">if</span> (!deepEqual(urlValues, relevantFormValues)) {
+</span></span><span style="display:flex;"><span>      isUpdatingFromUrl.current = <span style="color:#fb660a;font-weight:bold">true</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      reset({
+</span></span><span style="display:flex;"><span>        ...currentFormValues,
+</span></span><span style="display:flex;"><span>        ...urlValues,
+</span></span><span style="display:flex;"><span>      } <span style="color:#fb660a;font-weight:bold">as</span> DefaultValues&lt;<span style="color:#fb660a;font-weight:bold">T</span>&gt;);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      setTimeout(() =&gt; {
+</span></span><span style="display:flex;"><span>        isUpdatingFromUrl.current = <span style="color:#fb660a;font-weight:bold">false</span>;
+</span></span><span style="display:flex;"><span>      }, <span style="color:#0086f7;font-weight:bold">0</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }, [getUrlValues, reset, getValues]);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">return</span> form;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>코드가 다소 길어 보일 수 있지만, 핵심 로직은 간단합니다. 이제부터 하나씩 분석해 보겠습니다.</p>
+<h2 id="핵심-로직-파헤치기-">핵심 로직 파헤치기 💡</h2>
+<p>이 훅은 <strong>양방향 동기화</strong>를 구현하는 것이 핵심입니다.</p>
+<ol>
+<li><strong>폼 상태 변경</strong> → <strong>URL 업데이트</strong></li>
+<li><strong>URL 변경</strong> (예: 뒤로 가기) → <strong>폼 상태 업데이트</strong></li>
+</ol>
+<p>이 두 가지 흐름이 어떻게 구현되었는지 살펴보겠습니다.</p>
+<h3 id="1-폼-변경--url-업데이트">1. 폼 변경 → URL 업데이트</h3>
+<p>이 부분은 <code>react-hook-form</code>의 <code>watch</code> 함수와 <code>useEffect</code>를 사용하여 구현합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span>  <span style="color:#080;background-color:#0f140f;font-style:italic">// ...
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>  useEffect(() =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">const</span> subscription = watch(values =&gt; {
+</span></span><span style="display:flex;"><span>      <span style="color:#080;background-color:#0f140f;font-style:italic">// isUpdatingFromUrl 플래그에 대해서는 잠시 후에 설명하겠습니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>      <span style="color:#fb660a;font-weight:bold">if</span> (isUpdatingFromUrl.current) {
+</span></span><span style="display:flex;"><span>        <span style="color:#fb660a;font-weight:bold">return</span>;
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>      updateUrl(values <span style="color:#fb660a;font-weight:bold">as</span> T); <span style="color:#080;background-color:#0f140f;font-style:italic">// 폼 값이 변경되면 URL을 업데이트하는 함수 호출
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>    });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">return</span> () =&gt; subscription.unsubscribe();
+</span></span><span style="display:flex;"><span>  }, [watch, updateUrl]);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#080;background-color:#0f140f;font-style:italic">// ...
+</span></span></span></code></pre></div><p><code>watch</code>는 폼의 모든 값 변경을 감지하는 구독(subscription)을 생성합니다. 값이 바뀔 때마다 <code>updateUrl</code> 함수를 호출하여 변경된 값을 URL 쿼리 파라미터로 만들어줍니다.</p>
+<h3 id="2-url-변경--폼-상태-업데이트">2. URL 변경 → 폼 상태 업데이트</h3>
+<p>이것은 사용자가 브라우저의 뒤로 가기/앞으로 가기 버튼을 눌렀을 때를 위한 기능입니다. <code>useSearchParams</code> 훅이 URL의 변경을 감지하면, <code>useEffect</code>가 실행됩니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span>  <span style="color:#080;background-color:#0f140f;font-style:italic">// ...
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>  useEffect(() =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">const</span> urlValues = getUrlValues(); <span style="color:#080;background-color:#0f140f;font-style:italic">// URL에서 현재 폼 관련 값들을 가져옴
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>    <span style="color:#fb660a;font-weight:bold">const</span> currentFormValues = getValues(); <span style="color:#080;background-color:#0f140f;font-style:italic">// react-hook-form의 현재 값들을 가져옴
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#080;background-color:#0f140f;font-style:italic">// ... (비교 로직) ...
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#080;background-color:#0f140f;font-style:italic">// URL의 값과 폼의 값이 다를 경우
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>    <span style="color:#fb660a;font-weight:bold">if</span> (!deepEqual(urlValues, relevantFormValues)) {
+</span></span><span style="display:flex;"><span>      isUpdatingFromUrl.current = <span style="color:#fb660a;font-weight:bold">true</span>; <span style="color:#080;background-color:#0f140f;font-style:italic">// 무한 루프 방지 플래그 ON
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>      <span style="color:#080;background-color:#0f140f;font-style:italic">// URL 값으로 폼 상태를 리셋(업데이트)
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>      reset({
+</span></span><span style="display:flex;"><span>        ...currentFormValues,
+</span></span><span style="display:flex;"><span>        ...urlValues,
+</span></span><span style="display:flex;"><span>      } <span style="color:#fb660a;font-weight:bold">as</span> DefaultValues&lt;<span style="color:#fb660a;font-weight:bold">T</span>&gt;);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#080;background-color:#0f140f;font-style:italic">// 아주 잠깐의 딜레이 후 플래그 OFF
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>      setTimeout(() =&gt; {
+</span></span><span style="display:flex;"><span>        isUpdatingFromUrl.current = <span style="color:#fb660a;font-weight:bold">false</span>;
+</span></span><span style="display:flex;"><span>      }, <span style="color:#0086f7;font-weight:bold">0</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }, [getUrlValues, reset, getValues]); <span style="color:#080;background-color:#0f140f;font-style:italic">// URL이 변경될 때마다 실행
+</span></span></span></code></pre></div><p>URL이 바뀌면 <code>searchParams</code> 객체가 변경되고, 이를 의존하는 <code>getUrlValues</code>가 새로운 값을 반환하면서 이 <code>useEffect</code>가 다시 실행됩니다. 그리고 URL에서 가져온 값(<code>urlValues</code>)과 현재 폼의 값(<code>currentFormValues</code>)을 비교해서, 다르다면 <code>form.reset</code>을 호출하여 폼을 업데이트해줍니다.</p>
+<h3 id="3-무한-루프-방지-isupdatingfromurl-">3. 무한 루프 방지: <code>isUpdatingFromUrl</code> ⚠️</h3>
+<p>여기서 매우 중요한 부분은 바로 <code>isUpdatingFromUrl</code>이라는 <code>useRef</code> 값입니다. 이것이 왜 필요합니까?</p>
+<p>만약 이 플래그가 없다면 다음과 같은 <strong>무한 루프</strong>에 빠질 수 있습니다.</p>
+<ol>
+<li>URL 변경 → <code>useEffect</code> 실행 → <code>form.reset()</code> 호출 (폼 업데이트)</li>
+<li>폼 업데이트 → <code>watch</code> 감지 → <code>updateUrl()</code> 호출 (URL 업데이트)</li>
+<li>URL 업데이트 → <code>useEffect</code> 실행 → <code>form.reset()</code> 호출 (폼 업데이트)</li>
+<li>&hellip; 무한 반복 &hellip;</li>
+</ol>
+<p><code>isUpdatingFromUrl.current = true</code>는 &ldquo;지금은 URL 변경 때문에 폼을 강제로 업데이트하는 중이니, <code>watch</code>는 잠시 반응하지 말라&quot;고 알려주는 신호탄과 같습니다. 폼을 <code>reset</code> 한 직후 <code>setTimeout</code>으로 플래그를 다시 <code>false</code>로 바꿔서, 그 이후의 사용자 입력에는 정상적으로 반응하도록 만듭니다. 매우 효율적인 방법입니다.</p>
+<h2 id="실제로-사용해보기-">실제로 사용해보기 📝</h2>
+<p>이제 이 훅을 실제 컴포넌트에서 어떻게 사용하는지 살펴보겠습니다. 간단한 검색 폼을 예시로 들어보겠습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// components/SearchForm.tsx
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span><span style="color:#0086d2">&#34;use client&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> { useFormUrlSync } <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#34;@/hooks/useFormUrlSync&#34;</span>; <span style="color:#080;background-color:#0f140f;font-style:italic">// 우리가 만든 훅
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">interface</span> SearchFormValues {
+</span></span><span style="display:flex;"><span>  keyword: <span style="color:#cdcaa9;font-weight:bold">string</span>;
+</span></span><span style="display:flex;"><span>  category: <span style="color:#cdcaa9;font-weight:bold">string</span>;
+</span></span><span style="display:flex;"><span>  inStockOnly: <span style="color:#cdcaa9;font-weight:bold">boolean</span>;
+</span></span><span style="display:flex;"><span>  page: <span style="color:#cdcaa9;font-weight:bold">number</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">export</span> <span style="color:#fb660a;font-weight:bold">function</span> SearchForm() {
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> { register, handleSubmit, formState: { errors } } = useFormUrlSync&lt;<span style="color:#fb660a;font-weight:bold">SearchFormValues</span>&gt;({
+</span></span><span style="display:flex;"><span>    <span style="color:#080;background-color:#0f140f;font-style:italic">// 폼의 기본값 설정
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>    defaultValues: {
+</span></span><span style="display:flex;"><span>      keyword: <span style="color:#0086d2">&#34;&#34;</span>,
+</span></span><span style="display:flex;"><span>      category: <span style="color:#0086d2">&#34;all&#34;</span>,
+</span></span><span style="display:flex;"><span>      inStockOnly: <span style="color:#cdcaa9;font-weight:bold">false</span>,
+</span></span><span style="display:flex;"><span>      page: <span style="color:#cdcaa9;font-weight:bold">1</span>,
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#080;background-color:#0f140f;font-style:italic">// URL에 포함시키고 싶지 않은 필드
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>    excludeFromUrl: [<span style="color:#0086d2">&#34;page&#34;</span>],
+</span></span><span style="display:flex;"><span>    <span style="color:#080;background-color:#0f140f;font-style:italic">// URL 변경 시 히스토리를 남기고 싶을 때
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>    replace: <span style="color:#cdcaa9;font-weight:bold">false</span>,
+</span></span><span style="display:flex;"><span>  });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> onSubmit = (data: <span style="color:#cdcaa9;font-weight:bold">SearchFormValues</span>) =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#080;background-color:#0f140f;font-style:italic">// 실제 검색 로직 수행
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>    console.log(<span style="color:#0086d2">&#34;검색 실행:&#34;</span>, data);
+</span></span><span style="display:flex;"><span>  };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">return</span> (
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#fb660a;font-weight:bold">form</span> <span style="color:#ff0086;font-weight:bold">onSubmit</span>={handleSubmit(onSubmit)} <span style="color:#ff0086;font-weight:bold">className</span>=<span style="color:#0086d2">&#34;space-y-4&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#fb660a;font-weight:bold">div</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#fb660a;font-weight:bold">label</span> <span style="color:#ff0086;font-weight:bold">htmlFor</span>=<span style="color:#0086d2">&#34;keyword&#34;</span>&gt;검색어&lt;/<span style="color:#fb660a;font-weight:bold">label</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#fb660a;font-weight:bold">input</span> <span style="color:#ff0086;font-weight:bold">id</span>=<span style="color:#0086d2">&#34;keyword&#34;</span> {<span style="color:#ff0086;font-weight:bold">...register</span>(&#34;<span style="color:#ff0086;font-weight:bold">keyword</span>&#34;)} /&gt;
+</span></span><span style="display:flex;"><span>      &lt;/<span style="color:#fb660a;font-weight:bold">div</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#fb660a;font-weight:bold">div</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#fb660a;font-weight:bold">label</span> <span style="color:#ff0086;font-weight:bold">htmlFor</span>=<span style="color:#0086d2">&#34;category&#34;</span>&gt;카테고리&lt;/<span style="color:#fb660a;font-weight:bold">label</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#fb660a;font-weight:bold">select</span> <span style="color:#ff0086;font-weight:bold">id</span>=<span style="color:#0086d2">&#34;category&#34;</span> {<span style="color:#ff0086;font-weight:bold">...register</span>(&#34;<span style="color:#ff0086;font-weight:bold">category</span>&#34;)}&gt;
+</span></span><span style="display:flex;"><span>          &lt;<span style="color:#fb660a;font-weight:bold">option</span> <span style="color:#ff0086;font-weight:bold">value</span>=<span style="color:#0086d2">&#34;all&#34;</span>&gt;전체&lt;/<span style="color:#fb660a;font-weight:bold">option</span>&gt;
+</span></span><span style="display:flex;"><span>          &lt;<span style="color:#fb660a;font-weight:bold">option</span> <span style="color:#ff0086;font-weight:bold">value</span>=<span style="color:#0086d2">&#34;electronics&#34;</span>&gt;전자기기&lt;/<span style="color:#fb660a;font-weight:bold">option</span>&gt;
+</span></span><span style="display:flex;"><span>          &lt;<span style="color:#fb660a;font-weight:bold">option</span> <span style="color:#ff0086;font-weight:bold">value</span>=<span style="color:#0086d2">&#34;books&#34;</span>&gt;도서&lt;/<span style="color:#fb660a;font-weight:bold">option</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;/<span style="color:#fb660a;font-weight:bold">select</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;/<span style="color:#fb660a;font-weight:bold">div</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#fb660a;font-weight:bold">div</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#fb660a;font-weight:bold">input</span> <span style="color:#ff0086;font-weight:bold">type</span>=<span style="color:#0086d2">&#34;checkbox&#34;</span> <span style="color:#ff0086;font-weight:bold">id</span>=<span style="color:#0086d2">&#34;inStockOnly&#34;</span> {<span style="color:#ff0086;font-weight:bold">...register</span>(&#34;<span style="color:#ff0086;font-weight:bold">inStockOnly</span>&#34;)} /&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#fb660a;font-weight:bold">label</span> <span style="color:#ff0086;font-weight:bold">htmlFor</span>=<span style="color:#0086d2">&#34;inStockOnly&#34;</span>&gt;재고 있음&lt;/<span style="color:#fb660a;font-weight:bold">label</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;/<span style="color:#fb660a;font-weight:bold">div</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#fb660a;font-weight:bold">button</span> <span style="color:#ff0086;font-weight:bold">type</span>=<span style="color:#0086d2">&#34;submit&#34;</span>&gt;검색&lt;/<span style="color:#fb660a;font-weight:bold">button</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#fb660a;font-weight:bold">form</span>&gt;
+</span></span><span style="display:flex;"><span>  );
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>사용법은 기존 <code>react-hook-form</code>의 <code>useForm</code>과 거의 동일합니다. 단순히 <code>useForm</code> 대신 <code>useFormUrlSync</code>를 쓰고, 몇 가지 옵션만 추가하면 됩니다.</p>
+<blockquote>
+<p>📌 <strong>팁: <code>replace</code> 옵션은 언제 사용합니까?</strong></p>
+<p><code>useFormUrlSync</code> 훅의 <code>replace</code> 옵션은 URL을 업데이트할 때 Next.js의 <code>router.replace()</code>를 쓸지, <code>router.push()</code>를 쓸지 결정하는 중요한 키입니다.</p>
+<ul>
+<li>
+<p>✅ <strong><code>replace: true</code> (기본값)</strong></p>
+<ul>
+<li><strong>사용 시나리오:</strong> 실시간으로 변하는 필터 값(체크박스, 검색어 입력 등)에 적합합니다.</li>
+<li><strong>장점:</strong> <code>router.replace()</code>는 브라우저의 히스토리 스택에 새 기록을 추가하지 않고 현재 URL을 <strong>대체</strong>합니다. 만약 사용자가 검색어를 한 글자씩 입력할 때마다 히스토리가 쌓인다면, 뒤로 가기 버튼을 누를 때마다 한 글자씩 지워지는 불편한 경험을 하게 될 것입니다. <code>replace</code>는 이런 불필요한 히스토리를 방지합니다.</li>
+</ul>
+</li>
+<li>
+<p>❌ <strong><code>replace: false</code></strong></p>
+<ul>
+<li><strong>사용 시나리오:</strong> 사용자의 명시적인 액션(예: &lsquo;검색&rsquo; 버튼 클릭, &lsquo;다음 페이지&rsquo; 버튼 클릭)으로 URL이 변경될 때 적합합니다.</li>
+<li><strong>장점:</strong> <code>router.push()</code>는 브라우저 히스토리 스택에 새 기록을 <strong>추가</strong>합니다. 예를 들어, &lsquo;검색 조건 A&rsquo;로 검색했다가 &lsquo;검색 조건 B&rsquo;로 다시 검색했을 때, 사용자는 뒤로 가기 버튼을 눌러 &lsquo;검색 조건 A&rsquo;의 결과로 돌아가고 싶을 수 있습니다. 이때 <code>replace: false</code> (즉, <code>router.push</code>)를 사용하면 자연스러운 브라우저 탐색 경험을 제공할 수 있습니다.</li>
+</ul>
+</li>
+</ul>
+<p>이 옵션을 통해 우리는 사용자의 행동 의도에 맞는 최적의 URL 업데이트 방식을 선택할 수 있습니다.</p>
+</blockquote>
+<p>이제 이 폼에 값을 입력하면, URL이 실시간으로 변하고 브라우저 히스토리에도 차곡차곡 쌓이는 것을 볼 수 있습니다.</p>
+<blockquote>
+<p><code>http://localhost:3000/search?keyword=Next.js&amp;category=books&amp;inStockOnly=true</code></p>
+</blockquote>
+<h2 id="마무리하며">마무리하며</h2>
+<p>이번 글에서는 Next.js 환경에서 <code>react-hook-form</code>의 상태를 URL 쿼리 파라미터와 동기화하는 <code>useFormUrlSync</code> 커스텀 훅에 대해 알아보았습니다.</p>
+<p>이 훅 하나만 잘 만들어두면, 앞으로 필터나 검색 기능이 필요한 모든 페이지에서 사용자 경험을 크게 향상시킬 수 있을 것입니다. 상태 유지를 위해 더 이상 복잡한 전역 상태 관리 라이브러리에 의존할 필요가 없습니다.</p>
+<p>독자 여러분께서는 프로젝트에서 폼 상태를 어떻게 관리하고 계십니까? 더 좋은 아이디어나 방법이 있다면 댓글을 통해 공유해 주시기 바랍니다. 😊</p>
+
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2025년 06월 13일 21시 00분
+</time>
+  
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2025/2025-05-06-obsidian-editor-width/" rel="prev">
+        <span>옵시디언에서 편집창 폭 넓히기</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#왜-url과의-동기화가-필요합니까-">왜 URL과의 동기화가 필요합니까? 🤔</a></li>
+    <li><a href="#useformurlsync-전체-코드-훑어보기-"><code>useFormUrlSync</code> 전체 코드 훑어보기 🧐</a></li>
+    <li><a href="#핵심-로직-파헤치기-">핵심 로직 파헤치기 💡</a>
+      <ul>
+        <li><a href="#1-폼-변경--url-업데이트">1. 폼 변경 → URL 업데이트</a></li>
+        <li><a href="#2-url-변경--폼-상태-업데이트">2. URL 변경 → 폼 상태 업데이트</a></li>
+        <li><a href="#3-무한-루프-방지-isupdatingfromurl-">3. 무한 루프 방지: <code>isUpdatingFromUrl</code> ⚠️</a></li>
+      </ul>
+    </li>
+    <li><a href="#실제로-사용해보기-">실제로 사용해보기 📝</a></li>
+    <li><a href="#마무리하며">마무리하며</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="https://gyuha.com/tags/next.js" class="badge badge-secondary">next.js</a>
+    <a href="https://gyuha.com/tags/react-hook-form" class="badge badge-secondary">react-hook-form</a>
+    <a href="https://gyuha.com/tags/typescript" class="badge badge-secondary">typescript</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });  
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
