@@ -117,13 +117,109 @@
 </span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> { useCallback, useEffect, useRef } <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#34;react&#34;</span>;
 </span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> { <span style="color:#fb660a;font-weight:bold">type</span> DefaultValues, <span style="color:#fb660a;font-weight:bold">type</span> FieldValues, <span style="color:#fb660a;font-weight:bold">type</span> UseFormProps, <span style="color:#fb660a;font-weight:bold">type</span> UseFormReturn, useForm } <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#34;react-hook-form&#34;</span>;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// ... (훅의 상세 코드는 이전과 동일) ...
-</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * useFormUrlSync 훅의 옵션 타입
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @template T - 폼 필드 값들의 타입
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> */</span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">type</span> UseFormUrlSyncOptions&lt;<span style="color:#fb660a;font-weight:bold">T</span> <span style="color:#ff0086;font-weight:bold">extends</span> <span style="color:#ff0086;font-weight:bold">FieldValues</span>&gt; = Omit&lt;<span style="color:#fb660a;font-weight:bold">UseFormProps</span>&lt;<span style="color:#ff0086;font-weight:bold">T</span>&gt;, <span style="color:#0086d2">&#34;defaultValues&#34;</span>&gt; &amp; {
+</span></span><span style="display:flex;"><span>  <span style="color:#080;background-color:#0f140f;font-style:italic">/** URL 동기화에서 제외할 필드명들 */</span>
+</span></span><span style="display:flex;"><span>  excludeFromUrl?: (<span style="color:#fb660a;font-weight:bold">keyof</span> T)[];
+</span></span><span style="display:flex;"><span>  <span style="color:#080;background-color:#0f140f;font-style:italic">/** URL 변경 시 replace 사용 여부 (기본값: true) */</span>
+</span></span><span style="display:flex;"><span>  replace?: <span style="color:#cdcaa9;font-weight:bold">boolean</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#080;background-color:#0f140f;font-style:italic">/** 폼의 기본값들 */</span>
+</span></span><span style="display:flex;"><span>  defaultValues: <span style="color:#cdcaa9;font-weight:bold">DefaultValues</span>&lt;<span style="color:#fb660a;font-weight:bold">T</span>&gt;;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * URL 파라미터 값을 적절한 타입으로 파싱합니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @param value - 파싱할 문자열 값
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @returns 파싱된 값 (string | number | boolean)
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> */</span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">function</span> parseUrlValue(value: <span style="color:#cdcaa9;font-weight:bold">string</span>): <span style="color:#cdcaa9;font-weight:bold">string</span> | <span style="color:#cdcaa9;font-weight:bold">number</span> | <span style="color:#fb660a;font-weight:bold">boolean</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">if</span> (value === <span style="color:#0086d2">&#34;&#34;</span>) <span style="color:#fb660a;font-weight:bold">return</span> value;
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">if</span> (value === <span style="color:#0086d2">&#34;true&#34;</span>) <span style="color:#fb660a;font-weight:bold">return</span> <span style="color:#fb660a;font-weight:bold">true</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">if</span> (value === <span style="color:#0086d2">&#34;false&#34;</span>) <span style="color:#fb660a;font-weight:bold">return</span> <span style="color:#fb660a;font-weight:bold">false</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> numValue = Number(value);
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">if</span> (isNumber(numValue) &amp;&amp; !Number.isNaN(numValue)) {
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">return</span> numValue;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">return</span> value;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * URL 검색 파라미터에서 초기값을 추출합니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @template T - 폼 필드 값들의 타입
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @param searchParams - URL 검색 파라미터
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @param excludeFromUrl - URL 동기화에서 제외할 필드명들
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @returns URL에서 추출한 초기값들
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> */</span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">function</span> extractInitialValuesFromUrl&lt;<span style="color:#fb660a;font-weight:bold">T</span> <span style="color:#ff0086;font-weight:bold">extends</span> <span style="color:#ff0086;font-weight:bold">FieldValues</span>&gt;(
+</span></span><span style="display:flex;"><span>  searchParams: <span style="color:#cdcaa9;font-weight:bold">URLSearchParams</span>,
+</span></span><span style="display:flex;"><span>  excludeFromUrl: (<span style="color:#fb660a;font-weight:bold">keyof</span> T)[],
+</span></span><span style="display:flex;"><span>): Partial&lt;<span style="color:#fb660a;font-weight:bold">T</span>&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> urlValues: <span style="color:#cdcaa9;font-weight:bold">Partial</span>&lt;<span style="color:#fb660a;font-weight:bold">T</span>&gt; = {};
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">for</span> (<span style="color:#fb660a;font-weight:bold">const</span> [key, value] <span style="color:#fb660a;font-weight:bold">of</span> searchParams.entries()) {
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">if</span> (!excludeFromUrl.includes(key <span style="color:#fb660a;font-weight:bold">as</span> <span style="color:#fb660a;font-weight:bold">keyof</span> T)) {
+</span></span><span style="display:flex;"><span>      (urlValues <span style="color:#fb660a;font-weight:bold">as</span> AliasAny)[key] = parseUrlValue(value);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">return</span> urlValues;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * 폼 값들로부터 URL 파라미터를 생성합니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @template T - 폼 필드 값들의 타입
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @param values - 폼 값들
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @param currentParams - 현재 URL 파라미터
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @param excludeFromUrl - URL 동기화에서 제외할 필드명들
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @returns 새로운 URLSearchParams 객체
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> */</span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">function</span> createUrlParamsFromValues&lt;<span style="color:#fb660a;font-weight:bold">T</span> <span style="color:#ff0086;font-weight:bold">extends</span> <span style="color:#ff0086;font-weight:bold">FieldValues</span>&gt;(
+</span></span><span style="display:flex;"><span>  values: <span style="color:#cdcaa9;font-weight:bold">T</span>,
+</span></span><span style="display:flex;"><span>  currentParams: <span style="color:#cdcaa9;font-weight:bold">URLSearchParams</span>,
+</span></span><span style="display:flex;"><span>  excludeFromUrl: (<span style="color:#fb660a;font-weight:bold">keyof</span> T)[],
+</span></span><span style="display:flex;"><span>): URLSearchParams {
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> params = <span style="color:#fb660a;font-weight:bold">new</span> URLSearchParams(currentParams);
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">for</span> (<span style="color:#fb660a;font-weight:bold">const</span> [key, value] <span style="color:#fb660a;font-weight:bold">of</span> Object.entries(values)) {
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">if</span> (excludeFromUrl.includes(key <span style="color:#fb660a;font-weight:bold">as</span> <span style="color:#fb660a;font-weight:bold">keyof</span> T)) {
+</span></span><span style="display:flex;"><span>      <span style="color:#fb660a;font-weight:bold">continue</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">if</span> (value !== <span style="color:#fb660a;font-weight:bold">undefined</span> &amp;&amp; value !== <span style="color:#fb660a;font-weight:bold">null</span> &amp;&amp; value !== <span style="color:#0086d2">&#34;&#34;</span>) {
+</span></span><span style="display:flex;"><span>      params.<span style="color:#fb660a;font-weight:bold">set</span>(key, String(value));
+</span></span><span style="display:flex;"><span>    } <span style="color:#fb660a;font-weight:bold">else</span> {
+</span></span><span style="display:flex;"><span>      params.<span style="color:#fb660a;font-weight:bold">delete</span>(key);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">return</span> params;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * 두 객체의 깊은 비교를 수행합니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @param obj1 - 비교할 첫 번째 객체
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @param obj2 - 비교할 두 번째 객체
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @returns 객체들이 동일한지 여부
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> */</span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">function</span> deepEqual(obj1: <span style="color:#cdcaa9;font-weight:bold">AliasAny</span>, obj2: <span style="color:#cdcaa9;font-weight:bold">AliasAny</span>): <span style="color:#fb660a;font-weight:bold">boolean</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">return</span> JSON.stringify(obj1) === JSON.stringify(obj2);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * React Hook Form과 URL 검색 파라미터를 양방향으로 동기화하는 커스텀 훅입니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> *
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @template T - 폼 필드 값들의 타입, FieldValues를 확장해야 함
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @param options - 훅 설정 옵션
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @returns React Hook Form의 UseFormReturn 객체
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> *
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @remarks
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * URL 파라미터는 자동으로 적절한 타입(string, number, boolean)으로 파싱됩니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * 빈 문자열, null, undefined 값은 URL에서 제거됩니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * Next.js의 useRouter와 useSearchParams를 사용하므로 Next.js 환경에서만 동작합니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> */</span>
 </span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">export</span> <span style="color:#fb660a;font-weight:bold">function</span> useFormUrlSync&lt;<span style="color:#fb660a;font-weight:bold">T</span> <span style="color:#ff0086;font-weight:bold">extends</span> <span style="color:#ff0086;font-weight:bold">FieldValues</span>&gt;(options: <span style="color:#cdcaa9;font-weight:bold">UseFormUrlSyncOptions</span>&lt;<span style="color:#fb660a;font-weight:bold">T</span>&gt;): UseFormReturn&lt;<span style="color:#fb660a;font-weight:bold">T</span>&gt; {
 </span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> router = useRouter();
 </span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> searchParams = useSearchParams();
 </span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> { excludeFromUrl = [], replace = <span style="color:#fb660a;font-weight:bold">true</span>, defaultValues, ...formOptions } = options;
-</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  
 </span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> isUpdatingFromUrl = useRef(<span style="color:#fb660a;font-weight:bold">false</span>);
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> getUrlValues = useCallback(() =&gt; {
