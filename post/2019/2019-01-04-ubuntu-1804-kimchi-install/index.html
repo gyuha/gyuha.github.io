@@ -477,7 +477,49 @@ bytes, but Linux says it is 512 bytes.</p>
 
     window.addEventListener('scroll', highlightTocItem);
     highlightTocItem(); 
-  });  
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.textContent = '복사';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.textContent = '복사됨!';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.textContent = '복사';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.textContent = '실패';
+          setTimeout(function() {
+            copyButton.textContent = '복사';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
 </script>
 
 
