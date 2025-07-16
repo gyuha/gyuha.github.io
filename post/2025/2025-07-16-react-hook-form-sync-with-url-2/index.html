@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Next.js에서 react-hook-form과 URL을 우아하게 동기화하는 법 2 🚀'" />
+  <title>Next.js에서 react-hook-form과 URL을 우아하게 동기화하는 법 2 🚀  | 신규하 블로그</title>
+  <meta property="og:title" content="Next.js에서 react-hook-form과 URL을 우아하게 동기화하는 법 2 🚀" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2025-06-13"> 
+  <meta property="og:url" content="https://gyuha.com/post/2025/2025-07-16-react-hook-form-sync-with-url-2/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="next.js" />
+  
+  <meta property="og:tags" content="react-hook-form" />
+  
+  <meta property="og:tags" content="typescript" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action="https://google.com/search">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search"></i>
+                <input type="hidden" name="sitesearch" value="https://gyuha.com/" />
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2025/2025-07-16-react-hook-form-sync-with-url-2/">
+          <h1>
+            Next.js에서 react-hook-form과 URL을 우아하게 동기화하는 법 2 🚀
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2025/2025-07-16-react-hook-form-sync-with-url-2/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <h2 id="전체-소스-코드">전체 소스 코드</h2>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span><span style="color:#0086d2">&#34;use client&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> <span style="color:#fb660a;font-weight:bold">type</span> { AliasAny } <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#34;@/types/alias.types&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> { isNumber } <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#34;es-toolkit/compat&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> { useRouter, useSearchParams } <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#34;next/navigation&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> { useCallback, useEffect, useRef } <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#34;react&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> { <span style="color:#fb660a;font-weight:bold">type</span> DefaultValues, <span style="color:#fb660a;font-weight:bold">type</span> FieldValues, <span style="color:#fb660a;font-weight:bold">type</span> UseFormProps, <span style="color:#fb660a;font-weight:bold">type</span> UseFormReturn, useForm } <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#34;react-hook-form&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * useFormUrlSync 훅의 옵션 타입
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @template T - 폼 필드 값들의 타입
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> */</span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">type</span> UseFormUrlSyncOptions&lt;<span style="color:#fb660a;font-weight:bold">T</span> <span style="color:#ff0086;font-weight:bold">extends</span> <span style="color:#ff0086;font-weight:bold">FieldValues</span>&gt; = Omit&lt;<span style="color:#fb660a;font-weight:bold">UseFormProps</span>&lt;<span style="color:#ff0086;font-weight:bold">T</span>&gt;, <span style="color:#0086d2">&#34;defaultValues&#34;</span>&gt; &amp; {
+</span></span><span style="display:flex;"><span>  <span style="color:#080;background-color:#0f140f;font-style:italic">/** URL 동기화에서 제외할 필드명들 */</span>
+</span></span><span style="display:flex;"><span>  excludeFromUrl?: (<span style="color:#fb660a;font-weight:bold">keyof</span> T)[];
+</span></span><span style="display:flex;"><span>  <span style="color:#080;background-color:#0f140f;font-style:italic">/** URL 변경 시 replace 사용 여부 (기본값: true) */</span>
+</span></span><span style="display:flex;"><span>  replace?: <span style="color:#cdcaa9;font-weight:bold">boolean</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#080;background-color:#0f140f;font-style:italic">/** 폼의 기본값들 */</span>
+</span></span><span style="display:flex;"><span>  defaultValues: <span style="color:#cdcaa9;font-weight:bold">DefaultValues</span>&lt;<span style="color:#fb660a;font-weight:bold">T</span>&gt;;
+</span></span><span style="display:flex;"><span>  <span style="color:#080;background-color:#0f140f;font-style:italic">/** URL 실시간 동기화 여부 (기본값: true) */</span>
+</span></span><span style="display:flex;"><span>  sync?: <span style="color:#cdcaa9;font-weight:bold">boolean</span>;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * useFormUrlSync 훅의 반환 타입
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @template T - 폼 필드 값들의 타입
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> */</span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">type</span> UseFormUrlSyncReturn&lt;<span style="color:#fb660a;font-weight:bold">T</span> <span style="color:#ff0086;font-weight:bold">extends</span> <span style="color:#ff0086;font-weight:bold">FieldValues</span>&gt; = UseFormReturn&lt;<span style="color:#fb660a;font-weight:bold">T</span>&gt; &amp; {
+</span></span><span style="display:flex;"><span>  <span style="color:#080;background-color:#0f140f;font-style:italic">/** URL을 수동으로 동기화하는 함수 */</span>
+</span></span><span style="display:flex;"><span>  syncToUrl: () =&gt; <span style="color:#fb660a;font-weight:bold">void</span>;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * URL 파라미터 값을 적절한 타입으로 파싱합니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @param value - 파싱할 문자열 값
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @returns 파싱된 값 (string | number | boolean)
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> */</span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">function</span> parseUrlValue(value: <span style="color:#cdcaa9;font-weight:bold">string</span>): <span style="color:#cdcaa9;font-weight:bold">string</span> | <span style="color:#cdcaa9;font-weight:bold">number</span> | <span style="color:#fb660a;font-weight:bold">boolean</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">if</span> (value === <span style="color:#0086d2">&#34;&#34;</span>) <span style="color:#fb660a;font-weight:bold">return</span> value;
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">if</span> (value === <span style="color:#0086d2">&#34;true&#34;</span>) <span style="color:#fb660a;font-weight:bold">return</span> <span style="color:#fb660a;font-weight:bold">true</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">if</span> (value === <span style="color:#0086d2">&#34;false&#34;</span>) <span style="color:#fb660a;font-weight:bold">return</span> <span style="color:#fb660a;font-weight:bold">false</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> numValue = Number(value);
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">if</span> (isNumber(numValue) &amp;&amp; !Number.isNaN(numValue)) {
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">return</span> numValue;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">return</span> value;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * URL 검색 파라미터에서 초기값을 추출합니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @template T - 폼 필드 값들의 타입
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @param searchParams - URL 검색 파라미터
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @param excludeFromUrl - URL 동기화에서 제외할 필드명들
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @returns URL에서 추출한 초기값들
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> */</span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">function</span> extractInitialValuesFromUrl&lt;<span style="color:#fb660a;font-weight:bold">T</span> <span style="color:#ff0086;font-weight:bold">extends</span> <span style="color:#ff0086;font-weight:bold">FieldValues</span>&gt;(
+</span></span><span style="display:flex;"><span>  searchParams: <span style="color:#cdcaa9;font-weight:bold">URLSearchParams</span>,
+</span></span><span style="display:flex;"><span>  excludeFromUrl: (<span style="color:#fb660a;font-weight:bold">keyof</span> T)[],
+</span></span><span style="display:flex;"><span>): Partial&lt;<span style="color:#fb660a;font-weight:bold">T</span>&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> urlValues: <span style="color:#cdcaa9;font-weight:bold">Partial</span>&lt;<span style="color:#fb660a;font-weight:bold">T</span>&gt; = {};
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">for</span> (<span style="color:#fb660a;font-weight:bold">const</span> [key, value] <span style="color:#fb660a;font-weight:bold">of</span> searchParams.entries()) {
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">if</span> (!excludeFromUrl.includes(key <span style="color:#fb660a;font-weight:bold">as</span> <span style="color:#fb660a;font-weight:bold">keyof</span> T)) {
+</span></span><span style="display:flex;"><span>      (urlValues <span style="color:#fb660a;font-weight:bold">as</span> AliasAny)[key] = parseUrlValue(value);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">return</span> urlValues;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * 폼 값들로부터 URL 파라미터를 생성합니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @template T - 폼 필드 값들의 타입
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @param values - 폼 값들
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @param currentParams - 현재 URL 파라미터
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @param excludeFromUrl - URL 동기화에서 제외할 필드명들
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @returns 새로운 URLSearchParams 객체
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> */</span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">function</span> createUrlParamsFromValues&lt;<span style="color:#fb660a;font-weight:bold">T</span> <span style="color:#ff0086;font-weight:bold">extends</span> <span style="color:#ff0086;font-weight:bold">FieldValues</span>&gt;(
+</span></span><span style="display:flex;"><span>  values: <span style="color:#cdcaa9;font-weight:bold">T</span>,
+</span></span><span style="display:flex;"><span>  currentParams: <span style="color:#cdcaa9;font-weight:bold">URLSearchParams</span>,
+</span></span><span style="display:flex;"><span>  excludeFromUrl: (<span style="color:#fb660a;font-weight:bold">keyof</span> T)[],
+</span></span><span style="display:flex;"><span>): URLSearchParams {
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> params = <span style="color:#fb660a;font-weight:bold">new</span> URLSearchParams(currentParams);
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">for</span> (<span style="color:#fb660a;font-weight:bold">const</span> [key, value] <span style="color:#fb660a;font-weight:bold">of</span> Object.entries(values)) {
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">if</span> (excludeFromUrl.includes(key <span style="color:#fb660a;font-weight:bold">as</span> <span style="color:#fb660a;font-weight:bold">keyof</span> T)) {
+</span></span><span style="display:flex;"><span>      <span style="color:#fb660a;font-weight:bold">continue</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">if</span> (value !== <span style="color:#fb660a;font-weight:bold">undefined</span> &amp;&amp; value !== <span style="color:#fb660a;font-weight:bold">null</span> &amp;&amp; value !== <span style="color:#0086d2">&#34;&#34;</span>) {
+</span></span><span style="display:flex;"><span>      params.<span style="color:#fb660a;font-weight:bold">set</span>(key, String(value));
+</span></span><span style="display:flex;"><span>    } <span style="color:#fb660a;font-weight:bold">else</span> {
+</span></span><span style="display:flex;"><span>      params.<span style="color:#fb660a;font-weight:bold">delete</span>(key);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">return</span> params;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * 두 객체의 깊은 비교를 수행합니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @param obj1 - 비교할 첫 번째 객체
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @param obj2 - 비교할 두 번째 객체
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @returns 객체들이 동일한지 여부
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> */</span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">function</span> deepEqual(obj1: <span style="color:#cdcaa9;font-weight:bold">AliasAny</span>, obj2: <span style="color:#cdcaa9;font-weight:bold">AliasAny</span>): <span style="color:#fb660a;font-weight:bold">boolean</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">return</span> JSON.stringify(obj1) === JSON.stringify(obj2);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * React Hook Form과 URL 검색 파라미터를 양방향으로 동기화하는 커스텀 훅입니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> *
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @template T - 폼 필드 값들의 타입, FieldValues를 확장해야 함
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @param options - 훅 설정 옵션
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @returns React Hook Form의 UseFormReturn 객체
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> *
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @remarks
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * URL 파라미터는 자동으로 적절한 타입(string, number, boolean)으로 파싱됩니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * 빈 문자열, null, undefined 값은 URL에서 제거됩니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * Next.js의 useRouter와 useSearchParams를 사용하므로 Next.js 환경에서만 동작합니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> */</span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">export</span> <span style="color:#fb660a;font-weight:bold">function</span> useFormUrlSync&lt;<span style="color:#fb660a;font-weight:bold">T</span> <span style="color:#ff0086;font-weight:bold">extends</span> <span style="color:#ff0086;font-weight:bold">FieldValues</span>&gt;(options: <span style="color:#cdcaa9;font-weight:bold">UseFormUrlSyncOptions</span>&lt;<span style="color:#fb660a;font-weight:bold">T</span>&gt;): UseFormUrlSyncReturn&lt;<span style="color:#fb660a;font-weight:bold">T</span>&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> router = useRouter();
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> searchParams = useSearchParams();
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> { excludeFromUrl = [], replace = <span style="color:#fb660a;font-weight:bold">true</span>, defaultValues, sync = <span style="color:#fb660a;font-weight:bold">true</span>, ...formOptions } = options;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> isUpdatingFromUrl = useRef(<span style="color:#fb660a;font-weight:bold">false</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> getUrlValues = useCallback(() =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">return</span> extractInitialValuesFromUrl&lt;<span style="color:#fb660a;font-weight:bold">T</span>&gt;(searchParams, excludeFromUrl <span style="color:#fb660a;font-weight:bold">as</span> (<span style="color:#fb660a;font-weight:bold">keyof</span> T)[]);
+</span></span><span style="display:flex;"><span>  }, [searchParams, excludeFromUrl]);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> initialValues = {
+</span></span><span style="display:flex;"><span>    ...defaultValues,
+</span></span><span style="display:flex;"><span>    ...getUrlValues(),
+</span></span><span style="display:flex;"><span>  } <span style="color:#fb660a;font-weight:bold">as</span> DefaultValues&lt;<span style="color:#fb660a;font-weight:bold">T</span>&gt;;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> form = useForm({
+</span></span><span style="display:flex;"><span>    ...formOptions,
+</span></span><span style="display:flex;"><span>    defaultValues: <span style="color:#cdcaa9;font-weight:bold">initialValues</span>,
+</span></span><span style="display:flex;"><span>  });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> { watch, reset, getValues } = form;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> updateUrl = useCallback(
+</span></span><span style="display:flex;"><span>    (values: <span style="color:#cdcaa9;font-weight:bold">T</span>) =&gt; {
+</span></span><span style="display:flex;"><span>      <span style="color:#fb660a;font-weight:bold">const</span> params = createUrlParamsFromValues(values, searchParams, excludeFromUrl <span style="color:#fb660a;font-weight:bold">as</span> (<span style="color:#fb660a;font-weight:bold">keyof</span> T)[]);
+</span></span><span style="display:flex;"><span>      <span style="color:#fb660a;font-weight:bold">const</span> newSearchString = params.toString();
+</span></span><span style="display:flex;"><span>      <span style="color:#fb660a;font-weight:bold">const</span> currentSearchString = <span style="color:#fb660a;font-weight:bold">new</span> URLSearchParams(window.location.search).toString();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#fb660a;font-weight:bold">if</span> (newSearchString !== currentSearchString) {
+</span></span><span style="display:flex;"><span>        <span style="color:#fb660a;font-weight:bold">const</span> newUrl = <span style="color:#0086d2">`</span><span style="color:#0086d2">${</span>window.location.pathname<span style="color:#0086d2">}</span><span style="color:#0086d2">?</span><span style="color:#0086d2">${</span>newSearchString<span style="color:#0086d2">}</span><span style="color:#0086d2">`</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#fb660a;font-weight:bold">if</span> (replace) {
+</span></span><span style="display:flex;"><span>          router.replace(newUrl, { scroll: <span style="color:#cdcaa9;font-weight:bold">false</span> });
+</span></span><span style="display:flex;"><span>        } <span style="color:#fb660a;font-weight:bold">else</span> {
+</span></span><span style="display:flex;"><span>          router.push(newUrl, { scroll: <span style="color:#cdcaa9;font-weight:bold">false</span> });
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    [router, searchParams, excludeFromUrl, replace],
+</span></span><span style="display:flex;"><span>  );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> syncToUrl = useCallback(() =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">const</span> values = getValues();
+</span></span><span style="display:flex;"><span>    updateUrl(values);
+</span></span><span style="display:flex;"><span>  }, [getValues, updateUrl]);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  useEffect(() =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">if</span> (sync) {
+</span></span><span style="display:flex;"><span>      <span style="color:#fb660a;font-weight:bold">const</span> subscription = watch(values =&gt; {
+</span></span><span style="display:flex;"><span>        <span style="color:#fb660a;font-weight:bold">if</span> (isUpdatingFromUrl.current) {
+</span></span><span style="display:flex;"><span>          <span style="color:#fb660a;font-weight:bold">return</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        updateUrl(values <span style="color:#fb660a;font-weight:bold">as</span> T);
+</span></span><span style="display:flex;"><span>      });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#fb660a;font-weight:bold">return</span> () =&gt; subscription.unsubscribe();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }, [watch, updateUrl, sync]);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  useEffect(() =&gt; {
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">const</span> urlValues = getUrlValues();
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">const</span> currentFormValues = getValues();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">const</span> relevantFormValues: <span style="color:#cdcaa9;font-weight:bold">Partial</span>&lt;<span style="color:#fb660a;font-weight:bold">T</span>&gt; = {};
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">for</span> (<span style="color:#fb660a;font-weight:bold">const</span> key <span style="color:#fb660a;font-weight:bold">in</span> urlValues) {
+</span></span><span style="display:flex;"><span>      <span style="color:#fb660a;font-weight:bold">if</span> (Object.prototype.hasOwnProperty.call(urlValues, key)) {
+</span></span><span style="display:flex;"><span>        relevantFormValues[key <span style="color:#fb660a;font-weight:bold">as</span> <span style="color:#fb660a;font-weight:bold">keyof</span> T] = currentFormValues[key <span style="color:#fb660a;font-weight:bold">as</span> <span style="color:#fb660a;font-weight:bold">keyof</span> T];
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">if</span> (!deepEqual(urlValues, relevantFormValues)) {
+</span></span><span style="display:flex;"><span>      isUpdatingFromUrl.current = <span style="color:#fb660a;font-weight:bold">true</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      reset({
+</span></span><span style="display:flex;"><span>        ...currentFormValues,
+</span></span><span style="display:flex;"><span>        ...urlValues,
+</span></span><span style="display:flex;"><span>      } <span style="color:#fb660a;font-weight:bold">as</span> DefaultValues&lt;<span style="color:#fb660a;font-weight:bold">T</span>&gt;);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      setTimeout(() =&gt; {
+</span></span><span style="display:flex;"><span>        isUpdatingFromUrl.current = <span style="color:#fb660a;font-weight:bold">false</span>;
+</span></span><span style="display:flex;"><span>      }, <span style="color:#0086f7;font-weight:bold">0</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }, [getUrlValues, reset, getValues]);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">return</span> {
+</span></span><span style="display:flex;"><span>    ...form,
+</span></span><span style="display:flex;"><span>    syncToUrl: <span style="color:#cdcaa9;font-weight:bold">syncToUrl</span>,
+</span></span><span style="display:flex;"><span>  };
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>웹 애플리케이션에서 필터나 검색 기능을 구현할 때, 사용자가 설정한 상태를 URL에 반영하고 싶은 경우가 많습니다. 예를 들어, 사용자가 상품 목록에서 카테고리를 선택하고 가격 범위를 설정했을 때, 이 정보가 URL에 반영되어 페이지를 새로고침하거나 다른 사람과 공유해도 동일한 필터 상태를 유지할 수 있어야 합니다.</p>
+<p>이런 요구사항을 해결하기 위해 React Hook Form과 URL 검색 파라미터를 양방향으로 동기화하는 <code>useFormUrlSync</code> 커스텀 훅을 소개합니다.</p>
+<h2 id="주요-기능">주요 기능</h2>
+<h3 id="1-양방향-동기화">1. 양방향 동기화</h3>
+<ul>
+<li><strong>폼 → URL</strong>: 폼 값이 변경되면 자동으로 URL이 업데이트됩니다</li>
+<li><strong>URL → 폼</strong>: URL 파라미터가 변경되면 폼 상태도 자동으로 업데이트됩니다</li>
+</ul>
+<h3 id="2-타입-안전성">2. 타입 안전성</h3>
+<p>URL 파라미터는 기본적으로 문자열이지만, 이 훅은 자동으로 적절한 타입으로 변환합니다:</p>
+<ul>
+<li><code>&quot;true&quot;</code> → <code>true</code> (boolean)</li>
+<li><code>&quot;false&quot;</code> → <code>false</code> (boolean)</li>
+<li><code>&quot;42&quot;</code> → <code>42</code> (number)</li>
+<li><code>&quot;hello&quot;</code> → <code>&quot;hello&quot;</code> (string)</li>
+</ul>
+<h3 id="3-선택적-필드-제외">3. 선택적 필드 제외</h3>
+<p>특정 필드를 URL 동기화에서 제외할 수 있습니다. 예를 들어, 비밀번호나 임시 상태 같은 민감한 정보는 URL에 노출되지 않도록 할 수 있습니다.</p>
+<h3 id="4-실시간-동기화-제어">4. 실시간 동기화 제어</h3>
+<p><code>sync</code> 옵션으로 실시간 동기화를 활성화/비활성화할 수 있으며, 수동으로 동기화할 수 있는 <code>syncToUrl</code> 함수도 제공됩니다.</p>
+<h2 id="사용-방법">사용 방법</h2>
+<h3 id="기본-사용법">기본 사용법</h3>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> { useFormUrlSync } <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#39;./useFormUrlSync&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">type</span> FilterForm = {
+</span></span><span style="display:flex;"><span>  category: <span style="color:#cdcaa9;font-weight:bold">string</span>;
+</span></span><span style="display:flex;"><span>  minPrice: <span style="color:#cdcaa9;font-weight:bold">number</span>;
+</span></span><span style="display:flex;"><span>  maxPrice: <span style="color:#cdcaa9;font-weight:bold">number</span>;
+</span></span><span style="display:flex;"><span>  inStock: <span style="color:#cdcaa9;font-weight:bold">boolean</span>;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">function</span> ProductFilter() {
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> form = useFormUrlSync&lt;<span style="color:#fb660a;font-weight:bold">FilterForm</span>&gt;({
+</span></span><span style="display:flex;"><span>    defaultValues: {
+</span></span><span style="display:flex;"><span>      category: <span style="color:#0086d2">&#39;&#39;</span>,
+</span></span><span style="display:flex;"><span>      minPrice: <span style="color:#cdcaa9;font-weight:bold">0</span>,
+</span></span><span style="display:flex;"><span>      maxPrice: <span style="color:#cdcaa9;font-weight:bold">1000</span>,
+</span></span><span style="display:flex;"><span>      inStock: <span style="color:#cdcaa9;font-weight:bold">false</span>,
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>  });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> { register, watch } = form;
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> values = watch();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">return</span> (
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#fb660a;font-weight:bold">form</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#fb660a;font-weight:bold">select</span> {<span style="color:#ff0086;font-weight:bold">...register</span>(&#39;<span style="color:#ff0086;font-weight:bold">category</span>&#39;)}&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#fb660a;font-weight:bold">option</span> <span style="color:#ff0086;font-weight:bold">value</span>=<span style="color:#0086d2">&#34;&#34;</span>&gt;전체 카테고리&lt;/<span style="color:#fb660a;font-weight:bold">option</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#fb660a;font-weight:bold">option</span> <span style="color:#ff0086;font-weight:bold">value</span>=<span style="color:#0086d2">&#34;electronics&#34;</span>&gt;전자제품&lt;/<span style="color:#fb660a;font-weight:bold">option</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#fb660a;font-weight:bold">option</span> <span style="color:#ff0086;font-weight:bold">value</span>=<span style="color:#0086d2">&#34;clothing&#34;</span>&gt;의류&lt;/<span style="color:#fb660a;font-weight:bold">option</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;/<span style="color:#fb660a;font-weight:bold">select</span>&gt;
+</span></span><span style="display:flex;"><span>      
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#fb660a;font-weight:bold">input</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff0086;font-weight:bold">type</span>=<span style="color:#0086d2">&#34;number&#34;</span>
+</span></span><span style="display:flex;"><span>        {<span style="color:#ff0086;font-weight:bold">...register</span>(&#39;<span style="color:#ff0086;font-weight:bold">minPrice</span>&#39;, { <span style="color:#ff0086;font-weight:bold">valueAsNumber</span>: <span style="color:#ff0086;font-weight:bold">true</span> })}
+</span></span><span style="display:flex;"><span>        <span style="color:#ff0086;font-weight:bold">placeholder</span>=<span style="color:#0086d2">&#34;최소 가격&#34;</span>
+</span></span><span style="display:flex;"><span>      /&gt;
+</span></span><span style="display:flex;"><span>      
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#fb660a;font-weight:bold">input</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff0086;font-weight:bold">type</span>=<span style="color:#0086d2">&#34;number&#34;</span>
+</span></span><span style="display:flex;"><span>        {<span style="color:#ff0086;font-weight:bold">...register</span>(&#39;<span style="color:#ff0086;font-weight:bold">maxPrice</span>&#39;, { <span style="color:#ff0086;font-weight:bold">valueAsNumber</span>: <span style="color:#ff0086;font-weight:bold">true</span> })}
+</span></span><span style="display:flex;"><span>        <span style="color:#ff0086;font-weight:bold">placeholder</span>=<span style="color:#0086d2">&#34;최대 가격&#34;</span>
+</span></span><span style="display:flex;"><span>      /&gt;
+</span></span><span style="display:flex;"><span>      
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#fb660a;font-weight:bold">label</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#fb660a;font-weight:bold">input</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#ff0086;font-weight:bold">type</span>=<span style="color:#0086d2">&#34;checkbox&#34;</span>
+</span></span><span style="display:flex;"><span>          {<span style="color:#ff0086;font-weight:bold">...register</span>(&#39;<span style="color:#ff0086;font-weight:bold">inStock</span>&#39;)}
+</span></span><span style="display:flex;"><span>        /&gt;
+</span></span><span style="display:flex;"><span>        재고 있는 상품만
+</span></span><span style="display:flex;"><span>      &lt;/<span style="color:#fb660a;font-weight:bold">label</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#fb660a;font-weight:bold">form</span>&gt;
+</span></span><span style="display:flex;"><span>  );
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="옵션-상세-설명">옵션 상세 설명</h3>
+<h4 id="excludefromurl"><code>excludeFromUrl</code></h4>
+<p>특정 필드를 URL 동기화에서 제외합니다:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">const</span> form = useFormUrlSync&lt;<span style="color:#fb660a;font-weight:bold">FilterForm</span>&gt;({
+</span></span><span style="display:flex;"><span>  defaultValues: { <span style="color:#080;background-color:#0f140f;font-style:italic">/* ... */</span> },
+</span></span><span style="display:flex;"><span>  excludeFromUrl: [<span style="color:#0086d2">&#39;password&#39;</span>, <span style="color:#0086d2">&#39;temporaryState&#39;</span>],
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><h4 id="replace"><code>replace</code></h4>
+<p>URL 변경 시 브라우저 히스토리 관리 방식을 결정합니다:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">const</span> form = useFormUrlSync&lt;<span style="color:#fb660a;font-weight:bold">FilterForm</span>&gt;({
+</span></span><span style="display:flex;"><span>  defaultValues: { <span style="color:#080;background-color:#0f140f;font-style:italic">/* ... */</span> },
+</span></span><span style="display:flex;"><span>  replace: <span style="color:#cdcaa9;font-weight:bold">false</span>, <span style="color:#080;background-color:#0f140f;font-style:italic">// push 사용 (기본값: true)
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>});
+</span></span></code></pre></div><h4 id="sync"><code>sync</code></h4>
+<p>실시간 동기화 여부를 제어합니다:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">const</span> form = useFormUrlSync&lt;<span style="color:#fb660a;font-weight:bold">FilterForm</span>&gt;({
+</span></span><span style="display:flex;"><span>  defaultValues: { <span style="color:#080;background-color:#0f140f;font-style:italic">/* ... */</span> },
+</span></span><span style="display:flex;"><span>  sync: <span style="color:#cdcaa9;font-weight:bold">false</span>, <span style="color:#080;background-color:#0f140f;font-style:italic">// 실시간 동기화 비활성화
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>});
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// 수동으로 동기화
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span><span style="color:#fb660a;font-weight:bold">const</span> { syncToUrl } = form;
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">const</span> handleSubmit = () =&gt; {
+</span></span><span style="display:flex;"><span>  syncToUrl();
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><h2 id="구현-상세-설명">구현 상세 설명</h2>
+<h3 id="1-url-값-파싱-parseurlvalue">1. URL 값 파싱 (<code>parseUrlValue</code>)</h3>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">function</span> parseUrlValue(value: <span style="color:#cdcaa9;font-weight:bold">string</span>): <span style="color:#cdcaa9;font-weight:bold">string</span> | <span style="color:#cdcaa9;font-weight:bold">number</span> | <span style="color:#fb660a;font-weight:bold">boolean</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">if</span> (value === <span style="color:#0086d2">&#34;&#34;</span>) <span style="color:#fb660a;font-weight:bold">return</span> value;
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">if</span> (value === <span style="color:#0086d2">&#34;true&#34;</span>) <span style="color:#fb660a;font-weight:bold">return</span> <span style="color:#fb660a;font-weight:bold">true</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">if</span> (value === <span style="color:#0086d2">&#34;false&#34;</span>) <span style="color:#fb660a;font-weight:bold">return</span> <span style="color:#fb660a;font-weight:bold">false</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> numValue = Number(value);
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">if</span> (isNumber(numValue) &amp;&amp; !Number.isNaN(numValue)) {
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">return</span> numValue;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">return</span> value;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>이 함수는 URL의 문자열 파라미터를 적절한 타입으로 변환합니다. 문자열이 boolean이나 number로 변환 가능한지 확인하고, 그렇지 않으면 원본 문자열을 반환합니다.</p>
+<h3 id="2-초기값-추출-extractinitialvaluesfromurl">2. 초기값 추출 (<code>extractInitialValuesFromUrl</code>)</h3>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">function</span> extractInitialValuesFromUrl&lt;<span style="color:#fb660a;font-weight:bold">T</span> <span style="color:#ff0086;font-weight:bold">extends</span> <span style="color:#ff0086;font-weight:bold">FieldValues</span>&gt;(
+</span></span><span style="display:flex;"><span>  searchParams: <span style="color:#cdcaa9;font-weight:bold">URLSearchParams</span>,
+</span></span><span style="display:flex;"><span>  excludeFromUrl: (<span style="color:#fb660a;font-weight:bold">keyof</span> T)[],
+</span></span><span style="display:flex;"><span>): Partial&lt;<span style="color:#fb660a;font-weight:bold">T</span>&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> urlValues: <span style="color:#cdcaa9;font-weight:bold">Partial</span>&lt;<span style="color:#fb660a;font-weight:bold">T</span>&gt; = {};
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">for</span> (<span style="color:#fb660a;font-weight:bold">const</span> [key, value] <span style="color:#fb660a;font-weight:bold">of</span> searchParams.entries()) {
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">if</span> (!excludeFromUrl.includes(key <span style="color:#fb660a;font-weight:bold">as</span> <span style="color:#fb660a;font-weight:bold">keyof</span> T)) {
+</span></span><span style="display:flex;"><span>      (urlValues <span style="color:#fb660a;font-weight:bold">as</span> AliasAny)[key] = parseUrlValue(value);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">return</span> urlValues;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>페이지 로드 시 URL에서 초기값을 추출하여 폼의 기본값과 병합합니다. <code>excludeFromUrl</code>에 포함된 필드는 제외됩니다.</p>
+<h3 id="3-url-파라미터-생성-createurlparamsfromvalues">3. URL 파라미터 생성 (<code>createUrlParamsFromValues</code>)</h3>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">function</span> createUrlParamsFromValues&lt;<span style="color:#fb660a;font-weight:bold">T</span> <span style="color:#ff0086;font-weight:bold">extends</span> <span style="color:#ff0086;font-weight:bold">FieldValues</span>&gt;(
+</span></span><span style="display:flex;"><span>  values: <span style="color:#cdcaa9;font-weight:bold">T</span>,
+</span></span><span style="display:flex;"><span>  currentParams: <span style="color:#cdcaa9;font-weight:bold">URLSearchParams</span>,
+</span></span><span style="display:flex;"><span>  excludeFromUrl: (<span style="color:#fb660a;font-weight:bold">keyof</span> T)[],
+</span></span><span style="display:flex;"><span>): URLSearchParams {
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> params = <span style="color:#fb660a;font-weight:bold">new</span> URLSearchParams(currentParams);
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">for</span> (<span style="color:#fb660a;font-weight:bold">const</span> [key, value] <span style="color:#fb660a;font-weight:bold">of</span> Object.entries(values)) {
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">if</span> (excludeFromUrl.includes(key <span style="color:#fb660a;font-weight:bold">as</span> <span style="color:#fb660a;font-weight:bold">keyof</span> T)) {
+</span></span><span style="display:flex;"><span>      <span style="color:#fb660a;font-weight:bold">continue</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">if</span> (value !== <span style="color:#fb660a;font-weight:bold">undefined</span> &amp;&amp; value !== <span style="color:#fb660a;font-weight:bold">null</span> &amp;&amp; value !== <span style="color:#0086d2">&#34;&#34;</span>) {
+</span></span><span style="display:flex;"><span>      params.<span style="color:#fb660a;font-weight:bold">set</span>(key, String(value));
+</span></span><span style="display:flex;"><span>    } <span style="color:#fb660a;font-weight:bold">else</span> {
+</span></span><span style="display:flex;"><span>      params.<span style="color:#fb660a;font-weight:bold">delete</span>(key);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">return</span> params;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>폼 값들을 URL 파라미터로 변환합니다. 빈 값(<code>undefined</code>, <code>null</code>, <code>&quot;&quot;</code>)은 URL에서 제거되어 깔끔한 URL을 유지합니다.</p>
+<h3 id="4-무한-루프-방지">4. 무한 루프 방지</h3>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">const</span> isUpdatingFromUrl = useRef(<span style="color:#fb660a;font-weight:bold">false</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>useEffect(() =&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">if</span> (sync) {
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">const</span> subscription = watch(values =&gt; {
+</span></span><span style="display:flex;"><span>      <span style="color:#fb660a;font-weight:bold">if</span> (isUpdatingFromUrl.current) {
+</span></span><span style="display:flex;"><span>        <span style="color:#fb660a;font-weight:bold">return</span>;
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>      updateUrl(values <span style="color:#fb660a;font-weight:bold">as</span> T);
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">return</span> () =&gt; subscription.unsubscribe();
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}, [watch, updateUrl, sync]);
+</span></span></code></pre></div><p><code>useRef</code>를 사용하여 URL 업데이트로 인한 폼 변경과 폼 변경으로 인한 URL 업데이트를 구분합니다. 이를 통해 무한 루프를 방지합니다.</p>
+<h3 id="5-깊은-비교-deepequal">5. 깊은 비교 (<code>deepEqual</code>)</h3>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">function</span> deepEqual(obj1: <span style="color:#cdcaa9;font-weight:bold">AliasAny</span>, obj2: <span style="color:#cdcaa9;font-weight:bold">AliasAny</span>): <span style="color:#fb660a;font-weight:bold">boolean</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">return</span> JSON.stringify(obj1) === JSON.stringify(obj2);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>객체의 깊은 비교를 통해 실제로 값이 변경되었을 때만 폼을 업데이트하여 불필요한 렌더링을 방지합니다.</p>
+<h2 id="실제-활용-예시">실제 활용 예시</h2>
+<h3 id="검색-필터-페이지">검색 필터 페이지</h3>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">type</span> SearchFilters = {
+</span></span><span style="display:flex;"><span>  query: <span style="color:#cdcaa9;font-weight:bold">string</span>;
+</span></span><span style="display:flex;"><span>  category: <span style="color:#cdcaa9;font-weight:bold">string</span>;
+</span></span><span style="display:flex;"><span>  sortBy: <span style="color:#0086d2">&#39;price&#39;</span> | <span style="color:#0086d2">&#39;name&#39;</span> | <span style="color:#0086d2">&#39;date&#39;</span>;
+</span></span><span style="display:flex;"><span>  priceRange: [<span style="color:#cdcaa9;font-weight:bold">number</span>, <span style="color:#cdcaa9;font-weight:bold">number</span>];
+</span></span><span style="display:flex;"><span>  isAvailable: <span style="color:#cdcaa9;font-weight:bold">boolean</span>;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">function</span> SearchPage() {
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> form = useFormUrlSync&lt;<span style="color:#fb660a;font-weight:bold">SearchFilters</span>&gt;({
+</span></span><span style="display:flex;"><span>    defaultValues: {
+</span></span><span style="display:flex;"><span>      query: <span style="color:#0086d2">&#39;&#39;</span>,
+</span></span><span style="display:flex;"><span>      category: <span style="color:#0086d2">&#39;&#39;</span>,
+</span></span><span style="display:flex;"><span>      sortBy: <span style="color:#0086d2">&#39;name&#39;</span>,
+</span></span><span style="display:flex;"><span>      priceRange: [<span style="color:#0086f7;font-weight:bold">0</span>, <span style="color:#0086f7;font-weight:bold">1000</span>],
+</span></span><span style="display:flex;"><span>      isAvailable: <span style="color:#cdcaa9;font-weight:bold">false</span>,
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    excludeFromUrl: [<span style="color:#0086d2">&#39;priceRange&#39;</span>], <span style="color:#080;background-color:#0f140f;font-style:italic">// 복잡한 객체는 URL에서 제외
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>  });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> { register, watch } = form;
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> filters = watch();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#080;background-color:#0f140f;font-style:italic">// 필터 변경 시 자동으로 URL 업데이트되고
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>  <span style="color:#080;background-color:#0f140f;font-style:italic">// 검색 결과도 자동으로 업데이트됨
+</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>  <span style="color:#fb660a;font-weight:bold">const</span> { data: <span style="color:#cdcaa9;font-weight:bold">products</span> } = useQuery({
+</span></span><span style="display:flex;"><span>    queryKey: [<span style="color:#0086d2">&#39;products&#39;</span>, filters],
+</span></span><span style="display:flex;"><span>    queryFn: () =&gt; fetchProducts(filters),
+</span></span><span style="display:flex;"><span>  });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">return</span> (
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#fb660a;font-weight:bold">div</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#fb660a;font-weight:bold">form</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#fb660a;font-weight:bold">input</span>
+</span></span><span style="display:flex;"><span>          {<span style="color:#ff0086;font-weight:bold">...register</span>(&#39;<span style="color:#ff0086;font-weight:bold">query</span>&#39;)}
+</span></span><span style="display:flex;"><span>          <span style="color:#ff0086;font-weight:bold">placeholder</span>=<span style="color:#0086d2">&#34;검색어 입력&#34;</span>
+</span></span><span style="display:flex;"><span>        /&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#fb660a;font-weight:bold">select</span> {<span style="color:#ff0086;font-weight:bold">...register</span>(&#39;<span style="color:#ff0086;font-weight:bold">category</span>&#39;)}&gt;
+</span></span><span style="display:flex;"><span>          &lt;<span style="color:#fb660a;font-weight:bold">option</span> <span style="color:#ff0086;font-weight:bold">value</span>=<span style="color:#0086d2">&#34;&#34;</span>&gt;전체&lt;/<span style="color:#fb660a;font-weight:bold">option</span>&gt;
+</span></span><span style="display:flex;"><span>          &lt;<span style="color:#fb660a;font-weight:bold">option</span> <span style="color:#ff0086;font-weight:bold">value</span>=<span style="color:#0086d2">&#34;electronics&#34;</span>&gt;전자제품&lt;/<span style="color:#fb660a;font-weight:bold">option</span>&gt;
+</span></span><span style="display:flex;"><span>          &lt;<span style="color:#fb660a;font-weight:bold">option</span> <span style="color:#ff0086;font-weight:bold">value</span>=<span style="color:#0086d2">&#34;books&#34;</span>&gt;도서&lt;/<span style="color:#fb660a;font-weight:bold">option</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;/<span style="color:#fb660a;font-weight:bold">select</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#fb660a;font-weight:bold">select</span> {<span style="color:#ff0086;font-weight:bold">...register</span>(&#39;<span style="color:#ff0086;font-weight:bold">sortBy</span>&#39;)}&gt;
+</span></span><span style="display:flex;"><span>          &lt;<span style="color:#fb660a;font-weight:bold">option</span> <span style="color:#ff0086;font-weight:bold">value</span>=<span style="color:#0086d2">&#34;name&#34;</span>&gt;이름순&lt;/<span style="color:#fb660a;font-weight:bold">option</span>&gt;
+</span></span><span style="display:flex;"><span>          &lt;<span style="color:#fb660a;font-weight:bold">option</span> <span style="color:#ff0086;font-weight:bold">value</span>=<span style="color:#0086d2">&#34;price&#34;</span>&gt;가격순&lt;/<span style="color:#fb660a;font-weight:bold">option</span>&gt;
+</span></span><span style="display:flex;"><span>          &lt;<span style="color:#fb660a;font-weight:bold">option</span> <span style="color:#ff0086;font-weight:bold">value</span>=<span style="color:#0086d2">&#34;date&#34;</span>&gt;날짜순&lt;/<span style="color:#fb660a;font-weight:bold">option</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;/<span style="color:#fb660a;font-weight:bold">select</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#fb660a;font-weight:bold">label</span>&gt;
+</span></span><span style="display:flex;"><span>          &lt;<span style="color:#fb660a;font-weight:bold">input</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff0086;font-weight:bold">type</span>=<span style="color:#0086d2">&#34;checkbox&#34;</span>
+</span></span><span style="display:flex;"><span>            {<span style="color:#ff0086;font-weight:bold">...register</span>(&#39;<span style="color:#ff0086;font-weight:bold">isAvailable</span>&#39;)}
+</span></span><span style="display:flex;"><span>          /&gt;
+</span></span><span style="display:flex;"><span>          구매 가능한 상품만
+</span></span><span style="display:flex;"><span>        &lt;/<span style="color:#fb660a;font-weight:bold">label</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;/<span style="color:#fb660a;font-weight:bold">form</span>&gt;
+</span></span><span style="display:flex;"><span>      
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#fb660a;font-weight:bold">ProductList</span> <span style="color:#ff0086;font-weight:bold">products</span>={products} /&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#fb660a;font-weight:bold">div</span>&gt;
+</span></span><span style="display:flex;"><span>  );
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="주의사항-및-한계">주의사항 및 한계</h2>
+<h3 id="1-nextjs-클라이언트-컴포넌트-전용">1. Next.js 클라이언트 컴포넌트 전용</h3>
+<p>이 훅은 Next.js의 <code>useRouter</code>와 <code>useSearchParams</code>를 사용하므로:</p>
+<ul>
+<li>클라이언트 컴포넌트에서만 동작합니다</li>
+<li>컴포넌트 상단에 <code>&quot;use client&quot;</code> 지시어가 필요합니다</li>
+</ul>
+<h3 id="2-복잡한-객체-타입-제한">2. 복잡한 객체 타입 제한</h3>
+<p>URL 파라미터의 특성상 복잡한 객체나 배열은 직접 지원하지 않습니다. 이런 경우 <code>excludeFromUrl</code> 옵션을 사용하거나 별도의 직렬화 로직을 구현해야 합니다.</p>
+<h3 id="3-히스토리-관리">3. 히스토리 관리</h3>
+<p>기본적으로 <code>replace: true</code>로 설정되어 있어 뒤로 가기 버튼으로 필터 변경 이력을 탐색할 수 없습니다. 필요에 따라 <code>replace: false</code>로 설정할 수 있습니다.</p>
+<h3 id="4-성능-고려사항">4. 성능 고려사항</h3>
+<p>실시간 동기화가 활성화되어 있으면 모든 폼 변경이 URL 업데이트를 트리거합니다. 성능이 중요한 경우 <code>sync: false</code>로 설정하고 수동으로 동기화하는 것을 고려해보세요.</p>
+<h2 id="마무리">마무리</h2>
+<p><code>useFormUrlSync</code> 훅은 React Hook Form과 URL 상태를 간편하게 동기화할 수 있는 강력한 도구입니다. 특히 검색이나 필터 기능이 있는 페이지에서 사용자 경험을 크게 향상시킬 수 있습니다.</p>
+<p>주요 장점:</p>
+<ul>
+<li><strong>공유 가능한 URL</strong>: 사용자가 설정한 필터 상태를 URL로 공유 가능</li>
+<li><strong>새로고침 안정성</strong>: 페이지 새로고침 후에도 설정 유지</li>
+<li><strong>타입 안전성</strong>: TypeScript를 통한 완전한 타입 지원</li>
+<li><strong>유연한 설정</strong>: 다양한 옵션으로 프로젝트 요구사항에 맞게 조정 가능</li>
+</ul>
+<p>이 훅을 활용하여 더 나은 사용자 경험을 제공하는 웹 애플리케이션을 만들어보세요!</p>
+
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2025년 06월 13일 21시 00분
+</time>
+  
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2025/2025-05-06-obsidian-editor-width/" rel="prev">
+        <span>옵시디언에서 편집창 폭 넓히기</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2025/2025-06-13-react-hook-form-sync-with-url/" rel="next">
+        <span>Next.js에서 react-hook-form과 URL을 우아하게 동기화하는 법 🚀</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#전체-소스-코드">전체 소스 코드</a></li>
+    <li><a href="#주요-기능">주요 기능</a>
+      <ul>
+        <li><a href="#1-양방향-동기화">1. 양방향 동기화</a></li>
+        <li><a href="#2-타입-안전성">2. 타입 안전성</a></li>
+        <li><a href="#3-선택적-필드-제외">3. 선택적 필드 제외</a></li>
+        <li><a href="#4-실시간-동기화-제어">4. 실시간 동기화 제어</a></li>
+      </ul>
+    </li>
+    <li><a href="#사용-방법">사용 방법</a>
+      <ul>
+        <li><a href="#기본-사용법">기본 사용법</a></li>
+        <li><a href="#옵션-상세-설명">옵션 상세 설명</a></li>
+      </ul>
+    </li>
+    <li><a href="#구현-상세-설명">구현 상세 설명</a>
+      <ul>
+        <li><a href="#1-url-값-파싱-parseurlvalue">1. URL 값 파싱 (<code>parseUrlValue</code>)</a></li>
+        <li><a href="#2-초기값-추출-extractinitialvaluesfromurl">2. 초기값 추출 (<code>extractInitialValuesFromUrl</code>)</a></li>
+        <li><a href="#3-url-파라미터-생성-createurlparamsfromvalues">3. URL 파라미터 생성 (<code>createUrlParamsFromValues</code>)</a></li>
+        <li><a href="#4-무한-루프-방지">4. 무한 루프 방지</a></li>
+        <li><a href="#5-깊은-비교-deepequal">5. 깊은 비교 (<code>deepEqual</code>)</a></li>
+      </ul>
+    </li>
+    <li><a href="#실제-활용-예시">실제 활용 예시</a>
+      <ul>
+        <li><a href="#검색-필터-페이지">검색 필터 페이지</a></li>
+      </ul>
+    </li>
+    <li><a href="#주의사항-및-한계">주의사항 및 한계</a>
+      <ul>
+        <li><a href="#1-nextjs-클라이언트-컴포넌트-전용">1. Next.js 클라이언트 컴포넌트 전용</a></li>
+        <li><a href="#2-복잡한-객체-타입-제한">2. 복잡한 객체 타입 제한</a></li>
+        <li><a href="#3-히스토리-관리">3. 히스토리 관리</a></li>
+        <li><a href="#4-성능-고려사항">4. 성능 고려사항</a></li>
+      </ul>
+    </li>
+    <li><a href="#마무리">마무리</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="https://gyuha.com/tags/next.js" class="badge badge-secondary">next.js</a>
+    <a href="https://gyuha.com/tags/react-hook-form" class="badge badge-secondary">react-hook-form</a>
+    <a href="https://gyuha.com/tags/typescript" class="badge badge-secondary">typescript</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });  
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

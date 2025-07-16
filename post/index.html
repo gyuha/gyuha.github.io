@@ -109,6 +109,29 @@
 
 <article class="post">
   <div class="post-title">
+    <a href="https://gyuha.com/post/2025/2025-07-16-react-hook-form-sync-with-url-2/" title="Next.js에서 react-hook-form과 URL을 우아하게 동기화하는 법 2 🚀">
+      <div class="post-meta">
+        <h2>Next.js에서 react-hook-form과 URL을 우아하게 동기화하는 법 2 🚀</h2>
+        <time>
+          <i class="far fa-clock"></i>
+          2025년 06월 13일 21시 00분
+        </time>
+         
+      </div>
+    </a>
+  </div>
+  <div class="post-summary">
+    전체 소스 코드 &#34;use client&#34;; import type { AliasAny } from &#34;@/types/alias.types&#34;; import { isNumber } from &#34;es-toolkit/compat&#34;; import { useRouter, useSearchParams } from &#34;next/navigation&#34;; import { useCallback, useEffect, useRef } from &#34;react&#34;; import { type DefaultValues, type FieldValues, type UseFormProps, type UseFormReturn, useForm } from &#34;react-hook-form&#34;; /** * useFormUrlSync 훅의 옵션 타입 * @template T - 폼 필드 값들의 타입 */ type UseFormUrlSyncOptions&lt;T extends FieldValues&gt; = Omit&lt;UseFormProps&lt;T&gt;, &#34;defaultValues&#34;&gt; &amp; { /** URL 동기화에서 제외할 필드명들 */ excludeFromUrl?: (keyof T)[]; /** URL 변경 시 replace 사용 여부 (기본값: true) */ replace?: boolean; /** 폼의 기본값들 */ defaultValues: DefaultValues&lt;T&gt;; /** URL 실시간 동기화 여부 (기본값: true) */ sync?: boolean; }; /** * useFormUrlSync 훅의 반환 타입 * @template T - 폼 필드 값들의 타입 */ type UseFormUrlSyncReturn&lt;T extends FieldValues&gt; = UseFormReturn&lt;T&gt; &amp; { /** URL을 수동으로 동기화하는 함수 */ syncToUrl: () =&gt; void; }; /** * URL 파라미터 값을 적절한 타입으로 파싱합니다. * @param value - 파싱할 문자열 값 * @returns 파싱된 값 (string | number | boolean) */ function parseUrlValue(value: string): string | number | boolean { if (value === &#34;&#34;) return value; if (value === &#34;true&#34;) return true; if (value === &#34;false&#34;) return false; const numValue = Number(value); if (isNumber(numValue) &amp;&amp; !Number.isNaN(numValue)) { return numValue; } return value; } /** * URL 검색 파라미터에서 초기값을 추출합니다. * @template T - 폼 필드 값들의 타입 * @param searchParams - URL 검색 파라미터 * @param excludeFromUrl - URL 동기화에서 제외할 필드명들 * @returns URL에서 추출한 초기값들 */ function extractInitialValuesFromUrl&lt;T extends FieldValues&gt;( searchParams: URLSearchParams, excludeFromUrl: (keyof T)[], ): Partial&lt;T&gt; { const urlValues: Partial&lt;T&gt; = {}; for (const [key, value] of searchParams.entries()) { if (!excludeFromUrl.includes(key as keyof T)) { (urlValues as AliasAny)[key] = parseUrlValue(value); } } return urlValues; } /** * 폼 값들로부터 URL 파라미터를 생성합니다. * @template T - 폼 필드 값들의 타입 * @param values - 폼 값들 * @param currentParams - 현재 URL 파라미터 * @param excludeFromUrl - URL 동기화에서 제외할 필드명들 * @returns 새로운 URLSearchParams 객체 */ function createUrlParamsFromValues&lt;T extends FieldValues&gt;( values: T, currentParams: URLSearchParams, excludeFromUrl: (keyof T)[], ): URLSearchParams { const params = new URLSearchParams(currentParams); for (const [key, value] of Object.entries(values)) { if (excludeFromUrl.includes(key as keyof T)) { continue; } if (value !== undefined &amp;&amp; value !== null &amp;&amp; value !== &#34;&#34;) { params.set(key, String(value)); } else { params.delete(key); } } return params; } /** * 두 객체의 깊은 비교를 수행합니다. * @param obj1 - 비교할 첫 번째 객체 * @param obj2 - 비교할 두 번째 객체 * @returns 객체들이 동일한지 여부 */ function deepEqual(obj1: AliasAny, obj2: AliasAny): boolean { return JSON.stringify(obj1) === JSON.stringify(obj2); } /** * React Hook Form과 URL 검색 파라미터를 양방향으로 동기화하는 커스텀 훅입니다. * * @template T - 폼 필드 값들의 타입, FieldValues를 확장해야 함 * @param options - 훅 설정 옵션 * @returns React Hook Form의 UseFormReturn 객체 * * @remarks * URL 파라미터는 자동으로 적절한 타입(string, number, boolean)으로 파싱됩니다. * 빈 문자열, null, undefined 값은 URL에서 제거됩니다. * Next.js의 useRouter와 useSearchParams를 사용하므로 Next.js 환경에서만 동작합니다. */ export function useFormUrlSync&lt;T extends FieldValues&gt;(options: UseFormUrlSyncOptions&lt;T&gt;): UseFormUrlSyncReturn&lt;T&gt; { const router = useRouter(); const searchParams = useSearchParams(); const { excludeFromUrl = [], replace = true, defaultValues, sync = true, ...formOptions } = options; const isUpdatingFromUrl = useRef(false); const getUrlValues = useCallback(() =&gt; { return extractInitialValuesFromUrl&lt;T&gt;(searchParams, excludeFromUrl as (keyof T)[]); }, [searchParams, excludeFromUrl]); const initialValues = { ...defaultValues, ...getUrlValues(), } as DefaultValues&lt;T&gt;; const form = useForm({ ...formOptions, defaultValues: initialValues, }); const { watch, reset, getValues } = form; const updateUrl = useCallback( (values: T) =&gt; { const params = createUrlParamsFromValues(values, searchParams, excludeFromUrl as (keyof T)[]); const newSearchString = params.toString(); const currentSearchString = new URLSearchParams(window.location.search).toString(); if (newSearchString !== currentSearchString) { const newUrl = `${window.location.pathname}?${newSearchString}`; if (replace) { router.replace(newUrl, { scroll: false }); } else { router.push(newUrl, { scroll: false }); } } }, [router, searchParams, excludeFromUrl, replace], ); const syncToUrl = useCallback(() =&gt; { const values = getValues(); updateUrl(values); }, [getValues, updateUrl]); useEffect(() =&gt; { if (sync) { const subscription = watch(values =&gt; { if (isUpdatingFromUrl.current) { return; } updateUrl(values as T); }); return () =&gt; subscription.unsubscribe(); } }, [watch, updateUrl, sync]); useEffect(() =&gt; { const urlValues = getUrlValues(); const currentFormValues = getValues(); const relevantFormValues: Partial&lt;T&gt; = {}; for (const key in urlValues) { if (Object.prototype.hasOwnProperty.call(urlValues, key)) { relevantFormValues[key as keyof T] = currentFormValues[key as keyof T]; } } if (!deepEqual(urlValues, relevantFormValues)) { isUpdatingFromUrl.current = true; reset({ ...currentFormValues, ...urlValues, } as DefaultValues&lt;T&gt;); setTimeout(() =&gt; { isUpdatingFromUrl.current = false; }, 0); } }, [getUrlValues, reset, getValues]); return { ...form, syncToUrl: syncToUrl, }; } 웹 애플리케이션에서 필터나 검색 기능을 구현할 때, 사용자가 설정한 상태를 URL에 반영하고 싶은 경우가 많습니다. 예를 들어, 사용자가 상품 목록에서 카테고리를 선택하고 가격 범위를 설정했을 때, 이 정보가 URL에 반영되어 페이지를 새로고침하거나 다른 사람과 공유해도 동일한 필터 상태를 유지할 수 있어야 합니다.
+ 
+    <a href="/post/2025/2025-07-16-react-hook-form-sync-with-url-2/" class="summary-more">더보기</a>
+    
+  </div>
+  <hr class="summary-sep" />
+</article>
+ 
+
+<article class="post">
+  <div class="post-title">
     <a href="https://gyuha.com/post/2025/2025-05-06-obsidian-editor-width/" title="옵시디언에서 편집창 폭 넓히기">
       <div class="post-meta">
         <h2>옵시디언에서 편집창 폭 넓히기</h2>
@@ -231,32 +254,6 @@
     이번 글에서는 Docker Compose를 사용하여 PostgreSQL Replication 환경을 구축하고, PgCat을 통한 Connection Pooling을 구현하는 방법을 알아보겠습니다.
  
     <a href="/post/2025/2025-01-17_postgresql-replication/" class="summary-more">더보기</a>
-    
-  </div>
-  <hr class="summary-sep" />
-</article>
- 
-
-<article class="post">
-  <div class="post-title">
-    <a href="https://gyuha.com/post/2025/2025-01-08_script-type-speculationrules/" title="Speculation Rules 사이트 로딩 속도 개선하기">
-      <div class="post-meta">
-        <h2>Speculation Rules 사이트 로딩 속도 개선하기</h2>
-        <time>
-          <i class="far fa-clock"></i>
-          2025년 01월 08일 11시 13분
-        </time>
-         
-        <i class="far fa-folder"></i>
-        <a href="https://gyuha.com//categories/web">web</a>
-        
-      </div>
-    </a>
-  </div>
-  <div class="post-summary">
-    웹 성능은 사용자 경험(UX)을 결정짓는 핵심 요소 중 하나입니다. 사용자가 페이지에서 다른 페이지로 이동할 때 추가적인 로딩 지연 없이 빠르게 전환할 수 있다면, 더 높은 만족도가 보장됩니다.
- 
-    <a href="/post/2025/2025-01-08_script-type-speculationrules/" class="summary-more">더보기</a>
     
   </div>
   <hr class="summary-sep" />
