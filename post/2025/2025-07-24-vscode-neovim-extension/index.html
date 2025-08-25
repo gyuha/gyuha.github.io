@@ -195,14 +195,10 @@
 </span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">local</span> packer_bootstrap = ensure_packer()
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">-- 플러그인 설정</span>
-</span></span><span style="display:flex;"><span>require(<span style="color:#0086d2">&#39;packer&#39;</span>).startup(<span style="color:#fb660a;font-weight:bold">function</span>()
+</span></span><span style="display:flex;"><span>require(<span style="color:#0086d2">&#39;packer&#39;</span>).startup(<span style="color:#fb660a;font-weight:bold">function</span>(use)
 </span></span><span style="display:flex;"><span>  use <span style="color:#0086d2">&#39;wbthomason/packer.nvim&#39;</span>
 </span></span><span style="display:flex;"><span>  use {
-</span></span><span style="display:flex;"><span>    <span style="color:#0086d2">&#39;phaazon/hop.nvim&#39;</span>,
-</span></span><span style="display:flex;"><span>    branch = <span style="color:#0086d2">&#39;v2&#39;</span>, <span style="color:#080;background-color:#0f140f;font-style:italic">-- 안정적인 v2 브랜치 사용</span>
-</span></span><span style="display:flex;"><span>    config = <span style="color:#fb660a;font-weight:bold">function</span>()
-</span></span><span style="display:flex;"><span>      require<span style="color:#0086d2">&#39;hop&#39;</span>.setup { keys = <span style="color:#0086d2">&#39;etovxqpdygfblzhckisuran&#39;</span> }
-</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">end</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0086d2">&#39;easymotion/vim-easymotion&#39;</span>
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">end</span>)
 </span></span><span style="display:flex;"><span>
@@ -214,32 +210,35 @@
 </span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">end</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>vim.g.mapleader = <span style="color:#0086d2">&#34;,&#34;</span>        <span style="color:#080;background-color:#0f140f;font-style:italic">-- Leader 키 설정</span>
-</span></span><span style="display:flex;"><span>require(<span style="color:#0086d2">&#39;hop&#39;</span>).setup()       <span style="color:#080;background-color:#0f140f;font-style:italic">-- hop 설정</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">-- hop이 설치되었는지 확인 후 키맵 설정</span>
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">local</span> hop_ok, hop = pcall(require, <span style="color:#0086d2">&#39;hop&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">-- EasyMotion 키맵 설정</span>
 </span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">local</span> opts = { noremap = <span style="color:#fb660a;font-weight:bold">true</span>, silent = <span style="color:#fb660a;font-weight:bold">true</span> }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">if</span> hop_ok <span style="color:#fb660a;font-weight:bold">then</span>
-</span></span><span style="display:flex;"><span>  vim.keymap.set(<span style="color:#0086d2">&#39;n&#39;</span>, <span style="color:#0086d2">&#39;&lt;leader&gt;&lt;leader&gt;f&#39;</span>, <span style="color:#0086d2">&#39;:HopWord&lt;CR&gt;&#39;</span>, opts)
-</span></span><span style="display:flex;"><span>  vim.keymap.set(<span style="color:#0086d2">&#39;n&#39;</span>, <span style="color:#0086d2">&#39;&lt;leader&gt;&lt;leader&gt;w&#39;</span>, <span style="color:#0086d2">&#39;:HopWordAC&lt;CR&gt;&#39;</span>, opts)
-</span></span><span style="display:flex;"><span>  vim.keymap.set(<span style="color:#0086d2">&#39;n&#39;</span>, <span style="color:#0086d2">&#39;&lt;leader&gt;&lt;leader&gt;b&#39;</span>, <span style="color:#0086d2">&#39;:HopWordBC&lt;CR&gt;&#39;</span>, opts)
-</span></span><span style="display:flex;"><span>  vim.keymap.set(<span style="color:#0086d2">&#39;n&#39;</span>, <span style="color:#0086d2">&#39;&lt;leader&gt;&lt;leader&gt;j&#39;</span>, <span style="color:#0086d2">&#39;:HopLineAC&lt;CR&gt;&#39;</span>, opts)
-</span></span><span style="display:flex;"><span>  vim.keymap.set(<span style="color:#0086d2">&#39;n&#39;</span>, <span style="color:#0086d2">&#39;&lt;leader&gt;&lt;leader&gt;k&#39;</span>, <span style="color:#0086d2">&#39;:HopLineBC&lt;CR&gt;&#39;</span>, opts)
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">end</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">-- EasyMotion 키맵들</span>
+</span></span><span style="display:flex;"><span>vim.api.nvim_set_keymap(<span style="color:#0086d2">&#39;n&#39;</span>, <span style="color:#0086d2">&#39;&lt;leader&gt;&lt;leader&gt;f&#39;</span>, <span style="color:#0086d2">&#39;&lt;Plug&gt;(easymotion-bd-f)&#39;</span>, {})
+</span></span><span style="display:flex;"><span>vim.api.nvim_set_keymap(<span style="color:#0086d2">&#39;n&#39;</span>, <span style="color:#0086d2">&#39;&lt;leader&gt;&lt;leader&gt;w&#39;</span>, <span style="color:#0086d2">&#39;&lt;Plug&gt;(easymotion-w)&#39;</span>, {})
+</span></span><span style="display:flex;"><span>vim.api.nvim_set_keymap(<span style="color:#0086d2">&#39;n&#39;</span>, <span style="color:#0086d2">&#39;&lt;leader&gt;&lt;leader&gt;b&#39;</span>, <span style="color:#0086d2">&#39;&lt;Plug&gt;(easymotion-b)&#39;</span>, {})
+</span></span><span style="display:flex;"><span>vim.api.nvim_set_keymap(<span style="color:#0086d2">&#39;n&#39;</span>, <span style="color:#0086d2">&#39;&lt;leader&gt;&lt;leader&gt;j&#39;</span>, <span style="color:#0086d2">&#39;&lt;Plug&gt;(easymotion-j)&#39;</span>, {})
+</span></span><span style="display:flex;"><span>vim.api.nvim_set_keymap(<span style="color:#0086d2">&#39;n&#39;</span>, <span style="color:#0086d2">&#39;&lt;leader&gt;&lt;leader&gt;k&#39;</span>, <span style="color:#0086d2">&#39;&lt;Plug&gt;(easymotion-k)&#39;</span>, {})
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">-- Y를 누르면 라인 yank가 되도록 설정</span>
-</span></span><span style="display:flex;"><span>vim.keymap.set(<span style="color:#0086d2">&#39;n&#39;</span>, <span style="color:#0086d2">&#39;Y&#39;</span>, <span style="color:#0086d2">&#39;yy&#39;</span>, { noremap = <span style="color:#fb660a;font-weight:bold">true</span> })
+</span></span><span style="display:flex;"><span>vim.api.nvim_set_keymap(<span style="color:#0086d2">&#39;n&#39;</span>, <span style="color:#0086d2">&#39;Y&#39;</span>, <span style="color:#0086d2">&#39;yy&#39;</span>, { noremap = <span style="color:#fb660a;font-weight:bold">true</span> })
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">-- Visual Block 모드를 위한 여러 키 바인딩</span>
 </span></span><span style="display:flex;"><span>vim.api.nvim_set_keymap(<span style="color:#0086d2">&#39;n&#39;</span>, <span style="color:#0086d2">&#39;&lt;C-q&gt;&#39;</span>, <span style="color:#0086d2">&#39;&lt;C-v&gt;&#39;</span>, opts)
 </span></span><span style="display:flex;"><span>vim.api.nvim_set_keymap(<span style="color:#0086d2">&#39;v&#39;</span>, <span style="color:#0086d2">&#39;&lt;C-q&gt;&#39;</span>, <span style="color:#0086d2">&#39;&lt;C-v&gt;&#39;</span>, opts)
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">-- 추가 대안 (leader 키 사용)</span>
-</span></span><span style="display:flex;"><span>vim.keymap.set(<span style="color:#0086d2">&#39;n&#39;</span>, <span style="color:#0086d2">&#39;&lt;leader&gt;v&#39;</span>, <span style="color:#0086d2">&#39;&lt;C-v&gt;&#39;</span>, opts)
+</span></span><span style="display:flex;"><span>vim.api.nvim_set_keymap(<span style="color:#0086d2">&#39;n&#39;</span>, <span style="color:#0086d2">&#39;&lt;leader&gt;v&#39;</span>, <span style="color:#0086d2">&#39;&lt;C-v&gt;&#39;</span>, opts)
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">-- 상태라인에 모드 표시 (선택사항)</span>
 </span></span><span style="display:flex;"><span>vim.opt.showmode = <span style="color:#fb660a;font-weight:bold">true</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">-- 완성 메뉴 메시지 숨기기</span>
+</span></span><span style="display:flex;"><span>vim.opt.shortmess:append(<span style="color:#0086d2">&#34;c&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>vim.opt.ignorecase = <span style="color:#fb660a;font-weight:bold">true</span>
+</span></span><span style="display:flex;"><span>vim.opt.smartcase = <span style="color:#fb660a;font-weight:bold">true</span>
 </span></span></code></pre></div><h3 id="5-플러그인-설치">5. 플러그인 설치</h3>
 <p>init.lua 파일을 작성한 후, Neovim을 실행하여 플러그인을 설치해야 합니다:</p>
 <div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># Neovim 실행</span>
