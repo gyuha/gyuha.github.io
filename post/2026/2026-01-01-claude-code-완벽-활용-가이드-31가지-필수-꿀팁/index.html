@@ -255,33 +255,35 @@ Claude Code 실행 시 <code>-p</code> 옵션을 붙이면 대화형 인터페�
 <pre tabindex="0"><code>&#34;이 알고리즘을 생각 hard으로 최적화해줘&#34;
 복잡한 문제에는 &#34;ultrathink&#34;를 사용하여 Claude가 더 오래 생각하게 하고, 간단한 작업에는 기본 &#34;think&#34;를 사용하여 속도를 높입니다.
 
-13. 프롬프트 임시 저장하기
-핵심 개념: 초안 자동 보관
-입력 중인 프롬프트에서 Ctrl+S를 누르면 초안이 자동으로 저장됩니다:
+## 13. 프롬프트 임시 저장하기
+**핵심 개념**: 초안 자동 보관
+입력 중인 프롬프트에서 `Ctrl+S`를 누르면 초안이 자동으로 저장됩니다:
 
-다른 메시지를 보내도 자동으로 복원
-메모장이나 외부 저장소 불필요
-복잡한 멀티라인 프롬프트 안전 보관
-생각이 정리되지 않은 상태에서도 작업 중단 가능
+- 다른 메시지를 보내도 자동으로 복원
+- 메모장이나 외부 저장소 불필요
+- 복잡한 멀티라인 프롬프트 안전 보관
+- 생각이 정리되지 않은 상태에서도 작업 중단 가능
 
 
-14. /statusline으로 하단 정보 바 꾸미기
-핵심 개념: 화면 정보 맞춤 설정
-/statusline 명령으로 Claude Code 화면 아래의 상태 바를 설정할 수 있습니다:
-표시 가능한 정보:
+## 14. /statusline으로 하단 정보 바 꾸미기
+**핵심 개념**: 화면 정보 맞춤 설정
+`/statusline` 명령으로 Claude Code 화면 아래의 상태 바를 설정할 수 있습니다:
 
-현재 시간
-토큰 사용량
-활성 세션 이름
-프로젝트 상태
-마지막 명령 실행 시간
+**표시 가능한 정보:**
+- 현재 시간
+- 토큰 사용량
+- 활성 세션 이름
+- 프로젝트 상태
+- 마지막 명령 실행 시간
 
 자신이 중요하게 생각하는 정보만 선택하여 표시하므로 작업 중 필요한 정보를 한눈에 파악할 수 있습니다.
 
-15. YOLO 모드로 권한 확인 없이 실행
-핵심 개념: 신뢰할 수 있는 환경에서의 빠른 작업
---dangerously-skip-permissions 플래그를 사용하면 파일 생성, 명령 실행, 수정마다 묻지 않고 바로 진행합니다:
-bashclaude --dangerously-skip-permissions
+## 15. YOLO 모드로 권한 확인 없이 실행
+**핵심 개념**: 신뢰할 수 있는 환경에서의 빠른 작업
+`--dangerously-skip-permissions` 플래그를 사용하면 파일 생성, 명령 실행, 수정마다 묻지 않고 바로 진행합니다:
+
+```bash
+claude --dangerously-skip-permissions
 </code></pre><p><strong>주의사항</strong>:</p>
 <ul>
 <li>신뢰할 수 있는 프로젝트에서만 사용</li>
@@ -289,7 +291,6 @@ bashclaude --dangerously-skip-permissions
 <li>외부 코드를 실행할 때는 비활성화</li>
 </ul>
 <p>이 모드를 사용하면 반복적인 승인 화면을 거치지 않아 개발 속도가 크게 향상됩니다.</p>
-<hr>
 <h2 id="16-hooks로-실행-흐름-직접-제어하기">16. Hooks로 실행 흐름 직접 제어하기</h2>
 <p><strong>핵심 개념</strong>: 자동화된 작업 흐름</p>
 <p>Hooks는 특정 시점에 자동으로 실행되는 쉘 명령입니다. <code>/hooks</code> 또는 <code>.claude/settings.json</code>에서 설정할 수 있습니다:</p>
@@ -297,7 +298,7 @@ bashclaude --dangerously-skip-permissions
 <pre tabindex="0"><code>on-start: npm install
 on-before-save: eslint .
 on-after-execute: npm test
-</code></pre><p>이를 통해:</p>
+</code></pre><p><strong>이를 통해:</strong></p>
 <ul>
 <li>세션 시작 시 자동으로 의존성 설치</li>
 <li>코드 저장 전 린트 검사</li>
@@ -307,57 +308,53 @@ on-after-execute: npm test
 <h2 id="17--멘션으로-컨텍스트-빠르게-추가">17. @ 멘션으로 컨텍스트 빠르게 추가</h2>
 <p><strong>핵심 개념</strong>: 대화 맥락 빠른 로딩</p>
 <p>Claude Code에서 <code>@</code>를 입력하면 다양한 항목을 즉시 대화에 포함할 수 있습니다:</p>
-<pre tabindex="0"><code>@src/utils.ts - 특정 파일
-@/src - 전체 디렉터리
-@mcp-server - MCP 서버
-@subagent - 서브에이전트
-파일을 일일이 첨부할 필요 없이 간단한 입력으로 필요한 컨텍스트를 모두 로드합니다.
-
-18. 다음 프롬프트 자동 제안 받기
-핵심 개념: 워크플로우 최적화 제안
-작업이 완료되면 Claude가 회색 글씨로 다음 단계를 제안합니다:
-
-테스트 작성 제안
-리팩토링 권장
-문서화 필요성 지적
-관련 기능 구현 제안
-
-이 제안에:
-
-Tab: 불러와서 수정 후 사용
-Enter: 바로 실행
-Esc: 무시
-
-
-19. /chrome으로 브라우저 직접 제어
-핵심 개념: 웹 개발 자동화
-Claude Code에서 /chrome을 실행하면 브라우저를 직접 제어할 수 있습니다:
-가능한 작업:
-
-페이지 이동 및 로딩
-버튼 클릭 및 입력
-콘솔 에러 확인
-DOM 검사 및 수정
-스크린샷 캡처
-
-웹 애플리케이션 개발 시 실시간으로 브라우저 상태를 확인하고 조정할 수 있습니다.
-
-20. Agent Skills로 작업 방식 재사용하기
-핵심 개념: 재사용 가능한 작업 패턴
-Agent Skills는 특정 작업 방법을 폴더 단위로 정의하여 Claude에게 가르치는 방식입니다.
-한 번 설정하면:
-
-다른 프로젝트에서 동일한 작업 패턴 재사용
-팀 전체와 최적의 작업 방법 공유
-시간이 지나도 일관된 품질 유지
-
-예: 데이터베이스 마이그레이션 패턴, API 작성 규칙, 테스트 전략 등
-
-21. 플러그인으로 설정 한 번에 공유하기
-핵심 개념: 작업 환경 포장화
-여러 파일과 설정을 따로 주고받지 않고 플러그인으로 패킹합니다:
-bash/plugin install my-project-setup
-</code></pre><p>이는 다음을 포함합니다:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>@src/utils.ts - 특정 파일
+</span></span><span style="display:flex;"><span>@/src - 전체 디렉터리
+</span></span><span style="display:flex;"><span>@mcp-server - MCP 서버
+</span></span><span style="display:flex;"><span>@subagent - 서브에이전트
+</span></span></code></pre></div><p>파일을 일일이 첨부할 필요 없이 간단한 입력으로 필요한 컨텍스트를 모두 로드합니다.</p>
+<h2 id="18-다음-프롬프트-자동-제안-받기">18. 다음 프롬프트 자동 제안 받기</h2>
+<p><strong>핵심 개념</strong>: 워크플로우 최적화 제안
+작업이 완료되면 Claude가 회색 글씨로 다음 단계를 제안합니다:</p>
+<ul>
+<li>테스트 작성 제안</li>
+<li>리팩토링 권장</li>
+<li>문서화 필요성 지적</li>
+<li>관련 기능 구현 제안</li>
+</ul>
+<p>이 제안에:</p>
+<ul>
+<li>Tab: 불러와서 수정 후 사용</li>
+<li>Enter: 바로 실행</li>
+<li>Esc: 무시</li>
+</ul>
+<h2 id="19-chrome으로-브라우저-직접-제어">19. /chrome으로 브라우저 직접 제어</h2>
+<p><strong>핵심 개념</strong>: 웹 개발 자동화
+Claude Code에서 /chrome을 실행하면 브라우저를 직접 제어할 수 있습니다:</p>
+<p><strong>가능한 작업:</strong></p>
+<ul>
+<li>페이지 이동 및 로딩</li>
+<li>버튼 클릭 및 입력</li>
+<li>콘솔 에러 확인</li>
+<li>DOM 검사 및 수정</li>
+<li>스크린샷 캡처</li>
+</ul>
+<p>웹 애플리케이션 개발 시 실시간으로 브라우저 상태를 확인하고 조정할 수 있습니다.</p>
+<h2 id="20-agent-skills로-작업-방식-재사용하기">20. Agent Skills로 작업 방식 재사용하기</h2>
+<p><strong>핵심 개념</strong>: 재사용 가능한 작업 패턴
+Agent Skills는 특정 작업 방법을 폴더 단위로 정의하여 Claude에게 가르치는 방식입니다.</p>
+<p><strong>한 번 설정하면:</strong></p>
+<ul>
+<li>다른 프로젝트에서 동일한 작업 패턴 재사용</li>
+<li>팀 전체와 최적의 작업 방법 공유</li>
+<li>시간이 지나도 일관된 품질 유지</li>
+</ul>
+<p>예: <code>데이터베이스 마이그레이션 패턴</code>, <code>API 작성 규칙</code>, <code>테스트 전략</code> 등</p>
+<h2 id="21-플러그인으로-설정-한-번에-공유하기">21. 플러그인으로 설정 한 번에 공유하기</h2>
+<p><strong>핵심 개념</strong>: 작업 환경 포장화
+여러 파일과 설정을 따로 주고받지 않고 플러그인으로 패킹합니다:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>plugin install my-project-setup
+</span></span></code></pre></div><p>이는 다음을 포함합니다:</p>
 <ul>
 <li>프로젝트 설정 파일</li>
 <li>린트 규칙</li>
@@ -366,7 +363,6 @@ bash/plugin install my-project-setup
 <li>커스텀 명령어</li>
 </ul>
 <p>새로운 개발자가 한 줄 명령어로 동일한 환경을 구성할 수 있습니다.</p>
-<hr>
 <h2 id="22-ctrlr로-이전-프롬프트-다시-쓰기">22. Ctrl+R로 이전 프롬프트 다시 쓰기</h2>
 <p><strong>핵심 개념</strong>: 명령어 히스토리 검색</p>
 <p>Claude Code에서 <code>Ctrl+R</code>을 누르면 bash의 역방향 검색처럼 과거 프롬프트를 검색할 수 있습니다:</p>
@@ -585,6 +581,10 @@ Claude Code에서 사용되던 에이전트 구조(루프, 도구 사용, 컨텍
     <li><a href="#12-키워드로-생각-깊이-조절하기">12. 키워드로 생각 깊이 조절하기</a></li>
     <li><a href="#16-hooks로-실행-흐름-직접-제어하기">16. Hooks로 실행 흐름 직접 제어하기</a></li>
     <li><a href="#17--멘션으로-컨텍스트-빠르게-추가">17. @ 멘션으로 컨텍스트 빠르게 추가</a></li>
+    <li><a href="#18-다음-프롬프트-자동-제안-받기">18. 다음 프롬프트 자동 제안 받기</a></li>
+    <li><a href="#19-chrome으로-브라우저-직접-제어">19. /chrome으로 브라우저 직접 제어</a></li>
+    <li><a href="#20-agent-skills로-작업-방식-재사용하기">20. Agent Skills로 작업 방식 재사용하기</a></li>
+    <li><a href="#21-플러그인으로-설정-한-번에-공유하기">21. 플러그인으로 설정 한 번에 공유하기</a></li>
     <li><a href="#22-ctrlr로-이전-프롬프트-다시-쓰기">22. Ctrl+R로 이전 프롬프트 다시 쓰기</a></li>
     <li><a href="#23-init으로-자동-온보딩-문서-만들기">23. /init으로 자동 온보딩 문서 만들기</a></li>
     <li><a href="#24-export로-대화-기록-문서화">24. /export로 대화 기록 문서화</a></li>
