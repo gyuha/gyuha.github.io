@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '효율적인 Git 커밋 전략: 작업을 논리적 단위로 나누기'" />
+  <title>효율적인 Git 커밋 전략: 작업을 논리적 단위로 나누기  | 신규하 블로그</title>
+  <meta property="og:title" content="효율적인 Git 커밋 전략: 작업을 논리적 단위로 나누기" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-01-01"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/2026-01-01-claude-code-commit/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="Git" />
+  
+  <meta property="og:tags" content="버전관리" />
+  
+  <meta property="og:tags" content="커밋전략" />
+  
+  <meta property="og:tags" content="개발워크플로우" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action="https://google.com/search">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search"></i>
+                <input type="hidden" name="sitesearch" value="https://gyuha.com/" />
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/2026-01-01-claude-code-commit/">
+          <h1>
+            효율적인 Git 커밋 전략: 작업을 논리적 단위로 나누기
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/2026-01-01-claude-code-commit/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Claude code에서 commit 명령을 간단하게 실행하는 방법을 공유합니다.</p>
+<p>아래 내용을 <code>~/.claude-code/commands/</code> 디렉터리에 <code>commit.md</code> 파일로 저장하세요.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>description: &#34;현재까지의 작업을 논리적 단위별로 나눠서 커밋&#34;
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>현재까지 작업한 내용을 작업 단위별로 나눠서 커밋해주세요.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">## 수행 단계
+</span></span></span><span style="display:flex;"><span><span style="font-weight:bold"></span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">### 1. **현재 변경사항 확인**
+</span></span></span><span style="display:flex;"><span><span style="font-weight:bold"></span><span style="color:#fb660a;font-weight:bold">-</span> <span style="color:#0086d2">`git status`</span>로 staged/unstaged 변경사항 확인
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">-</span> <span style="color:#0086d2">`git diff`</span>로 각 파일의 변경 내용 파악
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">-</span> <span style="color:#0086d2">`git diff --cached`</span>로 스테이징된 변경사항 확인
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">### 2. **작업을 논리적 단위로 분류**
+</span></span></span><span style="display:flex;"><span><span style="font-weight:bold"></span><span style="color:#fb660a;font-weight:bold">-</span> 관련된 변경사항끼리 그룹화
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">-</span> 각 그룹이 하나의 완성된 기능/수정 단위가 되도록 구성
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">-</span> 예: 기능 추가, 버그 수정, 리팩토링, 문서 수정 등으로 분류
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">### 3. **각 단위별로 순차 커밋**
+</span></span></span><span style="display:flex;"><span><span style="font-weight:bold"></span><span style="color:#fb660a;font-weight:bold">-</span> 가장 핵심적인 변경부터 시작
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">-</span> 각 작업 단위별로:
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">-</span> <span style="color:#0086d2">`git add [관련 파일들]`</span> - 해당 단위의 파일만 추가
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">-</span> 컨벤션에 맞는 커밋 메시지 작성
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">-</span> 메시지 형식: <span style="color:#0086d2">`[타입] 제목`</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">-</span> feat: 새로운 기능
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">-</span> fix: 버그 수정
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">-</span> docs: 문서 수정
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">-</span> refactor: 코드 리팩토링
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">-</span> style: 스타일 변경 (공백, 세미콜론 등)
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">-</span> test: 테스트 추가/수정
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">-</span> chore: 빌드, 의존성 업데이트 등
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">### 4. **커밋 완료 확인**
+</span></span></span><span style="display:flex;"><span><span style="font-weight:bold"></span><span style="color:#fb660a;font-weight:bold">-</span> <span style="color:#0086d2">`git log --oneline -10`</span>으로 커밋 이력 확인
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">-</span> <span style="color:#0086d2">`git status`</span>로 남은 변경사항 확인 (모두 커밋되어야 함)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">## 주의사항
+</span></span></span><span style="display:flex;"><span><span style="font-weight:bold"></span><span style="color:#fb660a;font-weight:bold">-</span> 각 커밋은 독립적으로 의미가 있어야 함
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">-</span> 너무 큰 단위도, 너무 작은 단위도 피하기
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">-</span> 커밋 메시지는 명확하고 간결하게
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">-</span> 미스테이징된 파일이 없는지 확인하기
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">-</span> .env, credentials 등 민감한 파일은 커밋하지 않음
+</span></span></code></pre></div><p>이제 Claude Code에서 <code>/commit</code> 명령을 실행하면, 위 가이드에 따라 변경사항을 논리적 단위로 나눠서 커밋할 수 있습니다.</p>
+<p>추가로 commit and push 명령도 만들어 두면, 커밋 후 바로 원격 저장소에 푸시하는 작업도 자동화할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>description: &#34;현재까지의 작업을 논리적 단위별로 나눠서 커밋과 푸시&#34;
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>현재까지 작업한 내용을 작업 단위별로 나눠서 커밋해주세요.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">## 수행 단계
+</span></span></span><span style="display:flex;"><span><span style="font-weight:bold"></span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">### 1. **현재 변경사항 확인**
+</span></span></span><span style="display:flex;"><span><span style="font-weight:bold"></span><span style="color:#fb660a;font-weight:bold">-</span> <span style="color:#0086d2">`git status`</span>로 staged/unstaged 변경사항 확인
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">-</span> <span style="color:#0086d2">`git diff`</span>로 각 파일의 변경 내용 파악
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">-</span> <span style="color:#0086d2">`git diff --cached`</span>로 스테이징된 변경사항 확인
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">### 2. **작업을 논리적 단위로 분류**
+</span></span></span><span style="display:flex;"><span><span style="font-weight:bold"></span><span style="color:#fb660a;font-weight:bold">-</span> 관련된 변경사항끼리 그룹화
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">-</span> 각 그룹이 하나의 완성된 기능/수정 단위가 되도록 구성
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">-</span> 예: 기능 추가, 버그 수정, 리팩토링, 문서 수정 등으로 분류
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">### 3. **각 단위별로 순차 커밋**
+</span></span></span><span style="display:flex;"><span><span style="font-weight:bold"></span><span style="color:#fb660a;font-weight:bold">-</span> 가장 핵심적인 변경부터 시작
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">-</span> 각 작업 단위별로:
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">-</span> <span style="color:#0086d2">`git add [관련 파일들]`</span> - 해당 단위의 파일만 추가
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">-</span> 컨벤션에 맞는 커밋 메시지 작성
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">-</span> 메시지 형식: <span style="color:#0086d2">`[타입] 제목`</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">-</span> feat: 새로운 기능
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">-</span> fix: 버그 수정
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">-</span> docs: 문서 수정
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">-</span> refactor: 코드 리팩토링
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">-</span> style: 스타일 변경 (공백, 세미콜론 등)
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">-</span> test: 테스트 추가/수정
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">-</span> chore: 빌드, 의존성 업데이트 등
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">### 4. **커밋 완료 확인**
+</span></span></span><span style="display:flex;"><span><span style="font-weight:bold"></span><span style="color:#fb660a;font-weight:bold">-</span> <span style="color:#0086d2">`git log --oneline -10`</span>으로 커밋 이력 확인
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">-</span> <span style="color:#0086d2">`git status`</span>로 남은 변경사항 확인 (모두 커밋되어야 함)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">### 5. **원격 저장소에 푸시**
+</span></span></span><span style="display:flex;"><span><span style="font-weight:bold"></span><span style="color:#fb660a;font-weight:bold">-</span> <span style="color:#0086d2">`git push`</span>로 원격 저장소에 푸시
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">-</span> 푸시 실패 시 원인 파악 및 해결 (충돌, 권한 등)
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">-</span> 새 브랜치인 경우 <span style="color:#0086d2">`git push -u origin [branch-name]`</span> 사용
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">## 주의사항
+</span></span></span><span style="display:flex;"><span><span style="font-weight:bold"></span><span style="color:#fb660a;font-weight:bold">-</span> 각 커밋은 독립적으로 의미가 있어야 함
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">-</span> 너무 큰 단위도, 너무 작은 단위도 피하기
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">-</span> 커밋 메시지는 명확하고 간결하게
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">-</span> 미스테이징된 파일이 없는지 확인하기
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">-</span> .env, credentials 등 민감한 파일은 커밋하지 않음
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">-</span> 푸시 전 원격 브랜치와의 충돌 여부 확인
+</span></span></code></pre></div>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 01월 01일 23시 32분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/%EA%B0%9C%EB%B0%9C">개발</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-01-01-claude-code-31-tips/" rel="prev">
+        <span>Claude Code 완벽 활용 가이드: 31가지 필수 꿀팁</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents"></nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="https://gyuha.com/tags/git" class="badge badge-secondary">Git</a>
+    <a href="https://gyuha.com/tags/%EB%B2%84%EC%A0%84%EA%B4%80%EB%A6%AC" class="badge badge-secondary">버전관리</a>
+    <a href="https://gyuha.com/tags/%EC%BB%A4%EB%B0%8B%EC%A0%84%EB%9E%B5" class="badge badge-secondary">커밋전략</a>
+    <a href="https://gyuha.com/tags/%EA%B0%9C%EB%B0%9C%EC%9B%8C%ED%81%AC%ED%94%8C%EB%A1%9C%EC%9A%B0" class="badge badge-secondary">개발워크플로우</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.textContent = '복사';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.textContent = '복사됨!';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.textContent = '복사';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.textContent = '실패';
+          setTimeout(function() {
+            copyButton.textContent = '복사';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude Code 완벽 활용 가이드: 31가지 필수 꿀팁'" />
+  <title>Claude Code 완벽 활용 가이드: 31가지 필수 꿀팁  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude Code 완벽 활용 가이드: 31가지 필수 꿀팁" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-01-01"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/2026-01-01-claude-code-31-tips/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude" />
+  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="anthropic" />
+  
+  <meta property="og:tags" content="productivity" />
+  
+  <meta property="og:tags" content="prompts" />
+  
+  <meta property="og:tags" content="automation" />
+  
+  <meta property="og:tags" content="tips" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action="https://google.com/search">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search"></i>
+                <input type="hidden" name="sitesearch" value="https://gyuha.com/" />
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/2026-01-01-claude-code-31-tips/">
+          <h1>
+            Claude Code 완벽 활용 가이드: 31가지 필수 꿀팁
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/2026-01-01-claude-code-31-tips/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Anthropic에서 공유한 Claude Code의 생산성 향상 팁을 정리했습니다. Claude Code를 더욱 효율적으로 사용하기 위한 실용적인 가이드입니다.</p>
+<h2 id="1--프리픽스로-터미널-바로-실행">1. ! 프리픽스로 터미널 바로 실행</h2>
+<p>핵심 개념: 명령어 입력 시간과 토큰 소모를 최소화하는 기술
+Claude Code에서 명령을 실행할 때 전통적으로 &ldquo;git status 실행해줘&quot;라고 자연어로 요청했다면, 이제는 더 빠른 방법이 있습니다. 프롬프트 앞에 느낌표(!)를 붙여서 <code>!git status</code>처럼 입력하면 bash가 즉시 실행됩니다.</p>
+<p>이 방식의 장점은 다음과 같습니다:</p>
+<ul>
+<li><strong>속도 향상</strong>: 자연어 처리 없이 즉시 명령 실행</li>
+<li><strong>토큰 절약</strong>: 모델 추론 과정이 없어 토큰 소비 감소</li>
+<li><strong>대기시간 단축</strong>: 실행 결과가 바로 대화 맥락에 반영</li>
+<li><strong>작업 흐름 유지</strong>: 개발 리듬이 끊어지지 않음</li>
+</ul>
+<p>예시: <code>!npm install</code>, <code>!python script.py</code>, <code>!yarn build</code></p>
+<h2 id="2-esc-두-번으로-이전-상태-되돌리기">2. Esc 두 번으로 이전 상태 되돌리기</h2>
+<p>핵심 개념: 실험적 개발의 안전장치
+아이디어를 여러 번 시도하다가 코드 흐름이 꼬였을 때, Esc 키를 두 번 누르면 깔끔한 지점으로 바로 복구할 수 있습니다. 이것은 Git의 undo 개념과 유사하지만 더 세분화되어 있습니다.</p>
+<p><strong>활용 방식:</strong></p>
+<ul>
+<li>대화 내용만 되감기</li>
+<li>생성된 코드만 되감기</li>
+<li>대화 내용과 코드 모두 되감기</li>
+</ul>
+<p>이 기능은 &ldquo;만약 이렇게 했다면?&ldquo;이라는 가정 하에 여러 방향으로 실험할 수 있게 해줍니다. 리팩토링 작업이나 아키텍처 개선 때 유용합니다.</p>
+<h2 id="3-api에서-extended-thinking-켜기">3. API에서 Extended Thinking 켜기</h2>
+<p>핵심 개념: 복잡한 문제에 대한 깊이 있는 사고 활성화
+Claude API를 사용할 때, 요청에 thinking 파라미터를 추가하면 Extended Thinking 기능을 활성화할 수 있습니다:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">&#34;thinking&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">&#34;type&#34;</span>: <span style="color:#0086d2">&#34;enabled&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">&#34;budget_tokens&#34;</span>: <span style="color:#0086f7;font-weight:bold">5000</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>이는 Claude가 답변을 주기 전에 &ldquo;thinking blocks&quot;라는 내부 추론 과정을 거치게 합니다. 수학 문제, 알고리즘 설계, 복잡한 로직 분석 같은 작업에서 훨씬 더 정확한 결과를 얻을 수 있습니다.</p>
+<p><strong>언제 사용할까:</strong></p>
+<ul>
+<li>복잡한 알고리즘 구현</li>
+<li>아키텍처 설계 검토</li>
+<li>버그 원인 분석</li>
+<li>성능 최적화 전략</li>
+</ul>
+<h2 id="4---continue와---resume으로-세션-이어가기">4. &ndash;continue와 &ndash;resume으로 세션 이어가기</h2>
+<p><strong>핵심 개념</strong>: 작업 연속성 보장</p>
+<p>노트북을 닫거나 터미널을 종료해도 작업을 이어갈 수 있습니다.</p>
+<p>두 가지 옵션:</p>
+<p><code>claude --continue</code>: 직전 대화를 그대로 이어서 진행</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ claude --continue
+</span></span></code></pre></div><p>이전 세션의 컨텍스트가 완전히 복원되어 마지막 지점에서 계속 작업할 수 있습니다.</p>
+<p><code>claude --resume</code>: 과거 세션 목록에서 선택</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ claude --resume
+</span></span></code></pre></div><p>저장된 모든 세션을 보고 원하는 것을 선택하여 재개할 수 있습니다. 여러 프로젝트를 동시에 진행 중일 때 유용합니다.</p>
+<p><strong>실용적 사용 사례</strong>:</p>
+<ul>
+<li>장시간 실행되는 작업 중단 후 재개</li>
+<li>다양한 프로젝트 간 빠른 전환</li>
+<li>세션 기반 작업 관리</li>
+</ul>
+<h2 id="5--프리픽스로-메모리-바로-저장">5. # 프리픽스로 메모리 바로 저장</h2>
+<p><strong>핵심 개념</strong>: 파일 편집 없이 설정 정보 저장</p>
+<p>반복적으로 사용되는 설정이나 규칙을 메모리에 저장할 수 있습니다. 프롬프트 앞에 해시(#)를 붙여 입력하면:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># Always use bun instead of npm</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># Always create TypeScript files</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># Use async/await patterns exclusively</span>
+</span></span></code></pre></div><p>이러한 규칙들은 Claude의 메모리에 저장되어 이후 모든 대화에서 자동으로 적용됩니다. 복잡한 설정 파일을 편집할 필요가 없습니다.</p>
+<p><strong>장점:</strong></p>
+<ul>
+<li>즉각적인 규칙 적용</li>
+<li>프로젝트별 관례 통일</li>
+<li>수정이 간편함</li>
+</ul>
+<h2 id="6-vim으로-프롬프트-편집을-키보드로">6. /vim으로 프롬프트 편집을 키보드로</h2>
+<p><strong>핵심 개념</strong>: 마우스 없는 편집 경험</p>
+<p>Claude Code에서 /vim을 입력하면 vim 에디터 방식으로 프롬프트를 편집할 수 있습니다. 이는 다음과 같은 이점이 있습니다:</p>
+<p><strong>vim 명령어 지원:</strong></p>
+<ul>
+<li>h j k l: 상하좌우 이동</li>
+<li>i: 입력 모드</li>
+<li>dd: 한 줄 삭제</li>
+<li>cw: 단어 바꾸기</li>
+<li>esc: 명령 모드 복귀</li>
+</ul>
+<p>터미널에서 vim에 익숙한 개발자들에게 매우 효율적입니다. 복잡한 다중 라인 프롬프트를 작성할 때 특히 유용합니다.</p>
+<h2 id="7--p-옵션으로-headless-모드-사용">7. -p 옵션으로 Headless 모드 사용</h2>
+<p>핵심 개념: 스크립트와 자동화 파이프라인 통합
+Claude Code 실행 시 <code>-p</code> 옵션을 붙이면 대화형 인터페이스 없이 순수 명령어처럼 작동합니다:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>claude -p <span style="color:#0086d2">&#34;create a util logging function&#34;</span>
+</span></span></code></pre></div><p><strong>사용 사례</strong>:</p>
+<ul>
+<li>CI/CD 파이프라인 통합</li>
+<li>자동화된 코드 생성 스크립트</li>
+<li>배치 작업</li>
+<li>Git hooks 연동</li>
+</ul>
+<p>이는 Claude Code를 기존의 개발 워크플로우에 자연스럽게 통합할 수 있게 합니다.</p>
+<h2 id="8-context로-토큰-사용-내역-확인">8. /context로 토큰 사용 내역 확인</h2>
+<p><strong>핵심 개념</strong>: 컨텍스트 윈도우 관리</p>
+<p>Claude Code에서 <code>/context</code>를 입력하면 현재 사용 중인 토큰을 상세히 분석할 수 있습니다:</p>
+<ul>
+<li>시스템 프롬프트가 사용하는 토큰</li>
+<li>MCP 서버 연결에 사용되는 토큰</li>
+<li>메모리 파일이 차지하는 공간</li>
+<li>대화 이력이 차지하는 공간</li>
+</ul>
+<p><strong>이 정보를 통해:</strong></p>
+<ul>
+<li>토큰 한도 내에서 최적 성능 유지</li>
+<li>불필요한 메모리 정리</li>
+<li>파일 첨부 관리</li>
+<li>대화 이력 압축</li>
+</ul>
+<h2 id="9-원격-세션으로-웹과-터미널-오가며-작업">9. 원격 세션으로 웹과 터미널 오가며 작업</h2>
+<p><strong>핵심 개념</strong>: 다중 환경에서의 작업 동시화</p>
+<p>프롬프트 앞에 앰퍼샌드(&amp;)를 붙이면 작업을 Claude Code의 웹 인터페이스로 보내 백그라운드에서 실행할 수 있습니다:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>&amp; npm run build
+</span></span><span style="display:flex;"><span>&amp; python manage.py migrate
+</span></span></code></pre></div><p><strong>장점</strong>:</p>
+<ul>
+<li>브라우저 기반 작업 모니터링</li>
+<li>터미널과 웹 인터페이스 간 자유로운 전환</li>
+<li>장시간 실행 작업 진행 상황 추적</li>
+<li>터미널 리소스 절약</li>
+</ul>
+<h2 id="10-stats로-claude-code-사용-기록-보기">10. /stats로 Claude Code 사용 기록 보기</h2>
+<p><strong>핵심 개념</strong>: 사용 패턴 분석</p>
+<p><code>/stats</code> 명령으로 Claude Code의 사용 통계를 확인할 수 있습니다:</p>
+<ul>
+<li>전체 작업 수행 횟수</li>
+<li>일일/주간/월간 사용량</li>
+<li>가장 자주 사용되는 명령어</li>
+<li>코드 작성 대 코드 실행 비율</li>
+<li>가장 오래 지속된 세션</li>
+</ul>
+<p>이 데이터는 자신의 개발 습관을 이해하고 생산성을 개선하는 데 도움이 됩니다. GitHub의 잔디 같은 시각적 피드백도 제공됩니다.</p>
+<h2 id="11-세션에-이름-붙여서-관리하기">11. 세션에 이름 붙여서 관리하기</h2>
+<p><strong>핵심 개념</strong>: 작업별 세션 조직화</p>
+<p><code>/rename</code> 명령으로 현재 세션에 의미 있는 이름을 붙일 수 있습니다:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/rename api-migration
+</span></span><span style="display:flex;"><span>/rename database-refactor
+</span></span><span style="display:flex;"><span>/rename performance-optimization
+</span></span></code></pre></div><p>이후 <code>/resume</code>를 사용할 때 이름으로 검색하여 원하는 세션을 빠르게 찾을 수 있습니다. 여러 프로젝트를 동시에 관리할 때 매우 유용합니다.</p>
+<hr>
+<h2 id="12-키워드로-생각-깊이-조절하기">12. 키워드로 생각 깊이 조절하기</h2>
+<p><strong>핵심 개념</strong>: 사고 깊이 맞춤화</p>
+<p>프롬프트에 특정 단어를 포함하면 Claude가 사용하는 사고 토큰의 양이 달라집니다:</p>
+<ul>
+<li><strong>&ldquo;think&rdquo;</strong>: 기본 수준의 사고</li>
+<li><strong>&ldquo;think hard&rdquo;</strong>: 더 깊은 분석</li>
+<li><strong>&ldquo;ultrathink&rdquo;</strong>: 최대 깊이의 사고</li>
+</ul>
+<pre tabindex="0"><code>&#34;이 알고리즘을 생각 hard으로 최적화해줘&#34;
+복잡한 문제에는 &#34;ultrathink&#34;를 사용하여 Claude가 더 오래 생각하게 하고, 간단한 작업에는 기본 &#34;think&#34;를 사용하여 속도를 높입니다.
+
+## 13. 프롬프트 임시 저장하기
+**핵심 개념**: 초안 자동 보관
+입력 중인 프롬프트에서 `Ctrl+S`를 누르면 초안이 자동으로 저장됩니다:
+
+- 다른 메시지를 보내도 자동으로 복원
+- 메모장이나 외부 저장소 불필요
+- 복잡한 멀티라인 프롬프트 안전 보관
+- 생각이 정리되지 않은 상태에서도 작업 중단 가능
+
+
+## 14. /statusline으로 하단 정보 바 꾸미기
+**핵심 개념**: 화면 정보 맞춤 설정
+`/statusline` 명령으로 Claude Code 화면 아래의 상태 바를 설정할 수 있습니다:
+
+**표시 가능한 정보:**
+- 현재 시간
+- 토큰 사용량
+- 활성 세션 이름
+- 프로젝트 상태
+- 마지막 명령 실행 시간
+
+자신이 중요하게 생각하는 정보만 선택하여 표시하므로 작업 중 필요한 정보를 한눈에 파악할 수 있습니다.
+
+## 15. YOLO 모드로 권한 확인 없이 실행
+**핵심 개념**: 신뢰할 수 있는 환경에서의 빠른 작업
+`--dangerously-skip-permissions` 플래그를 사용하면 파일 생성, 명령 실행, 수정마다 묻지 않고 바로 진행합니다:
+
+```bash
+claude --dangerously-skip-permissions
+</code></pre><p><strong>주의사항</strong>:</p>
+<ul>
+<li>신뢰할 수 있는 프로젝트에서만 사용</li>
+<li>자신이 작성한 코드만 함께 작업할 때 안전</li>
+<li>외부 코드를 실행할 때는 비활성화</li>
+</ul>
+<p>이 모드를 사용하면 반복적인 승인 화면을 거치지 않아 개발 속도가 크게 향상됩니다.</p>
+<h2 id="16-hooks로-실행-흐름-직접-제어하기">16. Hooks로 실행 흐름 직접 제어하기</h2>
+<p><strong>핵심 개념</strong>: 자동화된 작업 흐름</p>
+<p>Hooks는 특정 시점에 자동으로 실행되는 쉘 명령입니다. <code>/hooks</code> 또는 <code>.claude/settings.json</code>에서 설정할 수 있습니다:</p>
+<p><strong>예시</strong>:</p>
+<pre tabindex="0"><code>on-start: npm install
+on-before-save: eslint .
+on-after-execute: npm test
+</code></pre><p><strong>이를 통해:</strong></p>
+<ul>
+<li>세션 시작 시 자동으로 의존성 설치</li>
+<li>코드 저장 전 린트 검사</li>
+<li>명령 실행 후 자동 테스트</li>
+</ul>
+<hr>
+<h2 id="17--멘션으로-컨텍스트-빠르게-추가">17. @ 멘션으로 컨텍스트 빠르게 추가</h2>
+<p><strong>핵심 개념</strong>: 대화 맥락 빠른 로딩</p>
+<p>Claude Code에서 <code>@</code>를 입력하면 다양한 항목을 즉시 대화에 포함할 수 있습니다:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>@src/utils.ts - 특정 파일
+</span></span><span style="display:flex;"><span>@/src - 전체 디렉터리
+</span></span><span style="display:flex;"><span>@mcp-server - MCP 서버
+</span></span><span style="display:flex;"><span>@subagent - 서브에이전트
+</span></span></code></pre></div><p>파일을 일일이 첨부할 필요 없이 간단한 입력으로 필요한 컨텍스트를 모두 로드합니다.</p>
+<h2 id="18-다음-프롬프트-자동-제안-받기">18. 다음 프롬프트 자동 제안 받기</h2>
+<p><strong>핵심 개념</strong>: 워크플로우 최적화 제안
+작업이 완료되면 Claude가 회색 글씨로 다음 단계를 제안합니다:</p>
+<ul>
+<li>테스트 작성 제안</li>
+<li>리팩토링 권장</li>
+<li>문서화 필요성 지적</li>
+<li>관련 기능 구현 제안</li>
+</ul>
+<p>이 제안에:</p>
+<ul>
+<li>Tab: 불러와서 수정 후 사용</li>
+<li>Enter: 바로 실행</li>
+<li>Esc: 무시</li>
+</ul>
+<h2 id="19-chrome으로-브라우저-직접-제어">19. /chrome으로 브라우저 직접 제어</h2>
+<p><strong>핵심 개념</strong>: 웹 개발 자동화
+Claude Code에서 /chrome을 실행하면 브라우저를 직접 제어할 수 있습니다:</p>
+<p><strong>가능한 작업:</strong></p>
+<ul>
+<li>페이지 이동 및 로딩</li>
+<li>버튼 클릭 및 입력</li>
+<li>콘솔 에러 확인</li>
+<li>DOM 검사 및 수정</li>
+<li>스크린샷 캡처</li>
+</ul>
+<p>웹 애플리케이션 개발 시 실시간으로 브라우저 상태를 확인하고 조정할 수 있습니다.</p>
+<h2 id="20-agent-skills로-작업-방식-재사용하기">20. Agent Skills로 작업 방식 재사용하기</h2>
+<p><strong>핵심 개념</strong>: 재사용 가능한 작업 패턴
+Agent Skills는 특정 작업 방법을 폴더 단위로 정의하여 Claude에게 가르치는 방식입니다.</p>
+<p><strong>한 번 설정하면:</strong></p>
+<ul>
+<li>다른 프로젝트에서 동일한 작업 패턴 재사용</li>
+<li>팀 전체와 최적의 작업 방법 공유</li>
+<li>시간이 지나도 일관된 품질 유지</li>
+</ul>
+<p>예: <code>데이터베이스 마이그레이션 패턴</code>, <code>API 작성 규칙</code>, <code>테스트 전략</code> 등</p>
+<h2 id="21-플러그인으로-설정-한-번에-공유하기">21. 플러그인으로 설정 한 번에 공유하기</h2>
+<p><strong>핵심 개념</strong>: 작업 환경 포장화
+여러 파일과 설정을 따로 주고받지 않고 플러그인으로 패킹합니다:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>plugin install my-project-setup
+</span></span></code></pre></div><p>이는 다음을 포함합니다:</p>
+<ul>
+<li>프로젝트 설정 파일</li>
+<li>린트 규칙</li>
+<li>포매터 설정</li>
+<li>테스트 프레임워크 구성</li>
+<li>커스텀 명령어</li>
+</ul>
+<p>새로운 개발자가 한 줄 명령어로 동일한 환경을 구성할 수 있습니다.</p>
+<h2 id="22-ctrlr로-이전-프롬프트-다시-쓰기">22. Ctrl+R로 이전 프롬프트 다시 쓰기</h2>
+<p><strong>핵심 개념</strong>: 명령어 히스토리 검색</p>
+<p>Claude Code에서 <code>Ctrl+R</code>을 누르면 bash의 역방향 검색처럼 과거 프롬프트를 검색할 수 있습니다:</p>
+<ul>
+<li><strong>입력하며 검색</strong>: 자동으로 일치하는 프롬프트 제시</li>
+<li><strong>Enter</strong>: 바로 실행</li>
+<li><strong>Tab</strong>: 프롬프트를 불러와 수정</li>
+</ul>
+<p>자주 사용하는 복잡한 프롬프트를 빠르게 재사용할 수 있습니다.</p>
+<hr>
+<h2 id="23-init으로-자동-온보딩-문서-만들기">23. /init으로 자동 온보딩 문서 만들기</h2>
+<p><strong>핵심 개념</strong>: 프로젝트 문서 자동화</p>
+<p>Claude Code에서 <code>/init</code>을 실행하면 코드베이스를 자동으로 분석하여 <code>CLAUDE.md</code> 문서를 생성합니다:</p>
+<p><strong>포함 내용</strong>:</p>
+<ul>
+<li>프로젝트 구조 설명</li>
+<li>빌드 명령어</li>
+<li>테스트 실행 방법</li>
+<li>주요 디렉터리별 역할</li>
+<li>환경 설정 방법</li>
+<li>핵심 기술 스택</li>
+</ul>
+<p>새로운 팀원이나 다른 개발자가 프로젝트에 빠르게 적응할 수 있도록 돕습니다.</p>
+<hr>
+<h2 id="24-export로-대화-기록-문서화">24. /export로 대화 기록 문서화</h2>
+<p><strong>핵심 개념</strong>: 작업 기록 자동 저장</p>
+<p><code>/export</code>를 실행하면 현재 대화의 모든 내용을 마크다운 파일로 내보냅니다:</p>
+<p><strong>포함 항목</strong>:</p>
+<ul>
+<li>모든 프롬프트와 응답</li>
+<li>실행된 명령어와 결과</li>
+<li>도구 호출 이력</li>
+<li>시간 기록</li>
+</ul>
+<p>이는 다음에 유용합니다:</p>
+<ul>
+<li>작업 회고 및 분석</li>
+<li>팀 간의 지식 공유</li>
+<li>프로젝트 진행 과정 문서화</li>
+<li>미래 참고 자료</li>
+</ul>
+<hr>
+<h2 id="25-subagents로-작업-나눠-병렬-처리">25. Subagents로 작업 나눠 병렬 처리</h2>
+<p><strong>핵심 개념</strong>: 분산 작업 처리</p>
+<p>Subagents는 각각 200k 토큰의 독립적인 컨텍스트를 가진 보조 에이전트입니다:</p>
+<pre tabindex="0"><code>@subagent1: API 엔드포인트 구현
+@subagent2: 데이터베이스 스키마 설계
+@subagent3: 테스트 케이스 작성
+</code></pre><p><strong>장점</strong>:</p>
+<ul>
+<li>복잡한 작업을 병렬로 처리</li>
+<li>서브에이전트 간 자동 결과 통합</li>
+<li>대규모 프로젝트의 개발 시간 단축</li>
+<li>각 에이전트가 분야별로 최적화</li>
+</ul>
+<hr>
+<h2 id="26-프롬프트를-명령어로-저장하기">26. 프롬프트를 명령어로 저장하기</h2>
+<p><strong>핵심 개념</strong>: 자주 쓰는 작업의 단축키화</p>
+<p>반복되는 프롬프트를 마크다운 파일로 저장하면 슬래시 명령어로 변환됩니다:</p>
+<p><strong>.claude/commands/explain.md</strong>:</p>
+<pre tabindex="0"><code># explain
+설명해줘: {selected_code}
+- 목적 분석
+- 핵심 로직 설명
+- 주의사항 지적
+</code></pre><p>사용: <code>/explain</code></p>
+<p><strong>인자 지원</strong>:</p>
+<pre tabindex="0"><code>/review --strict
+/generate --typescript
+</code></pre><h2 id="27-sandbox-모드로-권한-한-번에-설정하기">27. Sandbox 모드로 권한 한 번에 설정하기</h2>
+<p><strong>핵심 개념</strong>: 보안과 효율성의 균형</p>
+<p>Sandbox 모드를 활성화하면 실행 가능한 범위를 미리 정의합니다:</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">sandbox</span>:<span style="color:#888">
+</span></span></span><span style="display:flex;"><span><span style="color:#888">  </span>- <span style="color:#fb660a;font-weight:bold">allow</span>:<span style="color:#888"> </span>src/** (코드 편집)<span style="color:#888">
+</span></span></span><span style="display:flex;"><span><span style="color:#888">  </span>- <span style="color:#fb660a;font-weight:bold">allow</span>:<span style="color:#888"> </span>npm run* (스크립트 실행)<span style="color:#888">
+</span></span></span><span style="display:flex;"><span><span style="color:#888">  </span>- <span style="color:#fb660a;font-weight:bold">deny</span>:<span style="color:#888"> </span>rm -rf (위험 작업 차단)<span style="color:#888">
+</span></span></span></code></pre></div><p>이 범위 내에서 Claude는 반복적인 권한 확인 없이 작업합니다:</p>
+<p>빠른 개발 속도: 승인 화면 최소화
+안전성: 위험 작업 사전 차단
+효율적 관리: 권한 정책 중앙 관리</p>
+<h2 id="28-usage로-사용-한도-확인하기">28. /usage로 사용 한도 확인하기</h2>
+<p><strong>핵심 개념</strong>: 토큰 한도 관리</p>
+<p>/usage 명령으로 현재 상태를 확인합니다:</p>
+<ul>
+<li>사용한 토큰 수</li>
+<li>남은 토큰 수</li>
+<li>한도까지의 남은 비율</li>
+<li>추가 사용 요청 옵션</li>
+</ul>
+<p>토큰 한도에 가까워지면 /extra-usage로 추가 요청을 할 수 있습니다.</p>
+<h2 id="29-plan-mode로-수정-전-전체-흐름-파악">29. Plan Mode로 수정 전 전체 흐름 파악</h2>
+<p><strong>핵심 개념</strong>: 읽기 전용 분석 모드</p>
+<p><code>Shift+Tab</code> 두 번으로 Plan Mode를 활성화합니다:</p>
+<p><strong>Plan Mode의 특징:</strong></p>
+<ul>
+<li>코드는 수정하지 않음</li>
+<li>읽기, 검색, 분석만 진행</li>
+<li>구조와 흐름을 파악</li>
+<li>구현 전 전략 수립</li>
+</ul>
+<p>이 모드에서:</p>
+<ul>
+<li>코드 구조 파악</li>
+<li>의존성 관계 분석</li>
+<li>리팩토링 계획 수립</li>
+<li>잠재적 문제점 식별</li>
+</ul>
+<h2 id="30-lsp로-코드-이해도-높이기">30. LSP로 코드 이해도 높이기</h2>
+<p><strong>핵심 개념</strong>: IDE 수준의 개발 환경
+Claude Code에 Language Server Protocol(LSP)을 연결하면:</p>
+<p><strong>IDE 기능 활용:</strong></p>
+<ul>
+<li>실시간 오류 및 경고 표시</li>
+<li>정의로 이동 (Go to Definition)</li>
+<li>모든 참조 찾기</li>
+<li>변수명 리팩토링</li>
+<li>타입 정보 자동 완성</li>
+</ul>
+<p>TypeScript, Python, Go 등 주요 언어를 지원하여 IDE 수준의 개발 경험을 제공합니다.</p>
+<h2 id="31-claude-agent-sdk로-에이전트-직접-만들기">31. Claude Agent SDK로 에이전트 직접 만들기</h2>
+<p><strong>핵심 개념</strong> 커스텀 AI 에이전트 개발
+Claude Code에서 사용되던 에이전트 구조(루프, 도구 사용, 컨텍스트 관리)가 SDK 형태로 제공됩니다:</p>
+<p><strong>SDK로 가능한 것:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">from</span> anthropic <span style="color:#fb660a;font-weight:bold">import</span> Anthropic
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>client = Anthropic()
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 에이전트 루프 구현</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 도구 정의 및 사용</span>
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 컨텍스트 관리</span>
+</span></span></code></pre></div><p><strong>활용 사례:</strong></p>
+<ul>
+<li>자동화된 데이터 처리 에이전트</li>
+<li>고객 지원 챗봇</li>
+<li>코드 리뷰 자동화</li>
+<li>시스템 모니터링 에이전트</li>
+</ul>
+<p>단 몇 줄 코드로 강력한 커스텀 에이전트를 만들 수 있습니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 01월 01일 22시 50분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/tooling">Tooling</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/productivity">Productivity</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2025/2025-07-25-vim-esc/" rel="prev">
+        <span>Windows에서 ESC 키를 누르면 자동으로 영어 입력 상태로 전환하는 방법</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-01-01-claude-code-commit/" rel="next">
+        <span>효율적인 Git 커밋 전략: 작업을 논리적 단위로 나누기</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1--프리픽스로-터미널-바로-실행">1. ! 프리픽스로 터미널 바로 실행</a></li>
+    <li><a href="#2-esc-두-번으로-이전-상태-되돌리기">2. Esc 두 번으로 이전 상태 되돌리기</a></li>
+    <li><a href="#3-api에서-extended-thinking-켜기">3. API에서 Extended Thinking 켜기</a></li>
+    <li><a href="#4---continue와---resume으로-세션-이어가기">4. &ndash;continue와 &ndash;resume으로 세션 이어가기</a></li>
+    <li><a href="#5--프리픽스로-메모리-바로-저장">5. # 프리픽스로 메모리 바로 저장</a></li>
+    <li><a href="#6-vim으로-프롬프트-편집을-키보드로">6. /vim으로 프롬프트 편집을 키보드로</a></li>
+    <li><a href="#7--p-옵션으로-headless-모드-사용">7. -p 옵션으로 Headless 모드 사용</a></li>
+    <li><a href="#8-context로-토큰-사용-내역-확인">8. /context로 토큰 사용 내역 확인</a></li>
+    <li><a href="#9-원격-세션으로-웹과-터미널-오가며-작업">9. 원격 세션으로 웹과 터미널 오가며 작업</a></li>
+    <li><a href="#10-stats로-claude-code-사용-기록-보기">10. /stats로 Claude Code 사용 기록 보기</a></li>
+    <li><a href="#11-세션에-이름-붙여서-관리하기">11. 세션에 이름 붙여서 관리하기</a></li>
+    <li><a href="#12-키워드로-생각-깊이-조절하기">12. 키워드로 생각 깊이 조절하기</a></li>
+    <li><a href="#16-hooks로-실행-흐름-직접-제어하기">16. Hooks로 실행 흐름 직접 제어하기</a></li>
+    <li><a href="#17--멘션으로-컨텍스트-빠르게-추가">17. @ 멘션으로 컨텍스트 빠르게 추가</a></li>
+    <li><a href="#18-다음-프롬프트-자동-제안-받기">18. 다음 프롬프트 자동 제안 받기</a></li>
+    <li><a href="#19-chrome으로-브라우저-직접-제어">19. /chrome으로 브라우저 직접 제어</a></li>
+    <li><a href="#20-agent-skills로-작업-방식-재사용하기">20. Agent Skills로 작업 방식 재사용하기</a></li>
+    <li><a href="#21-플러그인으로-설정-한-번에-공유하기">21. 플러그인으로 설정 한 번에 공유하기</a></li>
+    <li><a href="#22-ctrlr로-이전-프롬프트-다시-쓰기">22. Ctrl+R로 이전 프롬프트 다시 쓰기</a></li>
+    <li><a href="#23-init으로-자동-온보딩-문서-만들기">23. /init으로 자동 온보딩 문서 만들기</a></li>
+    <li><a href="#24-export로-대화-기록-문서화">24. /export로 대화 기록 문서화</a></li>
+    <li><a href="#25-subagents로-작업-나눠-병렬-처리">25. Subagents로 작업 나눠 병렬 처리</a></li>
+    <li><a href="#26-프롬프트를-명령어로-저장하기">26. 프롬프트를 명령어로 저장하기</a></li>
+    <li><a href="#27-sandbox-모드로-권한-한-번에-설정하기">27. Sandbox 모드로 권한 한 번에 설정하기</a></li>
+    <li><a href="#28-usage로-사용-한도-확인하기">28. /usage로 사용 한도 확인하기</a></li>
+    <li><a href="#29-plan-mode로-수정-전-전체-흐름-파악">29. Plan Mode로 수정 전 전체 흐름 파악</a></li>
+    <li><a href="#30-lsp로-코드-이해도-높이기">30. LSP로 코드 이해도 높이기</a></li>
+    <li><a href="#31-claude-agent-sdk로-에이전트-직접-만들기">31. Claude Agent SDK로 에이전트 직접 만들기</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="https://gyuha.com/tags/claude" class="badge badge-secondary">claude</a>
+    <a href="https://gyuha.com/tags/claude-code" class="badge badge-secondary">claude-code</a>
+    <a href="https://gyuha.com/tags/anthropic" class="badge badge-secondary">anthropic</a>
+    <a href="https://gyuha.com/tags/productivity" class="badge badge-secondary">productivity</a>
+    <a href="https://gyuha.com/tags/prompts" class="badge badge-secondary">prompts</a>
+    <a href="https://gyuha.com/tags/automation" class="badge badge-secondary">automation</a>
+    <a href="https://gyuha.com/tags/tips" class="badge badge-secondary">tips</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.textContent = '복사';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.textContent = '복사됨!';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.textContent = '복사';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.textContent = '실패';
+          setTimeout(function() {
+            copyButton.textContent = '복사';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
