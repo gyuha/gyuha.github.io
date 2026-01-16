@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'linux mpv 자막 번역기'" />
+  <title>linux mpv 자막 번역기  | 신규하 블로그</title>
+  <meta property="og:title" content="linux mpv 자막 번역기" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-01-16"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/2026-01-16-mpv-translate/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="mpv" />
+  
+  <meta property="og:tags" content="자막 번역" />
+  
+  <meta property="og:tags" content="Linux" />
+  
+  <meta property="og:tags" content="동영상 플레이어" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action="https://google.com/search">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search"></i>
+                <input type="hidden" name="sitesearch" value="https://gyuha.com/" />
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/2026-01-16-mpv-translate/">
+          <h1>
+            linux mpv 자막 번역기
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/2026-01-16-mpv-translate/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>mpv는 강력한 오픈소스 동영상 플레이어로, 다양한 기능을 플러그인 형태로 확장할 수 있습니다. 이번 글에서는 mpv에서 자막을 실시간으로 번역해주는 Lua 스크립트를 소개합니다. 이 스크립트는 <code>trans</code> 명령줄 도구를 사용하여 자막을 번역하며, Linux 환경에서 mpv와 함께 사용할 수 있습니다.</p>
+<p>설치 방법과 사용법은 다음과 같습니다.</p>
+<h2 id="사전-준비">사전 준비</h2>
+<ol>
+<li><strong>mpv 설치</strong>: Linux 배포판에 따라 패키지 관리자를 사용하여 mpv를 설치합니다.
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt install mpv  <span style="color:#080;background-color:#0f140f;font-style:italic"># Ubuntu/Debian</span>
+</span></span><span style="display:flex;"><span>sudo dnf install mpv  <span style="color:#080;background-color:#0f140f;font-style:italic"># Fedora</span>
+</span></span></code></pre></div></li>
+<li><strong>trans 도구 설치</strong>: <code>trans</code>는 다양한 번역 서비스를 지원하는 명령줄 번역기입니다. 다음 명령어로 설치할 수 있습니다.
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt install translate-shell  <span style="color:#080;background-color:#0f140f;font-style:italic"># Ubuntu/Debian</span>
+</span></span></code></pre></div>또는 <a href="https://github.com/soimort/translate-shell">공식 GitHub 저장소</a>에서 최신 버전을 확인할 수 있습니다。</li>
+</ol>
+<h2 id="스크립트-설치-및-설정">스크립트 설치 및 설정</h2>
+<p>아래 Lua 스크립트를 <code>~/.config/mpv/scripts/</code> 디렉토리에 <code>auto_translate.lua</code>라는 이름으로 저장합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">local</span> mp = require <span style="color:#0086d2">&#39;mp&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">local</span> enabled = <span style="color:#fb660a;font-weight:bold">false</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">-- OSD 오버레이 생성</span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">local</span> ov = mp.create_osd_overlay(<span style="color:#0086d2">&#34;ass-events&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">function</span> <span style="color:#ff0086;font-weight:bold">translation_callback</span>(success, result, error)
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">if</span> success and result.status == <span style="color:#0086f7;font-weight:bold">0</span> <span style="color:#fb660a;font-weight:bold">then</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#080;background-color:#0f140f;font-style:italic">-- [[ 스타일 설정 ]]</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#080;background-color:#0f140f;font-style:italic">-- \an2 : 하단 중앙 정렬</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#080;background-color:#0f140f;font-style:italic">-- \fs60 : 글자 크기</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#080;background-color:#0f140f;font-style:italic">-- \bord2 : 테두리 두께 (검은색)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#080;background-color:#0f140f;font-style:italic">-- \1c&amp;HFFFFFF&amp; : 글자색 (흰색)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#fb660a;font-weight:bold">local</span> style = <span style="color:#0086d2">&#34;{</span><span style="color:#0086d2">\\</span><span style="color:#0086d2">an2}{</span><span style="color:#0086d2">\\</span><span style="color:#0086d2">fs60}{</span><span style="color:#0086d2">\\</span><span style="color:#0086d2">bord2}&#34;</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#080;background-color:#0f140f;font-style:italic">-- 줄바꿈을 공백으로 변경</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#fb660a;font-weight:bold">local</span> clean_text = result.stdout:gsub(<span style="color:#0086d2">&#34;</span><span style="color:#0086d2">\n</span><span style="color:#0086d2">&#34;</span>, <span style="color:#0086d2">&#34; &#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        ov.data = style .. clean_text
+</span></span><span style="display:flex;"><span>        ov:update()
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">end</span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">function</span> <span style="color:#ff0086;font-weight:bold">on_subtitle_change</span>(name, text)
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">if</span> not enabled <span style="color:#fb660a;font-weight:bold">then</span> <span style="color:#fb660a;font-weight:bold">return</span> <span style="color:#fb660a;font-weight:bold">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">if</span> not text or text == <span style="color:#0086d2">&#34;&#34;</span> <span style="color:#fb660a;font-weight:bold">then</span>
+</span></span><span style="display:flex;"><span>        ov.data = <span style="color:#0086d2">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        ov:update()
+</span></span><span style="display:flex;"><span>        <span style="color:#fb660a;font-weight:bold">return</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    text = text:gsub(<span style="color:#0086d2">&#34;</span><span style="color:#0086d2">\n</span><span style="color:#0086d2">&#34;</span>, <span style="color:#0086d2">&#34; &#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">local</span> cmd = {
+</span></span><span style="display:flex;"><span>        name = <span style="color:#0086d2">&#34;subprocess&#34;</span>,
+</span></span><span style="display:flex;"><span>        args = { <span style="color:#0086d2">&#34;trans&#34;</span>, <span style="color:#0086d2">&#34;-b&#34;</span>, <span style="color:#0086d2">&#34;-t&#34;</span>, <span style="color:#0086d2">&#34;ko&#34;</span>, text },
+</span></span><span style="display:flex;"><span>        capture_stdout = <span style="color:#fb660a;font-weight:bold">true</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    mp.command_native_async(cmd, translation_callback)
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">function</span> <span style="color:#ff0086;font-weight:bold">toggle_translation</span>()
+</span></span><span style="display:flex;"><span>    enabled = not enabled
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">if</span> enabled <span style="color:#fb660a;font-weight:bold">then</span>
+</span></span><span style="display:flex;"><span>        mp.set_property(<span style="color:#0086d2">&#34;sub-visibility&#34;</span>, <span style="color:#0086d2">&#34;no&#34;</span>)
+</span></span><span style="display:flex;"><span>        mp.osd_message(<span style="color:#0086d2">&#34;자동 번역 ON (Shift+t로 끄기)&#34;</span>, <span style="color:#0086f7;font-weight:bold">2</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#fb660a;font-weight:bold">local</span> current_text = mp.get_property(<span style="color:#0086d2">&#34;sub-text&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#fb660a;font-weight:bold">if</span> current_text <span style="color:#fb660a;font-weight:bold">then</span> on_subtitle_change(<span style="color:#0086d2">&#34;sub-text&#34;</span>, current_text) <span style="color:#fb660a;font-weight:bold">end</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">else</span>
+</span></span><span style="display:flex;"><span>        mp.set_property(<span style="color:#0086d2">&#34;sub-visibility&#34;</span>, <span style="color:#0086d2">&#34;yes&#34;</span>)
+</span></span><span style="display:flex;"><span>        ov.data = <span style="color:#0086d2">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        ov:update()
+</span></span><span style="display:flex;"><span>        mp.osd_message(<span style="color:#0086d2">&#34;자동 번역 OFF&#34;</span>, <span style="color:#0086f7;font-weight:bold">2</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">end</span>
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>mp.observe_property(<span style="color:#0086d2">&#34;sub-text&#34;</span>, <span style="color:#0086d2">&#34;string&#34;</span>, on_subtitle_change)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">-- [[ 단축키 변경됨: Shift + t (대문자 T) ]]</span>
+</span></span><span style="display:flex;"><span>mp.add_key_binding(<span style="color:#0086d2">&#34;T&#34;</span>, <span style="color:#0086d2">&#34;toggle_auto_translation&#34;</span>, toggle_translation)
+</span></span></code></pre></div><h2 id="사용법">사용법</h2>
+<ol>
+<li>mpv로 동영상을 재생합니다.</li>
+<li>자막이 표시되는 동안 <code>Shift + t</code> 키를 눌러 자동 번역 기능을 켜거나 끕니다.</li>
+<li>자막이 번역되어 화면 하단에 표시됩니다.</li>
+</ol>
+<h2 id="함께-보기">함께 보기</h2>
+<ul>
+<li><a href="https://mpv.io/manual/stable/">mpv 공식 문서</a></li>
+<li><a href="https://github.com/soimort/translate-shell">translate-shell GitHub</a></li>
+</ul>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 01월 16일 22시 04분
+</time>
+  
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-01-02-top-python-libraries-2025/" rel="prev">
+        <span>2025년 주목해야 할 Python 라이브러리 Top 10</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#사전-준비">사전 준비</a></li>
+    <li><a href="#스크립트-설치-및-설정">스크립트 설치 및 설정</a></li>
+    <li><a href="#사용법">사용법</a></li>
+    <li><a href="#함께-보기">함께 보기</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="https://gyuha.com/tags/mpv" class="badge badge-secondary">mpv</a>
+    <a href="https://gyuha.com/tags/%EC%9E%90%EB%A7%89-%EB%B2%88%EC%97%AD" class="badge badge-secondary">자막 번역</a>
+    <a href="https://gyuha.com/tags/linux" class="badge badge-secondary">Linux</a>
+    <a href="https://gyuha.com/tags/%EB%8F%99%EC%98%81%EC%83%81-%ED%94%8C%EB%A0%88%EC%9D%B4%EC%96%B4" class="badge badge-secondary">동영상 플레이어</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.textContent = '복사';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.textContent = '복사됨!';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.textContent = '복사';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.textContent = '실패';
+          setTimeout(function() {
+            copyButton.textContent = '복사';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
