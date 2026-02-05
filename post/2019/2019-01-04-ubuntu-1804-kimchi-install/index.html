@@ -104,11 +104,11 @@
 <p>kimchi를 설치 이후에 설정으로 추가해 주면&hellip; 문제가 발생하면서 네트워크가 불능이 되어 버립니다.</p>
 <p>그래서 미리 설정을 해 줍니다.</p>
 <p>먼저 bridge-utils를 설치 해 줍니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt install bridge-utils
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt install bridge-utils
 </span></span></code></pre></div><p>그리고, <code>/etc/netplan/50-cloud-init.yaml</code>을 수정해 줍니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo vi /etc/netplan/50-cloud-init.yaml
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo vi /etc/netplan/50-cloud-init.yaml
 </span></span></code></pre></div><p>아래와 같이 입력 합니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">network</span>:<span style="color:#888">
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">network</span>:<span style="color:#888">
 </span></span></span><span style="display:flex;"><span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">ethernets</span>:<span style="color:#888">
 </span></span></span><span style="display:flex;"><span><span style="color:#888">        </span><span style="color:#fb660a;font-weight:bold">enp3s0</span>:<span style="color:#888">
 </span></span></span><span style="display:flex;"><span><span style="color:#888">            </span><span style="color:#fb660a;font-weight:bold">dhcp4</span>:<span style="color:#888"> </span><span style="color:#fb660a;font-weight:bold">false</span><span style="color:#888">
@@ -130,9 +130,9 @@
 </span></span></span><span style="display:flex;"><span><span style="color:#888">            </span><span style="color:#fb660a;font-weight:bold">optional</span>:<span style="color:#888"> </span><span style="color:#fb660a;font-weight:bold">true</span><span style="color:#888">
 </span></span></span><span style="display:flex;"><span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">version</span>:<span style="color:#888"> </span><span style="color:#0086f7;font-weight:bold">2</span><span style="color:#888">
 </span></span></span></code></pre></div><p>입력한 내용을 적용 합니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo netplan apply
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo netplan apply
 </span></span></code></pre></div><p>이제 네트워크에 잘 적용이 되었는지 확인 합니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ ip a
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ ip a
 </span></span><span style="display:flex;"><span>1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu <span style="color:#0086f7;font-weight:bold">65536</span> qdisc noqueue state UNKNOWN group default qlen <span style="color:#0086f7;font-weight:bold">1000</span>
 </span></span><span style="display:flex;"><span>    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
 </span></span><span style="display:flex;"><span>    inet 127.0.0.1/8 scope host lo
@@ -151,42 +151,42 @@
 </span></span><span style="display:flex;"><span>    link/ether 00:90:f5:e7:6e:10 brd ff:ff:ff:ff:ff:ff
 </span></span></code></pre></div><h2 id="kimchi-설치하기">Kimchi 설치하기</h2>
 <p>먼저 업데이트 할꺼와 업그레이드 할 꺼를 해 줍니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt update &amp;&amp; sudo apt upgrade -y
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt update &amp;&amp; sudo apt upgrade -y
 </span></span></code></pre></div><p>그리고 KVM을 설치하고 Kimchi와 Wok이 필요로 하는 패키지들을 설치해 줍니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt install qemu qemu-kvm libvirt-bin <span style="color:#0086d2">\
-</span></span></span><span style="display:flex;"><span><span style="color:#0086d2"></span>python-paramiko python-pil novnc python-libvirt <span style="color:#0086d2">\
-</span></span></span><span style="display:flex;"><span><span style="color:#0086d2"></span>python-ethtool python-ipaddr python-guestfs <span style="color:#0086d2">\
-</span></span></span><span style="display:flex;"><span><span style="color:#0086d2"></span>libguestfs-tools spice-html5 spice-html5 <span style="color:#0086d2">\
-</span></span></span><span style="display:flex;"><span><span style="color:#0086d2"></span>python-magic keyutils libnfsidmap2 <span style="color:#0086d2">\
-</span></span></span><span style="display:flex;"><span><span style="color:#0086d2"></span>libtirpc1 nfs-common rpcbind python-configobj <span style="color:#0086d2">\
-</span></span></span><span style="display:flex;"><span><span style="color:#0086d2"></span>python-parted -y
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt install qemu qemu-kvm libvirt-bin <span style="color:#0086d2">\
+</span></span></span><span style="display:flex;"><span>python-paramiko python-pil novnc python-libvirt <span style="color:#0086d2">\
+</span></span></span><span style="display:flex;"><span>python-ethtool python-ipaddr python-guestfs <span style="color:#0086d2">\
+</span></span></span><span style="display:flex;"><span>libguestfs-tools spice-html5 spice-html5 <span style="color:#0086d2">\
+</span></span></span><span style="display:flex;"><span>python-magic keyutils libnfsidmap2 <span style="color:#0086d2">\
+</span></span></span><span style="display:flex;"><span>libtirpc1 nfs-common rpcbind python-configobj <span style="color:#0086d2">\
+</span></span></span><span style="display:flex;"><span>python-parted -y
 </span></span></code></pre></div><p>혹시 패키지를 찾지 못한다면 Universe 저장소를 활성화 해 줘야 합니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo add-apt-repository universe
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo add-apt-repository universe
 </span></span></code></pre></div><p>KVM 설치를 확인 합니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ kvm-ok
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ kvm-ok
 </span></span><span style="display:flex;"><span>INFO: /dev/kvm exists
 </span></span><span style="display:flex;"><span>KVM acceleration can be used
 </span></span></code></pre></div><p>정상적으로 설치가 되었다면 위와 같은 메시지가 나옵니다.</p>
 <p>nginx를 설치 합니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt install nginx -y
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt install nginx -y
 </span></span></code></pre></div><p>Kimchi의 최신 설치파일을 받아 옵니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ wget https://github.com/kimchi-project/kimchi/releases/download/2.5.0/wok-2.5.0-0.noarch.deb
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ wget https://github.com/kimchi-project/kimchi/releases/download/2.5.0/wok-2.5.0-0.noarch.deb
 </span></span><span style="display:flex;"><span>$ wget https://github.com/kimchi-project/kimchi/releases/download/2.5.0/kimchi-2.5.0-0.noarch.deb
 </span></span></code></pre></div><p>먼저 wok을 설치를 합니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sudo dpkg -i wok-2.5.0-0.noarch.deb
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sudo dpkg -i wok-2.5.0-0.noarch.deb
 </span></span><span style="display:flex;"><span>$ sudo apt install -f -y
 </span></span></code></pre></div><p>그리고, Kimchi를 설치 합니다. 그런데 그냥 설치 하면 <code>python-imaging</code>에서 문제가 발생 합니다. 그래서 python-imaging을 depends에서 제외하고 설치를 해 줍니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sudo dpkg --ignore-depends=python-imaging -i kimchi-2.5.0-0.noarch.deb
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sudo dpkg --ignore-depends=python-imaging -i kimchi-2.5.0-0.noarch.deb
 </span></span></code></pre></div><p>만약에 UFW를 사용 한다면, 8001번 포트를 열어 줍니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sudo ufw allow 8001/tcp
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sudo ufw allow 8001/tcp
 </span></span></code></pre></div><p>설치가 되었다면 재부팅해 줍니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sudo reboot
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sudo reboot
 </span></span></code></pre></div><h3 id="kimchi-패키지-종속-문제-해결하기">Kimchi 패키지 종속 문제 해결하기</h3>
 <p>우선 kimchi에서 python-imaging을 제거 해 줘야 합니다. 여기서는 python-imaging을 python-pil을 대체해 줍니다.</p>
 <p>먼저 아래와 같이 편집기를 띄워 줍니다.</p>
 <pre tabindex="0"><code>$ sudo vi /var/lib/dpkg/status
 </code></pre><p><code>/var/lib/dpkg/status</code> 파일에서 <code>package: kimchi</code>를 검색해 보면&hellip;</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#ff0086;font-weight:bold">Package: kimchi</span>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#ff0086;font-weight:bold">Package: kimchi</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff0086;font-weight:bold">Status: install ok installed</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff0086;font-weight:bold">Priority: optional</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff0086;font-weight:bold">Section: base</span>
@@ -211,7 +211,7 @@
 <p>여기까지 하면 한 고비를 남겨서 잘 동작하는 화면을 볼 수 있습니다.</p>
 <h2 id="ubuntu-1804-서버-설치-하기">Ubuntu 18.04 서버 설치 하기</h2>
 <p>먼저 ubuntu 18.04의 이미지를 받아 줍니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ cd /var/lib/kimchi/isos
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ cd /var/lib/kimchi/isos
 </span></span><span style="display:flex;"><span>$ sudo wget http://releases.ubuntu.com/18.04.1/ubuntu-18.04.1-live-server-amd64.iso
 </span></span></code></pre></div><p>이미지가 다 받아 지면 <code>Vitualization</code> &gt; <code>Templates</code> 에서 <code>+ Add Template</code> 버튼을 누르면 제일 처음에 Ubuntu 18.04가 보입니다.</p>
 <p>하지만, 아직 이미지를 쓰진 못 합니다. ㅜ.ㅜ</p>
@@ -224,44 +224,44 @@ bytes, but Linux says it is 512 bytes.</p>
 <h4 id="ubuntu-1804-이미지-오류-수정하기">Ubuntu 18.04 이미지 오류 수정하기</h4>
 <p>이미지를 템플릿으로 추가 하려면 위와 같이 메시지가 나옵니다.</p>
 <p>여기서 다시 편집이 들어가야 합니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sudo vi /usr/lib/python2.7/dist-packages/wok/plugins/kimchi/model/templates.py
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sudo vi /usr/lib/python2.7/dist-packages/wok/plugins/kimchi/model/templates.py
 </span></span></code></pre></div><p>먼저 아래와 같은 라인을 찾습니다. 제가 쓰는 버전에서는 42라인입니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>ISO_TYPE = <span style="color:#0086d2">&#34;ISO 9660 CD-ROM&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>ISO_TYPE = <span style="color:#0086d2">&#34;ISO 9660 CD-ROM&#34;</span>
 </span></span></code></pre></div><p>이걸 아래와 같이 변경해 줍니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>ISO_TYPE = [<span style="color:#0086d2">&#34;DOS/MBR&#34;</span>, <span style="color:#0086d2">&#34;ISO 9660 CD-ROM&#34;</span>]
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>ISO_TYPE = [<span style="color:#0086d2">&#34;DOS/MBR&#34;</span>, <span style="color:#0086d2">&#34;ISO 9660 CD-ROM&#34;</span>]
 </span></span></code></pre></div><p>그리고  다시 아래와 같은 줄을 찾아 줍니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>        <span style="color:#fb660a;font-weight:bold">if</span> ISO_TYPE in ftype:
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>        <span style="color:#fb660a;font-weight:bold">if</span> ISO_TYPE in ftype:
 </span></span></code></pre></div><p>위 라인을 아래와 같이 바꿔 줍니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>        iscdrom = [t <span style="color:#fb660a;font-weight:bold">for</span> t in ISO_TYPE <span style="color:#fb660a;font-weight:bold">if</span> t in ftype]
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>        iscdrom = [t <span style="color:#fb660a;font-weight:bold">for</span> t in ISO_TYPE <span style="color:#fb660a;font-weight:bold">if</span> t in ftype]
 </span></span><span style="display:flex;"><span>        <span style="color:#fb660a;font-weight:bold">if</span> iscdrom:
 </span></span></code></pre></div><p>여기서 수정 할 때 주의 해야 할 점은 python이라서 공백에 민감합니다. 꼭 공백을 맞춰서 넣어 주세요.</p>
 <p>python을 약간만 보셨다면 어렵지 않게 하실 수 있을 겁니다.</p>
 <p>그리고 재부팅을 해 줍니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sudo reboot
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sudo reboot
 </span></span></code></pre></div><h2 id="포트를-443으로-변경해-주기">포트를 443으로 변경해 주기</h2>
 <p>인증서는 없지만, 그래도 443으로 변경해 주면 포트를 안 써줘도 되니.. 변경 해 줍니다.</p>
 <h4 id="nginx-설정-변경하기">Nginx 설정 변경하기</h4>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sudo vi /etc/nginx/conf.d/wok.conf
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sudo vi /etc/nginx/conf.d/wok.conf
 </span></span></code></pre></div><p>아래과 같은 2라인을  찾습니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#ff0086;font-weight:bold">....</span>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#ff0086;font-weight:bold">....</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff0086;font-weight:bold">listen 0.0.0.0:8001 ssl;</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff0086;font-weight:bold">....</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff0086;font-weight:bold">proxy_redirect http://127.0.0.1:8010/ https://$host:8001/;</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff0086;font-weight:bold">....</span>
 </span></span></code></pre></div><p>내용을 아래와 같이 변경 합니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#ff0086;font-weight:bold">....</span>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#ff0086;font-weight:bold">....</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff0086;font-weight:bold">listen 0.0.0.0:443 ssl;</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff0086;font-weight:bold">....</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff0086;font-weight:bold">proxy_redirect http://127.0.0.1:8010/ https://$host:443/;</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff0086;font-weight:bold">....</span>
 </span></span></code></pre></div><h4 id="wok-설정-변경하기">Wok 설정 변경하기</h4>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sudo vi /etc/wok/wok.conf
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sudo vi /etc/wok/wok.conf
 </span></span></code></pre></div><p>아래과 같은 라인을 찾습니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#ff0086;font-weight:bold">....</span>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#ff0086;font-weight:bold">....</span>
 </span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">#proxy_port = 8001</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff0086;font-weight:bold">....</span>
 </span></span></code></pre></div><p>아래과 같이 변경 해 줍니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#ff0086;font-weight:bold">....</span>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span><span style="color:#ff0086;font-weight:bold">....</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff0086;font-weight:bold">proxy_port</span> = <span style="color:#0086d2">443</span>
 </span></span><span style="display:flex;"><span><span style="color:#ff0086;font-weight:bold">....</span>
 </span></span></code></pre></div><h2 id="참고">참고</h2>

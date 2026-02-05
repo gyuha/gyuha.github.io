@@ -111,7 +111,7 @@
 <p>이 모든 것이 사소해 보일 수 있지만, 잘 만들어진 웹 애플리케이션의 디테일을 결정하는 중요한 요소입니다.</p>
 <h2 id="useformurlsync-전체-코드-훑어보기-"><code>useFormUrlSync</code> 전체 코드 훑어보기 🧐</h2>
 <p>먼저 우리가 만들 커스텀 훅의 전체 코드를 살펴보겠습니다. Next.js(App Router 기준) 환경과 <code>react-hook-form</code> 라이브러리를 사용한다는 점을 참고해 주시기 바랍니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> <span style="color:#fb660a;font-weight:bold">type</span> { AliasAny } <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#34;@/types/alias.types&#34;</span>;
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> <span style="color:#fb660a;font-weight:bold">type</span> { AliasAny } <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#34;@/types/alias.types&#34;</span>;
 </span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> { isNumber } <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#34;es-toolkit/compat&#34;</span>;
 </span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> { useRouter, useSearchParams } <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#34;next/navigation&#34;</span>;
 </span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> { useCallback, useEffect, useRef } <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#34;react&#34;</span>;
@@ -121,7 +121,7 @@
 </span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * useFormUrlSync 훅의 옵션 타입
 </span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> * @template T - 폼 필드 값들의 타입
 </span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"> */</span>
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">type</span> UseFormUrlSyncOptions&lt;<span style="color:#fb660a;font-weight:bold">T</span> <span style="color:#ff0086;font-weight:bold">extends</span> <span style="color:#ff0086;font-weight:bold">FieldValues</span>&gt; = Omit&lt;<span style="color:#fb660a;font-weight:bold">UseFormProps</span>&lt;<span style="color:#ff0086;font-weight:bold">T</span>&gt;, <span style="color:#0086d2">&#34;defaultValues&#34;</span>&gt; &amp; {
+</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">type</span> UseFormUrlSyncOptions&lt;<span style="color:#fb660a;font-weight:bold">T</span> <span style="color:#ff0086;font-weight:bold">extends</span> <span style="color:#ff0086;font-weight:bold">FieldValues</span>&gt; = Omit&lt;<span style="color:#fb660a;font-weight:bold">UseFormProps</span>&lt;<span style="color:#fb660a;font-weight:bold">T</span>&gt;, <span style="color:#0086d2">&#34;defaultValues&#34;</span>&gt; &amp; {
 </span></span><span style="display:flex;"><span>  <span style="color:#080;background-color:#0f140f;font-style:italic">/** URL 동기화에서 제외할 필드명들 */</span>
 </span></span><span style="display:flex;"><span>  excludeFromUrl?: (<span style="color:#fb660a;font-weight:bold">keyof</span> T)[];
 </span></span><span style="display:flex;"><span>  <span style="color:#080;background-color:#0f140f;font-style:italic">/** URL 변경 시 replace 사용 여부 (기본값: true) */</span>
@@ -304,16 +304,16 @@
 <p>이 두 가지 흐름이 어떻게 구현되었는지 살펴보겠습니다.</p>
 <h3 id="1-폼-변경--url-업데이트">1. 폼 변경 → URL 업데이트</h3>
 <p>이 부분은 <code>react-hook-form</code>의 <code>watch</code> 함수와 <code>useEffect</code>를 사용하여 구현합니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span>  <span style="color:#080;background-color:#0f140f;font-style:italic">// ...
-</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span>  <span style="color:#080;background-color:#0f140f;font-style:italic">// ...
+</span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  useEffect(() =&gt; {
 </span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">const</span> subscription = watch(values =&gt; {
 </span></span><span style="display:flex;"><span>      <span style="color:#080;background-color:#0f140f;font-style:italic">// isUpdatingFromUrl 플래그에 대해서는 잠시 후에 설명하겠습니다.
-</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>      <span style="color:#fb660a;font-weight:bold">if</span> (isUpdatingFromUrl.current) {
+</span></span></span><span style="display:flex;"><span>      <span style="color:#fb660a;font-weight:bold">if</span> (isUpdatingFromUrl.current) {
 </span></span><span style="display:flex;"><span>        <span style="color:#fb660a;font-weight:bold">return</span>;
 </span></span><span style="display:flex;"><span>      }
 </span></span><span style="display:flex;"><span>      updateUrl(values <span style="color:#fb660a;font-weight:bold">as</span> T); <span style="color:#080;background-color:#0f140f;font-style:italic">// 폼 값이 변경되면 URL을 업데이트하는 함수 호출
-</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>    });
+</span></span></span><span style="display:flex;"><span>    });
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">return</span> () =&gt; subscription.unsubscribe();
 </span></span><span style="display:flex;"><span>  }, [watch, updateUrl]);
@@ -322,26 +322,26 @@
 </span></span></span></code></pre></div><p><code>watch</code>는 폼의 모든 값 변경을 감지하는 구독(subscription)을 생성합니다. 값이 바뀔 때마다 <code>updateUrl</code> 함수를 호출하여 변경된 값을 URL 쿼리 파라미터로 만들어줍니다.</p>
 <h3 id="2-url-변경--폼-상태-업데이트">2. URL 변경 → 폼 상태 업데이트</h3>
 <p>이것은 사용자가 브라우저의 뒤로 가기/앞으로 가기 버튼을 눌렀을 때를 위한 기능입니다. <code>useSearchParams</code> 훅이 URL의 변경을 감지하면, <code>useEffect</code>가 실행됩니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span>  <span style="color:#080;background-color:#0f140f;font-style:italic">// ...
-</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span>  <span style="color:#080;background-color:#0f140f;font-style:italic">// ...
+</span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  useEffect(() =&gt; {
 </span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">const</span> urlValues = getUrlValues(); <span style="color:#080;background-color:#0f140f;font-style:italic">// URL에서 현재 폼 관련 값들을 가져옴
-</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>    <span style="color:#fb660a;font-weight:bold">const</span> currentFormValues = getValues(); <span style="color:#080;background-color:#0f140f;font-style:italic">// react-hook-form의 현재 값들을 가져옴
-</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>
+</span></span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">const</span> currentFormValues = getValues(); <span style="color:#080;background-color:#0f140f;font-style:italic">// react-hook-form의 현재 값들을 가져옴
+</span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#080;background-color:#0f140f;font-style:italic">// ... (비교 로직) ...
-</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>
+</span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#080;background-color:#0f140f;font-style:italic">// URL의 값과 폼의 값이 다를 경우
-</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>    <span style="color:#fb660a;font-weight:bold">if</span> (!deepEqual(urlValues, relevantFormValues)) {
+</span></span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">if</span> (!deepEqual(urlValues, relevantFormValues)) {
 </span></span><span style="display:flex;"><span>      isUpdatingFromUrl.current = <span style="color:#fb660a;font-weight:bold">true</span>; <span style="color:#080;background-color:#0f140f;font-style:italic">// 무한 루프 방지 플래그 ON
-</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>
+</span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>      <span style="color:#080;background-color:#0f140f;font-style:italic">// URL 값으로 폼 상태를 리셋(업데이트)
-</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>      reset({
+</span></span></span><span style="display:flex;"><span>      reset({
 </span></span><span style="display:flex;"><span>        ...currentFormValues,
 </span></span><span style="display:flex;"><span>        ...urlValues,
 </span></span><span style="display:flex;"><span>      } <span style="color:#fb660a;font-weight:bold">as</span> DefaultValues&lt;<span style="color:#fb660a;font-weight:bold">T</span>&gt;);
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>      <span style="color:#080;background-color:#0f140f;font-style:italic">// 아주 잠깐의 딜레이 후 플래그 OFF
-</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>      setTimeout(() =&gt; {
+</span></span></span><span style="display:flex;"><span>      setTimeout(() =&gt; {
 </span></span><span style="display:flex;"><span>        isUpdatingFromUrl.current = <span style="color:#fb660a;font-weight:bold">false</span>;
 </span></span><span style="display:flex;"><span>      }, <span style="color:#0086f7;font-weight:bold">0</span>);
 </span></span><span style="display:flex;"><span>    }
@@ -359,11 +359,11 @@
 <p><code>isUpdatingFromUrl.current = true</code>는 &ldquo;지금은 URL 변경 때문에 폼을 강제로 업데이트하는 중이니, <code>watch</code>는 잠시 반응하지 말라&quot;고 알려주는 신호탄과 같습니다. 폼을 <code>reset</code> 한 직후 <code>setTimeout</code>으로 플래그를 다시 <code>false</code>로 바꿔서, 그 이후의 사용자 입력에는 정상적으로 반응하도록 만듭니다. 매우 효율적인 방법입니다.</p>
 <h2 id="실제로-사용해보기-">실제로 사용해보기 📝</h2>
 <p>이제 이 훅을 실제 컴포넌트에서 어떻게 사용하는지 살펴보겠습니다. 간단한 검색 폼을 예시로 들어보겠습니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// components/SearchForm.tsx
-</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span><span style="color:#0086d2">&#34;use client&#34;</span>;
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// components/SearchForm.tsx
+</span></span></span><span style="display:flex;"><span><span style="color:#0086d2">&#34;use client&#34;</span>;
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> { useFormUrlSync } <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#34;@/hooks/useFormUrlSync&#34;</span>; <span style="color:#080;background-color:#0f140f;font-style:italic">// 우리가 만든 훅
-</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>
+</span></span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">interface</span> SearchFormValues {
 </span></span><span style="display:flex;"><span>  keyword: <span style="color:#cdcaa9;font-weight:bold">string</span>;
 </span></span><span style="display:flex;"><span>  category: <span style="color:#cdcaa9;font-weight:bold">string</span>;
@@ -374,39 +374,39 @@
 </span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">export</span> <span style="color:#fb660a;font-weight:bold">function</span> SearchForm() {
 </span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> { register, handleSubmit, formState: { errors } } = useFormUrlSync&lt;<span style="color:#fb660a;font-weight:bold">SearchFormValues</span>&gt;({
 </span></span><span style="display:flex;"><span>    <span style="color:#080;background-color:#0f140f;font-style:italic">// 폼의 기본값 설정
-</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>    defaultValues: {
+</span></span></span><span style="display:flex;"><span>    defaultValues: {
 </span></span><span style="display:flex;"><span>      keyword: <span style="color:#0086d2">&#34;&#34;</span>,
 </span></span><span style="display:flex;"><span>      category: <span style="color:#0086d2">&#34;all&#34;</span>,
 </span></span><span style="display:flex;"><span>      inStockOnly: <span style="color:#cdcaa9;font-weight:bold">false</span>,
 </span></span><span style="display:flex;"><span>      page: <span style="color:#cdcaa9;font-weight:bold">1</span>,
 </span></span><span style="display:flex;"><span>    },
 </span></span><span style="display:flex;"><span>    <span style="color:#080;background-color:#0f140f;font-style:italic">// URL에 포함시키고 싶지 않은 필드
-</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>    excludeFromUrl: [<span style="color:#0086d2">&#34;page&#34;</span>],
+</span></span></span><span style="display:flex;"><span>    excludeFromUrl: [<span style="color:#0086d2">&#34;page&#34;</span>],
 </span></span><span style="display:flex;"><span>    <span style="color:#080;background-color:#0f140f;font-style:italic">// URL 변경 시 히스토리를 남기고 싶을 때
-</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>    replace: <span style="color:#cdcaa9;font-weight:bold">false</span>,
+</span></span></span><span style="display:flex;"><span>    replace: <span style="color:#cdcaa9;font-weight:bold">false</span>,
 </span></span><span style="display:flex;"><span>  });
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">const</span> onSubmit = (data: <span style="color:#cdcaa9;font-weight:bold">SearchFormValues</span>) =&gt; {
 </span></span><span style="display:flex;"><span>    <span style="color:#080;background-color:#0f140f;font-style:italic">// 실제 검색 로직 수행
-</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"></span>    console.log(<span style="color:#0086d2">&#34;검색 실행:&#34;</span>, data);
+</span></span></span><span style="display:flex;"><span>    console.log(<span style="color:#0086d2">&#34;검색 실행:&#34;</span>, data);
 </span></span><span style="display:flex;"><span>  };
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">return</span> (
 </span></span><span style="display:flex;"><span>    &lt;<span style="color:#fb660a;font-weight:bold">form</span> <span style="color:#ff0086;font-weight:bold">onSubmit</span>={handleSubmit(onSubmit)} <span style="color:#ff0086;font-weight:bold">className</span>=<span style="color:#0086d2">&#34;space-y-4&#34;</span>&gt;
 </span></span><span style="display:flex;"><span>      &lt;<span style="color:#fb660a;font-weight:bold">div</span>&gt;
 </span></span><span style="display:flex;"><span>        &lt;<span style="color:#fb660a;font-weight:bold">label</span> <span style="color:#ff0086;font-weight:bold">htmlFor</span>=<span style="color:#0086d2">&#34;keyword&#34;</span>&gt;검색어&lt;/<span style="color:#fb660a;font-weight:bold">label</span>&gt;
-</span></span><span style="display:flex;"><span>        &lt;<span style="color:#fb660a;font-weight:bold">input</span> <span style="color:#ff0086;font-weight:bold">id</span>=<span style="color:#0086d2">&#34;keyword&#34;</span> {<span style="color:#ff0086;font-weight:bold">...register</span>(&#34;<span style="color:#ff0086;font-weight:bold">keyword</span>&#34;)} /&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#fb660a;font-weight:bold">input</span> <span style="color:#ff0086;font-weight:bold">id</span>=<span style="color:#0086d2">&#34;keyword&#34;</span> {<span style="color:#ff0086;font-weight:bold">...register</span>(<span style="color:#0086d2">&#34;keyword&#34;</span>)} /&gt;
 </span></span><span style="display:flex;"><span>      &lt;/<span style="color:#fb660a;font-weight:bold">div</span>&gt;
 </span></span><span style="display:flex;"><span>      &lt;<span style="color:#fb660a;font-weight:bold">div</span>&gt;
 </span></span><span style="display:flex;"><span>        &lt;<span style="color:#fb660a;font-weight:bold">label</span> <span style="color:#ff0086;font-weight:bold">htmlFor</span>=<span style="color:#0086d2">&#34;category&#34;</span>&gt;카테고리&lt;/<span style="color:#fb660a;font-weight:bold">label</span>&gt;
-</span></span><span style="display:flex;"><span>        &lt;<span style="color:#fb660a;font-weight:bold">select</span> <span style="color:#ff0086;font-weight:bold">id</span>=<span style="color:#0086d2">&#34;category&#34;</span> {<span style="color:#ff0086;font-weight:bold">...register</span>(&#34;<span style="color:#ff0086;font-weight:bold">category</span>&#34;)}&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#fb660a;font-weight:bold">select</span> <span style="color:#ff0086;font-weight:bold">id</span>=<span style="color:#0086d2">&#34;category&#34;</span> {<span style="color:#ff0086;font-weight:bold">...register</span>(<span style="color:#0086d2">&#34;category&#34;</span>)}&gt;
 </span></span><span style="display:flex;"><span>          &lt;<span style="color:#fb660a;font-weight:bold">option</span> <span style="color:#ff0086;font-weight:bold">value</span>=<span style="color:#0086d2">&#34;all&#34;</span>&gt;전체&lt;/<span style="color:#fb660a;font-weight:bold">option</span>&gt;
 </span></span><span style="display:flex;"><span>          &lt;<span style="color:#fb660a;font-weight:bold">option</span> <span style="color:#ff0086;font-weight:bold">value</span>=<span style="color:#0086d2">&#34;electronics&#34;</span>&gt;전자기기&lt;/<span style="color:#fb660a;font-weight:bold">option</span>&gt;
 </span></span><span style="display:flex;"><span>          &lt;<span style="color:#fb660a;font-weight:bold">option</span> <span style="color:#ff0086;font-weight:bold">value</span>=<span style="color:#0086d2">&#34;books&#34;</span>&gt;도서&lt;/<span style="color:#fb660a;font-weight:bold">option</span>&gt;
 </span></span><span style="display:flex;"><span>        &lt;/<span style="color:#fb660a;font-weight:bold">select</span>&gt;
 </span></span><span style="display:flex;"><span>      &lt;/<span style="color:#fb660a;font-weight:bold">div</span>&gt;
 </span></span><span style="display:flex;"><span>      &lt;<span style="color:#fb660a;font-weight:bold">div</span>&gt;
-</span></span><span style="display:flex;"><span>        &lt;<span style="color:#fb660a;font-weight:bold">input</span> <span style="color:#ff0086;font-weight:bold">type</span>=<span style="color:#0086d2">&#34;checkbox&#34;</span> <span style="color:#ff0086;font-weight:bold">id</span>=<span style="color:#0086d2">&#34;inStockOnly&#34;</span> {<span style="color:#ff0086;font-weight:bold">...register</span>(&#34;<span style="color:#ff0086;font-weight:bold">inStockOnly</span>&#34;)} /&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#fb660a;font-weight:bold">input</span> <span style="color:#ff0086;font-weight:bold">type</span>=<span style="color:#0086d2">&#34;checkbox&#34;</span> <span style="color:#ff0086;font-weight:bold">id</span>=<span style="color:#0086d2">&#34;inStockOnly&#34;</span> {<span style="color:#ff0086;font-weight:bold">...register</span>(<span style="color:#0086d2">&#34;inStockOnly&#34;</span>)} /&gt;
 </span></span><span style="display:flex;"><span>        &lt;<span style="color:#fb660a;font-weight:bold">label</span> <span style="color:#ff0086;font-weight:bold">htmlFor</span>=<span style="color:#0086d2">&#34;inStockOnly&#34;</span>&gt;재고 있음&lt;/<span style="color:#fb660a;font-weight:bold">label</span>&gt;
 </span></span><span style="display:flex;"><span>      &lt;/<span style="color:#fb660a;font-weight:bold">div</span>&gt;
 </span></span><span style="display:flex;"><span>      &lt;<span style="color:#fb660a;font-weight:bold">button</span> <span style="color:#ff0086;font-weight:bold">type</span>=<span style="color:#0086d2">&#34;submit&#34;</span>&gt;검색&lt;/<span style="color:#fb660a;font-weight:bold">button</span>&gt;

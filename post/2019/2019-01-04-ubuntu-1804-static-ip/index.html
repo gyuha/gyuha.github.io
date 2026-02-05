@@ -97,16 +97,16 @@
   
   <p>17.10부터 네트워크 인터페이스 설정이 <code>netplan</code>이라는 새로운 네트워크 설정이 생겼다. 기존에 인터페이스 설정(/etc/network/interfaces)보다는 간결해 보입니다.</p>
 <p>변경 할 파일은 아래와 같습니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo vi /etc/netplan/50-cloud-init.yaml
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo vi /etc/netplan/50-cloud-init.yaml
 </span></span></code></pre></div><p>기본적으로 dhcp로 설치 했을 경우 아래와 같이 나옵니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">network</span>:<span style="color:#888">
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">network</span>:<span style="color:#888">
 </span></span></span><span style="display:flex;"><span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">ethernets</span>:<span style="color:#888">
 </span></span></span><span style="display:flex;"><span><span style="color:#888">        </span><span style="color:#fb660a;font-weight:bold">enp4s0f2</span>:<span style="color:#888">
 </span></span></span><span style="display:flex;"><span><span style="color:#888">        	</span><span style="color:#fb660a;font-weight:bold">addresses</span>:<span style="color:#888"> </span>[]<span style="color:#888">
 </span></span></span><span style="display:flex;"><span><span style="color:#888">            </span><span style="color:#fb660a;font-weight:bold">dhcp4</span>:<span style="color:#888"> </span><span style="color:#fb660a;font-weight:bold">true</span><span style="color:#888">
 </span></span></span><span style="display:flex;"><span><span style="color:#888">   </span><span style="color:#fb660a;font-weight:bold">version</span>:<span style="color:#888"> </span><span style="color:#0086f7;font-weight:bold">2</span><span style="color:#888">
 </span></span></span></code></pre></div><p>그 내용을 아래와 같이 ip와 정보를 넣고 설정 해 주면 됩니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">network</span>:<span style="color:#888">
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">network</span>:<span style="color:#888">
 </span></span></span><span style="display:flex;"><span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">ethernets</span>:<span style="color:#888">
 </span></span></span><span style="display:flex;"><span><span style="color:#888">        </span><span style="color:#fb660a;font-weight:bold">enp4s0f2</span>:<span style="color:#888">
 </span></span></span><span style="display:flex;"><span><span style="color:#888">            </span><span style="color:#fb660a;font-weight:bold">dhcp4</span>:<span style="color:#888"> </span><span style="color:#fb660a;font-weight:bold">no</span><span style="color:#888">
@@ -116,9 +116,9 @@
 </span></span></span><span style="display:flex;"><span><span style="color:#888">                    </span><span style="color:#fb660a;font-weight:bold">addresses</span>:<span style="color:#888"> </span>[<span style="color:#0086f7;font-weight:bold">1.1.1.1</span>,<span style="color:#0086f7;font-weight:bold">8.8.8.8</span>,<span style="color:#0086f7;font-weight:bold">8.8.4.4</span>]<span style="color:#888">
 </span></span></span><span style="display:flex;"><span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">version</span>:<span style="color:#888"> </span><span style="color:#0086f7;font-weight:bold">2</span><span style="color:#888">
 </span></span></span></code></pre></div><p>그리고 변경 된 내용을 아래와 같이 적용 합니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo netplan apply
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo netplan apply
 </span></span></code></pre></div><p>변경된 내용을 <code>ifconfig</code>로 확인 하면 됩니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ ifconfig
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ ifconfig
 </span></span><span style="display:flex;"><span>enp4s0f2: <span style="color:#fb660a">flags</span>=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu <span style="color:#0086f7;font-weight:bold">1500</span>
 </span></span><span style="display:flex;"><span>        inet 192.168.1.200  netmask 255.255.255.0  broadcast 192.168.1.255
 </span></span><span style="display:flex;"><span>        inet6 fe80::290:f5ff:fee7:6e10  prefixlen <span style="color:#0086f7;font-weight:bold">64</span>  scopeid 0x20&lt;link&gt;

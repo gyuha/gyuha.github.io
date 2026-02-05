@@ -101,7 +101,7 @@
 <hr>
 <h3 id="1-환경-변수를-통해-현재-환경-설정하기"><strong>1. 환경 변수를 통해 현재 환경 설정하기</strong></h3>
 <p>먼저, 애플리케이션 실행 시 현재 환경을 지정하는 환경 변수를 설정합니다. 흔히 <code>ENV</code> 또는 <code>APP_ENV</code>라는 이름을 사용합니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 개발 환경에서 실행</span>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 개발 환경에서 실행</span>
 </span></span><span style="display:flex;"><span>export <span style="color:#fb660a">ENV</span>=dev
 </span></span><span style="display:flex;"><span>uvicorn main:app
 </span></span><span style="display:flex;"><span>
@@ -109,10 +109,10 @@
 </span></span><span style="display:flex;"><span>export <span style="color:#fb660a">ENV</span>=product
 </span></span><span style="display:flex;"><span>uvicorn main:app
 </span></span></code></pre></div><p>또는 <code>ENV</code> 변수를 명령과 함께 지정할 수도 있습니다:</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#fb660a">ENV</span>=dev uvicorn main:app
-</span></span></code></pre></div><h3 id="2-환경에-따라-적절한-env-파일-로드하기"><strong>2. 환경에 따라 적절한 <code>.env</code> 파일 로드하기</strong></h3>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#fb660a">ENV</span>=dev uvicorn main:app
+</span></span></code></pre></div><h3 id="2-환경에-따라-적절한"><strong>2. 환경에 따라 적절한 <code>.env</code> 파일 로드하기</strong></h3>
 <p><code>python-dotenv</code>의 <code>load_dotenv()</code> 함수에 로드할 <code>.env</code> 파일의 경로를 지정하여, 환경별로 다른 설정을 로드할 수 있습니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> os
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> os
 </span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">from</span> dotenv <span style="color:#fb660a;font-weight:bold">import</span> load_dotenv
 </span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">from</span> fastapi <span style="color:#fb660a;font-weight:bold">import</span> FastAPI
 </span></span><span style="display:flex;"><span>
@@ -134,7 +134,7 @@
 </span></span></code></pre></div><p>이렇게 하면 <code>ENV</code> 변수에 따라 <code>.env.dev</code>, <code>.env.product</code> 등의 파일을 로드하게 됩니다.</p>
 <h3 id="3-로컬-설정-파일-지원하기"><strong>3. 로컬 설정 파일 지원하기</strong></h3>
 <p>만약 환경별 설정에 추가로 로컬에서만 사용하고 싶은 설정이 있다면, 로컬 <code>.env</code> 파일을 추가로 로드할 수 있습니다. 예를 들어, 개발 환경에서만 사용하는 <code>.env.dev.local</code> 파일을 로드하려면:</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> os
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> os
 </span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">from</span> dotenv <span style="color:#fb660a;font-weight:bold">import</span> load_dotenv
 </span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">from</span> fastapi <span style="color:#fb660a;font-weight:bold">import</span> FastAPI
 </span></span><span style="display:flex;"><span>
@@ -151,7 +151,7 @@
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>app = FastAPI()
 </span></span></code></pre></div><p>여기서 <code>override=True</code> 옵션을 사용하여 이전에 로드된 변수들을 덮어쓰도록 합니다.</p>
-<h3 id="4-env-파일-구성하기"><strong>4. <code>.env</code> 파일 구성하기</strong></h3>
+<h3 id="4"><strong>4. <code>.env</code> 파일 구성하기</strong></h3>
 <p>각 환경별로 필요한 설정을 <code>.env</code> 파일에 작성합니다.</p>
 <ul>
 <li>
@@ -172,7 +172,7 @@ DEBUG=False
 </code></pre></li>
 </ul>
 <p><code>DATABASE_URL</code>과 같은 설정은 로컬 개발 환경에 따라 다를 수 있으므로 <code>.env.dev.local</code>에서 오버라이드할 수 있습니다.</p>
-<h3 id="5-gitignore에-로컬-env-파일-추가하기"><strong>5. <code>.gitignore</code>에 로컬 <code>.env</code> 파일 추가하기</strong></h3>
+<h3 id="5"><strong>5. <code>.gitignore</code>에 로컬 <code>.env</code> 파일 추가하기</strong></h3>
 <p>로컬 설정 파일은 버전 관리에서 제외하여 개인별 설정이 공유되지 않도록 합니다.</p>
 <pre tabindex="0"><code># .gitignore
 .env.*.local
@@ -180,15 +180,15 @@ DEBUG=False
 <ul>
 <li>
 <p><strong>개발 환경에서 기본 설정으로 실행</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#fb660a">ENV</span>=dev uvicorn main:app
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#fb660a">ENV</span>=dev uvicorn main:app
 </span></span></code></pre></div></li>
 <li>
 <p><strong>개발 환경에서 로컬 설정을 포함하여 실행</strong> (로컬 <code>.env</code> 파일이 존재해야 함)</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#fb660a">ENV</span>=dev uvicorn main:app
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#fb660a">ENV</span>=dev uvicorn main:app
 </span></span></code></pre></div></li>
 <li>
 <p><strong>프로덕션 환경에서 실행</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#fb660a">ENV</span>=product uvicorn main:app
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#fb660a">ENV</span>=product uvicorn main:app
 </span></span></code></pre></div></li>
 </ul>
 <hr>
@@ -263,10 +263,10 @@ DEBUG=False
     <li>
       <ul>
         <li><a href="#1-환경-변수를-통해-현재-환경-설정하기"><strong>1. 환경 변수를 통해 현재 환경 설정하기</strong></a></li>
-        <li><a href="#2-환경에-따라-적절한-env-파일-로드하기"><strong>2. 환경에 따라 적절한 <code>.env</code> 파일 로드하기</strong></a></li>
+        <li><a href="#2-환경에-따라-적절한"><strong>2. 환경에 따라 적절한 <code>.env</code> 파일 로드하기</strong></a></li>
         <li><a href="#3-로컬-설정-파일-지원하기"><strong>3. 로컬 설정 파일 지원하기</strong></a></li>
-        <li><a href="#4-env-파일-구성하기"><strong>4. <code>.env</code> 파일 구성하기</strong></a></li>
-        <li><a href="#5-gitignore에-로컬-env-파일-추가하기"><strong>5. <code>.gitignore</code>에 로컬 <code>.env</code> 파일 추가하기</strong></a></li>
+        <li><a href="#4"><strong>4. <code>.env</code> 파일 구성하기</strong></a></li>
+        <li><a href="#5"><strong>5. <code>.gitignore</code>에 로컬 <code>.env</code> 파일 추가하기</strong></a></li>
         <li><a href="#6-실행-방법-정리"><strong>6. 실행 방법 정리</strong></a></li>
       </ul>
     </li>
