@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude 4.6 Agent Teams 완전 가이드: 활성화 방법, 트리거 기법 및 5대 실전 시나리오'" />
+  <title>Claude 4.6 Agent Teams 완전 가이드: 활성화 방법, 트리거 기법 및 5대 실전 시나리오  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude 4.6 Agent Teams 완전 가이드: 활성화 방법, 트리거 기법 및 5대 실전 시나리오" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-02-12"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/2026-02-12-claude-4-6-agent-teams-guide/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude" />
+  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="anthropic" />
+  
+  <meta property="og:tags" content="agent-teams" />
+  
+  <meta property="og:tags" content="opus-4-6" />
+  
+  <meta property="og:tags" content="collaboration" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action="https://google.com/search">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search"></i>
+                <input type="hidden" name="sitesearch" value="https://gyuha.com/" />
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/2026-02-12-claude-4-6-agent-teams-guide/">
+          <h1>
+            Claude 4.6 Agent Teams 완전 가이드: 활성화 방법, 트리거 기법 및 5대 실전 시나리오
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/2026-02-12-claude-4-6-agent-teams-guide/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Claude Opus 4.6 출시와 함께 Agent Teams(다중 에이전트 팀) 기능이 공개되었습니다. 이 기능을 통해 여러 개의 Claude 인스턴스가 실제 개발 팀처럼 병렬로 협업할 수 있게 되었죠. 많은 개발자분이 Agent Teams를 어떻게 활성화하는지, 어떻게 실행하는지, 그리고 기존 Subagent와는 무엇이 다른지 궁금해하고 계십니다.</p>
+<h2 id="서론-agent-teams-소개">서론: Agent Teams 소개</h2>
+<h3 id="단일-에이전트의-한계">단일 에이전트의 한계</h3>
+<p>기존의 AI 코딩 도구는 단일 모델이 모든 작업을 처리하는 방식이었습니다. 이는 복잡한 대형 프로젝트에서 다음과 같은 문제가 있었습니다:</p>
+<ul>
+<li><strong>컨텍스트 제한</strong>: 단일 모델의 컨텍스트 윈도우로 대형 코드베이스 분석 어려움</li>
+<li><strong>직렬 처리</strong>: 한 번에 한 가지 작업만 가능하여 병렬 처리 불가</li>
+<li><strong>특화 부족</strong>: 범용적인 목적의 모델로 특정 도메인 지식 깊이 부족</li>
+<li><strong>확장성 부재</strong>: 팀 단위 협업 시 지각이 공유하는 지식 관리 어려움</li>
+</ul>
+<h3 id="agent-teams의-해결책">Agent Teams의 해결책</h3>
+<p>Claude Code Agent Teams는 다음과 같은 문제들을 해결합니다:</p>
+<ul>
+<li><strong>분산 처리</strong>: 여러 에이전트가 병렬로 작업하여 시간 단축</li>
+<li><strong>역할 분담</strong>: 각 에이전트가 특정 역할에 특화된 전문가 역할</li>
+<li><strong>지식 공유</strong>: 팀원 간 자연스러운 의사소통과 지식 공유</li>
+<li><strong>통합 관리</strong>: 팀 리더가 전체 작업 흐름을 조정하고 관리</li>
+</ul>
+<h3 id="핵심-가치">핵심 가치</h3>
+<p>이 글을 읽고 나면 활성화 설정부터 명령어 실행, 작업 할당, 팀 협업에 이르기까지 Agent Teams의 전체 사용 프로세스를 마스터하여 즉시 다중 에이전트 프로그래밍을 시작할 수 있습니다.</p>
+<h2 id="핵심-개념-4가지-구성-요소">핵심 개념: 4가지 구성 요소</h2>
+<p>Agent Teams는 4가지 핵심 구성 요소로 이루어져 있습니다.</p>
+<table>
+  <thead>
+      <tr>
+          <th>구성 요소</th>
+          <th>역할</th>
+          <th>설명</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Lead Agent</strong></td>
+          <td>팀 리더</td>
+          <td>메인 Claude Code 세션으로, 팀 생성, 작업 할당, 결과 요약을 담당합니다.</td>
+      </tr>
+      <tr>
+          <td><strong>Teammate</strong></td>
+          <td>팀원</td>
+          <td>독립된 Claude Code 인스턴스로, 할당된 작업을 각자 수행합니다.</td>
+      </tr>
+      <tr>
+          <td><strong>Task List</strong></td>
+          <td>공유 작업 목록</td>
+          <td>모든 구성원이 볼 수 있는 작업 보드로, 할당, 의존성, 상태 추적을 지원합니다.</td>
+      </tr>
+      <tr>
+          <td><strong>Mailbox</strong></td>
+          <td>메시지 시스템</td>
+          <td>팀원 간의 통신 채널로, 개인 메시지와 브로드캐스트를 지원합니다.</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="subagent와의-비교">Subagent와의 비교</h3>
+<table>
+  <thead>
+      <tr>
+          <th>비교 항목</th>
+          <th>Subagent(하위 에이전트)</th>
+          <th>Agent Teams(팀)</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>통신 방식</strong></td>
+          <td>메인 에이전트에게만 결과 보고</td>
+          <td>팀원 간 <strong>직접 통신</strong> 가능</td>
+      </tr>
+      <tr>
+          <td><strong>조율 방식</strong></td>
+          <td>메인 에이전트가 모든 것을 관리</td>
+          <td>공유 작업 목록 + 자율적 할당</td>
+      </tr>
+      <tr>
+          <td><strong>컨텍스트</strong></td>
+          <td>독립된 컨텍스트, 결과를 호출자에게 반환</td>
+          <td>독립된 컨텍스트, 완전한 자율성</td>
+      </tr>
+      <tr>
+          <td><strong>최적 시나리오</strong></td>
+          <td>결과만 필요한 집중 작업</td>
+          <td><strong>토론과 협업</strong>이 필요한 복잡한 작업</td>
+      </tr>
+      <tr>
+          <td><strong>토큰 소모</strong></td>
+          <td>비교적 낮음 (결과만 메인 컨텍스트로 취합)</td>
+          <td>높음 (각 팀원이 독립된 Claude 인스턴스임)</td>
+      </tr>
+  </tbody>
+</table>
+<blockquote>
+<p>💡 <strong>중요 차이점</strong>: Subagent가 &lsquo;상하 보고&rsquo; 모델이라면, Agent Teams는 &lsquo;팀 협업&rsquo; 모델입니다. 작업에 여러 명의 토론, 관점 교환, 또는 서로 다른 모듈의 병렬 처리가 필요하다면 Agent Teams가 더 나은 선택입니다.</p>
+</blockquote>
+<h2 id="활성화-방법-3단계">활성화 방법: 3단계</h2>
+<p>Agent Teams는 기본적으로 <strong>비활성화</strong>되어 있으며, 수동으로 활성화해야 합니다.</p>
+<h3 id="1단계-실험적-기능-활성화하기">1단계: 실험적 기능 활성화하기</h3>
+<p><strong>방법 A — 설정 파일 (권장)</strong></p>
+<p>Claude Code의 <code>settings.json</code> 파일에 다음 내용을 추가하세요.</p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">&#34;env&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">&#34;CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS&#34;</span>: <span style="color:#0086d2">&#34;1&#34;</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>방법 B — 환경 변수</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># .bashrc 또는 .zshrc 파일에 추가</span>
+</span></span><span style="display:flex;"><span>export <span style="color:#fb660a">CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS</span>=<span style="color:#0086f7;font-weight:bold">1</span>
+</span></span></code></pre></div><p><strong>방법 C — 단일 세션</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#fb660a">CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS</span>=<span style="color:#0086f7;font-weight:bold">1</span> claude
+</span></span></code></pre></div><h3 id="2단계-자연어로-agent-teams-트리거하기">2단계: 자연어로 Agent Teams 트리거하기</h3>
+<p><strong><code>/agent-teams</code>와 같은 별도의 슬래시 명령어는 없습니다</strong>. 기능을 활성화한 후에는 원하는 팀 구성을 자연어로 설명하기만 하면 됩니다.</p>
+<pre tabindex="0"><code>PR #142를 검토하기 위한 에이전트 팀을 생성해줘. 다음 세 명의 검토자를 만들어줘:
+- 보안 취약점 집중 검토자
+- 성능 영향 확인자
+- 테스트 커버리지 검증자
+각자 검토 후 발견된 사항을 보고하게 해줘.
+</code></pre><p>또는 더 간단하게 요청할 수도 있습니다.</p>
+<pre tabindex="0"><code>Create a team with 4 teammates to refactor these modules in parallel.
+Use Sonnet for each teammate.
+</code></pre><p>Claude가 자동으로 팀을 생성하고, 팀원을 배정하며, 업무를 할당합니다. 또한 Claude가 판단하기에 현재 작업이 병렬 처리에 적합하다고 생각되면 <strong>먼저 팀 생성을 제안</strong>할 수도 있습니다. 이 경우 사용자의 확인을 거친 후 진행됩니다.</p>
+<h3 id="3단계-표시-모드-선택하기">3단계: 표시 모드 선택하기</h3>
+<table>
+  <thead>
+      <tr>
+          <th>표시 모드</th>
+          <th>설명</th>
+          <th>적용 환경</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>in-process</strong> (기본값)</td>
+          <td>모든 팀원이 메인 터미널에서 실행됨</td>
+          <td>VS Code를 포함한 모든 터미널</td>
+      </tr>
+      <tr>
+          <td><strong>tmux</strong></td>
+          <td>각 팀원이 독립된 패널에서 실행됨</td>
+          <td>tmux 또는 iTerm2 필요</td>
+      </tr>
+      <tr>
+          <td><strong>auto</strong></td>
+          <td>자동 판단</td>
+          <td>tmux 환경이면 화면 분할, 아니면 in-process</td>
+      </tr>
+  </tbody>
+</table>
+<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 명령행에서 지정</span>
+</span></span><span style="display:flex;"><span>claude --teammate-mode tmux
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 또는 settings.json에서 설정</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#0086d2">&#34;teammateMode&#34;</span>: <span style="color:#0086d2">&#34;tmux&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><blockquote>
+<p>💡 <strong>팁</strong>: 처음 사용하신다면 in-process 모드로 시작해 보시고, 익숙해지면 tmux 화면 분할 모드를 시도해 보시는 것을 추천합니다.</p>
+</blockquote>
+<h2 id="조작-가이드">조작 가이드</h2>
+<h3 id="키보드-단축키-요약">키보드 단축키 요약</h3>
+<p>Agent Teams가 실행 중일 때 다음 단축키를 사용할 수 있어요.</p>
+<table>
+  <thead>
+      <tr>
+          <th>단축키</th>
+          <th>기능</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Shift+Up/Down</strong></td>
+          <td>다른 팀원 전환/선택</td>
+      </tr>
+      <tr>
+          <td><strong>Enter</strong></td>
+          <td>선택한 팀원의 대화 상세 내용 보기</td>
+      </tr>
+      <tr>
+          <td><strong>Escape</strong></td>
+          <td>팀원의 현재 작업 중단</td>
+      </tr>
+      <tr>
+          <td><strong>Ctrl+T</strong></td>
+          <td>작업 목록 보기 전환</td>
+      </tr>
+      <tr>
+          <td><strong>Shift+Tab</strong></td>
+          <td>위임 모드 전환 (리더는 코딩 없이 조율만 수행)</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="작업-할당-메커니즘">작업 할당 메커니즘</h3>
+<p>Agent Teams의 작업 시스템은 3가지 상태와 의존 관계를 지원합니다.</p>
+<p><strong>작업 상태</strong>: <code>pending</code>(대기 중) → <code>in_progress</code>(진행 중) → <code>completed</code>(완료)</p>
+<p><strong>의존성 메커니즘</strong>: 작업에 <code>blockedBy</code> 의존성을 설정할 수 있습니다. 의존하는 작업이 완료되면 하위 작업이 <strong>자동으로 잠금 해제</strong>되어 수동 개입 없이 진행됩니다.</p>
+<p><strong>수락 방식</strong>:</p>
+<ol>
+<li><strong>리더(Lead) 지정 할당</strong>: 리더에게 특정 작업을 특정 팀원에게 맡기라고 명확하게 지시합니다.</li>
+<li><strong>팀원 자율 수락</strong>: 현재 작업을 마친 팀원이 할당되지 않은 다음 가용 작업을 자동으로 가져옵니다.</li>
+<li><strong>파일 잠금(File Lock)을 통한 충돌 방지</strong>: 여러 팀원이 동시에 같은 작업을 가져가려 할 때, 시스템은 파일 잠금을 사용하여 충돌을 방지합니다.</li>
+</ol>
+<p><strong>작업 크기 권장 사항</strong>: 팀원당 <strong>5~6개의 작업</strong>을 할당하는 것이 가장 좋습니다. 작업이 너무 작으면 조율 비용이 이득보다 커지고, 너무 크면 팀원이 오랫동안 진행 상황을 보고하지 않게 됩니다.</p>
+<h3 id="팀원-간-통신-방식">팀원 간 통신 방식</h3>
+<table>
+  <thead>
+      <tr>
+          <th>통신 유형</th>
+          <th>설명</th>
+          <th>사용 시나리오</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>write (개별 메시지)</strong></td>
+          <td>특정 팀원에게 메시지 전송</td>
+          <td>구체적인 문제 조율</td>
+      </tr>
+      <tr>
+          <td><strong>broadcast (브로드캐스트)</strong></td>
+          <td>모든 팀원에게 메시지 전송</td>
+          <td>중요 공지 (주의해서 사용, 팀 규모에 따라 비용 증가)</td>
+      </tr>
+  </tbody>
+</table>
+<p>통신은 <strong>P2P(점대점)</strong> 방식이며, 리더를 거칠 필요가 없습니다. 어떤 팀원이든 다른 팀원에게 직접 메시지를 보낼 수 있어요.</p>
+<h3 id="git-협업-및-파일-충돌-방지">Git 협업 및 파일 충돌 방지</h3>
+<p>Agent Teams에서 가장 중요한 규칙은 <strong>두 명의 팀원이 동일한 파일을 편집하면 내용이 덮어씌워질 수 있다</strong>는 점입니다.</p>
+<p>추천하는 파일 분업 전략은 다음과 같아요.</p>
+<pre tabindex="0"><code># 풀스택 기능 개발 예시
+백엔드 팀원  → src/api/ 및 src/migrations/ 담당
+프론트엔드 팀원 → src/components/ 담당
+테스트 팀원     → tests/ 담당
+</code></pre><blockquote>
+<p>⚠️ <strong>중요</strong>: Agent Teams의 팀원들은 동일한 작업 디렉토리를 공유하며, 자동으로 git worktree를 사용하지 않습니다. 각 팀원이 서로 다른 파일 집합을 담당하도록 하는 것이 충돌을 피하는 핵심입니다.</p>
+</blockquote>
+<h2 id="5대-실전-시나리오">5대 실전 시나리오</h2>
+<h3 id="시나리오-1-다각도-코드-리뷰">시나리오 1: 다각도 코드 리뷰</h3>
+<pre tabindex="0"><code>이 PR을 리뷰할 에이전트 팀을 생성해줘:
+- 보안 리뷰어: 인젝션, XSS, 권한 등 보안 문제 점검
+- 성능 리뷰어: N+1 쿼리, 메모리 누수, 캐싱 전략 분석
+- 테스트 리뷰어: 테스트 커버리지 및 경계 사례 검증
+각자 리뷰를 마친 후 발견 사항을 보고하게 해줘.
+</code></pre><p><strong>Agent Teams에 적합한 이유</strong>: 세 가지 리뷰 관점이 완전히 독립적이므로 파일 충돌이 발생하지 않으며 병렬로 실행할 수 있습니다.</p>
+<h3 id="시나리오-2-신기능-모듈-병렬-개발">시나리오 2: 신기능 모듈 병렬 개발</h3>
+<pre tabindex="0"><code>사용자 알림 시스템을 구축할 팀을 생성해줘:
+- 팀원 1: 백엔드 API 구축 (src/api/notifications/)
+- 팀원 2: 프론트엔드 컴포넌트 구축 (src/components/notifications/)
+- 팀원 3: 통합 테스트 작성 (tests/notifications/)
+</code></pre><p><strong>적합한 이유</strong>: 각 팀원이 서로 다른 디렉토리를 담당하여 자연스럽게 격리되며, 작업 완료 후 합치기만 하면 됩니다.</p>
+<h3 id="시나리오-3-가설-검증-디버깅">시나리오 3: 가설 검증 디버깅</h3>
+<pre tabindex="0"><code>간헐적으로 발생하는 버그가 있어. 서로 다른 가설로 디버깅할 팀을 만들어줘:
+- 팀원 A: 레이스 컨디션(Race Condition) 여부 조사
+- 팀원 B: 메모리 누수 여부 조사
+- 팀원 C: 서드파티 API 타임아웃 여부 조사
+각자 독립적으로 가설을 검증하고 보고해줘.
+</code></pre><p><strong>적합한 이유</strong>: 대항적 디버깅 방식으로, 여러 단서를 동시에 추적하여 누가 먼저 근본 원인을 찾는지 경쟁할 수 있습니다.</p>
+<h3 id="시나리오-4-계층-간-수정-조율">시나리오 4: 계층 간 수정 조율</h3>
+<p>프론트엔드, 백엔드, 데이터베이스를 모두 가로지르는 수정이 필요할 때, Agent Teams를 통해 각 계층의 전문가가 역할을 분담하고 메시지 시스템을 통해 인터페이스 정의를 조율할 수 있습니다.</p>
+<h3 id="시나리오-5-탐색적-연구">시나리오 5: 탐색적 연구</h3>
+<pre tabindex="0"><code>코드 내 TODO 주석을 추적하는 CLI 도구를 설계하고 있어.
+다양한 관점에서 탐색할 팀을 만들어줘:
+- 한 명은 사용자 경험(UX) 설계 담당
+- 한 명은 기술 아키텍처 담당
+- 한 명은 &#39;비판자(Devil&#39;s Advocate)&#39; 역할 수행
+</code></pre><p><strong>적합한 이유</strong>: 다각도의 관점이 충돌하면서 서로의 가설과 결론에 도전하고 보완할 수 있습니다.</p>
+<h2 id="subagent와-비교-선택-가이드표">Subagent와 비교: 선택 가이드표</h2>
+<table>
+  <thead>
+      <tr>
+          <th>판단 기준</th>
+          <th>Subagent 선택</th>
+          <th>Agent Teams 선택</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>팀원 간 소통이 필요한가요?</td>
+          <td>❌ 아니요</td>
+          <td>✅ 네</td>
+      </tr>
+      <tr>
+          <td>작업을 병렬로 처리할 수 있나요?</td>
+          <td>부분적으로 가능</td>
+          <td>✅ 고도의 병렬 처리 가능</td>
+      </tr>
+      <tr>
+          <td>여러 파일을 동시에 편집하나요?</td>
+          <td>✅ 동일 파일 작업 시 안전</td>
+          <td>⚠️ 충돌 방지를 위한 역할 분담 필요</td>
+      </tr>
+      <tr>
+          <td>작업의 복잡도는 어떤가요?</td>
+          <td>단일 목표에 집중</td>
+          <td>다각도, 다중 모듈</td>
+      </tr>
+      <tr>
+          <td>토큰 예산은?</td>
+          <td>💰 더 절약됨</td>
+          <td>💸 약 3~7배 소모</td>
+      </tr>
+      <tr>
+          <td>토론이나 피드백이 필요한가요?</td>
+          <td>❌ 아니요</td>
+          <td>✅ 네</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>비용 참고</strong>: 3인 구성의 Agent Teams 팀을 30분 동안 실행할 경우, 토큰 소모량은 단일 세션의 약 3~4배 정도입니다. Plan 모드에서는 약 7배까지 늘어날 수 있습니다.</p>
+<h2 id="고급-팁">고급 팁</h2>
+<h3 id="팁-1-하이브리드-모델로-비용-절감하기">팁 1: 하이브리드 모델로 비용 절감하기</h3>
+<pre tabindex="0"><code>리드(Lead)는 Opus를 사용하고, 팀원 4명은 Sonnet을 사용하는 팀을 구성해 줘.
+</code></pre><p>리더는 전략적인 의사결정을 위해 Opus 4.6을 사용하여 품질을 보장하고, 팀원들은 구체적인 실행 작업을 위해 Sonnet을 사용하여 비용을 효율적으로 관리하는 방식이에요.</p>
+<h3 id="팁-2-plan-승인-워크플로우-활용하기">팁 2: Plan 승인 워크플로우 활용하기</h3>
+<pre tabindex="0"><code>인증 모듈을 리팩토링할 아키텍트 팀원을 생성해 줘.
+수정 작업을 시작하기 전에 먼저 방안을 제출하고 승인을 기다리도록 해줘.
+</code></pre><p>이렇게 하면 팀원이 먼저 읽기 전용인 &lsquo;Plan 모드&rsquo;로 진입하여 방안을 완성한 뒤, 리더에게 승인 요청을 보냅니다. 리더가 승인한 후에야 팀원이 실제 구현 단계에 들어갑니다.</p>
+<h3 id="팁-3-리더의-직접-개입을-방지하는-위임-모드">팁 3: 리더의 직접 개입을 방지하는 위임 모드</h3>
+<p><strong>Shift+Tab</strong>을 눌러 위임 모드를 켜보세요. 이 모드에서는 리더가 작업 조율과 할당만 담당하고, 직접 코드를 작성하지 않게 됩니다. 리더가 팀원의 &lsquo;일을 가로채는&rsquo; 상황을 방지할 수 있죠.</p>
+<h3 id="팁-4-품질-게이트-훅quality-gate-hooks">팁 4: 품질 게이트 훅(Quality Gate Hooks)</h3>
+<p>훅(Hook) 메커니즘을 통해 작업 품질을 자동으로 관리할 수 있습니다.</p>
+<ul>
+<li><strong><code>TeammateIdle</code></strong>: 팀원이 유휴 상태가 되기 직전에 트리거됩니다. 종료 코드 2를 반환하면 팀원에게 피드백을 보내 작업을 계속하게 할 수 있습니다.</li>
+<li><strong><code>TaskCompleted</code></strong>: 작업이 완료로 표시될 때 트리거됩니다. 종료 코드 2를 반환하면 완료 처리를 중단하고 수정을 요구할 수 있습니다.</li>
+</ul>
+<h2 id="주의사항-및-베스트-프랙티스">주의사항 및 베스트 프랙티스</h2>
+<h3 id="알려진-제한-사항">알려진 제한 사항</h3>
+<ol>
+<li><strong>대화 복구 미지원</strong>: <code>/resume</code> 및 <code>/rewind</code> 명령어를 사용해도 종료된 팀원을 복구할 수 없습니다.</li>
+<li><strong>세션당 하나의 팀</strong>: 리더(Lead)는 한 번에 하나의 팀만 관리할 수 있습니다.</li>
+<li><strong>중첩 팀 미지원</strong>: 팀원이 다시 자신의 팀을 생성할 수는 없습니다.</li>
+<li><strong>권한 상속</strong>: 팀원은 리더의 권한 모드를 상속받으며, 생성된 후에는 개별적으로 조정할 수 있습니다.</li>
+<li><strong>분할 화면 모드 제한</strong>: tmux 분할 화면은 VS Code 내장 터미널, Windows Terminal, Ghostty를 지원하지 않습니다.</li>
+<li><strong>팀원 충돌(Crash)</strong>: 팀원이 충돌하면 5분의 하트비트(Heartbeat) 타임아웃이 발생하며, 해당 작업은 다른 팀원이 이어받을 수 있습니다.</li>
+</ol>
+<h3 id="베스트-프랙티스">베스트 프랙티스</h3>
+<ul>
+<li><strong>팀 규모</strong>: 2~5명의 팀원을 권장하며, 보통 6명보다 3명이 더 효과적인 경우가 많습니다.</li>
+<li><strong>인원수보다 중요한 작업 분할</strong>: 작업 분할이 제대로 되지 않은 6인 팀보다 잘 분할된 3인 팀이 더 낫습니다.</li>
+<li><strong>읽기 집약적 작업</strong>(코드 리뷰, 리서치 등)이 에이전트 팀의 강점(Sweet spot)입니다.</li>
+<li><strong>쓰기 집약적 동시 편집</strong>은 여전히 어려운 과제이며, 엄격한 파일 분업이 필요합니다.</li>
+</ul>
+<h2 id="faq">FAQ</h2>
+<h3 id="q1-에이전트-팀을-사용하려면-어떤-구독이-필요한가요">Q1: 에이전트 팀을 사용하려면 어떤 구독이 필요한가요?</h3>
+<p>에이전트 팀은 Claude Code의 실험적 기능으로, 충분한 Opus 4.6 사용량을 확보하려면 Claude Max 구독(월 $100-200)이 필요합니다. API 사용자는 표준 Opus 4.6 요율(백만 토큰당 $5/$25)에 따라 과금됩니다.</p>
+<h3 id="q2-에이전트-팀은-opus-46만-사용할-수-있나요">Q2: 에이전트 팀은 Opus 4.6만 사용할 수 있나요?</h3>
+<p>아니요, 그렇지 않습니다. 에이전트 팀은 Opus 4.6과 함께 출시되었지만, 여러 모델을 혼합해서 사용할 수 있습니다. 리더는 전략적 의사결정을 위해 Opus 4.6을 사용하고, 팀원은 구체적인 작업을 수행하기 위해 Sonnet을 사용하는 방식을 추천합니다. 이렇게 하면 협업의 품질을 유지하면서 비용을 효율적으로 관리할 수 있습니다.</p>
+<h3 id="q3-에이전트-팀을-vs-code에서-사용할-수-있나요">Q3: 에이전트 팀을 VS Code에서 사용할 수 있나요?</h3>
+<p>네, 가능하지만 몇 가지 제한이 있습니다. VS Code 내장 터미널은 인프로세스(In-process) 모드(모든 팀원이 동일한 터미널에서 실행됨)를 지원합니다. 하지만 tmux 분할 화면 모드는 VS Code에서 사용할 수 없으므로, 이 기능을 쓰려면 외부 터미널을 사용해야 합니다.</p>
+<h2 id="결론-및-요약">결론 및 요약</h2>
+<p>Claude 4.6 Agent Teams의 핵심 요약:</p>
+<ol>
+<li><strong>활성화 방법</strong>: 환경 변수 <code>CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1</code>을 설정한 후, 자연어로 팀 구성을 설명하세요.</li>
+<li><strong>아키텍처 모델</strong>: 리더 에이전트(Lead Agent)가 전체를 조율하고 팀원 에이전트(Teammate Agent)가 병렬로 작업하며, 공유 작업 목록과 메시징 시스템을 통해 협업합니다.</li>
+<li><strong>최적의 활용 시나리오</strong>: 코드 리뷰, 새로운 모듈의 병렬 개발, 경쟁 가설 디버깅, 계층 간 조율, 탐색적 연구 등.</li>
+<li><strong>핵심 원칙</strong>: 인원수보다 작업을 어떻게 나누느냐가 더 중요합니다. 보통 6명보다는 3명의 팀원이 더 효과적이에요.</li>
+<li><strong>비용 관리</strong>: 하이브리드 모델(리더는 Opus + 팀원은 Sonnet) 구성이 가성비 면에서 가장 좋은 선택입니다.</li>
+</ol>
+<p>Agent Teams는 AI 프로그래밍을 &lsquo;솔로 플레이&rsquo;에서 &lsquo;팀 협업&rsquo; 시대로 진화시켰습니다. 아직 연구 프리뷰 단계이지만, 이미 강력한 병렬 개발 능력을 보여주고 있죠.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 02월 12일 22시 45분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/development">Development</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/productivity">Productivity</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-02-05-windows-terminal-utf-8-hangul/" rel="prev">
+        <span>Windows Terminal Git Bash 한글 깨짐 해결하기</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#서론-agent-teams-소개">서론: Agent Teams 소개</a>
+      <ul>
+        <li><a href="#단일-에이전트의-한계">단일 에이전트의 한계</a></li>
+        <li><a href="#agent-teams의-해결책">Agent Teams의 해결책</a></li>
+        <li><a href="#핵심-가치">핵심 가치</a></li>
+      </ul>
+    </li>
+    <li><a href="#핵심-개념-4가지-구성-요소">핵심 개념: 4가지 구성 요소</a>
+      <ul>
+        <li><a href="#subagent와의-비교">Subagent와의 비교</a></li>
+      </ul>
+    </li>
+    <li><a href="#활성화-방법-3단계">활성화 방법: 3단계</a>
+      <ul>
+        <li><a href="#1단계-실험적-기능-활성화하기">1단계: 실험적 기능 활성화하기</a></li>
+        <li><a href="#2단계-자연어로-agent-teams-트리거하기">2단계: 자연어로 Agent Teams 트리거하기</a></li>
+        <li><a href="#3단계-표시-모드-선택하기">3단계: 표시 모드 선택하기</a></li>
+      </ul>
+    </li>
+    <li><a href="#조작-가이드">조작 가이드</a>
+      <ul>
+        <li><a href="#키보드-단축키-요약">키보드 단축키 요약</a></li>
+        <li><a href="#작업-할당-메커니즘">작업 할당 메커니즘</a></li>
+        <li><a href="#팀원-간-통신-방식">팀원 간 통신 방식</a></li>
+        <li><a href="#git-협업-및-파일-충돌-방지">Git 협업 및 파일 충돌 방지</a></li>
+      </ul>
+    </li>
+    <li><a href="#5대-실전-시나리오">5대 실전 시나리오</a>
+      <ul>
+        <li><a href="#시나리오-1-다각도-코드-리뷰">시나리오 1: 다각도 코드 리뷰</a></li>
+        <li><a href="#시나리오-2-신기능-모듈-병렬-개발">시나리오 2: 신기능 모듈 병렬 개발</a></li>
+        <li><a href="#시나리오-3-가설-검증-디버깅">시나리오 3: 가설 검증 디버깅</a></li>
+        <li><a href="#시나리오-4-계층-간-수정-조율">시나리오 4: 계층 간 수정 조율</a></li>
+        <li><a href="#시나리오-5-탐색적-연구">시나리오 5: 탐색적 연구</a></li>
+      </ul>
+    </li>
+    <li><a href="#subagent와-비교-선택-가이드표">Subagent와 비교: 선택 가이드표</a></li>
+    <li><a href="#고급-팁">고급 팁</a>
+      <ul>
+        <li><a href="#팁-1-하이브리드-모델로-비용-절감하기">팁 1: 하이브리드 모델로 비용 절감하기</a></li>
+        <li><a href="#팁-2-plan-승인-워크플로우-활용하기">팁 2: Plan 승인 워크플로우 활용하기</a></li>
+        <li><a href="#팁-3-리더의-직접-개입을-방지하는-위임-모드">팁 3: 리더의 직접 개입을 방지하는 위임 모드</a></li>
+        <li><a href="#팁-4-품질-게이트-훅quality-gate-hooks">팁 4: 품질 게이트 훅(Quality Gate Hooks)</a></li>
+      </ul>
+    </li>
+    <li><a href="#주의사항-및-베스트-프랙티스">주의사항 및 베스트 프랙티스</a>
+      <ul>
+        <li><a href="#알려진-제한-사항">알려진 제한 사항</a></li>
+        <li><a href="#베스트-프랙티스">베스트 프랙티스</a></li>
+      </ul>
+    </li>
+    <li><a href="#faq">FAQ</a>
+      <ul>
+        <li><a href="#q1-에이전트-팀을-사용하려면-어떤-구독이-필요한가요">Q1: 에이전트 팀을 사용하려면 어떤 구독이 필요한가요?</a></li>
+        <li><a href="#q2-에이전트-팀은-opus-46만-사용할-수-있나요">Q2: 에이전트 팀은 Opus 4.6만 사용할 수 있나요?</a></li>
+        <li><a href="#q3-에이전트-팀을-vs-code에서-사용할-수-있나요">Q3: 에이전트 팀을 VS Code에서 사용할 수 있나요?</a></li>
+      </ul>
+    </li>
+    <li><a href="#결론-및-요약">결론 및 요약</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="https://gyuha.com/tags/claude" class="badge badge-secondary">claude</a>
+    <a href="https://gyuha.com/tags/claude-code" class="badge badge-secondary">claude-code</a>
+    <a href="https://gyuha.com/tags/anthropic" class="badge badge-secondary">anthropic</a>
+    <a href="https://gyuha.com/tags/agent-teams" class="badge badge-secondary">agent-teams</a>
+    <a href="https://gyuha.com/tags/opus-4-6" class="badge badge-secondary">opus-4-6</a>
+    <a href="https://gyuha.com/tags/collaboration" class="badge badge-secondary">collaboration</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.textContent = '복사';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.textContent = '복사됨!';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.textContent = '복사';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.textContent = '실패';
+          setTimeout(function() {
+            copyButton.textContent = '복사';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
