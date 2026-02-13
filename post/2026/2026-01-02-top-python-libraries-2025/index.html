@@ -121,7 +121,7 @@
 <li>GitHub Actions, VS Code 확장, TOML 설정 파일을 지원합니다</li>
 <li>명령줄 및 Python API를 모두 제공합니다</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>complexipy path/to/code.py --max-complexity-allowed <span style="color:#0086f7;font-weight:bold">10</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>complexipy path/to/code.py --max-complexity-allowed <span style="color:#0550ae">10</span>
 </span></span></code></pre></div><p>코드 유지보수성 표준을 강제하고 싶은 팀에 최적입니다.</p>
 <h2 id="3-kreuzberg---50개-이상-파일-포맷-지원-데이터-추출">3. Kreuzberg - 50개 이상 파일 포맷 지원 데이터 추출</h2>
 <p><strong>GitHub Stars</strong>: 3,200+ | <a href="https://github.com/tryolabs/kreuzberg">GitHub</a> | <a href="https://kreuzberg.ai">공식 사이트</a></p>
@@ -163,7 +163,7 @@
 <li>폭포수 형태의 타임라인으로 시각화합니다</li>
 <li>JSON 출력으로 프로그래밍 분석이 가능합니다</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>httptap https://api.example.com/data
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>httptap https://api.example.com/data
 </span></span><span style="display:flex;"><span>httptap --json https://api.example.com/data &gt; metrics.json
 </span></span></code></pre></div><p>curl과 호환되는 플래그를 제공하므로 기존 curl 사용자도 쉽게 적응할 수 있습니다.</p>
 <h2 id="6-fastapi-guard---fastapi-보안-미들웨어">6. fastapi-guard - FastAPI 보안 미들웨어</h2>
@@ -206,7 +206,7 @@
 <li>실행 가능한 작업으로 분해</li>
 <li>AI 에이전트가 계획대로 구현</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>uvx --from git+https://github.com/github/spec-kit.git specify init my-project
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>uvx --from git+https://github.com/github/spec-kit.git specify init my-project
 </span></span></code></pre></div><p><strong>특별한 점:</strong></p>
 <ul>
 <li>GitHub Copilot, Claude Code, Gemini CLI 등 모든 AI 어시스턴트와 호환됩니다</li>
@@ -463,13 +463,14 @@
   
   document.addEventListener('DOMContentLoaded', function() {
     
-    const codeBlocks = document.querySelectorAll('.post-content pre');
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
     
     codeBlocks.forEach(function(block) {
       
       const copyButton = document.createElement('button');
       copyButton.className = 'copy-button';
-      copyButton.textContent = '복사';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
       
       
       copyButton.addEventListener('click', function() {
@@ -480,19 +481,19 @@
         
         navigator.clipboard.writeText(text).then(function() {
           
-          copyButton.textContent = '복사됨!';
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
           copyButton.classList.add('copied');
           
           
           setTimeout(function() {
-            copyButton.textContent = '복사';
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
             copyButton.classList.remove('copied');
           }, 2000);
         }).catch(function(err) {
           console.error('복사 실패:', err);
-          copyButton.textContent = '실패';
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
           setTimeout(function() {
-            copyButton.textContent = '복사';
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
           }, 2000);
         });
       });
@@ -502,6 +503,9 @@
     });
   });
 </script>
+
+
+
 
 
 

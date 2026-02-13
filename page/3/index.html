@@ -628,13 +628,14 @@ Docker의 이미지에는 사용자가 생각하는 것보다 더 많은 내용�
   
   document.addEventListener('DOMContentLoaded', function() {
     
-    const codeBlocks = document.querySelectorAll('.post-content pre');
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
     
     codeBlocks.forEach(function(block) {
       
       const copyButton = document.createElement('button');
       copyButton.className = 'copy-button';
-      copyButton.textContent = '복사';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
       
       
       copyButton.addEventListener('click', function() {
@@ -645,19 +646,19 @@ Docker의 이미지에는 사용자가 생각하는 것보다 더 많은 내용�
         
         navigator.clipboard.writeText(text).then(function() {
           
-          copyButton.textContent = '복사됨!';
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
           copyButton.classList.add('copied');
           
           
           setTimeout(function() {
-            copyButton.textContent = '복사';
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
             copyButton.classList.remove('copied');
           }, 2000);
         }).catch(function(err) {
           console.error('복사 실패:', err);
-          copyButton.textContent = '실패';
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
           setTimeout(function() {
-            copyButton.textContent = '복사';
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
           }, 2000);
         });
       });
@@ -667,6 +668,9 @@ Docker의 이미지에는 사용자가 생각하는 것보다 더 많은 내용�
     });
   });
 </script>
+
+
+
 
 
 

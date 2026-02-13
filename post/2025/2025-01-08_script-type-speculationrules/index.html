@@ -105,7 +105,7 @@
 <ul>
 <li>
 <p><strong>Resource Hint (prefetch, preload)</strong><br>
-HTML <!-- raw HTML omitted --> 같은 리소스 힌트(Resource Hint)는 요청을 미리 가져오도록 브라우저에 알리는 역할을 합니다. 다만, 개별 리소스 단위로 적용하고, 더 세밀한 제어는 어렵습니다.</p>
+HTML <link rel="prefetch"> 같은 리소스 힌트(Resource Hint)는 요청을 미리 가져오도록 브라우저에 알리는 역할을 합니다. 다만, 개별 리소스 단위로 적용하고, 더 세밀한 제어는 어렵습니다.</p>
 </li>
 <li>
 <p><strong>Speculation Rules</strong></p>
@@ -115,27 +115,27 @@ HTML <!-- raw HTML omitted --> 같은 리소스 힌트(Resource Hint)는 요청�
 </ul>
 <h2 id="2-script-typespeculationrules-개요">2. &lt;script type=&ldquo;speculationrules&rdquo;&gt; 개요</h2>
 <p>Speculation Rules는 다음과 같은 형태로 작성합니다:</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#fb660a;font-weight:bold">script</span> <span style="color:#ff0086;font-weight:bold">type</span>=<span style="color:#0086d2">&#34;speculationrules&#34;</span>&gt;
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>  <span style="color:#0086d2">&#34;prefetch&#34;</span>: [
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>      <span style="color:#0086d2">&#34;source&#34;</span>: <span style="color:#0086d2">&#34;list&#34;</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#0086d2">&#34;urls&#34;</span>: [
-</span></span><span style="display:flex;"><span>        <span style="color:#0086d2">&#34;/users&#34;</span>,
-</span></span><span style="display:flex;"><span>        <span style="color:#0086d2">&#34;/info&#34;</span>
-</span></span><span style="display:flex;"><span>      ]
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>  ],
-</span></span><span style="display:flex;"><span>  <span style="color:#0086d2">&#34;prerender&#34;</span>: [
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>      <span style="color:#0086d2">&#34;source&#34;</span>: <span style="color:#0086d2">&#34;list&#34;</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#0086d2">&#34;urls&#34;</span>: [
-</span></span><span style="display:flex;"><span>        <span style="color:#0086d2">&#34;/main&#34;</span>
-</span></span><span style="display:flex;"><span>      ]
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>  ]
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>&lt;/<span style="color:#fb660a;font-weight:bold">script</span>&gt;
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-html" data-lang="html"><span style="display:flex;"><span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">script</span> <span style="color:#1f2328">type</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;speculationrules&#34;</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0a3069">&#34;prefetch&#34;</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">[</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0a3069">&#34;source&#34;</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#34;list&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0a3069">&#34;urls&#34;</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">[</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#0a3069">&#34;/users&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#0a3069">&#34;/info&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">],</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0a3069">&#34;prerender&#34;</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">[</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0a3069">&#34;source&#34;</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#34;list&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0a3069">&#34;urls&#34;</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">[</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#0a3069">&#34;/main&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">&lt;/</span><span style="color:#0550ae">script</span><span style="color:#1f2328">&gt;</span>
 </span></span></code></pre></div><ul>
 <li><strong><code>type=&quot;speculationrules&quot;</code></strong>: JSON 형식의 규칙을 가진 스크립트 파일임을 브라우저에게 알림</li>
 <li><strong>prefetch</strong>: 브라우저가 리소스를 미리 가져오기만 하고, 렌더링은 하지 않음</li>
@@ -175,31 +175,31 @@ JSON의 prefetch, prerender, eagerness 설정에 따라 해당 URL들을 우선�
 </li>
 </ol>
 <h3 id="prerender-옵션">prerender 옵션</h3>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">&#34;prerender&#34;</span>: [
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>      <span style="color:#fb660a;font-weight:bold">&#34;source&#34;</span>: <span style="color:#0086d2">&#34;list&#34;</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#fb660a;font-weight:bold">&#34;urls&#34;</span>: [
-</span></span><span style="display:flex;"><span>        <span style="color:#0086d2">&#34;https://example.com/next-page&#34;</span>
-</span></span><span style="display:flex;"><span>      ]
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>  ]
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;prerender&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">[</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0550ae">&#34;source&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;list&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0550ae">&#34;urls&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">[</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#0a3069">&#34;https://example.com/next-page&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
 </span></span></code></pre></div><ul>
 <li><strong><code>source: &quot;list&quot;</code></strong>: 단순히 사전에 선언한 URL만을 prerender 대상으로 지정</li>
 <li><strong>활용 상황</strong>: 다음 단계로 넘어갈 URL을 이미 파악하고 있거나, ‘다음 버튼’과 같이 사용자가 누를 확률이 매우 높은 경우</li>
 </ul>
 <h3 id="prefetch-옵션">prefetch 옵션</h3>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">&#34;prefetch&#34;</span>: [
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>      <span style="color:#fb660a;font-weight:bold">&#34;source&#34;</span>: <span style="color:#0086d2">&#34;list&#34;</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#fb660a;font-weight:bold">&#34;urls&#34;</span>: [
-</span></span><span style="display:flex;"><span>        <span style="color:#0086d2">&#34;https://example.com/assets/images/banner.jpg&#34;</span>
-</span></span><span style="display:flex;"><span>      ]
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>  ]
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;prefetch&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">[</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0550ae">&#34;source&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;list&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0550ae">&#34;urls&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">[</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#0a3069">&#34;https://example.com/assets/images/banner.jpg&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
 </span></span></code></pre></div><ul>
 <li><strong><code>prefetch</code></strong>: 큰 이미지, JS, CSS 파일 등 다음 페이지 로딩에 필요한 리소스를 미리 다운받아 둘 때 사용</li>
 <li><strong>주의점</strong>: 너무 많은 리소스를 무분별하게 prefetch하면, 자원 낭비와 네트워크 혼잡이 발생할 수 있음</li>
@@ -276,56 +276,56 @@ JSON의 prefetch, prerender, eagerness 설정에 따라 해당 URL들을 우선�
 </li>
 </ol>
 <h2 id="7-사용-예시">7. 사용 예시</h2>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-html" data-lang="html"><span style="display:flex;"><span><span style="color:#ff0007;background-color:#0f140f;font-weight:bold;font-style:italic">&lt;!DOCTYPE html&gt;</span>
-</span></span><span style="display:flex;"><span>&lt;<span style="color:#fb660a;font-weight:bold">html</span> <span style="color:#ff0086;font-weight:bold">lang</span>=<span style="color:#0086d2">&#34;ko&#34;</span>&gt;
-</span></span><span style="display:flex;"><span>&lt;<span style="color:#fb660a;font-weight:bold">head</span>&gt;
-</span></span><span style="display:flex;"><span>  &lt;<span style="color:#fb660a;font-weight:bold">meta</span> <span style="color:#ff0086;font-weight:bold">charset</span>=<span style="color:#0086d2">&#34;UTF-8&#34;</span> /&gt;
-</span></span><span style="display:flex;"><span>  &lt;<span style="color:#fb660a;font-weight:bold">title</span>&gt;Speculation Rules Demo&lt;/<span style="color:#fb660a;font-weight:bold">title</span>&gt;
-</span></span><span style="display:flex;"><span>&lt;/<span style="color:#fb660a;font-weight:bold">head</span>&gt;
-</span></span><span style="display:flex;"><span>&lt;<span style="color:#fb660a;font-weight:bold">body</span>&gt;
-</span></span><span style="display:flex;"><span>  &lt;<span style="color:#fb660a;font-weight:bold">h1</span>&gt;Speculation Rules 테스트&lt;/<span style="color:#fb660a;font-weight:bold">h1</span>&gt;
-</span></span><span style="display:flex;"><span>  &lt;<span style="color:#fb660a;font-weight:bold">p</span>&gt;
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-html" data-lang="html"><span style="display:flex;"><span><span style="color:#57606a">&lt;!DOCTYPE html&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">html</span> <span style="color:#1f2328">lang</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;ko&#34;</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">head</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">&lt;</span><span style="color:#0550ae">meta</span> <span style="color:#1f2328">charset</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;UTF-8&#34;</span> <span style="color:#1f2328">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">&lt;</span><span style="color:#0550ae">title</span><span style="color:#1f2328">&gt;</span>Speculation Rules Demo<span style="color:#1f2328">&lt;/</span><span style="color:#0550ae">title</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">&lt;/</span><span style="color:#0550ae">head</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">body</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">&lt;</span><span style="color:#0550ae">h1</span><span style="color:#1f2328">&gt;</span>Speculation Rules 테스트<span style="color:#1f2328">&lt;/</span><span style="color:#0550ae">h1</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">&lt;</span><span style="color:#0550ae">p</span><span style="color:#1f2328">&gt;</span>
 </span></span><span style="display:flex;"><span>    아래 버튼을 누르면 다음 페이지로 이동합니다. 다만, 사전에 페이지를
 </span></span><span style="display:flex;"><span>    미리 렌더링해 두어, 클릭 즉시 새 페이지가 뜰 것입니다.
-</span></span><span style="display:flex;"><span>  &lt;/<span style="color:#fb660a;font-weight:bold">p</span>&gt;
-</span></span><span style="display:flex;"><span>  &lt;<span style="color:#fb660a;font-weight:bold">button</span> <span style="color:#ff0086;font-weight:bold">onclick</span>=<span style="color:#0086d2">&#34;location.href=&#39;next.html&#39;&#34;</span>&gt;다음 페이지로 이동&lt;/<span style="color:#fb660a;font-weight:bold">button</span>&gt;
-</span></span><span style="display:flex;"><span>  <span style="color:#080;background-color:#0f140f;font-style:italic">&lt;!-- Speculation Rules Script --&gt;</span>
-</span></span><span style="display:flex;"><span>  &lt;<span style="color:#fb660a;font-weight:bold">script</span> <span style="color:#ff0086;font-weight:bold">type</span>=<span style="color:#0086d2">&#34;speculationrules&#34;</span>&gt;
-</span></span><span style="display:flex;"><span>  {
-</span></span><span style="display:flex;"><span>    <span style="color:#0086d2">&#34;prerender&#34;</span>: [
-</span></span><span style="display:flex;"><span>      {
-</span></span><span style="display:flex;"><span>        <span style="color:#0086d2">&#34;source&#34;</span>: <span style="color:#0086d2">&#34;list&#34;</span>,
-</span></span><span style="display:flex;"><span>        <span style="color:#0086d2">&#34;urls&#34;</span>: [<span style="color:#0086d2">&#34;https://example.com/next.html&#34;</span>]
-</span></span><span style="display:flex;"><span>      }
-</span></span><span style="display:flex;"><span>    ],
-</span></span><span style="display:flex;"><span>    <span style="color:#0086d2">&#34;prefetch&#34;</span>: [
-</span></span><span style="display:flex;"><span>      {
-</span></span><span style="display:flex;"><span>        <span style="color:#0086d2">&#34;source&#34;</span>: <span style="color:#0086d2">&#34;list&#34;</span>,
-</span></span><span style="display:flex;"><span>        <span style="color:#0086d2">&#34;urls&#34;</span>: [
-</span></span><span style="display:flex;"><span>          <span style="color:#0086d2">&#34;/users&#34;</span>,
-</span></span><span style="display:flex;"><span>          <span style="color:#0086d2">&#34;/info&#34;</span>
-</span></span><span style="display:flex;"><span>        ]
-</span></span><span style="display:flex;"><span>      }
-</span></span><span style="display:flex;"><span>    ],
-</span></span><span style="display:flex;"><span>    <span style="color:#0086d2">&#34;eagerness&#34;</span>: <span style="color:#0086d2">&#34;eager&#34;</span>
-</span></span><span style="display:flex;"><span>  }
-</span></span><span style="display:flex;"><span>  &lt;/<span style="color:#fb660a;font-weight:bold">script</span>&gt;
-</span></span><span style="display:flex;"><span>&lt;/<span style="color:#fb660a;font-weight:bold">body</span>&gt;
-</span></span><span style="display:flex;"><span>&lt;/<span style="color:#fb660a;font-weight:bold">html</span>&gt;
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">&lt;/</span><span style="color:#0550ae">p</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">&lt;</span><span style="color:#0550ae">button</span> <span style="color:#1f2328">onclick</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;location.href=&#39;next.html&#39;&#34;</span><span style="color:#1f2328">&gt;</span>다음 페이지로 이동<span style="color:#1f2328">&lt;/</span><span style="color:#0550ae">button</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">&lt;!-- Speculation Rules Script --&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">&lt;</span><span style="color:#0550ae">script</span> <span style="color:#1f2328">type</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;speculationrules&#34;</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0a3069">&#34;prerender&#34;</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">[</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#0a3069">&#34;source&#34;</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#34;list&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#0a3069">&#34;urls&#34;</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">[</span><span style="color:#0a3069">&#34;https://example.com/next.html&#34;</span><span style="color:#1f2328">]</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">],</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0a3069">&#34;prefetch&#34;</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">[</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#0a3069">&#34;source&#34;</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#34;list&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#0a3069">&#34;urls&#34;</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">[</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#0a3069">&#34;/users&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#0a3069">&#34;/info&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#1f2328">]</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">],</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0a3069">&#34;eagerness&#34;</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#34;eager&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">&lt;/</span><span style="color:#0550ae">script</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">&lt;/</span><span style="color:#0550ae">body</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">&lt;/</span><span style="color:#0550ae">html</span><span style="color:#1f2328">&gt;</span>
 </span></span></code></pre></div><p>위 예시는 다음 페이지 next.html을 미리 렌더링(prerender) 해 두고, 필요한 JS/CSS 파일은 미리 다운로드(prefetch)하며, eagerness를 &ldquo;eager&quot;로 설정해 보다 적극적으로 자원을 활용하도록 설정합니다.</p>
 <h2 id="8-문서가-prerendering인지-확인하는-방법">8. 문서가 prerendering인지 확인하는 방법</h2>
 <p>문서의 통계를 위해서 자바스크립트가 실행을 제한 해야 할 경우가 있을 수도 있습니다.
 이런 경우에는 아래와 같은 스크립트를 통해서 제어가 가능 합니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">if</span> (document.prerendering) {
-</span></span><span style="display:flex;"><span>  document.addEventListener(<span style="color:#0086d2">&#34;prerenderingchange&#34;</span>, main, { once: <span style="color:#fb660a;font-weight:bold">true</span> });
-</span></span><span style="display:flex;"><span>} <span style="color:#fb660a;font-weight:bold">else</span> {
-</span></span><span style="display:flex;"><span>  main();
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">function</span> main() {
-</span></span><span style="display:flex;"><span>  setTimeout(() =&gt; {
-</span></span><span style="display:flex;"><span>    document.body.append(<span style="color:#0086d2">&#34;Timeout Finished&#34;</span>);
-</span></span><span style="display:flex;"><span>  }, <span style="color:#0086f7;font-weight:bold">1000</span>);
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#6639ba">document</span><span style="color:#1f2328">.</span><span style="color:#1f2328">prerendering</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6639ba">document</span><span style="color:#1f2328">.</span><span style="color:#1f2328">addEventListener</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;prerenderingchange&#34;</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">main</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">once</span><span style="color:#0550ae">:</span> <span style="color:#cf222e">true</span> <span style="color:#1f2328">});</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span> <span style="color:#cf222e">else</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">main</span><span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">function</span> <span style="color:#1f2328">main</span><span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">setTimeout</span><span style="color:#1f2328">(()</span> <span style="color:#1f2328">=&gt;</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6639ba">document</span><span style="color:#1f2328">.</span><span style="color:#1f2328">body</span><span style="color:#1f2328">.</span><span style="color:#1f2328">append</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;Timeout Finished&#34;</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">},</span> <span style="color:#0550ae">1000</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
 </span></span></code></pre></div><h2 id="9-참고">9. 참고</h2>
 <ul>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/prefetch">MDN: Resource Hint 사양</a></li>
@@ -554,13 +554,14 @@ JSON의 prefetch, prerender, eagerness 설정에 따라 해당 URL들을 우선�
   
   document.addEventListener('DOMContentLoaded', function() {
     
-    const codeBlocks = document.querySelectorAll('.post-content pre');
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
     
     codeBlocks.forEach(function(block) {
       
       const copyButton = document.createElement('button');
       copyButton.className = 'copy-button';
-      copyButton.textContent = '복사';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
       
       
       copyButton.addEventListener('click', function() {
@@ -571,19 +572,19 @@ JSON의 prefetch, prerender, eagerness 설정에 따라 해당 URL들을 우선�
         
         navigator.clipboard.writeText(text).then(function() {
           
-          copyButton.textContent = '복사됨!';
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
           copyButton.classList.add('copied');
           
           
           setTimeout(function() {
-            copyButton.textContent = '복사';
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
             copyButton.classList.remove('copied');
           }, 2000);
         }).catch(function(err) {
           console.error('복사 실패:', err);
-          copyButton.textContent = '실패';
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
           setTimeout(function() {
-            copyButton.textContent = '복사';
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
           }, 2000);
         });
       });
@@ -593,6 +594,9 @@ JSON의 prefetch, prerender, eagerness 설정에 따라 해당 URL들을 우선�
     });
   });
 </script>
+
+
+
 
 
 

@@ -130,12 +130,12 @@ Claude Code에서 명령을 실행할 때 전통적으로 &ldquo;git status 실�
 <h2 id="3-api에서-extended-thinking-켜기">3. API에서 Extended Thinking 켜기</h2>
 <p>핵심 개념: 복잡한 문제에 대한 깊이 있는 사고 활성화
 Claude API를 사용할 때, 요청에 thinking 파라미터를 추가하면 Extended Thinking 기능을 활성화할 수 있습니다:</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">&#34;thinking&#34;</span>: {
-</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">&#34;type&#34;</span>: <span style="color:#0086d2">&#34;enabled&#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">&#34;budget_tokens&#34;</span>: <span style="color:#0086f7;font-weight:bold">5000</span>
-</span></span><span style="display:flex;"><span>  }
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;thinking&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;type&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;enabled&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;budget_tokens&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0550ae">5000</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
 </span></span></code></pre></div><p>이는 Claude가 답변을 주기 전에 &ldquo;thinking blocks&quot;라는 내부 추론 과정을 거치게 합니다. 수학 문제, 알고리즘 설계, 복잡한 로직 분석 같은 작업에서 훨씬 더 정확한 결과를 얻을 수 있습니다.</p>
 <p><strong>언제 사용할까:</strong></p>
 <ul>
@@ -149,10 +149,10 @@ Claude API를 사용할 때, 요청에 thinking 파라미터를 추가하면 Ext
 <p>노트북을 닫거나 터미널을 종료해도 작업을 이어갈 수 있습니다.</p>
 <p>두 가지 옵션:</p>
 <p><code>claude --continue</code>: 직전 대화를 그대로 이어서 진행</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ claude --continue
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ claude --continue
 </span></span></code></pre></div><p>이전 세션의 컨텍스트가 완전히 복원되어 마지막 지점에서 계속 작업할 수 있습니다.</p>
 <p><code>claude --resume</code>: 과거 세션 목록에서 선택</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ claude --resume
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ claude --resume
 </span></span></code></pre></div><p>저장된 모든 세션을 보고 원하는 것을 선택하여 재개할 수 있습니다. 여러 프로젝트를 동시에 진행 중일 때 유용합니다.</p>
 <p><strong>실용적 사용 사례</strong>:</p>
 <ul>
@@ -163,9 +163,9 @@ Claude API를 사용할 때, 요청에 thinking 파라미터를 추가하면 Ext
 <h2 id="5--프리픽스로-메모리-바로-저장">5. # 프리픽스로 메모리 바로 저장</h2>
 <p><strong>핵심 개념</strong>: 파일 편집 없이 설정 정보 저장</p>
 <p>반복적으로 사용되는 설정이나 규칙을 메모리에 저장할 수 있습니다. 프롬프트 앞에 해시(#)를 붙여 입력하면:</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># Always use bun instead of npm</span>
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># Always create TypeScript files</span>
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># Use async/await patterns exclusively</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># Always use bun instead of npm</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Always create TypeScript files</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Use async/await patterns exclusively</span>
 </span></span></code></pre></div><p>이러한 규칙들은 Claude의 메모리에 저장되어 이후 모든 대화에서 자동으로 적용됩니다. 복잡한 설정 파일을 편집할 필요가 없습니다.</p>
 <p><strong>장점:</strong></p>
 <ul>
@@ -188,7 +188,7 @@ Claude API를 사용할 때, 요청에 thinking 파라미터를 추가하면 Ext
 <h2 id="7--p-옵션으로-headless-모드-사용">7. -p 옵션으로 Headless 모드 사용</h2>
 <p>핵심 개념: 스크립트와 자동화 파이프라인 통합
 Claude Code 실행 시 <code>-p</code> 옵션을 붙이면 대화형 인터페이스 없이 순수 명령어처럼 작동합니다:</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>claude -p <span style="color:#0086d2">&#34;create a util logging function&#34;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>claude -p <span style="color:#0a3069">&#34;create a util logging function&#34;</span>
 </span></span></code></pre></div><p><strong>사용 사례</strong>:</p>
 <ul>
 <li>CI/CD 파이프라인 통합</li>
@@ -216,8 +216,8 @@ Claude Code 실행 시 <code>-p</code> 옵션을 붙이면 대화형 인터페�
 <h2 id="9-원격-세션으로-웹과-터미널-오가며-작업">9. 원격 세션으로 웹과 터미널 오가며 작업</h2>
 <p><strong>핵심 개념</strong>: 다중 환경에서의 작업 동시화</p>
 <p>프롬프트 앞에 앰퍼샌드(&amp;)를 붙이면 작업을 Claude Code의 웹 인터페이스로 보내 백그라운드에서 실행할 수 있습니다:</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>&amp; npm run build
-</span></span><span style="display:flex;"><span>&amp; python manage.py migrate
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#1f2328">&amp;</span> npm run build
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">&amp;</span> python manage.py migrate
 </span></span></code></pre></div><p><strong>장점</strong>:</p>
 <ul>
 <li>브라우저 기반 작업 모니터링</li>
@@ -239,7 +239,7 @@ Claude Code 실행 시 <code>-p</code> 옵션을 붙이면 대화형 인터페�
 <h2 id="11-세션에-이름-붙여서-관리하기">11. 세션에 이름 붙여서 관리하기</h2>
 <p><strong>핵심 개념</strong>: 작업별 세션 조직화</p>
 <p><code>/rename</code> 명령으로 현재 세션에 의미 있는 이름을 붙일 수 있습니다:</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/rename api-migration
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/rename api-migration
 </span></span><span style="display:flex;"><span>/rename database-refactor
 </span></span><span style="display:flex;"><span>/rename performance-optimization
 </span></span></code></pre></div><p>이후 <code>/resume</code>를 사용할 때 이름으로 검색하여 원하는 세션을 빠르게 찾을 수 있습니다. 여러 프로젝트를 동시에 관리할 때 매우 유용합니다.</p>
@@ -278,7 +278,7 @@ Claude Code 실행 시 <code>-p</code> 옵션을 붙이면 대화형 인터페�
 <h2 id="15-yolo-모드로-권한-확인-없이-실행">15. YOLO 모드로 권한 확인 없이 실행</h2>
 <p><strong>핵심 개념</strong>: 신뢰할 수 있는 환경에서의 빠른 작업
 <code>--dangerously-skip-permissions</code> 플래그를 사용하면 파일 생성, 명령 실행, 수정마다 묻지 않고 바로 진행합니다:</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>claude --dangerously-skip-permissions
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>claude --dangerously-skip-permissions
 </span></span></code></pre></div><p><strong>주의사항</strong>:</p>
 <ul>
 <li>신뢰할 수 있는 프로젝트에서만 사용</li>
@@ -303,7 +303,7 @@ on-after-execute: npm test
 <h2 id="17--멘션으로-컨텍스트-빠르게-추가">17. @ 멘션으로 컨텍스트 빠르게 추가</h2>
 <p><strong>핵심 개념</strong>: 대화 맥락 빠른 로딩</p>
 <p>Claude Code에서 <code>@</code>를 입력하면 다양한 항목을 즉시 대화에 포함할 수 있습니다:</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>@src/utils.ts - 특정 파일
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>@src/utils.ts - 특정 파일
 </span></span><span style="display:flex;"><span>@/src - 전체 디렉터리
 </span></span><span style="display:flex;"><span>@mcp-server - MCP 서버
 </span></span><span style="display:flex;"><span>@subagent - 서브에이전트
@@ -348,7 +348,7 @@ Agent Skills는 특정 작업 방법을 폴더 단위로 정의하여 Claude에�
 <h2 id="21-플러그인으로-설정-한-번에-공유하기">21. 플러그인으로 설정 한 번에 공유하기</h2>
 <p><strong>핵심 개념</strong>: 작업 환경 포장화
 여러 파일과 설정을 따로 주고받지 않고 플러그인으로 패킹합니다:</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>plugin install my-project-setup
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>plugin install my-project-setup
 </span></span></code></pre></div><p>이는 다음을 포함합니다:</p>
 <ul>
 <li>프로젝트 설정 파일</li>
@@ -430,10 +430,10 @@ Agent Skills는 특정 작업 방법을 폴더 단위로 정의하여 Claude에�
 </code></pre><h2 id="27-sandbox-모드로-권한-한-번에-설정하기">27. Sandbox 모드로 권한 한 번에 설정하기</h2>
 <p><strong>핵심 개념</strong>: 보안과 효율성의 균형</p>
 <p>Sandbox 모드를 활성화하면 실행 가능한 범위를 미리 정의합니다:</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">sandbox</span>:<span style="color:#888">
-</span></span></span><span style="display:flex;"><span><span style="color:#888">  </span>- <span style="color:#fb660a;font-weight:bold">allow</span>:<span style="color:#888"> </span>src/** (코드 편집)<span style="color:#888">
-</span></span></span><span style="display:flex;"><span><span style="color:#888">  </span>- <span style="color:#fb660a;font-weight:bold">allow</span>:<span style="color:#888"> </span>npm run* (스크립트 실행)<span style="color:#888">
-</span></span></span><span style="display:flex;"><span><span style="color:#888">  </span>- <span style="color:#fb660a;font-weight:bold">deny</span>:<span style="color:#888"> </span>rm -rf (위험 작업 차단)<span style="color:#888">
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#0550ae">sandbox</span><span style="color:#1f2328">:</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>- <span style="color:#0550ae">allow</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>src/** (코드 편집)<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>- <span style="color:#0550ae">allow</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>npm run* (스크립트 실행)<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>- <span style="color:#0550ae">deny</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>rm -rf (위험 작업 차단)<span style="color:#fff">
 </span></span></span></code></pre></div><p>이 범위 내에서 Claude는 반복적인 권한 확인 없이 작업합니다:</p>
 <p>빠른 개발 속도: 승인 화면 최소화
 안전성: 위험 작업 사전 차단
@@ -481,12 +481,12 @@ Claude Code에 Language Server Protocol(LSP)을 연결하면:</p>
 <p><strong>핵심 개념</strong> 커스텀 AI 에이전트 개발
 Claude Code에서 사용되던 에이전트 구조(루프, 도구 사용, 컨텍스트 관리)가 SDK 형태로 제공됩니다:</p>
 <p><strong>SDK로 가능한 것:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">from</span> anthropic <span style="color:#fb660a;font-weight:bold">import</span> Anthropic
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#cf222e">from</span> <span style="color:#24292e">anthropic</span> <span style="color:#cf222e">import</span> Anthropic
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>client = Anthropic()
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 에이전트 루프 구현</span>
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 도구 정의 및 사용</span>
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 컨텍스트 관리</span>
+</span></span><span style="display:flex;"><span>client <span style="color:#0550ae">=</span> Anthropic<span style="color:#1f2328">()</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 에이전트 루프 구현</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 도구 정의 및 사용</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 컨텍스트 관리</span>
 </span></span></code></pre></div><p><strong>활용 사례:</strong></p>
 <ul>
 <li>자동화된 데이터 처리 에이전트</li>
@@ -731,13 +731,14 @@ Claude Code에서 사용되던 에이전트 구조(루프, 도구 사용, 컨텍
   
   document.addEventListener('DOMContentLoaded', function() {
     
-    const codeBlocks = document.querySelectorAll('.post-content pre');
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
     
     codeBlocks.forEach(function(block) {
       
       const copyButton = document.createElement('button');
       copyButton.className = 'copy-button';
-      copyButton.textContent = '복사';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
       
       
       copyButton.addEventListener('click', function() {
@@ -748,19 +749,19 @@ Claude Code에서 사용되던 에이전트 구조(루프, 도구 사용, 컨텍
         
         navigator.clipboard.writeText(text).then(function() {
           
-          copyButton.textContent = '복사됨!';
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
           copyButton.classList.add('copied');
           
           
           setTimeout(function() {
-            copyButton.textContent = '복사';
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
             copyButton.classList.remove('copied');
           }, 2000);
         }).catch(function(err) {
           console.error('복사 실패:', err);
-          copyButton.textContent = '실패';
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
           setTimeout(function() {
-            copyButton.textContent = '복사';
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
           }, 2000);
         });
       });
@@ -770,6 +771,9 @@ Claude Code에서 사용되던 에이전트 구조(루프, 도구 사용, 컨텍
     });
   });
 </script>
+
+
+
 
 
 

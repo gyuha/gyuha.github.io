@@ -102,40 +102,40 @@
   <p>SVG 아이콘 폴더를 모니터링하고 자동으로 index.ts 파일을 생성하는 Vite 플러그인입니다.</p>
 <p>이 플러그인은 웹사이트의 기능을 확장하고 관리 효율성을 높이기 위해 필요합니다. 사용자가 원하는 특정 기능들을 쉽게 추가할 수 있도록 도와주며, 설치 후에는 사용자 친화적인 인터페이스를 통해 간편하게 설정 및 활용할 수 있습니다. 특히 svgr을 사용하면 ?react가 붙은 URL을 일일이 import할 필요 없이 손쉽게 SVG 아이콘을 import할 수 있어 매우 유용합니다. 이러한 편리함 덕분에 개발자는 더욱 빠르고 효과적으로 사이트를 개발을 할 수 있습니다.</p>
 <h2 id="설치">설치.</h2>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>npm install vite-plugin-svgr vite-plugin-svgr-indexer --save-dev
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 또는</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>npm install vite-plugin-svgr vite-plugin-svgr-indexer --save-dev
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 또는</span>
 </span></span><span style="display:flex;"><span>yarn add vite-plugin-svgr vite-plugin-svgr-indexer -D
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 또는</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 또는</span>
 </span></span><span style="display:flex;"><span>pnpm add vite-plugin-svgr vite-plugin-svgr-indexer -D
 </span></span></code></pre></div><h2 id="사용-방법">사용 방법</h2>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// vite.config.js / vite.config.ts
-</span></span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> { defineConfig } from <span style="color:#0086d2">&#39;vite&#39;</span>;
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> svgr from <span style="color:#0086d2">&#39;vite-plugin-svgr&#39;</span>;
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> svgrIndexer from <span style="color:#0086d2">&#39;vite-plugin-svgr-indexer&#39;</span>;
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">export</span> <span style="color:#fb660a;font-weight:bold">default</span> defineConfig({
-</span></span><span style="display:flex;"><span>  plugins: [
-</span></span><span style="display:flex;"><span>    svgr(), <span style="color:#080;background-color:#0f140f;font-style:italic">// 먼저 vite-plugin-svgr 구성
-</span></span></span><span style="display:flex;"><span>    svgrIndexer({
-</span></span><span style="display:flex;"><span>      <span style="color:#080;background-color:#0f140f;font-style:italic">// 모니터링할 SVG 아이콘 디렉토리 경로 (필수)
-</span></span></span><span style="display:flex;"><span>      iconDirs: [<span style="color:#0086d2">&#39;src/assets/icons&#39;</span>],
-</span></span><span style="display:flex;"><span>      <span style="color:#080;background-color:#0f140f;font-style:italic">// 생성할 인덱스 파일 이름 (기본값: &#39;index.ts&#39;)
-</span></span></span><span style="display:flex;"><span>      indexFileName: <span style="color:#0086d2">&#39;index.ts&#39;</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#080;background-color:#0f140f;font-style:italic">// 파일 감시 활성화 (기본값: true)
-</span></span></span><span style="display:flex;"><span>      watch: <span style="color:#fb660a;font-weight:bold">true</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#080;background-color:#0f140f;font-style:italic">// 하위 폴더 감시 활성화 (기본값: true)
-</span></span></span><span style="display:flex;"><span>      recursive: <span style="color:#fb660a;font-weight:bold">true</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#080;background-color:#0f140f;font-style:italic">// 컴포넌트 이름에 추가할 접두사 (기본값: &#39;&#39;)
-</span></span></span><span style="display:flex;"><span>      componentPrefix: <span style="color:#0086d2">&#39;Icon&#39;</span>
-</span></span><span style="display:flex;"><span>    }),
-</span></span><span style="display:flex;"><span>  ],
-</span></span><span style="display:flex;"><span>});
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#57606a">// vite.config.js / vite.config.ts
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">defineConfig</span> <span style="color:#1f2328">}</span> <span style="color:#1f2328">from</span> <span style="color:#0a3069">&#39;vite&#39;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#1f2328">svgr</span> <span style="color:#1f2328">from</span> <span style="color:#0a3069">&#39;vite-plugin-svgr&#39;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#1f2328">svgrIndexer</span> <span style="color:#1f2328">from</span> <span style="color:#0a3069">&#39;vite-plugin-svgr-indexer&#39;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">export</span> <span style="color:#cf222e">default</span> <span style="color:#1f2328">defineConfig</span><span style="color:#1f2328">({</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">plugins</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">[</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">svgr</span><span style="color:#1f2328">(),</span> <span style="color:#57606a">// 먼저 vite-plugin-svgr 구성
+</span></span></span><span style="display:flex;"><span>    <span style="color:#1f2328">svgrIndexer</span><span style="color:#1f2328">({</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#57606a">// 모니터링할 SVG 아이콘 디렉토리 경로 (필수)
+</span></span></span><span style="display:flex;"><span>      <span style="color:#1f2328">iconDirs</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">[</span><span style="color:#0a3069">&#39;src/assets/icons&#39;</span><span style="color:#1f2328">],</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#57606a">// 생성할 인덱스 파일 이름 (기본값: &#39;index.ts&#39;)
+</span></span></span><span style="display:flex;"><span>      <span style="color:#1f2328">indexFileName</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;index.ts&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#57606a">// 파일 감시 활성화 (기본값: true)
+</span></span></span><span style="display:flex;"><span>      <span style="color:#1f2328">watch</span><span style="color:#0550ae">:</span> <span style="color:#cf222e">true</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#57606a">// 하위 폴더 감시 활성화 (기본값: true)
+</span></span></span><span style="display:flex;"><span>      <span style="color:#1f2328">recursive</span><span style="color:#0550ae">:</span> <span style="color:#cf222e">true</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#57606a">// 컴포넌트 이름에 추가할 접두사 (기본값: &#39;&#39;)
+</span></span></span><span style="display:flex;"><span>      <span style="color:#1f2328">componentPrefix</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;Icon&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">}),</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">],</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">});</span>
 </span></span></code></pre></div><h2 id="typescript-지원">TypeScript 지원</h2>
 <p>TypeScript를 사용하는 경우 tsconfig.json에 다음을 추가하세요:</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">&#34;compilerOptions&#34;</span>: {
-</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">&#34;types&#34;</span>: [<span style="color:#0086d2">&#34;vite-plugin-svgr/client&#34;</span>]
-</span></span><span style="display:flex;"><span>  }
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;compilerOptions&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;types&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">[</span><span style="color:#0a3069">&#34;vite-plugin-svgr/client&#34;</span><span style="color:#1f2328">]</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
 </span></span></code></pre></div><p>또는 더 나은 타입 추론을 위한 선언 도우미도 있습니다. vite-env.d.ts에 다음을 추가하세요:</p>
 <pre tabindex="0"><code>/// &lt;reference types=&#34;vite-plugin-svgr/client&#34; /&gt;
 </code></pre><p>이렇게 하면 SVG 임포트에 대한 적절한 타입 정의가 제공됩니다.</p>
@@ -157,35 +157,35 @@
       ├── back.svg
       └── forward.svg
 </code></pre><p>메인 디렉토리에 생성된 index.ts:</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> IconArrow <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#39;./arrow.svg?react&#39;</span>;
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> IconClose <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#39;./close.svg?react&#39;</span>;
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> IconMenu <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#39;./menu.svg?react&#39;</span>;
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">export</span> {
-</span></span><span style="display:flex;"><span>  IconArrow,
-</span></span><span style="display:flex;"><span>  IconClose,
-</span></span><span style="display:flex;"><span>  IconMenu
-</span></span><span style="display:flex;"><span>};
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#1f2328">IconArrow</span> <span style="color:#cf222e">from</span> <span style="color:#0a3069">&#39;./arrow.svg?react&#39;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#1f2328">IconClose</span> <span style="color:#cf222e">from</span> <span style="color:#0a3069">&#39;./close.svg?react&#39;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#1f2328">IconMenu</span> <span style="color:#cf222e">from</span> <span style="color:#0a3069">&#39;./menu.svg?react&#39;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">export</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">IconArrow</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">IconClose</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">IconMenu</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
 </span></span></code></pre></div><p>navigation 하위 디렉토리에 생성된 index.ts:</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> IconBack <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#39;./back.svg?react&#39;</span>;
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> IconForward <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#39;./forward.svg?react&#39;</span>;
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">export</span> {
-</span></span><span style="display:flex;"><span>  IconBack,
-</span></span><span style="display:flex;"><span>  IconForward
-</span></span><span style="display:flex;"><span>};
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#1f2328">IconBack</span> <span style="color:#cf222e">from</span> <span style="color:#0a3069">&#39;./back.svg?react&#39;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#1f2328">IconForward</span> <span style="color:#cf222e">from</span> <span style="color:#0a3069">&#39;./forward.svg?react&#39;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">export</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">IconBack</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">IconForward</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
 </span></span></code></pre></div><p>React 컴포넌트에서의 사용법</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// 메인 디렉토리에서 가져오기
-</span></span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> { IconClose, IconMenu } <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#39;./assets/icons&#39;</span>;
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// 하위 디렉토리에서 가져오기
-</span></span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> { IconBack } <span style="color:#fb660a;font-weight:bold">from</span> <span style="color:#0086d2">&#39;./assets/icons/navigation&#39;</span>;
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">function</span> App() {
-</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">return</span> (
-</span></span><span style="display:flex;"><span>    &lt;<span style="color:#fb660a;font-weight:bold">div</span>&gt;
-</span></span><span style="display:flex;"><span>      &lt;<span style="color:#fb660a;font-weight:bold">IconClose</span> /&gt;
-</span></span><span style="display:flex;"><span>      &lt;<span style="color:#fb660a;font-weight:bold">IconMenu</span> /&gt;
-</span></span><span style="display:flex;"><span>      &lt;<span style="color:#fb660a;font-weight:bold">IconBack</span> /&gt;
-</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#fb660a;font-weight:bold">div</span>&gt;
-</span></span><span style="display:flex;"><span>  );
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span><span style="color:#57606a">// 메인 디렉토리에서 가져오기
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">IconClose</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">IconMenu</span> <span style="color:#1f2328">}</span> <span style="color:#cf222e">from</span> <span style="color:#0a3069">&#39;./assets/icons&#39;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// 하위 디렉토리에서 가져오기
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">IconBack</span> <span style="color:#1f2328">}</span> <span style="color:#cf222e">from</span> <span style="color:#0a3069">&#39;./assets/icons/navigation&#39;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">function</span> <span style="color:#1f2328">App() {</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> <span style="color:#1f2328">(</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">&lt;</span><span style="color:#0550ae">div</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">&lt;</span><span style="color:#0550ae">IconClose</span> <span style="color:#1f2328">/&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">&lt;</span><span style="color:#0550ae">IconMenu</span> <span style="color:#1f2328">/&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">&lt;</span><span style="color:#0550ae">IconBack</span> <span style="color:#1f2328">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">&lt;/</span><span style="color:#0550ae">div</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
 </span></span></code></pre></div>
 </section>
 <time>
@@ -388,13 +388,14 @@
   
   document.addEventListener('DOMContentLoaded', function() {
     
-    const codeBlocks = document.querySelectorAll('.post-content pre');
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
     
     codeBlocks.forEach(function(block) {
       
       const copyButton = document.createElement('button');
       copyButton.className = 'copy-button';
-      copyButton.textContent = '복사';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
       
       
       copyButton.addEventListener('click', function() {
@@ -405,19 +406,19 @@
         
         navigator.clipboard.writeText(text).then(function() {
           
-          copyButton.textContent = '복사됨!';
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
           copyButton.classList.add('copied');
           
           
           setTimeout(function() {
-            copyButton.textContent = '복사';
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
             copyButton.classList.remove('copied');
           }, 2000);
         }).catch(function(err) {
           console.error('복사 실패:', err);
-          copyButton.textContent = '실패';
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
           setTimeout(function() {
-            copyButton.textContent = '복사';
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
           }, 2000);
         });
       });
@@ -427,6 +428,9 @@
     });
   });
 </script>
+
+
+
 
 
 

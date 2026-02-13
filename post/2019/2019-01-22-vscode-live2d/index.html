@@ -120,13 +120,13 @@
 <p><code>File &gt; Preferences &gt; Settings</code>를 선택 하거나 <code>Ctrl+,</code>으로 설정 화면을 들어 갑니다.</p>
 <p>Live2d를 검색 하시거나 직접 입력을 하시거나, 좌측 상단에 <code>{}</code>버튼을 누르셔서 코드를 넣어 주시면 됩니다.</p>
 <p>저 같은 경우는 위 기본 값에서 사이즈를 반으로 줄여서 넣어 봤습니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">&#34;live2d.width&#34;</span>: <span style="color:#0086f7;font-weight:bold">150</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">&#34;live2d.height&#34;</span>: <span style="color:#0086f7;font-weight:bold">200</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">&#34;live2d.model&#34;</span>: <span style="color:#0086d2">&#34;33.2017.newyear&#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">&#34;live2d.headPos&#34;</span>: <span style="color:#0086f7;font-weight:bold">0.5</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">&#34;live2d.scale&#34;</span>: <span style="color:#0086f7;font-weight:bold">1</span>   
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;live2d.width&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0550ae">150</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;live2d.height&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0550ae">200</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;live2d.model&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;33.2017.newyear&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;live2d.headPos&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0550ae">0.5</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;live2d.scale&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0550ae">1</span>   
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
 </span></span></code></pre></div><p>하지만, 수정한다고 해서 바로 적용 되지 않습니다.</p>
 <p><code>F1</code> 또는 <code>Ctrl+Shit+P</code>을 다시 누르고 <code>live2d uninstall</code>을 하고 다시 <code>live2d install</code>을 해 줘야 합니다.</p>
 <p>꼭!!! 지웠다가 다시 설치를 해야 적용이 됩니다.</p>
@@ -324,13 +324,14 @@
   
   document.addEventListener('DOMContentLoaded', function() {
     
-    const codeBlocks = document.querySelectorAll('.post-content pre');
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
     
     codeBlocks.forEach(function(block) {
       
       const copyButton = document.createElement('button');
       copyButton.className = 'copy-button';
-      copyButton.textContent = '복사';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
       
       
       copyButton.addEventListener('click', function() {
@@ -341,19 +342,19 @@
         
         navigator.clipboard.writeText(text).then(function() {
           
-          copyButton.textContent = '복사됨!';
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
           copyButton.classList.add('copied');
           
           
           setTimeout(function() {
-            copyButton.textContent = '복사';
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
             copyButton.classList.remove('copied');
           }, 2000);
         }).catch(function(err) {
           console.error('복사 실패:', err);
-          copyButton.textContent = '실패';
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
           setTimeout(function() {
-            copyButton.textContent = '복사';
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
           }, 2000);
         });
       });
@@ -363,6 +364,9 @@
     });
   });
 </script>
+
+
+
 
 
 

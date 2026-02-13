@@ -104,78 +104,78 @@
 <h2 id="사전-준비">사전 준비</h2>
 <ol>
 <li><strong>mpv 설치</strong>: Linux 배포판에 따라 패키지 관리자를 사용하여 mpv를 설치합니다.
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt install mpv  <span style="color:#080;background-color:#0f140f;font-style:italic"># Ubuntu/Debian</span>
-</span></span><span style="display:flex;"><span>sudo dnf install mpv  <span style="color:#080;background-color:#0f140f;font-style:italic"># Fedora</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt install mpv  <span style="color:#57606a"># Ubuntu/Debian</span>
+</span></span><span style="display:flex;"><span>sudo dnf install mpv  <span style="color:#57606a"># Fedora</span>
 </span></span></code></pre></div></li>
 <li><strong>trans 도구 설치</strong>: <code>trans</code>는 다양한 번역 서비스를 지원하는 명령줄 번역기입니다. 다음 명령어로 설치할 수 있습니다.
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt install translate-shell  <span style="color:#080;background-color:#0f140f;font-style:italic"># Ubuntu/Debian</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt install translate-shell  <span style="color:#57606a"># Ubuntu/Debian</span>
 </span></span></code></pre></div>또는 <a href="https://github.com/soimort/translate-shell">공식 GitHub 저장소</a>에서 최신 버전을 확인할 수 있습니다。</li>
 </ol>
 <h2 id="스크립트-설치-및-설정">스크립트 설치 및 설정</h2>
 <p>아래 Lua 스크립트를 <code>~/.config/mpv/scripts/</code> 디렉토리에 <code>auto_translate.lua</code>라는 이름으로 저장합니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">local</span> mp = require <span style="color:#0086d2">&#39;mp&#39;</span>
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">local</span> enabled = <span style="color:#fb660a;font-weight:bold">false</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#cf222e">local</span> mp <span style="color:#0550ae">=</span> require <span style="color:#0a3069">&#39;mp&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">local</span> enabled <span style="color:#0550ae">=</span> <span style="color:#cf222e">false</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">-- OSD 오버레이 생성</span>
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">local</span> ov = mp.create_osd_overlay(<span style="color:#0086d2">&#34;ass-events&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#57606a">-- OSD 오버레이 생성</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">local</span> ov <span style="color:#0550ae">=</span> mp.create_osd_overlay<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;ass-events&#34;</span><span style="color:#1f2328">)</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">function</span> <span style="color:#ff0086;font-weight:bold">translation_callback</span>(success, result, error)
-</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">if</span> success and result.status == <span style="color:#0086f7;font-weight:bold">0</span> <span style="color:#fb660a;font-weight:bold">then</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#080;background-color:#0f140f;font-style:italic">-- [[ 스타일 설정 ]]</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#080;background-color:#0f140f;font-style:italic">-- \an2 : 하단 중앙 정렬</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#080;background-color:#0f140f;font-style:italic">-- \fs60 : 글자 크기</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#080;background-color:#0f140f;font-style:italic">-- \bord2 : 테두리 두께 (검은색)</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#080;background-color:#0f140f;font-style:italic">-- \1c&amp;HFFFFFF&amp; : 글자색 (흰색)</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#fb660a;font-weight:bold">local</span> style = <span style="color:#0086d2">&#34;{</span><span style="color:#0086d2">\\</span><span style="color:#0086d2">an2}{</span><span style="color:#0086d2">\\</span><span style="color:#0086d2">fs60}{</span><span style="color:#0086d2">\\</span><span style="color:#0086d2">bord2}&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">function</span> <span style="color:#6639ba">translation_callback</span><span style="color:#1f2328">(</span>success<span style="color:#1f2328">,</span> result<span style="color:#1f2328">,</span> error<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> success <span style="color:#0550ae">and</span> result.status <span style="color:#0550ae">==</span> <span style="color:#0550ae">0</span> <span style="color:#cf222e">then</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#57606a">-- [[ 스타일 설정 ]]</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#57606a">-- \an2 : 하단 중앙 정렬</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#57606a">-- \fs60 : 글자 크기</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#57606a">-- \bord2 : 테두리 두께 (검은색)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#57606a">-- \1c&amp;HFFFFFF&amp; : 글자색 (흰색)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">local</span> style <span style="color:#0550ae">=</span> <span style="color:#0a3069">&#34;{</span><span style="color:#0a3069">\\</span><span style="color:#0a3069">an2}{</span><span style="color:#0a3069">\\</span><span style="color:#0a3069">fs60}{</span><span style="color:#0a3069">\\</span><span style="color:#0a3069">bord2}&#34;</span>
 </span></span><span style="display:flex;"><span>        
-</span></span><span style="display:flex;"><span>        <span style="color:#080;background-color:#0f140f;font-style:italic">-- 줄바꿈을 공백으로 변경</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#fb660a;font-weight:bold">local</span> clean_text = result.stdout:gsub(<span style="color:#0086d2">&#34;</span><span style="color:#0086d2">\n</span><span style="color:#0086d2">&#34;</span>, <span style="color:#0086d2">&#34; &#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#57606a">-- 줄바꿈을 공백으로 변경</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">local</span> clean_text <span style="color:#0550ae">=</span> result.stdout<span style="color:#1f2328">:</span>gsub<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;</span><span style="color:#0a3069">\n</span><span style="color:#0a3069">&#34;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#34; &#34;</span><span style="color:#1f2328">)</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        ov.data = style .. clean_text
-</span></span><span style="display:flex;"><span>        ov:update()
-</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">end</span>
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">end</span>
+</span></span><span style="display:flex;"><span>        ov.data <span style="color:#0550ae">=</span> style <span style="color:#0550ae">..</span> clean_text
+</span></span><span style="display:flex;"><span>        ov<span style="color:#1f2328">:</span>update<span style="color:#1f2328">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">end</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">end</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">function</span> <span style="color:#ff0086;font-weight:bold">on_subtitle_change</span>(name, text)
-</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">if</span> not enabled <span style="color:#fb660a;font-weight:bold">then</span> <span style="color:#fb660a;font-weight:bold">return</span> <span style="color:#fb660a;font-weight:bold">end</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">function</span> <span style="color:#6639ba">on_subtitle_change</span><span style="color:#1f2328">(</span>name<span style="color:#1f2328">,</span> text<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> <span style="color:#0550ae">not</span> enabled <span style="color:#cf222e">then</span> <span style="color:#cf222e">return</span> <span style="color:#cf222e">end</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">if</span> not text or text == <span style="color:#0086d2">&#34;&#34;</span> <span style="color:#fb660a;font-weight:bold">then</span>
-</span></span><span style="display:flex;"><span>        ov.data = <span style="color:#0086d2">&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>        ov:update()
-</span></span><span style="display:flex;"><span>        <span style="color:#fb660a;font-weight:bold">return</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">end</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> <span style="color:#0550ae">not</span> text <span style="color:#0550ae">or</span> text <span style="color:#0550ae">==</span> <span style="color:#0a3069">&#34;&#34;</span> <span style="color:#cf222e">then</span>
+</span></span><span style="display:flex;"><span>        ov.data <span style="color:#0550ae">=</span> <span style="color:#0a3069">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        ov<span style="color:#1f2328">:</span>update<span style="color:#1f2328">()</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">return</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">end</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    text = text:gsub(<span style="color:#0086d2">&#34;</span><span style="color:#0086d2">\n</span><span style="color:#0086d2">&#34;</span>, <span style="color:#0086d2">&#34; &#34;</span>)
+</span></span><span style="display:flex;"><span>    text <span style="color:#0550ae">=</span> text<span style="color:#1f2328">:</span>gsub<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;</span><span style="color:#0a3069">\n</span><span style="color:#0a3069">&#34;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#34; &#34;</span><span style="color:#1f2328">)</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">local</span> cmd = {
-</span></span><span style="display:flex;"><span>        name = <span style="color:#0086d2">&#34;subprocess&#34;</span>,
-</span></span><span style="display:flex;"><span>        args = { <span style="color:#0086d2">&#34;trans&#34;</span>, <span style="color:#0086d2">&#34;-b&#34;</span>, <span style="color:#0086d2">&#34;-t&#34;</span>, <span style="color:#0086d2">&#34;ko&#34;</span>, text },
-</span></span><span style="display:flex;"><span>        capture_stdout = <span style="color:#fb660a;font-weight:bold">true</span>
-</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">local</span> cmd <span style="color:#0550ae">=</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>        name <span style="color:#0550ae">=</span> <span style="color:#0a3069">&#34;subprocess&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>        args <span style="color:#0550ae">=</span> <span style="color:#1f2328">{</span> <span style="color:#0a3069">&#34;trans&#34;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#34;-b&#34;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#34;-t&#34;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#34;ko&#34;</span><span style="color:#1f2328">,</span> text <span style="color:#1f2328">},</span>
+</span></span><span style="display:flex;"><span>        capture_stdout <span style="color:#0550ae">=</span> <span style="color:#cf222e">true</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">}</span>
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    mp.command_native_async(cmd, translation_callback)
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">end</span>
+</span></span><span style="display:flex;"><span>    mp.command_native_async<span style="color:#1f2328">(</span>cmd<span style="color:#1f2328">,</span> translation_callback<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">end</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">function</span> <span style="color:#ff0086;font-weight:bold">toggle_translation</span>()
-</span></span><span style="display:flex;"><span>    enabled = not enabled
-</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">if</span> enabled <span style="color:#fb660a;font-weight:bold">then</span>
-</span></span><span style="display:flex;"><span>        mp.set_property(<span style="color:#0086d2">&#34;sub-visibility&#34;</span>, <span style="color:#0086d2">&#34;no&#34;</span>)
-</span></span><span style="display:flex;"><span>        mp.osd_message(<span style="color:#0086d2">&#34;자동 번역 ON (Shift+t로 끄기)&#34;</span>, <span style="color:#0086f7;font-weight:bold">2</span>)
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">function</span> <span style="color:#6639ba">toggle_translation</span><span style="color:#1f2328">()</span>
+</span></span><span style="display:flex;"><span>    enabled <span style="color:#0550ae">=</span> <span style="color:#0550ae">not</span> enabled
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> enabled <span style="color:#cf222e">then</span>
+</span></span><span style="display:flex;"><span>        mp.set_property<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;sub-visibility&#34;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#34;no&#34;</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>        mp.osd_message<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;자동 번역 ON (Shift+t로 끄기)&#34;</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">2</span><span style="color:#1f2328">)</span>
 </span></span><span style="display:flex;"><span>        
-</span></span><span style="display:flex;"><span>        <span style="color:#fb660a;font-weight:bold">local</span> current_text = mp.get_property(<span style="color:#0086d2">&#34;sub-text&#34;</span>)
-</span></span><span style="display:flex;"><span>        <span style="color:#fb660a;font-weight:bold">if</span> current_text <span style="color:#fb660a;font-weight:bold">then</span> on_subtitle_change(<span style="color:#0086d2">&#34;sub-text&#34;</span>, current_text) <span style="color:#fb660a;font-weight:bold">end</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">else</span>
-</span></span><span style="display:flex;"><span>        mp.set_property(<span style="color:#0086d2">&#34;sub-visibility&#34;</span>, <span style="color:#0086d2">&#34;yes&#34;</span>)
-</span></span><span style="display:flex;"><span>        ov.data = <span style="color:#0086d2">&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>        ov:update()
-</span></span><span style="display:flex;"><span>        mp.osd_message(<span style="color:#0086d2">&#34;자동 번역 OFF&#34;</span>, <span style="color:#0086f7;font-weight:bold">2</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">end</span>
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">end</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">local</span> current_text <span style="color:#0550ae">=</span> mp.get_property<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;sub-text&#34;</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">if</span> current_text <span style="color:#cf222e">then</span> on_subtitle_change<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;sub-text&#34;</span><span style="color:#1f2328">,</span> current_text<span style="color:#1f2328">)</span> <span style="color:#cf222e">end</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">else</span>
+</span></span><span style="display:flex;"><span>        mp.set_property<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;sub-visibility&#34;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#34;yes&#34;</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>        ov.data <span style="color:#0550ae">=</span> <span style="color:#0a3069">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        ov<span style="color:#1f2328">:</span>update<span style="color:#1f2328">()</span>
+</span></span><span style="display:flex;"><span>        mp.osd_message<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;자동 번역 OFF&#34;</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">2</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">end</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">end</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>mp.observe_property(<span style="color:#0086d2">&#34;sub-text&#34;</span>, <span style="color:#0086d2">&#34;string&#34;</span>, on_subtitle_change)
+</span></span><span style="display:flex;"><span>mp.observe_property<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;sub-text&#34;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#34;string&#34;</span><span style="color:#1f2328">,</span> on_subtitle_change<span style="color:#1f2328">)</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">-- [[ 단축키 변경됨: Shift + t (대문자 T) ]]</span>
-</span></span><span style="display:flex;"><span>mp.add_key_binding(<span style="color:#0086d2">&#34;T&#34;</span>, <span style="color:#0086d2">&#34;toggle_auto_translation&#34;</span>, toggle_translation)
+</span></span><span style="display:flex;"><span><span style="color:#57606a">-- [[ 단축키 변경됨: Shift + t (대문자 T) ]]</span>
+</span></span><span style="display:flex;"><span>mp.add_key_binding<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;T&#34;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#34;toggle_auto_translation&#34;</span><span style="color:#1f2328">,</span> toggle_translation<span style="color:#1f2328">)</span>
 </span></span></code></pre></div><h2 id="사용법">사용법</h2>
 <ol>
 <li>mpv로 동영상을 재생합니다.</li>
@@ -384,13 +384,14 @@
   
   document.addEventListener('DOMContentLoaded', function() {
     
-    const codeBlocks = document.querySelectorAll('.post-content pre');
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
     
     codeBlocks.forEach(function(block) {
       
       const copyButton = document.createElement('button');
       copyButton.className = 'copy-button';
-      copyButton.textContent = '복사';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
       
       
       copyButton.addEventListener('click', function() {
@@ -401,19 +402,19 @@
         
         navigator.clipboard.writeText(text).then(function() {
           
-          copyButton.textContent = '복사됨!';
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
           copyButton.classList.add('copied');
           
           
           setTimeout(function() {
-            copyButton.textContent = '복사';
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
             copyButton.classList.remove('copied');
           }, 2000);
         }).catch(function(err) {
           console.error('복사 실패:', err);
-          copyButton.textContent = '실패';
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
           setTimeout(function() {
-            copyButton.textContent = '복사';
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
           }, 2000);
         });
       });
@@ -423,6 +424,9 @@
     });
   });
 </script>
+
+
+
 
 
 

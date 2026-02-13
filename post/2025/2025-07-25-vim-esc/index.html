@@ -120,62 +120,62 @@
 <p>AutoHotkey는 Windows에서 키 입출력 관련 기능에 특화된 스크립트 언어로, 다양한 자동화 작업을 수행할 수 있습니다.</p>
 <h2 id="2단계-ime-상태-확인-코드">2단계: IME 상태 확인 코드</h2>
 <p>현재 입력기가 한글인지 영문인지 확인하는 기능이 필요합니다. 다음 코드를 사용하여 IME 상태를 확인할 수 있습니다:</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-autohotkey" data-lang="autohotkey"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">/*
-</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">  IME check 
-</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">*/</span>
-</span></span><span style="display:flex;"><span>IME_CHECK(WinTitle) {
-</span></span><span style="display:flex;"><span>  WinGet,hWnd,ID,<span style="color:#fb660a">%WinTitle%</span>
-</span></span><span style="display:flex;"><span>  Return Send_ImeControl(ImmGetDefaultIMEWnd(hWnd),<span style="color:#0086f7;font-weight:bold">0x005</span>,<span style="color:#0086d2">&#34;&#34;</span>)
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Send_ImeControl(DefaultIMEWnd, wParam, lParam) {
-</span></span><span style="display:flex;"><span>  DetectSave := <span style="color:#fb660a">A_DetectHiddenWindows</span>
-</span></span><span style="display:flex;"><span>  DetectHiddenWindows,ON
-</span></span><span style="display:flex;"><span>   SendMessage <span style="color:#0086f7;font-weight:bold">0x283</span>, wParam,lParam,,ahk_id <span style="color:#fb660a">%DefaultIMEWnd%</span>
-</span></span><span style="display:flex;"><span>  if (DetectSave &lt;&gt; <span style="color:#fb660a">A_DetectHiddenWindows</span>)
-</span></span><span style="display:flex;"><span>      DetectHiddenWindows,<span style="color:#fb660a">%DetectSave%</span>
-</span></span><span style="display:flex;"><span>  return <span style="color:#fb660a">ErrorLevel</span>
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>ImmGetDefaultIMEWnd(hWnd) {
-</span></span><span style="display:flex;"><span>  return <span style="color:#ff0086;font-weight:bold">DllCall</span>(<span style="color:#0086d2">&#34;imm32\ImmGetDefaultIMEWnd&#34;</span>, Uint,hWnd, Uint)
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h2 id="3단계-esc-키-자동-전환-스크립트">3단계: ESC 키 자동 전환 스크립트</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-autohotkey" data-lang="autohotkey"><span style="display:flex;"><span><span style="color:#57606a">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">  IME check 
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">*/</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>IME_CHECK<span style="color:#1f2328">(</span>WinTitle<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>  <span style="color:#6639ba">WinGet</span><span style="color:#1f2328">,</span>hWnd<span style="color:#1f2328">,</span>ID<span style="color:#1f2328">,</span><span style="color:#953800">%WinTitle%</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>  <span style="color:#6639ba">Return</span> Send_ImeControl<span style="color:#1f2328">(</span>ImmGetDefaultIMEWnd<span style="color:#1f2328">(</span>hWnd<span style="color:#1f2328">),</span><span style="color:#0550ae">0x005</span><span style="color:#1f2328">,</span><span style="color:#0a3069">&#34;&#34;</span><span style="color:#1f2328">)</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>Send_ImeControl<span style="color:#1f2328">(</span>DefaultIMEWnd<span style="color:#1f2328">,</span> wParam<span style="color:#1f2328">,</span> lParam<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>  DetectSave <span style="color:#0550ae">:=</span> <span style="color:#953800">A_DetectHiddenWindows</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>  <span style="color:#6639ba">DetectHiddenWindows</span><span style="color:#1f2328">,</span>ON<span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>   <span style="color:#6639ba">SendMessage</span> <span style="color:#0550ae">0x283</span><span style="color:#1f2328">,</span> wParam<span style="color:#1f2328">,</span>lParam<span style="color:#1f2328">,,</span>ahk_id <span style="color:#953800">%DefaultIMEWnd%</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>  if <span style="color:#1f2328">(</span>DetectSave <span style="color:#0550ae">&lt;&gt;</span> <span style="color:#953800">A_DetectHiddenWindows</span><span style="color:#1f2328">)</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>      <span style="color:#6639ba">DetectHiddenWindows</span><span style="color:#1f2328">,</span><span style="color:#953800">%DetectSave%</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>  <span style="color:#6639ba">return</span> <span style="color:#953800">ErrorLevel</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>ImmGetDefaultIMEWnd<span style="color:#1f2328">(</span>hWnd<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>  <span style="color:#6639ba">return</span> <span style="color:#6639ba">DllCall</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;imm32\ImmGetDefaultIMEWnd&#34;</span><span style="color:#1f2328">,</span> Uint<span style="color:#1f2328">,</span>hWnd<span style="color:#1f2328">,</span> Uint<span style="color:#1f2328">)</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span></code></pre></div><h2 id="3단계-esc-키-자동-전환-스크립트">3단계: ESC 키 자동 전환 스크립트</h2>
 <p>이제 ESC 키를 누르면 항상 영문 입력으로 전환되도록 하는 완전한 스크립트를 작성해보겠습니다:</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-autohotkey" data-lang="autohotkey"><span style="display:flex;"><span>$Esc::
-</span></span><span style="display:flex;"><span>    ret := IME_CHECK(<span style="color:#0086d2">&#34;A&#34;</span>)
-</span></span><span style="display:flex;"><span>    if <span style="color:#fb660a">%ret%</span> &lt;&gt; <span style="color:#0086f7;font-weight:bold">0</span><span style="color:#080;background-color:#0f140f;font-style:italic">           ; 1 means IME is in Hangul(Korean) mode now.</span>
-</span></span><span style="display:flex;"><span>        {
-</span></span><span style="display:flex;"><span>            Send, {Esc}
-</span></span><span style="display:flex;"><span>            Send, {vk15}<span style="color:#080;background-color:#0f140f;font-style:italic">    ; 한글인 경우 Esc키를 입력하고 한영키를 입력해 준다.</span>
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>    else if <span style="color:#fb660a">%ret%</span> = <span style="color:#0086f7;font-weight:bold">0</span><span style="color:#080;background-color:#0f140f;font-style:italic">       ; 0 means IME is in English mode now.</span>
-</span></span><span style="display:flex;"><span>        {
-</span></span><span style="display:flex;"><span>            Send, {Esc}<span style="color:#080;background-color:#0f140f;font-style:italic">     ; 영문인 경우 Esc키만 입력한다.</span>
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>    return
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">/*
-</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">  IME check 
-</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">*/</span>
-</span></span><span style="display:flex;"><span>IME_CHECK(WinTitle) {
-</span></span><span style="display:flex;"><span>  WinGet,hWnd,ID,<span style="color:#fb660a">%WinTitle%</span>
-</span></span><span style="display:flex;"><span>  Return Send_ImeControl(ImmGetDefaultIMEWnd(hWnd),<span style="color:#0086f7;font-weight:bold">0x005</span>,<span style="color:#0086d2">&#34;&#34;</span>)
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Send_ImeControl(DefaultIMEWnd, wParam, lParam) {
-</span></span><span style="display:flex;"><span>  DetectSave := <span style="color:#fb660a">A_DetectHiddenWindows</span>
-</span></span><span style="display:flex;"><span>  DetectHiddenWindows,ON
-</span></span><span style="display:flex;"><span>   SendMessage <span style="color:#0086f7;font-weight:bold">0x283</span>, wParam,lParam,,ahk_id <span style="color:#fb660a">%DefaultIMEWnd%</span>
-</span></span><span style="display:flex;"><span>  if (DetectSave &lt;&gt; <span style="color:#fb660a">A_DetectHiddenWindows</span>)
-</span></span><span style="display:flex;"><span>      DetectHiddenWindows,<span style="color:#fb660a">%DetectSave%</span>
-</span></span><span style="display:flex;"><span>  return <span style="color:#fb660a">ErrorLevel</span>
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>ImmGetDefaultIMEWnd(hWnd) {
-</span></span><span style="display:flex;"><span>  return <span style="color:#ff0086;font-weight:bold">DllCall</span>(<span style="color:#0086d2">&#34;imm32\ImmGetDefaultIMEWnd&#34;</span>, Uint,hWnd, Uint)
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h3 id="코드-동작-원리">코드 동작 원리</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-autohotkey" data-lang="autohotkey"><span style="display:flex;"><span><span style="color:#900;font-weight:bold">$Esc::</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>    ret <span style="color:#0550ae">:=</span> IME_CHECK<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;A&#34;</span><span style="color:#1f2328">)</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>    if <span style="color:#953800">%ret%</span> <span style="color:#0550ae">&lt;&gt;</span> <span style="color:#0550ae">0</span><span style="color:#57606a">           ; 1 means IME is in Hangul(Korean) mode now.</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>        <span style="color:#1f2328">{</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>            <span style="color:#6639ba">Send</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">{</span>Esc<span style="color:#1f2328">}</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>            <span style="color:#6639ba">Send</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">{</span>vk15<span style="color:#1f2328">}</span><span style="color:#57606a">    ; 한글인 경우 Esc키를 입력하고 한영키를 입력해 준다.</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>        <span style="color:#1f2328">}</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>    <span style="color:#6639ba">else</span> if <span style="color:#953800">%ret%</span> <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span><span style="color:#57606a">       ; 0 means IME is in English mode now.</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>        <span style="color:#1f2328">{</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>            <span style="color:#6639ba">Send</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">{</span>Esc<span style="color:#1f2328">}</span><span style="color:#57606a">     ; 영문인 경우 Esc키만 입력한다.</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>        <span style="color:#1f2328">}</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>    <span style="color:#6639ba">return</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">  IME check 
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">*/</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>IME_CHECK<span style="color:#1f2328">(</span>WinTitle<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>  <span style="color:#6639ba">WinGet</span><span style="color:#1f2328">,</span>hWnd<span style="color:#1f2328">,</span>ID<span style="color:#1f2328">,</span><span style="color:#953800">%WinTitle%</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>  <span style="color:#6639ba">Return</span> Send_ImeControl<span style="color:#1f2328">(</span>ImmGetDefaultIMEWnd<span style="color:#1f2328">(</span>hWnd<span style="color:#1f2328">),</span><span style="color:#0550ae">0x005</span><span style="color:#1f2328">,</span><span style="color:#0a3069">&#34;&#34;</span><span style="color:#1f2328">)</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>Send_ImeControl<span style="color:#1f2328">(</span>DefaultIMEWnd<span style="color:#1f2328">,</span> wParam<span style="color:#1f2328">,</span> lParam<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>  DetectSave <span style="color:#0550ae">:=</span> <span style="color:#953800">A_DetectHiddenWindows</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>  <span style="color:#6639ba">DetectHiddenWindows</span><span style="color:#1f2328">,</span>ON<span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>   <span style="color:#6639ba">SendMessage</span> <span style="color:#0550ae">0x283</span><span style="color:#1f2328">,</span> wParam<span style="color:#1f2328">,</span>lParam<span style="color:#1f2328">,,</span>ahk_id <span style="color:#953800">%DefaultIMEWnd%</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>  if <span style="color:#1f2328">(</span>DetectSave <span style="color:#0550ae">&lt;&gt;</span> <span style="color:#953800">A_DetectHiddenWindows</span><span style="color:#1f2328">)</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>      <span style="color:#6639ba">DetectHiddenWindows</span><span style="color:#1f2328">,</span><span style="color:#953800">%DetectSave%</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>  <span style="color:#6639ba">return</span> <span style="color:#953800">ErrorLevel</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>ImmGetDefaultIMEWnd<span style="color:#1f2328">(</span>hWnd<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>  <span style="color:#6639ba">return</span> <span style="color:#6639ba">DllCall</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;imm32\ImmGetDefaultIMEWnd&#34;</span><span style="color:#1f2328">,</span> Uint<span style="color:#1f2328">,</span>hWnd<span style="color:#1f2328">,</span> Uint<span style="color:#1f2328">)</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span></code></pre></div><h3 id="코드-동작-원리">코드 동작 원리</h3>
 <ol>
 <li><strong>IME 상태 확인</strong>: 현재 입력기가 한글(1) 또는 영문(0) 상태인지 확인</li>
 <li><strong>조건부 처리</strong>:
@@ -233,14 +233,14 @@
 </ul>
 <h3 id="스크립트-수정-및-확장">스크립트 수정 및 확장</h3>
 <p>필요에 따라 스크립트를 수정할 수 있습니다:</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-autohotkey" data-lang="autohotkey"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">; 다른 키에도 동일한 기능 적용</span>
-</span></span><span style="display:flex;"><span>$F1::
-</span></span><span style="display:flex;"><span>    ret := IME_CHECK(<span style="color:#0086d2">&#34;A&#34;</span>)
-</span></span><span style="display:flex;"><span>    if <span style="color:#fb660a">%ret%</span> &lt;&gt; <span style="color:#0086f7;font-weight:bold">0</span>
-</span></span><span style="display:flex;"><span>        Send, {vk15}
-</span></span><span style="display:flex;"><span>    Send, {F1}
-</span></span><span style="display:flex;"><span>    return
-</span></span></code></pre></div><h3 id="성능-고려사항">성능 고려사항</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-autohotkey" data-lang="autohotkey"><span style="display:flex;"><span><span style="color:#57606a">; 다른 키에도 동일한 기능 적용</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span><span style="color:#900;font-weight:bold">$F1::</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>    ret <span style="color:#0550ae">:=</span> IME_CHECK<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;A&#34;</span><span style="color:#1f2328">)</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>    if <span style="color:#953800">%ret%</span> <span style="color:#0550ae">&lt;&gt;</span> <span style="color:#0550ae">0</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>        <span style="color:#6639ba">Send</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">{</span>vk15<span style="color:#1f2328">}</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>    <span style="color:#6639ba">Send</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">{</span>F1<span style="color:#1f2328">}</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span>    <span style="color:#6639ba">return</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span></code></pre></div><h3 id="성능-고려사항">성능 고려사항</h3>
 <ul>
 <li>AutoHotkey는 가벼운 프로그램이므로 시스템 성능에 큰 영향을 주지 않습니다</li>
 <li>메모리 사용량도 매우 적습니다 (보통 1-2MB 수준)</li>
@@ -495,13 +495,14 @@
   
   document.addEventListener('DOMContentLoaded', function() {
     
-    const codeBlocks = document.querySelectorAll('.post-content pre');
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
     
     codeBlocks.forEach(function(block) {
       
       const copyButton = document.createElement('button');
       copyButton.className = 'copy-button';
-      copyButton.textContent = '복사';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
       
       
       copyButton.addEventListener('click', function() {
@@ -512,19 +513,19 @@
         
         navigator.clipboard.writeText(text).then(function() {
           
-          copyButton.textContent = '복사됨!';
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
           copyButton.classList.add('copied');
           
           
           setTimeout(function() {
-            copyButton.textContent = '복사';
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
             copyButton.classList.remove('copied');
           }, 2000);
         }).catch(function(err) {
           console.error('복사 실패:', err);
-          copyButton.textContent = '실패';
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
           setTimeout(function() {
-            copyButton.textContent = '복사';
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
           }, 2000);
         });
       });
@@ -534,6 +535,9 @@
     });
   });
 </script>
+
+
+
 
 
 

@@ -105,20 +105,20 @@
 <p>먼저, 프로젝트 디렉토리에 <code>docker-compose.yml</code> 파일을 생성합니다. 이 파일은 Docker Compose가 컨테이너를 어떻게 구성하고 실행할지 정의합니다.</p>
 <h2 id="2-docker-composeyml-내용-작성">2. docker-compose.yml 내용 작성</h2>
 <p>다음은 Jenkins를 Docker Compose로 실행하기 위한 기본적인 <code>docker-compose.yml</code> 파일의 내용입니다:</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">version</span>:<span style="color:#888"> </span><span style="color:#0086d2">&#39;3&#39;</span><span style="color:#888">
-</span></span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">services</span>:<span style="color:#888">
-</span></span></span><span style="display:flex;"><span><span style="color:#888">  </span><span style="color:#fb660a;font-weight:bold">jenkins</span>:<span style="color:#888">
-</span></span></span><span style="display:flex;"><span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">image</span>:<span style="color:#888"> </span>jenkins/jenkins:lts<span style="color:#888">
-</span></span></span><span style="display:flex;"><span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">privileged</span>:<span style="color:#888"> </span><span style="color:#fb660a;font-weight:bold">true</span><span style="color:#888">
-</span></span></span><span style="display:flex;"><span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">user</span>:<span style="color:#888"> </span>root<span style="color:#888">
-</span></span></span><span style="display:flex;"><span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">ports</span>:<span style="color:#888">
-</span></span></span><span style="display:flex;"><span><span style="color:#888">      </span>- <span style="color:#0086f7;font-weight:bold">8080</span>:<span style="color:#0086f7;font-weight:bold">8080</span><span style="color:#888">
-</span></span></span><span style="display:flex;"><span><span style="color:#888">      </span>- <span style="color:#0086f7;font-weight:bold">50000</span>:<span style="color:#0086f7;font-weight:bold">50000</span><span style="color:#888">
-</span></span></span><span style="display:flex;"><span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">container_name</span>:<span style="color:#888"> </span>jenkins<span style="color:#888">
-</span></span></span><span style="display:flex;"><span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">volumes</span>:<span style="color:#888">
-</span></span></span><span style="display:flex;"><span><span style="color:#888">      </span>- ./jenkins_home:/var/jenkins_home<span style="color:#888">
-</span></span></span><span style="display:flex;"><span><span style="color:#888">      </span>- /var/run/docker.sock:/var/run/docker.sock<span style="color:#888">
-</span></span></span><span style="display:flex;"><span><span style="color:#888">    </span><span style="color:#fb660a;font-weight:bold">restart</span>:<span style="color:#888"> </span>always<span style="color:#888">
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#0550ae">version</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span><span style="color:#0a3069">&#39;3&#39;</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#0550ae">services</span><span style="color:#1f2328">:</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#0550ae">jenkins</span><span style="color:#1f2328">:</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span><span style="color:#0550ae">image</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>jenkins/jenkins:lts<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span><span style="color:#0550ae">privileged</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span><span style="color:#cf222e">true</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span><span style="color:#0550ae">user</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>root<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span><span style="color:#0550ae">ports</span><span style="color:#1f2328">:</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">      </span>- <span style="color:#0550ae">8080</span><span style="color:#1f2328">:</span><span style="color:#0550ae">8080</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">      </span>- <span style="color:#0550ae">50000</span><span style="color:#1f2328">:</span><span style="color:#0550ae">50000</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span><span style="color:#0550ae">container_name</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>jenkins<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span><span style="color:#0550ae">volumes</span><span style="color:#1f2328">:</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">      </span>- ./jenkins_home:/var/jenkins_home<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">      </span>- /var/run/docker.sock:/var/run/docker.sock<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span><span style="color:#0550ae">restart</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>always<span style="color:#fff">
 </span></span></span></code></pre></div><p>이 설정은 Jenkins의 기본적인 실행 환경을 제공합니다. 각 설정의 의미와 중요성에 대해 자세히 살펴보겠습니다.</p>
 <h2 id="3-설정-설명">3. 설정 설명</h2>
 <h3 id="image-jenkinsjenkinslts">image: jenkins/jenkins:lts</h3>
@@ -139,14 +139,14 @@
 <p>시스템이 재시작되거나 Docker 데몬이 재시작될 때 Jenkins 컨테이너를 자동으로 시작하도록 설정합니다.</p>
 <h2 id="4-jenkins-실행">4. Jenkins 실행</h2>
 <p>설정이 완료되면, <code>docker-compose.yml</code> 파일이 있는 디렉토리에서 다음 명령어를 실행하여 Jenkins를 시작합니다:</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker-compose up -d
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker-compose up -d
 </span></span></code></pre></div><p><code>-d</code> 옵션은 백그라운드에서 컨테이너를 실행하도록 합니다.</p>
 <h2 id="5-jenkins-초기-설정">5. Jenkins 초기 설정</h2>
 <p>Jenkins를 처음 실행하면 초기 설정 과정이 필요합니다. 다음 단계를 따라 설정을 완료하세요:</p>
 <ol>
 <li>웹 브라우저에서 <code>http://localhost:8080</code>으로 접속합니다.</li>
 <li>초기 관리자 비밀번호를 입력해야 합니다. 이 비밀번호는 다음 명령어로 확인할 수 있습니다:
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker <span style="color:#6639ba">exec</span> jenkins cat /var/jenkins_home/secrets/initialAdminPassword
 </span></span></code></pre></div></li>
 <li>화면의 지시에 따라 추천 플러그인을 설치하고 관리자 계정을 생성합니다.</li>
 </ol>
@@ -382,13 +382,14 @@
   
   document.addEventListener('DOMContentLoaded', function() {
     
-    const codeBlocks = document.querySelectorAll('.post-content pre');
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
     
     codeBlocks.forEach(function(block) {
       
       const copyButton = document.createElement('button');
       copyButton.className = 'copy-button';
-      copyButton.textContent = '복사';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
       
       
       copyButton.addEventListener('click', function() {
@@ -399,19 +400,19 @@
         
         navigator.clipboard.writeText(text).then(function() {
           
-          copyButton.textContent = '복사됨!';
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
           copyButton.classList.add('copied');
           
           
           setTimeout(function() {
-            copyButton.textContent = '복사';
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
             copyButton.classList.remove('copied');
           }, 2000);
         }).catch(function(err) {
           console.error('복사 실패:', err);
-          copyButton.textContent = '실패';
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
           setTimeout(function() {
-            copyButton.textContent = '복사';
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
           }, 2000);
         });
       });
@@ -421,6 +422,9 @@
     });
   });
 </script>
+
+
+
 
 
 

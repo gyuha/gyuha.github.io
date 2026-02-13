@@ -99,17 +99,17 @@
 <p>이 글에서는 Seaborn의 기본 사용법과 함께 추천할 만한 다양한 그래프 유형을 소개하겠습니다.</p>
 <h2 id="1-seaborn-설치">1. Seaborn 설치</h2>
 <p>Seaborn이 설치되어 있지 않다면, 다음 명령어로 설치할 수 있습니다:</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install seaborn
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install seaborn
 </span></span></code></pre></div><h2 id="2-기본-사용법">2. 기본 사용법</h2>
 <p>Seaborn을 사용하기 위해서는 먼저 라이브러리를 임포트하고, 데이터셋을 준비해야 합니다. 예를 들어, <code>tips</code>라는 내장 데이터셋을 사용할 수 있습니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> seaborn <span style="color:#fb660a;font-weight:bold">as</span> sns
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> matplotlib.pyplot <span style="color:#fb660a;font-weight:bold">as</span> plt
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#24292e">seaborn</span> <span style="color:#cf222e">as</span> <span style="color:#24292e">sns</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#24292e">matplotlib.pyplot</span> <span style="color:#cf222e">as</span> <span style="color:#24292e">plt</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 내장 데이터셋 로드</span>
-</span></span><span style="display:flex;"><span>tips = sns.load_dataset(<span style="color:#0086d2">&#34;tips&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 내장 데이터셋 로드</span>
+</span></span><span style="display:flex;"><span>tips <span style="color:#0550ae">=</span> sns<span style="color:#0550ae">.</span>load_dataset<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;tips&#34;</span><span style="color:#1f2328">)</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 데이터셋 확인</span>
-</span></span><span style="display:flex;"><span>print(tips.head())
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 데이터셋 확인</span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">print</span><span style="color:#1f2328">(</span>tips<span style="color:#0550ae">.</span>head<span style="color:#1f2328">())</span>
 </span></span></code></pre></div><p>결과값</p>
 <pre tabindex="0"><code>   total_bill   tip     sex smoker  day    time  size
 0       16.99  1.01  Female     No  Sun  Dinner     2
@@ -120,87 +120,87 @@
 </code></pre><h2 id="3-기본-플롯">3. 기본 플롯</h2>
 <h3 id="31-산점도-scatter-plot">3.1 산점도 (Scatter Plot)</h3>
 <p>산점도는 두 변수 간의 관계를 시각화하는 데 유용합니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 산점도 그리기</span>
-</span></span><span style="display:flex;"><span>sns.scatterplot(data=tips, x=<span style="color:#0086d2">&#34;total_bill&#34;</span>, y=<span style="color:#0086d2">&#34;tip&#34;</span>, hue=<span style="color:#0086d2">&#34;day&#34;</span>)
-</span></span><span style="display:flex;"><span>plt.title(<span style="color:#0086d2">&#34;Total Bill vs Tip&#34;</span>)
-</span></span><span style="display:flex;"><span>plt.show()
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#57606a"># 산점도 그리기</span>
+</span></span><span style="display:flex;"><span>sns<span style="color:#0550ae">.</span>scatterplot<span style="color:#1f2328">(</span>data<span style="color:#0550ae">=</span>tips<span style="color:#1f2328">,</span> x<span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;total_bill&#34;</span><span style="color:#1f2328">,</span> y<span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;tip&#34;</span><span style="color:#1f2328">,</span> hue<span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;day&#34;</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#0550ae">.</span>title<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;Total Bill vs Tip&#34;</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#0550ae">.</span>show<span style="color:#1f2328">()</span>
 </span></span></code></pre></div><p><img src="/img/2024/seaborn/sns_scatterplot.png" alt="scatterplot"></p>
 <h3 id="32-상자-그림-box-plot">3.2 상자 그림 (Box Plot)</h3>
 <p>상자 그림은 데이터의 분포와 이상치를 시각화합니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 상자 그림 그리기</span>
-</span></span><span style="display:flex;"><span>sns.boxplot(data=tips, x=<span style="color:#0086d2">&#34;day&#34;</span>, y=<span style="color:#0086d2">&#34;total_bill&#34;</span>, hue=<span style="color:#0086d2">&#34;sex&#34;</span>)
-</span></span><span style="display:flex;"><span>plt.title(<span style="color:#0086d2">&#34;Total Bill by Day and Sex&#34;</span>)
-</span></span><span style="display:flex;"><span>plt.show()
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#57606a"># 상자 그림 그리기</span>
+</span></span><span style="display:flex;"><span>sns<span style="color:#0550ae">.</span>boxplot<span style="color:#1f2328">(</span>data<span style="color:#0550ae">=</span>tips<span style="color:#1f2328">,</span> x<span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;day&#34;</span><span style="color:#1f2328">,</span> y<span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;total_bill&#34;</span><span style="color:#1f2328">,</span> hue<span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;sex&#34;</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#0550ae">.</span>title<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;Total Bill by Day and Sex&#34;</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#0550ae">.</span>show<span style="color:#1f2328">()</span>
 </span></span></code></pre></div><p><img src="/img/2024/seaborn/sns_boxplot.png" alt="scatterplot"></p>
 <h3 id="33-히스토그램-histogram">3.3 히스토그램 (Histogram)</h3>
 <p>히스토그램은 데이터의 분포를 시각화합니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 히스토그램 그리기</span>
-</span></span><span style="display:flex;"><span>sns.histplot(data=tips, x=<span style="color:#0086d2">&#34;total_bill&#34;</span>, bins=<span style="color:#0086f7;font-weight:bold">30</span>, kde=<span style="color:#fb660a;font-weight:bold">True</span>)
-</span></span><span style="display:flex;"><span>plt.title(<span style="color:#0086d2">&#34;Distribution of Total Bill&#34;</span>)
-</span></span><span style="display:flex;"><span>plt.show()
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#57606a"># 히스토그램 그리기</span>
+</span></span><span style="display:flex;"><span>sns<span style="color:#0550ae">.</span>histplot<span style="color:#1f2328">(</span>data<span style="color:#0550ae">=</span>tips<span style="color:#1f2328">,</span> x<span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;total_bill&#34;</span><span style="color:#1f2328">,</span> bins<span style="color:#0550ae">=</span><span style="color:#0550ae">30</span><span style="color:#1f2328">,</span> kde<span style="color:#0550ae">=</span><span style="color:#cf222e">True</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#0550ae">.</span>title<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;Distribution of Total Bill&#34;</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#0550ae">.</span>show<span style="color:#1f2328">()</span>
 </span></span></code></pre></div><p><img src="/img/2024/seaborn/sns_histplot.png" alt="scatterplot"></p>
 <h3 id="34-pairplot">3.4 Pairplot</h3>
 <p><code>pairplot</code>은 데이터셋의 모든 변수 쌍에 대해 산점도를 그려주고, 대각선에는 각 변수의 분포를 보여줍니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># Pairplot 그리기</span>
-</span></span><span style="display:flex;"><span>sns.pairplot(tips, hue=<span style="color:#0086d2">&#34;sex&#34;</span>)
-</span></span><span style="display:flex;"><span>plt.title(<span style="color:#0086d2">&#34;Pairplot of Tips Dataset&#34;</span>)
-</span></span><span style="display:flex;"><span>plt.show()
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#57606a"># Pairplot 그리기</span>
+</span></span><span style="display:flex;"><span>sns<span style="color:#0550ae">.</span>pairplot<span style="color:#1f2328">(</span>tips<span style="color:#1f2328">,</span> hue<span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;sex&#34;</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#0550ae">.</span>title<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;Pairplot of Tips Dataset&#34;</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#0550ae">.</span>show<span style="color:#1f2328">()</span>
 </span></span></code></pre></div><p><img src="/img/2024/seaborn/sns_pairplot.png" alt="scatterplot"></p>
 <h2 id="4-추가-추천-그래프">4. 추가 추천 그래프</h2>
 <p>Seaborn은 다양한 유형의 그래프를 지원하여 데이터 시각화를 풍부하게 할 수 있습니다. 아래는 추가로 추천할 만한 그래프 유형입니다.</p>
 <h3 id="41-히트맵-heatmap">4.1 히트맵 (Heatmap)</h3>
 <p>히트맵은 데이터의 상관관계를 시각화하는 데 유용합니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 상관 행렬 계산</span>
-</span></span><span style="display:flex;"><span>correlation_matrix = tips.corr()
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#57606a"># 상관 행렬 계산</span>
+</span></span><span style="display:flex;"><span>correlation_matrix <span style="color:#0550ae">=</span> tips<span style="color:#0550ae">.</span>corr<span style="color:#1f2328">()</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 히트맵 그리기</span>
-</span></span><span style="display:flex;"><span>sns.heatmap(correlation_matrix, annot=<span style="color:#fb660a;font-weight:bold">True</span>, cmap=<span style="color:#0086d2">&#34;coolwarm&#34;</span>)
-</span></span><span style="display:flex;"><span>plt.title(<span style="color:#0086d2">&#34;Correlation Heatmap&#34;</span>)
-</span></span><span style="display:flex;"><span>plt.show()
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 히트맵 그리기</span>
+</span></span><span style="display:flex;"><span>sns<span style="color:#0550ae">.</span>heatmap<span style="color:#1f2328">(</span>correlation_matrix<span style="color:#1f2328">,</span> annot<span style="color:#0550ae">=</span><span style="color:#cf222e">True</span><span style="color:#1f2328">,</span> cmap<span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;coolwarm&#34;</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#0550ae">.</span>title<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;Correlation Heatmap&#34;</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#0550ae">.</span>show<span style="color:#1f2328">()</span>
 </span></span></code></pre></div><p><img src="/img/2024/seaborn/sns_heatmap.png" alt="scatterplot"></p>
 <h3 id="42-바-플롯-bar-plot">4.2 바 플롯 (Bar Plot)</h3>
 <p>바 플롯은 범주형 데이터의 평균 또는 합계를 시각화하는 데 유용합니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 바 플롯 그리기</span>
-</span></span><span style="display:flex;"><span>sns.barplot(data=tips, x=<span style="color:#0086d2">&#34;day&#34;</span>, y=<span style="color:#0086d2">&#34;total_bill&#34;</span>, hue=<span style="color:#0086d2">&#34;sex&#34;</span>)
-</span></span><span style="display:flex;"><span>plt.title(<span style="color:#0086d2">&#34;Average Total Bill by Day and Sex&#34;</span>)
-</span></span><span style="display:flex;"><span>plt.show()
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#57606a"># 바 플롯 그리기</span>
+</span></span><span style="display:flex;"><span>sns<span style="color:#0550ae">.</span>barplot<span style="color:#1f2328">(</span>data<span style="color:#0550ae">=</span>tips<span style="color:#1f2328">,</span> x<span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;day&#34;</span><span style="color:#1f2328">,</span> y<span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;total_bill&#34;</span><span style="color:#1f2328">,</span> hue<span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;sex&#34;</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#0550ae">.</span>title<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;Average Total Bill by Day and Sex&#34;</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#0550ae">.</span>show<span style="color:#1f2328">()</span>
 </span></span></code></pre></div><p><img src="/img/2024/seaborn/sns_barplot.png" alt="scatterplot"></p>
 <h3 id="43-선-그래프-line-plot">4.3 선 그래프 (Line Plot)</h3>
 <p>선 그래프는 시간에 따른 변화를 시각화하는 데 적합합니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 예시 데이터 생성</span>
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> pandas <span style="color:#fb660a;font-weight:bold">as</span> pd
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#57606a"># 예시 데이터 생성</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#24292e">pandas</span> <span style="color:#cf222e">as</span> <span style="color:#24292e">pd</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 날짜 생성</span>
-</span></span><span style="display:flex;"><span>dates = pd.date_range(<span style="color:#0086d2">&#34;2023-01-01&#34;</span>, periods=<span style="color:#0086f7;font-weight:bold">10</span>)
-</span></span><span style="display:flex;"><span>values = [<span style="color:#0086f7;font-weight:bold">1</span>, <span style="color:#0086f7;font-weight:bold">3</span>, <span style="color:#0086f7;font-weight:bold">2</span>, <span style="color:#0086f7;font-weight:bold">5</span>, <span style="color:#0086f7;font-weight:bold">4</span>, <span style="color:#0086f7;font-weight:bold">6</span>, <span style="color:#0086f7;font-weight:bold">7</span>, <span style="color:#0086f7;font-weight:bold">8</span>, <span style="color:#0086f7;font-weight:bold">9</span>, <span style="color:#0086f7;font-weight:bold">10</span>]
-</span></span><span style="display:flex;"><span>data = pd.DataFrame({<span style="color:#0086d2">&#34;Date&#34;</span>: dates, <span style="color:#0086d2">&#34;Values&#34;</span>: values})
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 날짜 생성</span>
+</span></span><span style="display:flex;"><span>dates <span style="color:#0550ae">=</span> pd<span style="color:#0550ae">.</span>date_range<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;2023-01-01&#34;</span><span style="color:#1f2328">,</span> periods<span style="color:#0550ae">=</span><span style="color:#0550ae">10</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>values <span style="color:#0550ae">=</span> <span style="color:#1f2328">[</span><span style="color:#0550ae">1</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">3</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">2</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">5</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">4</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">6</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">7</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">8</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">9</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">10</span><span style="color:#1f2328">]</span>
+</span></span><span style="display:flex;"><span>data <span style="color:#0550ae">=</span> pd<span style="color:#0550ae">.</span>DataFrame<span style="color:#1f2328">({</span><span style="color:#0a3069">&#34;Date&#34;</span><span style="color:#1f2328">:</span> dates<span style="color:#1f2328">,</span> <span style="color:#0a3069">&#34;Values&#34;</span><span style="color:#1f2328">:</span> values<span style="color:#1f2328">})</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 선 그래프 그리기</span>
-</span></span><span style="display:flex;"><span>sns.lineplot(data=data, x=<span style="color:#0086d2">&#34;Date&#34;</span>, y=<span style="color:#0086d2">&#34;Values&#34;</span>)
-</span></span><span style="display:flex;"><span>plt.title(<span style="color:#0086d2">&#34;Line Plot Example&#34;</span>)
-</span></span><span style="display:flex;"><span>plt.xticks(rotation=<span style="color:#0086f7;font-weight:bold">45</span>)
-</span></span><span style="display:flex;"><span>plt.show()
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 선 그래프 그리기</span>
+</span></span><span style="display:flex;"><span>sns<span style="color:#0550ae">.</span>lineplot<span style="color:#1f2328">(</span>data<span style="color:#0550ae">=</span>data<span style="color:#1f2328">,</span> x<span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;Date&#34;</span><span style="color:#1f2328">,</span> y<span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;Values&#34;</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#0550ae">.</span>title<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;Line Plot Example&#34;</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#0550ae">.</span>xticks<span style="color:#1f2328">(</span>rotation<span style="color:#0550ae">=</span><span style="color:#0550ae">45</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#0550ae">.</span>show<span style="color:#1f2328">()</span>
 </span></span></code></pre></div><p><img src="/img/2024/seaborn/sns_lineplot.png" alt="scatterplot"></p>
 <h3 id="44-카운트-플롯-count-plot">4.4 카운트 플롯 (Count Plot)</h3>
 <p>카운트 플롯은 각 범주형 변수의 개수를 시각화합니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 카운트 플롯 그리기</span>
-</span></span><span style="display:flex;"><span>sns.countplot(data=tips, x=<span style="color:#0086d2">&#34;day&#34;</span>, hue=<span style="color:#0086d2">&#34;sex&#34;</span>)
-</span></span><span style="display:flex;"><span>plt.title(<span style="color:#0086d2">&#34;Count of Tips by Day and Sex&#34;</span>)
-</span></span><span style="display:flex;"><span>plt.show()
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#57606a"># 카운트 플롯 그리기</span>
+</span></span><span style="display:flex;"><span>sns<span style="color:#0550ae">.</span>countplot<span style="color:#1f2328">(</span>data<span style="color:#0550ae">=</span>tips<span style="color:#1f2328">,</span> x<span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;day&#34;</span><span style="color:#1f2328">,</span> hue<span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;sex&#34;</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#0550ae">.</span>title<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;Count of Tips by Day and Sex&#34;</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#0550ae">.</span>show<span style="color:#1f2328">()</span>
 </span></span></code></pre></div><p><img src="/img/2024/seaborn/sns_countplot.png" alt="scatterplot"></p>
 <h3 id="45-조인트-플롯-joint-plot">4.5 조인트 플롯 (Joint Plot)</h3>
 <p>조인트 플롯은 두 변수 간의 관계를 시각화하고, 각 변수의 분포를 함께 보여줍니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 조인트 플롯 그리기</span>
-</span></span><span style="display:flex;"><span>sns.jointplot(data=tips, x=<span style="color:#0086d2">&#34;total_bill&#34;</span>, y=<span style="color:#0086d2">&#34;tip&#34;</span>, kind=<span style="color:#0086d2">&#34;scatter&#34;</span>, hue=<span style="color:#0086d2">&#34;sex&#34;</span>)
-</span></span><span style="display:flex;"><span>plt.title(<span style="color:#0086d2">&#34;Joint Plot of Total Bill and Tip&#34;</span>)
-</span></span><span style="display:flex;"><span>plt.show()
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#57606a"># 조인트 플롯 그리기</span>
+</span></span><span style="display:flex;"><span>sns<span style="color:#0550ae">.</span>jointplot<span style="color:#1f2328">(</span>data<span style="color:#0550ae">=</span>tips<span style="color:#1f2328">,</span> x<span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;total_bill&#34;</span><span style="color:#1f2328">,</span> y<span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;tip&#34;</span><span style="color:#1f2328">,</span> kind<span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;scatter&#34;</span><span style="color:#1f2328">,</span> hue<span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;sex&#34;</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#0550ae">.</span>title<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;Joint Plot of Total Bill and Tip&#34;</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#0550ae">.</span>show<span style="color:#1f2328">()</span>
 </span></span></code></pre></div><p><img src="/img/2024/seaborn/sns_jointplot.png" alt="scatterplot"></p>
 <h3 id="46-바이올린-플롯-violin-plot">4.6 바이올린 플롯 (Violin Plot)</h3>
 <p>바이올린 플롯은 데이터의 분포를 시각화하며, 상자 그림과 밀도 곡선을 결합한 형태입니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 바이올린 플롯 그리기</span>
-</span></span><span style="display:flex;"><span>sns.violinplot(data=tips, x=<span style="color:#0086d2">&#34;day&#34;</span>, y=<span style="color:#0086d2">&#34;total_bill&#34;</span>, hue=<span style="color:#0086d2">&#34;sex&#34;</span>, split=<span style="color:#fb660a;font-weight:bold">True</span>)
-</span></span><span style="display:flex;"><span>plt.title(<span style="color:#0086d2">&#34;Violin Plot of Total Bill by Day and Sex&#34;</span>)
-</span></span><span style="display:flex;"><span>plt.show()
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#57606a"># 바이올린 플롯 그리기</span>
+</span></span><span style="display:flex;"><span>sns<span style="color:#0550ae">.</span>violinplot<span style="color:#1f2328">(</span>data<span style="color:#0550ae">=</span>tips<span style="color:#1f2328">,</span> x<span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;day&#34;</span><span style="color:#1f2328">,</span> y<span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;total_bill&#34;</span><span style="color:#1f2328">,</span> hue<span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;sex&#34;</span><span style="color:#1f2328">,</span> split<span style="color:#0550ae">=</span><span style="color:#cf222e">True</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#0550ae">.</span>title<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;Violin Plot of Total Bill by Day and Sex&#34;</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#0550ae">.</span>show<span style="color:#1f2328">()</span>
 </span></span></code></pre></div><p><img src="/img/2024/seaborn/sns_violinplot.png" alt="scatterplot"></p>
 <h2 id="결론">결론</h2>
 <p>Seaborn은 데이터 시각화를 간편하게 만들어주는 강력한 도구입니다. 다양한 플롯과 스타일을 통해 데이터를 효과적으로 시각화할 수 있습니다.</p>
@@ -416,13 +416,14 @@
   
   document.addEventListener('DOMContentLoaded', function() {
     
-    const codeBlocks = document.querySelectorAll('.post-content pre');
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
     
     codeBlocks.forEach(function(block) {
       
       const copyButton = document.createElement('button');
       copyButton.className = 'copy-button';
-      copyButton.textContent = '복사';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
       
       
       copyButton.addEventListener('click', function() {
@@ -433,19 +434,19 @@
         
         navigator.clipboard.writeText(text).then(function() {
           
-          copyButton.textContent = '복사됨!';
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
           copyButton.classList.add('copied');
           
           
           setTimeout(function() {
-            copyButton.textContent = '복사';
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
             copyButton.classList.remove('copied');
           }, 2000);
         }).catch(function(err) {
           console.error('복사 실패:', err);
-          copyButton.textContent = '실패';
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
           setTimeout(function() {
-            copyButton.textContent = '복사';
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
           }, 2000);
         });
       });
@@ -455,6 +456,9 @@
     });
   });
 </script>
+
+
+
 
 
 

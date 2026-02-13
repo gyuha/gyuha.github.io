@@ -101,55 +101,55 @@
 <hr>
 <h3 id="1-환경-변수를-통해-현재-환경-설정하기"><strong>1. 환경 변수를 통해 현재 환경 설정하기</strong></h3>
 <p>먼저, 애플리케이션 실행 시 현재 환경을 지정하는 환경 변수를 설정합니다. 흔히 <code>ENV</code> 또는 <code>APP_ENV</code>라는 이름을 사용합니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 개발 환경에서 실행</span>
-</span></span><span style="display:flex;"><span>export <span style="color:#fb660a">ENV</span>=dev
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># 개발 환경에서 실행</span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">export</span> <span style="color:#953800">ENV</span><span style="color:#0550ae">=</span>dev
 </span></span><span style="display:flex;"><span>uvicorn main:app
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 프로덕션 환경에서 실행</span>
-</span></span><span style="display:flex;"><span>export <span style="color:#fb660a">ENV</span>=product
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 프로덕션 환경에서 실행</span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">export</span> <span style="color:#953800">ENV</span><span style="color:#0550ae">=</span>product
 </span></span><span style="display:flex;"><span>uvicorn main:app
 </span></span></code></pre></div><p>또는 <code>ENV</code> 변수를 명령과 함께 지정할 수도 있습니다:</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#fb660a">ENV</span>=dev uvicorn main:app
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#953800">ENV</span><span style="color:#0550ae">=</span>dev uvicorn main:app
 </span></span></code></pre></div><h3 id="2-환경에-따라-적절한"><strong>2. 환경에 따라 적절한 <code>.env</code> 파일 로드하기</strong></h3>
 <p><code>python-dotenv</code>의 <code>load_dotenv()</code> 함수에 로드할 <code>.env</code> 파일의 경로를 지정하여, 환경별로 다른 설정을 로드할 수 있습니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> os
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">from</span> dotenv <span style="color:#fb660a;font-weight:bold">import</span> load_dotenv
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">from</span> fastapi <span style="color:#fb660a;font-weight:bold">import</span> FastAPI
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#24292e">os</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">from</span> <span style="color:#24292e">dotenv</span> <span style="color:#cf222e">import</span> load_dotenv
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">from</span> <span style="color:#24292e">fastapi</span> <span style="color:#cf222e">import</span> FastAPI
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># ENV 환경 변수에서 현재 환경을 가져옵니다. 기본값은 &#39;dev&#39;로 설정합니다.</span>
-</span></span><span style="display:flex;"><span>ENV = os.getenv(<span style="color:#0086d2">&#39;ENV&#39;</span>, <span style="color:#0086d2">&#39;dev&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># ENV 환경 변수에서 현재 환경을 가져옵니다. 기본값은 &#39;dev&#39;로 설정합니다.</span>
+</span></span><span style="display:flex;"><span>ENV <span style="color:#0550ae">=</span> os<span style="color:#0550ae">.</span>getenv<span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;ENV&#39;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#39;dev&#39;</span><span style="color:#1f2328">)</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 로드할 .env 파일의 경로를 설정합니다.</span>
-</span></span><span style="display:flex;"><span>dotenv_path = <span style="color:#0086d2">f</span><span style="color:#0086d2">&#39;.env.</span><span style="color:#0086d2">{</span>ENV<span style="color:#0086d2">}</span><span style="color:#0086d2">&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 로드할 .env 파일의 경로를 설정합니다.</span>
+</span></span><span style="display:flex;"><span>dotenv_path <span style="color:#0550ae">=</span> <span style="color:#0a3069">f</span><span style="color:#0a3069">&#39;.env.</span><span style="color:#0a3069">{</span>ENV<span style="color:#0a3069">}</span><span style="color:#0a3069">&#39;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 해당 .env 파일을 로드합니다.</span>
-</span></span><span style="display:flex;"><span>load_dotenv(dotenv_path)
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 해당 .env 파일을 로드합니다.</span>
+</span></span><span style="display:flex;"><span>load_dotenv<span style="color:#1f2328">(</span>dotenv_path<span style="color:#1f2328">)</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>app = FastAPI()
+</span></span><span style="display:flex;"><span>app <span style="color:#0550ae">=</span> FastAPI<span style="color:#1f2328">()</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>@app.get(<span style="color:#0086d2">&#34;/&#34;</span>)
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">async</span> <span style="color:#fb660a;font-weight:bold">def</span> <span style="color:#ff0086;font-weight:bold">read_root</span>():
-</span></span><span style="display:flex;"><span>    secret_key = os.getenv(<span style="color:#0086d2">&#34;SECRET_KEY&#34;</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">return</span> {<span style="color:#0086d2">&#34;SECRET_KEY&#34;</span>: secret_key}
+</span></span><span style="display:flex;"><span><span style="color:#0550ae">@app.get</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;/&#34;</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">async</span> <span style="color:#cf222e">def</span> <span style="color:#6639ba">read_root</span><span style="color:#1f2328">():</span>
+</span></span><span style="display:flex;"><span>    secret_key <span style="color:#0550ae">=</span> os<span style="color:#0550ae">.</span>getenv<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;SECRET_KEY&#34;</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">return</span> <span style="color:#1f2328">{</span><span style="color:#0a3069">&#34;SECRET_KEY&#34;</span><span style="color:#1f2328">:</span> secret_key<span style="color:#1f2328">}</span>
 </span></span></code></pre></div><p>이렇게 하면 <code>ENV</code> 변수에 따라 <code>.env.dev</code>, <code>.env.product</code> 등의 파일을 로드하게 됩니다.</p>
 <h3 id="3-로컬-설정-파일-지원하기"><strong>3. 로컬 설정 파일 지원하기</strong></h3>
 <p>만약 환경별 설정에 추가로 로컬에서만 사용하고 싶은 설정이 있다면, 로컬 <code>.env</code> 파일을 추가로 로드할 수 있습니다. 예를 들어, 개발 환경에서만 사용하는 <code>.env.dev.local</code> 파일을 로드하려면:</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">import</span> os
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">from</span> dotenv <span style="color:#fb660a;font-weight:bold">import</span> load_dotenv
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">from</span> fastapi <span style="color:#fb660a;font-weight:bold">import</span> FastAPI
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#24292e">os</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">from</span> <span style="color:#24292e">dotenv</span> <span style="color:#cf222e">import</span> load_dotenv
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">from</span> <span style="color:#24292e">fastapi</span> <span style="color:#cf222e">import</span> FastAPI
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>ENV = os.getenv(<span style="color:#0086d2">&#39;ENV&#39;</span>, <span style="color:#0086d2">&#39;dev&#39;</span>)
-</span></span><span style="display:flex;"><span>dotenv_path = <span style="color:#0086d2">f</span><span style="color:#0086d2">&#39;.env.</span><span style="color:#0086d2">{</span>ENV<span style="color:#0086d2">}</span><span style="color:#0086d2">&#39;</span>
+</span></span><span style="display:flex;"><span>ENV <span style="color:#0550ae">=</span> os<span style="color:#0550ae">.</span>getenv<span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;ENV&#39;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#39;dev&#39;</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>dotenv_path <span style="color:#0550ae">=</span> <span style="color:#0a3069">f</span><span style="color:#0a3069">&#39;.env.</span><span style="color:#0a3069">{</span>ENV<span style="color:#0a3069">}</span><span style="color:#0a3069">&#39;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 기본 환경 설정 로드</span>
-</span></span><span style="display:flex;"><span>load_dotenv(dotenv_path)
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 기본 환경 설정 로드</span>
+</span></span><span style="display:flex;"><span>load_dotenv<span style="color:#1f2328">(</span>dotenv_path<span style="color:#1f2328">)</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 로컬 환경 설정 로드 (파일이 존재하는 경우에만)</span>
-</span></span><span style="display:flex;"><span>dotenv_local_path = <span style="color:#0086d2">f</span><span style="color:#0086d2">&#39;.env.</span><span style="color:#0086d2">{</span>ENV<span style="color:#0086d2">}</span><span style="color:#0086d2">.local&#39;</span>
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">if</span> os.path.exists(dotenv_local_path):
-</span></span><span style="display:flex;"><span>    load_dotenv(dotenv_local_path, override=<span style="color:#fb660a;font-weight:bold">True</span>)
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 로컬 환경 설정 로드 (파일이 존재하는 경우에만)</span>
+</span></span><span style="display:flex;"><span>dotenv_local_path <span style="color:#0550ae">=</span> <span style="color:#0a3069">f</span><span style="color:#0a3069">&#39;.env.</span><span style="color:#0a3069">{</span>ENV<span style="color:#0a3069">}</span><span style="color:#0a3069">.local&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">if</span> os<span style="color:#0550ae">.</span>path<span style="color:#0550ae">.</span>exists<span style="color:#1f2328">(</span>dotenv_local_path<span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>    load_dotenv<span style="color:#1f2328">(</span>dotenv_local_path<span style="color:#1f2328">,</span> override<span style="color:#0550ae">=</span><span style="color:#cf222e">True</span><span style="color:#1f2328">)</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>app = FastAPI()
+</span></span><span style="display:flex;"><span>app <span style="color:#0550ae">=</span> FastAPI<span style="color:#1f2328">()</span>
 </span></span></code></pre></div><p>여기서 <code>override=True</code> 옵션을 사용하여 이전에 로드된 변수들을 덮어쓰도록 합니다.</p>
 <h3 id="4"><strong>4. <code>.env</code> 파일 구성하기</strong></h3>
 <p>각 환경별로 필요한 설정을 <code>.env</code> 파일에 작성합니다.</p>
@@ -180,15 +180,15 @@ DEBUG=False
 <ul>
 <li>
 <p><strong>개발 환경에서 기본 설정으로 실행</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#fb660a">ENV</span>=dev uvicorn main:app
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#953800">ENV</span><span style="color:#0550ae">=</span>dev uvicorn main:app
 </span></span></code></pre></div></li>
 <li>
 <p><strong>개발 환경에서 로컬 설정을 포함하여 실행</strong> (로컬 <code>.env</code> 파일이 존재해야 함)</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#fb660a">ENV</span>=dev uvicorn main:app
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#953800">ENV</span><span style="color:#0550ae">=</span>dev uvicorn main:app
 </span></span></code></pre></div></li>
 <li>
 <p><strong>프로덕션 환경에서 실행</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#fb660a">ENV</span>=product uvicorn main:app
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#953800">ENV</span><span style="color:#0550ae">=</span>product uvicorn main:app
 </span></span></code></pre></div></li>
 </ul>
 <hr>
@@ -397,13 +397,14 @@ DEBUG=False
   
   document.addEventListener('DOMContentLoaded', function() {
     
-    const codeBlocks = document.querySelectorAll('.post-content pre');
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
     
     codeBlocks.forEach(function(block) {
       
       const copyButton = document.createElement('button');
       copyButton.className = 'copy-button';
-      copyButton.textContent = '복사';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
       
       
       copyButton.addEventListener('click', function() {
@@ -414,19 +415,19 @@ DEBUG=False
         
         navigator.clipboard.writeText(text).then(function() {
           
-          copyButton.textContent = '복사됨!';
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
           copyButton.classList.add('copied');
           
           
           setTimeout(function() {
-            copyButton.textContent = '복사';
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
             copyButton.classList.remove('copied');
           }, 2000);
         }).catch(function(err) {
           console.error('복사 실패:', err);
-          copyButton.textContent = '실패';
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
           setTimeout(function() {
-            copyButton.textContent = '복사';
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
           }, 2000);
         });
       });
@@ -436,6 +437,9 @@ DEBUG=False
     });
   });
 </script>
+
+
+
 
 
 

@@ -110,29 +110,29 @@
 <h2 id="해결-방법">해결 방법</h2>
 <h3 id="1-git-파일명메시지-한글-깨짐-해결">1. Git 파일명/메시지 한글 깨짐 해결</h3>
 <p><code>git status</code>, <code>git log</code>에서 한글이 정상적으로 표시되도록 Git의 <code>core.quotepath</code> 설정을 변경합니다. 이 설정은 0x80 이상의 문자(한글 등)를 이스케이프할지 여부를 결정합니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git config --global core.quotepath false
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git config --global core.quotepath <span style="color:#6639ba">false</span>
 </span></span></code></pre></div><h3 id="2-ls-명령어-한글-파일명-깨짐-해결">2. ls 명령어 한글 파일명 깨짐 해결</h3>
 <p><code>~/.bashrc</code> 파일에 환경 변수 설정을 추가하여 로케일을 UTF-8로 설정합니다. Git Bash에서 다음 명령어를 실행하세요:</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>echo <span style="color:#0086d2">&#39;export LANG=&#34;ko_KR.UTF-8&#34;&#39;</span> &gt;&gt; ~/.bashrc
-</span></span><span style="display:flex;"><span>echo <span style="color:#0086d2">&#39;export LC_ALL=&#34;ko_KR.UTF-8&#34;&#39;</span> &gt;&gt; ~/.bashrc
-</span></span><span style="display:flex;"><span>source ~/.bashrc
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#6639ba">echo</span> <span style="color:#0a3069">&#39;export LANG=&#34;ko_KR.UTF-8&#34;&#39;</span> &gt;&gt; ~/.bashrc
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">echo</span> <span style="color:#0a3069">&#39;export LC_ALL=&#34;ko_KR.UTF-8&#34;&#39;</span> &gt;&gt; ~/.bashrc
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">source</span> ~/.bashrc
 </span></span></code></pre></div><h3 id="3-입력-시-한글-깨짐-해결-inputrc-설정">3. 입력 시 한글 깨짐 해결 (Inputrc 설정)</h3>
 <p><code>~/.inputrc</code> 파일을 생성하거나 수정하여 8비트 문자 입력을 허용하도록 설정합니다:</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>echo <span style="color:#0086d2">&#34;set output-meta on&#34;</span> &gt;&gt; ~/.inputrc
-</span></span><span style="display:flex;"><span>echo <span style="color:#0086d2">&#34;set convert-meta off&#34;</span> &gt;&gt; ~/.inputrc
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#6639ba">echo</span> <span style="color:#0a3069">&#34;set output-meta on&#34;</span> &gt;&gt; ~/.inputrc
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">echo</span> <span style="color:#0a3069">&#34;set convert-meta off&#34;</span> &gt;&gt; ~/.inputrc
 </span></span></code></pre></div><ul>
 <li><code>set output-meta on</code>: 8비트 문자(Meta 키 + 문자 조합 등)를 직접 출력</li>
 <li><code>set convert-meta off</code>: 8비트 문자를 이스케이프 시퀀스로 변환하지 않음</li>
 </ul>
 <h2 id="적용-확인">적용 확인</h2>
 <p>모든 설정을 완료한 후 Git Bash를 재시작하면 다음과 같이 한글이 정상적으로 표시됩니다:</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ git status
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ git status
 </span></span><span style="display:flex;"><span>현재 브랜치 main
-</span></span><span style="display:flex;"><span>브랜치가 <span style="color:#0086d2">&#39;origin/main&#39;</span>과 일치합니다
+</span></span><span style="display:flex;"><span>브랜치가 <span style="color:#0a3069">&#39;origin/main&#39;</span>과 일치합니다
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>커밋하도록 정리하지 않은 변경 사항들:
-</span></span><span style="display:flex;"><span>  (git add/rm을 사용하여 커밋할 것을 표시하십시오)
-</span></span><span style="display:flex;"><span>  (git restore를 사용하여 작업 디렉토리 변경 사항을 폐기하십시오)
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">(</span>git add/rm을 사용하여 커밋할 것을 표시하십시오<span style="color:#0550ae">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">(</span>git restore를 사용하여 작업 디렉토리 변경 사항을 폐기하십시오<span style="color:#0550ae">)</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    수정됨:   한글파일명.md
 </span></span></code></pre></div><h2 id="함께-보기">함께 보기</h2>
@@ -342,13 +342,14 @@
   
   document.addEventListener('DOMContentLoaded', function() {
     
-    const codeBlocks = document.querySelectorAll('.post-content pre');
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
     
     codeBlocks.forEach(function(block) {
       
       const copyButton = document.createElement('button');
       copyButton.className = 'copy-button';
-      copyButton.textContent = '복사';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
       
       
       copyButton.addEventListener('click', function() {
@@ -359,19 +360,19 @@
         
         navigator.clipboard.writeText(text).then(function() {
           
-          copyButton.textContent = '복사됨!';
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
           copyButton.classList.add('copied');
           
           
           setTimeout(function() {
-            copyButton.textContent = '복사';
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
             copyButton.classList.remove('copied');
           }, 2000);
         }).catch(function(err) {
           console.error('복사 실패:', err);
-          copyButton.textContent = '실패';
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
           setTimeout(function() {
-            copyButton.textContent = '복사';
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
           }, 2000);
         });
       });
@@ -381,6 +382,9 @@
     });
   });
 </script>
+
+
+
 
 
 

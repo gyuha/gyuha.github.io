@@ -98,46 +98,46 @@
 <h2 id="interface">Interface</h2>
 <h3 id="기본적인-interface-선언">기본적인 Interface 선언</h3>
 <p>Interface는 주로 객체의 구조를 정의하는 데 사용됩니다. 각 속성의 이름과 타입을 정의하며, 클래스에서도 이를 구현할 수 있습니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">interface</span> User {
-</span></span><span style="display:flex;"><span>  id: <span style="color:#cdcaa9;font-weight:bold">number</span>;
-</span></span><span style="display:flex;"><span>  name: <span style="color:#cdcaa9;font-weight:bold">string</span>;
-</span></span><span style="display:flex;"><span>  email: <span style="color:#cdcaa9;font-weight:bold">string</span>;
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">const</span> newUser: <span style="color:#cdcaa9;font-weight:bold">User</span> = {
-</span></span><span style="display:flex;"><span>  id: <span style="color:#cdcaa9;font-weight:bold">1</span>,
-</span></span><span style="display:flex;"><span>  name: <span style="color:#0086d2">&#39;철수&#39;</span>,
-</span></span><span style="display:flex;"><span>  email: <span style="color:#0086d2">&#39;chulsoo@example.com&#39;</span>,
-</span></span><span style="display:flex;"><span>};
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#cf222e">interface</span> <span style="color:#1f2328">User</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">id</span>: <span style="color:#cf222e">number</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">name</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">email</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">const</span> <span style="color:#1f2328">newUser</span>: <span style="color:#cf222e">User</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">id</span>: <span style="color:#cf222e">1</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">name</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;철수&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">email</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;chulsoo@example.com&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
 </span></span></code></pre></div><h3 id="선택적-속성optional-properties과-읽기-전용readonly-properties">선택적 속성(Optional Properties)과 읽기 전용(Readonly Properties)</h3>
 <p>Interface는 선택적 속성과 읽기 전용 속성도 지원합니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">interface</span> Post {
-</span></span><span style="display:flex;"><span>  title: <span style="color:#cdcaa9;font-weight:bold">string</span>;
-</span></span><span style="display:flex;"><span>  content?: <span style="color:#cdcaa9;font-weight:bold">string</span>; <span style="color:#080;background-color:#0f140f;font-style:italic">// 선택적 속성
-</span></span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">readonly</span> author: <span style="color:#cdcaa9;font-weight:bold">string</span>; <span style="color:#080;background-color:#0f140f;font-style:italic">// 읽기 전용 속성
-</span></span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">const</span> blogPost: <span style="color:#cdcaa9;font-weight:bold">Post</span> = {
-</span></span><span style="display:flex;"><span>  title: <span style="color:#0086d2">&#39;TypeScript Interface 사용법&#39;</span>,
-</span></span><span style="display:flex;"><span>  author: <span style="color:#0086d2">&#39;영희&#39;</span>,
-</span></span><span style="display:flex;"><span>};
-</span></span><span style="display:flex;"><span>blogPost.title = <span style="color:#0086d2">&#39;새로운 제목&#39;</span>; <span style="color:#080;background-color:#0f140f;font-style:italic">// 가능
-</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// blogPost.author = &#39;철수&#39;; // 오류 발생
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#cf222e">interface</span> <span style="color:#1f2328">Post</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">title</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">content?</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span> <span style="color:#57606a">// 선택적 속성
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">readonly</span> <span style="color:#1f2328">author</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span> <span style="color:#57606a">// 읽기 전용 속성
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">const</span> <span style="color:#1f2328">blogPost</span>: <span style="color:#cf222e">Post</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">title</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;TypeScript Interface 사용법&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">author</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;영희&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">blogPost</span><span style="color:#1f2328">.</span><span style="color:#1f2328">title</span> <span style="color:#0550ae">=</span> <span style="color:#0a3069">&#39;새로운 제목&#39;</span><span style="color:#1f2328">;</span> <span style="color:#57606a">// 가능
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// blogPost.author = &#39;철수&#39;; // 오류 발생
 </span></span></span></code></pre></div><h2 id="type">Type</h2>
 <h3 id="type-별칭-type-aliases">Type 별칭 (Type Aliases)</h3>
 <p>Type은 다양한 타입을 결합하거나 새로운 이름으로 기존 타입을 정의할 때 사용됩니다. 유니언 타입, 인터섹션 타입 등을 정의하기에도 적합합니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">type</span> Status = <span style="color:#0086d2">&#39;active&#39;</span> | <span style="color:#0086d2">&#39;inactive&#39;</span> | <span style="color:#0086d2">&#39;suspended&#39;</span>;
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">const</span> userStatus: <span style="color:#cdcaa9;font-weight:bold">Status</span> = <span style="color:#0086d2">&#39;active&#39;</span>;
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#cf222e">type</span> <span style="color:#1f2328">Status</span> <span style="color:#0550ae">=</span> <span style="color:#0a3069">&#39;active&#39;</span> <span style="color:#0550ae">|</span> <span style="color:#0a3069">&#39;inactive&#39;</span> <span style="color:#0550ae">|</span> <span style="color:#0a3069">&#39;suspended&#39;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">const</span> <span style="color:#1f2328">userStatus</span>: <span style="color:#cf222e">Status</span> <span style="color:#0550ae">=</span> <span style="color:#0a3069">&#39;active&#39;</span><span style="color:#1f2328">;</span>
 </span></span></code></pre></div><h3 id="객체-타입-정의">객체 타입 정의</h3>
 <p>Type도 interface와 마찬가지로 객체의 구조를 정의할 수 있습니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">type</span> Product = {
-</span></span><span style="display:flex;"><span>  id: <span style="color:#cdcaa9;font-weight:bold">number</span>;
-</span></span><span style="display:flex;"><span>  name: <span style="color:#cdcaa9;font-weight:bold">string</span>;
-</span></span><span style="display:flex;"><span>  price: <span style="color:#cdcaa9;font-weight:bold">number</span>;
-</span></span><span style="display:flex;"><span>};
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">const</span> newProduct: <span style="color:#cdcaa9;font-weight:bold">Product</span> = {
-</span></span><span style="display:flex;"><span>  id: <span style="color:#cdcaa9;font-weight:bold">101</span>,
-</span></span><span style="display:flex;"><span>  name: <span style="color:#0086d2">&#39;컴퓨터&#39;</span>,
-</span></span><span style="display:flex;"><span>  price: <span style="color:#cdcaa9;font-weight:bold">1500000</span>,
-</span></span><span style="display:flex;"><span>};
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#cf222e">type</span> <span style="color:#1f2328">Product</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">id</span>: <span style="color:#cf222e">number</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">name</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">price</span>: <span style="color:#cf222e">number</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">const</span> <span style="color:#1f2328">newProduct</span>: <span style="color:#cf222e">Product</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">id</span>: <span style="color:#cf222e">101</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">name</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;컴퓨터&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">price</span>: <span style="color:#cf222e">1500000</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
 </span></span></code></pre></div><h2 id="interface와-type의-차이">Interface와 Type의 차이</h2>
 <table>
   <thead>
@@ -166,68 +166,68 @@
   </tbody>
 </table>
 <h3 id="interface-확장">Interface 확장</h3>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">interface</span> Animal {
-</span></span><span style="display:flex;"><span>  name: <span style="color:#cdcaa9;font-weight:bold">string</span>;
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">interface</span> Dog <span style="color:#fb660a;font-weight:bold">extends</span> Animal {
-</span></span><span style="display:flex;"><span>  breed: <span style="color:#cdcaa9;font-weight:bold">string</span>;
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">const</span> myDog: <span style="color:#cdcaa9;font-weight:bold">Dog</span> = {
-</span></span><span style="display:flex;"><span>  name: <span style="color:#0086d2">&#39;나비&#39;</span>,
-</span></span><span style="display:flex;"><span>  breed: <span style="color:#0086d2">&#39;푸들&#39;</span>,
-</span></span><span style="display:flex;"><span>};
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#cf222e">interface</span> <span style="color:#1f2328">Animal</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">name</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">interface</span> <span style="color:#1f2328">Dog</span> <span style="color:#cf222e">extends</span> <span style="color:#1f2328">Animal</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">breed</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">const</span> <span style="color:#1f2328">myDog</span>: <span style="color:#cf222e">Dog</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">name</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;나비&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">breed</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;푸들&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
 </span></span></code></pre></div><h3 id="type-확장">Type 확장</h3>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">type</span> Animal = {
-</span></span><span style="display:flex;"><span>  name: <span style="color:#cdcaa9;font-weight:bold">string</span>;
-</span></span><span style="display:flex;"><span>};
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">type</span> Bird = Animal &amp; {
-</span></span><span style="display:flex;"><span>  canFly: <span style="color:#cdcaa9;font-weight:bold">boolean</span>;
-</span></span><span style="display:flex;"><span>};
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">const</span> myBird: <span style="color:#cdcaa9;font-weight:bold">Bird</span> = {
-</span></span><span style="display:flex;"><span>  name: <span style="color:#0086d2">&#39;참새&#39;</span>,
-</span></span><span style="display:flex;"><span>  canFly: <span style="color:#cdcaa9;font-weight:bold">true</span>,
-</span></span><span style="display:flex;"><span>};
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#cf222e">type</span> <span style="color:#1f2328">Animal</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">name</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">type</span> <span style="color:#1f2328">Bird</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">Animal</span> <span style="color:#0550ae">&amp;</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">canFly</span>: <span style="color:#cf222e">boolean</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">const</span> <span style="color:#1f2328">myBird</span>: <span style="color:#cf222e">Bird</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">name</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;참새&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">canFly</span>: <span style="color:#cf222e">true</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
 </span></span></code></pre></div><p>일반적으로 Interface는 객체에 적합하며, Type은 유연성과 간결성이 요구되는 상황에 더 적합합니다. 프로젝트의 요구 사항에 따라 적절히 선택하여 활용하세요.</p>
 <h3 id="interface와-type을-활용한-함수-작성">Interface와 Type을 활용한 함수 작성</h3>
 <p>Interface와 Type을 사용하면 함수의 매개변수와 반환값을 명확히 정의할 수 있습니다.</p>
 <h4 id="interface로-함수-정의">Interface로 함수 정의</h4>
 <p>Interface는 함수의 매개변수 객체의 구조를 정의하는 데 자주 사용됩니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">interface</span> Book {
-</span></span><span style="display:flex;"><span>  title: <span style="color:#cdcaa9;font-weight:bold">string</span>;
-</span></span><span style="display:flex;"><span>  author: <span style="color:#cdcaa9;font-weight:bold">string</span>;
-</span></span><span style="display:flex;"><span>  publishedYear: <span style="color:#cdcaa9;font-weight:bold">number</span>;
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">function</span> printBookInfo(book: <span style="color:#cdcaa9;font-weight:bold">Book</span>): <span style="color:#fb660a;font-weight:bold">void</span> {
-</span></span><span style="display:flex;"><span>  console.log(<span style="color:#0086d2">`제목: </span><span style="color:#0086d2">${</span>book.title<span style="color:#0086d2">}</span><span style="color:#0086d2">, 저자: </span><span style="color:#0086d2">${</span>book.author<span style="color:#0086d2">}</span><span style="color:#0086d2">, 출판년도: </span><span style="color:#0086d2">${</span>book.publishedYear<span style="color:#0086d2">}</span><span style="color:#0086d2">`</span>);
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// 올바른 사용 예시
-</span></span></span><span style="display:flex;"><span>printBookInfo({
-</span></span><span style="display:flex;"><span>  title: <span style="color:#0086d2">&#39;타입스크립트 마스터하기&#39;</span>,
-</span></span><span style="display:flex;"><span>  author: <span style="color:#0086d2">&#39;홍길동&#39;</span>,
-</span></span><span style="display:flex;"><span>  publishedYear: <span style="color:#cdcaa9;font-weight:bold">2023</span>,
-</span></span><span style="display:flex;"><span>});
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// 잘못된 사용 예시
-</span></span></span><span style="display:flex;"><span>printBookInfo({
-</span></span><span style="display:flex;"><span>  title: <span style="color:#0086d2">&#39;타입스크립트 마스터하기&#39;</span>,
-</span></span><span style="display:flex;"><span>  author: <span style="color:#0086d2">&#39;홍길동&#39;</span>,
-</span></span><span style="display:flex;"><span>}); <span style="color:#080;background-color:#0f140f;font-style:italic">// 오류: publishedYear 속성이 없음
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#cf222e">interface</span> <span style="color:#1f2328">Book</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">title</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">author</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">publishedYear</span>: <span style="color:#cf222e">number</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">function</span> <span style="color:#1f2328">printBookInfo</span><span style="color:#1f2328">(</span><span style="color:#1f2328">book</span>: <span style="color:#cf222e">Book</span><span style="color:#1f2328">)</span><span style="color:#0550ae">:</span> <span style="color:#cf222e">void</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">console</span><span style="color:#1f2328">.</span><span style="color:#1f2328">log</span><span style="color:#1f2328">(</span><span style="color:#0a3069">`제목: </span><span style="color:#0a3069">${</span><span style="color:#1f2328">book</span><span style="color:#1f2328">.</span><span style="color:#1f2328">title</span><span style="color:#0a3069">}</span><span style="color:#0a3069">, 저자: </span><span style="color:#0a3069">${</span><span style="color:#1f2328">book</span><span style="color:#1f2328">.</span><span style="color:#1f2328">author</span><span style="color:#0a3069">}</span><span style="color:#0a3069">, 출판년도: </span><span style="color:#0a3069">${</span><span style="color:#1f2328">book</span><span style="color:#1f2328">.</span><span style="color:#1f2328">publishedYear</span><span style="color:#0a3069">}</span><span style="color:#0a3069">`</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// 올바른 사용 예시
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">printBookInfo</span><span style="color:#1f2328">({</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">title</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;타입스크립트 마스터하기&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">author</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;홍길동&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">publishedYear</span>: <span style="color:#cf222e">2023</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">});</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// 잘못된 사용 예시
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">printBookInfo</span><span style="color:#1f2328">({</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">title</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;타입스크립트 마스터하기&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">author</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;홍길동&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">});</span> <span style="color:#57606a">// 오류: publishedYear 속성이 없음
 </span></span></span></code></pre></div><h4 id="type으로-함수-정의">Type으로 함수 정의</h4>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">type</span> Status = <span style="color:#0086d2">&#39;active&#39;</span> | <span style="color:#0086d2">&#39;inactive&#39;</span> | <span style="color:#0086d2">&#39;suspended&#39;</span>;
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">type</span> User = {
-</span></span><span style="display:flex;"><span>  id: <span style="color:#cdcaa9;font-weight:bold">number</span>;
-</span></span><span style="display:flex;"><span>  name: <span style="color:#cdcaa9;font-weight:bold">string</span>;
-</span></span><span style="display:flex;"><span>  status: <span style="color:#cdcaa9;font-weight:bold">Status</span>;
-</span></span><span style="display:flex;"><span>};
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">function</span> updateUserStatus(user: <span style="color:#cdcaa9;font-weight:bold">User</span>, newStatus: <span style="color:#cdcaa9;font-weight:bold">Status</span>): User {
-</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">return</span> { ...user, status: <span style="color:#cdcaa9;font-weight:bold">newStatus</span> };
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">const</span> user: <span style="color:#cdcaa9;font-weight:bold">User</span> = {
-</span></span><span style="display:flex;"><span>  id: <span style="color:#cdcaa9;font-weight:bold">1</span>,
-</span></span><span style="display:flex;"><span>  name: <span style="color:#0086d2">&#39;철수&#39;</span>,
-</span></span><span style="display:flex;"><span>  status: <span style="color:#0086d2">&#39;active&#39;</span>,
-</span></span><span style="display:flex;"><span>};
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">const</span> updatedUser = updateUserStatus(user, <span style="color:#0086d2">&#39;inactive&#39;</span>);
-</span></span><span style="display:flex;"><span>console.log(updatedUser);
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#cf222e">type</span> <span style="color:#1f2328">Status</span> <span style="color:#0550ae">=</span> <span style="color:#0a3069">&#39;active&#39;</span> <span style="color:#0550ae">|</span> <span style="color:#0a3069">&#39;inactive&#39;</span> <span style="color:#0550ae">|</span> <span style="color:#0a3069">&#39;suspended&#39;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">type</span> <span style="color:#1f2328">User</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">id</span>: <span style="color:#cf222e">number</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">name</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">status</span>: <span style="color:#cf222e">Status</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">function</span> <span style="color:#1f2328">updateUserStatus</span><span style="color:#1f2328">(</span><span style="color:#1f2328">user</span>: <span style="color:#cf222e">User</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">newStatus</span>: <span style="color:#cf222e">Status</span><span style="color:#1f2328">)</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">User</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">...</span><span style="color:#1f2328">user</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">status</span>: <span style="color:#cf222e">newStatus</span> <span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">const</span> <span style="color:#1f2328">user</span>: <span style="color:#cf222e">User</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">id</span>: <span style="color:#cf222e">1</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">name</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;철수&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">status</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;active&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">const</span> <span style="color:#1f2328">updatedUser</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">updateUserStatus</span><span style="color:#1f2328">(</span><span style="color:#1f2328">user</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#39;inactive&#39;</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">console</span><span style="color:#1f2328">.</span><span style="color:#1f2328">log</span><span style="color:#1f2328">(</span><span style="color:#1f2328">updatedUser</span><span style="color:#1f2328">);</span>
 </span></span></code></pre></div><h3 id="interface와-type의-장점-비교">Interface와 Type의 장점 비교</h3>
 <h4 id="interface의-주요-장점">Interface의 주요 장점</h4>
 <ol>
@@ -245,214 +245,214 @@
 <p>TypeScript는 여러 타입을 결합하여 새로운 타입을 만들어낼 수 있는 강력한 기능을 제공합니다. 이는 JavaScript에서의 논리 연산자 OR(||)와 AND(&amp;&amp;)와 비슷한 개념으로, 코드 베이스에서 정교한 타입 검사를 수행할 수 있게 합니다.</p>
 <h3 id="유니언-타입">유니언 타입</h3>
 <p>유니언 타입은 두 개 이상의 타입을 조합하여 생성하는 타입입니다. 이를 통해 변수나 매개변수가 여러 타입 중 하나를 가질 수 있도록 지정할 수 있습니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">function</span> orderProduct(orderId: <span style="color:#cdcaa9;font-weight:bold">string</span> | <span style="color:#cdcaa9;font-weight:bold">number</span>) {
-</span></span><span style="display:flex;"><span>  console.log(<span style="color:#0086d2">&#39;상품 주문 번호:&#39;</span>, orderId);
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#cf222e">function</span> <span style="color:#1f2328">orderProduct</span><span style="color:#1f2328">(</span><span style="color:#1f2328">orderId</span>: <span style="color:#cf222e">string</span> <span style="color:#0550ae">|</span> <span style="color:#cf222e">number</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">console</span><span style="color:#1f2328">.</span><span style="color:#1f2328">log</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;상품 주문 번호:&#39;</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">orderId</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// 👍 올바른 사용 예시
-</span></span></span><span style="display:flex;"><span>orderProduct(<span style="color:#0086f7;font-weight:bold">1</span>);
-</span></span><span style="display:flex;"><span>orderProduct(<span style="color:#0086d2">&#39;123-abc&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// 👍 올바른 사용 예시
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">orderProduct</span><span style="color:#1f2328">(</span><span style="color:#0550ae">1</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">orderProduct</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;123-abc&#39;</span><span style="color:#1f2328">);</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// 👎 잘못된 사용 예시
-</span></span></span><span style="display:flex;"><span>orderProduct({ name: <span style="color:#0086d2">&#39;상품명&#39;</span> });
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// 👎 잘못된 사용 예시
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">orderProduct</span><span style="color:#1f2328">({</span> <span style="color:#1f2328">name</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;상품명&#39;</span> <span style="color:#1f2328">});</span>
 </span></span></code></pre></div><p>위 코드는 string 또는 number 타입을 매개변수로만 허용합니다. 다른 타입이 들어올 경우 컴파일 단계에서 오류를 반환합니다.</p>
 <h3 id="인터섹션-타입">인터섹션 타입</h3>
 <p>반면, 인터섹션 타입은 여러 타입의 모든 속성을 포함하는 새로운 타입을 생성합니다. 이는 객체 또는 변수 등이 여러 타입을 동시에 만족해야 할 때 유용합니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">interface</span> Person {
-</span></span><span style="display:flex;"><span>  name: <span style="color:#cdcaa9;font-weight:bold">string</span>;
-</span></span><span style="display:flex;"><span>  firstname: <span style="color:#cdcaa9;font-weight:bold">string</span>;
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#cf222e">interface</span> <span style="color:#1f2328">Person</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">name</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">firstname</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">interface</span> FootballPlayer {
-</span></span><span style="display:flex;"><span>  club: <span style="color:#cdcaa9;font-weight:bold">string</span>;
-</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">interface</span> <span style="color:#1f2328">FootballPlayer</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">club</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">function</span> transferPlayer(player: <span style="color:#cdcaa9;font-weight:bold">Person</span> &amp; FootballPlayer) {
-</span></span><span style="display:flex;"><span>  console.log(<span style="color:#0086d2">`</span><span style="color:#0086d2">${</span>player.firstname<span style="color:#0086d2">}</span><span style="color:#0086d2"> </span><span style="color:#0086d2">${</span>player.name<span style="color:#0086d2">}</span><span style="color:#0086d2"> 선수가 </span><span style="color:#0086d2">${</span>player.club<span style="color:#0086d2">}</span><span style="color:#0086d2">으로 이적합니다.`</span>);
-</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">function</span> <span style="color:#1f2328">transferPlayer</span><span style="color:#1f2328">(</span><span style="color:#1f2328">player</span>: <span style="color:#cf222e">Person</span> <span style="color:#0550ae">&amp;</span> <span style="color:#1f2328">FootballPlayer</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">console</span><span style="color:#1f2328">.</span><span style="color:#1f2328">log</span><span style="color:#1f2328">(</span><span style="color:#0a3069">`</span><span style="color:#0a3069">${</span><span style="color:#1f2328">player</span><span style="color:#1f2328">.</span><span style="color:#1f2328">firstname</span><span style="color:#0a3069">}</span><span style="color:#0a3069"> </span><span style="color:#0a3069">${</span><span style="color:#1f2328">player</span><span style="color:#1f2328">.</span><span style="color:#1f2328">name</span><span style="color:#0a3069">}</span><span style="color:#0a3069"> 선수가 </span><span style="color:#0a3069">${</span><span style="color:#1f2328">player</span><span style="color:#1f2328">.</span><span style="color:#1f2328">club</span><span style="color:#0a3069">}</span><span style="color:#0a3069">으로 이적합니다.`</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// 👍 올바른 사용 예시
-</span></span></span><span style="display:flex;"><span>transferPlayer({
-</span></span><span style="display:flex;"><span>  name: <span style="color:#0086d2">&#39;라마스&#39;</span>,
-</span></span><span style="display:flex;"><span>  firstname: <span style="color:#0086d2">&#39;세르히오&#39;</span>,
-</span></span><span style="display:flex;"><span>  club: <span style="color:#0086d2">&#39;PSG&#39;</span>,
-</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// 👍 올바른 사용 예시
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">transferPlayer</span><span style="color:#1f2328">({</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">name</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;라마스&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">firstname</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;세르히오&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">club</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;PSG&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">});</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// 👎 잘못된 사용 예시
-</span></span></span><span style="display:flex;"><span>transferPlayer({
-</span></span><span style="display:flex;"><span>  name: <span style="color:#0086d2">&#39;라마스&#39;</span>,
-</span></span><span style="display:flex;"><span>  firstname: <span style="color:#0086d2">&#39;세르히오&#39;</span>,
-</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// 👎 잘못된 사용 예시
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">transferPlayer</span><span style="color:#1f2328">({</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">name</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;라마스&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">firstname</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;세르히오&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">});</span>
 </span></span></code></pre></div><p>여기서 transferPlayer 함수는 Person과 FootballPlayer의 모든 속성을 가지는 객체만 허용합니다. 속성이 누락되면 TypeScript는 컴파일 단계에서 오류를 반환합니다.</p>
 <h2 id="keyof-키워드">Keyof 키워드</h2>
 <p>keyof 키워드는 인터페이스나 객체의 키를 추출하여 새로운 유니언 타입을 생성할 수 있게 해줍니다. 이는 타입 안정성을 유지하고, 리팩토링 시 실수를 줄이는 데 중요한 역할을 합니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">interface</span> MovieCharacter {
-</span></span><span style="display:flex;"><span>  firstname: <span style="color:#cdcaa9;font-weight:bold">string</span>;
-</span></span><span style="display:flex;"><span>  name: <span style="color:#cdcaa9;font-weight:bold">string</span>;
-</span></span><span style="display:flex;"><span>  movie: <span style="color:#cdcaa9;font-weight:bold">string</span>;
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#cf222e">interface</span> <span style="color:#1f2328">MovieCharacter</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">firstname</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">name</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">movie</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">type</span> characterProps = <span style="color:#fb660a;font-weight:bold">keyof</span> MovieCharacter;
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// characterProps는 &#39;firstname&#39; | &#39;name&#39; | &#39;movie&#39; 타입
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">type</span> <span style="color:#1f2328">characterProps</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">keyof</span> <span style="color:#1f2328">MovieCharacter</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// characterProps는 &#39;firstname&#39; | &#39;name&#39; | &#39;movie&#39; 타입
 </span></span></span></code></pre></div><p>keyof를 사용하지 않고 직접 타입을 명시할 수도 있습니다:</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">type</span> characterProps = <span style="color:#0086d2">&#39;firstname&#39;</span> | <span style="color:#0086d2">&#39;name&#39;</span> | <span style="color:#0086d2">&#39;movie&#39;</span>;
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#cf222e">type</span> <span style="color:#1f2328">characterProps</span> <span style="color:#0550ae">=</span> <span style="color:#0a3069">&#39;firstname&#39;</span> <span style="color:#0550ae">|</span> <span style="color:#0a3069">&#39;name&#39;</span> <span style="color:#0550ae">|</span> <span style="color:#0a3069">&#39;movie&#39;</span><span style="color:#1f2328">;</span>
 </span></span></code></pre></div><p>하지만 keyof를 사용하면 MovieCharacter 인터페이스를 변경하더라도 타입이 자동으로 반영되어 코드의 유지보수가 더 쉬워집니다.</p>
 <h4 id="응용-예제">응용 예제</h4>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">interface</span> PizzaMenu {
-</span></span><span style="display:flex;"><span>  starter: <span style="color:#cdcaa9;font-weight:bold">string</span>;
-</span></span><span style="display:flex;"><span>  pizza: <span style="color:#cdcaa9;font-weight:bold">string</span>;
-</span></span><span style="display:flex;"><span>  beverage: <span style="color:#cdcaa9;font-weight:bold">string</span>;
-</span></span><span style="display:flex;"><span>  dessert: <span style="color:#cdcaa9;font-weight:bold">string</span>;
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#cf222e">interface</span> <span style="color:#1f2328">PizzaMenu</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">starter</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">pizza</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">beverage</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">dessert</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">const</span> simpleMenu: <span style="color:#cdcaa9;font-weight:bold">PizzaMenu</span> = {
-</span></span><span style="display:flex;"><span>  starter: <span style="color:#0086d2">&#39;샐러드&#39;</span>,
-</span></span><span style="display:flex;"><span>  pizza: <span style="color:#0086d2">&#39;페퍼로니&#39;</span>,
-</span></span><span style="display:flex;"><span>  beverage: <span style="color:#0086d2">&#39;콜라&#39;</span>,
-</span></span><span style="display:flex;"><span>  dessert: <span style="color:#0086d2">&#39;바닐라 아이스크림&#39;</span>,
-</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">const</span> <span style="color:#1f2328">simpleMenu</span>: <span style="color:#cf222e">PizzaMenu</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">starter</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;샐러드&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">pizza</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;페퍼로니&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">beverage</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;콜라&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">dessert</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;바닐라 아이스크림&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">function</span> adjustMenu(
-</span></span><span style="display:flex;"><span>  menu: <span style="color:#cdcaa9;font-weight:bold">PizzaMenu</span>,
-</span></span><span style="display:flex;"><span>  menuEntry: <span style="color:#cdcaa9;font-weight:bold">keyof</span> PizzaMenu,
-</span></span><span style="display:flex;"><span>  change: <span style="color:#cdcaa9;font-weight:bold">string</span>,
-</span></span><span style="display:flex;"><span>) {
-</span></span><span style="display:flex;"><span>  menu[menuEntry] = change;
-</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">function</span> <span style="color:#1f2328">adjustMenu</span><span style="color:#1f2328">(</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">menu</span>: <span style="color:#cf222e">PizzaMenu</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">menuEntry</span>: <span style="color:#cf222e">keyof</span> <span style="color:#1f2328">PizzaMenu</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">change</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">menu</span><span style="color:#1f2328">[</span><span style="color:#1f2328">menuEntry</span><span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">change</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// 👍 올바른 사용 예시
-</span></span></span><span style="display:flex;"><span>adjustMenu(simpleMenu, <span style="color:#0086d2">&#39;pizza&#39;</span>, <span style="color:#0086d2">&#39;하와이안 피자&#39;</span>);
-</span></span><span style="display:flex;"><span>adjustMenu(simpleMenu, <span style="color:#0086d2">&#39;beverage&#39;</span>, <span style="color:#0086d2">&#39;맥주&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// 👍 올바른 사용 예시
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">adjustMenu</span><span style="color:#1f2328">(</span><span style="color:#1f2328">simpleMenu</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#39;pizza&#39;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#39;하와이안 피자&#39;</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">adjustMenu</span><span style="color:#1f2328">(</span><span style="color:#1f2328">simpleMenu</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#39;beverage&#39;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#39;맥주&#39;</span><span style="color:#1f2328">);</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// 👎 잘못된 사용 예시
-</span></span></span><span style="display:flex;"><span>adjustMenu(simpleMenu, <span style="color:#0086d2">&#39;coffee&#39;</span>, <span style="color:#0086d2">&#39;아메리카노&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// 👎 잘못된 사용 예시
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">adjustMenu</span><span style="color:#1f2328">(</span><span style="color:#1f2328">simpleMenu</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#39;coffee&#39;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#39;아메리카노&#39;</span><span style="color:#1f2328">);</span>
 </span></span></code></pre></div><p>위의 예제에서 adjustMenu 함수는 메뉴를 조정할 수 있도록 구현되었습니다. keyof를 사용함으로써 인터페이스 변경 시 함수가 자동으로 변화를 반영하며 타입 안정성이 유지됩니다.</p>
 <h2 id="typeof-키워드">Typeof 키워드</h2>
 <p>typeof 키워드는 변수의 타입을 추출하여 사용할 수 있도록 해줍니다. 이는 특히 함수의 반환 타입을 기반으로 새로운 타입을 생성할 때 유용합니다.</p>
 <h4 id="간단한-예제">간단한 예제</h4>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">let</span> firstname = <span style="color:#0086d2">&#39;프로도&#39;</span>;
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">let</span> name: <span style="color:#cdcaa9;font-weight:bold">typeof</span> firstname; <span style="color:#080;background-color:#0f140f;font-style:italic">// name은 &#39;string&#39; 타입
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#cf222e">let</span> <span style="color:#1f2328">firstname</span> <span style="color:#0550ae">=</span> <span style="color:#0a3069">&#39;프로도&#39;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">let</span> <span style="color:#1f2328">name</span>: <span style="color:#cf222e">typeof</span> <span style="color:#1f2328">firstname</span><span style="color:#1f2328">;</span> <span style="color:#57606a">// name은 &#39;string&#39; 타입
 </span></span></span></code></pre></div><p>단순한 예제에서는 효과가 크지 않지만, 더 복잡한 코드에서는 강력한 도구가 됩니다. 아래는 ReturnType과 결합하여 함수의 반환 타입을 추출하는 예제입니다.</p>
 <h4 id="응용-예제-1">응용 예제</h4>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">function</span> getCharacter() {
-</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">return</span> {
-</span></span><span style="display:flex;"><span>    firstname: <span style="color:#0086d2">&#39;프로도&#39;</span>,
-</span></span><span style="display:flex;"><span>    name: <span style="color:#0086d2">&#39;배긴스&#39;</span>,
-</span></span><span style="display:flex;"><span>  };
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#cf222e">function</span> <span style="color:#1f2328">getCharacter() {</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">firstname</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;프로도&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">name</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;배긴스&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">type</span> Character = ReturnType&lt;<span style="color:#fb660a;font-weight:bold">typeof</span> <span style="color:#ff0086;font-weight:bold">getCharacter</span>&gt;;
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">/* Character 타입은 아래와 같습니다:
-</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">{
-</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">  firstname: string;
-</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">  name: string;
-</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">}
-</span></span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">*/</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">type</span> <span style="color:#1f2328">Character</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">ReturnType</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">typeof</span> <span style="color:#1f2328">getCharacter</span><span style="color:#1f2328">&gt;;</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">/* Character 타입은 아래와 같습니다:
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">{
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">  firstname: string;
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">  name: string;
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">}
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">*/</span>
 </span></span></code></pre></div><p>위 코드에서는 getCharacter 함수의 반환 타입을 기반으로 Character 타입을 생성합니다. 함수의 반환 타입이 변경되면 Character 타입도 자동으로 갱신됩니다. 이는 리팩토링과 코드 유지보수의 부담을 크게 줄여줍니다.</p>
 <h2 id="조건부-타입-conditional-types">조건부 타입 (Conditional Types)</h2>
 <p>조건부 타입은 JavaScript의 삼항 연산자와 유사한 개념으로, 조건에 따라 다른 타입을 반환합니다. 이는 TypeScript에서 더욱 강력하고 유연한 타입 시스템을 지원합니다.</p>
 <h4 id="기본-문법">기본 문법</h4>
 <p>T extends 조건 ? 참일 때 타입 : 거짓일 때 타입;</p>
 <h4 id="활용-예제">활용 예제</h4>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">interface</span> StringId {
-</span></span><span style="display:flex;"><span>  id: <span style="color:#cdcaa9;font-weight:bold">string</span>;
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#cf222e">interface</span> <span style="color:#1f2328">StringId</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">id</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">interface</span> NumberId {
-</span></span><span style="display:flex;"><span>  id: <span style="color:#cdcaa9;font-weight:bold">number</span>;
-</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">interface</span> <span style="color:#1f2328">NumberId</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">id</span>: <span style="color:#cf222e">number</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">type</span> Id&lt;<span style="color:#fb660a;font-weight:bold">T</span>&gt; = T <span style="color:#fb660a;font-weight:bold">extends</span> <span style="color:#cdcaa9;font-weight:bold">string</span> ? StringId : <span style="color:#cdcaa9;font-weight:bold">NumberId</span>;
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">type</span> <span style="color:#1f2328">Id</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">T</span><span style="color:#1f2328">&gt;</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">T</span> <span style="color:#cf222e">extends</span> <span style="color:#cf222e">string</span> <span style="color:#0550ae">?</span> <span style="color:#1f2328">StringId</span> : <span style="color:#cf222e">NumberId</span><span style="color:#1f2328">;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// 사용 예시
-</span></span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">let</span> idOne: <span style="color:#cdcaa9;font-weight:bold">Id</span>&lt;<span style="color:#fb660a;font-weight:bold">string</span>&gt;; <span style="color:#080;background-color:#0f140f;font-style:italic">// StringId 타입
-</span></span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">let</span> idTwo: <span style="color:#cdcaa9;font-weight:bold">Id</span>&lt;<span style="color:#fb660a;font-weight:bold">number</span>&gt;; <span style="color:#080;background-color:#0f140f;font-style:italic">// NumberId 타입
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// 사용 예시
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">let</span> <span style="color:#1f2328">idOne</span>: <span style="color:#cf222e">Id</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">string</span><span style="color:#1f2328">&gt;;</span> <span style="color:#57606a">// StringId 타입
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">let</span> <span style="color:#1f2328">idTwo</span>: <span style="color:#cf222e">Id</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">number</span><span style="color:#1f2328">&gt;;</span> <span style="color:#57606a">// NumberId 타입
 </span></span></span></code></pre></div><p>위 예제에서는 Id라는 조건부 타입을 정의했습니다. 만약 T가 string 타입으로 확장 가능하다면, 반환 타입은 StringId이고, 그렇지 않으면 NumberId 타입이 됩니다.</p>
 <p>조건부 타입은 타입에서 더욱 정교한 제어와 타입 기반 로직을 구현할 수 있도록 도와줍니다.</p>
 <h2 id="명령어-유형">명령어 유형</h2>
 <p>유틸리티 타입은 일반적인 타입 변환을 용이하게 하기 위한 도구입니다. TypeScript는 많은 유틸리티 타입을 제공합니다. 이 블로그 포스트에서 전부를 다루기에는 너무 많습니다. 아래에는 제가 가장 자주 사용하는 유틸리티 타입 몇 가지를 선택적으로 소개합니다. 공식 TypeScript 문서는 모든 유틸리티 타입 목록을 잘 제공하고 있습니다.</p>
 <h3 id="partial">Partial</h3>
 <p>The Partial utility type를 사용하면 모든 속성이 선택 사항인 새로운 인터페이스로 인터페이스를 변환할 수 있습니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">interface</span> MovieCharacter {
-</span></span><span style="display:flex;"><span>  firstname: <span style="color:#cdcaa9;font-weight:bold">string</span>;
-</span></span><span style="display:flex;"><span>  name: <span style="color:#cdcaa9;font-weight:bold">string</span>;
-</span></span><span style="display:flex;"><span>  movie: <span style="color:#cdcaa9;font-weight:bold">string</span>;
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#cf222e">interface</span> <span style="color:#1f2328">MovieCharacter</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">firstname</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">name</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">movie</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">function</span> registerCharacter(character: <span style="color:#cdcaa9;font-weight:bold">Partial</span>&lt;<span style="color:#fb660a;font-weight:bold">MovieCharacter</span>&gt;) {}
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">function</span> <span style="color:#1f2328">registerCharacter</span><span style="color:#1f2328">(</span><span style="color:#1f2328">character</span>: <span style="color:#cf222e">Partial</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">MovieCharacter</span><span style="color:#1f2328">&gt;)</span> <span style="color:#1f2328">{}</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// 👍 올바른 사용 예시
-</span></span></span><span style="display:flex;"><span>registerCharacter({
-</span></span><span style="display:flex;"><span>  firstname: <span style="color:#0086d2">&#39;Frodo&#39;</span>,
-</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// 👍 올바른 사용 예시
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">registerCharacter</span><span style="color:#1f2328">({</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">firstname</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;Frodo&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">});</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// 👎 잘못된 사용 예시
-</span></span></span><span style="display:flex;"><span>registerCharacter({
-</span></span><span style="display:flex;"><span>  firstname: <span style="color:#0086d2">&#39;Frodo&#39;</span>,
-</span></span><span style="display:flex;"><span>  name: <span style="color:#0086d2">&#39;Baggins&#39;</span>,
-</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// 👎 잘못된 사용 예시
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">registerCharacter</span><span style="color:#1f2328">({</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">firstname</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;Frodo&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">name</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;Baggins&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">});</span>
 </span></span></code></pre></div><p>MovieCharacter는 firstname, name, movie가 필요합니다. 그러나 registerPerson 함수의 시그니처는 Partial 유틸리티를 사용하여 firstname, name, movie를 선택적으로 가진 새 타입을 생성합니다.</p>
 <h3 id="required">Required</h3>
 <p>Required는 Partial의 반대 역할을 합니다. 선택적 속성을 가진 기존 인터페이스를 받아 모든 속성이 필수인 타입으로 변환합니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">interface</span> MovieCharacter {
-</span></span><span style="display:flex;"><span>  firstname?: <span style="color:#cdcaa9;font-weight:bold">string</span>;
-</span></span><span style="display:flex;"><span>  name?: <span style="color:#cdcaa9;font-weight:bold">string</span>;
-</span></span><span style="display:flex;"><span>  movie?: <span style="color:#cdcaa9;font-weight:bold">string</span>;
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#cf222e">interface</span> <span style="color:#1f2328">MovieCharacter</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">firstname?</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">name?</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">movie?</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">function</span> hireActor(character: <span style="color:#cdcaa9;font-weight:bold">Required</span>&lt;<span style="color:#fb660a;font-weight:bold">MovieCharacter</span>&gt;) {}
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">function</span> <span style="color:#1f2328">hireActor</span><span style="color:#1f2328">(</span><span style="color:#1f2328">character</span>: <span style="color:#cf222e">Required</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">MovieCharacter</span><span style="color:#1f2328">&gt;)</span> <span style="color:#1f2328">{}</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// 👍 올바른 사용 예시
-</span></span></span><span style="display:flex;"><span>hireActor({
-</span></span><span style="display:flex;"><span>  firstname: <span style="color:#0086d2">&#39;Frodo&#39;</span>,
-</span></span><span style="display:flex;"><span>  name: <span style="color:#0086d2">&#39;Baggins&#39;</span>,
-</span></span><span style="display:flex;"><span>  movie: <span style="color:#0086d2">&#39;The Lord of the Rings&#39;</span>,
-</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// 👍 올바른 사용 예시
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">hireActor</span><span style="color:#1f2328">({</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">firstname</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;Frodo&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">name</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;Baggins&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">movie</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;The Lord of the Rings&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">});</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// 👎 잘못된 사용 예시
-</span></span></span><span style="display:flex;"><span>hireActor({
-</span></span><span style="display:flex;"><span>  firstname: <span style="color:#0086d2">&#39;Frodo&#39;</span>,
-</span></span><span style="display:flex;"><span>  name: <span style="color:#0086d2">&#39;Baggins&#39;</span>,
-</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// 👎 잘못된 사용 예시
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">hireActor</span><span style="color:#1f2328">({</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">firstname</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;Frodo&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">name</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;Baggins&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">});</span>
 </span></span></code></pre></div><p>이 예제에서는 MovieCharacter의 속성이 선택 사항이었습니다. Required를 사용하여 모든 속성이 필수인 타입으로 변환하였습니다. 따라서 firstname, name 및 movie 속성을 포함하는 객체만 허용됩니다.</p>
 <h3 id="extract">Extract</h3>
 <p>Extract는 타입의 정보를 추출할 수 있도록 해줍니다. Extract는 두 개의 매개변수를 받으며, 첫 번째는 인터페이스이고 두 번째는 추출해야 할 타입입니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">type</span> MovieCharacters =
-</span></span><span style="display:flex;"><span>  | <span style="color:#0086d2">&#39;Harry Potter&#39;</span>
-</span></span><span style="display:flex;"><span>  | <span style="color:#0086d2">&#39;Tom Riddle&#39;</span>
-</span></span><span style="display:flex;"><span>  | { firstname: <span style="color:#cdcaa9;font-weight:bold">string</span>; name: <span style="color:#cdcaa9;font-weight:bold">string</span> };
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#cf222e">type</span> <span style="color:#1f2328">MovieCharacters</span> <span style="color:#0550ae">=</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">|</span> <span style="color:#0a3069">&#39;Harry Potter&#39;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">|</span> <span style="color:#0a3069">&#39;Tom Riddle&#39;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">|</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">firstname</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span> <span style="color:#1f2328">name</span>: <span style="color:#cf222e">string</span> <span style="color:#1f2328">};</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">type</span> hpCharacters = Extract&lt;<span style="color:#fb660a;font-weight:bold">MovieCharacters</span>, <span style="color:#ff0086;font-weight:bold">string</span>&gt;;
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// hpCharacters = &#39;Harry Potter&#39; | &#39;Tom Riddle&#39;;
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">type</span> <span style="color:#1f2328">hpCharacters</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">Extract</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">MovieCharacters</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">string</span><span style="color:#1f2328">&gt;;</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// hpCharacters = &#39;Harry Potter&#39; | &#39;Tom Riddle&#39;;
 </span></span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">type</span> hpCharacters = Extract&lt;<span style="color:#fb660a;font-weight:bold">MovieCharacters</span>, { <span style="color:#ff0086;font-weight:bold">firstname</span>: <span style="color:#ff0086;font-weight:bold">string</span> }&gt;;
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// hpCharacters = {firstname: string; name: string };
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">type</span> <span style="color:#1f2328">hpCharacters</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">Extract</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">MovieCharacters</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">firstname</span><span style="color:#f6f8fa;background-color:#82071e">:</span> <span style="color:#1f2328">string</span> <span style="color:#1f2328">}&gt;;</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// hpCharacters = {firstname: string; name: string };
 </span></span></span></code></pre></div><p>Extract&lt;MovieCharacters, string&gt;는 문자열로 구성된 유니언 타입 hpCharacters를 생성합니다. 반면 Extract&lt;MovieCharacters, {firstname: string}&gt;는 firstname: string 타입을 포함하는 모든 객체 타입을 추출합니다.</p>
 <h3 id="exclude">Exclude</h3>
 <p>Exclude는 추출의 반대 역할을 합니다. 즉, 타입을 제외하여 새 타입을 생성할 수 있습니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">type</span> MovieCharacters =
-</span></span><span style="display:flex;"><span>  | <span style="color:#0086d2">&#39;Harry Potter&#39;</span>
-</span></span><span style="display:flex;"><span>  | <span style="color:#0086d2">&#39;Tom Riddle&#39;</span>
-</span></span><span style="display:flex;"><span>  | { firstname: <span style="color:#cdcaa9;font-weight:bold">string</span>; name: <span style="color:#cdcaa9;font-weight:bold">string</span> };
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#cf222e">type</span> <span style="color:#1f2328">MovieCharacters</span> <span style="color:#0550ae">=</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">|</span> <span style="color:#0a3069">&#39;Harry Potter&#39;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">|</span> <span style="color:#0a3069">&#39;Tom Riddle&#39;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">|</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">firstname</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span> <span style="color:#1f2328">name</span>: <span style="color:#cf222e">string</span> <span style="color:#1f2328">};</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">type</span> hpCharacters = Exclude&lt;<span style="color:#fb660a;font-weight:bold">MovieCharacters</span>, <span style="color:#ff0086;font-weight:bold">string</span>&gt;;
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// equal to type hpCharacters = {firstname: string; name: string };
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">type</span> <span style="color:#1f2328">hpCharacters</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">Exclude</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">MovieCharacters</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">string</span><span style="color:#1f2328">&gt;;</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// equal to type hpCharacters = {firstname: string; name: string };
 </span></span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">type</span> hpCharacters = Exclude&lt;<span style="color:#fb660a;font-weight:bold">MovieCharacters</span>, { <span style="color:#ff0086;font-weight:bold">firstname</span>: <span style="color:#ff0086;font-weight:bold">string</span> }&gt;;
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// equal to type hpCharacters = &#39;Harry Potter&#39; | &#39;Tom Riddle&#39;;
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">type</span> <span style="color:#1f2328">hpCharacters</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">Exclude</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">MovieCharacters</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">firstname</span><span style="color:#f6f8fa;background-color:#82071e">:</span> <span style="color:#1f2328">string</span> <span style="color:#1f2328">}&gt;;</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// equal to type hpCharacters = &#39;Harry Potter&#39; | &#39;Tom Riddle&#39;;
 </span></span></span></code></pre></div><p>먼저, 모든 문자열을 제외하는 새로운 타입을 생성합니다. 그 다음, firstname: string을 포함하는 모든 객체 타입을 제외하는 타입을 생성합니다.</p>
 <h3 id="infer-type">Infer type</h3>
 <p>infer는 새 유형(type)을 생성할 수 있게 해줍니다. 이는 Javascript에서 var, let 또는 const 키워드를 사용하여 변수를 생성하는 것과 유사합니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">type</span> flattenArrayType&lt;<span style="color:#fb660a;font-weight:bold">T</span>&gt; = T <span style="color:#fb660a;font-weight:bold">extends</span> Array&lt;<span style="color:#fb660a;font-weight:bold">infer</span> <span style="color:#ff0086;font-weight:bold">ArrayType</span>&gt; ? ArrayType : <span style="color:#cdcaa9;font-weight:bold">T</span>;
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#cf222e">type</span> <span style="color:#1f2328">flattenArrayType</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">T</span><span style="color:#1f2328">&gt;</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">T</span> <span style="color:#cf222e">extends</span> <span style="color:#6639ba">Array</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">infer</span> <span style="color:#1f2328">ArrayType</span><span style="color:#1f2328">&gt;</span> <span style="color:#0550ae">?</span> <span style="color:#1f2328">ArrayType</span> : <span style="color:#cf222e">T</span><span style="color:#1f2328">;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">type</span> foo = flattenArrayType&lt;<span style="color:#fb660a;font-weight:bold">string</span>[]&gt;;
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// foo = string;
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">type</span> <span style="color:#1f2328">foo</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">flattenArrayType</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">string</span><span style="color:#f6f8fa;background-color:#82071e">[]</span><span style="color:#1f2328">&gt;;</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// foo = string;
 </span></span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">type</span> foo = flattenArrayType&lt;<span style="color:#fb660a;font-weight:bold">number</span>[]&gt;;
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// foo = number;
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">type</span> <span style="color:#1f2328">foo</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">flattenArrayType</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">number</span><span style="color:#f6f8fa;background-color:#82071e">[]</span><span style="color:#1f2328">&gt;;</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// foo = number;
 </span></span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">type</span> foo = flattenArrayType&lt;<span style="color:#fb660a;font-weight:bold">number</span>&gt;;
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic">// foo = number;
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">type</span> <span style="color:#1f2328">foo</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">flattenArrayType</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">number</span><span style="color:#1f2328">&gt;;</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// foo = number;
 </span></span></span></code></pre></div><p><code>T</code>는 <code>Array&lt;infer ArrayType&gt;</code>을 확장합니다. 이는 <code>T</code>가 배열(Array)을 확장하는지 확인하는 것입니다. 더욱이, 우리는 infer 키워드를 사용하여 배열 타입을 얻습니다. 이는 마치 변수를 사용해 타입을 저장하는 것과 같습니다.그런 다음, 조건부 타입을 사용하여 T가 배열을 확장하면 ArrayType을 반환합니다. 그렇지 않으면 T를 반환합니다.</p>
 </section>
 <time>
@@ -697,13 +697,14 @@
   
   document.addEventListener('DOMContentLoaded', function() {
     
-    const codeBlocks = document.querySelectorAll('.post-content pre');
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
     
     codeBlocks.forEach(function(block) {
       
       const copyButton = document.createElement('button');
       copyButton.className = 'copy-button';
-      copyButton.textContent = '복사';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
       
       
       copyButton.addEventListener('click', function() {
@@ -714,19 +715,19 @@
         
         navigator.clipboard.writeText(text).then(function() {
           
-          copyButton.textContent = '복사됨!';
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
           copyButton.classList.add('copied');
           
           
           setTimeout(function() {
-            copyButton.textContent = '복사';
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
             copyButton.classList.remove('copied');
           }, 2000);
         }).catch(function(err) {
           console.error('복사 실패:', err);
-          copyButton.textContent = '실패';
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
           setTimeout(function() {
-            copyButton.textContent = '복사';
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
           }, 2000);
         });
       });
@@ -736,6 +737,9 @@
     });
   });
 </script>
+
+
+
 
 
 

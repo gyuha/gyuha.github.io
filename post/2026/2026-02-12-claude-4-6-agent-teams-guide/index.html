@@ -123,7 +123,45 @@
 </ul>
 <h3 id="핵심-가치">핵심 가치</h3>
 <p>이 글을 읽고 나면 활성화 설정부터 명령어 실행, 작업 할당, 팀 협업에 이르기까지 Agent Teams의 전체 사용 프로세스를 마스터하여 즉시 다중 에이전트 프로그래밍을 시작할 수 있습니다.</p>
-<h2 id="핵심-개념-4가지-구성-요소">핵심 개념: 4가지 구성 요소</h2>
+<h3 id="agent-teams-아키텍처-다이어그램">Agent Teams 아키텍처 다이어그램</h3>
+<pre class="mermaid">graph TB
+    subgraph Lead["Lead Agent (팀 리더)"]
+        L1["팀 생성"]
+        L2["작업 할당"]
+        L3["결과 요약"]
+        L4["조율 및 관리"]
+    end
+
+    subgraph TaskList["Task List (공유 작업 목록)"]
+        T1["작업 생성"]
+        T2["의존성 추적"]
+        T3["상태 관리"]
+        T4["파일 잠금"]
+    end
+
+    subgraph Teammates["Teammates (팀원)"]
+        M1["작업 수락"]
+        M2["결과 보고"]
+        M3["상태 업데이트"]
+    end
+
+    subgraph Mailbox["Mailbox (메시지 시스템)"]
+        B1["개별 메시지"]
+        B2["브로드캐스트"]
+    end
+
+    L1 --> T1
+    L2 --> T2
+    L3 --> T4
+    M1 --> T3
+    M2 --> L3
+    M1 -.->|P2P 통신| B1
+    M2 -.->|P2P 통신| B2
+
+    style Lead fill:#3fa4ff,stroke:#036,stroke-width:2px
+    style TaskList fill:#ffeb3b,stroke:#036,stroke-width:2px
+    style Teammates fill:#4caf50,stroke:#036,stroke-width:2px
+    style Mailbox fill:#ff5722,stroke:#036,stroke-width:2px</pre><h2 id="핵심-개념-4가지-구성-요소">핵심 개념: 4가지 구성 요소</h2>
 <p>Agent Teams는 4가지 핵심 구성 요소로 이루어져 있습니다.</p>
 <table>
   <thead>
@@ -196,21 +234,57 @@
 <blockquote>
 <p>💡 <strong>중요 차이점</strong>: Subagent가 &lsquo;상하 보고&rsquo; 모델이라면, Agent Teams는 &lsquo;팀 협업&rsquo; 모델입니다. 작업에 여러 명의 토론, 관점 교환, 또는 서로 다른 모듈의 병렬 처리가 필요하다면 Agent Teams가 더 나은 선택입니다.</p>
 </blockquote>
-<h2 id="활성화-방법-3단계">활성화 방법: 3단계</h2>
+<h3 id="subagent-vs-agent-teams-시각적-비교">Subagent vs Agent Teams 시각적 비교</h3>
+<pre class="mermaid">graph LR
+    subgraph Subagent["Subagent (하위 에이전트)"]
+        S1[Main Agent]
+        S2[Subagent 1]
+        S3[Subagent 2]
+        S1 -.->|결과만 보고| S2
+        S1 -.->|결과만 보고| S3
+        S2 -->|결과 반환| S1
+        S3 -->|결과 반환| S1
+    end
+
+    subgraph Teams["Agent Teams (팀)"]
+        T1[Lead Agent<br/>팀 리더]
+        T2[Teammate 1]
+        T3[Teammate 2]
+        T4[Teammate 3]
+        T5[Task List<br/>공유 작업 목록]
+
+        T1 -->|작업 할당| T5
+        T2 -->|작업 선택| T5
+        T3 -->|작업 선택| T5
+        T4 -->|작업 선택| T5
+
+        T2 <-.->|P2P 직접 통신| T3
+        T3 <-.->|P2P 직접 통신| T4
+        T2 <-.->|P2P 직접 통신| T4
+        T2 -.->|보고| T1
+        T3 -.->|보고| T1
+        T4 -.->|보고| T1
+    end
+
+    style Subagent fill:#f5f5f5,stroke:#036,stroke-width:2px
+    style Teams fill:#e8f5e9,stroke:#036,stroke-width:2px
+    style S1 fill:#ffcc80,stroke:#036
+    style T1 fill:#3fa4ff,stroke:#036
+    style T5 fill:#fff59d,stroke:#036</pre><h2 id="활성화-방법-3단계">활성화 방법: 3단계</h2>
 <p>Agent Teams는 기본적으로 <strong>비활성화</strong>되어 있으며, 수동으로 활성화해야 합니다.</p>
 <h3 id="1단계-실험적-기능-활성화하기">1단계: 실험적 기능 활성화하기</h3>
 <p><strong>방법 A — 설정 파일 (권장)</strong></p>
 <p>Claude Code의 <code>settings.json</code> 파일에 다음 내용을 추가하세요.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>  <span style="color:#fb660a;font-weight:bold">&#34;env&#34;</span>: {
-</span></span><span style="display:flex;"><span>    <span style="color:#fb660a;font-weight:bold">&#34;CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS&#34;</span>: <span style="color:#0086d2">&#34;1&#34;</span>
-</span></span><span style="display:flex;"><span>  }
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;env&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;1&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
 </span></span></code></pre></div><p><strong>방법 B — 환경 변수</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># .bashrc 또는 .zshrc 파일에 추가</span>
-</span></span><span style="display:flex;"><span>export <span style="color:#fb660a">CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS</span>=<span style="color:#0086f7;font-weight:bold">1</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># .bashrc 또는 .zshrc 파일에 추가</span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">export</span> <span style="color:#953800">CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS</span><span style="color:#0550ae">=</span><span style="color:#0550ae">1</span>
 </span></span></code></pre></div><p><strong>방법 C — 단일 세션</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#fb660a">CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS</span>=<span style="color:#0086f7;font-weight:bold">1</span> claude
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#953800">CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS</span><span style="color:#0550ae">=</span><span style="color:#0550ae">1</span> claude
 </span></span></code></pre></div><h3 id="2단계-자연어로-agent-teams-트리거하기">2단계: 자연어로 Agent Teams 트리거하기</h3>
 <p><strong><code>/agent-teams</code>와 같은 별도의 슬래시 명령어는 없습니다</strong>. 기능을 활성화한 후에는 원하는 팀 구성을 자연어로 설명하기만 하면 됩니다.</p>
 <pre tabindex="0"><code>PR #142를 검토하기 위한 에이전트 팀을 생성해줘. 다음 세 명의 검토자를 만들어줘:
@@ -249,17 +323,42 @@ Use Sonnet for each teammate.
       </tr>
   </tbody>
 </table>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 명령행에서 지정</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># 명령행에서 지정</span>
 </span></span><span style="display:flex;"><span>claude --teammate-mode tmux
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#080;background-color:#0f140f;font-style:italic"># 또는 settings.json에서 설정</span>
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>  <span style="color:#0086d2">&#34;teammateMode&#34;</span>: <span style="color:#0086d2">&#34;tmux&#34;</span>
-</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 또는 settings.json에서 설정</span>
+</span></span><span style="display:flex;"><span><span style="color:#0550ae">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0a3069">&#34;teammateMode&#34;</span>: <span style="color:#0a3069">&#34;tmux&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#0550ae">}</span>
 </span></span></code></pre></div><blockquote>
 <p>💡 <strong>팁</strong>: 처음 사용하신다면 in-process 모드로 시작해 보시고, 익숙해지면 tmux 화면 분할 모드를 시도해 보시는 것을 추천합니다.</p>
 </blockquote>
-<h2 id="조작-가이드">조작 가이드</h2>
+<h3 id="활성화-3단계-플로우차트">활성화 3단계 플로우차트</h3>
+<pre class="mermaid">flowchart LR
+    A[시작] --> B[1단계<br/>실험적 기능 활성화]
+    B --> C{활성화 방법 선택}
+    C --> C1[설정 파일]
+    C --> C2[환경 변수]
+    C --> C3[단일 세션]
+
+    C1 --> D[2단계<br/>자연어 팀 생성]
+    C2 --> D
+    C3 --> D
+
+    D --> E[3단계<br/>표시 모드 선택]
+    E --> F{모드 선택}
+    F --> F1[in-process]
+    F --> F2[tmux]
+    F --> F3[auto]
+
+    F1 --> G[✅ Agent Teams 준비 완료]
+    F2 --> G
+    F3 --> G
+
+    style B fill:#e3f2fd,stroke:#036
+    style D fill:#fff3e0,stroke:#036
+    style E fill:#e8f5e9,stroke:#036
+    style G fill:#c8e6c9,stroke:#036,stroke-width:2px</pre><h2 id="조작-가이드">조작 가이드</h2>
 <h3 id="키보드-단축키-요약">키보드 단축키 요약</h3>
 <p>Agent Teams가 실행 중일 때 다음 단축키를 사용할 수 있어요.</p>
 <table>
@@ -302,8 +401,29 @@ Use Sonnet for each teammate.
 <li><strong>팀원 자율 수락</strong>: 현재 작업을 마친 팀원이 할당되지 않은 다음 가용 작업을 자동으로 가져옵니다.</li>
 <li><strong>파일 잠금(File Lock)을 통한 충돌 방지</strong>: 여러 팀원이 동시에 같은 작업을 가져가려 할 때, 시스템은 파일 잠금을 사용하여 충돌을 방지합니다.</li>
 </ol>
-<p><strong>작업 크기 권장 사항</strong>: 팀원당 <strong>5~6개의 작업</strong>을 할당하는 것이 가장 좋습니다. 작업이 너무 작으면 조율 비용이 이득보다 커지고, 너무 크면 팀원이 오랫동안 진행 상황을 보고하지 않게 됩니다.</p>
-<h3 id="팀원-간-통신-방식">팀원 간 통신 방식</h3>
+<p><strong>작업 크기 권장 사항</strong>: 팀원당 <strong>5~6개의 작업</strong>을 할당하는 것입니다. 작업이 너무 작으면 조율 비용이 이득보다 커지고, 너무 크면 팀원이 오랫동안 진행 상황을 보고하지 않게 됩니다.</p>
+<h3 id="작업-상태-다이어그램">작업 상태 다이어그램</h3>
+<pre class="mermaid">stateDiagram-v2
+    [*] --> pending: 작업 생성
+    pending --> in_progress: 팀원이 작업 선택
+    in_progress --> completed: 작업 완료
+    in_progress --> pending: 작업 실패/재시도
+
+    pending --> blocked: 의존성 있는 작업 대기
+    blocked --> pending: 의존 작업 완료
+
+    completed --> [*]: 아카이브
+
+    note right of pending
+        모든 작업은 기본적으로
+        pending 상태로 시작됩니다.
+    end note
+
+    note right of blocked
+        blockedBy가 설정된 작업은
+        의존하는 작업이 완료될 때까지
+        잠금 상태로 유지됩니다.
+    end note</pre><h3 id="팀원-간-통신-방식">팀원 간 통신 방식</h3>
 <table>
   <thead>
       <tr>
@@ -326,8 +446,40 @@ Use Sonnet for each teammate.
   </tbody>
 </table>
 <p>통신은 <strong>P2P(점대점)</strong> 방식이며, 리더를 거칠 필요가 없습니다. 어떤 팀원이든 다른 팀원에게 직접 메시지를 보낼 수 있어요.</p>
-<h3 id="git-협업-및-파일-충돌-방지">Git 협업 및 파일 충돌 방지</h3>
-<p>Agent Teams에서 가장 중요한 규칙은 <strong>두 명의 팀원이 동일한 파일을 편집하면 내용이 덮어씌워질 수 있다</strong>는 점입니다.</p>
+<h3 id="팀원-간-통신-시퀀스-다이어그램">팀원 간 통신 시퀀스 다이어그램</h3>
+<pre class="mermaid">sequenceDiagram
+    participant L as Lead Agent<br/>(팀 리더)
+    participant M1 as Teammate 1<br/>(팀원1)
+    participant M2 as Teammate 2<br/>(팀원2)
+    participant M3 as Teammate 3<br/>(팀원3)
+    participant MB as Mailbox<br/>(메시지 시스템)
+
+    L->>M1: 작업 할당 (Task 1)
+    L->>M2: 작업 할당 (Task 2)
+    L->>M3: 작업 할당 (Task 3)
+
+    M1->>MB: 개별 메시지 (write)<br/>M2에게 질문
+    MB->>M2: 메시지 전달
+    M2->>MB: 응답
+    MB->>M1: 응답 전달
+
+    Note over M1,M3: 작업 진행 중...
+
+    M1->>M1: Task 1 완료
+    M1->>L: 작업 완료 보고
+
+    M2->>MB: 브로드캐스트 (broadcast)<br/>"중요 공지: API 변경사항"
+    MB->>M1: 공지 전달
+    MB->>M3: 공지 전달
+    MB->>L: 공지 전달
+
+    M2->>M2: Task 2 완료
+    M2->>L: 작업 완료 보고
+
+    M3->>M3: Task 3 완료
+    M3->>L: 작업 완료 보고
+
+    L->>L: 모든 작업 종합 및 요약</pre><p>Agent Teams에서 가장 중요한 규칙은 <strong>두 명의 팀원이 동일한 파일을 편집하면 내용이 덮어씌워질 수 있다</strong>는 점입니다.</p>
 <p>추천하는 파일 분업 전략은 다음과 같아요.</p>
 <pre tabindex="0"><code># 풀스택 기능 개발 예시
 백엔드 팀원  → src/api/ 및 src/migrations/ 담당
@@ -450,6 +602,49 @@ Use Sonnet for each teammate.
 <h3 id="q3-에이전트-팀을-vs-code에서-사용할-수-있나요">Q3: 에이전트 팀을 VS Code에서 사용할 수 있나요?</h3>
 <p>네, 가능하지만 몇 가지 제한이 있습니다. VS Code 내장 터미널은 인프로세스(In-process) 모드(모든 팀원이 동일한 터미널에서 실행됨)를 지원합니다. 하지만 tmux 분할 화면 모드는 VS Code에서 사용할 수 없으므로, 이 기능을 쓰려면 외부 터미널을 사용해야 합니다.</p>
 <h2 id="결론-및-요약">결론 및 요약</h2>
+<h3 id="agent-teams-전체-프로세스-플로우차트">Agent Teams 전체 프로세스 플로우차트</h3>
+<pre class="mermaid">flowchart TB
+    subgraph Setup["🔧 1. 환경 설정"]
+        S1["CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1"]
+        S2["표시 모드 선택<br/>(in-process/tmux/auto)"]
+    end
+
+    subgraph Create["👥 2. 팀 생성"]
+        C1["자연어 팀 구성 설명"]
+        C2["Claude 자동 팀 생성"]
+        C3["팀원 배정 및 역할 분담"]
+    end
+
+    subgraph Work["⚙️ 3. 작업 실행"]
+        W1["작업 목록 생성"]
+        W2["의존성 설정"]
+        W3["팀원별 작업 할당"]
+        W4["병렬 작업 진행"]
+    end
+
+    subgraph Comm["💬 4. 팀 협업"]
+        CM1["개별 메시지 (write)"]
+        CM2["브로드캐스트 (broadcast)"]
+        CM3["P2P 직접 통신"]
+    end
+
+    subgraph Complete["✅ 5. 완료 및 종합"]
+        F1["개별 작업 완료 보고"]
+        F2["리더 결과 종합"]
+        F3["팀 종료 및 정리"]
+    end
+
+    Setup --> Create
+    Create --> Work
+    Work --> Comm
+    Comm --> Work
+    Work --> Complete
+
+    style Setup fill:#e3f2fd,stroke:#036
+    style Create fill:#fff3e0,stroke:#036
+    style Work fill:#e8f5e9,stroke:#036
+    style Comm fill:#fce4ec,stroke:#036
+    style Complete fill:#c8e6c9,stroke:#036,stroke-width:2px</pre><h3 id="핵심-요약">핵심 요약</h3>
 <p>Claude 4.6 Agent Teams의 핵심 요약:</p>
 <ol>
 <li><strong>활성화 방법</strong>: 환경 변수 <code>CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1</code>을 설정한 후, 자연어로 팀 구성을 설명하세요.</li>
@@ -531,11 +726,13 @@ Use Sonnet for each teammate.
         <li><a href="#단일-에이전트의-한계">단일 에이전트의 한계</a></li>
         <li><a href="#agent-teams의-해결책">Agent Teams의 해결책</a></li>
         <li><a href="#핵심-가치">핵심 가치</a></li>
+        <li><a href="#agent-teams-아키텍처-다이어그램">Agent Teams 아키텍처 다이어그램</a></li>
       </ul>
     </li>
     <li><a href="#핵심-개념-4가지-구성-요소">핵심 개념: 4가지 구성 요소</a>
       <ul>
         <li><a href="#subagent와의-비교">Subagent와의 비교</a></li>
+        <li><a href="#subagent-vs-agent-teams-시각적-비교">Subagent vs Agent Teams 시각적 비교</a></li>
       </ul>
     </li>
     <li><a href="#활성화-방법-3단계">활성화 방법: 3단계</a>
@@ -543,14 +740,16 @@ Use Sonnet for each teammate.
         <li><a href="#1단계-실험적-기능-활성화하기">1단계: 실험적 기능 활성화하기</a></li>
         <li><a href="#2단계-자연어로-agent-teams-트리거하기">2단계: 자연어로 Agent Teams 트리거하기</a></li>
         <li><a href="#3단계-표시-모드-선택하기">3단계: 표시 모드 선택하기</a></li>
+        <li><a href="#활성화-3단계-플로우차트">활성화 3단계 플로우차트</a></li>
       </ul>
     </li>
     <li><a href="#조작-가이드">조작 가이드</a>
       <ul>
         <li><a href="#키보드-단축키-요약">키보드 단축키 요약</a></li>
         <li><a href="#작업-할당-메커니즘">작업 할당 메커니즘</a></li>
+        <li><a href="#작업-상태-다이어그램">작업 상태 다이어그램</a></li>
         <li><a href="#팀원-간-통신-방식">팀원 간 통신 방식</a></li>
-        <li><a href="#git-협업-및-파일-충돌-방지">Git 협업 및 파일 충돌 방지</a></li>
+        <li><a href="#팀원-간-통신-시퀀스-다이어그램">팀원 간 통신 시퀀스 다이어그램</a></li>
       </ul>
     </li>
     <li><a href="#5대-실전-시나리오">5대 실전 시나리오</a>
@@ -584,7 +783,12 @@ Use Sonnet for each teammate.
         <li><a href="#q3-에이전트-팀을-vs-code에서-사용할-수-있나요">Q3: 에이전트 팀을 VS Code에서 사용할 수 있나요?</a></li>
       </ul>
     </li>
-    <li><a href="#결론-및-요약">결론 및 요약</a></li>
+    <li><a href="#결론-및-요약">결론 및 요약</a>
+      <ul>
+        <li><a href="#agent-teams-전체-프로세스-플로우차트">Agent Teams 전체 프로세스 플로우차트</a></li>
+        <li><a href="#핵심-요약">핵심 요약</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
   </div>
@@ -716,13 +920,14 @@ Use Sonnet for each teammate.
   
   document.addEventListener('DOMContentLoaded', function() {
     
-    const codeBlocks = document.querySelectorAll('.post-content pre');
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
     
     codeBlocks.forEach(function(block) {
       
       const copyButton = document.createElement('button');
       copyButton.className = 'copy-button';
-      copyButton.textContent = '복사';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
       
       
       copyButton.addEventListener('click', function() {
@@ -733,19 +938,19 @@ Use Sonnet for each teammate.
         
         navigator.clipboard.writeText(text).then(function() {
           
-          copyButton.textContent = '복사됨!';
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
           copyButton.classList.add('copied');
           
           
           setTimeout(function() {
-            copyButton.textContent = '복사';
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
             copyButton.classList.remove('copied');
           }, 2000);
         }).catch(function(err) {
           console.error('복사 실패:', err);
-          copyButton.textContent = '실패';
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
           setTimeout(function() {
-            copyButton.textContent = '복사';
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
           }, 2000);
         });
       });
@@ -754,6 +959,14 @@ Use Sonnet for each teammate.
       block.appendChild(copyButton);
     });
   });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
 </script>
 
 

@@ -98,9 +98,9 @@
 <p>기본으로는 <code>Port 22</code>는 주석처리 되어 있습니다. 주석처리를 지우고 변경합니다.</p>
 <p>이유는,  윈도우에서 이미 22번 포트를 사용하고 있기 때문입니다. 만약에 꼭 22번을 쓰고 윈도우에서 사용하는 22번 포트를 disable하고 써야 합니다.</p>
 <p>정리하면 아래와 같습니다.</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt-get remove --purge openssh-server
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt-get remove --purge openssh-server
 </span></span><span style="display:flex;"><span>sudo apt-get install openssh-server
-</span></span><span style="display:flex;"><span>sudo vi /etc/ssh/sshd_config <span style="color:#080;background-color:#0f140f;font-style:italic"># Change Port from 22 to 222 </span>
+</span></span><span style="display:flex;"><span>sudo vi /etc/ssh/sshd_config <span style="color:#57606a"># Change Port from 22 to 222 </span>
 </span></span><span style="display:flex;"><span>sudo service ssh --full-restart
 </span></span></code></pre></div>
 </section>
@@ -293,13 +293,14 @@
   
   document.addEventListener('DOMContentLoaded', function() {
     
-    const codeBlocks = document.querySelectorAll('.post-content pre');
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
     
     codeBlocks.forEach(function(block) {
       
       const copyButton = document.createElement('button');
       copyButton.className = 'copy-button';
-      copyButton.textContent = '복사';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
       
       
       copyButton.addEventListener('click', function() {
@@ -310,19 +311,19 @@
         
         navigator.clipboard.writeText(text).then(function() {
           
-          copyButton.textContent = '복사됨!';
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
           copyButton.classList.add('copied');
           
           
           setTimeout(function() {
-            copyButton.textContent = '복사';
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
             copyButton.classList.remove('copied');
           }, 2000);
         }).catch(function(err) {
           console.error('복사 실패:', err);
-          copyButton.textContent = '실패';
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
           setTimeout(function() {
-            copyButton.textContent = '복사';
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
           }, 2000);
         });
       });
@@ -332,6 +333,9 @@
     });
   });
 </script>
+
+
+
 
 
 

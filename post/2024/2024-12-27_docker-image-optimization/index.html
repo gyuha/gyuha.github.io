@@ -112,70 +112,70 @@
 <h3 id="1-최소한의-베이스-이미지-선택하기">1. 최소한의 베이스 이미지 선택하기</h3>
 <p>기본적으로 ubuntu:latest와 같은 큰 이미지를 사용하는 대신, 우리는 alpine으로 전환했습니다. 이 간단한 변화로 이미지 크기를 800MB에서 30MB 이하로 줄일 수 있었습니다.
 <strong>예시:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>FROM alpine:latest
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#1f2328">FROM</span> <span style="color:#1f2328">alpine</span><span style="color:#0550ae">:</span><span style="color:#1f2328">latest</span>
 </span></span></code></pre></div><h3 id="2-다단계-빌드-사용하기">2. 다단계 빌드 사용하기</h3>
 <p>React 애플리케이션 같은 프로젝트에서는 빌드 의존성(Node.js, npm 등)이 빌드 과정에서만 필요하고 프로덕션 이미지에서는 필요하지 않습니다. 다단계 빌드를 사용하면 빌드 환경과 런타임 환경을 분리하여 훨씬 작은 이미지를 생성할 수 있습니다.
 <strong>예시:</strong> React 애플리케이션에 다단계 빌드를 적용한 Dockerfile은 다음과 같습니다:</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span># 빌드 단계 (Build Stage)
-</span></span><span style="display:flex;"><span>FROM node:<span style="color:#0086f7;font-weight:bold">16</span> AS builder
-</span></span><span style="display:flex;"><span>WORKDIR /app
-</span></span><span style="display:flex;"><span>COPY <span style="color:#fb660a;font-weight:bold">package</span>.json <span style="color:#fb660a;font-weight:bold">package</span>-lock.json ./
-</span></span><span style="display:flex;"><span>RUN npm install
-</span></span><span style="display:flex;"><span>COPY . .
-</span></span><span style="display:flex;"><span>RUN npm run build
-</span></span><span style="display:flex;"><span># 런타임 단계 (Runtime Stage)
-</span></span><span style="display:flex;"><span>FROM nginx:alpine
-</span></span><span style="display:flex;"><span>COPY --from=builder /app/build /usr/share/nginx/html
-</span></span><span style="display:flex;"><span>CMD [<span style="color:#0086d2">&#34;nginx&#34;</span>, <span style="color:#0086d2">&#34;-g&#34;</span>, <span style="color:#0086d2">&#34;daemon off;&#34;</span>]
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#f6f8fa;background-color:#82071e">#</span> <span style="color:#1f2328">빌드</span> <span style="color:#1f2328">단계</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">Build</span> <span style="color:#1f2328">Stage</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">FROM</span> <span style="color:#1f2328">node</span><span style="color:#0550ae">:</span><span style="color:#0550ae">16</span> <span style="color:#1f2328">AS</span> <span style="color:#1f2328">builder</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">WORKDIR</span> <span style="color:#0550ae">/</span><span style="color:#1f2328">app</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">COPY</span> <span style="color:#cf222e">package</span><span style="color:#1f2328">.</span><span style="color:#1f2328">json</span> <span style="color:#cf222e">package</span><span style="color:#0550ae">-</span><span style="color:#1f2328">lock</span><span style="color:#1f2328">.</span><span style="color:#1f2328">json</span> <span style="color:#1f2328">.</span><span style="color:#0550ae">/</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">RUN</span> <span style="color:#1f2328">npm</span> <span style="color:#1f2328">install</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">COPY</span> <span style="color:#1f2328">.</span> <span style="color:#1f2328">.</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">RUN</span> <span style="color:#1f2328">npm</span> <span style="color:#1f2328">run</span> <span style="color:#1f2328">build</span>
+</span></span><span style="display:flex;"><span><span style="color:#f6f8fa;background-color:#82071e">#</span> <span style="color:#1f2328">런타임</span> <span style="color:#1f2328">단계</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">Runtime</span> <span style="color:#1f2328">Stage</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">FROM</span> <span style="color:#1f2328">nginx</span><span style="color:#0550ae">:</span><span style="color:#1f2328">alpine</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">COPY</span> <span style="color:#0550ae">--</span><span style="color:#1f2328">from</span><span style="color:#0550ae">=</span><span style="color:#1f2328">builder</span> <span style="color:#0550ae">/</span><span style="color:#1f2328">app</span><span style="color:#0550ae">/</span><span style="color:#1f2328">build</span> <span style="color:#0550ae">/</span><span style="color:#1f2328">usr</span><span style="color:#0550ae">/</span><span style="color:#1f2328">share</span><span style="color:#0550ae">/</span><span style="color:#1f2328">nginx</span><span style="color:#0550ae">/</span><span style="color:#1f2328">html</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">CMD</span> <span style="color:#1f2328">[</span><span style="color:#0a3069">&#34;nginx&#34;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#34;-g&#34;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#34;daemon off;&#34;</span><span style="color:#1f2328">]</span>
 </span></span></code></pre></div><p>이 방법은 빌드 파일들만 최종 이미지에 포함되도록 보장해, 프로덕션에 적합하고 크기가 작아진 이미지를 제공합니다.</p>
 <h3 id="3-불필요한-파일-제거하기">3. 불필요한 파일 제거하기</h3>
 <p>디버깅 과정에서 임시 파일들이 빌드에 포함되는 경우가 많았습니다. .dockerignore 파일을 추가함으로써 이러한 파일들이 이미지에 포함되지 않도록 방지했습니다.
 <strong>예시:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>node_modules
-</span></span><span style="display:flex;"><span>*.log
-</span></span><span style="display:flex;"><span>.git
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#1f2328">node_modules</span>
+</span></span><span style="display:flex;"><span><span style="color:#0550ae">*</span><span style="color:#1f2328">.</span><span style="color:#1f2328">log</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">.</span><span style="color:#1f2328">git</span>
 </span></span></code></pre></div><h3 id="4-레이어-결합-및-최소화하기">4. 레이어 결합 및 최소화하기</h3>
 <p>Dockerfile의 각 명령어(RUN, COPY, ADD 등)는 이미지에 새로운 레이어를 생성합니다. 레이어가 많아지면 이미지 크기가 커질 수 있습니다. 여러 명령어를 하나의 RUN 명령어로 결합하여 레이어 수를 줄이면 이미지를 최적화할 수 있습니다.
 <strong>예시:</strong> 다음과 같이 작성하기보다는:</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>RUN apt-get update
-</span></span><span style="display:flex;"><span>RUN apt-get install -y curl nodejs
-</span></span><span style="display:flex;"><span>RUN apt-get clean
-</span></span><span style="display:flex;"><span>RUN rm -rf /<span style="color:#fb660a;font-weight:bold">var</span>/lib/apt/lists/*
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#1f2328">RUN</span> <span style="color:#1f2328">apt</span><span style="color:#0550ae">-</span><span style="color:#1f2328">get</span> <span style="color:#1f2328">update</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">RUN</span> <span style="color:#1f2328">apt</span><span style="color:#0550ae">-</span><span style="color:#1f2328">get</span> <span style="color:#1f2328">install</span> <span style="color:#0550ae">-</span><span style="color:#1f2328">y</span> <span style="color:#1f2328">curl</span> <span style="color:#1f2328">nodejs</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">RUN</span> <span style="color:#1f2328">apt</span><span style="color:#0550ae">-</span><span style="color:#1f2328">get</span> <span style="color:#1f2328">clean</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">RUN</span> <span style="color:#1f2328">rm</span> <span style="color:#0550ae">-</span><span style="color:#1f2328">rf</span> <span style="color:#0550ae">/</span><span style="color:#cf222e">var</span><span style="color:#f6f8fa;background-color:#82071e">/lib/apt/lists/*</span>
 </span></span></code></pre></div><p>다음처럼 한 줄로 결합하면 좋습니다:</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>RUN apt-get update &amp;&amp; apt-get install -y curl nodejs \
-</span></span><span style="display:flex;"><span>    &amp;&amp; apt-get clean &amp;&amp; rm -rf /<span style="color:#fb660a;font-weight:bold">var</span>/lib/apt/lists/*
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#1f2328">RUN</span> <span style="color:#1f2328">apt</span><span style="color:#0550ae">-</span><span style="color:#1f2328">get</span> <span style="color:#1f2328">update</span> <span style="color:#0550ae">&amp;&amp;</span> <span style="color:#1f2328">apt</span><span style="color:#0550ae">-</span><span style="color:#1f2328">get</span> <span style="color:#1f2328">install</span> <span style="color:#0550ae">-</span><span style="color:#1f2328">y</span> <span style="color:#1f2328">curl</span> <span style="color:#1f2328">nodejs</span> <span style="color:#0550ae">\</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&amp;&amp;</span> <span style="color:#1f2328">apt</span><span style="color:#0550ae">-</span><span style="color:#1f2328">get</span> <span style="color:#1f2328">clean</span> <span style="color:#0550ae">&amp;&amp;</span> <span style="color:#1f2328">rm</span> <span style="color:#0550ae">-</span><span style="color:#1f2328">rf</span> <span style="color:#0550ae">/</span><span style="color:#cf222e">var</span><span style="color:#f6f8fa;background-color:#82071e">/lib/apt/lists/*</span>
 </span></span></code></pre></div><p>이렇게 하면 레이어 수를 줄이고 같은 레이어 안에서 캐시와 같은 임시 파일을 제거할 수 있어 이미지가 더 작고 깔끔해집니다.</p>
 <h3 id="5-불필요한-의존성-설치-피하기">5. 불필요한 의존성 설치 피하기</h3>
 <p>Docker 이미지 초기 상태에서는 &ldquo;혹시 필요할지도 몰라서&rdquo; 추가 라이브러리를 설치하는 경우가 많았습니다. 그러나 시간이 지나면서 이는 이미지의 불필요한 비대화와 불필요한 보안 위험을 초래한다는 것을 깨달았습니다. 런타임에 실제로 필요한 의존성만 지정함으로써 이미지를 더 작고 안전하게 유지할 수 있었습니다.</p>
 <h3 id="6-캐시-활용하기">6. 캐시 활용하기</h3>
 <p>도커 이미지 빌드 과정에서 캐시를 잘 활용하면 이미지 빌드 시간을 크게 단축할 수 있습니다. 예를 들어, 변경되지 않는 의존성 파일(COPY 명령어)은 Dockerfile 최상단에 배치하여 캐시를 재사용할 수 있게 설계할 수 있습니다.예시:</p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>COPY <span style="color:#fb660a;font-weight:bold">package</span>.json <span style="color:#fb660a;font-weight:bold">package</span>-lock.json ./
-</span></span><span style="display:flex;"><span>RUN npm install
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#1f2328">COPY</span> <span style="color:#cf222e">package</span><span style="color:#1f2328">.</span><span style="color:#1f2328">json</span> <span style="color:#cf222e">package</span><span style="color:#0550ae">-</span><span style="color:#1f2328">lock</span><span style="color:#1f2328">.</span><span style="color:#1f2328">json</span> <span style="color:#1f2328">.</span><span style="color:#0550ae">/</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">RUN</span> <span style="color:#1f2328">npm</span> <span style="color:#1f2328">install</span>
 </span></span></code></pre></div><h3 id="7-docker-slim-사용하기">7. docker-slim 사용하기</h3>
 <p>이미지 최적화에 혁신을 가져온 도구 중 하나는 docker-slim이었습니다. 이 도구는 이미지를 자동으로 분석하고 사용되지 않는 파일, 바이너리, 라이브러리를 제거하여 크기를 줄여주며, 기능에는 영향을 주지 않습니다.
 docker-slim을 사용한 이후, 최대 80%까지 이미지 크기를 줄일 수 있었으며 이는 최적화 전략의 필수 도구가 되었습니다.
 <strong>이미지를 최적화하는 명령어:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>docker-slim build &lt;image-name&gt;
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#1f2328">docker</span><span style="color:#0550ae">-</span><span style="color:#1f2328">slim</span> <span style="color:#1f2328">build</span> <span style="color:#0550ae">&lt;</span><span style="color:#1f2328">image</span><span style="color:#0550ae">-</span><span style="color:#1f2328">name</span><span style="color:#0550ae">&gt;</span>
 </span></span></code></pre></div><h3 id="8-이미지-정기적으로-점검-및-정리하기">8. 이미지 정기적으로 점검 및 정리하기</h3>
 <p>Docker 이미지는 시간이 지남에 따라 쌓이는데, 사용되지 않는 이미지나 레이어는 공간을 낭비하게 됩니다. 정기적으로 사용하지 않는 이미지를 점검하고 정리하는 것은 깨끗한 환경을 유지하는 데 중요합니다.
 <strong>사용하지 않는 이미지를 정리하는 명령어:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>docker system prune -f
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#1f2328">docker</span> <span style="color:#1f2328">system</span> <span style="color:#1f2328">prune</span> <span style="color:#0550ae">-</span><span style="color:#1f2328">f</span>
 </span></span></code></pre></div><p><strong>모든 사용하지 않는 이미지를 제거하는 명령어:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>docker image prune -a -f
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#1f2328">docker</span> <span style="color:#1f2328">image</span> <span style="color:#1f2328">prune</span> <span style="color:#0550ae">-</span><span style="color:#1f2328">a</span> <span style="color:#0550ae">-</span><span style="color:#1f2328">f</span>
 </span></span></code></pre></div><p>정기적인 정리 작업을 통해 Docker 환경을 효율적으로 유지할 수 있습니다.</p>
 <h3 id="9-압축-파일-활용하기">9. 압축 파일 활용하기</h3>
 <p>이미지 크기를 줄이는 또 다른 방법으로, 압축된 애플리케이션 소스를 Docker 이미지에 포함할 수 있습니다. 소스 파일을 압축하면 전송량이 줄어들고 크기가 최적화됩니다. 또한, 컨테이너 안에서 압축 해제를 통해 필요한 파일만 사용할 수 있습니다.
 <strong>예시:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-dockerfile" data-lang="dockerfile"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">COPY</span> app.tar.gz /app/
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">RUN</span> tar -zxvf /app/app.tar.gz -C /app &amp;&amp; rm /app/app.tar.gz
-</span></span></code></pre></div><p>이 방법은 특히 파일 구조가 복잡하거나 대량의 데이터를 포함하고 있을 때 유용하게 사용할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-dockerfile" data-lang="dockerfile"><span style="display:flex;"><span><span style="color:#cf222e">COPY</span> app.tar.gz /app/<span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">RUN</span> tar -zxvf /app/app.tar.gz -C /app <span style="color:#0550ae">&amp;&amp;</span> rm /app/app.tar.gz<span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span></code></pre></div><p>이 방법은 특히 파일 구조가 복잡하거나 대량의 데이터를 포함하고 있을 때 유용하게 사용할 수 있습니다.</p>
 <h3 id="10-이미지에-메타데이터-추가하기">10. 이미지에 메타데이터 추가하기</h3>
 <p>Dockerfile에 LABEL 명령어를 사용해 주요 메타데이터를 추가하면 이미지 관리와 검색이 더 쉬워집니다. 이는 이미지가 서로 다른 팀이나 빌드 파이프라인에서 사용될 때 유용합니다.
 <strong>예시:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#fff;background-color:#111;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-dockerfile" data-lang="dockerfile"><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">LABEL</span> <span style="color:#fb660a">maintainer</span>=<span style="color:#0086d2">&#34;your_email@example.com&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">LABEL</span> <span style="color:#fb660a">version</span>=<span style="color:#0086d2">&#34;1.0&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#fb660a;font-weight:bold">LABEL</span> <span style="color:#fb660a">description</span>=<span style="color:#0086d2">&#34;This is an optimized Docker image.&#34;</span>
-</span></span></code></pre></div><p>이렇게 메타데이터를 추가하면 관리가 용이하고, 다양한 태그로 이미지를 명확히 식별할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-dockerfile" data-lang="dockerfile"><span style="display:flex;"><span><span style="color:#cf222e">LABEL</span> <span style="color:#953800">maintainer</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;your_email@example.com&#34;</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">LABEL</span> <span style="color:#953800">version</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;1.0&#34;</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">LABEL</span> <span style="color:#953800">description</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;This is an optimized Docker image.&#34;</span><span style="color:#f6f8fa;background-color:#82071e">
+</span></span></span></code></pre></div><p>이렇게 메타데이터를 추가하면 관리가 용이하고, 다양한 태그로 이미지를 명확히 식별할 수 있습니다.</p>
 <h2 id="결론">결론</h2>
 <p>Docker 이미지를 최적화하는 작업은 단순히 이미지 크기를 줄이고 배포 속도를 높이는 것뿐만 아니라, 보안성과 자원 효율성까지 향상시킬 수 있는 중요한 과정입니다. 다양한 최적화 방법을 통해 Docker 이미지를 간소화하면 운영 환경에서의 안정성과 관리 효율성이 증가합니다. 특히 다단계 빌드나 캐시 활용, 그리고 도구를 적극 활용하는 전략들은 시간을 절약하고 비용을 줄이는 데 큰 도움이 됩니다. 결과적으로, 최적화된 Docker 이미지는 개발 및 운영의 전체적인 생산성을 높이는 핵심 요소로 자리매김합니다.</p>
 <h2 id="참고-자료">참고 자료</h2>
@@ -395,13 +395,14 @@ docker-slim을 사용한 이후, 최대 80%까지 이미지 크기를 줄일 수
   
   document.addEventListener('DOMContentLoaded', function() {
     
-    const codeBlocks = document.querySelectorAll('.post-content pre');
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
     
     codeBlocks.forEach(function(block) {
       
       const copyButton = document.createElement('button');
       copyButton.className = 'copy-button';
-      copyButton.textContent = '복사';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
       
       
       copyButton.addEventListener('click', function() {
@@ -412,19 +413,19 @@ docker-slim을 사용한 이후, 최대 80%까지 이미지 크기를 줄일 수
         
         navigator.clipboard.writeText(text).then(function() {
           
-          copyButton.textContent = '복사됨!';
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
           copyButton.classList.add('copied');
           
           
           setTimeout(function() {
-            copyButton.textContent = '복사';
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
             copyButton.classList.remove('copied');
           }, 2000);
         }).catch(function(err) {
           console.error('복사 실패:', err);
-          copyButton.textContent = '실패';
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
           setTimeout(function() {
-            copyButton.textContent = '복사';
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
           }, 2000);
         });
       });
@@ -434,6 +435,9 @@ docker-slim을 사용한 이후, 최대 80%까지 이미지 크기를 줄일 수
     });
   });
 </script>
+
+
+
 
 
 
