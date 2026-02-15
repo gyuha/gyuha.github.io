@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude Code Subagent 만들기: 실무에서 바로 쓰는 설계/구현 가이드'" />
+  <title>Claude Code Subagent 만들기: 실무에서 바로 쓰는 설계/구현 가이드  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude Code Subagent 만들기: 실무에서 바로 쓰는 설계/구현 가이드" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-02-16"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/2026-02-16-claude-code-subagents-guide/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude" />
+  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="subagent" />
+  
+  <meta property="og:tags" content="multi-agent" />
+  
+  <meta property="og:tags" content="automation" />
+  
+  <meta property="og:tags" content="agent-sdk" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action="https://google.com/search">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search"></i>
+                <input type="hidden" name="sitesearch" value="https://gyuha.com/" />
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/2026-02-16-claude-code-subagents-guide/">
+          <h1>
+            Claude Code Subagent 만들기: 실무에서 바로 쓰는 설계/구현 가이드
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/2026-02-16-claude-code-subagents-guide/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>&ldquo;에이전트는 많이 만들었는데, 왜 자꾸 컨텍스트가 오염되지?&rdquo;</p>
+<p>&ldquo;읽기 전용 조사 작업인데 왜 메인 세션에서 토큰을 이렇게 많이 먹지?&rdquo;</p>
+<p>Claude Code를 오래 쓰다 보면 결국 <strong>Subagent 설계</strong>가 생산성을 결정합니다.</p>
+<p>이 글은 Claude 공식 문서의 <code>sub-agents</code>를 중심으로, 실제로 바로 적용 가능한 방식으로 정리했습니다. 추가로 Agent SDK 관점과 멀티 에이전트 운영 사례를 함께 묶어서, &ldquo;어디서부터 어떻게 시작하면 되는지&quot;를 한 번에 이해할 수 있게 구성했습니다.</p>
+<h2 id="1-subagent가-정확히-뭔가">1) Subagent가 정확히 뭔가?</h2>
+<p>Subagent는 특정 작업을 위임받아 처리하는 <strong>전문화된 AI 워커</strong>입니다.</p>
+<p>핵심은 4가지입니다.</p>
+<ol>
+<li><strong>독립 컨텍스트</strong>에서 실행됨</li>
+<li>자체 <strong>시스템 프롬프트</strong>를 가짐</li>
+<li>사용할 **도구 권한(tools/disallowedTools)**을 분리 가능</li>
+<li>필요하면 모델(<code>haiku</code>, <code>sonnet</code>, <code>opus</code>, <code>inherit</code>)도 분리 가능</li>
+</ol>
+<p>즉, &ldquo;탐색/검토/수정&quot;을 메인 세션에 다 몰아 넣지 않고, 역할별로 컨텍스트를 분리해서 운영할 수 있습니다.</p>
+<h2 id="2-subagent-vs-agent-teams-뭐가-다른가">2) Subagent vs Agent Teams, 뭐가 다른가?</h2>
+<p>둘 다 멀티 에이전트처럼 보이지만 목적이 다릅니다.</p>
+<ul>
+<li><strong>Subagent</strong>: 단일 세션 안에서 특정 작업을 위임받아 처리한 뒤 결과를 반환</li>
+<li><strong>Agent Teams</strong>: 여러 에이전트가 병렬로 돌아가며 서로 통신하고 조율하는 협업 구조</li>
+</ul>
+<p>간단히 말하면:</p>
+<ul>
+<li>&ldquo;코드베이스 조사만 빨리 해줘&rdquo; -&gt; Subagent</li>
+<li>&ldquo;보안/성능/테스트 리뷰어를 팀으로 동시에 돌려줘&rdquo; -&gt; Agent Teams</li>
+</ul>
+<h2 id="3-가장-빠른-시작-방법-agents">3) 가장 빠른 시작 방법 (<code>/agents</code>)</h2>
+<p>가장 쉬운 방법은 Claude Code에서 <code>/agents</code>를 쓰는 것입니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>/agents
+</span></span></code></pre></div><p>추천 흐름:</p>
+<ol>
+<li><code>Create new agent</code> 선택</li>
+<li><code>User-level</code> 또는 <code>Project-level</code> 선택</li>
+<li><code>Generate with Claude</code>로 초안 생성</li>
+<li>도구 권한(읽기 전용/전체)과 모델 선택</li>
+<li>저장 후 바로 호출</li>
+</ol>
+<p><code>User-level</code>은 여러 프로젝트에서 재사용할 때 좋고,
+<code>Project-level(.claude/agents/)</code>은 팀과 함께 버전 관리할 때 좋습니다.</p>
+<h2 id="4-수동으로-만들-때-subagent-파일-템플릿">4) 수동으로 만들 때: Subagent 파일 템플릿</h2>
+<p>Subagent는 Markdown + YAML frontmatter 파일입니다.</p>
+<p>예: <code>.claude/agents/code-reviewer.md</code></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>name: code-reviewer
+</span></span><span style="display:flex;"><span>description: 코드 변경 직후 품질/보안/유지보수성을 검토한다. 필요할 때 적극적으로 사용한다.
+</span></span><span style="display:flex;"><span>tools: Read, Grep, Glob, Bash
+</span></span><span style="display:flex;"><span>model: sonnet
+</span></span><span style="display:flex;"><span>permissionMode: default
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>당신은 시니어 코드 리뷰어다.
+</span></span><span style="display:flex;"><span>변경 파일 중심으로 검토하고, 우선순위(critical/warning/suggestion)로 결과를 정리하라.
+</span></span></code></pre></div><h3 id="자주-쓰는-frontmatter-필드">자주 쓰는 frontmatter 필드</h3>
+<ul>
+<li><code>name</code> (필수): 에이전트 식별자</li>
+<li><code>description</code> (필수): Claude가 언제 이 에이전트를 호출할지 판단 기준</li>
+<li><code>tools</code>: 허용 도구 목록</li>
+<li><code>disallowedTools</code>: 금지 도구 목록</li>
+<li><code>model</code>: <code>haiku</code> / <code>sonnet</code> / <code>opus</code> / <code>inherit</code></li>
+<li><code>permissionMode</code>: <code>default</code>, <code>acceptEdits</code>, <code>dontAsk</code>, <code>bypassPermissions</code>, <code>plan</code></li>
+<li><code>skills</code>: 시작 시 주입할 스킬 목록</li>
+<li><code>hooks</code>: PreToolUse/PostToolUse/Stop 등 라이프사이클 훅</li>
+<li><code>memory</code>: <code>user</code>, <code>project</code>, <code>local</code> 범위 메모리</li>
+</ul>
+<h2 id="5-실무-설계-원칙-이거-먼저-지키면-실패-확률이-줄어듦">5) 실무 설계 원칙 (이거 먼저 지키면 실패 확률이 줄어듦)</h2>
+<h3 id="원칙-a-설명description을-가장-공들여-써라">원칙 A: 설명(description)을 가장 공들여 써라</h3>
+<p>Claude는 설명을 보고 라우팅합니다. 설명이 모호하면 호출 타이밍이 흔들립니다.</p>
+<ul>
+<li>나쁜 예: &ldquo;코드 잘 보는 에이전트&rdquo;</li>
+<li>좋은 예: &ldquo;코드 변경 직후 보안/성능/테스트 누락을 점검하는 리뷰 에이전트&rdquo;</li>
+</ul>
+<h3 id="원칙-b-최소-권한으로-시작하라">원칙 B: 최소 권한으로 시작하라</h3>
+<p>처음부터 <code>Write/Edit/Bash</code>를 다 열지 말고, 읽기 전용으로 검증한 뒤 필요한 권한만 확장하세요.</p>
+<h3 id="원칙-c-단일-책임으로-쪼개라">원칙 C: 단일 책임으로 쪼개라</h3>
+<p>하나의 Subagent가 기획+구현+리뷰+배포까지 다 하게 만들면 다시 범용 에이전트가 됩니다.</p>
+<ul>
+<li><code>explorer</code> (읽기 전용 탐색)</li>
+<li><code>implementer</code> (수정)</li>
+<li><code>reviewer</code> (검증)</li>
+</ul>
+<p>이렇게 분리하면 훨씬 안정적입니다.</p>
+<h3 id="원칙-d-토큰-폭탄-작업은-subagent로-격리하라">원칙 D: 토큰 폭탄 작업은 Subagent로 격리하라</h3>
+<p>대규모 로그 분석, 테스트 전체 실행, 문서 수집 같은 작업은 Subagent에 위임해서 메인 컨텍스트를 보호하세요.</p>
+<h2 id="6-블로그-자동화-관점에서의-subagent-설계-예시">6) 블로그 자동화 관점에서의 Subagent 설계 예시</h2>
+<p>질문이 자주 나옵니다.</p>
+<p>&ldquo;블로그 자동화를 할 때도 Subagent를 써야 하나요?&rdquo;</p>
+<p>답은 <strong>Yes</strong>입니다. 특히 다음처럼 나누면 좋습니다.</p>
+<ol>
+<li><code>keyword-researcher</code> (읽기 전용)</li>
+<li><code>content-planner</code> (읽기 + 정리)</li>
+<li><code>post-writer</code> (쓰기 허용)</li>
+<li><code>seo-reviewer</code> (읽기 전용 검수)</li>
+</ol>
+<p>여기서 핵심은, 작성(<code>post-writer</code>) 권한을 다른 에이전트와 분리하는 것입니다. 그래야 잘못된 수정/덮어쓰기 리스크를 줄일 수 있습니다.</p>
+<h2 id="7-hook으로-안전장치-걸기-고급">7) Hook으로 안전장치 걸기 (고급)</h2>
+<p>권한만으로 부족할 때는 <code>PreToolUse</code> 훅으로 명령을 필터링할 수 있습니다.</p>
+<p>예를 들어 Bash는 허용하지만 위험 명령은 차단하도록 만들 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#0550ae">hooks</span><span style="color:#1f2328">:</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#0550ae">PreToolUse</span><span style="color:#1f2328">:</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span>- <span style="color:#0550ae">matcher</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span><span style="color:#0a3069">&#34;Bash&#34;</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">      </span><span style="color:#0550ae">hooks</span><span style="color:#1f2328">:</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">        </span>- <span style="color:#0550ae">type</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>command<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">          </span><span style="color:#0550ae">command</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span><span style="color:#0a3069">&#34;./scripts/validate-command.sh&#34;</span><span style="color:#fff">
+</span></span></span></code></pre></div><p>검증 스크립트에서 금지 패턴을 감지하면 종료 코드 <code>2</code>로 차단합니다.</p>
+<h2 id="8-agent-sdk는-언제-필요한가">8) Agent SDK는 언제 필요한가?</h2>
+<p>Subagent를 CLI 안에서 운영하는 단계 다음으로,
+백엔드 서비스/워크플로우에 내장하려면 Agent SDK를 고려할 수 있습니다.</p>
+<ul>
+<li>장점: 앱/서버 코드에서 에이전트 실행 흐름을 직접 제어 가능</li>
+<li>용도: 장기 세션 운영, 외부 시스템 연동, 커스텀 툴 체인 구성</li>
+</ul>
+<p>다만, 처음에는 SDK부터 시작하기보다 <strong>Claude Code 내 Subagent로 설계 검증</strong>을 먼저 하는 편이 빠릅니다. 구조가 검증된 후 SDK로 올리는 것이 실패 비용이 낮습니다.</p>
+<h2 id="9-바로-써먹는-체크리스트">9) 바로 써먹는 체크리스트</h2>
+<p>새 Subagent를 만들 때 아래 7가지만 확인하세요.</p>
+<ol>
+<li><code>description</code>이 구체적인가?</li>
+<li>기본 도구 권한이 최소 권한인가?</li>
+<li>모델 선택 이유가 명확한가? (속도/비용/품질)</li>
+<li>단일 책임이 지켜졌는가?</li>
+<li>결과 출력 형식(예: 우선순위/파일경로)이 정해졌는가?</li>
+<li>실패 시 재시도 규칙이 있는가?</li>
+<li>팀 공유가 필요하면 <code>.claude/agents/</code>에 버전 관리되는가?</li>
+</ol>
+<h2 id="마무리">마무리</h2>
+<p>Subagent를 잘 만들면 &ldquo;AI가 잘 답한다&quot;를 넘어
+<strong>&ldquo;AI 워크플로우가 재현 가능하게 굴러간다&rdquo;</strong> 단계로 올라갑니다.</p>
+<p>처음에는 복잡하게 시작하지 말고,</p>
+<ul>
+<li>읽기 전용 <code>explorer</code> 하나</li>
+<li>수정 전용 <code>implementer</code> 하나</li>
+<li>검수 전용 <code>reviewer</code> 하나</li>
+</ul>
+<p>이 3개만 먼저 만들어 보세요.</p>
+<p>그 다음에 hooks, memory, skills를 붙이면 됩니다.</p>
+<h2 id="참고-자료">참고 자료</h2>
+<ul>
+<li>Claude Code 공식 문서 (Subagents): <a href="https://code.claude.com/docs/ko/sub-agents">https://code.claude.com/docs/ko/sub-agents</a></li>
+<li>Bind AI 블로그 (Claude Agent SDK 개요): <a href="https://blog.getbind.co/how-to-create-agents-with-claude-agents-sdk/">https://blog.getbind.co/how-to-create-agents-with-claude-agents-sdk/</a></li>
+<li>zoeylog (클로드 코드 자동화 사례): <a href="https://zoey.day/blog?post=1q3vdn2px1w382xy49pr">https://zoey.day/blog?post=1q3vdn2px1w382xy49pr</a></li>
+</ul>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 02월 16일 01시 40분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/development">Development</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/productivity">Productivity</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-02-14-tmux-guide/" rel="prev">
+        <span>tmux 사용법 완전 정리: 세션 관리부터 생산성 꿀팁까지</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-subagent가-정확히-뭔가">1) Subagent가 정확히 뭔가?</a></li>
+    <li><a href="#2-subagent-vs-agent-teams-뭐가-다른가">2) Subagent vs Agent Teams, 뭐가 다른가?</a></li>
+    <li><a href="#3-가장-빠른-시작-방법-agents">3) 가장 빠른 시작 방법 (<code>/agents</code>)</a></li>
+    <li><a href="#4-수동으로-만들-때-subagent-파일-템플릿">4) 수동으로 만들 때: Subagent 파일 템플릿</a>
+      <ul>
+        <li><a href="#자주-쓰는-frontmatter-필드">자주 쓰는 frontmatter 필드</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-실무-설계-원칙-이거-먼저-지키면-실패-확률이-줄어듦">5) 실무 설계 원칙 (이거 먼저 지키면 실패 확률이 줄어듦)</a>
+      <ul>
+        <li><a href="#원칙-a-설명description을-가장-공들여-써라">원칙 A: 설명(description)을 가장 공들여 써라</a></li>
+        <li><a href="#원칙-b-최소-권한으로-시작하라">원칙 B: 최소 권한으로 시작하라</a></li>
+        <li><a href="#원칙-c-단일-책임으로-쪼개라">원칙 C: 단일 책임으로 쪼개라</a></li>
+        <li><a href="#원칙-d-토큰-폭탄-작업은-subagent로-격리하라">원칙 D: 토큰 폭탄 작업은 Subagent로 격리하라</a></li>
+      </ul>
+    </li>
+    <li><a href="#6-블로그-자동화-관점에서의-subagent-설계-예시">6) 블로그 자동화 관점에서의 Subagent 설계 예시</a></li>
+    <li><a href="#7-hook으로-안전장치-걸기-고급">7) Hook으로 안전장치 걸기 (고급)</a></li>
+    <li><a href="#8-agent-sdk는-언제-필요한가">8) Agent SDK는 언제 필요한가?</a></li>
+    <li><a href="#9-바로-써먹는-체크리스트">9) 바로 써먹는 체크리스트</a></li>
+    <li><a href="#마무리">마무리</a></li>
+    <li><a href="#참고-자료">참고 자료</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="https://gyuha.com/tags/claude" class="badge badge-secondary">claude</a>
+    <a href="https://gyuha.com/tags/claude-code" class="badge badge-secondary">claude-code</a>
+    <a href="https://gyuha.com/tags/subagent" class="badge badge-secondary">subagent</a>
+    <a href="https://gyuha.com/tags/multi-agent" class="badge badge-secondary">multi-agent</a>
+    <a href="https://gyuha.com/tags/automation" class="badge badge-secondary">automation</a>
+    <a href="https://gyuha.com/tags/agent-sdk" class="badge badge-secondary">agent-sdk</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
