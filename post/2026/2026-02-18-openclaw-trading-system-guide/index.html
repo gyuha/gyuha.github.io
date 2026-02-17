@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'OpenClaw Trading 실전 구축기: AI 자동매매 시스템을 데이터-전략-분석-집행으로 운영하는 방법'" />
+  <title>OpenClaw Trading 실전 구축기: AI 자동매매 시스템을 데이터-전략-분석-집행으로 운영하는 방법  | 신규하 블로그</title>
+  <meta property="og:title" content="OpenClaw Trading 실전 구축기: AI 자동매매 시스템을 데이터-전략-분석-집행으로 운영하는 방법" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-02-18"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/2026-02-18-openclaw-trading-system-guide/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="openclaw" />
+  
+  <meta property="og:tags" content="trading" />
+  
+  <meta property="og:tags" content="kiwoom" />
+  
+  <meta property="og:tags" content="opendart" />
+  
+  <meta property="og:tags" content="supabase" />
+  
+  <meta property="og:tags" content="cron" />
+  
+  <meta property="og:tags" content="heartbeat" />
+  
+  <meta property="og:tags" content="webhook" />
+  
+  <meta property="og:tags" content="ai-agent" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action="https://google.com/search">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search"></i>
+                <input type="hidden" name="sitesearch" value="https://gyuha.com/" />
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/2026-02-18-openclaw-trading-system-guide/">
+          <h1>
+            OpenClaw Trading 실전 구축기: AI 자동매매 시스템을 데이터-전략-분석-집행으로 운영하는 방법
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/2026-02-18-openclaw-trading-system-guide/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>OpenClaw를 트레이딩에 붙이면 &ldquo;지표 조회 자동화&rdquo; 수준을 넘어서, 전략 문서를 해석하고 점수화 로직을 만들고 주문까지 연결하는 운영 체계를 만들 수 있습니다.</p>
+<p>이번 글은 아래 두 소스를 기준으로, 실제로 따라 할 수 있는 구축 순서와 운영 체크포인트를 한 번에 정리한 실전형 포스팅입니다.</p>
+<ul>
+<li>영상: <a href="https://www.youtube.com/watch?v=CgniMVyJtmg&amp;t=733s">OpenClaw Utilization Guide</a></li>
+<li>문서: <a href="https://dante-labs-english.notion.site/openclaw-trading">OpenClaw Trading Notion</a></li>
+</ul>
+<h2 id="핵심-요약">핵심 요약</h2>
+<p>OpenClaw Trading의 본질은 &ldquo;매매 봇 하나 실행&quot;이 아니라 다음 루프를 계속 돌리는 것입니다.</p>
+<ol>
+<li>데이터 수집 파이프라인 구축</li>
+<li>전략 문서 기반 분석 모듈 생성</li>
+<li>종목 스코어링 및 주문 집행</li>
+<li>결과 기록과 피드백을 다음 전략에 반영</li>
+</ol>
+<p>즉, 사람이 매일 감으로 진입/청산을 판단하는 구조가 아니라, <strong>전략-실행-회고를 자동화 가능한 운영 시스템</strong>으로 바꾸는 접근입니다.</p>
+<h2 id="시스템-구조-4계층-아키텍처">시스템 구조: 4계층 아키텍처</h2>
+<pre class="mermaid">flowchart LR
+    A[Data Layer\nOHLCV/거래량/공시/재무 수집] --> B[Strategy Layer\n전략 문서 해석\n활성 전략 관리]
+    B --> C[Analysis Layer\n다중 팩터 스코어링\n랭킹/매수수량 계산]
+    C --> D[Execution Layer\n주문 집행\n손익/체결 기록]
+    D --> E[(Supabase)]
+    E --> B</pre><h3 id="1-data-layer">1) Data Layer</h3>
+<ul>
+<li>OHLCV, 거래량, 공시/재무 데이터 수집</li>
+<li>종목군(예: 거래량 상위 Top 50) 기준 적재</li>
+<li>장중/장후/새벽 정리 작업까지 스케줄링</li>
+</ul>
+<h3 id="2-strategy-layer">2) Strategy Layer</h3>
+<ul>
+<li>투자 전략 보고서(PDF/문서) 입력</li>
+<li>LLM이 전략 규칙을 실행 가능한 로직으로 변환</li>
+<li>전략 버전 관리(활성/비활성)</li>
+</ul>
+<h3 id="3-analysis-layer">3) Analysis Layer</h3>
+<ul>
+<li>다중 팩터 스코어링(수치, 차트, 뉴스/감성 등)</li>
+<li>종목별 점수, 랭킹, 예산 대비 매수 수량 계산</li>
+<li>Python 분석 모듈 자동 생성/수정</li>
+</ul>
+<h3 id="4-execution-layer">4) Execution Layer</h3>
+<ul>
+<li>스케줄 또는 신호 기반 주문 실행</li>
+<li>예산 한도와 분산 투자 규칙 적용</li>
+<li>주문/체결/손익 로그 저장</li>
+</ul>
+<h2 id="openclaw가-자동으로-돌아가는-3가지-메커니즘">OpenClaw가 자동으로 돌아가는 3가지 메커니즘</h2>
+<pre class="mermaid">flowchart TB
+    Cron[Cron\n정시/주기 실행] --> Agent[OpenClaw Agent]
+    Heartbeat[Heartbeat\n간격 기반 점검] --> Agent
+    Webhook[Webhook\n외부 이벤트 트리거] --> Agent
+    Agent --> Telegram[Telegram 알림/대화]
+    Agent --> Kiwoom[키움 REST API\n주문/조회]
+    Agent --> DART[OpenDART API\n공시/재무]
+    Agent --> DB[(Supabase)]</pre><h3 id="cron">Cron</h3>
+<p>정해진 시간에 작업을 실행합니다.</p>
+<ul>
+<li>예: 장중 5분 수집, 장후 일봉 적재, 장마감 전 청산</li>
+</ul>
+<h3 id="heartbeat">Heartbeat</h3>
+<p>고정 시각이 아니라 &ldquo;간격 기반&quot;으로 상태를 확인합니다.</p>
+<ul>
+<li>장애 감지, 누락 점검, 알림에 유리</li>
+</ul>
+<h3 id="webhook">Webhook</h3>
+<p>외부 이벤트가 들어오면 작업을 깨웁니다.</p>
+<ul>
+<li>메시지/트리거 기반 실행</li>
+</ul>
+<h2 id="기술-스택-조합이-중요한-이유">기술 스택 조합이 중요한 이유</h2>
+<p>영상/문서 흐름에서 강조되는 조합은 다음입니다.</p>
+<ul>
+<li><strong>키움 REST API</strong>: 자동매매 실행 경로</li>
+<li><strong>OpenDART API</strong>: 공시/재무 데이터 보강</li>
+<li><strong>Supabase(Postgres)</strong>: 데이터/전략/결과 저장소</li>
+<li><strong>Telegram</strong>: 운영 커뮤니케이션 채널</li>
+</ul>
+<p>포인트는 &ldquo;모델이 똑똑하다&quot;가 아니라, <strong>실행 가능한 인프라와 연결되어 있느냐</strong>입니다.</p>
+<h2 id="구축-절차-실무에서-바로-쓰는-순서">구축 절차: 실무에서 바로 쓰는 순서</h2>
+<pre class="mermaid">flowchart TD
+    S1[1. OpenClaw/Telegram 기본 연결] --> S2[2. 스킬 설치\nKiwoom/OpenDART/Supabase]
+    S2 --> S3[3. API 키 발급/환경변수 등록]
+    S3 --> S4[4. API 연결 테스트]
+    S4 --> S5[5. 데이터 파이프라인 적재/스케줄]
+    S5 --> S6[6. 전략 문서 등록\n분석 모듈 생성]
+    S6 --> S7[7. 백테스트]
+    S7 --> S8[8. 모의투자 운영]
+    S8 --> S9[9. 소액 실전 전환]</pre><h3 id="1-기본-환경-준비">1) 기본 환경 준비</h3>
+<ol>
+<li>OpenClaw 설치 및 초기 설정</li>
+<li>Telegram bot 연결(대화 승인/송수신 확인)</li>
+<li>스킬 경로 확인 (<code>~/.openclaw/skills</code>)</li>
+</ol>
+<h3 id="2-스킬-설치">2) 스킬 설치</h3>
+<ul>
+<li>키움 REST API 스킬</li>
+<li>OpenDART API 스킬</li>
+<li>Supabase/Postgres 관련 스킬</li>
+<li>시크릿/환경변수 관리 스킬</li>
+</ul>
+<p>핵심은 임시 프롬프트가 아니라, 반복 가능한 작업을 스킬로 고정하는 것입니다.</p>
+<h3 id="3-api-키-발급-및-환경변수-등록">3) API 키 발급 및 환경변수 등록</h3>
+<p>필수 항목 예시:</p>
+<ul>
+<li><code>SUPABASE_URL</code></li>
+<li><code>SUPABASE_SECRET_KEY</code></li>
+<li><code>SUPABASE_DB_PASSWORD</code></li>
+<li><code>OPENDART_API_KEY</code></li>
+<li><code>KIWOOM_MOCK_APP_KEY</code>, <code>KIWOOM_MOCK_SECRET_KEY</code>, <code>KIWOOM_MOCK_ACCOUNT_NO</code></li>
+<li><code>KIWOOM_APP_KEY</code>, <code>KIWOOM_SECRET_KEY</code>, <code>KIWOOM_ACCOUNT_NO</code></li>
+</ul>
+<p>실전 팁: 모의/실전 키는 변수명부터 명확히 분리해야 운영 사고를 줄일 수 있습니다.</p>
+<h3 id="4-api-연결-테스트반드시-선행">4) API 연결 테스트(반드시 선행)</h3>
+<p>순서:</p>
+<ol>
+<li>Supabase 읽기/쓰기 테스트</li>
+<li>OpenDART 조회 테스트</li>
+<li>키움 REST API 핵심 엔드포인트 테스트</li>
+</ol>
+<p>이 단계를 건너뛰면, 이후 문제 발생 시 전략 오류와 인프라 오류를 구분하기가 어려워집니다.</p>
+<h2 id="데이터-파이프라인-설계-예시">데이터 파이프라인 설계 예시</h2>
+<p>영상 흐름 기준 운영 주기:</p>
+<ul>
+<li>장중: 5분 봉 데이터 수집</li>
+<li>장후: 일봉/집계 데이터 적재</li>
+<li>공시: 10분 단위 모니터링</li>
+<li>새벽: 정리/청소 작업</li>
+</ul>
+<p>또한 예시로 Top 50 종목군 대상 데이터 적재(수천 건 규모)를 수행하고, 기술/재무/공시/스냅샷 테이블을 분리 관리합니다.</p>
+<p>중요한 운영 포인트는 하나입니다.</p>
+<p><strong>&ldquo;스케줄 문서 작성&quot;이 아니라, 실제 cron 등록 여부를 반드시 검증해야 한다.</strong></p>
+<h2 id="전략-생성-감-대신-근거로">전략 생성: 감 대신 근거로</h2>
+<p>영상/문서에서는 전략 설계 시 다음 흐름을 추천합니다.</p>
+<ol>
+<li>리서치 도구(예: Deep Research)로 전략 아이디어 정리</li>
+<li>진입/청산/가중치/임계값을 수식/파라미터로 명시</li>
+<li>분석 코드를 자동 생성하고 버전 관리</li>
+<li>백테스트로 1차 검증</li>
+</ol>
+<p>예시로 통합 점수 임계값(예: 70점 이상 진입) 같은 규칙을 명확히 수치화해, 전략 해석 편차를 줄이는 접근을 사용합니다.</p>
+<h2 id="백테스트와-실거래는-다르게-나온다">백테스트와 실거래는 다르게 나온다</h2>
+<p>소스에서 제시된 백테스트 수치(승률/손익비 등)는 참고 지표일 뿐, 그대로 실거래 성과를 보장하지 않습니다.</p>
+<p>대표적인 이유:</p>
+<ul>
+<li>과최적화(Overfitting)</li>
+<li>체결 지연/슬리피지</li>
+<li>장중 분석 지연으로 인한 타이밍 미스</li>
+<li>API/네트워크/운영 장애</li>
+</ul>
+<p>권장 순서는 항상 같습니다.</p>
+<ol>
+<li>모의투자 충분 검증</li>
+<li>소액 실전</li>
+<li>점진적 증액</li>
+</ol>
+<h2 id="실행-레이어-운영-예시">실행 레이어 운영 예시</h2>
+<p>데이트레이딩 형태 기준으로는 다음 패턴이 자주 사용됩니다.</p>
+<ul>
+<li>장중 특정 시각: 스냅샷 + 스코어링 실행</li>
+<li>예산 사용 한도 적용(예: 자산의 일정 비율)</li>
+<li>종목별 상/하한 규칙으로 분산 매수</li>
+<li>장마감 전 일괄 청산</li>
+</ul>
+<p>이 구조는 &ldquo;당일 리스크 종료&quot;에 유리하지만, 스윙 전략에는 별도 청산 규칙이 필요합니다.</p>
+<h2 id="운영에서-성능을-만드는-진짜-포인트">운영에서 성능을 만드는 진짜 포인트</h2>
+<pre class="mermaid">flowchart LR
+    R1[당일 손익/체결 리포트] --> R2[실패 원인 태깅\n신호/체결/데이터/운영]
+    R2 --> R3[파라미터 수정 후보 생성]
+    R3 --> R4[다음 거래일 반영]
+    R4 --> R1</pre><p>자동매매는 주문 자동화보다 <strong>회고 자동화</strong>가 더 중요합니다.</p>
+<p>매일 최소 루프:</p>
+<ol>
+<li>당일 손익/체결 리포트 생성</li>
+<li>실패 원인 태깅(신호/체결/데이터/운영)</li>
+<li>파라미터 수정 후보 제안</li>
+<li>다음 거래일 반영</li>
+</ol>
+<p>이 루프가 없으면, 시스템은 &ldquo;자동 실행&quot;만 하고 &ldquo;자동 개선&quot;은 하지 못합니다.</p>
+<h2 id="리스크-관리-체크리스트">리스크 관리 체크리스트</h2>
+<ul>
+<li>모의/실전 계정과 키를 완전히 분리했는가</li>
+<li>주문 전 한도(일손실, 종목당 익스포저)를 강제했는가</li>
+<li>데이터 누락/지연 감지 알림이 있는가</li>
+<li>비정상 응답 시 주문 중지(fail-safe) 규칙이 있는가</li>
+<li>cron이 실제 등록되어 있고 주기 점검 중인가</li>
+<li>로그/감사 추적(누가, 언제, 어떤 규칙으로 주문했는가)이 가능한가</li>
+</ul>
+<h2 id="비용-최적화-전략">비용 최적화 전략</h2>
+<p>운영 단계에서 놓치기 쉬운 부분이 모델/API 비용입니다.</p>
+<ul>
+<li>전략 설계/재구성: 상위 모델</li>
+<li>일상 운영/반복 분석: 경량 모델</li>
+<li>이벤트성 재검증: 상위 모델 재투입</li>
+</ul>
+<p>결국 목표는 &ldquo;수익률&quot;뿐 아니라 <strong>수익 - 운영비(모델/API/인프라)</strong> 기준으로 시스템을 관리하는 것입니다.</p>
+<h2 id="마무리">마무리</h2>
+<p>OpenClaw Trading은 &ldquo;AI에게 주문을 맡긴다&quot;보다 훨씬 큰 개념입니다.</p>
+<p>정확히는, <strong>전략 지식 + 데이터 파이프라인 + 자동 집행 + 피드백 학습</strong>을 하나의 운영 시스템으로 묶는 작업입니다.</p>
+<p>자동매매를 시작할 때 가장 먼저 해야 할 일은 화려한 전략이 아니라, 안전하게 반복 실행 가능한 기본 루프를 만드는 것입니다.</p>
+<h2 id="참고">참고</h2>
+<ul>
+<li><a href="https://openclaw.ai">OpenClaw 홈페이지</a></li>
+<li><a href="https://github.com/openclaw/openclaw">OpenClaw Repository</a></li>
+<li><a href="https://www.youtube.com/watch?v=CgniMVyJtmg&amp;t=733s">OpenClaw Utilization Guide (YouTube)</a></li>
+<li><a href="https://dante-labs-english.notion.site/openclaw-trading">OpenClaw Trading (Notion)</a></li>
+<li><a href="https://openapi.koreainvestment.com">키움증권 REST API 개발자 포털</a></li>
+<li><a href="https://hey.liner.com/ixyht1">Liner AI (딥리서치)</a></li>
+<li><a href="https://opendart.fss.or.kr/">OpenDART (공시정보)</a></li>
+<li><a href="https://supabase.com">Supabase (클라우드 데이터베이스)</a></li>
+<li><a href="https://skill.sh">SkillsMP (스킬 마켓플레이스)</a></li>
+<li><a href="https://github.com/dandacompany/dantelabs-agentic-school">스킬 다운로드 유틸</a></li>
+<li><a href="https://core.telegram.org/bots">Telegram Bot 공식 문서</a></li>
+</ul>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 02월 18일 00시 45분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/trading">Trading</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/automation">Automation</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-02-18-claude-code-100x-usage-guide/" rel="prev">
+        <span>클로드 코드, 이렇게 쓰면 생산성이 벌어진다: 30일 실전에서 뽑은 핵심 원칙</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#시스템-구조-4계층-아키텍처">시스템 구조: 4계층 아키텍처</a>
+      <ul>
+        <li><a href="#1-data-layer">1) Data Layer</a></li>
+        <li><a href="#2-strategy-layer">2) Strategy Layer</a></li>
+        <li><a href="#3-analysis-layer">3) Analysis Layer</a></li>
+        <li><a href="#4-execution-layer">4) Execution Layer</a></li>
+      </ul>
+    </li>
+    <li><a href="#openclaw가-자동으로-돌아가는-3가지-메커니즘">OpenClaw가 자동으로 돌아가는 3가지 메커니즘</a>
+      <ul>
+        <li><a href="#cron">Cron</a></li>
+        <li><a href="#heartbeat">Heartbeat</a></li>
+        <li><a href="#webhook">Webhook</a></li>
+      </ul>
+    </li>
+    <li><a href="#기술-스택-조합이-중요한-이유">기술 스택 조합이 중요한 이유</a></li>
+    <li><a href="#구축-절차-실무에서-바로-쓰는-순서">구축 절차: 실무에서 바로 쓰는 순서</a>
+      <ul>
+        <li><a href="#1-기본-환경-준비">1) 기본 환경 준비</a></li>
+        <li><a href="#2-스킬-설치">2) 스킬 설치</a></li>
+        <li><a href="#3-api-키-발급-및-환경변수-등록">3) API 키 발급 및 환경변수 등록</a></li>
+        <li><a href="#4-api-연결-테스트반드시-선행">4) API 연결 테스트(반드시 선행)</a></li>
+      </ul>
+    </li>
+    <li><a href="#데이터-파이프라인-설계-예시">데이터 파이프라인 설계 예시</a></li>
+    <li><a href="#전략-생성-감-대신-근거로">전략 생성: 감 대신 근거로</a></li>
+    <li><a href="#백테스트와-실거래는-다르게-나온다">백테스트와 실거래는 다르게 나온다</a></li>
+    <li><a href="#실행-레이어-운영-예시">실행 레이어 운영 예시</a></li>
+    <li><a href="#운영에서-성능을-만드는-진짜-포인트">운영에서 성능을 만드는 진짜 포인트</a></li>
+    <li><a href="#리스크-관리-체크리스트">리스크 관리 체크리스트</a></li>
+    <li><a href="#비용-최적화-전략">비용 최적화 전략</a></li>
+    <li><a href="#마무리">마무리</a></li>
+    <li><a href="#참고">참고</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="https://gyuha.com/tags/openclaw" class="badge badge-secondary">openclaw</a>
+    <a href="https://gyuha.com/tags/trading" class="badge badge-secondary">trading</a>
+    <a href="https://gyuha.com/tags/kiwoom" class="badge badge-secondary">kiwoom</a>
+    <a href="https://gyuha.com/tags/opendart" class="badge badge-secondary">opendart</a>
+    <a href="https://gyuha.com/tags/supabase" class="badge badge-secondary">supabase</a>
+    <a href="https://gyuha.com/tags/cron" class="badge badge-secondary">cron</a>
+    <a href="https://gyuha.com/tags/heartbeat" class="badge badge-secondary">heartbeat</a>
+    <a href="https://gyuha.com/tags/webhook" class="badge badge-secondary">webhook</a>
+    <a href="https://gyuha.com/tags/ai-agent" class="badge badge-secondary">ai-agent</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
