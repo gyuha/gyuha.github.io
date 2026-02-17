@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '클로드 코드, 이렇게 쓰면 생산성이 벌어진다: 30일 실전에서 뽑은 핵심 원칙'" />
+  <title>클로드 코드, 이렇게 쓰면 생산성이 벌어진다: 30일 실전에서 뽑은 핵심 원칙  | 신규하 블로그</title>
+  <meta property="og:title" content="클로드 코드, 이렇게 쓰면 생산성이 벌어진다: 30일 실전에서 뽑은 핵심 원칙" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-02-17"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/2026-02-18-claude-code-100x-usage-guide/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude" />
+  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="prompt" />
+  
+  <meta property="og:tags" content="hooks" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+  <meta property="og:tags" content="monorepo" />
+  
+  <meta property="og:tags" content="productivity" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action="https://google.com/search">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search"></i>
+                <input type="hidden" name="sitesearch" value="https://gyuha.com/" />
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/2026-02-18-claude-code-100x-usage-guide/">
+          <h1>
+            클로드 코드, 이렇게 쓰면 생산성이 벌어진다: 30일 실전에서 뽑은 핵심 원칙
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/2026-02-18-claude-code-100x-usage-guide/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>AI 코딩 도구를 쓰고 있는데도 결과가 들쑥날쑥하다면, 문제는 모델 성능보다 사용 방식일 가능성이 큽니다.</p>
+<p>이번 글은 메이커 에반님의 영상 **&ldquo;클로드 이렇게 쓰면 100배 차이 납니다&rdquo;**를 참고해, Claude Code를 단순 챗봇이 아니라 <strong>재현 가능한 작업 시스템</strong>으로 쓰는 방법을 정리한 포스팅입니다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<p>영상의 중심 메시지는 아래 네 줄로 압축할 수 있습니다.</p>
+<ol>
+<li>막연한 요청(&ldquo;잘해줘&rdquo;)은 거의 효과가 없다.</li>
+<li>세션 메모리를 신뢰하지 말고, 중요한 규칙은 파일에 먼저 고정해야 한다.</li>
+<li>설정은 &ldquo;부탁&quot;이고, 훅은 &ldquo;강제&quot;에 가깝다.</li>
+<li>프로젝트 구조 자체가 AI가 이해하기 쉬워야 생산성이 올라간다.</li>
+</ol>
+<p>즉, 성능 차이를 만드는 건 프롬프트 한 줄이 아니라 <strong>운영 방식의 시스템화</strong>입니다.</p>
+<h2 id="문제-정의-왜-같은-claude-code인데-결과가-크게-갈릴까">문제 정의: 왜 같은 Claude Code인데 결과가 크게 갈릴까?</h2>
+<p>영상 초반부에서 강조하는 포인트는 &ldquo;도구 사용 숙련도의 격차&quot;입니다.</p>
+<ul>
+<li>AI 도구를 쓰는 것 자체는 이제 진입장벽이 낮아졌고</li>
+<li>실제 차이는 반복 가능한 규칙을 갖고 운용하느냐에서 벌어진다는 주장입니다.</li>
+</ul>
+<p>발표자는 30일 동안 대규모 코드 작업을 하며 같은 문제를 반복해서 겪었고, 결론적으로 &ldquo;클로드는 도구가 아니라 시스템으로 다뤄야 한다&quot;는 관점을 제시합니다.</p>
+<h2 id="원칙-1-설정-파일은-추상-문장-대신-상황---행동-규칙으로-작성하기">원칙 1) 설정 파일은 추상 문장 대신 &ldquo;상황 -&gt; 행동&rdquo; 규칙으로 작성하기</h2>
+<p>영상에서 가장 먼저 지적한 안티패턴은 이런 문장입니다.</p>
+<ul>
+<li>&ldquo;친절하게 답해줘&rdquo;</li>
+<li>&ldquo;좋은 코드 써줘&rdquo;</li>
+<li>&ldquo;잘해줘&rdquo;</li>
+</ul>
+<p>이런 지시는 해석 폭이 너무 넓어 모델이 일관되게 따르기 어렵습니다.</p>
+<p>대신 아래처럼 조건과 행동을 묶어 써야 한다고 설명합니다.</p>
+<ul>
+<li>코드가 30줄을 넘으면 분리하기</li>
+<li>에러 가능 구간에는 방어 로직 추가하기</li>
+<li>새 파일 상단에 파일 역할 1줄 명시하기</li>
+</ul>
+<p>핵심은 감각적 지시가 아니라 <strong>검증 가능한 규칙 문장</strong>입니다.</p>
+<h2 id="원칙-2-기억할게요를-신뢰하지-말고-파일-기반-메모를-기본값으로-두기">원칙 2) &ldquo;기억할게요&quot;를 신뢰하지 말고, 파일 기반 메모를 기본값으로 두기</h2>
+<p>영상에서 반복 언급되는 문제는 세션 경계입니다.</p>
+<ul>
+<li>대화창을 닫거나 새 세션으로 넘어가면 이전 맥락이 유지되지 않는 상황이 생김</li>
+<li>중요한 규칙이 구두 지시로만 남아 있으면 다음 작업에서 재설명 비용이 커짐</li>
+</ul>
+<p>해결책은 단순합니다.</p>
+<ol>
+<li>중요한 규칙/결정사항은 먼저 파일로 기록</li>
+<li>이후 대화는 파일을 기준으로 진행</li>
+</ol>
+<p>이렇게 하면 매번 &ldquo;처음부터 다시 설명&quot;하는 시간이 크게 줄어듭니다.</p>
+<h2 id="원칙-3-설정만으로-부족할-때는-훅으로-자동-검증-파이프를-만들기">원칙 3) 설정만으로 부족할 때는 훅으로 자동 검증 파이프를 만들기</h2>
+<p>영상에서 말하는 핵심 구분은 이렇습니다.</p>
+<ul>
+<li>설정 파일: 권고/요청 성격</li>
+<li>훅(Hooks): 조건 충족 시 자동 실행되는 강제 장치</li>
+</ul>
+<p>예시로는 &ldquo;기록했다&quot;고 답했지만 실제 메모 파일 갱신이 없을 때, 훅으로 차단/재요청을 걸어 누락을 줄이는 흐름을 설명합니다.</p>
+<p>결국 훅의 목적은 모델을 더 똑똑하게 만드는 것이 아니라, <strong>사람이 정한 프로세스를 안정적으로 집행</strong>하는 데 있습니다.</p>
+<h2 id="원칙-4-claude를-바꾸기-전에-프로젝트를-claude-친화적으로-구성하기">원칙 4) Claude를 바꾸기 전에 프로젝트를 Claude 친화적으로 구성하기</h2>
+<p>영상 후반부에서 실전 팁으로 제시한 항목은 프로젝트 구조 최적화입니다.</p>
+<h3 id="4-1-저장소를-한곳에서-보이게-정리하기">4-1. 저장소를 한곳에서 보이게 정리하기</h3>
+<ul>
+<li>프론트/백/스크립트가 과하게 분산되면 전체 맥락 파악이 느려짐</li>
+<li>모노레포처럼 구조를 한 번에 읽기 좋게 맞추면 맥락 연결이 쉬워짐</li>
+</ul>
+<h3 id="4-2-한-파일에-기능을-과밀하게-넣지-않기">4-2. 한 파일에 기능을 과밀하게 넣지 않기</h3>
+<ul>
+<li>거대한 파일은 관련 없는 맥락까지 끌어와 수정 실수를 늘림</li>
+<li>기능 단위 분리로 탐색 비용과 오수정 가능성을 낮춤</li>
+</ul>
+<h3 id="4-3-ai가-많이-본-안정적인-기술-스택-우선하기">4-3. AI가 많이 본, 안정적인 기술 스택 우선하기</h3>
+<ul>
+<li>지나치게 최신이거나 레퍼런스가 적은 조합은 출력 정확도가 흔들릴 수 있음</li>
+<li>검증된 버전/패턴이 유지보수성과 예측 가능성을 높임</li>
+</ul>
+<h3 id="4-4-폴더파일-단위-가이드-문서와-헤더-설명-넣기">4-4. 폴더/파일 단위 가이드 문서와 헤더 설명 넣기</h3>
+<ul>
+<li>폴더별 규칙 문서(어떤 스타일/규칙을 따르는지)</li>
+<li>파일 상단 1줄 설명(이 파일의 역할)</li>
+</ul>
+<p>이 두 가지는 사람이 읽기 편할 뿐 아니라, AI가 빠르게 의도를 파악하는 데도 직접적인 도움을 줍니다.</p>
+<h2 id="원칙-5-데이터-접근과-계획-수립에도-운영-규칙을-넣기">원칙 5) 데이터 접근과 계획 수립에도 운영 규칙을 넣기</h2>
+<p>영상에서 함께 제시된 실무 팁은 아래 두 가지입니다.</p>
+<ul>
+<li>데이터베이스는 우선 읽기 전용 연결로 진단/탐색 안정성 확보</li>
+<li><strong>구현 전에 계획 생성과 리뷰에 충분한 시간 투자</strong></li>
+</ul>
+<p>특히 &ldquo;빨리 만들기&quot;보다 &ldquo;좋은 계획을 먼저 만들고 검토하기&quot;가 결과 품질을 더 크게 좌우한다는 점을 강조합니다.</p>
+<h2 id="관통-메시지-바이브-코딩보다-바이브-리뷰">관통 메시지: 바이브 코딩보다 바이브 리뷰</h2>
+<p>영상의 마지막 키워드는 <strong>vibe coding이 아니라 vibe review</strong>입니다.</p>
+<ul>
+<li>코드 생성은 AI에게 맡겨도</li>
+<li>무엇을 만들었는지 이해하고 검토하는 책임은 사람에게 남아 있어야 함</li>
+</ul>
+<p>이 검토 루프가 없으면 생산성은 잠깐 올라가도 품질이 무너지고, 장기적으로는 오히려 속도가 느려집니다.</p>
+<h2 id="바로-적용할-체크리스트">바로 적용할 체크리스트</h2>
+<p>오늘 내용 기준으로, 바로 실행 가능한 최소 체크리스트를 정리하면 다음과 같습니다.</p>
+<ol>
+<li>규칙을 추상 문장이 아니라 조건/행동 문장으로 바꿨는가?</li>
+<li>중요한 지시를 대화창이 아니라 파일에 먼저 기록했는가?</li>
+<li>반복 누락 항목에 훅 기반 자동 검증을 붙였는가?</li>
+<li>프로젝트 구조를 AI가 탐색하기 쉽게 분리/정리했는가?</li>
+<li>폴더/파일 가이드 문서로 맥락 설명 비용을 줄였는가?</li>
+<li>생성 이후 리뷰 기준(정확성/안전성/일관성)을 운영하고 있는가?</li>
+</ol>
+<h2 id="마무리">마무리</h2>
+<p>Claude Code의 성능은 모델 스펙보다 운영 체계에 더 크게 좌우됩니다.</p>
+<p>이번 영상을 실무 관점으로 요약하면, &ldquo;잘 쓰는 사람&quot;은 프롬프트를 잘 꾸미는 사람이 아니라 규칙, 기록, 자동 검증, 구조화를 통해 <strong>실수 가능성을 시스템적으로 줄인 사람</strong>입니다. 당장 하나만 적용한다면, 오늘부터는 중요한 의사결정을 대화창이 아니라 파일에 먼저 남기는 습관부터 시작해 보세요.</p>
+<h2 id="참고">참고</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=F7XWUi8HOss">YouTube: 클로드 이렇게 쓰면 100배 차이 납니다</a></li>
+<li><a href="https://docs.anthropic.com/">Anthropic Docs</a></li>
+<li><a href="https://modelcontextprotocol.io/">Model Context Protocol</a></li>
+</ul>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 02월 17일 23시 40분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/development">Development</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/productivity">Productivity</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-02-18-vibe-coding-design-rules/" rel="prev">
+        <span>바이브 코딩 디자인, 실무에서 바로 쓰는 6가지 규칙</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#문제-정의-왜-같은-claude-code인데-결과가-크게-갈릴까">문제 정의: 왜 같은 Claude Code인데 결과가 크게 갈릴까?</a></li>
+    <li><a href="#원칙-1-설정-파일은-추상-문장-대신-상황---행동-규칙으로-작성하기">원칙 1) 설정 파일은 추상 문장 대신 &ldquo;상황 -&gt; 행동&rdquo; 규칙으로 작성하기</a></li>
+    <li><a href="#원칙-2-기억할게요를-신뢰하지-말고-파일-기반-메모를-기본값으로-두기">원칙 2) &ldquo;기억할게요&quot;를 신뢰하지 말고, 파일 기반 메모를 기본값으로 두기</a></li>
+    <li><a href="#원칙-3-설정만으로-부족할-때는-훅으로-자동-검증-파이프를-만들기">원칙 3) 설정만으로 부족할 때는 훅으로 자동 검증 파이프를 만들기</a></li>
+    <li><a href="#원칙-4-claude를-바꾸기-전에-프로젝트를-claude-친화적으로-구성하기">원칙 4) Claude를 바꾸기 전에 프로젝트를 Claude 친화적으로 구성하기</a>
+      <ul>
+        <li><a href="#4-1-저장소를-한곳에서-보이게-정리하기">4-1. 저장소를 한곳에서 보이게 정리하기</a></li>
+        <li><a href="#4-2-한-파일에-기능을-과밀하게-넣지-않기">4-2. 한 파일에 기능을 과밀하게 넣지 않기</a></li>
+        <li><a href="#4-3-ai가-많이-본-안정적인-기술-스택-우선하기">4-3. AI가 많이 본, 안정적인 기술 스택 우선하기</a></li>
+        <li><a href="#4-4-폴더파일-단위-가이드-문서와-헤더-설명-넣기">4-4. 폴더/파일 단위 가이드 문서와 헤더 설명 넣기</a></li>
+      </ul>
+    </li>
+    <li><a href="#원칙-5-데이터-접근과-계획-수립에도-운영-규칙을-넣기">원칙 5) 데이터 접근과 계획 수립에도 운영 규칙을 넣기</a></li>
+    <li><a href="#관통-메시지-바이브-코딩보다-바이브-리뷰">관통 메시지: 바이브 코딩보다 바이브 리뷰</a></li>
+    <li><a href="#바로-적용할-체크리스트">바로 적용할 체크리스트</a></li>
+    <li><a href="#마무리">마무리</a></li>
+    <li><a href="#참고">참고</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="https://gyuha.com/tags/claude" class="badge badge-secondary">claude</a>
+    <a href="https://gyuha.com/tags/claude-code" class="badge badge-secondary">claude-code</a>
+    <a href="https://gyuha.com/tags/prompt" class="badge badge-secondary">prompt</a>
+    <a href="https://gyuha.com/tags/hooks" class="badge badge-secondary">hooks</a>
+    <a href="https://gyuha.com/tags/workflow" class="badge badge-secondary">workflow</a>
+    <a href="https://gyuha.com/tags/monorepo" class="badge badge-secondary">monorepo</a>
+    <a href="https://gyuha.com/tags/productivity" class="badge badge-secondary">productivity</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
