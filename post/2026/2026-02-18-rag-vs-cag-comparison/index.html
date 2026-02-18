@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'LLM에서 RAG vs CAG 비교: 언제 검색하고, 언제 캐시할까?'" />
+  <title>LLM에서 RAG vs CAG 비교: 언제 검색하고, 언제 캐시할까?  | 신규하 블로그</title>
+  <meta property="og:title" content="LLM에서 RAG vs CAG 비교: 언제 검색하고, 언제 캐시할까?" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-02-18"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/2026-02-18-rag-vs-cag-comparison/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="rag" />
+  
+  <meta property="og:tags" content="cag" />
+  
+  <meta property="og:tags" content="retrieval-augmented-generation" />
+  
+  <meta property="og:tags" content="cache-augmented-generation" />
+  
+  <meta property="og:tags" content="llm" />
+  
+  <meta property="og:tags" content="prompt-caching" />
+  
+  <meta property="og:tags" content="architecture" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/2026-02-18-rag-vs-cag-comparison/">
+          <h1>
+            LLM에서 RAG vs CAG 비교: 언제 검색하고, 언제 캐시할까?
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/2026-02-18-rag-vs-cag-comparison/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>LLM 애플리케이션을 만들다 보면 결국 같은 질문에 부딪힙니다.</p>
+<p>&ldquo;외부 지식을 <strong>매 요청마다 검색(RAG)</strong> 할지, 아니면 <strong>미리 넣어두고 캐시(CAG)</strong> 할지&rdquo;</p>
+<p>이 글은 공식 문서와 논문을 바탕으로 RAG와 CAG를 실무 관점에서 비교합니다.</p>
+<h2 id="먼저-용어-정리-이-글에서-cag는-무엇인가">먼저 용어 정리: 이 글에서 CAG는 무엇인가?</h2>
+<p>먼저 주의할 점이 있습니다. CAG라는 약어는 문맥에 따라 다르게 쓰일 수 있습니다.</p>
+<ul>
+<li>이 글에서 CAG는 <strong>Cache-Augmented Generation</strong>(캐시 증강 생성)을 의미합니다.</li>
+<li>즉, 질의 시점의 실시간 검색을 줄이거나 생략하고, 미리 준비한 컨텍스트/캐시를 활용하는 접근입니다.</li>
+</ul>
+<h2 id="rag-한-장-요약">RAG 한 장 요약</h2>
+<p>RAG(Retrieval-Augmented Generation)는 질의가 들어올 때마다 관련 문서를 검색해 LLM 프롬프트에 붙여 답변을 생성하는 방식입니다.</p>
+<pre class="mermaid">flowchart TD
+    U[사용자 질문] --> Q[질의 전처리/임베딩]
+    Q --> V[(벡터 DB/검색 인덱스)]
+    V --> R[관련 문서 Top-k 검색]
+    R --> P[프롬프트 구성
+질문 + 검색 문맥]
+    P --> L[LLM 생성]
+    L --> A[응답 + 근거]</pre><h3 id="rag의-강점">RAG의 강점</h3>
+<ul>
+<li>문서가 자주 바뀌는 환경에 유리합니다.</li>
+<li>대규모 지식베이스(문맥창보다 큰 규모)에도 확장하기 쉽습니다.</li>
+<li>검색된 근거를 함께 보여주기 쉬워 감사/추적에 강합니다.</li>
+</ul>
+<h3 id="rag의-주의점">RAG의 주의점</h3>
+<ul>
+<li>검색 품질(청킹, 임베딩, 리랭킹)에 따라 답변 품질이 흔들립니다.</li>
+<li>검색 단계가 추가되어 시스템 복잡도와 지연이 늘어납니다.</li>
+</ul>
+<h2 id="cag-한-장-요약">CAG 한 장 요약</h2>
+<p>CAG(Cache-Augmented Generation)는 자주 쓰는 컨텍스트를 미리 로딩/캐싱해, 반복 질의에서 재사용하는 접근입니다.</p>
+<pre class="mermaid">flowchart TD
+    K[지식/문서 준비] --> C[초기 로딩/캐시 생성]
+    C --> S[(캐시된 프리픽스 또는 KV 상태)]
+    U[사용자 질문] --> M[질문 결합]
+    S --> M
+    M --> L[LLM 생성]
+    L --> A[응답]</pre><h3 id="cag의-강점">CAG의 강점</h3>
+<ul>
+<li>반복 질의 워크로드에서 지연과 비용을 낮추기 쉽습니다.</li>
+<li>검색 계층이 줄어 아키텍처가 단순해집니다.</li>
+</ul>
+<h3 id="cag의-주의점">CAG의 주의점</h3>
+<ul>
+<li>지식이 자주 바뀌면 캐시 무효화/재생성 전략이 필요합니다.</li>
+<li>모델 컨텍스트 크기와 캐시 정책 제약을 직접 관리해야 합니다.</li>
+</ul>
+<h2 id="rag-vs-cag-핵심-비교">RAG vs CAG 핵심 비교</h2>
+<table>
+  <thead>
+      <tr>
+          <th>항목</th>
+          <th>RAG</th>
+          <th>CAG</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>지식 반영 방식</td>
+          <td>질의 시점 실시간 검색</td>
+          <td>사전 로딩/캐시 재사용</td>
+      </tr>
+      <tr>
+          <td>데이터 변경 대응</td>
+          <td>강함 (업데이트 반영 용이)</td>
+          <td>보통 (재캐시 필요)</td>
+      </tr>
+      <tr>
+          <td>시스템 구성</td>
+          <td>검색 파이프라인 필요</td>
+          <td>상대적으로 단순</td>
+      </tr>
+      <tr>
+          <td>응답 근거 추적</td>
+          <td>용이</td>
+          <td>구현 방식에 따라 다름</td>
+      </tr>
+      <tr>
+          <td>반복 질의 효율</td>
+          <td>중간</td>
+          <td>높음(캐시 히트 시)</td>
+      </tr>
+      <tr>
+          <td>대규모 코퍼스 확장</td>
+          <td>유리</td>
+          <td>컨텍스트/캐시 한계에 영향</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="언제-무엇을-선택할까">언제 무엇을 선택할까?</h2>
+<pre class="mermaid">flowchart TD
+    S[시작] --> D1{데이터가 자주 바뀌는가?}
+    D1 -->|예| R1[RAG 우선 검토]
+    D1 -->|아니오| D2{반복 질의가 많은가?}
+    D2 -->|예| C1[CAG 우선 검토]
+    D2 -->|아니오| D3{코퍼스가 컨텍스트에
+    안정적으로 들어가는가?}
+    D3 -->|예| C2[CAG 또는 Hybrid]
+    D3 -->|아니오| R2[RAG 또는 Hybrid]</pre><p>실무에서는 <strong>하이브리드</strong>도 자주 씁니다.</p>
+<ul>
+<li>변동이 큰 데이터: RAG로 최신성 확보</li>
+<li>고정된 정책/핸드북/반복 규칙: CAG로 캐시 효율 확보</li>
+</ul>
+<h2 id="구현-팁-짧게">구현 팁 (짧게)</h2>
+<h3 id="rag-품질을-올리려면">RAG 품질을 올리려면</h3>
+<ul>
+<li>청킹 기준(길이/의미 단위)을 먼저 고정합니다.</li>
+<li>검색 후 리랭킹 단계를 넣어 관련도 편차를 줄입니다.</li>
+<li>&ldquo;검색 실패&rdquo; 케이스를 별도로 로깅해 인덱스 품질을 개선합니다.</li>
+</ul>
+<h3 id="cag-효율을-올리려면">CAG 효율을 올리려면</h3>
+<ul>
+<li>프롬프트에서 고정 프리픽스를 앞에 두고, 변동 입력을 뒤에 둡니다.</li>
+<li>캐시 키 전략(테넌트/문서 버전 단위)을 명시합니다.</li>
+<li>TTL, 캐시 무효화, 버전 롤백 정책을 운영 규칙으로 둡니다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>RAG와 CAG는 경쟁이라기보다 <strong>워크로드에 따라 분업</strong>하는 관계에 가깝습니다.</p>
+<ul>
+<li>최신성/대규모/근거 추적이 핵심이면 RAG</li>
+<li>반복 질의/지연·비용 최적화가 핵심이면 CAG</li>
+<li>대부분의 프로덕션은 둘을 섞는 하이브리드가 현실적입니다.</li>
+</ul>
+<hr>
+<h2 id="참고-자료">참고 자료</h2>
+<ol>
+<li>Lewis et al., &ldquo;Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks&rdquo; (arXiv, 2020): <a href="https://arxiv.org/abs/2005.11401">https://arxiv.org/abs/2005.11401</a></li>
+<li>Chan et al., &ldquo;Don&rsquo;t Do RAG: When Cache-Augmented Generation is All You Need for Knowledge Tasks&rdquo; (arXiv, 2024/2025): <a href="https://arxiv.org/abs/2412.15605">https://arxiv.org/abs/2412.15605</a></li>
+<li>OpenAI Docs, &ldquo;Prompt caching&rdquo;: <a href="https://developers.openai.com/api/docs/guides/prompt-caching/">https://developers.openai.com/api/docs/guides/prompt-caching/</a></li>
+<li>Anthropic Docs, &ldquo;Prompt caching&rdquo;: <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching">https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching</a></li>
+<li>Anthropic News, &ldquo;Introducing Contextual Retrieval&rdquo; (RAG 품질 향상 관련): <a href="https://www.anthropic.com/news/contextual-retrieval">https://www.anthropic.com/news/contextual-retrieval</a></li>
+<li>Google Cloud, &ldquo;Vertex AI RAG Engine overview&rdquo;: <a href="https://docs.cloud.google.com/vertex-ai/generative-ai/docs/rag-engine/rag-overview">https://docs.cloud.google.com/vertex-ai/generative-ai/docs/rag-engine/rag-overview</a></li>
+<li>AWS Prescriptive Guidance, &ldquo;Retrieval Augmented Generation options and architectures on AWS&rdquo;: <a href="https://docs.aws.amazon.com/prescriptive-guidance/latest/retrieval-augmented-generation-options/introduction.html">https://docs.aws.amazon.com/prescriptive-guidance/latest/retrieval-augmented-generation-options/introduction.html</a></li>
+</ol>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 02월 18일 00시 25분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/llm">LLM</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-02-18-claude-code-100x-usage-guide/" rel="prev">
+        <span>클로드 코드, 이렇게 쓰면 생산성이 벌어진다: 30일 실전에서 뽑은 핵심 원칙</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-02-18-openclaw-trading-system-guide/" rel="next">
+        <span>OpenClaw Trading 실전 구축기: AI 자동매매 시스템을 데이터-전략-분석-집행으로 운영하는 방법</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#먼저-용어-정리-이-글에서-cag는-무엇인가">먼저 용어 정리: 이 글에서 CAG는 무엇인가?</a></li>
+    <li><a href="#rag-한-장-요약">RAG 한 장 요약</a>
+      <ul>
+        <li><a href="#rag의-강점">RAG의 강점</a></li>
+        <li><a href="#rag의-주의점">RAG의 주의점</a></li>
+      </ul>
+    </li>
+    <li><a href="#cag-한-장-요약">CAG 한 장 요약</a>
+      <ul>
+        <li><a href="#cag의-강점">CAG의 강점</a></li>
+        <li><a href="#cag의-주의점">CAG의 주의점</a></li>
+      </ul>
+    </li>
+    <li><a href="#rag-vs-cag-핵심-비교">RAG vs CAG 핵심 비교</a></li>
+    <li><a href="#언제-무엇을-선택할까">언제 무엇을 선택할까?</a></li>
+    <li><a href="#구현-팁-짧게">구현 팁 (짧게)</a>
+      <ul>
+        <li><a href="#rag-품질을-올리려면">RAG 품질을 올리려면</a></li>
+        <li><a href="#cag-효율을-올리려면">CAG 효율을 올리려면</a></li>
+      </ul>
+    </li>
+    <li><a href="#결론">결론</a></li>
+    <li><a href="#참고-자료">참고 자료</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="https://gyuha.com/tags/rag" class="badge badge-secondary">rag</a>
+    <a href="https://gyuha.com/tags/cag" class="badge badge-secondary">cag</a>
+    <a href="https://gyuha.com/tags/retrieval-augmented-generation" class="badge badge-secondary">retrieval-augmented-generation</a>
+    <a href="https://gyuha.com/tags/cache-augmented-generation" class="badge badge-secondary">cache-augmented-generation</a>
+    <a href="https://gyuha.com/tags/llm" class="badge badge-secondary">llm</a>
+    <a href="https://gyuha.com/tags/prompt-caching" class="badge badge-secondary">prompt-caching</a>
+    <a href="https://gyuha.com/tags/architecture" class="badge badge-secondary">architecture</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
