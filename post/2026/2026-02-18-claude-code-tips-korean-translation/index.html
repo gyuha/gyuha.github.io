@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'ykdojo/claude-code-tips 한글 번역·정리: 45개 팁(0~45) 실무 요약'" />
+  <title>ykdojo/claude-code-tips 한글 번역·정리: 45개 팁(0~45) 실무 요약  | 신규하 블로그</title>
+  <meta property="og:title" content="ykdojo/claude-code-tips 한글 번역·정리: 45개 팁(0~45) 실무 요약" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-02-18"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/2026-02-18-claude-code-tips-korean-translation/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="tips" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+  <meta property="og:tags" content="automation" />
+  
+  <meta property="og:tags" content="mcp" />
+  
+  <meta property="og:tags" content="github-cli" />
+  
+  <meta property="og:tags" content="translation" />
+  
+  <meta property="og:tags" content="mermaid" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/2026-02-18-claude-code-tips-korean-translation/">
+          <h1>
+            ykdojo/claude-code-tips 한글 번역·정리: 45개 팁(0~45) 실무 요약
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/2026-02-18-claude-code-tips-korean-translation/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>이 글은 <a href="https://github.com/ykdojo/claude-code-tips">ykdojo/claude-code-tips</a>의 README와 연관 파일을 바탕으로, 팁을 한국어로 번역하고 실무 기준으로 재정리한 문서입니다.</p>
+<p>원문은 팁 번호가 <code>0</code>부터 시작해서 <code>45</code>까지 이어지므로, 제목은 45 Tips지만 실제 항목 표기는 46개(0~45)입니다.</p>
+<h2 id="먼저-전체-구조부터-보기">먼저 전체 구조부터 보기</h2>
+<pre class="mermaid">flowchart TD
+    A[입력/조작 최적화] --> B[컨텍스트 관리]
+    B --> C[검증/테스트 자동화]
+    C --> D[병렬 작업/격리 실행]
+    D --> E[지식 자산화]
+    E --> F[지속 학습/공유]</pre><p>핵심 메시지는 간단합니다.</p>
+<ol>
+<li>빠른 입력보다 중요한 건 재현 가능한 작업 흐름이다.</li>
+<li>길어진 대화는 정리/분기/압축해서 신선한 컨텍스트로 유지해야 한다.</li>
+<li>코드 생성 자체보다 검증 루프(테스트, 리뷰, 자기검증)가 품질을 결정한다.</li>
+<li>위험한 작업은 컨테이너/권한 분리로 안전하게 실행해야 한다.</li>
+</ol>
+<h2 id="45개-팁045-한국어-번역--정리">45개 팁(0~45) 한국어 번역 + 정리</h2>
+<p>아래는 원문 팁을 실무 흐름 순서로 다시 묶어 요약한 버전입니다.</p>
+<h3 id="1-cli-기본기와-입력-속도">1) CLI 기본기와 입력 속도</h3>
+<ul>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-0-customize-your-status-line">Tip 0</a></strong> 상태바를 커스터마이징해 모델, 브랜치, 미커밋 파일, 토큰 사용률을 한눈에 본다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-1-learn-a-few-essential-slash-commands">Tip 1</a></strong> <code>/usage</code>, <code>/chrome</code>, <code>/mcp</code>, <code>/stats</code>, <code>/clear</code> 같은 핵심 슬래시 명령부터 익힌다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-2-talk-to-claude-code-with-your-voice">Tip 2</a></strong> 로컬 음성 인식 도구를 붙여 타이핑보다 빠르게 지시를 전달한다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-6-getting-output-out-of-your-terminal">Tip 6</a></strong> <code>/copy</code>, <code>pbcopy</code>, 파일 저장 후 에디터 열기 등으로 터미널 출력을 깔끔하게 꺼낸다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-7-set-up-terminal-aliases-for-quick-access">Tip 7</a></strong> <code>c</code>, <code>ch</code> 같은 alias로 반복 실행 비용을 줄인다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-10-cmda-and-ctrla-are-your-friends">Tip 10</a></strong> 접근 안 되는 웹/출력은 <code>Cmd/Ctrl + A</code> 복붙으로 컨텍스트를 직접 넣는다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-24-use-realpath-to-get-absolute-paths">Tip 24</a></strong> 다른 경로 파일은 <code>realpath</code>로 절대경로를 전달해 혼선을 줄인다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-38-navigating-and-editing-your-input-box">Tip 38</a></strong> 입력 박스 단축키(<code>Ctrl+A/E/W/U/K/G</code>)를 익혀 긴 프롬프트 편집 속도를 높인다.</li>
+</ul>
+<h3 id="2-문제-분해와-계획-수립">2) 문제 분해와 계획 수립</h3>
+<ul>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-3-break-down-large-problems-into-smaller-ones">Tip 3</a></strong> 큰 문제는 작은 실행 단위로 계속 쪼개서 해결한다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-39-spend-some-time-planning-but-also-prototype-quickly">Tip 39</a></strong> 구현 전에 계획을 먼저 만들고, 빠른 프로토타입으로 기술 선택을 검증한다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-32-its-all-about-choosing-the-right-level-of-abstraction">Tip 32</a></strong> 항상 같은 깊이로 보지 말고, 상황에 맞게 추상화 레벨을 조절한다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-35-be-braver-in-the-unknown-iterative-problem-solving">Tip 35</a></strong> 모르는 영역도 반복 탐색 방식으로 접근하면 해결 가능성이 커진다.</li>
+</ul>
+<h3 id="3-컨텍스트-관리성능품질-핵심">3) 컨텍스트 관리(성능/품질 핵심)</h3>
+<ul>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-5-ai-context-is-like-milk-its-best-served-fresh-and-condensed">Tip 5</a></strong> 대화 컨텍스트는 길어질수록 성능이 떨어지므로, 주제별 새 세션이 유리하다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-8-proactively-compact-your-context">Tip 8</a></strong> <code>/compact</code>를 수동으로 운용하고, 핸드오프 문서(HANDOFF.md)를 남겨 세션을 교체한다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-13-search-through-your-conversation-history">Tip 13</a></strong> <code>~/.claude/projects/</code>의 대화 로그를 검색해 과거 맥락을 재활용한다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-15-slim-down-the-system-prompt">Tip 15</a></strong> 시스템 프롬프트/툴 설명 토큰 오버헤드를 줄이는 전략(패치, lazy-load MCP)을 적용한다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-23-clonefork-and-half-clone-conversations">Tip 23</a></strong> <code>/fork</code>, clone/half-clone으로 대화를 분기하거나 절반만 남겨 문맥을 가볍게 유지한다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-30-keep-claudemd-simple-and-review-it-periodically">Tip 30</a></strong> <code>CLAUDE.md</code>는 짧게 유지하고 주기적으로 업데이트한다.</li>
+</ul>
+<h3 id="4-gitgithubpr-실전-운영">4) Git/GitHub/PR 실전 운영</h3>
+<ul>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-4-using-git-and-github-cli-like-a-pro">Tip 4</a></strong> Git/<code>gh</code> 작업(브랜치, 커밋, PR 생성)을 대화형으로 위임하되 푸시는 보수적으로 관리한다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-16-git-worktrees-for-parallel-branch-work">Tip 16</a></strong> 병렬 작업 충돌을 줄이기 위해 git worktree를 사용한다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-26-interactive-pr-reviews">Tip 26</a></strong> PR 리뷰를 일회성 평가가 아니라 대화형 점검 루프로 운영한다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-28-mastering-different-ways-of-verifying-its-output">Tip 28</a></strong> 테스트, 드래프트 PR, 시각적 Git 클라이언트, 자기 재검증 프롬프트를 조합해 검증한다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-29-claude-code-as-a-devops-engineer">Tip 29</a></strong> GitHub Actions 장애 분석을 자동화해 DevOps 디버깅 시간을 줄인다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-33-audit-your-approved-commands">Tip 33</a></strong> 승인된 위험 명령(<code>rm -rf</code>, <code>sudo</code> 등)을 정기 감사해 사고를 예방한다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-34-write-lots-of-tests-and-use-tdd">Tip 34</a></strong> 테스트를 많이 쓰고 TDD로 명세-구현 일치를 강제한다.</li>
+</ul>
+<h3 id="5-브라우저리서치외부정보-수집">5) 브라우저/리서치/외부정보 수집</h3>
+<ul>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-9-complete-the-write-test-cycle-for-autonomous-tasks">Tip 9</a></strong> 자율 실행은 반드시 write-test 사이클(작성→실행→검증)을 완성해야 안정적이다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-11-use-gemini-cli-as-a-fallback-for-blocked-sites">Tip 11</a></strong> 접근 제한 사이트는 Gemini CLI 등 대체 채널을 skill로 붙여 우회한다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-27-claude-code-as-a-research-tool">Tip 27</a></strong> Claude Code를 코드/시장/로그 조사용 리서치 엔진으로 활용한다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-36-running-bash-commands-and-subagents-in-the-background">Tip 36</a></strong> 긴 bash/subagent 작업은 백그라운드로 보내고 병렬 진행한다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-43-keep-learning">Tip 43</a></strong> <code>/release-notes</code>, 커뮤니티, DevRel 채널로 지속적으로 최신 기능을 학습한다.</li>
+</ul>
+<h3 id="6-글쓰기문서지식-관리">6) 글쓰기/문서/지식 관리</h3>
+<ul>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-18-claude-code-as-a-writing-assistant">Tip 18</a></strong> 글쓰기도 초안 생성 후 줄 단위 피드백 루프로 품질을 끌어올린다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-19-markdown-is-the-st">Tip 19</a></strong> 문서의 기본 포맷을 Markdown으로 두면 AI 협업 효율이 높다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-20-use-notion-to-preserve-links-when-pasting">Tip 20</a></strong> 링크 보존이 필요하면 Notion을 중간 포맷 변환기로 활용한다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-41-automation-of-automation">Tip 41</a></strong> 반복되는 지시/명령을 자동화하는 자동화(automation of automation)를 추구한다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-42-share-your-knowledge-and-contribute-where-you-can">Tip 42</a></strong> 팁 공유와 오픈소스 기여를 통해 피드백 루프를 만든다.</li>
+</ul>
+<h3 id="7-작업환경-확장컨테이너플러그인오케스트레이션">7) 작업환경 확장(컨테이너/플러그인/오케스트레이션)</h3>
+<ul>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-12-invest-in-your-own-workflow">Tip 12</a></strong> 내 워크플로를 직접 개선(음성 입력, 상태바, 규칙 문서)하는 투자를 한다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-14-multitasking-with-terminal-tabs">Tip 14</a></strong> 터미널 탭을 캐스케이드 방식으로 운영해 멀티태스킹을 정돈한다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-17-manual-exponential-backoff-for-long-running-jobs">Tip 17</a></strong> 긴 작업은 수동 지수 백오프로 상태를 점검해 토큰 낭비를 줄인다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-21-containers-for-long-running-risky-tasks">Tip 21</a></strong> 위험하거나 장시간 작업은 컨테이너에서 실행해 호스트를 보호한다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-22-the-best-way-to-get-better-at-using-claude-code-is-by-using-it">Tip 22</a></strong> 결국 실력이 느는 가장 빠른 방법은 실제로 많이 쓰는 것이다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-31-claude-code-as-the-universal-interface">Tip 31</a></strong> Claude Code를 단순 코더가 아니라 컴퓨터 작업 전반의 범용 인터페이스로 본다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-37-the-era-of-personalized-software-is-here">Tip 37</a></strong> 개인 맞춤형 소프트웨어를 빠르게 만드는 시대가 열렸다는 관점을 갖는다.</li>
+</ul>
+<h3 id="8-규칙-시스템-이해와-빠른-셋업">8) 규칙 시스템 이해와 빠른 셋업</h3>
+<ul>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-25-understanding-claudemd-vs-skills-vs-slash-commands-vs-plugins">Tip 25</a></strong> <code>CLAUDE.md</code> / Skills / Slash Commands / Plugins의 역할 차이를 구분해서 쓴다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-40-simplify-overcomplicated-code">Tip 40</a></strong> 모델이 과하게 복잡한 코드를 만들면 의도 설명을 요구하고 단순화시킨다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-44-install-the-dx-plugin">Tip 44</a></strong> <code>dx</code> 플러그인으로 gha/handoff/clone 등 반복 작업을 묶어 설치한다.</li>
+<li><strong><a href="https://github.com/ykdojo/claude-code-tips#tip-45-quick-setup-script">Tip 45</a></strong> 제공된 setup 스크립트로 권장 설정을 한번에 적용하되 항목별로 선택 설치한다.</li>
+</ul>
+<h2 id="실무-적용-순서추천">실무 적용 순서(추천)</h2>
+<pre class="mermaid">flowchart LR
+    A[단축키/alias/핵심 slash] --> B[CLAUDE.md 최소화]
+    B --> C[검증 루프 테스트+PR]
+    C --> D[컨텍스트 분기/핸드오프]
+    D --> E[컨테이너 격리 자동화]
+    E --> F[플러그인/스킬 패키징]</pre><p>처음부터 모든 팁을 한 번에 넣기보다, 위 순서대로 한 단계씩 도입하는 편이 실패 확률이 낮습니다.</p>
+<h2 id="번역-시-유지해야-할-전제중요">번역 시 유지해야 할 전제(중요)</h2>
+<p>원문의 일부 팁은 환경 의존성이 강하므로, 그대로 복사하기보다 전제를 함께 봐야 합니다.</p>
+<pre class="mermaid">flowchart TD
+    A[팁 적용] --> B{내 환경과 맞는가?}
+    B -->|예| C[바로 적용]
+    B -->|아니오| D[대체안 선택]
+    D --> E[권한/보안/비용 재검토]</pre><ul>
+<li>macOS 기준 예시가 많다(<code>pbcopy</code>, 키 바인딩, 경로 예시).</li>
+<li><code>--dangerously-skip-permissions</code>, 시스템 프롬프트 패치, 자동 승인 권한은 강한 리스크를 동반한다.</li>
+<li>컨테이너 오케스트레이션, 다중 모델 병행은 초보자에게 과할 수 있다.</li>
+<li>플러그인/스킬은 편리하지만, 설정 파일과 승인 규칙 감사가 선행되어야 안전하다.</li>
+</ul>
+<h2 id="바로-써먹는-최소-체크리스트">바로 써먹는 최소 체크리스트</h2>
+<ol>
+<li><code>/usage</code>, <code>/mcp</code>, <code>/stats</code>부터 익혔는가?</li>
+<li><code>CLAUDE.md</code>를 짧게 유지하고 불필요 지시를 제거했는가?</li>
+<li>코드 작업마다 테스트/드래프트 PR 기반 검증 루프를 두었는가?</li>
+<li>컨텍스트가 길어질 때 handoff/half-clone 같은 분기 전략이 있는가?</li>
+<li>위험 명령 승인 목록을 정기적으로 감사하는가?</li>
+</ol>
+<h2 id="참고-원문">참고 원문</h2>
+<ul>
+<li>메인 문서: <a href="https://github.com/ykdojo/claude-code-tips/blob/main/README.md">README.md</a></li>
+<li>설정 예시: <a href="https://github.com/ykdojo/claude-code-tips/blob/main/GLOBAL-CLAUDE.md">GLOBAL-CLAUDE.md</a></li>
+<li>스크립트/스킬: <a href="https://github.com/ykdojo/claude-code-tips/tree/main/scripts">scripts</a>, <a href="https://github.com/ykdojo/claude-code-tips/tree/main/skills">skills</a></li>
+</ul>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 02월 18일 20시 40분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/development">Development</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/productivity">Productivity</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-02-18-openclaw-install-and-remote-dashboard/" rel="prev">
+        <span>OpenClaw 설치 가이드: Getting Started 기준으로 10분 만에 올리고 원격 Dashboard 접속하기</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-02-18-harness-engineering-ai-agents/" rel="next">
+        <span>하니스 엔지니어링이 AI 성과를 가른다: 컨텍스트를 넘어 환경을 설계하는 법</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#먼저-전체-구조부터-보기">먼저 전체 구조부터 보기</a></li>
+    <li><a href="#45개-팁045-한국어-번역--정리">45개 팁(0~45) 한국어 번역 + 정리</a>
+      <ul>
+        <li><a href="#1-cli-기본기와-입력-속도">1) CLI 기본기와 입력 속도</a></li>
+        <li><a href="#2-문제-분해와-계획-수립">2) 문제 분해와 계획 수립</a></li>
+        <li><a href="#3-컨텍스트-관리성능품질-핵심">3) 컨텍스트 관리(성능/품질 핵심)</a></li>
+        <li><a href="#4-gitgithubpr-실전-운영">4) Git/GitHub/PR 실전 운영</a></li>
+        <li><a href="#5-브라우저리서치외부정보-수집">5) 브라우저/리서치/외부정보 수집</a></li>
+        <li><a href="#6-글쓰기문서지식-관리">6) 글쓰기/문서/지식 관리</a></li>
+        <li><a href="#7-작업환경-확장컨테이너플러그인오케스트레이션">7) 작업환경 확장(컨테이너/플러그인/오케스트레이션)</a></li>
+        <li><a href="#8-규칙-시스템-이해와-빠른-셋업">8) 규칙 시스템 이해와 빠른 셋업</a></li>
+      </ul>
+    </li>
+    <li><a href="#실무-적용-순서추천">실무 적용 순서(추천)</a></li>
+    <li><a href="#번역-시-유지해야-할-전제중요">번역 시 유지해야 할 전제(중요)</a></li>
+    <li><a href="#바로-써먹는-최소-체크리스트">바로 써먹는 최소 체크리스트</a></li>
+    <li><a href="#참고-원문">참고 원문</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="https://gyuha.com/tags/claude-code" class="badge badge-secondary">claude-code</a>
+    <a href="https://gyuha.com/tags/tips" class="badge badge-secondary">tips</a>
+    <a href="https://gyuha.com/tags/workflow" class="badge badge-secondary">workflow</a>
+    <a href="https://gyuha.com/tags/automation" class="badge badge-secondary">automation</a>
+    <a href="https://gyuha.com/tags/mcp" class="badge badge-secondary">mcp</a>
+    <a href="https://gyuha.com/tags/github-cli" class="badge badge-secondary">github-cli</a>
+    <a href="https://gyuha.com/tags/translation" class="badge badge-secondary">translation</a>
+    <a href="https://gyuha.com/tags/mermaid" class="badge badge-secondary">mermaid</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
