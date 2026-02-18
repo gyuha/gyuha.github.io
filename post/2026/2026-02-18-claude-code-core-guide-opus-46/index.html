@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude Code 핵심 가이드: 설치부터 Agent Team까지 (2026년 2월, Opus 4.6 기준)'" />
+  <title>Claude Code 핵심 가이드: 설치부터 Agent Team까지 (2026년 2월, Opus 4.6 기준)  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude Code 핵심 가이드: 설치부터 Agent Team까지 (2026년 2월, Opus 4.6 기준)" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-02-18"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/2026-02-18-claude-code-core-guide-opus-46/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude" />
+  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="opus-4-6" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+  <meta property="og:tags" content="skill" />
+  
+  <meta property="og:tags" content="mcp" />
+  
+  <meta property="og:tags" content="sub-agent" />
+  
+  <meta property="og:tags" content="agent-team" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/2026-02-18-claude-code-core-guide-opus-46/">
+          <h1>
+            Claude Code 핵심 가이드: 설치부터 Agent Team까지 (2026년 2월, Opus 4.6 기준)
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/2026-02-18-claude-code-core-guide-opus-46/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Claude Code를 막 도입했거나, 쓰고는 있는데 결과 품질이 들쑥날쑥하다면 이 글을 먼저 읽어보세요. 이 포스트는 <strong>2026년 2월 기준 Opus 4.6</strong> 환경을 바탕으로, 설치부터 운영 자동화까지 실제로 바로 적용할 수 있는 핵심만 압축해 정리합니다.</p>
+<h2 id="한눈에-보는-전체-지도">한눈에 보는 전체 지도</h2>
+<pre class="mermaid">flowchart LR
+    A[Part 1<br/>시작하기] --> B[Part 2<br/>실전 워크플로우]
+    B --> C[Part 3<br/>자동화와 확장]
+    C --> D[부록<br/>단축키/액션/보안]</pre><p>이 글은 아래 순서로 진행합니다.</p>
+<ol>
+<li><strong>시작하기</strong>: 설치, IDE, 토큰/컨텍스트, CLAUDE.md</li>
+<li><strong>실전 워크플로우</strong>: Task-Do-Verify, Plan Mode, 컨텍스트 관리</li>
+<li><strong>자동화/확장</strong>: Skill, MCP, Sub Agent, Agent Team</li>
+</ol>
+<hr>
+<h2 id="part-1-claude-code-시작하기">Part 1. Claude Code 시작하기</h2>
+<h3 id="claude-code란">Claude Code란?</h3>
+<p>Claude Code는 Anthropic의 에이전틱 코딩 도구입니다. 터미널 중심으로 동작하며 코드 읽기, 파일 수정, 명령 실행, 도구 통합, Git 작업(커밋/브랜치/PR)까지 한 흐름에서 수행할 수 있습니다.</p>
+<h3 id="구독-플랜-및-설치">구독 플랜 및 설치</h3>
+<table>
+  <thead>
+      <tr>
+          <th>플랜</th>
+          <th>가격</th>
+          <th>주요 특징</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Pro</td>
+          <td>$20/월</td>
+          <td>모든 기능 사용 가능, 사용량 제한</td>
+      </tr>
+      <tr>
+          <td>Max 5x</td>
+          <td>$100/월</td>
+          <td>Pro의 5배 사용량, Opus 4.6, Agent Teams</td>
+      </tr>
+      <tr>
+          <td>Max 20x</td>
+          <td>$200/월</td>
+          <td>Pro의 20배 사용량, 최대 우선순위</td>
+      </tr>
+      <tr>
+          <td>API 종량제</td>
+          <td>사용량 기반</td>
+          <td>Sonnet 4.5: 입력 $3/1M, 출력 $15/1M 토큰</td>
+      </tr>
+  </tbody>
+</table>
+<p>설치 명령어:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># macOS / Linux / WSL</span>
+</span></span><span style="display:flex;"><span>curl -fsSL https://claude.ai/install.sh <span style="color:#1f2328">|</span> bash
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Windows PowerShell</span>
+</span></span><span style="display:flex;"><span>irm https://claude.ai/install.ps1 <span style="color:#1f2328">|</span> iex
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Homebrew</span>
+</span></span><span style="display:flex;"><span>brew install --cask claude-code
+</span></span></code></pre></div><blockquote>
+<p>Tip: 네이티브 설치는 Node.js 없이 동작하고 자동 업데이트가 포함됩니다.</p>
+</blockquote>
+<h3 id="개발-환경ide-설정">개발 환경(IDE) 설정</h3>
+<p>VS Code에서 Anthropic 공식 Claude Code 확장을 사용하는 방식이 가장 일반적입니다. 비슷한 이름의 비공식 확장은 보안 위험이 있을 수 있어 피하는 것이 안전합니다.</p>
+<table>
+  <thead>
+      <tr>
+          <th>영역</th>
+          <th>위치</th>
+          <th>역할</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>파일 탐색기</td>
+          <td>왼쪽</td>
+          <td>프로젝트 파일/폴더 탐색</td>
+      </tr>
+      <tr>
+          <td>코드 편집기</td>
+          <td>가운데</td>
+          <td>코드 확인/수정</td>
+      </tr>
+      <tr>
+          <td>Claude Code 채팅</td>
+          <td>오른쪽 또는 아래</td>
+          <td>지시 전달/결과 확인</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="토큰과-컨텍스트-윈도우">토큰과 컨텍스트 윈도우</h3>
+<table>
+  <thead>
+      <tr>
+          <th>항목</th>
+          <th>의미</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>토큰(Token)</td>
+          <td>AI가 텍스트를 처리하는 기본 단위</td>
+      </tr>
+      <tr>
+          <td>컨텍스트 윈도우</td>
+          <td>AI가 한 번에 기억 가능한 대화/문맥 범위</td>
+      </tr>
+  </tbody>
+</table>
+<p>Opus 4.6 기준으로 컨텍스트 윈도우는 약 200,000 토큰입니다. 결국 핵심은 &ldquo;큰 컨텍스트를 얼마나 효율적으로 운영하느냐&quot;입니다.</p>
+<h3 id="프로젝트-브레인-claudemd">프로젝트 브레인: <code>CLAUDE.md</code></h3>
+<p><code>CLAUDE.md</code>는 프로젝트 루트에서 Claude Code가 가장 먼저 읽는 지침서입니다. 기술 스택, 코드 스타일, 구조, 작업 규칙을 이 파일에 고정하면 세션마다 재설명 비용이 크게 줄어듭니다.</p>
+<pre class="mermaid">flowchart TD
+    U[사용자 요청] --> G[Global CLAUDE.md]
+    G --> P[Project CLAUDE.md]
+    P --> A[Admin/Org 정책]
+    A --> R[최종 동작 규칙]</pre><p>작성 실전 팁:</p>
+<ol>
+<li>가장 중요한 규칙을 파일 맨 위에 둡니다.</li>
+<li>API 문서는 통째로 붙이지 말고 핵심 규칙만 요약합니다.</li>
+<li>같은 실수가 반복되면 그때 규칙을 추가합니다.</li>
+<li>오래된 규칙은 주기적으로 정리합니다.</li>
+</ol>
+<h3 id="rules-폴더와-auto-memory">Rules 폴더와 Auto Memory</h3>
+<p><code>.claude/rules/</code>에 주제별 규칙 파일을 분리하면 관리가 쉬워집니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>.claude/
+</span></span><span style="display:flex;"><span>  rules/
+</span></span><span style="display:flex;"><span>    workflow.md
+</span></span><span style="display:flex;"><span>    design-rules.md
+</span></span><span style="display:flex;"><span>    technical-defaults.md
+</span></span></code></pre></div><p><code>MEMORY.md</code> 자동 메모리를 함께 쓰면 세션이 바뀌어도 중요한 맥락을 이어가기 좋습니다.</p>
+<hr>
+<h2 id="part-2-실전-개발-워크플로우">Part 2. 실전 개발 워크플로우</h2>
+<h3 id="task-do-verify-루프">Task-Do-Verify 루프</h3>
+<p>AI 코딩의 기본은 <strong>Task -&gt; Do -&gt; Verify</strong> 반복입니다.</p>
+<pre class="mermaid">flowchart LR
+    T[Task<br/>작업 지시] --> D[Do<br/>AI 실행]
+    D --> V[Verify<br/>결과 검증]
+    V --> T</pre><p>검증을 생략하면 초반엔 빨라 보여도 후반에 Context Rot로 품질이 급격히 흔들립니다.</p>
+<h3 id="context-rot-방지-포인트">Context Rot 방지 포인트</h3>
+<ul>
+<li>단계마다 테스트/실행 결과를 확인합니다.</li>
+<li>실패 원인과 수정 내용을 짧게라도 기록합니다.</li>
+<li>긴 세션은 <code>/compact</code>로 정리하고, 큰 전환 시 <code>/clear</code>를 고려합니다.</li>
+</ul>
+<h3 id="병렬-작업과-hook-시스템">병렬 작업과 Hook 시스템</h3>
+<p>병렬 작업은 3~4개 정도가 실전에서 효율적입니다. Hook은 특정 이벤트에서 자동 실행되는 스크립트로, 반복 실수를 방지하는 강제 장치로 쓰기 좋습니다.</p>
+<table>
+  <thead>
+      <tr>
+          <th>Hook 이벤트</th>
+          <th>시점</th>
+          <th>활용 예시</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>PreToolUse</code></td>
+          <td>도구 실행 전</td>
+          <td>보호 파일 편집 차단</td>
+      </tr>
+      <tr>
+          <td><code>PostToolUse</code></td>
+          <td>도구 실행 후</td>
+          <td>포맷팅/정적 검사</td>
+      </tr>
+      <tr>
+          <td><code>Stop</code></td>
+          <td>응답 완료 시</td>
+          <td>완료 알림</td>
+      </tr>
+      <tr>
+          <td><code>Notification</code></td>
+          <td>알림 전송 시</td>
+          <td>OS 알림 연동</td>
+      </tr>
+      <tr>
+          <td><code>SessionStart</code></td>
+          <td>세션 시작 시</td>
+          <td>환경 초기화</td>
+      </tr>
+      <tr>
+          <td><code>UserPromptSubmit</code></td>
+          <td>프롬프트 제출 시</td>
+          <td>입력 정책 검증</td>
+      </tr>
+  </tbody>
+</table>
+<p>종료 코드 해석:</p>
+<ul>
+<li><code>Exit 0</code>: 진행 허용</li>
+<li><code>Exit 2</code>: 진행 차단 + 오류 피드백</li>
+<li>기타: 진행되지만 stderr는 로그로만 기록</li>
+</ul>
+<h3 id="4가지-권한-모드">4가지 권한 모드</h3>
+<table>
+  <thead>
+      <tr>
+          <th>모드</th>
+          <th>설명</th>
+          <th>추천</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>기본 모드</td>
+          <td>파일 변경마다 승인</td>
+          <td>안전 최우선</td>
+      </tr>
+      <tr>
+          <td>자동 수정 모드</td>
+          <td>기존 파일 자동 수정, 새 파일 확인</td>
+          <td>초보자 권장</td>
+      </tr>
+      <tr>
+          <td>Bypass Permissions</td>
+          <td>권한 대부분 위임</td>
+          <td>격리 환경에서만</td>
+      </tr>
+      <tr>
+          <td>Plan Mode</td>
+          <td>설계 우선, 코드 수정 불가</td>
+          <td>복잡 작업 필수</td>
+      </tr>
+  </tbody>
+</table>
+<p><code>Bypass Permissions</code>는 반드시 주의해서 사용해야 합니다. 격리되지 않은 환경에서의 무분별한 사용은 큰 손실로 이어질 수 있습니다.</p>
+<h3 id="plan-mode-활용법">Plan Mode 활용법</h3>
+<p>복잡한 작업일수록 &ldquo;바로 구현&quot;보다 &ldquo;먼저 계획&quot;이 결과 품질과 속도를 동시에 올립니다.</p>
+<pre class="mermaid">flowchart TD
+    A[코드베이스 분석] --> B[질문/가정 정리]
+    B --> C[구현 계획 작성]
+    C --> D[사용자 검토/승인]
+    D --> E[코드 작성]</pre><p>실무 체감으로는 1분 계획이 10분 디버깅을 줄여주는 경우가 흔합니다.</p>
+<h3 id="컨텍스트-관리-전략">컨텍스트 관리 전략</h3>
+<table>
+  <thead>
+      <tr>
+          <th>전략</th>
+          <th>설명</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>/context</code></td>
+          <td>현재 사용량 확인</td>
+      </tr>
+      <tr>
+          <td><code>/compact</code></td>
+          <td>대화 고밀도 압축</td>
+      </tr>
+      <tr>
+          <td>짧고 구체적인 프롬프트</td>
+          <td>토큰 절약 + 해석 오차 감소</td>
+      </tr>
+      <tr>
+          <td>Sub Agent 위임</td>
+          <td>메인 컨텍스트 보호</td>
+      </tr>
+      <tr>
+          <td>Extended Thinking</td>
+          <td>사고 토큰 누적 완화</td>
+      </tr>
+      <tr>
+          <td>모델 분리 운용</td>
+          <td>단순 작업 Sonnet, 복잡 작업 Opus</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="part-3-자동화와-확장">Part 3. 자동화와 확장</h2>
+<h3 id="skill-시스템">Skill 시스템</h3>
+<p>Skill은 반복 작업을 재사용 가능한 작업 매뉴얼로 고정하는 방법입니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>.claude/skills/my-skill.skill.md
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>name: my-skill
+</span></span><span style="display:flex;"><span>description: 이 스킬의 간단한 설명
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>실제 작업 단계...
+</span></span></code></pre></div><p>핵심은 &ldquo;자주 하는 일을 사람 기억이 아니라 파일 규칙으로 전환&quot;하는 것입니다.</p>
+<h3 id="mcp-model-context-protocol">MCP (Model Context Protocol)</h3>
+<p>MCP는 Claude Code를 외부 서비스(Gmail, Slack, Notion, Sheets 등)와 연결하는 확장 메커니즘입니다.</p>
+<table>
+  <thead>
+      <tr>
+          <th>항목</th>
+          <th>MCP</th>
+          <th>Skill</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>토큰 사용</td>
+          <td>상대적으로 큼</td>
+          <td>상대적으로 작음</td>
+      </tr>
+      <tr>
+          <td>처리 속도</td>
+          <td>서비스/네트워크 영향 큼</td>
+          <td>빠른 편</td>
+      </tr>
+      <tr>
+          <td>용도</td>
+          <td>연결/탐색/프로토타입</td>
+          <td>운영 자동화</td>
+      </tr>
+  </tbody>
+</table>
+<p>추천 흐름: <strong>MCP로 검증 -&gt; 반복되는 경로는 Skill/API 호출로 고정</strong>.</p>
+<h3 id="sub-agent와-agent-team">Sub Agent와 Agent Team</h3>
+<p>Sub Agent는 특정 작업을 별도 컨텍스트로 위임하고 요약만 회수하는 모델입니다. Agent Team은 여러 에이전트가 상호 소통하며 협업하는 모델입니다.</p>
+<pre class="mermaid">flowchart LR
+    subgraph SA[Sub Agent]
+      M[Main] --> S1[Sub 1]
+      M --> S2[Sub 2]
+      S1 --> M
+      S2 --> M
+    end
+
+    subgraph AT[Agent Team]
+      L[Lead] <-->|P2P 협업| T1[Teammate 1]
+      L <-->|P2P 협업| T2[Teammate 2]
+      T1 <-->|메시지| T2
+      L --> B[Shared Task Board]
+      T1 --> B
+      T2 --> B
+    end</pre><p>Agent Team 사용 시 핵심은 <strong>파일 충돌 없는 역할 분리</strong>입니다. 백엔드/프론트/테스트처럼 디렉토리 단위로 분업하면 안정성이 올라갑니다.</p>
+<h3 id="비용과-활용-기준">비용과 활용 기준</h3>
+<ul>
+<li>Agent Team은 강력하지만 토큰 사용량이 단일 세션보다 크게 증가할 수 있습니다.</li>
+<li>대형 리팩터링/보안 감사처럼 다각도 병렬 분석이 필요한 경우에 집중 투입하는 것이 효율적입니다.</li>
+</ul>
+<hr>
+<h2 id="부록-1-주요-단축키">부록 1) 주요 단축키</h2>
+<table>
+  <thead>
+      <tr>
+          <th>단축키</th>
+          <th>설명</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>Esc</code></td>
+          <td>Claude 중지</td>
+      </tr>
+      <tr>
+          <td><code>Esc x 2</code></td>
+          <td>이전 메시지 목록 이동</td>
+      </tr>
+      <tr>
+          <td><code>Shift+Tab</code></td>
+          <td>Plan Mode 전환</td>
+      </tr>
+      <tr>
+          <td><code>Cmd+T</code></td>
+          <td>Extended Thinking 토글</td>
+      </tr>
+      <tr>
+          <td><code>Cmd+P</code></td>
+          <td>모델 선택기</td>
+      </tr>
+      <tr>
+          <td><code>Ctrl+G</code></td>
+          <td>외부 에디터 편집</td>
+      </tr>
+      <tr>
+          <td><code>Ctrl+O</code></td>
+          <td>상세 모드 토글</td>
+      </tr>
+      <tr>
+          <td><code>Ctrl+B</code></td>
+          <td>현재 작업 백그라운드 전환</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="부록-2-오늘-바로-실행할-3가지">부록 2) 오늘 바로 실행할 3가지</h2>
+<ol>
+<li><code>/init</code>으로 <code>CLAUDE.md</code>를 만들고, 팀 규칙 3줄만 먼저 추가합니다.</li>
+<li>다음 복잡 작업에서 Plan Mode를 먼저 거친 뒤 구현합니다.</li>
+<li>매일 반복하는 작업 하나를 Skill로 분리해 자동화합니다.</li>
+</ol>
+<h2 id="부록-3-보안-주의사항">부록 3) 보안 주의사항</h2>
+<p>AI가 생성한 코드에는 보안 취약점이 포함될 수 있습니다. 특히 결제, 인증, 개인정보 처리 기능은 배포 전 반드시 보안 검토를 거치세요. 도구의 생산성과 서비스의 안전성은 별개의 품질 게이트로 관리해야 합니다.</p>
+<hr>
+<h2 id="마무리">마무리</h2>
+<p>Claude Code의 성능 차이는 모델 스펙보다 **운영 체계(규칙, 검증, 자동화, 분업)**에서 더 크게 발생합니다. 설치 후 바로 코드를 쓰기보다, <code>CLAUDE.md</code>와 검증 루프를 먼저 세팅하는 것이 가장 높은 ROI를 만듭니다.</p>
+<p>최신 내용은 공식 문서를 함께 확인하세요.</p>
+<ul>
+<li><a href="https://docs.anthropic.com/">Anthropic Docs</a></li>
+<li><a href="https://modelcontextprotocol.io/">Model Context Protocol</a></li>
+</ul>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 02월 18일 23시 29분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/development">Development</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/productivity">Productivity</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-02-18-harness-engineering-ai-agents/" rel="prev">
+        <span>하니스 엔지니어링이 AI 성과를 가른다: 컨텍스트를 넘어 환경을 설계하는 법</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#한눈에-보는-전체-지도">한눈에 보는 전체 지도</a></li>
+    <li><a href="#part-1-claude-code-시작하기">Part 1. Claude Code 시작하기</a>
+      <ul>
+        <li><a href="#claude-code란">Claude Code란?</a></li>
+        <li><a href="#구독-플랜-및-설치">구독 플랜 및 설치</a></li>
+        <li><a href="#개발-환경ide-설정">개발 환경(IDE) 설정</a></li>
+        <li><a href="#토큰과-컨텍스트-윈도우">토큰과 컨텍스트 윈도우</a></li>
+        <li><a href="#프로젝트-브레인-claudemd">프로젝트 브레인: <code>CLAUDE.md</code></a></li>
+        <li><a href="#rules-폴더와-auto-memory">Rules 폴더와 Auto Memory</a></li>
+      </ul>
+    </li>
+    <li><a href="#part-2-실전-개발-워크플로우">Part 2. 실전 개발 워크플로우</a>
+      <ul>
+        <li><a href="#task-do-verify-루프">Task-Do-Verify 루프</a></li>
+        <li><a href="#context-rot-방지-포인트">Context Rot 방지 포인트</a></li>
+        <li><a href="#병렬-작업과-hook-시스템">병렬 작업과 Hook 시스템</a></li>
+        <li><a href="#4가지-권한-모드">4가지 권한 모드</a></li>
+        <li><a href="#plan-mode-활용법">Plan Mode 활용법</a></li>
+        <li><a href="#컨텍스트-관리-전략">컨텍스트 관리 전략</a></li>
+      </ul>
+    </li>
+    <li><a href="#part-3-자동화와-확장">Part 3. 자동화와 확장</a>
+      <ul>
+        <li><a href="#skill-시스템">Skill 시스템</a></li>
+        <li><a href="#mcp-model-context-protocol">MCP (Model Context Protocol)</a></li>
+        <li><a href="#sub-agent와-agent-team">Sub Agent와 Agent Team</a></li>
+        <li><a href="#비용과-활용-기준">비용과 활용 기준</a></li>
+      </ul>
+    </li>
+    <li><a href="#부록-1-주요-단축키">부록 1) 주요 단축키</a></li>
+    <li><a href="#부록-2-오늘-바로-실행할-3가지">부록 2) 오늘 바로 실행할 3가지</a></li>
+    <li><a href="#부록-3-보안-주의사항">부록 3) 보안 주의사항</a></li>
+    <li><a href="#마무리">마무리</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="https://gyuha.com/tags/claude" class="badge badge-secondary">claude</a>
+    <a href="https://gyuha.com/tags/claude-code" class="badge badge-secondary">claude-code</a>
+    <a href="https://gyuha.com/tags/opus-4-6" class="badge badge-secondary">opus-4-6</a>
+    <a href="https://gyuha.com/tags/workflow" class="badge badge-secondary">workflow</a>
+    <a href="https://gyuha.com/tags/skill" class="badge badge-secondary">skill</a>
+    <a href="https://gyuha.com/tags/mcp" class="badge badge-secondary">mcp</a>
+    <a href="https://gyuha.com/tags/sub-agent" class="badge badge-secondary">sub-agent</a>
+    <a href="https://gyuha.com/tags/agent-team" class="badge badge-secondary">agent-team</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
