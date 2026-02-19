@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Caddy vs Nginx 비교와 Caddy 사용법: 예제로 이해하는 웹서버 선택 가이드'" />
+  <title>Caddy vs Nginx 비교와 Caddy 사용법: 예제로 이해하는 웹서버 선택 가이드  | 신규하 블로그</title>
+  <meta property="og:title" content="Caddy vs Nginx 비교와 Caddy 사용법: 예제로 이해하는 웹서버 선택 가이드" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-02-19"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/2026-02-19-caddy-vs-nginx-and-caddy-usage/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="caddy" />
+  
+  <meta property="og:tags" content="nginx" />
+  
+  <meta property="og:tags" content="reverse-proxy" />
+  
+  <meta property="og:tags" content="https" />
+  
+  <meta property="og:tags" content="letsencrypt" />
+  
+  <meta property="og:tags" content="web-server" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/2026-02-19-caddy-vs-nginx-and-caddy-usage/">
+          <h1>
+            Caddy vs Nginx 비교와 Caddy 사용법: 예제로 이해하는 웹서버 선택 가이드
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/2026-02-19-caddy-vs-nginx-and-caddy-usage/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>웹서버를 처음 고를 때 가장 자주 나오는 질문이 있습니다.</p>
+<p>&ldquo;Nginx를 써야 할까, Caddy를 써도 될까?&rdquo;</p>
+<p>이 글은 같은 요구사항을 두 서버 설정으로 나란히 보여주면서, 어디서 차이가 나는지 직관적으로 설명합니다.</p>
+<h2 id="한눈에-보는-차이">한눈에 보는 차이</h2>
+<pre class="mermaid">flowchart LR
+    R[요구사항<br/>HTTPS + 프록시 + 정적서빙] --> N[Nginx<br/>강력한 범용성]
+    R --> C[Caddy<br/>단순한 운영]
+    N --> N1[인증서 발급/갱신 경로를 직접 설계]
+    N --> N2[세부 튜닝 자유도 높음]
+    C --> C1[Automatic HTTPS 기본 제공]
+    C --> C2[Caddyfile로 짧은 설정]</pre><p>핵심만 먼저 정리하면:</p>
+<ul>
+<li><strong>Nginx</strong>: 세밀한 제어와 생태계가 강점, 대신 초기 구성과 운영 포인트가 많습니다.</li>
+<li><strong>Caddy</strong>: 기본값이 좋아서 빠르게 서비스 열기 좋고, HTTPS 자동화가 특히 편합니다.</li>
+</ul>
+<h2 id="비교-시나리오">비교 시나리오</h2>
+<p>아래 3가지를 같은 조건으로 비교합니다.</p>
+<ol>
+<li><code>app.example.com</code>을 <code>localhost:3000</code>으로 프록시</li>
+<li>HTTPS 적용</li>
+<li>정적 파일(<code>/var/www/site</code>) 서빙</li>
+</ol>
+<h2 id="1-리버스-프록시-같은-기능-다른-설정-밀도">1) 리버스 프록시: 같은 기능, 다른 설정 밀도</h2>
+<h3 id="nginx-예제">Nginx 예제</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span><span style="color:#cf222e">server</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">listen</span> <span style="color:#0550ae">80</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">server_name</span> <span style="color:#0a3069">app.example.com</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">location</span> <span style="color:#0a3069">/</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">proxy_pass</span> <span style="color:#0a3069">http://127.0.0.1:3000</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">proxy_set_header</span> <span style="color:#0a3069">Host</span> <span style="color:#953800">$host</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">proxy_set_header</span> <span style="color:#0a3069">X-Real-IP</span> <span style="color:#953800">$remote_addr</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">proxy_set_header</span> <span style="color:#0a3069">X-Forwarded-For</span> <span style="color:#953800">$proxy_add_x_forwarded_for</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">proxy_set_header</span> <span style="color:#0a3069">X-Forwarded-Proto</span> <span style="color:#953800">$scheme</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><h3 id="caddy-예제">Caddy 예제</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-caddy" data-lang="caddy"><span style="display:flex;"><span>app.example.com <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">reverse_proxy</span> 127.0.0.1<span style="color:#1f2328">:</span><span style="color:#0550ae">3000</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><p>둘 다 같은 역할이지만, Caddy는 기본 프록시 헤더 처리와 HTTPS 연계가 자연스럽게 이어져 설정이 짧습니다.</p>
+<h2 id="2-https-운영-난이도-차이가-크게-나는-지점">2) HTTPS: 운영 난이도 차이가 크게 나는 지점</h2>
+<h3 id="nginx-예제-인증서-설정-포함">Nginx 예제 (인증서 설정 포함)</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span><span style="color:#cf222e">server</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">listen</span> <span style="color:#0550ae">80</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">server_name</span> <span style="color:#0a3069">app.example.com</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">return</span> <span style="color:#0550ae">301</span> <span style="color:#0a3069">https://</span><span style="color:#953800">$host$request_uri</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">server</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">listen</span> <span style="color:#0550ae">443</span> <span style="color:#0a3069">ssl</span> <span style="color:#0a3069">http2</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">server_name</span> <span style="color:#0a3069">app.example.com</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">ssl_certificate</span> <span style="color:#0a3069">/etc/letsencrypt/live/app.example.com/fullchain.pem</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">ssl_certificate_key</span> <span style="color:#0a3069">/etc/letsencrypt/live/app.example.com/privkey.pem</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">location</span> <span style="color:#0a3069">/</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">proxy_pass</span> <span style="color:#0a3069">http://127.0.0.1:3000</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><p>Nginx는 보통 Certbot 같은 도구와 갱신 스케줄을 별도로 운영합니다.</p>
+<h3 id="caddy-예제-automatic-https">Caddy 예제 (Automatic HTTPS)</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-caddy" data-lang="caddy"><span style="display:flex;"><span>app.example.com <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">reverse_proxy</span> 127.0.0.1<span style="color:#1f2328">:</span><span style="color:#0550ae">3000</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><p>공개 DNS가 올바르게 연결된 도메인이라면, Caddy가 인증서 발급/갱신/적용을 자동으로 처리합니다.</p>
+<pre class="mermaid">flowchart TD
+    D[도메인 DNS 연결] --> S[Caddy 시작]
+    S --> A[ACME 챌린지 수행]
+    A --> I[인증서 발급]
+    I --> T[TLS 적용]
+    T --> R[자동 갱신]</pre><h2 id="3-정적-파일-서빙-문법-차이">3) 정적 파일 서빙: 문법 차이</h2>
+<h3 id="nginx-예제-1">Nginx 예제</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span><span style="color:#cf222e">server</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">listen</span> <span style="color:#0550ae">80</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">server_name</span> <span style="color:#0a3069">static.example.com</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">root</span> <span style="color:#0a3069">/var/www/site</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">index</span> <span style="color:#0a3069">index.html</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">location</span> <span style="color:#0a3069">/</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">try_files</span> <span style="color:#953800">$uri</span> <span style="color:#953800">$uri/</span> <span style="color:#1f2328">=</span><span style="color:#0550ae">404</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><h3 id="caddy-예제-1">Caddy 예제</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-caddy" data-lang="caddy"><span style="display:flex;"><span>static.example.com <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">root</span> <span style="color:#0550ae">*</span> <span style="color:#0a3069">/var/www/site</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">file_server</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><p>기본 정적 사이트 운영에서는 Caddy 문법이 더 읽기 쉽고, 작은 팀에서 유지보수 부담이 낮습니다.</p>
+<h2 id="caddy-사용법-처음부터-운영까지">Caddy 사용법: 처음부터 운영까지</h2>
+<p>여기서는 Linux 서버 기준으로 가장 단순한 흐름만 정리합니다.</p>
+<h3 id="1-설치">1) 설치</h3>
+<p>공식 문서를 기준으로 배포판별 설치 방법을 사용합니다.</p>
+<ul>
+<li>Caddy Docs: <a href="https://caddyserver.com/docs/install">https://caddyserver.com/docs/install</a></li>
+</ul>
+<h3 id="2-caddyfile-작성">2) Caddyfile 작성</h3>
+<p><code>/etc/caddy/Caddyfile</code> 예시:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-caddy" data-lang="caddy"><span style="display:flex;"><span>app.example.com <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">reverse_proxy</span> 127.0.0.1<span style="color:#1f2328">:</span><span style="color:#0550ae">3000</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><h3 id="3-설정-검증">3) 설정 검증</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>caddy fmt --overwrite /etc/caddy/Caddyfile
+</span></span><span style="display:flex;"><span>caddy validate --config /etc/caddy/Caddyfile
+</span></span></code></pre></div><h3 id="4-서비스-실행재시작">4) 서비스 실행/재시작</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo systemctl <span style="color:#6639ba">enable</span> caddy
+</span></span><span style="display:flex;"><span>sudo systemctl restart caddy
+</span></span><span style="display:flex;"><span>sudo systemctl status caddy
+</span></span></code></pre></div><h3 id="5-로그-확인">5) 로그 확인</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo journalctl -u caddy -f
+</span></span></code></pre></div><p>운영 관점에서 중요한 점은 &ldquo;설정이 짧다&quot;보다 &ldquo;HTTPS 갱신 운영이 자동화된다&quot;는 부분입니다.</p>
+<h2 id="언제-caddy를-선택하면-좋은가">언제 Caddy를 선택하면 좋은가?</h2>
+<ul>
+<li>소규모/중간 규모 서비스에서 빠르게 HTTPS까지 안정적으로 열고 싶을 때</li>
+<li>Nginx 고급 튜닝보다 운영 단순성이 더 중요할 때</li>
+<li>인프라 담당자가 적어 인증서 갱신 자동화의 가치가 클 때</li>
+</ul>
+<h2 id="언제-nginx가-더-적합한가">언제 Nginx가 더 적합한가?</h2>
+<ul>
+<li>이미 Nginx 중심 운영 표준(템플릿, 모듈, 모니터링)이 자리잡은 조직</li>
+<li>매우 세밀한 트래픽 제어/고급 라우팅/기존 에코시스템 결합이 필요한 경우</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>둘 중 &ldquo;절대 우위&quot;는 없습니다.</p>
+<ul>
+<li>빠른 시작과 단순한 HTTPS 운영이 목표라면 Caddy가 유리하고,</li>
+<li>강한 제어권과 기존 운영 자산을 활용해야 하면 Nginx가 유리합니다.</li>
+</ul>
+<p>처음 도입 단계라면, 같은 서비스에 대해 두 설정을 직접 작성해 보고 팀의 운영 부담이 어디서 줄어드는지 비교해 보는 것이 가장 현실적인 선택 방법입니다.</p>
+<h2 id="참고-자료">참고 자료</h2>
+<ol>
+<li>Caddy Docs - Automatic HTTPS: <a href="https://caddyserver.com/docs/automatic-https">https://caddyserver.com/docs/automatic-https</a></li>
+<li>Caddy Docs - Caddyfile Concepts: <a href="https://caddyserver.com/docs/caddyfile/concepts">https://caddyserver.com/docs/caddyfile/concepts</a></li>
+<li>Caddy Docs - <code>reverse_proxy</code> Directive: <a href="https://caddyserver.com/docs/caddyfile/directives/reverse_proxy">https://caddyserver.com/docs/caddyfile/directives/reverse_proxy</a></li>
+<li>Caddy Docs - Install: <a href="https://caddyserver.com/docs/install">https://caddyserver.com/docs/install</a></li>
+<li>Nginx Docs - Beginner&rsquo;s Guide: <a href="https://nginx.org/en/docs/beginners_guide.html">https://nginx.org/en/docs/beginners_guide.html</a></li>
+<li>Nginx Docs - Reverse Proxy: <a href="https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/">https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/</a></li>
+<li>Certbot Docs: <a href="https://certbot.eff.org/">https://certbot.eff.org/</a></li>
+</ol>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 02월 19일 11시 50분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/devops">DevOps</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/webserver">WebServer</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-02-18-claude-code-core-guide-opus-46/" rel="prev">
+        <span>Claude Code 핵심 가이드: 설치부터 Agent Team까지 (2026년 2월, Opus 4.6 기준)</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#한눈에-보는-차이">한눈에 보는 차이</a></li>
+    <li><a href="#비교-시나리오">비교 시나리오</a></li>
+    <li><a href="#1-리버스-프록시-같은-기능-다른-설정-밀도">1) 리버스 프록시: 같은 기능, 다른 설정 밀도</a>
+      <ul>
+        <li><a href="#nginx-예제">Nginx 예제</a></li>
+        <li><a href="#caddy-예제">Caddy 예제</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-https-운영-난이도-차이가-크게-나는-지점">2) HTTPS: 운영 난이도 차이가 크게 나는 지점</a>
+      <ul>
+        <li><a href="#nginx-예제-인증서-설정-포함">Nginx 예제 (인증서 설정 포함)</a></li>
+        <li><a href="#caddy-예제-automatic-https">Caddy 예제 (Automatic HTTPS)</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-정적-파일-서빙-문법-차이">3) 정적 파일 서빙: 문법 차이</a>
+      <ul>
+        <li><a href="#nginx-예제-1">Nginx 예제</a></li>
+        <li><a href="#caddy-예제-1">Caddy 예제</a></li>
+      </ul>
+    </li>
+    <li><a href="#caddy-사용법-처음부터-운영까지">Caddy 사용법: 처음부터 운영까지</a>
+      <ul>
+        <li><a href="#1-설치">1) 설치</a></li>
+        <li><a href="#2-caddyfile-작성">2) Caddyfile 작성</a></li>
+        <li><a href="#3-설정-검증">3) 설정 검증</a></li>
+        <li><a href="#4-서비스-실행재시작">4) 서비스 실행/재시작</a></li>
+        <li><a href="#5-로그-확인">5) 로그 확인</a></li>
+      </ul>
+    </li>
+    <li><a href="#언제-caddy를-선택하면-좋은가">언제 Caddy를 선택하면 좋은가?</a></li>
+    <li><a href="#언제-nginx가-더-적합한가">언제 Nginx가 더 적합한가?</a></li>
+    <li><a href="#결론">결론</a></li>
+    <li><a href="#참고-자료">참고 자료</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="https://gyuha.com/tags/caddy" class="badge badge-secondary">caddy</a>
+    <a href="https://gyuha.com/tags/nginx" class="badge badge-secondary">nginx</a>
+    <a href="https://gyuha.com/tags/reverse-proxy" class="badge badge-secondary">reverse-proxy</a>
+    <a href="https://gyuha.com/tags/https" class="badge badge-secondary">https</a>
+    <a href="https://gyuha.com/tags/letsencrypt" class="badge badge-secondary">letsencrypt</a>
+    <a href="https://gyuha.com/tags/web-server" class="badge badge-secondary">web-server</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
