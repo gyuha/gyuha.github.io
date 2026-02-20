@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '아직도 RAG 쓰세요? 단순 RAG는 줄이고, Contextual Retrieval로 올리는 실전 가이드'" />
+  <title>아직도 RAG 쓰세요? 단순 RAG는 줄이고, Contextual Retrieval로 올리는 실전 가이드  | 신규하 블로그</title>
+  <meta property="og:title" content="아직도 RAG 쓰세요? 단순 RAG는 줄이고, Contextual Retrieval로 올리는 실전 가이드" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-02-20"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/2026-02-20-rag-contextual-retrieval-practical-guide/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="rag" />
+  
+  <meta property="og:tags" content="contextual-retrieval" />
+  
+  <meta property="og:tags" content="hybrid-search" />
+  
+  <meta property="og:tags" content="long-context" />
+  
+  <meta property="og:tags" content="anthropic" />
+  
+  <meta property="og:tags" content="retrieval" />
+  
+  <meta property="og:tags" content="llm" />
+  
+  <meta property="og:tags" content="mermaid" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/2026-02-20-rag-contextual-retrieval-practical-guide/">
+          <h1>
+            아직도 RAG 쓰세요? 단순 RAG는 줄이고, Contextual Retrieval로 올리는 실전 가이드
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/2026-02-20-rag-contextual-retrieval-practical-guide/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>RAG는 죽지 않았습니다.
+다만 &ldquo;문서를 잘라서 벡터 DB에 넣고 Top-k만 붙이는 단순 RAG&quot;가 빠르게 한계를 드러내고 있습니다.</p>
+<p>이 글은 아래 영상을 바탕으로, 왜 단순 RAG가 흔들리는지와 지금 바로 적용할 수 있는 개선 패턴을 정리한 실전 노트입니다.</p>
+<ul>
+<li>영상: <a href="https://www.youtube.com/watch?v=2jcOpJnHKBw">아직도 RAG 쓰세요? 이거 보고 나면 멈춥니다</a></li>
+<li>채널: <a href="https://www.youtube.com/@maker-evan">메이커 에반 | Maker Evan</a></li>
+</ul>
+<h2 id="3줄-요약">3줄 요약</h2>
+<ol>
+<li>문제는 RAG 자체가 아니라, 문맥이 끊기는 단순 청킹 중심 RAG입니다.</li>
+<li>개선의 핵심은 하이브리드 검색 + 검색 후 검증 + 청크에 맥락 주석(Contextual Retrieval)입니다.</li>
+<li>문서량이 작을 때는 Long Context 직접 주입이 빠르지만, 비용·확장성·중간 구간 누락 리스크를 같이 봐야 합니다.</li>
+</ol>
+<pre class="mermaid">flowchart LR
+    A[단순 RAG
+    청킹 + 벡터검색] --> B[문맥 손실]
+    B --> C[검색은 됐는데 답이 틀림]
+    C --> D[운영 불신 증가]
+    D --> E[개선 필요]</pre><h2 id="왜-단순-rag에서-오답이-늘어날까">왜 단순 RAG에서 오답이 늘어날까</h2>
+<p>영상에서 강조하는 핵심은 &ldquo;문서를 자르는 순간 의미의 좌표가 사라진다&quot;는 점입니다.</p>
+<p>예를 들어 &ldquo;마케팅 비용이 전 분기 대비 15% 증가&quot;라는 문장만 떼어 놓으면,
+어느 회사인지, 어느 분기인지, 어떤 기준인지가 사라집니다.</p>
+<pre class="mermaid">flowchart TD
+    D0[원본 문서] --> D1[청킹]
+    D1 --> C1[청크 A
+    마케팅 비용 15% 증가]
+    D1 --> C2[청크 B
+    2024 Q3 A기업]
+    D1 --> C3[청크 C
+    비교 기준/주석]
+    Q[사용자 질문] --> R[벡터 검색 Top-k]
+    R --> C1
+    C1 --> L[LLM]
+    L --> O[맥락 부족한 답변]</pre><p>즉, 검색 히트율과 정답률은 다릅니다.
+&ldquo;비슷한 문장&quot;을 찾는 것만으로는 &ldquo;정확한 문맥&quot;까지 보장되지 않습니다.</p>
+<h2 id="영상에서-제시한-개선-전략-1-하이브리드-검색">영상에서 제시한 개선 전략 1: 하이브리드 검색</h2>
+<p>의미 기반 검색(semantic)과 키워드 기반 검색(keyword)을 함께 써야 누락이 줄어듭니다.</p>
+<ul>
+<li>의미 기반: 표현이 달라도 의도가 비슷한 문서를 찾음</li>
+<li>키워드 기반: 고유명사/정확 용어(예: 삼성전자, 계약번호)를 놓치지 않음</li>
+</ul>
+<pre class="mermaid">flowchart LR
+    Q[질문] --> S1[Semantic Search]
+    Q --> S2[Keyword Search]
+    S1 --> M[결과 병합]
+    S2 --> M
+    M --> RR[Re-rank / 관련성 검증]
+    RR --> K[최종 컨텍스트]
+    K --> L[LLM 응답]</pre><p>여기서 중요한 포인트는 &ldquo;검색 후 검증(Re-rank)&rdquo; 단계입니다.
+검색 결과를 그대로 넣지 말고, 한 번 더 관련도를 점검해 노이즈를 줄여야 합니다.</p>
+<h2 id="개선-전략-2-contextual-retrieval맥락-주석형-청킹">개선 전략 2: Contextual Retrieval(맥락 주석형 청킹)</h2>
+<p>영상에서 특히 강하게 추천하는 방식은 청크 앞에 &ldquo;문서 내 위치/의미&quot;를 짧게 붙여 저장하는 것입니다.</p>
+<p>예시:</p>
+<ul>
+<li>기존 청크: &ldquo;마케팅 비용이 15% 증가했다&rdquo;</li>
+<li>맥락 주석 청크: &ldquo;A기업 2024년 3분기 실적 보고서 중 마케팅 비용 분석 섹션: 마케팅 비용이 15% 증가했다&rdquo;</li>
+</ul>
+<pre class="mermaid">flowchart TB
+    A[원본 단락] --> B[청킹]
+    B --> C[청크별 맥락 주석 생성]
+    C --> D[(벡터/검색 저장소)]
+    Q[질문] --> E[검색]
+    E --> F[맥락 포함 청크 회수]
+    F --> G[LLM]
+    G --> H[정확도 개선]</pre><p>영상 내 언급 기준으로, 이 접근은 검색 실패율을 크게 낮추는 효과가 보고됩니다.
+핵심은 &ldquo;청크를 작게 자르되, 의미의 꼬리표를 붙여 잃어버린 맥락을 복구&quot;하는 것입니다.</p>
+<h2 id="개선-전략-3-요약본으로-찾고-원문으로-답하기">개선 전략 3: 요약본으로 찾고, 원문으로 답하기</h2>
+<p>실무에서 적용하기 쉬운 패턴은 다음 2단계입니다.</p>
+<ol>
+<li>각 단락을 요약해 &ldquo;검색용 인덱스&quot;를 만든다.</li>
+<li>검색에 성공하면 실제 생성 단계에는 &ldquo;요약이 아닌 원문&quot;을 전달한다.</li>
+</ol>
+<pre class="mermaid">sequenceDiagram
+    participant Doc as 문서 저장소
+    participant Idx as 검색 인덱스(요약본)
+    participant Ret as 리트리버
+    participant LLM as LLM
+
+    Doc->>Idx: 단락 요약 + 소제목 인덱싱
+    Ret->>Idx: 질문 기반 검색
+    Idx-->>Ret: 요약본 Top-k
+    Ret->>Doc: 원문 단락 조회
+    Doc-->>Ret: 원문 컨텍스트
+    Ret->>LLM: 질문 + 원문
+    LLM-->>Ret: 최종 답변</pre><p>이 구조는 속도와 정확도를 분리해 최적화한다는 점이 장점입니다.</p>
+<ul>
+<li>검색 단계: 가벼운 요약본으로 빠르게</li>
+<li>생성 단계: 원문으로 깊고 정확하게</li>
+</ul>
+<h2 id="long-context를-언제-쓸까">Long Context를 언제 쓸까</h2>
+<p>문서량이 작거나 태스크가 단기성이라면, 복잡한 RAG 파이프라인 없이 통째로 넣는 방식이 빠를 수 있습니다.
+다만 영상에서 짚듯이 세 가지를 같이 봐야 합니다.</p>
+<ol>
+<li>비용: 토큰 사용량이 급증할 수 있음</li>
+<li>확장성: 문서량이 커지면 전량 주입이 불가능해짐</li>
+<li>품질: 긴 문맥에서 중간 구간 정보가 약해질 수 있음</li>
+</ol>
+<pre class="mermaid">flowchart TD
+    S[시작] --> D1{문서 총량이 작고
+    변경이 적은가?}
+    D1 -->|예| D2{지연시간/개발속도
+    최우선인가?}
+    D2 -->|예| C1[Long Context 직접 주입]
+    D2 -->|아니오| C2[경량 RAG + 검증]
+    D1 -->|아니오| D3{정확 근거 추적이
+    중요한가?}
+    D3 -->|예| C3[하이브리드 RAG + 맥락 주석]
+    D3 -->|아니오| C4[요약 검색 + 원문 전달]</pre><h2 id="팀-적용용-체크리스트">팀 적용용 체크리스트</h2>
+<p>아래 항목 5개만 적용해도 단순 RAG 대비 체감 품질이 빠르게 올라갑니다.</p>
+<ul>
+<li>청킹 전에 문서 구조(장/절/표/주석)를 보존할 수 있는지 점검</li>
+<li>Semantic + Keyword 하이브리드 검색 기본값으로 설정</li>
+<li>검색 후 Re-rank 또는 관련성 필터 단계 추가</li>
+<li>청크 저장 시 맥락 주석(문서명/섹션/시점/주체) 붙이기</li>
+<li>검색 인덱스와 생성 컨텍스트를 분리(요약 검색 + 원문 전달)</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>&ldquo;RAG is dead&quot;의 정확한 해석은 &ldquo;단순 RAG의 시대가 끝나고 있다&quot;에 가깝습니다.</p>
+<p>앞으로의 기준은 더 선명합니다.</p>
+<ul>
+<li>문서가 작고 빠른 실험이 필요하면: Long Context 우선</li>
+<li>문서가 크고 운영이 중요하면: 하이브리드 RAG + Contextual Retrieval</li>
+<li>둘 사이에서는: 요약 검색 + 원문 전달 패턴으로 현실적인 균형</li>
+</ul>
+<p>결국 승부는 모델 이름이 아니라, <strong>문맥을 어떻게 설계하고 전달하느냐</strong>에서 납니다.</p>
+<h2 id="참고">참고</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=2jcOpJnHKBw">아직도 RAG 쓰세요? 이거 보고 나면 멈춥니다 (YouTube)</a></li>
+<li><a href="https://www.youtube.com/@maker-evan">메이커 에반 | Maker Evan</a></li>
+</ul>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 02월 20일 22시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/llm">LLM</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-02-19-caddy-vs-nginx-and-caddy-usage/" rel="prev">
+        <span>Caddy vs Nginx 비교와 Caddy 사용법: 예제로 이해하는 웹서버 선택 가이드</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#3줄-요약">3줄 요약</a></li>
+    <li><a href="#왜-단순-rag에서-오답이-늘어날까">왜 단순 RAG에서 오답이 늘어날까</a></li>
+    <li><a href="#영상에서-제시한-개선-전략-1-하이브리드-검색">영상에서 제시한 개선 전략 1: 하이브리드 검색</a></li>
+    <li><a href="#개선-전략-2-contextual-retrieval맥락-주석형-청킹">개선 전략 2: Contextual Retrieval(맥락 주석형 청킹)</a></li>
+    <li><a href="#개선-전략-3-요약본으로-찾고-원문으로-답하기">개선 전략 3: 요약본으로 찾고, 원문으로 답하기</a></li>
+    <li><a href="#long-context를-언제-쓸까">Long Context를 언제 쓸까</a></li>
+    <li><a href="#팀-적용용-체크리스트">팀 적용용 체크리스트</a></li>
+    <li><a href="#결론">결론</a></li>
+    <li><a href="#참고">참고</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="https://gyuha.com/tags/rag" class="badge badge-secondary">rag</a>
+    <a href="https://gyuha.com/tags/contextual-retrieval" class="badge badge-secondary">contextual-retrieval</a>
+    <a href="https://gyuha.com/tags/hybrid-search" class="badge badge-secondary">hybrid-search</a>
+    <a href="https://gyuha.com/tags/long-context" class="badge badge-secondary">long-context</a>
+    <a href="https://gyuha.com/tags/anthropic" class="badge badge-secondary">anthropic</a>
+    <a href="https://gyuha.com/tags/retrieval" class="badge badge-secondary">retrieval</a>
+    <a href="https://gyuha.com/tags/llm" class="badge badge-secondary">llm</a>
+    <a href="https://gyuha.com/tags/mermaid" class="badge badge-secondary">mermaid</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
