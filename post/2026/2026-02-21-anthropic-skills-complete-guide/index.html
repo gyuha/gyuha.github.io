@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Anthropic Skill 가이드 전체 재구성: 설계, 테스트, 배포, 트러블슈팅까지'" />
+  <title>Anthropic Skill 가이드 전체 재구성: 설계, 테스트, 배포, 트러블슈팅까지  | 신규하 블로그</title>
+  <meta property="og:title" content="Anthropic Skill 가이드 전체 재구성: 설계, 테스트, 배포, 트러블슈팅까지" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-02-21"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/2026-02-21-anthropic-skills-complete-guide/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="anthropic" />
+  
+  <meta property="og:tags" content="claude" />
+  
+  <meta property="og:tags" content="skills" />
+  
+  <meta property="og:tags" content="mcp" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+  <meta property="og:tags" content="testing" />
+  
+  <meta property="og:tags" content="yaml" />
+  
+  <meta property="og:tags" content="mermaid" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/2026-02-21-anthropic-skills-complete-guide/">
+          <h1>
+            Anthropic Skill 가이드 전체 재구성: 설계, 테스트, 배포, 트러블슈팅까지
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/2026-02-21-anthropic-skills-complete-guide/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>이 글은 Anthropic의 PDF 문서 <strong>The Complete Guide to Building Skills for Claude</strong>를 &ldquo;요약&quot;이 아니라 <strong>전체 흐름 기준으로 재구성</strong>한 버전입니다.</p>
+<p>문서의 챕터 구조(Introduction, Fundamentals, Planning and design, Testing and iteration, Distribution and sharing, Patterns and troubleshooting, Resources and references, Reference A/B/C)를 그대로 따라가면서, 실무에서 바로 쓸 수 있게 한국어로 재정렬했습니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Skill-for-Claude.pdf">https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Skill-for-Claude.pdf</a></li>
+</ul>
+<h2 id="문서-전체-구조-한눈에-보기">문서 전체 구조 한눈에 보기</h2>
+<p>원문 목차는 아래 순서입니다.</p>
+<ol>
+<li>Introduction</li>
+<li>Fundamentals</li>
+<li>Planning and design</li>
+<li>Testing and iteration</li>
+<li>Distribution and sharing</li>
+<li>Patterns and troubleshooting</li>
+<li>Resources and references</li>
+<li>Reference A: Quick checklist</li>
+<li>Reference B: YAML frontmatter</li>
+<li>Reference C: Complete skill examples</li>
+</ol>
+<pre class="mermaid">flowchart TD
+    A[Introduction] --> B[Fundamentals]
+    B --> C[Planning and design]
+    C --> D[Testing and iteration]
+    D --> E[Distribution and sharing]
+    E --> F[Patterns and troubleshooting]
+    F --> G[Resources and references]
+    G --> H[Reference A/B/C]</pre><h2 id="1-introduction-재구성">1) Introduction 재구성</h2>
+<p>원문이 규정하는 Skill의 핵심 정의는 다음과 같습니다.</p>
+<ul>
+<li>Skill은 &ldquo;간단한 폴더로 패키징된 지침 세트&rdquo;</li>
+<li>반복 워크플로우를 매 대화마다 다시 설명하지 않게 해 주는 재사용 단위</li>
+<li>단독으로도 유효하지만, MCP 연계 시 &ldquo;도구 접근&quot;을 &ldquo;일관된 실행 방식&quot;으로 끌어올리는 지식 계층</li>
+</ul>
+<p>원문이 강조한 사용 시나리오도 비교적 명확합니다.</p>
+<ul>
+<li>프런트엔드 디자인 생성</li>
+<li>일정한 조사 방법론으로 리서치 수행</li>
+<li>팀 문서 스타일에 맞춘 문서 생성</li>
+<li>다단계 프로세스 오케스트레이션</li>
+</ul>
+<p>또한 입문자를 위한 현실적인 기대치도 제시합니다.</p>
+<ul>
+<li>첫 Skill은 보통 15~30분 내 구축/테스트 가능</li>
+<li>skill-creator를 활용하면 초안 생성과 반복 개선이 빨라짐</li>
+</ul>
+<h2 id="2-fundamentals-재구성">2) Fundamentals 재구성</h2>
+<h3 id="2-1-skill-폴더-구성-요소">2-1. Skill 폴더 구성 요소</h3>
+<p>원문의 기본 구조는 다음과 같습니다.</p>
+<ul>
+<li><code>SKILL.md</code> (필수)</li>
+<li><code>scripts/</code> (선택)</li>
+<li><code>references/</code> (선택)</li>
+<li><code>assets/</code> (선택)</li>
+</ul>
+<pre class="mermaid">flowchart LR
+    A[your-skill-name/] --> B[SKILL.md required]
+    A --> C[scripts optional]
+    A --> D[references optional]
+    A --> E[assets optional]</pre><h3 id="2-2-core-design-principles">2-2. Core Design Principles</h3>
+<p>원문은 세 가지 원칙을 핵심으로 둡니다.</p>
+<ol>
+<li>Progressive Disclosure</li>
+<li>Composability</li>
+<li>Portability</li>
+</ol>
+<h4 id="progressive-disclosure-3단계">Progressive Disclosure (3단계)</h4>
+<ul>
+<li>1단계: YAML frontmatter (항상 시스템 프롬프트에 로드)</li>
+<li>2단계: <code>SKILL.md</code> 본문 (관련성 판단 후 로드)</li>
+<li>3단계: 링크 파일(<code>references/</code> 등, 필요 시 탐색)</li>
+</ul>
+<p>이 방식의 목적은 <strong>토큰 비용 최소화 + 전문성 유지</strong>입니다.</p>
+<h4 id="composability">Composability</h4>
+<p>Claude는 여러 Skill을 동시에 로드할 수 있으므로,
+각 Skill은 &ldquo;나 혼자만 존재한다&quot;는 전제를 버리고 상호 조합 가능하게 설계해야 합니다.</p>
+<h4 id="portability">Portability</h4>
+<p>Skill은 Claude.ai, Claude Code, API에서 동일한 원리로 동작합니다.
+단, 스크립트 의존성이 있으면 실행 환경 의존성은 별도 관리해야 합니다.</p>
+<h3 id="2-3-skills--mcp-주방-비유">2-3. Skills + MCP (주방 비유)</h3>
+<p>원문의 비유를 그대로 옮기면,</p>
+<ul>
+<li>MCP = 전문 주방(도구/재료/장비)</li>
+<li>Skill = 레시피(어떤 순서로 무엇을 만들지)</li>
+</ul>
+<pre class="mermaid">flowchart LR
+    M[MCP: What Claude can do] --> R[실행]
+    S[Skill: How Claude should do it] --> R
+    R --> O[일관된 결과]</pre><p>원문은 특히 MCP 제작자 관점의 문제를 짚습니다.</p>
+<ul>
+<li>Skill이 없으면: &ldquo;연결은 했는데 다음에 뭘 해야 하지?&ldquo;가 반복</li>
+<li>Skill이 있으면: 사전 정의된 워크플로우가 자동 활성화되어 학습 비용 감소</li>
+</ul>
+<h2 id="3-planning-and-design-재구성">3) Planning and design 재구성</h2>
+<h3 id="3-1-코드보다-먼저-유스케이스">3-1. 코드보다 먼저 유스케이스</h3>
+<p>원문은 시작점으로 <strong>2~3개의 구체 유스케이스 정의</strong>를 요구합니다.</p>
+<p>예시 구성은 다음 필드를 포함합니다.</p>
+<ul>
+<li>Use Case</li>
+<li>Trigger</li>
+<li>Steps</li>
+<li>Result</li>
+</ul>
+<p>체크 질문도 명확합니다.</p>
+<ul>
+<li>사용자가 실제로 달성하려는 목표는 무엇인가?</li>
+<li>이 목표는 어떤 다단계 흐름이 필요한가?</li>
+<li>내장 도구/MCP 중 무엇이 필요한가?</li>
+<li>어떤 도메인 지식을 내장해야 하는가?</li>
+</ul>
+<h3 id="3-2-anthropic이-관찰한-3개-카테고리">3-2. Anthropic이 관찰한 3개 카테고리</h3>
+<ol>
+<li>Document &amp; Asset Creation</li>
+<li>Workflow Automation</li>
+<li>MCP Enhancement</li>
+</ol>
+<p>각 카테고리마다 원문은 기술 포인트를 다르게 제시합니다.</p>
+<ul>
+<li>문서/산출물형: 스타일 가이드, 템플릿, 품질 체크리스트</li>
+<li>자동화형: 단계별 게이트, 반복 개선 루프</li>
+<li>MCP 강화형: 다중 MCP 호출 순서, 오류 처리, 도메인 컨텍스트 내장</li>
+</ul>
+<h3 id="3-3-success-criteria정량--정성">3-3. Success Criteria(정량 + 정성)</h3>
+<p>원문의 예시 지표는 아래와 같습니다.</p>
+<ul>
+<li>관련 질의의 90%에서 Skill 트리거</li>
+<li>워크플로우당 API 실패 0</li>
+<li>Skill 사용 전후 도구 호출 수/토큰 비교</li>
+<li>사용자 교정 없이 완료되는 비율</li>
+<li>세션 간 일관성</li>
+</ul>
+<pre class="mermaid">flowchart TD
+    A[정의된 유스케이스] --> B[트리거 테스트]
+    B --> C[기능 테스트]
+    C --> D[성능 비교]
+    D --> E[정량+정성 피드백]</pre><h3 id="3-4-technical-requirements-상세">3-4. Technical requirements 상세</h3>
+<p>원문에서 특히 강하게 강조하는 규칙은 아래입니다.</p>
+<ul>
+<li>파일명은 정확히 <code>SKILL.md</code> (대소문자 포함)</li>
+<li>폴더명은 kebab-case</li>
+<li>Skill 폴더 내부 <code>README.md</code> 금지</li>
+<li>frontmatter의 <code>description</code>은 &ldquo;무엇+언제&rdquo; 둘 다 포함</li>
+<li><code>description</code> 길이 1024자 이하</li>
+<li>XML 태그(<code>&lt; &gt;</code>) 금지</li>
+<li>이름에 <code>claude</code>/<code>anthropic</code> 사용 금지(예약)</li>
+</ul>
+<h2 id="4-yaml-frontmatter와-지침-작성-재구성">4) YAML frontmatter와 지침 작성 재구성</h2>
+<h3 id="4-1-최소-형식">4-1. 최소 형식</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#24292e">---</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#0550ae">name</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>your-skill-name<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#0550ae">description</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>What it does. Use when user asks to [specific phrases].<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#24292e">---</span><span style="color:#fff">
+</span></span></span></code></pre></div><h3 id="4-2-선택-필드">4-2. 선택 필드</h3>
+<ul>
+<li><code>license</code></li>
+<li><code>compatibility</code></li>
+<li><code>metadata</code></li>
+<li>(참고 섹션에서) <code>allowed-tools</code></li>
+</ul>
+<h3 id="4-3-description-작성-원칙">4-3. description 작성 원칙</h3>
+<p>원문의 공식 구조:</p>
+<ul>
+<li>What it does</li>
+<li>When to use it</li>
+<li>Key capabilities</li>
+</ul>
+<p>좋은 예시의 공통점:</p>
+<ul>
+<li>특정 트리거 표현 포함</li>
+<li>파일 형식/도메인 맥락 포함</li>
+<li>사용자 가치가 명확함</li>
+</ul>
+<p>나쁜 예시의 공통점:</p>
+<ul>
+<li>&ldquo;Helps with projects&rdquo; 같은 모호한 문장</li>
+<li>트리거 조건 누락</li>
+<li>내부 구현 용어만 있고 사용자 의도 신호가 없음</li>
+</ul>
+<h3 id="4-4-본문-지침skillmd-body-구조">4-4. 본문 지침(SKILL.md body) 구조</h3>
+<p>원문 권장 틀:</p>
+<ol>
+<li>단계별 절차</li>
+<li>실행 예시</li>
+<li>오류 시 원인/해결</li>
+<li>필요 시 스크립트 명령</li>
+</ol>
+<p>핵심 작성 원칙:</p>
+<ul>
+<li>구체적이고 실행 가능한 문장</li>
+<li>오류 처리 포함</li>
+<li><code>references/</code>로 상세 문서 분리</li>
+<li>긴 설명보다 구조화된 목록 우선</li>
+</ul>
+<h2 id="5-testing-and-iteration-재구성">5) Testing and iteration 재구성</h2>
+<p>원문은 테스트 강도를 3단계로 설명합니다.</p>
+<ol>
+<li>Claude.ai 수동 테스트</li>
+<li>Claude Code 스크립트 테스트</li>
+<li>Skills API 기반 평가 스위트</li>
+</ol>
+<h3 id="5-1-추천-접근">5-1. 추천 접근</h3>
+<p>원문의 실전 팁은 매우 현실적입니다.</p>
+<ul>
+<li>먼저 &ldquo;단일 고난도 작업&quot;을 통과시키고</li>
+<li>그 성공 패턴을 Skill로 추출한 뒤</li>
+<li>커버리지 케이스를 점진적으로 늘린다</li>
+</ul>
+<h3 id="5-2-테스트-3축">5-2. 테스트 3축</h3>
+<ol>
+<li>Triggering tests</li>
+<li>Functional tests</li>
+<li>Performance comparison</li>
+</ol>
+<p>원문 예시 비교(요지):</p>
+<ul>
+<li>Skill 없음: 지시 반복, 대화 왕복 증가, 실패 호출 발생, 토큰 소모 큼</li>
+<li>Skill 있음: 자동 워크플로우, 실패 감소, 토큰 감소</li>
+</ul>
+<h3 id="5-3-skill-creator의-역할">5-3. skill-creator의 역할</h3>
+<p>원문은 skill-creator를 다음 용도로 제시합니다.</p>
+<ul>
+<li>초안 생성</li>
+<li>구조/트리거/표현 문제 리뷰</li>
+<li>반복 개선(실패 케이스 반영)</li>
+</ul>
+<p>단, 자동 정량 평가를 완전히 대체하는 도구로 보지는 않습니다.</p>
+<h3 id="5-4-반복-개선-신호">5-4. 반복 개선 신호</h3>
+<ul>
+<li>언더트리거: 필요한데 안 뜸 -&gt; description 정밀화</li>
+<li>오버트리거: 불필요한데 뜸 -&gt; 범위 축소/negative trigger 추가</li>
+<li>실행 불안정: 결과 흔들림/API 오류 -&gt; 지침과 오류 처리 강화</li>
+</ul>
+<h2 id="6-distribution-and-sharing-재구성">6) Distribution and sharing 재구성</h2>
+<p>원문의 배포 흐름은 2026년 1월 기준 모델로 설명됩니다.</p>
+<ul>
+<li>개인: 폴더 다운로드 -&gt; zip -&gt; Claude.ai 업로드 또는 Claude Code 디렉터리 배치</li>
+<li>조직: 관리자 단위 workspace 배포, 자동 업데이트, 중앙 관리</li>
+</ul>
+<h3 id="6-1-api-활용">6-1. API 활용</h3>
+<p>원문 핵심 포인트:</p>
+<ul>
+<li><code>/v1/skills</code>로 관리</li>
+<li>Messages API 요청에서 <code>container.skills</code> 사용</li>
+<li>Claude Console 기반 버전 관리</li>
+<li>Agent SDK와 결합 가능</li>
+</ul>
+<p>추가 조건:</p>
+<ul>
+<li>API의 Skill 실행은 Code Execution Tool beta가 필요</li>
+</ul>
+<h3 id="6-2-현재-권장-배포-전략">6-2. 현재 권장 배포 전략</h3>
+<p>원문 권장 순서:</p>
+<ol>
+<li>GitHub 공개 저장소에 Skill 호스팅</li>
+<li>저장소 README에 설치/예시/스크린샷 문서화</li>
+<li>MCP 문서에서 Skill 연계 가치와 퀵스타트 안내</li>
+</ol>
+<p>중요한 구분:</p>
+<ul>
+<li>저장소 루트 README는 권장</li>
+<li>Skill 폴더 내부 README.md는 금지</li>
+</ul>
+<h2 id="7-patterns-and-troubleshooting-재구성">7) Patterns and troubleshooting 재구성</h2>
+<h3 id="7-1-문제-중심-vs-도구-중심">7-1. 문제 중심 vs 도구 중심</h3>
+<p>원문은 Skill 설계를 두 관점으로 나눕니다.</p>
+<ul>
+<li>Problem-first: 사용자가 결과를 말하면 Skill이 도구 순서를 알아서 조직</li>
+<li>Tool-first: 사용자가 MCP 연결은 했고, Skill이 최적 활용법을 제공</li>
+</ul>
+<p>둘 중 하나가 우세하더라도, 대부분은 혼합 형태로 운영됩니다.</p>
+<h3 id="7-2-원문-패턴-5종">7-2. 원문 패턴 5종</h3>
+<ol>
+<li>Sequential workflow orchestration</li>
+<li>Multi-MCP coordination</li>
+<li>Iterative refinement</li>
+<li>Context-aware tool selection</li>
+<li>Domain-specific intelligence</li>
+</ol>
+<pre class="mermaid">mindmap
+  root((Skill Patterns))
+    Sequential
+      explicit ordering
+      dependencies
+      rollback
+    Multi-MCP
+      phase separation
+      data passing
+    Iterative
+      quality criteria
+      stop conditions
+    Context-aware
+      decision criteria
+      fallback
+    Domain-specific
+      governance
+      audit trail</pre><h3 id="7-3-troubleshooting-핵심-재구성">7-3. Troubleshooting 핵심 재구성</h3>
+<h4 id="업로드-실패">업로드 실패</h4>
+<ul>
+<li><code>SKILL.md</code> 이름 오타/대소문자 불일치</li>
+<li>frontmatter 구분자(<code>---</code>) 오류</li>
+<li>name 규칙 위반(공백/대문자)</li>
+</ul>
+<h4 id="트리거-실패">트리거 실패</h4>
+<ul>
+<li>description이 너무 일반적임</li>
+<li>사용자가 실제로 말하는 표현이 없음</li>
+<li>디버그 질문: &ldquo;When would you use [skill]?&ldquo;로 현재 트리거 해석 점검</li>
+</ul>
+<h4 id="과도-트리거">과도 트리거</h4>
+<ul>
+<li>부정 조건(Do NOT use &hellip;) 추가</li>
+<li>범위 명확화(문서 처리 -&gt; 법률 PDF 계약 검토처럼 좁힘)</li>
+</ul>
+<h4 id="mcp-연결-실패">MCP 연결 실패</h4>
+<ul>
+<li>확장 연결 상태</li>
+<li>인증/권한/토큰</li>
+<li>MCP 자체 단독 호출 테스트</li>
+<li>tool name 대소문자 포함 정확성</li>
+</ul>
+<h4 id="지침-미준수">지침 미준수</h4>
+<ul>
+<li>문서 과다 장문 -&gt; 핵심 지시를 상단으로 이동</li>
+<li>모호한 표현 -&gt; 검증 기준 수치화</li>
+<li>중요 검증은 언어 지시만 두지 말고 스크립트로 결정론화</li>
+</ul>
+<h4 id="대형-컨텍스트-이슈">대형 컨텍스트 이슈</h4>
+<ul>
+<li><code>SKILL.md</code> 5000단어 이하 권장</li>
+<li>상세는 <code>references/</code>로 이동</li>
+<li>동시 활성 Skill 수 과다(20~50+) 점검</li>
+</ul>
+<h2 id="8-resources-and-references-재구성">8) Resources and references 재구성</h2>
+<p>원문 리소스 파트는 아래 축으로 구성됩니다.</p>
+<ul>
+<li>공식 문서(베스트 프랙티스, Skills docs, API reference, MCP docs)</li>
+<li>관련 블로그 포스트</li>
+<li>공개 스킬 저장소(<code>anthropics/skills</code>)</li>
+<li>skill-creator 활용법</li>
+<li>지원 채널(Discord, GitHub Issues)</li>
+</ul>
+<p>실무적 의미는 간단합니다.</p>
+<ul>
+<li>처음 만들 때: 베스트 프랙티스 + 예제 리포지토리부터 시작</li>
+<li>운영 문제 발생 시: 이슈 재현 정보(이름/오류/재현 단계)를 표준화해 보고</li>
+</ul>
+<h2 id="9-reference-a-quick-checklist-재구성">9) Reference A (Quick checklist) 재구성</h2>
+<p>원문 체크리스트를 단계별로 재정리하면 다음과 같습니다.</p>
+<h3 id="시작-전">시작 전</h3>
+<ul>
+<li>2~3개 유스케이스 정의</li>
+<li>도구(MCP/내장) 식별</li>
+<li>예제 검토</li>
+<li>폴더 구조 계획</li>
+</ul>
+<h3 id="개발-중">개발 중</h3>
+<ul>
+<li>폴더명 kebab-case</li>
+<li><code>SKILL.md</code> 존재 및 이름 정확성</li>
+<li>frontmatter <code>---</code> 구분자</li>
+<li><code>name</code> 규칙 준수</li>
+<li><code>description</code>에 What/When 포함</li>
+<li>XML <code>&lt; &gt;</code> 금지</li>
+<li>실행 지침/오류 처리/예시/참조 링크 준비</li>
+</ul>
+<h3 id="업로드-전">업로드 전</h3>
+<ul>
+<li>트리거/비트리거 케이스 점검</li>
+<li>기능 테스트 통과</li>
+<li>통합 도구 정상</li>
+<li>zip 패키징</li>
+</ul>
+<h3 id="업로드-후">업로드 후</h3>
+<ul>
+<li>실제 대화에서 관찰</li>
+<li>언더/오버트리거 모니터링</li>
+<li>사용자 피드백 반영</li>
+<li>메타데이터 버전 업데이트</li>
+</ul>
+<h2 id="10-reference-b-yaml-frontmatter-재구성">10) Reference B (YAML frontmatter) 재구성</h2>
+<p>원문은 필수/선택 필드를 아래처럼 정리합니다.</p>
+<h3 id="필수">필수</h3>
+<ul>
+<li><code>name</code></li>
+<li><code>description</code></li>
+</ul>
+<h3 id="선택">선택</h3>
+<ul>
+<li><code>license</code></li>
+<li><code>allowed-tools</code></li>
+<li><code>metadata</code>(author, version, mcp-server, tags 등)</li>
+</ul>
+<h3 id="보안-제한">보안 제한</h3>
+<ul>
+<li>XML angle brackets(<code>&lt; &gt;</code>) 금지</li>
+<li><code>claude</code>/<code>anthropic</code> 접두 Skill 이름 금지</li>
+<li>안전한 YAML 파싱 전제</li>
+</ul>
+<h2 id="11-reference-c-complete-skill-examples-재구성">11) Reference C (Complete skill examples) 재구성</h2>
+<p>원문은 &ldquo;완성 예시는 별도 저장소가 최신&quot;이라는 점을 강조합니다.</p>
+<ul>
+<li>문서 생성형 스킬(PDF/DOCX/PPTX/XLSX)</li>
+<li>다양한 워크플로우 예시</li>
+<li>파트너 스킬 디렉터리</li>
+</ul>
+<p>즉, 가이드를 읽고 끝내기보다 예시 저장소를 복제해 실사용 시나리오에 맞춰 변형하는 것이 권장 경로입니다.</p>
+<h2 id="12-전체-가이드의-실무-적용-순서">12) 전체 가이드의 실무 적용 순서</h2>
+<p>원문 전체를 합치면, 실제 실행 순서는 아래로 귀결됩니다.</p>
+<pre class="mermaid">flowchart TD
+    A[유스케이스 2~3개 정의] --> B[frontmatter name/description 정밀 작성]
+    B --> C[SKILL.md 핵심 절차 작성]
+    C --> D[필요 시 scripts/references 분리]
+    D --> E[트리거+기능+성능 테스트]
+    E --> F[언더/오버트리거 보정]
+    F --> G[배포 GitHub/Claude/API]
+    G --> H[운영 모니터링과 버전 갱신]</pre><p>이 순서를 따르면, Skill은 &ldquo;프롬프트 템플릿&quot;이 아니라
+반복 가능한 운영 단위(설계-검증-배포-개선)로 자리잡습니다.</p>
+<h2 id="결론">결론</h2>
+<p>원문을 끝까지 관통하는 메시지는 단순합니다.</p>
+<ul>
+<li>Skill의 성패는 frontmatter와 구조화된 지침에서 시작되고,</li>
+<li>품질은 트리거/기능/성능 테스트에서 결정되며,</li>
+<li>장기 가치는 배포 후 반복 개선에서 완성됩니다.</li>
+</ul>
+<p>즉, Claude Skill은 &ldquo;한 번 잘 쓰는 프롬프트&quot;가 아니라,
+<strong>지식과 절차를 제품처럼 운영하는 방법론</strong>입니다.</p>
+<h2 id="참고">참고</h2>
+<ul>
+<li><a href="https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Skill-for-Claude.pdf">https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Skill-for-Claude.pdf</a></li>
+</ul>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 02월 21일 17시 30분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/engineering">Engineering</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-02-21-how-to-design-animation/" rel="prev">
+        <span>애니메이션 설계는 감각이 아니라 그래프다: 실무에 바로 쓰는 분해·조합 프레임워크</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#문서-전체-구조-한눈에-보기">문서 전체 구조 한눈에 보기</a></li>
+    <li><a href="#1-introduction-재구성">1) Introduction 재구성</a></li>
+    <li><a href="#2-fundamentals-재구성">2) Fundamentals 재구성</a>
+      <ul>
+        <li><a href="#2-1-skill-폴더-구성-요소">2-1. Skill 폴더 구성 요소</a></li>
+        <li><a href="#2-2-core-design-principles">2-2. Core Design Principles</a></li>
+        <li><a href="#2-3-skills--mcp-주방-비유">2-3. Skills + MCP (주방 비유)</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-planning-and-design-재구성">3) Planning and design 재구성</a>
+      <ul>
+        <li><a href="#3-1-코드보다-먼저-유스케이스">3-1. 코드보다 먼저 유스케이스</a></li>
+        <li><a href="#3-2-anthropic이-관찰한-3개-카테고리">3-2. Anthropic이 관찰한 3개 카테고리</a></li>
+        <li><a href="#3-3-success-criteria정량--정성">3-3. Success Criteria(정량 + 정성)</a></li>
+        <li><a href="#3-4-technical-requirements-상세">3-4. Technical requirements 상세</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-yaml-frontmatter와-지침-작성-재구성">4) YAML frontmatter와 지침 작성 재구성</a>
+      <ul>
+        <li><a href="#4-1-최소-형식">4-1. 최소 형식</a></li>
+        <li><a href="#4-2-선택-필드">4-2. 선택 필드</a></li>
+        <li><a href="#4-3-description-작성-원칙">4-3. description 작성 원칙</a></li>
+        <li><a href="#4-4-본문-지침skillmd-body-구조">4-4. 본문 지침(SKILL.md body) 구조</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-testing-and-iteration-재구성">5) Testing and iteration 재구성</a>
+      <ul>
+        <li><a href="#5-1-추천-접근">5-1. 추천 접근</a></li>
+        <li><a href="#5-2-테스트-3축">5-2. 테스트 3축</a></li>
+        <li><a href="#5-3-skill-creator의-역할">5-3. skill-creator의 역할</a></li>
+        <li><a href="#5-4-반복-개선-신호">5-4. 반복 개선 신호</a></li>
+      </ul>
+    </li>
+    <li><a href="#6-distribution-and-sharing-재구성">6) Distribution and sharing 재구성</a>
+      <ul>
+        <li><a href="#6-1-api-활용">6-1. API 활용</a></li>
+        <li><a href="#6-2-현재-권장-배포-전략">6-2. 현재 권장 배포 전략</a></li>
+      </ul>
+    </li>
+    <li><a href="#7-patterns-and-troubleshooting-재구성">7) Patterns and troubleshooting 재구성</a>
+      <ul>
+        <li><a href="#7-1-문제-중심-vs-도구-중심">7-1. 문제 중심 vs 도구 중심</a></li>
+        <li><a href="#7-2-원문-패턴-5종">7-2. 원문 패턴 5종</a></li>
+        <li><a href="#7-3-troubleshooting-핵심-재구성">7-3. Troubleshooting 핵심 재구성</a></li>
+      </ul>
+    </li>
+    <li><a href="#8-resources-and-references-재구성">8) Resources and references 재구성</a></li>
+    <li><a href="#9-reference-a-quick-checklist-재구성">9) Reference A (Quick checklist) 재구성</a>
+      <ul>
+        <li><a href="#시작-전">시작 전</a></li>
+        <li><a href="#개발-중">개발 중</a></li>
+        <li><a href="#업로드-전">업로드 전</a></li>
+        <li><a href="#업로드-후">업로드 후</a></li>
+      </ul>
+    </li>
+    <li><a href="#10-reference-b-yaml-frontmatter-재구성">10) Reference B (YAML frontmatter) 재구성</a>
+      <ul>
+        <li><a href="#필수">필수</a></li>
+        <li><a href="#선택">선택</a></li>
+        <li><a href="#보안-제한">보안 제한</a></li>
+      </ul>
+    </li>
+    <li><a href="#11-reference-c-complete-skill-examples-재구성">11) Reference C (Complete skill examples) 재구성</a></li>
+    <li><a href="#12-전체-가이드의-실무-적용-순서">12) 전체 가이드의 실무 적용 순서</a></li>
+    <li><a href="#결론">결론</a></li>
+    <li><a href="#참고">참고</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/anthropic/" class="badge badge-secondary">Anthropic</a>
+    <a href="/tags/claude/" class="badge badge-secondary">Claude</a>
+    <a href="/tags/skills/" class="badge badge-secondary">Skills</a>
+    <a href="/tags/mcp/" class="badge badge-secondary">Mcp</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+    <a href="/tags/testing/" class="badge badge-secondary">Testing</a>
+    <a href="/tags/yaml/" class="badge badge-secondary">Yaml</a>
+    <a href="/tags/mermaid/" class="badge badge-secondary">Mermaid</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
