@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude Code in Production: 8 Credible Community Examples and Operational Practices'" />
+  <title>Claude Code in Production: 8 Credible Community Examples and Operational Practices  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude Code in Production: 8 Credible Community Examples and Operational Practices" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-02-21"> 
+  <meta property="og:url" content="http://localhost:1313/post/2026/2026-02-21-claude-code-production-workflows/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="http://localhost:1313/images/thumbnail.png">  
+  <meta property="og:tags" content="Claude Code" />
+  
+  <meta property="og:tags" content="Production" />
+  
+  <meta property="og:tags" content="Workflows" />
+  
+  <meta property="og:tags" content="Best Practices" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="http://localhost:1313/post/2026/2026-02-21-claude-code-production-workflows/">
+          <h1>
+            Claude Code in Production: 8 Credible Community Examples and Operational Practices
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="http://localhost:1313/post/2026/2026-02-21-claude-code-production-workflows/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <h2 id="sources">Sources</h2>
+<p>This post synthesizes insights from:</p>
+<ul>
+<li><a href="https://dev.to/codedbytan/how-i-shipped-3-production-saas-backends-in-30-days-using-claude-code-without-context-loss-2fnm">DEV.to - How I Shipped 3 Production SaaS Backends in 30 Days Using Claude Code</a></li>
+<li><a href="https://docs.bswen.com/blog/2026-02-09-claude-code-speed-comparison/">BSWEN Blog - Claude Code in Production: 40% Productivity Increase</a></li>
+<li><a href="https://developersvoice.com/blog/ai/claude_code_2026_end_to_end_sdlc/">DevelopersVoice - Claude Code: End-to-End SDLC Workflow</a></li>
+<li><a href="https://www.jovweb.dev/blog/claude-code-mastery-08-production-workflows">Jo Vinkenroye Blog - Claude Code Mastery Part 8</a></li>
+<li><a href="https://medium.com/@rob7850/i-didnt-design-this-module-i-directed-it-how-we-shipped-a-production-ready-module-in-5-days-8c9c4a7f454e">Medium - How We Vibe-Coded and Shipped a Production-Ready Module</a></li>
+<li><a href="https://www.propelkit.dev">PropelKit - SaaS Scaffolding System</a></li>
+<li><a href="https://medium.com/@rfatideh/from-idea-to-deployed-app-with-claude-code-what-worked-and-what-didnt-68ac4269e96b">Medium - From Idea to Deployed App</a></li>
+<li><a href="https://thoughtbot.com/blog/claude-code-skills-production-ready-code-in-a-two-week-sprint">Thoughtbot Blog - Production Ready Code in Two-Week Sprint</a></li>
+<li><a href="https://github.com/anthropics/skills">Anthropic Skills Repository</a></li>
+</ul>
+<h2 id="introduction">Introduction</h2>
+<p>Claude Code has matured from experimental tool to production-ready development environment. Teams are shipping production code, running multi-month projects, and building SaaS products with Claude Code as their primary development companion. This post compiles <strong>8 credible community examples</strong> with concrete insights on what works, what doesn&rsquo;t, and how to structure production workflows effectively.</p>
+<h2 id="insight-1-the-context-loss-problem-solved-by-multi-agent-orchestration">Insight 1: The Context Loss Problem Solved by Multi-Agent Orchestration</h2>
+<p><strong>Source:</strong> <a href="https://dev.to/codedbytan/how-i-shipped-3-production-saas-backends-in-30-days-using-claude-code-without-context-loss-2fnm">Tanishq - DEV.to</a></p>
+<h3 id="the-problem">The Problem</h3>
+<p>Tanishq spent months battling context degradation. Symptoms included:</p>
+<ul>
+<li>Mid-session drift: Claude would start with async/await, then randomly switch to .then() chains 200 lines later</li>
+<li>Schema amnesia: Defined tables in message 5, but by message 40, Claude was querying for columns that didn&rsquo;t exist</li>
+<li>Security regression: RLS policies set up in Phase 1, completely ignored when adding features in Phase 3</li>
+<li>&ldquo;Groundhog Day effect&rdquo;: Close laptop Friday, spend 30 minutes re-explaining entire project context to Claude on Monday</li>
+</ul>
+<p>None of the following worked:</p>
+<ul>
+<li>Longer prompts with full context (hit token limits, quality degraded anyway)</li>
+<li>Custom instructions (too vague, didn&rsquo;t persist across sessions)</li>
+<li>Separate chats for each feature (lost big picture, broke dependencies)</li>
+<li>Manual &ldquo;memory dumps&rdquo; (exhausting, error-prone)</li>
+</ul>
+<h3 id="the-solution-multi-agent-system-with-persistent-state-files">The Solution: Multi-Agent System with Persistent State Files</h3>
+<p>Tanishq built a system with four state files that maintain context across sessions:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span>## Four Files That Maintain State
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">1.</span> **PROJECT.md** - The vision document
+</span></span><span style="display:flex;"><span>   <span style="color:#cf222e">-</span> Problem being solved (plain English)
+</span></span><span style="display:flex;"><span>   <span style="color:#cf222e">-</span> Target users and workflows
+</span></span><span style="display:flex;"><span>   <span style="color:#cf222e">-</span> Core value proposition
+</span></span><span style="display:flex;"><span>   <span style="color:#cf222e">-</span> Success criteria
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">2.</span> **REQUIREMENTS.md** - Traceable feature definitions
+</span></span><span style="display:flex;"><span>   <span style="color:#cf222e">-</span> Every requirement has a unique ID (AUTH-01, PAY-02, etc.)
+</span></span><span style="display:flex;"><span>   <span style="color:#cf222e">-</span> v1 scope (must have), v2 scope (future), out-of-scope (won&#39;t do)
+</span></span><span style="display:flex;"><span>   <span style="color:#cf222e">-</span> Acceptance criteria for each
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">3.</span> **ROADMAP.md** - Phased execution plan
+</span></span><span style="display:flex;"><span>   <span style="color:#cf222e">-</span> Phase 0: Infrastructure
+</span></span><span style="display:flex;"><span>   <span style="color:#cf222e">-</span> Phase 1: Core feature
+</span></span><span style="display:flex;"><span>   <span style="color:#cf222e">-</span> Phase 2: Supporting features
+</span></span><span style="display:flex;"><span>   <span style="color:#cf222e">-</span> Phase 3: Polish
+</span></span><span style="display:flex;"><span>   <span style="color:#cf222e">-</span> Each requirement mapped to specific phases
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">4.</span> **STATE.md** - The living memory
+</span></span><span style="display:flex;"><span>   <span style="color:#cf222e">-</span> Completed phases (locked from modification)
+</span></span><span style="display:flex;"><span>   <span style="color:#cf222e">-</span> Current phase (only modifiable code)
+</span></span><span style="display:flex;"><span>   <span style="color:#cf222e">-</span> Database schema (exact DDL)
+</span></span><span style="display:flex;"><span>   <span style="color:#cf222e">-</span> API routes built (paths, methods, business logic)
+</span></span><span style="display:flex;"><span>   <span style="color:#cf222e">-</span> Architectural decisions
+</span></span></code></pre></div><h3 id="multi-agent-architecture">Multi-Agent Architecture</h3>
+<p>Instead of one long conversation, Tanishq spawns specialized parallel agents:</p>
+<pre tabindex="0"><code>├─ Research Agents (4 running in parallel before coding)
+│  ├─ Stack researcher → best technologies for your domain
+│  ├─ Features researcher → table stakes vs differentiators
+│  ├─ Architecture researcher → system design patterns
+│  └─ Pitfalls researcher → common mistakes to avoid
+│
+└─ Execution Agents
+   ├─ Planner → creates verified task plans
+   ├─ Executor → runs plans with atomic commits
+   ├─ Verifier → tests and auto-debugs
+   └─ Mapper → analyzes existing codebase
+</code></pre><p>Each agent gets fresh context. No degradation. No drift.</p>
+<h3 id="critical-rule-phase-locking">Critical Rule: Phase Locking</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span># Operational Rule
+</span></span><span style="display:flex;"><span>**Completed phases are locked. The AI can only modify code in current phase.**
+</span></span></code></pre></div><p>This prevents the &ldquo;adding payments breaks auth&rdquo; problem entirely.</p>
+<h3 id="results">Results</h3>
+<ul>
+<li>Built 3 production SaaS backends in 30 days</li>
+<li>Analytics Dashboard (13 hours): Custom analytics schema with time-series calculations</li>
+<li>Feedback Widget (11 hours): Schema with metadata, widget embedding API</li>
+<li>Content Calendar (9 hours): Scheduling system with CRUD API, publish logic</li>
+<li>All production-ready, using AI orchestration</li>
+</ul>
+<hr>
+<h2 id="insight-2-3x-productivity-gains-with-task-specific-variance">Insight 2: 3x Productivity Gains with Task-Specific Variance</h2>
+<p><strong>Source:</strong> <a href="https://docs.bswen.com/blog/2026-02-09-claude-code-speed-comparison/">BSWEN - How Much Faster is Claude Code?</a></p>
+<h3 id="the-data">The Data</h3>
+<p>BSWEN (Cowrie Dev) spent 3 months solo with Claude Code, completing a project estimated at &ldquo;4 people × 6 months&rdquo; in just 2 months.</p>
+<p><strong>Key Metrics:</strong></p>
+<ul>
+<li>Speedup: <strong>12x</strong> in raw person-months (3x accounting for estimation buffer)</li>
+<li>Task-specific variance from 1x to 10x</li>
+</ul>
+<h3 id="what-actually-drove-speedup">What Actually Drove Speedup</h3>
+<table>
+  <thead>
+      <tr>
+          <th>Task Type</th>
+          <th>Speedup</th>
+          <th>Notes</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Debugging complex logic</strong></td>
+          <td>2x faster</td>
+          <td>Breaking down problems systematically</td>
+      </tr>
+      <tr>
+          <td>Planning/architecture</td>
+          <td>No significant speedup</td>
+          <td>Claude already good at this</td>
+      </tr>
+      <tr>
+          <td><strong>Feature variants (A/B comparisons)</strong></td>
+          <td>4x faster</td>
+          <td>Generating multiple implementations to compare</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="caveats">Caveats</h3>
+<ul>
+<li>Not uniform: Some tasks (planning) saw minimal improvement</li>
+<li>Quality matters: BSWen spent extra time verifying AI outputs</li>
+<li>Task clarity matters: Well-defined requirements drove faster results</li>
+</ul>
+<p><strong>Takeaway:</strong> Focus Claude on its strengths—debugging and variant generation—rather than high-level planning where it offers less value.</p>
+<hr>
+<h2 id="insight-3-end-to-end-sdlc-integration---plan-execute-verify">Insight 3: End-to-End SDLC Integration - Plan, Execute, Verify</h2>
+<p><strong>Source:</strong> <a href="https://developersvoice.com/blog/ai/claude_code_2026_end_to_end_sdlc/">DevelopersVoice</a></p>
+<h3 id="the-three-phase-loop">The Three-Phase Loop</h3>
+<p>DevelopersVoice documents how Claude Code fits into full Software Development Lifecycle (SDLC):</p>
+<pre class="mermaid">flowchart LR
+    A[User Request] --> B[Planning Phase]
+    B --> C[Execution Phase]
+    C --> D[Verification Phase]
+    D --> E{Results}
+    
+    B -.->|Review & Adjust|
+    E --> F[Next Request]</pre><h3 id="step-1-planning---prd-before-code">Step 1: Planning - PRD Before Code</h3>
+<p>Before generating code, ask Claude to create a <strong>Product Requirements Document (PRD)</strong>:</p>
+<pre tabindex="0"><code># Feature: Billing Cycle Reset
+
+## Problem Statement
+Customers want to manually reset their billing cycle. Only admins can do this.
+
+## User Roles
+- Admin: Can perform this action
+- Customer: Cannot perform this action
+
+## Functional Requirements
+1. Admin can reset any customer&#39;s billing cycle
+2. Reset closes current cycle and starts new one
+3. New cycle start date must be validated
+4. System must generate audit trail
+5. UI must display new cycle immediately
+
+## Non-Functional Requirements
+- Performance: Reset runs during peak hours (10:00 PM EST)
+- Security: Only admins can reset cycles
+- Auditability: All resets must be logged
+</code></pre><p>Claude produces a structured PRD that becomes the contract.</p>
+<h3 id="step-2-execution---coordinated-multi-file-edits">Step 2: Execution - Coordinated Multi-File Edits</h3>
+<p>Once PRD is approved:</p>
+<pre tabindex="0"><code>Claude implements the Billing Cycle Reset feature exactly as described in the PRD.
+
+Rules:
+- Follow existing folder structure and naming conventions
+- Do not modify or refactor files unrelated to this feature
+- Wire up validation, command handler, and API endpoint
+- Add at least one unit test for each success path
+</code></pre><p>Claude edits multiple files in one coordinated patch—command classes, handlers, API endpoints, tests.</p>
+<h3 id="step-3-verification---human-in-the-loop-review">Step 3: Verification - Human-in-the-Loop Review</h3>
+<p>After implementation:</p>
+<pre tabindex="0"><code>Review every file you created/changed for the Billing Cycle Reset feature.
+
+Check for:
+- Missing input validation or null checks
+- Error handling gaps
+- Missing or incomplete test coverage
+- Naming or structural inconsistencies with rest of codebase
+
+If issues found, list them, then fix them.
+</code></pre><h3 id="constraint-human-engineers-stay-in-control">Constraint: Human Engineers Stay in Control</h3>
+<blockquote>
+<p>&ldquo;Claude Code does not replace architects or senior engineers. It changes where they spend their time.&rdquo; [DevelopersVoice]</p>
+</blockquote>
+<p>Humans decide:</p>
+<ul>
+<li>Domain boundaries</li>
+<li>When to refactor vs extend</li>
+<li>What trade-offs are acceptable</li>
+<li>What &ldquo;good enough&rdquo; means</li>
+</ul>
+<p>Claude handles:</p>
+<ul>
+<li>Execution-heavy parts (boilerplate generation, cross-file refactoring, repetitive test creation)</li>
+<li>Consistency enforcement</li>
+<li>Pattern matching</li>
+</ul>
+<hr>
+<h2 id="insight-4-production-ready-code-in-5-days-vibe-coding">Insight 4: Production-Ready Code in 5 Days (Vibe Coding)</h2>
+<p><strong>Source:</strong> <a href="https://medium.com/@rob7850/i-didnt-design-this-module-i-directed-it-how-we-shipped-a-production-ready-module-in-5-days-8c9c4a7f454e">Medium - Robert</a></p>
+<h3 id="the-challenge">The Challenge</h3>
+<p>As a product designer tasked with frontend development for the first time, Robert needed to ship a production module in 5 days.</p>
+<h3 id="what-worked">What Worked</h3>
+<ul>
+<li><strong>No Figma files</strong>: No traditional design mockups or refined static assets</li>
+<li><strong>No weeks spent</strong>: Not prolonged handoffs between design and engineering</li>
+<li><strong>Direct instructions</strong>: Used Claude Code with specific directives and constraints</li>
+<li><strong>Production quality</strong>: Module was fully functional, production-ready, and integrated</li>
+</ul>
+<h3 id="process">Process</h3>
+<pre class="mermaid">sequenceDiagram
+    participant P as Product Designer
+    participant C as Claude Code
+    participant D as Developer Team
+    
+    P->>C: Create module with specific constraints
+    Note over P, C: "I didn't design this module - I directed it"
+    C->>D: Build and integrate
+    Note over P, C, D: Module complete in 5 days</pre><h3 id="what-makes-vibe-coding-work">What Makes &ldquo;Vibe Coding&rdquo; Work</h3>
+<ul>
+<li><strong>Explicit constraints</strong>: Define technical boundaries (no auth, specific endpoints, error handling patterns)</li>
+<li><strong>Domain knowledge</strong>: Claude Code knows existing patterns from your codebase</li>
+<li><strong>Clear deliverables</strong>: Specified exact API contracts and integration points</li>
+<li><strong>Time-boxing</strong>: Limited scope to prevent feature creep</li>
+</ul>
+<p><strong>Takeaway:</strong> Designers can use Claude Code effectively by treating it as a specialized implementation tool with clear constraints, not a general-purpose assistant.</p>
+<hr>
+<h2 id="insight-5-saas-scaffolding---propelkit">Insight 5: SaaS Scaffolding - PropelKit</h2>
+<p><strong>Source:</strong> <a href="https://www.propelkit.dev">PropelKit</a></p>
+<h3 id="what-propelkit-provides">What PropelKit Provides</h3>
+<p>PropelKit is a production SaaS scaffolding system that uses an <strong>AI Product Manager</strong> to turn plain-English descriptions into shippable products.</p>
+<h3 id="architecture">Architecture</h3>
+<pre class="mermaid">flowchart LR
+    A[Plain English Description] --> B[AI PM Deep Questioning]
+    B --> C{Phased Roadmap<br/>9 Phases<br/>38 Plans<br/>225 Tests}
+    C --> D[Approval Gate]
+    D --> E[Verified Execution]
+    
+    E --> F{Production-Ready Backend<br/>Auth + Stripe<br/>Supabase<br/>Multi-tenancy}
+    F --> G[Lovable Integration<br/>Auto-Wire UI]
+    G --> H[Deployed SaaS]</pre><h3 id="key-features">Key Features</h3>
+<ul>
+<li><strong>AI Product Manager</strong>: Deep questions your vision, infers features, creates phased roadmap</li>
+<li><strong>Goal-Oriented Verification</strong>: Every phase verified against goals before coding starts</li>
+<li><strong>Lovable Integration</strong>: Auto-wire generated UI to Next.js backend with one command</li>
+<li><strong>Complete Stack</strong>:
+<ul>
+<li>Next.js 16 + TypeScript</li>
+<li>Supabase (PostgreSQL with RLS)</li>
+<li>Stripe + Razorpay payments</li>
+<li>Multi-tenancy with RBAC</li>
+<li>Email templates (8 pre-built)</li>
+<li>Admin panel with user management and analytics</li>
+<li>Credits system (usage-based billing)</li>
+</ul>
+</li>
+</ul>
+<h3 id="results-1">Results</h3>
+<ul>
+<li><strong>225 tests passing</strong>: 9 phases, 38 execution plans verified</li>
+<li><strong>Production-tested</strong>: All features tested against goals</li>
+<li><strong>From description to MVP in 180 seconds</strong>: One-time command</li>
+</ul>
+<h3 id="operational-commands">Operational Commands</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># Create new project</span>
+</span></span><span style="display:flex;"><span>npx propelkit init
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Deep question your domain</span>
+</span></span><span style="display:flex;"><span>npx propelkit:discuss
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Research + create execution plan</span>
+</span></span><span style="display:flex;"><span>npx propelkit:plan-phase1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Execute plan with parallel agents</span>
+</span></span><span style="display:flex;"><span>npx propelkit:execute-phase1
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Test with auto-debugging</span>
+</span></span><span style="display:flex;"><span>npx propelkit:verify-work
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Connect UI (auto-wire)</span>
+</span></span><span style="display:flex;"><span>npx propelkit:wire-ui
+</span></span></code></pre></div><p><strong>Value Proposition:</strong> One-time payment of $69 for unlimited projects with commercial license.</p>
+<hr>
+<h2 id="insight-6-claudemd-and-claude-folder-structures">Insight 6: CLAUDE.md and .claude/ Folder Structures</h2>
+<p><strong>Source:</strong> <a href="https://developersvoice.com/blog/ai/claude_code_2026_end_to_end_sdlc/">DevelopersVoice</a></p>
+<h3 id="claudemd-single-source-of-architectural-truth">CLAUDE.md: Single Source of Architectural Truth</h3>
+<p>Claude Code automatically looks for <code>CLAUDE.md</code> at repository root and treats it as <strong>authoritative guidance</strong>.</p>
+<p><strong>Practical Template:</strong></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span># Project Overview
+</span></span><span style="display:flex;"><span>This repository contains a billing service built with ASP.NET Core and EF Core.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span># Architecture Rules
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Use vertical slices organized by feature (Billing, Invoicing, Payments).
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Do not introduce shared &#34;Common&#34; folders.
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Each slice may contain: Commands, Queries, Handlers, Validators, Tests.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span># Backend Conventions
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> ASP.NET Core Minimal APIs only.
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Commands and queries use MediatR.
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Handlers must be internal.
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> EF Core DbContext is scoped per request.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span># Naming Rules
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Commands end with Command.cs
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Queries end with Query.cs
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Validators end with Validator.cs
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Test files mirror production folder structure.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span># Testing Rules
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Every command must have at least one unit test.
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Integration tests go under Tests/Integration.
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Do not mock DbContext in integration tests.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span># Things to Avoid
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Do not introduce new architectural patterns.
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Do not refactor unrelated code.
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Do not add dependencies without calling them out explicitly.
+</span></span></code></pre></div><p><strong>Key Principle:</strong> Explicit choices &gt; vague preferences. Claude doesn&rsquo;t need explanations—it needs decisions.</p>
+<h3 id="claude-folder-persistent-context-and-memory">.claude/ Folder: Persistent Context and Memory</h3>
+<pre class="mermaid">graph TD
+    A[".claude/"] --> B["context.md"]
+    A --> C["rules.md"]
+    A --> D["prompts.md"]
+    A --> E["settings.json"]
+    A --> F["agents/"]
+    F --> G["commands/"]
+    G --> H["hooks/"]
+    H --> I["skills/"]
+    I --> J["plans/"]
+    J --> K["file-history/"]
+    K --> L["session-env/"]
+    L --> M["debug/"]</pre><p><strong>Purpose:</strong> Each file under 10k tokens (context degradation threshold).</p>
+<p><strong>Auto Memory:</strong> Claude Code now has auto-memory in <code>~/.claude/projects/&lt;project&gt;/memory/</code> where it records learnings and patterns.</p>
+<hr>
+<h2 id="insight-7-tdd-verification-loops-with-claude-code">Insight 7: TDD Verification Loops with Claude Code</h2>
+<p><strong>Source:</strong> Multiple sources on TDD patterns with Claude Code</p>
+<h3 id="the-red-green-refactor-cycle">The Red-Green-Refactor Cycle</h3>
+<p>Claude Code can automate the rigorous TDD cycle:</p>
+<pre class="mermaid">flowchart LR
+    A[Describe Feature] --> B[Write Test]
+    B --> C{Test Fails?}
+    C -->|Yes| D[Confirm Failing]
+    D --> E[Write Implementation]
+    E --> F{Tests Pass?}
+    F -->|No| G[Test + Debug Loop]
+    G -->|Yes| H[Tests Pass]
+    
+    D -.->|Refactor|
+    E -.->|Reflect|</pre><h3 id="implementation-pattern">Implementation Pattern</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span># TDD Workflow with Claude Code
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>## Step 1: Test-First Approach
+</span></span><span style="display:flex;"><span>I want to add a &#34;Billing Cycle Reset&#34; feature using TDD.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Claude, write tests for a new, non-existent feature. 
+</span></span><span style="display:flex;"><span>Confirm that tests fail as expected.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>## Step 2: Implement and Verify
+</span></span><span style="display:flex;"><span>Claude, write the implementation code with the sole goal of 
+</span></span><span style="display:flex;"><span>making all committed tests pass.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Claude, enter an autonomous loop:
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Write code, run test suite, analyze failure messages
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Adjust code based on errors until all tests pass
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>## Step 3: Reflect and Document
+</span></span><span style="display:flex;"><span>After all tests pass, summarize what changed and why.
+</span></span></code></pre></div><h3 id="ralph-loop-plugin">Ralph Loop Plugin</h3>
+<p>Claude Code supports persistent iteration through the <strong>Ralph Loop</strong> plugin:</p>
+<ul>
+<li>Claude reads specification</li>
+<li>Executes work</li>
+<li>Checks verification criteria</li>
+<li><strong>Repeats until criteria met</strong> (not just once)</li>
+</ul>
+<h3 id="benefits">Benefits</h3>
+<ul>
+<li>Higher test coverage from continuous test execution</li>
+<li>Faster iteration cycles (Claude self-corrects)</li>
+<li>Tests provide clear, verifiable targets</li>
+</ul>
+<h3 id="caveat">Caveat</h3>
+<p>Ralph Loop runs indefinitely. Must define clear exit criteria or you&rsquo;ll get infinite loops.</p>
+<hr>
+<h2 id="insight-8-github-actions-integration">Insight 8: GitHub Actions Integration</h2>
+<p><strong>Source:</strong> <a href="https://github.com/features/actions">GitHub Actions documentation</a></p>
+<h3 id="automated-code-review-workflow">Automated Code Review Workflow</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#0550ae">name</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>Claude Code Review<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#0550ae">on</span><span style="color:#1f2328">:</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#0550ae">pull_request</span><span style="color:#1f2328">:</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span><span style="color:#0550ae">types</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span><span style="color:#1f2328">[</span>opened, synchronize]<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#0550ae">jobs</span><span style="color:#1f2328">:</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#0550ae">review</span><span style="color:#1f2328">:</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span><span style="color:#0550ae">runs-on</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>ubuntu-latest<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span><span style="color:#0550ae">permissions</span><span style="color:#1f2328">:</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">      </span><span style="color:#0550ae">contents</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>read<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">      </span><span style="color:#0550ae">pull-requests</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>write<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span><span style="color:#0550ae">steps</span><span style="color:#1f2328">:</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">      </span>- <span style="color:#0550ae">uses</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>actions/checkout@v4<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">        </span><span style="color:#0550ae">with</span><span style="color:#1f2328">:</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">          </span><span style="color:#0550ae">fetch-depth</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span><span style="color:#0550ae">0</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">      </span>- <span style="color:#0550ae">name</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>Run Claude Code Review<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">        </span><span style="color:#0550ae">uses</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>anthropics/claude-code-action@v1<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">        </span><span style="color:#0550ae">with</span><span style="color:#1f2328">:</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">          </span><span style="color:#0550ae">anthropic_api_key</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>${{ secrets.ANTHROPIC_API_KEY }}<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">          </span><span style="color:#0550ae">direct_prompt</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span><span style="color:#1f2328">|</span><span style="color:#0a3069">
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">            Review PR changes for potential bugs, style issues, and adherence to our standards.
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">            Provide a detailed comment with findings and suggestions.</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">          </span><span style="color:#0550ae">model</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span><span style="color:#0a3069">&#34;claude-3-sonnet-20240229&#34;</span><span style="color:#fff">
+</span></span></span></code></pre></div><h3 id="triggering-methods">Triggering Methods</h3>
+<ol>
+<li><strong>Pull Request Events</strong>: <code>on: pull_request: types: [opened, synchronize]</code></li>
+<li><strong>Mentions</strong>: <code>@claude</code> in PR or issue comments</li>
+<li><strong>Scheduled Runs</strong>: Daily documentation maintenance</li>
+</ol>
+<h3 id="best-practices">Best Practices</h3>
+<ul>
+<li>Use explicit permissions (least-privilege)</li>
+<li>Pin third-party actions by commit SHA (supply-chain security)</li>
+<li>Mask secrets via GitHub Secrets</li>
+<li>Optimize prompts to reduce token usage and costs</li>
+</ul>
+<hr>
+<h2 id="operational-checklist-for-production-claude-code-workflows">Operational Checklist for Production Claude Code Workflows</h2>
+<p>Based on the insights above, here&rsquo;s a practical checklist for running Claude Code in production:</p>
+<h3 id="pre-flight-setup">Pre-Flight Setup</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Install Claude Code (native installer recommended)</li>
+<li><input disabled="" type="checkbox"> Configure <code>.claude/</code> folder with context files</li>
+<li><input disabled="" type="checkbox"> Create <code>CLAUDE.md</code> with project rules and conventions</li>
+<li><input disabled="" type="checkbox"> Set up GitHub Actions with proper permissions</li>
+<li><input disabled="" type="checkbox"> Configure environment secrets securely</li>
+<li><input disabled="" type="checkbox"> Test Claude Code installation with <code>claude doctor</code></li>
+</ul>
+<h3 id="context-management">Context Management</h3>
+<ul>
+<li><input disabled="" type="checkbox"> CLAUDE.md under 200 lines (concise, explicit rules)</li>
+<li><input disabled="" type="checkbox"> <code>.claude/</code> files under 10k tokens each (avoid context degradation)</li>
+<li><input disabled="" type="checkbox"> Document architectural decisions in ADR format</li>
+<li><input disabled="" type="checkbox"> Use PROJECT.md for vision and success criteria</li>
+<li><input disabled="" type="checkbox"> Leverage auto-memory for recurring patterns (<code># remember keyword</code>)</li>
+</ul>
+<h3 id="planning-phase">Planning Phase</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Ask Claude to create PRD before implementation</li>
+<li><input disabled="" type="checkbox"> Review and approve PRD before coding starts</li>
+<li><input disabled="" type="checkbox"> Break tasks into verifiable phases</li>
+<li><input disabled="" type="checkbox"> Use Mermaid diagrams for architecture decisions</li>
+<li><input disabled="" type="checkbox"> Document trade-offs explicitly</li>
+</ul>
+<h3 id="execution-phase">Execution Phase</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Configure multi-agent orchestration (research + execution)</li>
+<li><input disabled="" type="checkbox"> Use atomic commits (one feature per commit)</li>
+<li><input disabled="" type="checkbox"> Implement TDD with Red-Green-Refactor loop</li>
+<li><input disabled="" type="checkbox"> Run tests after each implementation</li>
+<li><input disabled="" type="checkbox"> Use Ralph Loop with clear exit criteria</li>
+<li><input disabled="" type="checkbox"> Enable draft PRs only (no direct pushes to protected branches)</li>
+</ul>
+<h3 id="verification-phase">Verification Phase</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Human review all AI-generated code before merge</li>
+<li><input disabled="" type="checkbox"> Check for missing validation, error handling, test coverage</li>
+<li><input disabled="" type="checkbox"> Verify naming and structural consistency</li>
+<li><input disabled="" type="checkbox"> Run build in staging environment</li>
+<li><input disabled="" type="checkbox"> Security review (OWASP Top 10, dependency scanning)</li>
+</ul>
+<h3 id="github-integration">GitHub Integration</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Automated code review on all PRs</li>
+<li><input disabled="" type="checkbox"> Status checks (CI, linters, tests) before merge</li>
+<li><input disabled="" type="checkbox"> Signed commits (enforce accountability)</li>
+<li><input disabled="" type="checkbox"> Issue templates with required PRD sections</li>
+<li><input disabled="" type="checkbox"> Documentation updates auto-generated by Claude</li>
+</ul>
+<h3 id="monitoring-and-observability">Monitoring and Observability</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Log all Claude interactions (model version, prompts)</li>
+<li><input disabled="" type="checkbox"> Track context window usage and token costs</li>
+<li><input disabled="" type="checkbox"> Monitor for regressions after AI changes</li>
+<li><input disabled="" type="checkbox"> Set up alerts for failed deployments</li>
+<li><input disabled="" type="checkbox"> Review Claude suggestions for improvement opportunities</li>
+</ul>
+<h3 id="security-and-governance">Security and Governance</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Enforce role-based access controls</li>
+<li><input disabled="" type="checkbox"> Regular security audits of AI-generated code</li>
+<li><input disabled="" type="checkbox"> PII protection (no sensitive data in prompts)</li>
+<li><input disabled="" type="checkbox"> Supply-chain verification (verify action origins)</li>
+<li><input disabled="" type="checkbox"> Document AI security policies in CLAUDE.md</li>
+<li><input disabled="" type="checkbox"> Human-in-the-loop for high-risk changes</li>
+</ul>
+<h2 id="key-takeaways">Key Takeaways</h2>
+<ol>
+<li><strong>Context Loss is Solved by Persistent State Files</strong>: Use multi-agent orchestration with PROJECT.md, REQUIREMENTS.md, ROADMAP.md, and STATE.md instead of long conversations</li>
+<li><strong>Play to Strengths</strong>: Claude Code excels at debugging (2-10x faster) and variant generation (4x faster), not high-level planning</li>
+<li><strong>Structured Workflows Win</strong>: Plan → Execute → Verify cycles prevent drift and rework</li>
+<li><strong>Use Scaffolding for Boilerplate</strong>: Tools like PropelKit save 100+ hours on auth, payments, multi-tenancy</li>
+<li><strong>Explicit Constraints Matter</strong>: Clear technical directives (vibe coding) work better than vague requests</li>
+<li><strong>TDD with Ralph Loop</strong>: Automated Red-Green-Refactor loops produce higher quality code</li>
+<li><strong>GitHub Actions Enable Automation</strong>: Automated reviews, security scanning, and CI integration</li>
+<li><strong>Human Review Remains Critical</strong>: Claude Code is an execution tool, not a replacement for architectural decision-making</li>
+</ol>
+<h2 id="sources-1">Sources</h2>
+<ol>
+<li><a href="https://dev.to/codedbytan/how-i-shipped-3-production-saas-backends-in-30-days-using-claude-code-without-context-loss-2fnm">Tanishq - How I Shipped 3 Production SaaS Backends in 30 Days</a> - Multi-agent orchestration, phase locking, and 4-file state system</li>
+<li><a href="https://docs.bswen.com/blog/2026-02-09-claude-code-speed-comparison/">Cowrie Dev @ BSWEN - How Much Faster is Claude Code?</a> - 3x productivity gains, task-specific speedup data</li>
+<li><a href="https://developersvoice.com/blog/ai/claude_code_2026_end_to_end_sdlc/">DevelopersVoice - Claude Code: End-to-End SDLC Workflow</a> - Plan, execute, verify patterns with ASP.NET Core</li>
+<li><a href="https://www.jovweb.dev/blog/claude-code-mastery-08-production-workflows">Jo Vinkenroye - Claude Code Mastery Part 8</a> - CLAUDE.md, .claude/ folder structures, and auto-memory</li>
+<li><a href="https://medium.com/@rob7850/i-didnt-design-this-module-i-directed-it-how-we-shipped-a-production-ready-module-in-5-days-8c9c4a7f454e">Medium - Robert - How We Vibe-Coded and Shipped a Production-Ready Module</a> - Vibe coding with explicit constraints, production module in 5 days</li>
+<li><a href="https://medium.com/@rfatideh/from-idea-to-deployed-app-with-claude-code-what-worked-and-what-didnt-68ac4269e96b">Medium - Reza Fatideh - From Idea to Deployed App</a> - Full-stack app development case study</li>
+<li><a href="https://thoughtbot.com/blog/claude-code-skills-production-ready-code-in-a-two-week-sprint">Thoughtbot - Production Ready Code in Two-Week Sprint</a> - Startup sprint with Claude Code, production-ready code</li>
+<li><a href="https://www.propelkit.dev">PropelKit - Ship Your SaaS in Hours</a> - AI Product Manager, Lovable integration, complete SaaS stack</li>
+</ol>
+<hr>
+<p><em>All insights are sourced from developer case studies, blog posts, or official documentation. No fabricated examples are included.</em></p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 02월 21일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="http://localhost:1313//categories/engineering">Engineering</a>
+
+<i class="far fa-folder"></i>
+<a href="http://localhost:1313//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="http://localhost:1313/post/2026/2026-02-21-how-to-design-animation/" rel="prev">
+        <span>애니메이션 설계는 감각이 아니라 그래프다: 실무에 바로 쓰는 분해·조합 프레임워크</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="http://localhost:1313/post/2026/2026-02-21-anthropic-skills-complete-guide/" rel="next">
+        <span>Anthropic Skill 가이드 전체 재구성: 설계, 테스트, 배포, 트러블슈팅까지</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#insight-1-the-context-loss-problem-solved-by-multi-agent-orchestration">Insight 1: The Context Loss Problem Solved by Multi-Agent Orchestration</a>
+      <ul>
+        <li><a href="#the-problem">The Problem</a></li>
+        <li><a href="#the-solution-multi-agent-system-with-persistent-state-files">The Solution: Multi-Agent System with Persistent State Files</a></li>
+        <li><a href="#multi-agent-architecture">Multi-Agent Architecture</a></li>
+        <li><a href="#critical-rule-phase-locking">Critical Rule: Phase Locking</a></li>
+        <li><a href="#results">Results</a></li>
+      </ul>
+    </li>
+    <li><a href="#insight-2-3x-productivity-gains-with-task-specific-variance">Insight 2: 3x Productivity Gains with Task-Specific Variance</a>
+      <ul>
+        <li><a href="#the-data">The Data</a></li>
+        <li><a href="#what-actually-drove-speedup">What Actually Drove Speedup</a></li>
+        <li><a href="#caveats">Caveats</a></li>
+      </ul>
+    </li>
+    <li><a href="#insight-3-end-to-end-sdlc-integration---plan-execute-verify">Insight 3: End-to-End SDLC Integration - Plan, Execute, Verify</a>
+      <ul>
+        <li><a href="#the-three-phase-loop">The Three-Phase Loop</a></li>
+        <li><a href="#step-1-planning---prd-before-code">Step 1: Planning - PRD Before Code</a></li>
+        <li><a href="#step-2-execution---coordinated-multi-file-edits">Step 2: Execution - Coordinated Multi-File Edits</a></li>
+        <li><a href="#step-3-verification---human-in-the-loop-review">Step 3: Verification - Human-in-the-Loop Review</a></li>
+        <li><a href="#constraint-human-engineers-stay-in-control">Constraint: Human Engineers Stay in Control</a></li>
+      </ul>
+    </li>
+    <li><a href="#insight-4-production-ready-code-in-5-days-vibe-coding">Insight 4: Production-Ready Code in 5 Days (Vibe Coding)</a>
+      <ul>
+        <li><a href="#the-challenge">The Challenge</a></li>
+        <li><a href="#what-worked">What Worked</a></li>
+        <li><a href="#process">Process</a></li>
+        <li><a href="#what-makes-vibe-coding-work">What Makes &ldquo;Vibe Coding&rdquo; Work</a></li>
+      </ul>
+    </li>
+    <li><a href="#insight-5-saas-scaffolding---propelkit">Insight 5: SaaS Scaffolding - PropelKit</a>
+      <ul>
+        <li><a href="#what-propelkit-provides">What PropelKit Provides</a></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#key-features">Key Features</a></li>
+        <li><a href="#results-1">Results</a></li>
+        <li><a href="#operational-commands">Operational Commands</a></li>
+      </ul>
+    </li>
+    <li><a href="#insight-6-claudemd-and-claude-folder-structures">Insight 6: CLAUDE.md and .claude/ Folder Structures</a>
+      <ul>
+        <li><a href="#claudemd-single-source-of-architectural-truth">CLAUDE.md: Single Source of Architectural Truth</a></li>
+        <li><a href="#claude-folder-persistent-context-and-memory">.claude/ Folder: Persistent Context and Memory</a></li>
+      </ul>
+    </li>
+    <li><a href="#insight-7-tdd-verification-loops-with-claude-code">Insight 7: TDD Verification Loops with Claude Code</a>
+      <ul>
+        <li><a href="#the-red-green-refactor-cycle">The Red-Green-Refactor Cycle</a></li>
+        <li><a href="#implementation-pattern">Implementation Pattern</a></li>
+        <li><a href="#ralph-loop-plugin">Ralph Loop Plugin</a></li>
+        <li><a href="#benefits">Benefits</a></li>
+        <li><a href="#caveat">Caveat</a></li>
+      </ul>
+    </li>
+    <li><a href="#insight-8-github-actions-integration">Insight 8: GitHub Actions Integration</a>
+      <ul>
+        <li><a href="#automated-code-review-workflow">Automated Code Review Workflow</a></li>
+        <li><a href="#triggering-methods">Triggering Methods</a></li>
+        <li><a href="#best-practices">Best Practices</a></li>
+      </ul>
+    </li>
+    <li><a href="#operational-checklist-for-production-claude-code-workflows">Operational Checklist for Production Claude Code Workflows</a>
+      <ul>
+        <li><a href="#pre-flight-setup">Pre-Flight Setup</a></li>
+        <li><a href="#context-management">Context Management</a></li>
+        <li><a href="#planning-phase">Planning Phase</a></li>
+        <li><a href="#execution-phase">Execution Phase</a></li>
+        <li><a href="#verification-phase">Verification Phase</a></li>
+        <li><a href="#github-integration">GitHub Integration</a></li>
+        <li><a href="#monitoring-and-observability">Monitoring and Observability</a></li>
+        <li><a href="#security-and-governance">Security and Governance</a></li>
+      </ul>
+    </li>
+    <li><a href="#key-takeaways">Key Takeaways</a></li>
+    <li><a href="#sources-1">Sources</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/production/" class="badge badge-secondary">Production</a>
+    <a href="/tags/workflows/" class="badge badge-secondary">Workflows</a>
+    <a href="/tags/best-practices/" class="badge badge-secondary">Best Practices</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
