@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude Code CLAUDE.md 완성 가이드: 공식 문서 &#43; 실전 패턴으로 만드는 고성능 프로젝트 메모리'" />
+  <title>Claude Code CLAUDE.md 완성 가이드: 공식 문서 &#43; 실전 패턴으로 만드는 고성능 프로젝트 메모리  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude Code CLAUDE.md 완성 가이드: 공식 문서 &#43; 실전 패턴으로 만드는 고성능 프로젝트 메모리" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-02-22"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/2026-02-22-claude-md-ultimate-guide/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="claude-md" />
+  
+  <meta property="og:tags" content="context-engineering" />
+  
+  <meta property="og:tags" content="prompt-ops" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+  <meta property="og:tags" content="memory" />
+  
+  <meta property="og:tags" content="rules" />
+  
+  <meta property="og:tags" content="mermaid" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/2026-02-22-claude-md-ultimate-guide/">
+          <h1>
+            Claude Code CLAUDE.md 완성 가이드: 공식 문서 &#43; 실전 패턴으로 만드는 고성능 프로젝트 메모리
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/2026-02-22-claude-md-ultimate-guide/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p><code>CLAUDE.md</code>는 Claude Code에서 단순한 메모 파일이 아니라, 세션마다 재주입되는 작업 기준 문서입니다. 그래서 이 파일의 밀도가 낮으면 매번 같은 실수가 반복되고, 반대로 핵심만 압축하면 결과 품질이 빠르게 안정됩니다.
+이 글은 공식 문서에서 확인 가능한 사실과 커뮤니티 실전 패턴을 분리해, 바로 복붙 가능한 운영 형태로 재구성합니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>[1] <a href="https://code.claude.com/docs/en/memory">https://code.claude.com/docs/en/memory</a></li>
+<li>[2] <a href="https://code.claude.com/docs/en/best-practices">https://code.claude.com/docs/en/best-practices</a></li>
+<li>[3] <a href="https://code.claude.com/docs/en/interactive-mode">https://code.claude.com/docs/en/interactive-mode</a></li>
+<li>[4] <a href="https://code.claude.com/docs/en/skills">https://code.claude.com/docs/en/skills</a></li>
+<li>[5] <a href="https://claude.com/blog/using-claude-md-files">https://claude.com/blog/using-claude-md-files</a></li>
+<li>[6] <a href="https://www.humanlayer.dev/blog/writing-a-good-claude-md">https://www.humanlayer.dev/blog/writing-a-good-claude-md</a></li>
+<li>[7] <a href="https://www.builder.io/blog/claude-md-guide">https://www.builder.io/blog/claude-md-guide</a></li>
+</ul>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ol>
+<li><code>CLAUDE.md</code>는 세션 시작 시 로드되는 프로젝트 메모리이며, 상위/하위 디렉터리 및 사용자/관리 정책과 함께 계층적으로 동작합니다.[1]</li>
+<li><code>/init</code>은 시작점으로 유용하지만 완성본이 아니라 초안입니다. 팀 규칙과 실제 검증 명령을 반드시 수동 보정해야 합니다.[1][5]</li>
+<li>긴 단일 문서보다 <code>핵심 규칙 + 분리 문서 + 필요 시 로드</code> 구조가 더 안정적입니다. (<code>@path</code> import, <code>.claude/rules</code> 활용)[1]</li>
+<li>금지 규칙은 &ldquo;하지 마라&quot;로 끝내지 말고 대체 경로를 함께 써야 에이전트가 막히지 않습니다.[2][6]</li>
+<li>문서는 한 번 쓰고 끝내는 정적 문서가 아니라, 반복 실수 로그를 반영하는 운영 문서로 다뤄야 효과가 납니다.[2][6][7]</li>
+</ol>
+<pre class="mermaid">flowchart LR
+    U[User Task] --> M[CLAUDE.md 로딩]
+    M --> P[탐색/계획/구현]
+    P --> V[검증 실행]
+    V --> O[산출물]
+    O --> F[반복 실수 피드백]
+    F --> M</pre><h2 id="1-claudemd는-무엇이고-왜-그렇게-중요한가">1) CLAUDE.md는 무엇이고 왜 그렇게 중요한가</h2>
+<p>공식 문서 기준으로 Claude Code 메모리는 크게 두 종류입니다. 사용자가 관리하는 <code>CLAUDE.md</code> 계열과, 도구가 자동 기록하는 auto memory입니다.[1]
+핵심은 둘 다 세션 시작 컨텍스트에 반영된다는 점입니다. 즉, 평소 작성 습관이 매 작업 품질로 누적됩니다.[1][2]</p>
+<pre class="mermaid">flowchart TD
+    A[Session Start] --> B[CLAUDE.md 계층 로딩]
+    A --> C[Auto memory 로딩]
+    B --> D[초기 작업 기준 형성]
+    C --> D
+    D --> E[탐색/수정/검증 의사결정]</pre><p>실무적으로는 이렇게 이해하면 됩니다.</p>
+<ul>
+<li>&ldquo;프롬프트를 잘 쓰는 능력&quot;보다 먼저, <code>CLAUDE.md</code> 품질이 바닥선을 정합니다.</li>
+<li>매번 같은 지시를 반복하는 팀일수록 문서 설계 개선 ROI가 큽니다.</li>
+</ul>
+<h2 id="2-계층-구조를-잘못-쓰면-지시-충돌이-발생한다">2) 계층 구조를 잘못 쓰면 지시 충돌이 발생한다</h2>
+<p>공식 메모리 문서가 제시하는 범위를 실전 관점으로 정리하면 다음과 같습니다.[1]</p>
+<ul>
+<li>관리 정책(organization-wide)</li>
+<li>프로젝트 메모리(<code>./CLAUDE.md</code> 또는 <code>./.claude/CLAUDE.md</code>)</li>
+<li>프로젝트 규칙(<code>./.claude/rules/*.md</code>)</li>
+<li>사용자 메모리(<code>~/.claude/CLAUDE.md</code>)</li>
+<li>로컬 프로젝트 메모리(<code>./CLAUDE.local.md</code>)</li>
+</ul>
+<pre class="mermaid">flowchart TD
+    M[Managed Policy] --> P[Project CLAUDE.md]
+    P --> R[.claude/rules/*.md]
+    R --> L[CLAUDE.local.md]
+    U[~/.claude/CLAUDE.md] --> S[세션 전역 개인 선호]</pre><p>또한 하위 디렉터리 <code>CLAUDE.md</code>는 필요 시(on-demand) 로드되는 형태라, 모노레포/대형 레포에서 특히 유용합니다.[1]</p>
+<h2 id="3-init은-빠른-출발점이지-최종본이-아니다">3) /init은 빠른 출발점이지, 최종본이 아니다</h2>
+<p><code>/init</code>은 코드베이스를 보고 초기 <code>CLAUDE.md</code>를 부트스트랩하는 명령입니다.[1][3]
+문제는 이 초안이 팀의 숨은 운영 규칙(예: 특정 테스트 순서, 배포 승인 절차, 위험 폴더 금지)을 완전히 알기 어렵다는 점입니다.</p>
+<pre class="mermaid">flowchart LR
+    I["/init 생성본"] --> R[리뷰]
+    R --> A[정확한 명령어 보정]
+    A --> W[워크플로우/금지규칙 보정]
+    W --> C[팀 합의 후 커밋]</pre><p>최소 보정 체크:</p>
+<ol>
+<li>빌드/테스트/타입체크 명령이 실제 레포와 일치하는가</li>
+<li>&ldquo;절대 금지&rdquo; 규칙에 대체 행동이 함께 적혀 있는가</li>
+<li>프로젝트 특화 용어/디렉터리 맵이 포함되어 있는가</li>
+</ol>
+<h2 id="4-문서를-짧게-유지하되-정보는-잃지-않는-방법">4) 문서를 짧게 유지하되, 정보는 잃지 않는 방법</h2>
+<p>공식 Best Practices는 CLAUDE.md를 짧고 적용 범위가 넓은 규칙 위주로 유지하라고 권장합니다.[2]
+또한 skills 문서와 memory 문서는 긴 지식은 분리 파일로 이동해 필요할 때만 불러오는 방식을 지원합니다.[1][4]</p>
+<p>실전 패턴:</p>
+<ul>
+<li>루트 <code>CLAUDE.md</code>: 항상 필요한 전역 규칙</li>
+<li><code>.claude/rules/</code>: 주제별 세분화(테스트, 보안, API)</li>
+<li><code>@path</code> import: 상세 문서의 점진적 로딩</li>
+</ul>
+<pre class="mermaid">flowchart TD
+    C[Core CLAUDE.md] --> X{항상 필요한가?}
+    X -->|Yes| K[루트에 유지]
+    X -->|No| D[분리 문서로 이동]
+    D --> I["@import 포인터"]
+    I --> O[필요 시 로딩]</pre><h2 id="5-반드시-넣어야-할-항목과-안티패턴">5) 반드시 넣어야 할 항목과 안티패턴</h2>
+<h3 id="반드시-넣을-항목">반드시 넣을 항목</h3>
+<ul>
+<li><strong>정확한 명령어</strong>: 빌드/테스트/린트/타입체크/실행</li>
+<li><strong>워크플로우</strong>: 기능 추가, 버그 수정, PR 생성 순서</li>
+<li><strong>코딩 표준</strong>: 네이밍/에러 처리/예외 정책</li>
+<li><strong>도메인 용어집</strong>: 프로젝트 고유 약어/비즈니스 용어</li>
+<li><strong>Never Do + 대안</strong>: 금지 규칙과 우회 경로</li>
+</ul>
+<h3 id="피해야-할-항목">피해야 할 항목</h3>
+<ul>
+<li>장문 튜토리얼 전체 복붙(공식 문서 링크/참조로 대체)</li>
+<li>&ldquo;코드를 깔끔하게&rdquo; 같은 모호한 선언</li>
+<li>대안 없는 금지만 적는 규칙</li>
+<li>자주 바뀌는 운영 수치/임시값을 핵심 문서에 고정</li>
+</ul>
+<pre class="mermaid">flowchart LR
+    A[대안 없는 금지] --> B[에이전트 정지/우회 실패]
+    C[금지 + 대체 명령] --> D[안전하게 계속 실행]</pre><h2 id="6-바로-쓸-수-있는-claudemd-골격">6) 바로 쓸 수 있는 CLAUDE.md 골격</h2>
+<p>아래 골격은 &ldquo;짧지만 실전형&quot;으로 맞춘 템플릿입니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span># Project Overview
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 목적:
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 핵심 스택:
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 주요 디렉터리:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span># Commands
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> dev:
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> build:
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> test:
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> typecheck:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span># Workflows
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 새 API 추가:
+</span></span><span style="display:flex;"><span>  1) 계획
+</span></span><span style="display:flex;"><span>  2) 구현
+</span></span><span style="display:flex;"><span>  3) 테스트
+</span></span><span style="display:flex;"><span>  4) 문서 갱신
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span># Coding Standards
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 네이밍:
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 에러 처리:
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 비동기/상태 규칙:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span># Domain Jargon
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 용어A:
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 용어B:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span># Never Do (with Alternative)
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 절대 X 하지 말 것. 대신 Y를 사용.
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 절대 A 파일 직접 수정하지 말 것. 대신 B 스크립트 실행.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span># References
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 테스트 상세: <span style="color:#6639ba">@docs/testing</span>.md
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 배포 상세: <span style="color:#6639ba">@docs/deploy</span>.md
+</span></span></code></pre></div><h2 id="7-운영-루프-문서를-살아있게-관리하기">7) 운영 루프: 문서를 &ldquo;살아있게&rdquo; 관리하기</h2>
+<p>좋은 CLAUDE.md는 처음부터 완벽한 문서가 아니라, 실패 로그를 흡수하는 문서입니다.[2][6][7]</p>
+<pre class="mermaid">flowchart TD
+    T[작업 수행] --> E[반복 실수 발견]
+    E --> U[규칙 문장 1~2줄 추가/수정]
+    U --> V[다음 작업에서 재검증]
+    V --> T</pre><p>운영 팁:</p>
+<ul>
+<li>주간 10분 리뷰: &ldquo;최근 1주 반복 실수&quot;만 반영</li>
+<li>길이가 늘어나면 즉시 분리: 루트는 고신호만 유지</li>
+<li>새 규칙은 &ldquo;왜 필요한지&quot;를 짧게 같이 기록</li>
+</ul>
+<h2 id="8-커뮤니티-팁을-적용할-때의-주의점">8) 커뮤니티 팁을 적용할 때의 주의점</h2>
+<p>커뮤니티 글에는 유용한 패턴이 많지만, 버전/환경별 편차가 큰 항목도 있습니다.
+대표적으로 &ldquo;스킬이 항상 자동으로 잘 호출된다&rdquo; 같은 주장은 실전에서 일관되지 않을 수 있으니, 자동 추론에만 기대지 말고 명시 호출 경로(<code>/skill-name</code>)도 함께 설계하는 편이 안전합니다.[4][6]</p>
+<pre class="mermaid">flowchart LR
+    A[커뮤니티 팁 수집] --> B{공식 문서로 교차 검증됨?}
+    B -->|Yes| C[운영 규칙으로 채택]
+    B -->|No| D[실험 규칙으로 제한 적용]
+    D --> E[효과 측정 후 채택/폐기]</pre><p>운영 원칙:</p>
+<ul>
+<li>공식 문서에서 확인 가능한 항목은 &ldquo;기본 규칙&quot;으로 채택</li>
+<li>커뮤니티 고급 팁은 &ldquo;실험 규칙&quot;으로 먼저 적용</li>
+<li>효과가 검증된 항목만 루트 <code>CLAUDE.md</code>에 승격</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>완벽한 <code>CLAUDE.md</code>는 긴 매뉴얼이 아니라, <strong>매 세션에 들어가도 부담 없는 고신호 운영 문서</strong>입니다.
+공식 문서의 계층/로딩 모델을 기반으로 구조를 잡고, 커뮤니티 실전 패턴(짧게 유지, 대안 포함 금지 규칙, 점진적 공개, 지속 갱신)을 결합하면 코드 품질과 속도, 토큰 효율이 함께 올라갑니다.</p>
+<h2 id="참고">참고</h2>
+<ul>
+<li>[Anthropic Engineering] <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents">https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents</a></li>
+<li>[Anthropic Engineering] <a href="https://www.anthropic.com/engineering/prompt-engineering-overview">https://www.anthropic.com/engineering/prompt-engineering-overview</a></li>
+</ul>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 02월 22일 19시 55분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/development">Development</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/productivity">Productivity</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-02-22-writing-good-claude-md-practical-guide/" rel="prev">
+        <span>좋은 CLAUDE.md 작성법: 지시를 줄이고 성능을 올리는 실전 가이드</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#1-claudemd는-무엇이고-왜-그렇게-중요한가">1) CLAUDE.md는 무엇이고 왜 그렇게 중요한가</a></li>
+    <li><a href="#2-계층-구조를-잘못-쓰면-지시-충돌이-발생한다">2) 계층 구조를 잘못 쓰면 지시 충돌이 발생한다</a></li>
+    <li><a href="#3-init은-빠른-출발점이지-최종본이-아니다">3) /init은 빠른 출발점이지, 최종본이 아니다</a></li>
+    <li><a href="#4-문서를-짧게-유지하되-정보는-잃지-않는-방법">4) 문서를 짧게 유지하되, 정보는 잃지 않는 방법</a></li>
+    <li><a href="#5-반드시-넣어야-할-항목과-안티패턴">5) 반드시 넣어야 할 항목과 안티패턴</a>
+      <ul>
+        <li><a href="#반드시-넣을-항목">반드시 넣을 항목</a></li>
+        <li><a href="#피해야-할-항목">피해야 할 항목</a></li>
+      </ul>
+    </li>
+    <li><a href="#6-바로-쓸-수-있는-claudemd-골격">6) 바로 쓸 수 있는 CLAUDE.md 골격</a></li>
+    <li><a href="#7-운영-루프-문서를-살아있게-관리하기">7) 운영 루프: 문서를 &ldquo;살아있게&rdquo; 관리하기</a></li>
+    <li><a href="#8-커뮤니티-팁을-적용할-때의-주의점">8) 커뮤니티 팁을 적용할 때의 주의점</a></li>
+    <li><a href="#결론">결론</a></li>
+    <li><a href="#참고">참고</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude Code</a>
+    <a href="/tags/claude-md/" class="badge badge-secondary">Claude-Md</a>
+    <a href="/tags/context-engineering/" class="badge badge-secondary">Context-Engineering</a>
+    <a href="/tags/prompt-ops/" class="badge badge-secondary">Prompt-Ops</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+    <a href="/tags/memory/" class="badge badge-secondary">Memory</a>
+    <a href="/tags/rules/" class="badge badge-secondary">Rules</a>
+    <a href="/tags/mermaid/" class="badge badge-secondary">Mermaid</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

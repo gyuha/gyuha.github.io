@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '좋은 CLAUDE.md 작성법: 지시를 줄이고 성능을 올리는 실전 가이드'" />
+  <title>좋은 CLAUDE.md 작성법: 지시를 줄이고 성능을 올리는 실전 가이드  | 신규하 블로그</title>
+  <meta property="og:title" content="좋은 CLAUDE.md 작성법: 지시를 줄이고 성능을 올리는 실전 가이드" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-02-22"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/2026-02-22-writing-good-claude-md-practical-guide/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-md" />
+  
+  <meta property="og:tags" content="agents-md" />
+  
+  <meta property="og:tags" content="context-engineering" />
+  
+  <meta property="og:tags" content="coding-agent" />
+  
+  <meta property="og:tags" content="instruction-design" />
+  
+  <meta property="og:tags" content="progressive-disclosure" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/2026-02-22-writing-good-claude-md-practical-guide/">
+          <h1>
+            좋은 CLAUDE.md 작성법: 지시를 줄이고 성능을 올리는 실전 가이드
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/2026-02-22-writing-good-claude-md-practical-guide/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>코딩 에이전트 품질이 들쭉날쭉한 팀을 보면, 모델 자체보다 <code>CLAUDE.md</code> 설계에서 문제가 시작되는 경우가 많습니다.
+이 글은 HumanLayer의 &ldquo;Writing a good CLAUDE.md&quot;를 바탕으로, 실제 프로젝트에서 바로 적용할 수 있는 운영 원칙을 압축해 정리합니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.humanlayer.dev/blog/writing-a-good-claude-md">https://www.humanlayer.dev/blog/writing-a-good-claude-md</a></li>
+</ul>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ol>
+<li><code>CLAUDE.md</code>(또는 <code>AGENTS.md</code>)는 매 세션에 주입되는 <strong>상시 컨텍스트</strong>라서 영향력이 매우 큽니다.</li>
+<li>지시를 많이 넣을수록 에이전트가 특정 지시만 무시하는 것이 아니라, <strong>전체 지시 준수율이 같이 떨어질 수 있습니다</strong>.</li>
+<li>정답은 &ldquo;모든 규칙을 한 파일에 넣기&quot;가 아니라, <strong>짧은 전역 규칙 + 필요한 순간에만 읽는 점진적 공개(Progressive Disclosure) 구조</strong>입니다.</li>
+<li>코드 스타일 강제는 LLM에게 맡기기보다 lint/format/hook 같은 <strong>결정론적 도구</strong>로 분리하는 편이 안정적입니다.</li>
+<li><code>CLAUDE.md</code>는 <code>/init</code> 같은 자동 생성으로 끝내지 말고, 팀/프로젝트 맥락에 맞게 <strong>수동으로 다듬는 고레버리지 문서</strong>로 관리해야 합니다.</li>
+</ol>
+<pre class="mermaid">flowchart LR
+    A[사용자 요청] --> B[CLAUDE.md 로딩]
+    B --> C[작업 맥락 판단]
+    C --> D[코드 탐색/수정]
+    D --> E[검증]
+    E --> F[응답]</pre><h2 id="1-왜-claudemd가-중요한가">1) 왜 CLAUDE.md가 중요한가</h2>
+<p>원문이 강조하는 첫 번째 전제는 간단합니다. LLM은 세션을 넘어 코드베이스를 &ldquo;학습&quot;하지 않습니다.
+즉, 에이전트가 현재 세션에서 아는 내용은 <strong>주어진 토큰</strong> 뿐이며, 그중 <code>CLAUDE.md</code>는 거의 모든 대화에 반복적으로 들어가는 기본 메모리입니다.</p>
+<pre class="mermaid">flowchart TD
+    S[세션 시작] --> K[에이전트의 코드베이스 지식: 거의 0]
+    K --> M[CLAUDE.md + 현재 대화 + 읽은 파일]
+    M --> W[실행 품질 결정]</pre><p>그래서 <code>CLAUDE.md</code>의 역할은 장식이 아니라 온보딩 문서입니다.
+원문의 프레임을 그대로 쓰면 다음 3가지를 다뤄야 합니다.</p>
+<ul>
+<li>WHAT: 스택, 디렉터리 구조, 모노레포 구성 지도</li>
+<li>WHY: 프로젝트 목적, 각 모듈의 존재 이유</li>
+<li>HOW: 실제 작업/검증 명령, 테스트와 타입체크 방법</li>
+</ul>
+<h2 id="2-less-is-more-지시를-늘리면-왜-성능이-떨어지나">2) &ldquo;Less is more&rdquo;: 지시를 늘리면 왜 성능이 떨어지나</h2>
+<p>원문은 instruction-following 연구를 인용해, 지시 수가 커질수록 모델의 지시 이행 품질이 낮아질 수 있음을 설명합니다.
+핵심은 &ldquo;아래쪽 몇 줄만 무시&quot;가 아니라 <strong>전반적 저하</strong> 라는 점입니다.</p>
+<pre class="mermaid">flowchart LR
+    I[지시 수 증가] --> R[주의 분산]
+    R --> Q[지시 준수율 저하]
+    Q --> O[작업 결과 편차 증가]</pre><p>실무적으로는 다음 판단이 중요합니다.</p>
+<ul>
+<li><code>CLAUDE.md</code>에 &ldquo;항상 필요한 규칙&quot;만 남긴다.</li>
+<li>특정 작업에서만 필요한 규칙(예: DB 마이그레이션 세부 규칙)은 분리 문서로 뺀다.</li>
+<li>파일 길이는 짧을수록 유리하며, 원문은 일반적으로 300줄 이하 권고를 언급합니다.</li>
+</ul>
+<h2 id="3-점진적-공개progressive-disclosure로-분리-설계하기">3) 점진적 공개(Progressive Disclosure)로 분리 설계하기</h2>
+<p>좋은 운영 방식은 지식을 없애는 게 아니라, <strong>필요한 순간에만 로드</strong> 되게 만드는 것입니다.
+원문이 제안하는 구조는 다음과 같습니다.</p>
+<pre class="mermaid">flowchart TD
+    A[CLAUDE.md: 전역 최소 규칙] --> B[문서 인덱스/포인터]
+    B --> C{현재 작업과 관련?}
+    C -->|Yes| D[세부 문서 읽기]
+    C -->|No| E[읽지 않음]
+    D --> F[집중된 컨텍스트로 실행]</pre><p>예시 디렉터리:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>agent_docs/
+</span></span><span style="display:flex;"><span>  building_the_project.md
+</span></span><span style="display:flex;"><span>  running_tests.md
+</span></span><span style="display:flex;"><span>  code_conventions.md
+</span></span><span style="display:flex;"><span>  service_architecture.md
+</span></span><span style="display:flex;"><span>  database_schema.md
+</span></span></code></pre></div><p>그리고 본문 복붙 대신 <code>file:line</code> 포인터를 두라는 조언이 중요합니다.
+코드 스니펫은 빠르게 낡지만, 권위 있는 원본 파일 위치는 유지보수 비용이 낮기 때문입니다.</p>
+<h2 id="4-claude는-비싼-린터가-아니다">4) &ldquo;Claude는 비싼 린터가 아니다&rdquo;</h2>
+<p>원문의 강한 메시지 중 하나는 코드 스타일 검사를 LLM에게 과도하게 맡기지 말라는 것입니다.
+스타일/포맷 규칙이 <code>CLAUDE.md</code>를 비대하게 만들면, 본래 중요한 지시가 희석됩니다.</p>
+<pre class="mermaid">flowchart LR
+    A[스타일 규칙을 CLAUDE.md에 과적재] --> B[컨텍스트 오염]
+    B --> C[핵심 작업 지시 약화]
+    C --> D[산출물 품질 변동]
+
+    E[Formatter/Linter/Hook 분리] --> F[결정론적 검증]
+    F --> G[에이전트는 구현/추론에 집중]</pre><p>운영 팁:</p>
+<ul>
+<li>포맷/린트는 CI나 훅에서 자동 실행</li>
+<li>에이전트에게는 &ldquo;무엇을 구현할지&quot;를 우선 전달</li>
+<li>필요하면 Stop hook이나 전용 slash command로 후처리</li>
+</ul>
+<h2 id="5-왜-init-자동-생성에-의존하면-안-되나">5) 왜 <code>/init</code> 자동 생성에 의존하면 안 되나</h2>
+<p>원문은 <code>/init</code> 또는 자동 생성으로 <code>CLAUDE.md</code>를 만드는 습관을 명확히 경계합니다.
+핵심 이유는 <code>CLAUDE.md</code>가 단순 안내문이 아니라, 리서치-계획-구현-검증 전 단계에 반복 주입되는 <strong>최상위 레버리지 지점</strong>이기 때문입니다.</p>
+<pre class="mermaid">flowchart TD
+    A[자동 생성된 일반 지침] --> B[프로젝트 맥락 불일치]
+    B --> C[리서치/계획 품질 저하]
+    C --> D[구현 오류 증가]
+    D --> E[검증/수정 비용 증가]</pre><p>원문 취지를 실무적으로 옮기면 다음과 같습니다.</p>
+<ul>
+<li>자동 생성 초안을 &ldquo;완성본&quot;으로 쓰지 말고, 반드시 팀 규칙 기준으로 재작성한다.</li>
+<li>전역에 항상 필요한 원칙만 남기고, 나머지는 분리 문서로 이동한다.</li>
+<li><code>CLAUDE.md</code> 한 줄의 품질이 후속 산출물 전체를 증폭시키므로, 줄 단위로 검토한다.</li>
+</ul>
+<h2 id="6-바로-적용-가능한-claudemd-체크리스트">6) 바로 적용 가능한 CLAUDE.md 체크리스트</h2>
+<p>다음 체크리스트로 현재 파일을 점검해보면 빠르게 개선할 수 있습니다.</p>
+<pre class="mermaid">flowchart TD
+    A[초안 작성] --> B[보편 규칙만 남기기]
+    B --> C[길이 축소]
+    C --> D[세부 규칙 문서 분리]
+    D --> E[검증 명령 명시]
+    E --> F[정기 리뷰]</pre><p>체크 항목:</p>
+<ol>
+<li>전역적으로 항상 필요한 규칙만 포함했는가?</li>
+<li>작업 특화 규칙은 별도 문서로 분리했는가?</li>
+<li>파일 길이가 과도하게 길지 않은가?</li>
+<li><code>WHAT/WHY/HOW</code>가 명확한가?</li>
+<li>테스트/타입체크/빌드 명령이 실제 프로젝트와 일치하는가?</li>
+<li>코드 스타일 강제는 lint/format/hook으로 위임했는가?</li>
+<li>코드 스니펫보다 <code>file:line</code> 포인터를 우선했는가?</li>
+</ol>
+<h2 id="요약">요약</h2>
+<ol>
+<li><code>CLAUDE.md</code>는 Claude를 코드베이스에 온보딩하기 위한 문서이며, 프로젝트의 WHY/WHAT/HOW를 정의해야 합니다.</li>
+<li>지시는 적을수록 좋습니다. 필요한 지시를 빼면 안 되지만, 파일에는 합리적으로 필요한 최소한의 지시만 담아야 합니다.</li>
+<li><code>CLAUDE.md</code> 내용은 간결하고 보편적으로 적용 가능해야 합니다.</li>
+<li>점진적 공개(Progressive Disclosure)를 사용하세요. Claude에게 가능한 모든 정보를 한 번에 주지 말고, 필요한 시점에 필요한 정보를 찾고 읽을 수 있도록 안내해 컨텍스트 윈도우와 지시 수의 비대화를 막아야 합니다.</li>
+<li>Claude는 린터가 아닙니다. 린터/포매터를 사용하고, 필요에 따라 Hook과 Slash Command 같은 기능을 함께 활용해야 합니다.</li>
+<li><code>CLAUDE.md</code>는 하니스의 가장 레버리지가 큰 지점이므로 자동 생성에 의존하지 말고, 최상의 결과를 위해 내용을 신중하게 직접 다듬어야 합니다.</li>
+</ol>
+<h2 id="마무리">마무리</h2>
+<p>좋은 <code>CLAUDE.md</code>는 &ldquo;많이 알려주는 문서&quot;가 아니라, <strong>항상 필요한 것만 정확히 알려주는 문서</strong>입니다.
+짧은 전역 지침과 점진적 공개 구조를 만들면, 에이전트는 덜 흔들리고 팀은 더 일관된 결과를 얻을 수 있습니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 02월 22일 18시 35분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/development">Development</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/productivity">Productivity</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-02-21-claude-code-vibe-coding-workflow/" rel="prev">
+        <span>Claude Code 바이브 코딩 워크플로우: Skill·MCP·Agent·검증·Context 운영 한 번에 정리</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-02-22-claude-md-ultimate-guide/" rel="next">
+        <span>Claude Code CLAUDE.md 완성 가이드: 공식 문서 &#43; 실전 패턴으로 만드는 고성능 프로젝트 메모리</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#1-왜-claudemd가-중요한가">1) 왜 CLAUDE.md가 중요한가</a></li>
+    <li><a href="#2-less-is-more-지시를-늘리면-왜-성능이-떨어지나">2) &ldquo;Less is more&rdquo;: 지시를 늘리면 왜 성능이 떨어지나</a></li>
+    <li><a href="#3-점진적-공개progressive-disclosure로-분리-설계하기">3) 점진적 공개(Progressive Disclosure)로 분리 설계하기</a></li>
+    <li><a href="#4-claude는-비싼-린터가-아니다">4) &ldquo;Claude는 비싼 린터가 아니다&rdquo;</a></li>
+    <li><a href="#5-왜-init-자동-생성에-의존하면-안-되나">5) 왜 <code>/init</code> 자동 생성에 의존하면 안 되나</a></li>
+    <li><a href="#6-바로-적용-가능한-claudemd-체크리스트">6) 바로 적용 가능한 CLAUDE.md 체크리스트</a></li>
+    <li><a href="#요약">요약</a></li>
+    <li><a href="#마무리">마무리</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-md/" class="badge badge-secondary">Claude-Md</a>
+    <a href="/tags/agents-md/" class="badge badge-secondary">Agents-Md</a>
+    <a href="/tags/context-engineering/" class="badge badge-secondary">Context-Engineering</a>
+    <a href="/tags/coding-agent/" class="badge badge-secondary">Coding-Agent</a>
+    <a href="/tags/instruction-design/" class="badge badge-secondary">Instruction-Design</a>
+    <a href="/tags/progressive-disclosure/" class="badge badge-secondary">Progressive-Disclosure</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
