@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude Code 9개월 실전기: 계획 주도 워크플로우가 AI 코딩의 품질을 바꾸는 이유'" />
+  <title>Claude Code 9개월 실전기: 계획 주도 워크플로우가 AI 코딩의 품질을 바꾸는 이유  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude Code 9개월 실전기: 계획 주도 워크플로우가 AI 코딩의 품질을 바꾸는 이유" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-02-24"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/2026-02-24-claude-code-plan-driven-workflow/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="Claude Code" />
+  
+  <meta property="og:tags" content="AI Coding" />
+  
+  <meta property="og:tags" content="Workflow" />
+  
+  <meta property="og:tags" content="Prompt Engineering" />
+  
+  <meta property="og:tags" content="Plan-Driven Development" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/2026-02-24-claude-code-plan-driven-workflow/">
+          <h1>
+            Claude Code 9개월 실전기: 계획 주도 워크플로우가 AI 코딩의 품질을 바꾸는 이유
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/2026-02-24-claude-code-plan-driven-workflow/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>AI 코딩 도구를 쓰는 대부분의 개발자는 프롬프트를 입력하고, 에러를 고치고, 반복합니다. 하지만 Boris Tane은 Claude Code를 약 9개월간 주력 개발 도구로 사용하면서 전혀 다른 패턴에 도달했습니다. 핵심 원칙은 단 하나입니다: <strong>검토하고 승인한 서면 계획이 있기 전까지는 절대 코드를 작성하지 않는다.</strong></p>
+<p>이 계획과 실행의 분리가 낭비되는 노력을 방지하고, 아키텍처 결정의 통제권을 유지하며, 최소한의 토큰으로 훨씬 나은 결과를 만들어낸다고 합니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://boristane.com/blog/how-i-use-claude-code/">https://boristane.com/blog/how-i-use-claude-code/</a></li>
+</ul>
+<h2 id="1-전체-워크플로우-구조-리서치--계획--주석--구현">1) 전체 워크플로우 구조: 리서치 → 계획 → 주석 → 구현</h2>
+<p>Boris Tane의 워크플로우는 네 개의 명확한 단계로 나뉩니다. 가장 중요한 특징은 <strong>코드 작성이 전체 프로세스의 마지막에야 일어난다</strong>는 점입니다.</p>
+<pre class="mermaid">flowchart LR
+    R["1. 리서치<br>코드베이스 깊은 읽기"] --> P["2. 계획<br>plan.md 작성"]
+    P --> A["3. 주석 사이클<br>인간 판단 주입"]
+    A -->|"1~6회 반복"| A
+    A --> T["4. 투두 리스트<br>태스크 분해"]
+    T --> I["5. 구현<br>기계적 실행"]
+    I --> F["6. 피드백<br>짧은 교정"]
+
+    classDef research fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
+    classDef plan fill:#fff8e1,stroke:#ff8f00,color:#e65100
+    classDef annotate fill:#f3e5f5,stroke:#7b1fa2,color:#4a148c
+    classDef implement fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+
+    class R research
+    class P plan
+    class A,T annotate
+    class I,F implement</pre><p>일반적으로 AI 코딩 도구의 실패 모드는 잘못된 구문이나 논리 오류가 아닙니다. <strong>단독으로는 작동하지만 주변 시스템을 깨뜨리는 구현</strong>이 가장 비싼 실패입니다. 기존 캐싱 레이어를 무시하는 함수, ORM 관례를 고려하지 않는 마이그레이션, 이미 존재하는 로직을 중복하는 API 엔드포인트 — 리서치 단계가 이 모든 것을 사전에 방지합니다.</p>
+<h2 id="2-리서치-단계-깊은-읽기와-영속적-문서화">2) 리서치 단계: 깊은 읽기와 영속적 문서화</h2>
+<p>모든 의미 있는 작업은 <strong>deep-read 지시</strong>로 시작합니다. 핵심은 두 가지입니다:</p>
+<ol>
+<li><strong>강한 언어로 깊은 읽기를 요구한다</strong>: &ldquo;deeply&rdquo;, &ldquo;in great details&rdquo;, &ldquo;intricacies&rdquo;, &ldquo;go through everything&rdquo; 같은 표현이 없으면 Claude는 파일을 시그니처 수준에서만 훑고 넘어갑니다.</li>
+<li><strong>결과를 영속적 마크다운 파일에 기록한다</strong>: 채팅 안의 구두 요약이 아니라 <code>research.md</code> 같은 파일로 남겨야 리뷰할 수 있습니다.</li>
+</ol>
+<p>실제 프롬프트 예시:</p>
+
+  <blockquote>
+    <p>&ldquo;이 폴더를 깊이 읽고, 어떻게 작동하는지 깊이 이해하고, 모든 세부 사항을 파악해라. 끝나면 배운 내용을 research.md에 상세 보고서로 작성해라.&rdquo;</p>
+
+  </blockquote>
+
+
+  <blockquote>
+    <p>&ldquo;알림 시스템을 상세히 연구하고, 복잡한 부분을 이해하고, 알림이 어떻게 작동하는지에 대해 알아야 할 모든 것을 research.md에 작성해라.&rdquo;</p>
+
+  </blockquote>
+
+<pre class="mermaid">flowchart TD
+    A["Claude에게 깊은 읽기 지시"] --> B["코드베이스 탐색<br>함수, 의존성, 패턴 분석"]
+    B --> C["research.md 작성"]
+    C --> D["개발자가 research.md 리뷰"]
+    D --> E{"이해가 정확한가?"}
+    E -->|"오해 발견"| F["오류 교정 후<br>재탐색 지시"]
+    F --> B
+    E -->|"정확함"| G["계획 단계로 진행"]
+
+    classDef input fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
+    classDef process fill:#fff8e1,stroke:#ff8f00,color:#e65100
+    classDef decision fill:#f3e5f5,stroke:#7b1fa2,color:#4a148c
+    classDef output fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+
+    class A input
+    class B,C process
+    class D,E decision
+    class F,G output</pre><p><code>research.md</code>는 Claude에게 숙제를 시키는 것이 아닙니다. **리뷰 표면(review surface)**을 만드는 것입니다. 이 파일을 읽고 Claude가 시스템을 실제로 이해했는지 검증하고, 오해를 교정한 뒤에야 계획 단계로 넘어갑니다. 리서치가 틀리면 계획이 틀리고, 구현도 틀립니다. Garbage in, garbage out.</p>
+<h2 id="3-플래닝-단계-planmd-기반-구조화">3) 플래닝 단계: plan.md 기반 구조화</h2>
+<p>리서치를 리뷰한 후, 별도의 마크다운 파일에 상세 구현 계획을 요청합니다.</p>
+
+  <blockquote>
+    <p>&ldquo;cursor-based pagination을 지원하도록 list 엔드포인트를 바꾸고 싶다. 이를 달성하기 위한 상세 plan.md를 작성해라. 변경 사항을 제안하기 전에 소스 파일을 읽고, 실제 코드베이스에 기반해서 계획을 세워라.&rdquo;</p>
+
+  </blockquote>
+
+<p>생성되는 계획에는 다음이 포함됩니다:</p>
+<ul>
+<li>접근 방식에 대한 상세 설명</li>
+<li>실제 변경 사항을 보여주는 코드 스니펫</li>
+<li>수정될 파일 경로</li>
+<li>고려 사항과 트레이드오프</li>
+</ul>
+<h3 id="빌트인-plan-mode-대신-자체-md-파일을-쓰는-이유">빌트인 plan mode 대신 자체 .md 파일을 쓰는 이유</h3>
+<p>저자는 Claude Code의 빌트인 plan mode 대신 자체 마크다운 파일을 사용합니다. 그 이유는 마크다운 파일이 다음을 제공하기 때문입니다:</p>
+<ul>
+<li><strong>에디터에서 직접 편집</strong> 가능</li>
+<li><strong>인라인 노트</strong> 추가 가능</li>
+<li>프로젝트의 <strong>실제 아티팩트</strong>로 영속</li>
+</ul>
+<p>반면 빌트인 plan mode는 이런 직접 조작이 제한적입니다.</p>
+<h3 id="오픈소스-참조-코드-활용-팁">오픈소스 참조 코드 활용 팁</h3>
+<p>잘 구현된 오픈소스 레포에서 참조 코드를 발견하면, 계획 요청과 함께 공유합니다:</p>
+
+  <blockquote>
+    <p>&ldquo;이것은 그들이 sortable ID를 구현하는 방식이다. 우리가 유사한 접근법을 도입하는 방법을 설명하는 plan.md를 작성해라.&rdquo;</p>
+
+  </blockquote>
+
+<p>저자에 따르면, Claude는 처음부터 설계하는 것보다 <strong>구체적인 참조 구현을 기반으로 작업할 때 극적으로 더 나은 결과</strong>를 만들어냅니다. 이는 LLM의 in-context learning 특성과도 일치하는 관찰입니다.</p>
+<h2 id="4-주석-사이클-계획에-인간-판단을-주입하는-핵심-루프">4) 주석 사이클: 계획에 인간 판단을 주입하는 핵심 루프</h2>
+<p>이 워크플로우에서 가장 독특하고 가치 있는 부분입니다.</p>
+<pre class="mermaid">flowchart TD
+    W["Claude가 plan.md 작성"] --> R["개발자가 에디터에서 리뷰"]
+    R --> N["문서에 인라인 노트 추가"]
+    N --> S["Claude에게 문서로 돌아가라고 지시"]
+    S --> U["Claude가 노트 반영하여 계획 수정"]
+    U --> D{"만족하는가?"}
+    D -->|"아니오"| R
+    D -->|"예"| T["투두 리스트 요청"]
+
+    classDef human fill:#fff8e1,stroke:#ff8f00,color:#e65100
+    classDef claude fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
+    classDef decision fill:#f3e5f5,stroke:#7b1fa2,color:#4a148c
+    classDef output fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+
+    class R,N human
+    class W,U claude
+    class S,D decision
+    class T output</pre><p>Claude가 계획을 작성하면, 개발자는 에디터에서 <strong>문서 안에 직접 인라인 노트를 추가</strong>합니다. 그리고 Claude에게 노트를 반영하여 문서를 업데이트하라고 지시합니다.</p>
+
+  <blockquote>
+    <p>&ldquo;문서에 노트 몇 개를 추가했다. 모든 노트를 반영하고 문서를 업데이트해라. 아직 구현하지 마라.&rdquo;</p>
+
+  </blockquote>
+
+<p>이 사이클은 <strong>1회에서 6회까지 반복</strong>됩니다. 반복할 때마다 &ldquo;아직 구현하지 마라(don&rsquo;t implement yet)&ldquo;라는 가드가 필수입니다. 이 가드 없이는 Claude가 계획이 충분하다고 판단하는 순간 코드 작성으로 뛰어들기 때문입니다.</p>
+<h3 id="실제-인라인-노트-예시">실제 인라인 노트 예시</h3>
+<p>노트의 길이는 상황에 따라 매우 다릅니다:</p>
+<table>
+  <thead>
+      <tr>
+          <th>유형</th>
+          <th>예시</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>도메인 지식</td>
+          <td>&ldquo;마이그레이션에 raw SQL 대신 drizzle:generate를 사용해라&rdquo;</td>
+      </tr>
+      <tr>
+          <td>가정 교정</td>
+          <td>&ldquo;아니다 — 이건 PUT이 아니라 PATCH여야 한다&rdquo;</td>
+      </tr>
+      <tr>
+          <td>접근법 거부</td>
+          <td>&ldquo;이 섹션 전체를 제거해라, 여기에 캐싱이 필요 없다&rdquo;</td>
+      </tr>
+      <tr>
+          <td>로직 설명</td>
+          <td>&ldquo;큐 컨슈머가 이미 재시도를 처리하므로 이 재시도 로직은 중복이다. 제거하고 실패하게 놔둬라&rdquo;</td>
+      </tr>
+      <tr>
+          <td>구조 재설계</td>
+          <td>&ldquo;이건 틀렸다. visibility 필드는 개별 아이템이 아니라 리스트 자체에 있어야 한다. 스키마 섹션을 재구성해라&rdquo;</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="왜-이-방식이-효과적인가">왜 이 방식이 효과적인가</h3>
+<p>마크다운 파일이 개발자와 Claude 사이의 **공유 가변 상태(shared mutable state)**로 기능합니다:</p>
+<ul>
+<li>자기 속도에 맞춰 생각하고, 문제가 있는 <strong>정확한 지점에 교정을 작성</strong>할 수 있습니다</li>
+<li>채팅 메시지로 구현을 조종하는 것과 근본적으로 다릅니다 — 채팅은 스크롤을 되돌려 결정을 재구성해야 하지만, 계획 문서는 전체를 한눈에 리뷰할 수 있습니다</li>
+<li>3라운드의 주석 사이클만으로 일반적인 구현 계획을 기존 시스템에 완벽히 맞는 계획으로 변환할 수 있습니다</li>
+</ul>
+<p>Claude는 코드를 이해하고, 솔루션을 제안하고, 구현을 작성하는 데 뛰어납니다. 하지만 제품 우선순위, 사용자의 불편, 기꺼이 감수할 수 있는 엔지니어링 트레이드오프를 알지 못합니다. 주석 사이클은 바로 그 <strong>판단력을 주입하는 메커니즘</strong>입니다.</p>
+<h2 id="5-구현-단계-기계적-실행과-피드백-루프">5) 구현 단계: 기계적 실행과 피드백 루프</h2>
+<p>계획이 확정되면 투두 리스트를 요청한 뒤, 표준화된 단일 프롬프트로 구현을 시작합니다:</p>
+
+  <blockquote>
+    <p>&ldquo;전부 구현해라. 태스크나 단계를 완료할 때마다 계획 문서에 완료로 표시해라. 모든 태스크와 단계가 완료될 때까지 멈추지 마라. 불필요한 주석이나 jsdoc을 추가하지 마라, any나 unknown 타입을 사용하지 마라. 타입체크를 지속적으로 실행해서 새로운 이슈를 만들지 않도록 해라.&rdquo;</p>
+
+  </blockquote>
+
+<p>이 프롬프트에 담긴 설계 의도:</p>
+<table>
+  <thead>
+      <tr>
+          <th>지시</th>
+          <th>의도</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>&ldquo;전부 구현해라&rdquo;</td>
+          <td>계획의 일부만 골라서 하지 마라</td>
+      </tr>
+      <tr>
+          <td>&ldquo;계획 문서에 완료 표시&rdquo;</td>
+          <td>계획이 진행 상황의 source of truth</td>
+      </tr>
+      <tr>
+          <td>&ldquo;멈추지 마라&rdquo;</td>
+          <td>중간에 확인을 위해 멈추지 마라</td>
+      </tr>
+      <tr>
+          <td>&ldquo;불필요한 주석 금지&rdquo;</td>
+          <td>코드를 깔끔하게 유지</td>
+      </tr>
+      <tr>
+          <td>&ldquo;any/unknown 금지&rdquo;</td>
+          <td>엄격한 타이핑 유지</td>
+      </tr>
+      <tr>
+          <td>&ldquo;지속적 타입체크&rdquo;</td>
+          <td>문제를 마지막이 아닌 즉시 잡아라</td>
+      </tr>
+  </tbody>
+</table>
+<p>핵심은 이 시점에서 <strong>구현이 지루한 작업이 되어야 한다</strong>는 것입니다. 창의적인 작업은 주석 사이클에서 끝났습니다. 계획이 맞으면 실행은 기계적이어야 합니다.</p>
+<pre class="mermaid">flowchart LR
+    I["Claude 구현 중"] --> R["개발자 리뷰/테스트"]
+    R --> C{"올바른가?"}
+    C -->|"아니오"| F["짧은 교정"]
+    F --> I
+    C -->|"예"| N{"더 할 태스크?"}
+    N -->|"예"| I
+    N -->|"아니오"| D["완료"]
+
+    classDef claude fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
+    classDef human fill:#fff8e1,stroke:#ff8f00,color:#e65100
+    classDef decision fill:#f3e5f5,stroke:#7b1fa2,color:#4a148c
+    classDef done fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+
+    class I claude
+    class R,F human
+    class C,N decision
+    class D done</pre><h3 id="구현-중-피드백-패턴">구현 중 피드백 패턴</h3>
+<p>계획 단계의 노트가 문단이었다면, 구현 중 교정은 <strong>한 문장</strong>으로 충분합니다:</p>
+<ul>
+<li>&ldquo;deduplicateByTitle 함수를 구현하지 않았다.&rdquo;</li>
+<li>&ldquo;설정 페이지를 메인 앱에 만들었는데 어드민 앱에 있어야 한다. 옮겨라.&rdquo;</li>
+<li>&ldquo;더 넓게&rdquo;</li>
+<li>&ldquo;아직 잘렸다&rdquo;</li>
+<li>&ldquo;2px 간격이 있다&rdquo;</li>
+</ul>
+<p>Claude는 계획과 진행 중인 세션의 전체 컨텍스트를 갖고 있기 때문에, 짧은 교정만으로 충분합니다. 시각적 문제에는 스크린샷을 첨부하기도 합니다.</p>
+<h3 id="잘못된-방향으로-갈-때의-대응">잘못된 방향으로 갈 때의 대응</h3>
+<p>잘못된 방향으로 진행되면 패치하려 하지 않고, <strong>git 변경사항을 되돌린 후 범위를 좁혀서 재시작</strong>합니다:</p>
+
+  <blockquote>
+    <p>&ldquo;전부 되돌렸다. 이제 내가 원하는 건 리스트 뷰를 더 미니멀하게 만드는 것 — 그것만.&rdquo;</p>
+
+  </blockquote>
+
+<p>되돌린 후 범위를 좁히는 것이 잘못된 접근을 점진적으로 고치려는 것보다 거의 항상 더 나은 결과를 만들어냅니다.</p>
+<h2 id="6-세션-관리-단일-긴-세션-전략">6) 세션 관리: 단일 긴 세션 전략</h2>
+<p>저자는 리서치, 계획, 구현을 <strong>분리된 세션이 아닌 하나의 긴 세션</strong>에서 진행합니다. 하나의 세션에서 폴더를 깊이 읽는 것으로 시작해, 3라운드의 주석 사이클을 거치고, 전체 구현까지 연속된 대화에서 수행합니다.</p>
+<p>저자에 따르면 50% 컨텍스트 윈도우 이후의 성능 저하를 경험하지 못했다고 합니다. &ldquo;구현해라&quot;라고 말하는 시점까지 Claude는 전체 세션 동안 이해를 쌓아왔기 때문입니다: 리서치 중 파일 읽기, 주석 사이클 동안 멘탈 모델 정교화, 도메인 지식 교정 흡수.</p>
+<p>컨텍스트 윈도우가 가득 차면 Claude의 자동 컴팩션이 충분한 컨텍스트를 유지하고, <strong>영속적 아티팩트인 plan.md는 컴팩션을 온전히 통과</strong>합니다. 언제든지 이 파일을 참조할 수 있습니다.</p>
+
+  <blockquote>
+    <p><strong>참고</strong>: 단일 긴 세션 전략은 저자의 주관적 경험에 기반합니다. 커뮤니티에서는 &ldquo;하나의 세션에서 하나의 명확한 목표를 수행하라&quot;는 조언도 있으며, 최적의 세션 전략은 작업 복잡도와 컨텍스트 의존성에 따라 달라질 수 있습니다.</p>
+
+  </blockquote>
+
+<h2 id="7-운전석-유지하기-제안에-대한-선택적-통제">7) 운전석 유지하기: 제안에 대한 선택적 통제</h2>
+<pre class="mermaid">flowchart TD
+    P["Claude 변경 제안"] --> E["개발자가 항목별 평가"]
+    E --> A["그대로 수락"]
+    E --> M["접근법 수정"]
+    E --> S["건너뛰기/제거"]
+    E --> O["기술적 선택 오버라이드"]
+    A & M & S & O --> R["정제된 구현 범위"]
+
+    classDef input fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
+    classDef eval fill:#fff8e1,stroke:#ff8f00,color:#e65100
+    classDef action fill:#f3e5f5,stroke:#7b1fa2,color:#4a148c
+    classDef output fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+
+    class P input
+    class E eval
+    class A,M,S,O action
+    class R output</pre><p>실행을 Claude에 위임하더라도, 무엇이 만들어지는지에 대한 <strong>완전한 자율권은 절대 주지 않습니다</strong>. 구체적인 통제 방식은 다음과 같습니다:</p>
+<ul>
+<li><strong>항목별 체리피킹</strong>: &ldquo;첫 번째는 Promise.all을 쓰고 복잡하게 만들지 마라; 세 번째는 가독성을 위해 별도 함수로 추출해라; 네 번째와 다섯 번째는 무시해라, 복잡성 대비 가치가 없다.&rdquo;</li>
+<li><strong>범위 다듬기</strong>: &ldquo;다운로드 기능을 계획에서 제거해라, 지금은 구현하고 싶지 않다.&rdquo;</li>
+<li><strong>기존 인터페이스 보호</strong>: &ldquo;이 세 함수의 시그니처는 바뀌면 안 된다, 라이브러리가 아니라 호출자가 적응해야 한다.&rdquo;</li>
+<li><strong>기술적 선택 오버라이드</strong>: &ldquo;저 모델 대신 이 모델을 사용해라&rdquo; 또는 &ldquo;커스텀 함수 대신 이 라이브러리의 빌트인 메서드를 사용해라.&rdquo;</li>
+</ul>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<ol>
+<li><strong>&ldquo;아직 구현하지 마라&rdquo; 가드를 매번 사용하라</strong>: 이 한 마디가 계획 단계를 보호합니다. 없으면 Claude는 계획이 충분하다고 판단하는 순간 코드 작성으로 넘어갑니다.</li>
+<li><strong>영속적 문서(research.md, plan.md)를 리뷰 표면으로 활용하라</strong>: 채팅 안의 구두 요약은 리뷰할 수 없습니다. 파일로 남겨야 교정하고 추적할 수 있습니다.</li>
+<li><strong>구체적 참조 코드를 함께 제공하라</strong>: 처음부터 설계하게 하는 것보다, 잘 만들어진 오픈소스 구현을 참조로 주면 결과 품질이 크게 향상됩니다.</li>
+<li><strong>리서치 프롬프트에 강한 언어를 사용하라</strong>: &ldquo;deeply&rdquo;, &ldquo;in great details&rdquo;, &ldquo;intricacies&rdquo; 같은 표현이 표면적 읽기와 깊은 읽기를 가릅니다.</li>
+<li><strong>잘못된 방향은 패치하지 말고 되돌린 뒤 범위를 좁혀라</strong>: 점진적 수정보다 revert + 좁은 재시작이 거의 항상 낫습니다.</li>
+<li><strong>구현 프롬프트를 표준화하라</strong>: 타입 안전성, 진행 추적, 코드 스타일 등의 요구를 매번 동일한 프롬프트에 인코딩하면 일관된 품질을 유지할 수 있습니다.</li>
+</ol>
+<h2 id="마무리">마무리</h2>
+<p>Boris Tane의 워크플로우를 한 문장으로 요약하면 이렇습니다: <strong>깊이 읽고, 계획을 세우고, 계획이 맞을 때까지 주석을 달고, 그 다음에 Claude가 멈추지 않고 전부 실행하게 하되 타입을 계속 확인한다.</strong></p>
+<p>매직 프롬프트도, 정교한 시스템 지시도, 영리한 핵도 없습니다. 생각하기와 타이핑하기를 분리하는 훈련된 파이프라인이 전부입니다. 리서치가 무지한 변경을 방지하고, 계획이 잘못된 변경을 방지하고, 주석 사이클이 인간의 판단을 주입하고, 구현 명령이 모든 결정이 내려진 후 중단 없이 실행하게 합니다.</p>
+<p>핵심은 AI 코딩 도구에 자율권을 줄수록 좋은 것이 아니라, <strong>적절한 단계에서 적절한 통제를 행사하는 것</strong>이 품질을 결정한다는 점입니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 02월 24일 22시 30분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/development">Development</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-02-24-notebooklm-7-techniques-top-2-percent/" rel="prev">
+        <span>NotebookLM 7가지 핵심 기술: 상위 2% 활용법 완전 정리</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-전체-워크플로우-구조-리서치--계획--주석--구현">1) 전체 워크플로우 구조: 리서치 → 계획 → 주석 → 구현</a></li>
+    <li><a href="#2-리서치-단계-깊은-읽기와-영속적-문서화">2) 리서치 단계: 깊은 읽기와 영속적 문서화</a></li>
+    <li><a href="#3-플래닝-단계-planmd-기반-구조화">3) 플래닝 단계: plan.md 기반 구조화</a>
+      <ul>
+        <li><a href="#빌트인-plan-mode-대신-자체-md-파일을-쓰는-이유">빌트인 plan mode 대신 자체 .md 파일을 쓰는 이유</a></li>
+        <li><a href="#오픈소스-참조-코드-활용-팁">오픈소스 참조 코드 활용 팁</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-주석-사이클-계획에-인간-판단을-주입하는-핵심-루프">4) 주석 사이클: 계획에 인간 판단을 주입하는 핵심 루프</a>
+      <ul>
+        <li><a href="#실제-인라인-노트-예시">실제 인라인 노트 예시</a></li>
+        <li><a href="#왜-이-방식이-효과적인가">왜 이 방식이 효과적인가</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-구현-단계-기계적-실행과-피드백-루프">5) 구현 단계: 기계적 실행과 피드백 루프</a>
+      <ul>
+        <li><a href="#구현-중-피드백-패턴">구현 중 피드백 패턴</a></li>
+        <li><a href="#잘못된-방향으로-갈-때의-대응">잘못된 방향으로 갈 때의 대응</a></li>
+      </ul>
+    </li>
+    <li><a href="#6-세션-관리-단일-긴-세션-전략">6) 세션 관리: 단일 긴 세션 전략</a></li>
+    <li><a href="#7-운전석-유지하기-제안에-대한-선택적-통제">7) 운전석 유지하기: 제안에 대한 선택적 통제</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#마무리">마무리</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude Code</a>
+    <a href="/tags/ai-coding/" class="badge badge-secondary">AI Coding</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+    <a href="/tags/prompt-engineering/" class="badge badge-secondary">Prompt-Engineering</a>
+    <a href="/tags/plan-driven-development/" class="badge badge-secondary">Plan-Driven Development</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
