@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '테스트는 새로운 해자인가: AI 시대 오픈소스 경쟁력의 재정의'" />
+  <title>테스트는 새로운 해자인가: AI 시대 오픈소스 경쟁력의 재정의  | 신규하 블로그</title>
+  <meta property="og:title" content="테스트는 새로운 해자인가: AI 시대 오픈소스 경쟁력의 재정의" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-03-02"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/2026-03-02-tests-are-the-new-moat/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="Testing" />
+  
+  <meta property="og:tags" content="API Contracts" />
+  
+  <meta property="og:tags" content="Commercial OSS" />
+  
+  <meta property="og:tags" content="Competitive Moat" />
+  
+  <meta property="og:tags" content="Cloudflare" />
+  
+  <meta property="og:tags" content="SQLite" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/2026-03-02-tests-are-the-new-moat/">
+          <h1>
+            테스트는 새로운 해자인가: AI 시대 오픈소스 경쟁력의 재정의
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/2026-03-02-tests-are-the-new-moat/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Daniel Saewitz의 &ldquo;Tests Are The New Moat&quot;는 AI가 코드 작성 비용을 급격히 낮춘 환경에서, 오픈소스의 경쟁력이 어디로 이동하는지 짚습니다. 핵심 주장은 단순합니다. 문서와 API 계약, 그리고 특히 테스트가 잘 정리된 프로젝트일수록, 경쟁자가 동일한 인터페이스를 다른 기반 위에 빠르게 재구현할 수 있다는 것입니다. 이 글은 그 주장을 Cloudflare vinext 사례, SQLite 테스트 전략, tldraw 이슈까지 연결해 상업 오픈소스의 딜레마를 보여줍니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://saewitz.com/tests-are-the-new-moat">https://saewitz.com/tests-are-the-new-moat</a></li>
+<li>(보강 검증) <a href="https://blog.cloudflare.com/vinext/">https://blog.cloudflare.com/vinext/</a></li>
+<li>(보강 검증) <a href="https://www.sqlite.org/testing.html">https://www.sqlite.org/testing.html</a></li>
+<li>(보강 검증) <a href="https://github.com/tldraw/tldraw/issues/8082">https://github.com/tldraw/tldraw/issues/8082</a></li>
+</ul>
+<h2 id="1-왜-테스트가-해자로-떠오르는가-코드보다-계약-복제가-쉬워진-환경">1) 왜 &ldquo;테스트&quot;가 해자로 떠오르는가: 코드보다 계약 복제가 쉬워진 환경</h2>
+<p>원문은 오픈소스 프로젝트의 성장 경로(점진적 확장, 하위 호환성 유지, 기술 부채 누적)를 먼저 짚은 뒤, AI 시대에는 이 구조가 역설적으로 약점이 될 수 있다고 봅니다. 기존 프로젝트는 과거 사용자와 호환성이라는 무게를 지지만, 후발 재구현은 최신 스택만 선택해 가볍게 시작할 수 있기 때문입니다.</p>
+
+  <blockquote>
+    <p>&ldquo;Prompt an AI to read all of their docs, import their tests, and change the foundation.&rdquo;</p>
+
+  </blockquote>
+
+<p>이 문장이 의미하는 바는 &ldquo;코드 자체&quot;보다 &ldquo;행동 명세&quot;가 재현의 중심이 되었다는 점입니다. 테스트가 풍부하면 풍부할수록, 재구현 프로젝트는 &ldquo;무엇이 정답 동작인지&quot;를 빠르게 고정할 수 있습니다. 즉, 구현 난이도는 낮아지고 검증 가능성이 높아집니다.</p>
+<pre class="mermaid">flowchart LR
+    A["기존 OSS 프로젝트<br>문서/계약/테스트 축적"] --> B["AI 기반 재구현"]
+    B --> C["동일 API 표면 확보"]
+    C --> D["신규 기반 선택<br>예: 다른 번들러/런타임"]
+    D --> E["후발 주자의 경량 출발"]
+
+    classDef src fill:#BBDEFB,stroke:#1565C0,color:#0D47A1
+    classDef proc fill:#FFE0B2,stroke:#EF6C00,color:#E65100
+    classDef out fill:#C8E6C9,stroke:#2E7D32,color:#1B5E20
+
+    class A src
+    class B,C,D proc
+    class E out</pre><h2 id="2-cloudflare-vinext-사례-문서테스트가-재구현-속도를-만든다">2) Cloudflare vinext 사례: &ldquo;문서+테스트&quot;가 재구현 속도를 만든다</h2>
+<p>원문이 가장 강하게 드는 사례는 Cloudflare의 vinext입니다. 실제 Cloudflare 글 제목부터 &ldquo;How we rebuilt Next.js with AI in one week&quot;로 명시되어 있고, &ldquo;drop-in replacement&quot;를 전면에 내세웁니다.</p>
+
+  <blockquote>
+    <p>&ldquo;one engineer and an AI model rebuilt the most popular front-end framework from scratch&rdquo;</p>
+
+  </blockquote>
+
+<p>또한 해당 글은 다음과 같은 수치를 함께 제시합니다.</p>
+<ul>
+<li>API coverage: &ldquo;94% of the Next.js 16 API surface&rdquo;</li>
+<li>테스트 규모: &ldquo;over 1,700 Vitest tests and 380 Playwright E2E tests&rdquo;</li>
+</ul>
+<p>Saewitz 글의 주장과 연결하면, 이는 &ldquo;문서가 좋아서 이해가 쉬웠다&rdquo; 수준이 아니라 &ldquo;테스트가 있어서 동작 동등성을 기계적으로 검증할 수 있었다&quot;는 지점이 핵심입니다. 즉, 테스트는 품질 보증 자산인 동시에 재구현 가속 자산이 됩니다.</p>
+<pre class="mermaid">flowchart TD
+    A["목표: Next.js API 동등성"] --> B["입력1: 공개 문서/계약"]
+    A --> C["입력2: 대규모 테스트 자산"]
+    B --> D["AI 구현 반복"]
+    C --> D
+    D --> E["커버리지 수치로 검증"]
+    E --> F["실사용 배포 가능성 확보"]
+
+    classDef goal fill:#E1BEE7,stroke:#6A1B9A,color:#4A148C
+    classDef input fill:#B3E5FC,stroke:#0277BD,color:#01579B
+    classDef proc fill:#FFE082,stroke:#F57F17,color:#5D4037
+    classDef out fill:#C8E6C9,stroke:#2E7D32,color:#1B5E20
+
+    class A goal
+    class B,C input
+    class D,E proc
+    class F out</pre><h2 id="3-sqlite의-선택-코어는-열고-테스트-자산-일부는-닫는다">3) SQLite의 선택: 코어는 열고, 테스트 자산 일부는 닫는다</h2>
+<p>Saewitz 글은 &ldquo;미래를 먼저 본 그룹&quot;으로 SQLite를 언급합니다. SQLite 공식 테스트 문서에서도 테스트 규모와 구조를 매우 상세하게 공개합니다.</p>
+
+  <blockquote>
+    <p>&ldquo;the project has 590 times as much test code and test scripts - 92053.1 KSLOC&rdquo;</p>
+
+  </blockquote>
+
+<p>동시에 같은 문서에는 TH3가 &ldquo;proprietary tests&quot;라고 명시됩니다.</p>
+
+  <blockquote>
+    <p>&ldquo;The TH3 test harness is a set of proprietary tests&rdquo;</p>
+
+  </blockquote>
+
+<p>즉, SQLite는 오픈소스 코어와 비공개 테스트 자산을 혼합 운영해 왔습니다. 이는 커뮤니티 관점에서는 논쟁적일 수 있지만, 상업 지속 가능성 관점에서는 &ldquo;검증 자산을 해자로 관리&quot;하는 전략으로 읽힙니다. Saewitz의 문제의식은 바로 이 지점에서 강화됩니다. AI가 구현 비용을 낮출수록, 테스트 자산의 전략적 가치가 상대적으로 커집니다.</p>
+<pre class="mermaid">flowchart LR
+    A["오픈소스 코어 공개"] --> B["광범위한 채택"]
+    C["고강도 테스트 자산"] --> D["신뢰성/회귀 방지"]
+    C --> E["경쟁 우위 유지"]
+    B --> F["생태계 확장"]
+    D --> F
+
+    classDef open fill:#BBDEFB,stroke:#1565C0,color:#0D47A1
+    classDef moat fill:#FFCDD2,stroke:#C62828,color:#7F0000
+    classDef result fill:#C8E6C9,stroke:#2E7D32,color:#1B5E20
+
+    class A,B open
+    class C,D,E moat
+    class F result</pre><h2 id="4-인센티브-충돌-사용자-이익과-기업-생존-사이의-긴장">4) 인센티브 충돌: 사용자 이익과 기업 생존 사이의 긴장</h2>
+<p>원문은 &ldquo;완전한 이타성&quot;과 &ldquo;사업 인센티브&quot;가 상업 OSS에서 계속 충돌한다고 봅니다. 사용자 입장에서는 테스트/문서가 모두 공개될수록 좋지만, 기업 입장에서는 그 자산이 경쟁 복제 속도를 높일 수 있습니다.</p>
+<p>이 논점은 2026-02-25에 올라온 tldraw 이슈(&ldquo;Move tests to closed source repo&rdquo;)를 통해 현실 사례로도 관찰됩니다. 다만 원문 addendum에 따르면 tldraw는 다음날 &ldquo;농담이었다&quot;고 밝힙니다. 따라서 이 사건은 &ldquo;실행된 정책 변화&quot;라기보다 &ldquo;유지보수자들이 실제로 고민 중인 압력&quot;을 보여주는 신호로 해석하는 것이 안전합니다.</p>
+
+  <blockquote>
+    <p>불확실성 표기: tldraw 사례는 최종 정책 변화의 확정 증거가 아니라, 테스트 공개 범위에 대한 커뮤니티 민감도와 유지보수자의 문제의식을 보여주는 사건으로 제한 해석해야 합니다.</p>
+
+  </blockquote>
+
+<h2 id="핵심-내용">핵심 내용</h2>
+<p>정리하면 Saewitz 글의 통찰은 &ldquo;코드가 아니라 검증 가능한 행위 정의가 경쟁력의 중심이 된다&quot;로 압축됩니다. AI는 구현을 빠르게 만들지만, 시장에서 중요한 것은 결국 &ldquo;동일 인터페이스를 안정적으로 재현하고 운영할 수 있는가&quot;입니다. 이때 테스트와 API 계약은 품질 자산이자 전략 자산이라는 이중 성격을 갖습니다.</p>
+<p>또한 이 변화는 오픈소스의 도덕성 논쟁으로만 끝나지 않습니다. 제품을 운영하는 조직은 사용자 이익(투명성, 기여 유도, 생태계 확장)과 기업 생존(투자 회수, 차별화 유지)을 동시에 관리해야 합니다. 앞으로 더 많은 상업 OSS가 &ldquo;무엇을 공개하고 무엇을 비공개로 둘지&quot;를 테스트 자산 중심으로 재설계할 가능성이 큽니다.</p>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<ol>
+<li>테스트를 &ldquo;품질팀 산출물&quot;이 아니라 &ldquo;제품 전략 자산&quot;으로 분류하세요. 공개 범위와 라이선스 정책을 코드 공개 정책과 분리해 설계하는 것이 필요합니다.</li>
+<li>API 계약 문서화와 테스트 설계를 분리 관리하세요. 문서는 채택 확장에 유리하지만, 테스트 세부 자산은 경쟁 환경에 따라 공개 수준을 다르게 가져갈 수 있습니다.</li>
+<li>내부적으로는 재현 가능성 지표를 강화하세요. 예: 버전별 회귀율, 계약 위반 탐지 시간, E2E 안정성 같은 지표를 해자 운영 지표로 관리합니다.</li>
+<li>커뮤니티 신뢰를 위해 경계선을 명확히 공지하세요. &ldquo;무엇을 왜 닫는지&quot;를 숨기면 반발이 커지고, 명시하면 정책적 합의 가능성이 올라갑니다.</li>
+<li>과도한 일반화를 피하세요. 모든 프로젝트가 테스트 비공개 전략을 취해야 하는 것은 아니며, 프로젝트 성격(인프라/라이브러리/SaaS 연계)에 따라 최적점이 다릅니다.</li>
+</ol>
+<h2 id="결론">결론</h2>
+<p>&ldquo;테스트는 새로운 해자&quot;라는 주장은 AI 시대에 충분히 설득력이 있습니다. 구현 난이도는 낮아지고, 동작 동등성을 보장하는 검증 자산의 가치가 상대적으로 올라가고 있기 때문입니다. 다만 이것이 곧 &ldquo;테스트는 무조건 닫아야 한다&quot;를 뜻하지는 않습니다. 핵심은 프로젝트의 미션, 사업 구조, 커뮤니티 계약에 맞춰 공개와 보호의 경계를 의도적으로 설계하는 것입니다.</p>
+<p>앞으로 상업 오픈소스의 경쟁력은 &ldquo;얼마나 좋은 코드를 쓰는가&quot;만이 아니라, &ldquo;어떤 검증 체계를 어떻게 운영하고 어디까지 공유하는가&quot;에서 더 선명하게 갈릴 가능성이 큽니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 03월 02일 11시 50분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/open-source">Open Source</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-03-02-finding-the-right-amount-of-ai-threshold/" rel="prev">
+        <span>AI 코딩의 적정선 찾기: 생산성과 인지 부채 사이에서 팀이 결정해야 할 것</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-왜-테스트가-해자로-떠오르는가-코드보다-계약-복제가-쉬워진-환경">1) 왜 &ldquo;테스트&quot;가 해자로 떠오르는가: 코드보다 계약 복제가 쉬워진 환경</a></li>
+    <li><a href="#2-cloudflare-vinext-사례-문서테스트가-재구현-속도를-만든다">2) Cloudflare vinext 사례: &ldquo;문서+테스트&quot;가 재구현 속도를 만든다</a></li>
+    <li><a href="#3-sqlite의-선택-코어는-열고-테스트-자산-일부는-닫는다">3) SQLite의 선택: 코어는 열고, 테스트 자산 일부는 닫는다</a></li>
+    <li><a href="#4-인센티브-충돌-사용자-이익과-기업-생존-사이의-긴장">4) 인센티브 충돌: 사용자 이익과 기업 생존 사이의 긴장</a></li>
+    <li><a href="#핵심-내용">핵심 내용</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/testing/" class="badge badge-secondary">Testing</a>
+    <a href="/tags/api-contracts/" class="badge badge-secondary">API Contracts</a>
+    <a href="/tags/commercial-oss/" class="badge badge-secondary">Commercial OSS</a>
+    <a href="/tags/competitive-moat/" class="badge badge-secondary">Competitive Moat</a>
+    <a href="/tags/cloudflare/" class="badge badge-secondary">Cloudflare</a>
+    <a href="/tags/sqlite/" class="badge badge-secondary">SQLite</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
