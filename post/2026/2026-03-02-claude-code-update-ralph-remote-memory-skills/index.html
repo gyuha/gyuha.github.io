@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude Code 업데이트 심화 정리: Memory, Skills(번들 스킬), Remote Control, Ralph Loop 실전 운영'" />
+  <title>Claude Code 업데이트 심화 정리: Memory, Skills(번들 스킬), Remote Control, Ralph Loop 실전 운영  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude Code 업데이트 심화 정리: Memory, Skills(번들 스킬), Remote Control, Ralph Loop 실전 운영" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-03-02"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/2026-03-02-claude-code-update-ralph-remote-memory-skills/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="memory" />
+  
+  <meta property="og:tags" content="skills" />
+  
+  <meta property="og:tags" content="remote-control" />
+  
+  <meta property="og:tags" content="ralph-loop" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/2026-03-02-claude-code-update-ralph-remote-memory-skills/">
+          <h1>
+            Claude Code 업데이트 심화 정리: Memory, Skills(번들 스킬), Remote Control, Ralph Loop 실전 운영
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/2026-03-02-claude-code-update-ralph-remote-memory-skills/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>이번 글은 아래 5개 공식 링크를 기준으로 Claude Code의 핵심 업데이트를 &ldquo;기능 소개&quot;가 아니라 &ldquo;운영 설계&rdquo; 관점에서 다시 정리한 문서입니다.<br>특히 Memory, Skills, Remote Control, Ralph Loop를 각각 이해한 뒤, 마지막에 하나의 루프로 합치는 방법까지 다룹니다.<br>문서 확인 시점은 <strong>2026-03-02</strong> 입니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://code.claude.com/docs/ko/memory">https://code.claude.com/docs/ko/memory</a></li>
+<li><a href="https://code.claude.com/docs/en/skills#bundled-skills">https://code.claude.com/docs/en/skills#bundled-skills</a></li>
+<li><a href="https://code.claude.com/docs/en/remote-control">https://code.claude.com/docs/en/remote-control</a></li>
+<li><a href="https://claude.com/plugins/ralph-loop">https://claude.com/plugins/ralph-loop</a></li>
+<li><a href="https://github.com/anthropics/claude-code/blob/main/plugins/ralph-wiggum/README.md">https://github.com/anthropics/claude-code/blob/main/plugins/ralph-wiggum/README.md</a></li>
+</ul>
+<h2 id="1-memory-지침과-학습을-분리하는-계층-설계">1) Memory: &ldquo;지침&quot;과 &ldquo;학습&quot;을 분리하는 계층 설계</h2>
+<p>Memory 문서의 핵심은 메모리를 한 종류로 보지 않는 것입니다.<br>Claude Code는 크게 아래 두 축을 함께 사용합니다.</p>
+<ul>
+<li><strong>지침형 메모리</strong>: <code>CLAUDE.md</code> 계열 (사용자/팀/조직이 규칙을 명시)</li>
+<li><strong>자동 메모리</strong>: Claude가 세션 중 학습한 내용을 저장하는 <code>~/.claude/projects/&lt;project&gt;/memory/</code> 계열</li>
+</ul>
+<pre class="mermaid">flowchart TD
+  A["Memory 입력"] --> B["지침형 메모리<br>CLAUDE.md 계열"]
+  A --> C["자동 메모리<br>MEMORY.md + 토픽 파일"]
+  B --> D["세션 시작 시 로드"]
+  C --> E["MEMORY.md 앞 200줄 로드"]
+  E --> F["상세 토픽 파일은 필요 시 로드"]
+  D --> G["작업 중 행동 규칙 형성"]
+  F --> G
+
+  classDef input fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
+  classDef memory fill:#fff3e0,stroke:#ef6c00,color:#e65100
+  classDef output fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+  class A input
+  class B,C,D,E,F memory
+  class G output</pre><h3 id="메모리-위치와-우선순위-핵심">메모리 위치와 우선순위 핵심</h3>
+<p>문서 기준으로 메모리 레이어는 조직/프로젝트/사용자/로컬/자동 메모리로 분리됩니다.<br>실무에서 중요한 포인트는 아래입니다.</p>
+<ul>
+<li>더 구체적인 지침이 더 넓은 지침보다 우선합니다.</li>
+<li><code>cwd</code> 기준 상위 디렉토리의 <code>CLAUDE.md</code>를 재귀적으로 읽습니다.</li>
+<li>하위 디렉토리의 <code>CLAUDE.md</code>는 시작 시 전부 로드하지 않고, 해당 하위 트리 파일을 읽을 때 지연 로드됩니다.</li>
+</ul>
+<h3 id="자동-메모리의-실제-동작">자동 메모리의 실제 동작</h3>
+<ul>
+<li>엔트리 파일: <code>MEMORY.md</code> (세션 시작 시 앞 200줄만 자동 로드)</li>
+<li>상세 파일: <code>debugging.md</code>, <code>api-conventions.md</code> 같은 토픽 파일 (필요 시 읽기)</li>
+<li>저장 위치: <code>~/.claude/projects/&lt;project&gt;/memory/</code></li>
+<li>git worktree는 별도 메모리 디렉토리를 가집니다.</li>
+</ul>
+<h3 id="제어-스위치">제어 스위치</h3>
+<ul>
+<li><code>/memory</code> 명령으로 메모리 파일을 직접 열고 편집 가능</li>
+<li><code>autoMemoryEnabled</code> 설정으로 사용자/프로젝트 단위 on/off</li>
+<li><code>CLAUDE_CODE_DISABLE_AUTO_MEMORY</code> 환경 변수가 <code>/memory</code> 토글 및 settings보다 우선</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># ~/.claude/settings.json</span>
+</span></span><span style="display:flex;"><span><span style="color:#0550ae">{</span> <span style="color:#0a3069">&#34;autoMemoryEnabled&#34;</span>: <span style="color:#6639ba">false</span> <span style="color:#0550ae">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># .claude/settings.json</span>
+</span></span><span style="display:flex;"><span><span style="color:#0550ae">{</span> <span style="color:#0a3069">&#34;autoMemoryEnabled&#34;</span>: <span style="color:#6639ba">false</span> <span style="color:#0550ae">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">export</span> <span style="color:#953800">CLAUDE_CODE_DISABLE_AUTO_MEMORY</span><span style="color:#0550ae">=</span><span style="color:#0550ae">1</span>
+</span></span></code></pre></div><h3 id="구조화-팁">구조화 팁</h3>
+<p>Memory 문서에서 실전적으로 특히 중요한 부분은 아래 3개입니다.</p>
+<ol>
+<li><code>.claude/rules/*.md</code>로 규칙을 모듈화하고, 필요하면 YAML <code>paths</code>로 경로별 규칙을 건다.</li>
+<li><code>@path/to/import</code>로 규칙 파일을 분리하되, 임포트 깊이(최대 5 hops)를 의식한다.</li>
+<li>대형 리포는 &ldquo;공통 규칙(상위) + 모듈 규칙(하위) + 자동 메모리(프로젝트 학습)&rdquo; 3층 구조로 운영한다.</li>
+</ol>
+<h2 id="2-skills-프롬프트-자산을-실행-가능한-단위로-관리">2) Skills: 프롬프트 자산을 &ldquo;실행 가능한 단위&quot;로 관리</h2>
+<p>Skills 문서의 핵심은 &ldquo;명령어 확장&quot;이 아니라 &ldquo;Claude의 실행 정책 확장&quot;입니다.<br>스킬은 <code>SKILL.md</code>와 frontmatter로 정의되고, 필요 시 자동 호출되거나 <code>/skill-name</code>으로 직접 호출됩니다.</p>
+<pre class="mermaid">flowchart LR
+  A["사용자 요청"] --> B{"스킬 자동 호출 조건 충족?"}
+  B -->|Yes| C["Skill description 기반 자동 로드"]
+  B -->|No| D["직접 호출<br>/skill-name"]
+  C --> E["SKILL.md 본문 실행"]
+  D --> E
+  E --> F["도구 실행 / 파일 읽기 / 서브에이전트"]
+
+  classDef input fill:#e8eaf6,stroke:#3949ab,color:#1a237e
+  classDef decision fill:#fff8e1,stroke:#ff8f00,color:#e65100
+  classDef action fill:#e0f2f1,stroke:#00695c,color:#004d40
+  class A input
+  class B decision
+  class C,D,E,F action</pre><h3 id="번들-스킬bundled-skills">번들 스킬(Bundled skills)</h3>
+<p>문서에 명시된 기본 번들 스킬은 아래입니다.</p>
+<ul>
+<li><code>/simplify</code>: 최근 변경 파일을 병렬 리뷰하고 개선 적용</li>
+<li><code>/batch &lt;instruction&gt;</code>: 대규모 변경을 5~30개 단위로 분해, 승인 후 병렬 에이전트/워크트리 기반 실행</li>
+<li><code>/debug [description]</code>: 현재 세션 디버그 로그 기반 문제 분석</li>
+</ul>
+<p>추가로 Anthropic SDK import 시 자동 활성화되는 개발자 플랫폼 번들 스킬이 있다고 문서에 명시돼 있습니다.</p>
+<h3 id="스킬-저장-위치와-충돌-우선순위">스킬 저장 위치와 충돌 우선순위</h3>
+<ul>
+<li>Enterprise</li>
+<li>Personal: <code>~/.claude/skills/&lt;skill-name&gt;/SKILL.md</code></li>
+<li>Project: <code>.claude/skills/&lt;skill-name&gt;/SKILL.md</code></li>
+<li>Plugin: <code>&lt;plugin&gt;/skills/&lt;skill-name&gt;/SKILL.md</code></li>
+</ul>
+<p>우선순위는 <code>enterprise &gt; personal &gt; project</code> 입니다.<br>플러그인 스킬은 <code>plugin-name:skill-name</code> 네임스페이스를 사용해 충돌을 피합니다.</p>
+<h3 id="운영에-바로-쓰는-frontmatter-핵심">운영에 바로 쓰는 frontmatter 핵심</h3>
+<ul>
+<li><code>disable-model-invocation: true</code>: 모델 자동 호출 금지 (수동 실행 전용)</li>
+<li><code>user-invocable: false</code>: <code>/</code> 메뉴에서 숨김, 모델 자동 호출 전용</li>
+<li><code>allowed-tools</code>: 스킬 활성 시 무승인 사용 가능한 도구 범위</li>
+<li><code>context: fork</code> + <code>agent</code>: 분리된 subagent에서 실행</li>
+</ul>
+<pre class="mermaid">flowchart TD
+  A["Skill frontmatter"] --> B["disable-model-invocation"]
+  A --> C["user-invocable"]
+  A --> D["allowed-tools"]
+  A --> E["context: fork + agent"]
+  B --> F["수동 트리거 통제"]
+  C --> G["UI 노출 통제"]
+  D --> H["도구 권한 통제"]
+  E --> I["격리 실행 통제"]
+
+  classDef core fill:#f3e5f5,stroke:#6a1b9a,color:#4a148c
+  classDef out fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+  class A,B,C,D,E core
+  class F,G,H,I out</pre><h3 id="고급-패턴-2가지">고급 패턴 2가지</h3>
+<ol>
+<li><code>!\</code>command`<code>구문으로 스킬 실행 전 동적 데이터 주입&lt;br&gt;예:</code>gh pr diff` 결과를 프롬프트에 선반영</li>
+<li>스킬 설명 문자열 예산 관리<br>문서 기준으로 스킬 설명은 컨텍스트 예산(동적 2%, fallback 16,000 chars) 내에서 로드</li>
+</ol>
+<h2 id="3-remote-control-로컬-실행을-유지한-채-멀티디바이스로-이어붙이기">3) Remote Control: 로컬 실행을 유지한 채 멀티디바이스로 이어붙이기</h2>
+<p>Remote Control 문서 핵심은 &ldquo;웹에서 조작&quot;이 아니라 &ldquo;로컬 세션을 원격에서 이어서 제어&quot;입니다.<br>즉 실행 위치는 계속 내 머신이고, 브라우저/모바일은 그 세션의 창 역할을 합니다.</p>
+<pre class="mermaid">flowchart LR
+  A["로컬 Claude Code 세션"] --> B["Outbound HTTPS only"]
+  B --> C["Anthropic API 중계"]
+  C --> D["claude.ai/code"]
+  C --> E["Claude 모바일 앱"]
+  D --> F["동일 세션 동기화"]
+  E --> F
+
+  classDef local fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
+  classDef net fill:#fff3e0,stroke:#ef6c00,color:#e65100
+  classDef client fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+  class A local
+  class B,C net
+  class D,E,F client</pre><h3 id="시작-방법">시작 방법</h3>
+<ul>
+<li>새 원격 세션: <code>claude remote-control</code></li>
+<li>기존 세션 이어붙이기: <code>/remote-control</code> 또는 <code>/rc</code></li>
+<li>URL/QR/세션 목록으로 다른 디바이스에서 접속</li>
+</ul>
+<p><code>claude remote-control</code> 에서만 아래 플래그 사용 가능:</p>
+<ul>
+<li><code>--verbose</code></li>
+<li><code>--sandbox</code> / <code>--no-sandbox</code></li>
+</ul>
+<h3 id="문서-기준-요구사항과-현재-상태">문서 기준 요구사항과 현재 상태</h3>
+<p>문서 상단에는 &ldquo;research preview, Max/Pro&rdquo; 표기가 있고, Requirements 섹션에는 &ldquo;현재 Max 필요, Pro 곧 지원&quot;이라고 명시되어 있습니다.<br>즉 같은 페이지 안에서도 안내 문구가 섹션별로 다를 수 있으므로, 실제 사용 전 계정 플랜에서 즉시 확인이 필요합니다.</p>
+<p>추가 요구사항:</p>
+<ul>
+<li><code>/login</code> 인증 필요</li>
+<li>프로젝트 디렉토리에서 한 번 실행해 workspace trust 승인 필요</li>
+<li>API key 방식은 Remote Control에서 지원되지 않음</li>
+</ul>
+<h3 id="보안네트워크-관점-핵심">보안/네트워크 관점 핵심</h3>
+<ul>
+<li>인바운드 포트를 열지 않음</li>
+<li>로컬 프로세스가 아웃바운드 HTTPS로 등록/폴링</li>
+<li>트래픽은 TLS 위에서 전송</li>
+<li>용도별 단기 credential 사용</li>
+</ul>
+<h3 id="제한사항">제한사항</h3>
+<ul>
+<li>Claude Code 인스턴스당 원격 세션 1개</li>
+<li>터미널/프로세스 종료 시 세션 종료</li>
+<li>약 10분 이상 네트워크 단절 시 timeout 후 프로세스 종료</li>
+</ul>
+<h2 id="4-ralph-loop-stop-hook-기반-반복-개선-루프">4) Ralph Loop: Stop Hook 기반 반복 개선 루프</h2>
+<p>Ralph Loop 플러그인 페이지와 <code>ralph-wiggum</code> README가 공통으로 강조하는 포인트는 동일합니다.<br>한 번 실행한 프롬프트를 세션 내부에서 반복 재투입해, 실패를 다음 반복의 입력으로 쓰는 구조입니다.</p>
+<pre class="mermaid">flowchart TD
+  A["/ralph-loop 실행"] --> B["Claude 작업 수행"]
+  B --> C["종료 시도"]
+  C --> D["Stop Hook가 종료 차단"]
+  D --> E["동일 프롬프트 재주입"]
+  E --> B
+  B --> F{"완료 문자열 일치?"}
+  F -->|Yes| G["루프 종료"]
+  F -->|No| H{"max-iterations 도달?"}
+  H -->|No| C
+  H -->|Yes| I["안전 종료"]
+
+  classDef run fill:#ede7f6,stroke:#5e35b1,color:#311b92
+  classDef gate fill:#fff8e1,stroke:#ff8f00,color:#e65100
+  classDef endNode fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+  class A,B,C,D,E run
+  class F,H gate
+  class G,I endNode</pre><h3 id="명령과-제약">명령과 제약</h3>
+<ul>
+<li>시작: <code>/ralph-loop &quot;&lt;prompt&gt;&quot; --max-iterations &lt;n&gt; --completion-promise &quot;&lt;text&gt;&quot;</code></li>
+<li>중단: <code>/cancel-ralph</code></li>
+<li><code>--completion-promise</code>는 정확 문자열 매칭</li>
+<li>다중 종료 조건을 completion-promise 하나로 표현하기 어렵기 때문에 <code>--max-iterations</code>를 항상 안전장치로 두는 것을 README가 권장</li>
+</ul>
+<h3 id="어떤-작업에-적합한가">어떤 작업에 적합한가</h3>
+<p>적합:</p>
+<ul>
+<li>성공 조건이 명확한 작업</li>
+<li>테스트/린트 등 자동 검증 가능한 반복 개선 작업</li>
+<li>그린필드 구현처럼 일정 시간 무인 반복이 가능한 작업</li>
+</ul>
+<p>부적합:</p>
+<ul>
+<li>인간 판단/디자인 결정이 핵심인 작업</li>
+<li>성공 조건이 불명확한 작업</li>
+<li>프로덕션 장애처럼 즉시 정밀 판단이 필요한 디버깅</li>
+</ul>
+<h3 id="플러그인-페이지-메타">플러그인 페이지 메타</h3>
+<ul>
+<li>Anthropic verified 표기</li>
+<li>작성 주체: Anthropic</li>
+<li>설치 수 표기(확인 시점 2026-03-02 기준): <strong>83,061 installs</strong></li>
+</ul>
+<h2 id="5-4개-기능을-한-루프로-묶는-실전-운영-패턴">5) 4개 기능을 한 루프로 묶는 실전 운영 패턴</h2>
+<p>실무에서는 아래 순서가 가장 안정적입니다.</p>
+<ol>
+<li><code>Memory</code>로 규칙/학습 축적 구조를 먼저 고정</li>
+<li><code>Skills</code>로 반복 작업 절차를 명령화</li>
+<li><code>Ralph Loop</code>로 자동 반복 개선 구동</li>
+<li><code>Remote Control</code>로 이동 중 관찰/개입</li>
+</ol>
+<pre class="mermaid">flowchart LR
+  A["Memory 설계"] --> B["Skills 표준화"]
+  B --> C["Ralph 반복 실행"]
+  C --> D["Remote Control 관찰/개입"]
+  D --> E["결과를 Memory/Skills에 환류"]
+  E --> B
+
+  classDef stage fill:#e0f7fa,stroke:#00838f,color:#006064
+  class A,B,C,D,E stage</pre><p>이 루프의 장점은 &ldquo;한 번 잘한 작업&quot;을 &ldquo;다음에도 재현 가능한 작업&quot;으로 바꾼다는 점입니다.<br>결국 핵심은 기능 사용법 자체보다, 실패와 개선 흔적을 구조화해 다음 실행에 자동 반영하는 운영 체계입니다.</p>
+<h2 id="evidence-notes">Evidence Notes</h2>
+<table>
+  <thead>
+      <tr>
+          <th>claim</th>
+          <th>evidence</th>
+          <th>url</th>
+          <th>confidence</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>자동 메모리와 CLAUDE.md 계열이 함께 로드되며 MEMORY.md 앞 200줄만 시작 시 로드</td>
+          <td>memory 문서 본문에 자동 메모리/200줄/메모리 위치 명시</td>
+          <td><a href="https://code.claude.com/docs/ko/memory">https://code.claude.com/docs/ko/memory</a></td>
+          <td>High</td>
+      </tr>
+      <tr>
+          <td>번들 스킬로 <code>/simplify</code>, <code>/batch</code>, <code>/debug</code>가 제공됨</td>
+          <td>skills 문서 Bundled skills 섹션</td>
+          <td><a href="https://code.claude.com/docs/en/skills#bundled-skills">https://code.claude.com/docs/en/skills#bundled-skills</a></td>
+          <td>High</td>
+      </tr>
+      <tr>
+          <td>Remote Control은 로컬 실행 유지 + 원격 인터페이스 동기화 방식</td>
+          <td>remote-control 문서의 개념/보안/비교 섹션</td>
+          <td><a href="https://code.claude.com/docs/en/remote-control">https://code.claude.com/docs/en/remote-control</a></td>
+          <td>High</td>
+      </tr>
+      <tr>
+          <td>Ralph Loop는 Stop hook 기반 self-referential loop이며 <code>/ralph-loop</code>, <code>/cancel-ralph</code> 제공</td>
+          <td>ralph-wiggum README 명령/코어 컨셉</td>
+          <td><a href="https://github.com/anthropics/claude-code/blob/main/plugins/ralph-wiggum/README.md">https://github.com/anthropics/claude-code/blob/main/plugins/ralph-wiggum/README.md</a></td>
+          <td>High</td>
+      </tr>
+      <tr>
+          <td>Ralph Loop 플러그인 페이지에서 Anthropic verified/설치 수가 표시됨</td>
+          <td>plugin 페이지 카드 메타 정보</td>
+          <td><a href="https://claude.com/plugins/ralph-loop">https://claude.com/plugins/ralph-loop</a></td>
+          <td>High</td>
+      </tr>
+  </tbody>
+</table>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 03월 02일 11시 45분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/development">Development</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/engineering">Engineering</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-03-02-finding-the-right-amount-of-ai-threshold/" rel="prev">
+        <span>AI 코딩의 적정선 찾기: 생산성과 인지 부채 사이에서 팀이 결정해야 할 것</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-03-02-tests-are-the-new-moat/" rel="next">
+        <span>테스트는 새로운 해자인가: AI 시대 오픈소스 경쟁력의 재정의</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-memory-지침과-학습을-분리하는-계층-설계">1) Memory: &ldquo;지침&quot;과 &ldquo;학습&quot;을 분리하는 계층 설계</a>
+      <ul>
+        <li><a href="#메모리-위치와-우선순위-핵심">메모리 위치와 우선순위 핵심</a></li>
+        <li><a href="#자동-메모리의-실제-동작">자동 메모리의 실제 동작</a></li>
+        <li><a href="#제어-스위치">제어 스위치</a></li>
+        <li><a href="#구조화-팁">구조화 팁</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-skills-프롬프트-자산을-실행-가능한-단위로-관리">2) Skills: 프롬프트 자산을 &ldquo;실행 가능한 단위&quot;로 관리</a>
+      <ul>
+        <li><a href="#번들-스킬bundled-skills">번들 스킬(Bundled skills)</a></li>
+        <li><a href="#스킬-저장-위치와-충돌-우선순위">스킬 저장 위치와 충돌 우선순위</a></li>
+        <li><a href="#운영에-바로-쓰는-frontmatter-핵심">운영에 바로 쓰는 frontmatter 핵심</a></li>
+        <li><a href="#고급-패턴-2가지">고급 패턴 2가지</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-remote-control-로컬-실행을-유지한-채-멀티디바이스로-이어붙이기">3) Remote Control: 로컬 실행을 유지한 채 멀티디바이스로 이어붙이기</a>
+      <ul>
+        <li><a href="#시작-방법">시작 방법</a></li>
+        <li><a href="#문서-기준-요구사항과-현재-상태">문서 기준 요구사항과 현재 상태</a></li>
+        <li><a href="#보안네트워크-관점-핵심">보안/네트워크 관점 핵심</a></li>
+        <li><a href="#제한사항">제한사항</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-ralph-loop-stop-hook-기반-반복-개선-루프">4) Ralph Loop: Stop Hook 기반 반복 개선 루프</a>
+      <ul>
+        <li><a href="#명령과-제약">명령과 제약</a></li>
+        <li><a href="#어떤-작업에-적합한가">어떤 작업에 적합한가</a></li>
+        <li><a href="#플러그인-페이지-메타">플러그인 페이지 메타</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-4개-기능을-한-루프로-묶는-실전-운영-패턴">5) 4개 기능을 한 루프로 묶는 실전 운영 패턴</a></li>
+    <li><a href="#evidence-notes">Evidence Notes</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude Code</a>
+    <a href="/tags/memory/" class="badge badge-secondary">Memory</a>
+    <a href="/tags/skills/" class="badge badge-secondary">Skills</a>
+    <a href="/tags/remote-control/" class="badge badge-secondary">Remote-Control</a>
+    <a href="/tags/ralph-loop/" class="badge badge-secondary">Ralph-Loop</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
