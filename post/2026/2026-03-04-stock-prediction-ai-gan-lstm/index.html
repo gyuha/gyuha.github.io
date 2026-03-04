@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'AI 주가 예측 완전 해부: GAN, LSTM, 강화학습, BERT를 결합한 Goldman Sachs 주가 예측 시스템'" />
+  <title>AI 주가 예측 완전 해부: GAN, LSTM, 강화학습, BERT를 결합한 Goldman Sachs 주가 예측 시스템  | 신규하 블로그</title>
+  <meta property="og:title" content="AI 주가 예측 완전 해부: GAN, LSTM, 강화학습, BERT를 결합한 Goldman Sachs 주가 예측 시스템" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-03-04"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/2026-03-04-stock-prediction-ai-gan-lstm/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="GAN" />
+  
+  <meta property="og:tags" content="LSTM" />
+  
+  <meta property="og:tags" content="Reinforcement Learning" />
+  
+  <meta property="og:tags" content="BERT" />
+  
+  <meta property="og:tags" content="Stock Prediction" />
+  
+  <meta property="og:tags" content="Deep Learning" />
+  
+  <meta property="og:tags" content="CNN" />
+  
+  <meta property="og:tags" content="XGBoost" />
+  
+  <meta property="og:tags" content="Bayesian Optimization" />
+  
+  <meta property="og:tags" content="Time Series" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/2026-03-04-stock-prediction-ai-gan-lstm/">
+          <h1>
+            AI 주가 예측 완전 해부: GAN, LSTM, 강화학습, BERT를 결합한 Goldman Sachs 주가 예측 시스템
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/2026-03-04-stock-prediction-ai-gan-lstm/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <h2 id="들어가며">들어가며</h2>
+<p>주가 예측은 머신러닝에서 가장 도전적인 문제 중 하나다. 단일 모델로는 시장의 복잡성을 포착하기 어렵기 때문에, 실무에서는 여러 기법을 파이프라인으로 결합한다.</p>
+<p>Boris Banushev의 오픈소스 프로젝트 <a href="https://github.com/borisbanushev/stockpredictionai">stockpredictionai</a>는 <strong>Goldman Sachs(GS) 주가 예측</strong> 을 목표로, GAN(Generative Adversarial Network), LSTM, CNN, 강화학습, BERT NLP, 푸리에 변환, ARIMA, Stacked Autoencoder, XGBoost, PCA까지 — 현대 딥러닝과 전통 통계 기법을 하나의 시스템으로 통합한 프로젝트다. GitHub 스타 5,500개 이상을 받은 이 프로젝트의 전체 아키텍처를 해부한다.</p>
+<p><strong>원본 소스:</strong> <a href="https://github.com/borisbanushev/stockpredictionai">borisbanushev/stockpredictionai</a></p>
+<hr>
+<h2 id="시스템-전체-아키텍처">시스템 전체 아키텍처</h2>
+<p>이 프로젝트의 핵심 구조는 크게 세 단계로 나뉜다: <strong>데이터 수집 및 피처 엔지니어링</strong>, <strong>GAN 기반 예측 모델</strong>, <strong>강화학습 기반 하이퍼파라미터 최적화</strong>.</p>
+<pre class="mermaid">flowchart TD
+    subgraph DataCollection["1단계: 데이터 수집"]
+        A["Goldman Sachs 일별 주가<br>2010.01 ~ 2018.12"]
+        B["72개 상관 자산<br>지수, 통화, 원자재"]
+        C["일별 GS 뉴스<br>BERT 감성 분석"]
+    end
+
+    subgraph FeatureEng["2단계: 피처 엔지니어링"]
+        D["12개 기술적 지표<br>MA, MACD, BB"]
+        E["푸리에 변환<br>노이즈 제거"]
+        F["ARIMA 예측값<br>피처로 활용"]
+        G["Stacked Autoencoder<br>잠재 피처 추출"]
+        H["XGBoost<br>피처 중요도 분석"]
+    end
+
+    subgraph Model["3단계: GAN 예측 모델"]
+        I["Generator<br>LSTM 112→500→1"]
+        J["Discriminator<br>CNN Conv1D×3"]
+    end
+
+    subgraph Optimize["4단계: 최적화"]
+        K["Rainbow DQN + PPO<br>강화학습"]
+        L["베이지안 최적화<br>가우시안 프로세스"]
+    end
+
+    A --> D
+    B --> D
+    C --> D
+    D --> E
+    E --> F
+    F --> G
+    G --> H
+    H --> I
+    I <--> J
+    J --> K
+    K --> L
+    L -->|"하이퍼파라미터 갱신"| I
+
+    classDef data fill:#4A90D9,stroke:#2C6FB5,color:#FFFFFF
+    classDef feature fill:#7BC67E,stroke:#4FA853,color:#1A1A1A
+    classDef model fill:#F5A623,stroke:#D4881C,color:#1A1A1A
+    classDef optim fill:#D0021B,stroke:#A8011A,color:#FFFFFF
+
+    class A,B,C data
+    class D,E,F,G,H feature
+    class I,J model
+    class K,L optim</pre><hr>
+<h2 id="데이터-수집과-전처리">데이터 수집과 전처리</h2>
+<h3 id="기본-데이터-구성">기본 데이터 구성</h3>
+<p>예측 대상은 <strong>Goldman Sachs(GS)</strong> 의 NYSE 일별 종가다. 데이터 기간은 2010년 1월부터 2018년 12월까지 총 <strong>2,265 거래일</strong> 이며, <strong>70/30</strong> 비율로 분할했다 — 학습 1,585일, 테스트 680일, 분할 기준일은 약 2016년 4월 20일이다.</p>
+<h3 id="72개-상관-자산">72개 상관 자산</h3>
+<p>GS 단독 가격만으로는 시장 맥락이 빠진다. 프로젝트는 <strong>72개 상관 자산</strong> 을 함께 입력한다:</p>
+<table>
+  <thead>
+      <tr>
+          <th>카테고리</th>
+          <th>포함 자산 예시</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>투자은행</td>
+          <td>JPMorgan, Morgan Stanley, Citigroup, Wells Fargo</td>
+      </tr>
+      <tr>
+          <td>글로벌 지수</td>
+          <td>NASDAQ, NYSE, FTSE100, Nikkei225, Hang Seng, BSE Sensex</td>
+      </tr>
+      <tr>
+          <td>금리</td>
+          <td>LIBOR USD, LIBOR GBP</td>
+      </tr>
+      <tr>
+          <td>변동성</td>
+          <td>VIX</td>
+      </tr>
+      <tr>
+          <td>통화</td>
+          <td>USDJPY, GBPUSD, CNYJPY</td>
+      </tr>
+      <tr>
+          <td>원자재/채권</td>
+          <td>금, 은, 원유, 국채</td>
+      </tr>
+  </tbody>
+</table>
+<p>이 데이터는 매크로 환경이 개별 종목 가격에 미치는 영향을 모델에 전달하는 역할을 한다.</p>
+<h3 id="통계적-품질-검증">통계적 품질 검증</h3>
+<p>피처를 모델에 넣기 전에 세 가지 통계 검정을 수행했다:</p>
+<ul>
+<li><strong>이분산성(Heteroskedasticity)</strong> 검정 — 잔차 분산이 시간에 따라 변하는지 확인</li>
+<li><strong>다중공선성(Multicollinearity)</strong> 검정 — 독립 변수 간 과도한 상관 확인</li>
+<li><strong>계열 상관(Serial Correlation)</strong> 검정 — 잔차 간 자기상관 확인</li>
+</ul>
+<p>데이터는 세 가지 검정을 모두 통과했다.</p>
+<hr>
+<h2 id="피처-엔지니어링-파이프라인">피처 엔지니어링 파이프라인</h2>
+<p>총 <strong>112개 입력 피처</strong> 가 최종 GAN 모델에 투입된다. 이 피처들은 여러 기법을 통해 단계적으로 구성된다.</p>
+<pre class="mermaid">flowchart LR
+    subgraph Raw["원시 데이터"]
+        A1["GS 가격 데이터"]
+        A2["72개 상관 자산"]
+    end
+
+    subgraph Technical["기술적 지표 (12개)"]
+        B1["MA7, MA21"]
+        B2["EMA"]
+        B3["MACD"]
+        B4["Bollinger Bands<br>upper/lower, 20sd"]
+        B5["Momentum<br>log_momentum"]
+    end
+
+    subgraph NLP["자연어 처리"]
+        C1["일별 GS 뉴스"]
+        C2["BERT 감성 분석"]
+        C3["감성 점수 0~1"]
+    end
+
+    subgraph Signal["신호 처리"]
+        D1["푸리에 변환<br>3, 6, 9 components"]
+        D2["ARIMA(5,1,0)<br>MSE=10.151"]
+    end
+
+    subgraph Feature["피처 선택"]
+        E1["XGBoost<br>피처 중요도"]
+    end
+
+    Raw --> Technical
+    Raw --> NLP
+    Raw --> Signal
+    Technical --> Feature
+    NLP --> Feature
+    Signal --> Feature
+
+    classDef raw fill:#E8E8E8,stroke:#999999,color:#333333
+    classDef tech fill:#5B9BD5,stroke:#3A7BBF,color:#FFFFFF
+    classDef nlp fill:#A855F7,stroke:#7C3AED,color:#FFFFFF
+    classDef sig fill:#10B981,stroke:#059669,color:#FFFFFF
+    classDef feat fill:#F59E0B,stroke:#D97706,color:#1A1A1A
+
+    class A1,A2 raw
+    class B1,B2,B3,B4,B5 tech
+    class C1,C2,C3 nlp
+    class D1,D2 sig
+    class E1 feat</pre><h3 id="기술적-지표">기술적 지표</h3>
+<p>12개 기술적 지표를 계산했다:</p>
+<ul>
+<li><strong>이동평균</strong>: 7일(MA7), 21일(MA21) 단순 이동평균 + 지수 이동평균(EMA)</li>
+<li><strong>MACD</strong>: 12일과 26일 EMA의 차이로 추세 전환 신호 포착</li>
+<li><strong>볼린저 밴드</strong>: 20일 이동평균 ± 2σ (상한/하한) — 가격의 과매수/과매도 판단</li>
+<li><strong>모멘텀</strong>: 가격 변화율과 log 모멘텀</li>
+</ul>
+<p>XGBoost 피처 중요도 분석 결과, <strong>MA7, MACD, 볼린저 밴드</strong> 가 예측에 가장 큰 기여를 했다.</p>
+<h3 id="bert-감성-분석">BERT 감성 분석</h3>
+<p>매일의 Goldman Sachs 관련 뉴스를 수집하고, <strong>BERT(Bidirectional Encoder Representations from Transformers)</strong> 로 감성 점수를 추출했다. 출력은 sigmoid 함수를 거쳐 <strong>0(부정)~1(긍정)</strong> 사이 값으로 변환된다.</p>
+<pre class="mermaid">flowchart LR
+    A["일별 GS 뉴스<br>수집"] --> B["BERT<br>사전학습 모델"]
+    B --> C["금융 도메인<br>파인튜닝"]
+    C --> D["Sigmoid<br>출력"]
+    D --> E["감성 점수<br>0.0 ~ 1.0"]
+
+    classDef process fill:#A855F7,stroke:#7C3AED,color:#FFFFFF
+    class A,B,C,D,E process</pre><p>BERT의 핵심은 <strong>전이 학습(Transfer Learning)</strong> 이다. 대규모 텍스트로 사전학습된 언어 모델을 금융 뉴스 도메인에 파인튜닝하면, 적은 레이블 데이터로도 높은 정확도의 감성 분류가 가능하다. 최근 연구에 따르면, FinBERT 기반 접근은 전통 ML 대비 <strong>F1-score 17~20% 향상</strong> 을 보인다.</p>
+<h3 id="푸리에-변환을-이용한-노이즈-제거">푸리에 변환을 이용한 노이즈 제거</h3>
+<p>주가 데이터에는 일상적 변동(noise)과 실제 추세(signal)가 섞여 있다. <strong>푸리에 변환(Fourier Transform)</strong> 은 시계열을 주파수 영역으로 분해하여 고주파 노이즈를 제거한다.</p>
+<p>프로젝트에서는 <strong>3, 6, 9개 주파수 성분</strong> 을 유지하는 실험을 수행했다. 웨이블릿(wavelet) 변환도 시도했으나, 결과가 유사해 푸리에를 최종 채택했다.</p>
+<pre class="mermaid">flowchart LR
+    A["원시 주가<br>시계열"] --> B["FFT<br>주파수 분해"]
+    B --> C["저주파 성분 유지<br>3/6/9 components"]
+    C --> D["IFFT<br>역변환"]
+    D --> E["디노이즈된<br>주가 시계열"]
+
+    classDef signal fill:#10B981,stroke:#059669,color:#FFFFFF
+    class A,B,C,D,E signal</pre><p><strong>핵심 원리</strong>: FFT는 시계열을 구성 주파수로 분해한다. 시장 노이즈는 주로 고주파 성분으로 나타나고, 실제 추세는 저주파에 집중된다. 특정 cutoff 이상의 주파수를 제거한 뒤 IFFT로 복원하면 더 깨끗한 신호를 얻는다.</p>
+<h3 id="arima--전통-시계열-예측">ARIMA — 전통 시계열 예측</h3>
+<p><strong>ARIMA(5,1,0)</strong> 모델을 학습하여 테스트 MSE <strong>10.151</strong> 을 달성했다. 이 프로젝트에서 ARIMA는 최종 예측기가 아니라, <strong>예측값을 추가 피처로</strong> GAN에 공급하는 역할을 한다.</p>
+<h3 id="stacked-autoencoder-vae">Stacked Autoencoder (VAE)</h3>
+<p><strong>Stacked Autoencoder</strong> 는 입력 데이터의 잠재 표현을 학습하여 새로운 피처를 생성한다.</p>
+<pre class="mermaid">flowchart LR
+    subgraph Encoder["인코더"]
+        E1["입력: 112 피처"] --> E2["Dense 400<br>GELU"]
+        E2 --> E3["Dense 400<br>GELU"]
+        E3 --> E4["Dense 400<br>GELU"]
+    end
+
+    subgraph Bottleneck["보틀넥"]
+        E4 --> BN["잠재 표현"]
+    end
+
+    subgraph Decoder["디코더"]
+        BN --> D1["Dense 400<br>GELU"]
+        D1 --> D2["Dense 400<br>GELU"]
+        D2 --> D3["Dense 400<br>GELU"]
+        D3 --> D4["출력: 112 피처<br>복원"]
+    end
+
+    classDef enc fill:#3B82F6,stroke:#2563EB,color:#FFFFFF
+    classDef bn fill:#EF4444,stroke:#DC2626,color:#FFFFFF
+    classDef dec fill:#22C55E,stroke:#16A34A,color:#FFFFFF
+
+    class E1,E2,E3,E4 enc
+    class BN bn
+    class D1,D2,D3,D4 dec</pre><p>구성 세부사항:</p>
+<ul>
+<li><strong>구조</strong>: 인코더/디코더 각 3개 레이어, 레이어당 400 뉴런</li>
+<li><strong>활성화 함수</strong>: GELU — <code>0.5 * x * (1 + tanh(sqrt(2/π) * (x + 0.044715 * x³)))</code></li>
+<li><strong>학습</strong>: 150 에포크, 총 62초 소요</li>
+<li><strong>결과</strong>: 112개 원본 피처에서 112개 추가 잠재 피처 생성</li>
+</ul>
+<p>다만, PCA 분석 결과 80% 분산을 설명하는 데 <strong>84개 주성분</strong> 이 필요해 차원 축소 효과가 미미하여, 오토인코더 피처는 최종 모델에 포함되지 않았다.</p>
+<p><strong>왜 Stacked 구조인가</strong>: 각 레이어가 점진적으로 더 추상적인 시장 패턴을 포착한다. 압축(bottleneck)은 네트워크가 노이즈보다 신호를 학습하도록 강제하며, 비지도 사전학습은 레이블 없는 대량의 시장 데이터를 활용할 수 있게 한다.</p>
+<h3 id="xgboost-피처-중요도">XGBoost 피처 중요도</h3>
+<p>모든 피처를 구성한 뒤, <strong>XGBoost</strong> 로 피처 중요도를 분석했다. 결과적으로 <strong>MA7, MACD, 볼린저 밴드</strong> 가 상위에 위치하며, 이는 기술적 지표의 예측력이 가장 강함을 확인해준다.</p>
+<hr>
+<h2 id="gan-기반-주가-예측-모델">GAN 기반 주가 예측 모델</h2>
+<p>프로젝트의 핵심 모델은 <strong>GAN(Generative Adversarial Network)</strong> 이다. Generator가 미래 주가를 생성하고, Discriminator가 실제 주가와 생성된 주가를 구분하려 시도하며, 이 적대적 학습을 통해 Generator의 예측 정확도가 올라간다.</p>
+<h3 id="gan-학습-원리">GAN 학습 원리</h3>
+<p>GAN의 손실 함수는 <strong>minimax 게임</strong> 으로 정의된다:</p>
+
+  <blockquote>
+    <p>L(D,G) = E[log D(x)] + E[log(1 - D(G(z)))]</p>
+
+  </blockquote>
+
+<pre class="mermaid">flowchart LR
+    subgraph Generator["Generator (LSTM)"]
+        Z["입력: 112 피처<br>시퀀스 17일"] --> G["LSTM<br>500 hidden units"]
+        G --> GP["Dense(1)<br>예측 주가"]
+    end
+
+    subgraph Discriminator["Discriminator (CNN)"]
+        R["실제 주가"] --> D["CNN<br>Conv1D × 3"]
+        GP -->|"생성 주가"| D
+        D --> DO["판별 결과<br>Real / Fake"]
+    end
+
+    DO -->|"손실 역전파"| G
+
+    classDef gen fill:#3B82F6,stroke:#2563EB,color:#FFFFFF
+    classDef disc fill:#EF4444,stroke:#DC2626,color:#FFFFFF
+
+    class Z,G,GP gen
+    class R,D,DO disc</pre><h3 id="generator--lstm-아키텍처">Generator — LSTM 아키텍처</h3>
+<p>Generator는 <strong>LSTM(Long Short-Term Memory)</strong> 으로 구성된다. LSTM은 시계열 데이터에서 장기 의존성을 학습하는 데 특화된 RNN 변형이다.</p>
+<pre class="mermaid">flowchart TD
+    subgraph LSTMCell["LSTM 셀 내부 구조"]
+        I["입력 게이트<br>i_t = σ(W_i · [h_t-1, x_t] + b_i)"]
+        F["망각 게이트<br>f_t = σ(W_f · [h_t-1, x_t] + b_f)"]
+        O["출력 게이트<br>o_t = σ(W_o · [h_t-1, x_t] + b_o)"]
+        C["셀 상태 갱신<br>C_t = f_t * C_t-1 + i_t * tanh(...)"]
+        H["은닉 상태<br>h_t = o_t * tanh(C_t)"]
+    end
+
+    I --> C
+    F --> C
+    C --> H
+    O --> H
+
+    classDef gate fill:#F59E0B,stroke:#D97706,color:#1A1A1A
+    classDef state fill:#6366F1,stroke:#4F46E5,color:#FFFFFF
+
+    class I,F,O gate
+    class C,H state</pre><p><strong>Generator 구성 상세</strong>:</p>
+<table>
+  <thead>
+      <tr>
+          <th>파라미터</th>
+          <th>값</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>입력 차원</td>
+          <td>112 (피처 수)</td>
+      </tr>
+      <tr>
+          <td>LSTM hidden units</td>
+          <td>500</td>
+      </tr>
+      <tr>
+          <td>출력 Dense</td>
+          <td>1 (다음 날 종가)</td>
+      </tr>
+      <tr>
+          <td>시퀀스 길이</td>
+          <td>17일</td>
+      </tr>
+      <tr>
+          <td>초기화</td>
+          <td>Xavier</td>
+      </tr>
+      <tr>
+          <td>손실 함수</td>
+          <td>L1 Loss</td>
+      </tr>
+      <tr>
+          <td>옵티마이저</td>
+          <td>Adam (lr=0.01)</td>
+      </tr>
+  </tbody>
+</table>
+<p>LSTM이 GRU 대신 선택된 이유: LSTM은 별도의 셀 상태(cell state)를 유지하여 <strong>장기 의존성 보존에 유리</strong> 하고, GRU는 파라미터가 적어 빠르지만 복잡한 시계열에서는 LSTM이 더 나은 성능을 보인다.</p>
+<h3 id="discriminator--cnn-아키텍처">Discriminator — CNN 아키텍처</h3>
+<p>Discriminator는 <strong>CNN(Convolutional Neural Network)</strong> 으로 구성된다. 시계열 데이터에 대해 <strong>1D 합성곱</strong> 으로 국소 패턴을 감지한다.</p>
+<pre class="mermaid">flowchart TD
+    IN["입력 시퀀스"] --> C1["Conv1D 32 filters<br>kernel=5, stride=2<br>LeakyReLU(0.01)"]
+    C1 --> BN1["BatchNorm"]
+    BN1 --> C2["Conv1D 64 filters<br>kernel=5, stride=2<br>LeakyReLU(0.01)"]
+    C2 --> BN2["BatchNorm"]
+    BN2 --> C3["Conv1D 128 filters<br>kernel=5, stride=2<br>LeakyReLU(0.01)"]
+    C3 --> BN3["BatchNorm"]
+    BN3 --> D1["Dense 220<br>LeakyReLU"]
+    D1 --> D2["Dense 220<br>LeakyReLU"]
+    D2 --> OUT["Dense 1<br>Real / Fake"]
+
+    classDef conv fill:#EF4444,stroke:#DC2626,color:#FFFFFF
+    classDef dense fill:#F97316,stroke:#EA580C,color:#FFFFFF
+    classDef output fill:#991B1B,stroke:#7F1D1D,color:#FFFFFF
+
+    class C1,BN1,C2,BN2,C3,BN3 conv
+    class D1,D2 dense
+    class IN,OUT output</pre><p><strong>왜 시계열에 CNN인가</strong>: RNN과 달리 CNN은 국소 패턴(local pattern)을 병렬로 감지할 수 있어, 특정 시간 윈도우 내의 가격 패턴(상승 추세, 하락 추세, 횡보)을 효과적으로 포착한다. Generator가 LSTM으로 순차적 의존성을 학습하는 동안, Discriminator의 CNN은 국소적 진위 판별에 집중한다.</p>
+<h3 id="wasserstein-gan-wgan">Wasserstein GAN (WGAN)</h3>
+<p>표준 GAN은 학습이 불안정하다. Generator와 Discriminator의 균형이 무너지면 <strong>mode collapse</strong> 나 <strong>vanishing gradient</strong> 가 발생한다. 이를 해결하기 위해 <strong>Wasserstein GAN</strong> 을 채택했다.</p>
+<pre class="mermaid">flowchart TD
+    subgraph VanillaGAN["표준 GAN 문제"]
+        V1["KL/JS Divergence"] --> V2["분포 겹침 없으면<br>그래디언트 소실"]
+        V2 --> V3["학습 불안정"]
+    end
+
+    subgraph WGAN["Wasserstein GAN 해결"]
+        W1["Earth Mover's Distance<br>Wasserstein 거리"] --> W2["분포 간 거리에 비례한<br>매끄러운 그래디언트"]
+        W2 --> W3["안정적 학습"]
+    end
+
+    V3 -->|"개선"| W1
+
+    classDef problem fill:#FCA5A5,stroke:#EF4444,color:#7F1D1D
+    classDef solution fill:#86EFAC,stroke:#22C55E,color:#14532D
+
+    class V1,V2,V3 problem
+    class W1,W2,W3 solution</pre><p><strong>Wasserstein 거리</strong> 는 두 확률 분포 사이의 &ldquo;지구를 옮기는 비용(Earth Mover&rsquo;s Distance)&ldquo;으로, KL/JS Divergence와 달리 분포가 겹치지 않아도 의미 있는 그래디언트를 제공한다. 이것이 WGAN의 핵심 이점이다.</p>
+<h3 id="metropolis-hastings-gan-mhgan">Metropolis-Hastings GAN (MHGAN)</h3>
+<p>Uber에서 제안한 <strong>MHGAN</strong> 은 MCMC(Markov Chain Monte Carlo) 기반 샘플링을 GAN에 도입한다. Generator에서 <strong>K개의 후보 샘플</strong> 을 생성한 뒤, Discriminator의 판별 확률을 기반으로 <strong>Metropolis-Hastings 수락 규칙</strong> 에 따라 최적 샘플을 선택한다.</p>
+<p>프로젝트는 <strong>WGAN + MHGAN을 결합</strong> 하여 사용했으며, 구현에 3일이 소요됐다고 기록되어 있다.</p>
+<hr>
+<h2 id="학습-안정화-기법">학습 안정화 기법</h2>
+<h3 id="learning-rate-스케줄러">Learning Rate 스케줄러</h3>
+<p><strong>Triangular + Cyclical Learning Rate</strong> 방식을 채택했다:</p>
+<table>
+  <thead>
+      <tr>
+          <th>파라미터</th>
+          <th>값</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>min_lr</td>
+          <td>0.5</td>
+      </tr>
+      <tr>
+          <td>max_lr</td>
+          <td>2</td>
+      </tr>
+      <tr>
+          <td>cycle_length</td>
+          <td>500 iterations</td>
+      </tr>
+      <tr>
+          <td>총 반복</td>
+          <td>1,500 iterations</td>
+      </tr>
+  </tbody>
+</table>
+<p>학습률을 주기적으로 올렸다 내리면 <strong>지역 최솟값(local minima)을 탈출</strong> 하는 데 효과적이다.</p>
+<h3 id="과적합-방지">과적합 방지</h3>
+<p>다섯 가지 기법을 동시에 적용했다:</p>
+<ol>
+<li><strong>L1 정규화</strong> — 가중치의 절대값 합을 페널티로 추가, 희소한(sparse) 모델 유도</li>
+<li><strong>Dropout</strong> — 학습 중 랜덤하게 뉴런을 비활성화</li>
+<li><strong>Dense-Sparse-Dense(DSD) 학습</strong> — 밀집 학습 → 가중치 pruning → 희소 학습 → 다시 밀집 학습의 3단계</li>
+<li><strong>조기 종료(Early Stopping)</strong> — 검증 손실이 개선되지 않으면 학습 중단</li>
+<li><strong>데이터 품질 검증</strong> — 이분산성, 다중공선성, 계열 상관 검정</li>
+</ol>
+<pre class="mermaid">flowchart LR
+    A["모델 학습"] --> B["L1 정규화"]
+    A --> C["Dropout"]
+    A --> D["DSD 학습<br>Dense→Sparse→Dense"]
+    A --> E["조기 종료"]
+    A --> F["데이터 품질<br>검증"]
+    B & C & D & E & F --> G["과적합 방지된<br>최종 모델"]
+
+    classDef method fill:#8B5CF6,stroke:#7C3AED,color:#FFFFFF
+    classDef result fill:#10B981,stroke:#059669,color:#FFFFFF
+
+    class B,C,D,E,F method
+    class A,G result</pre><hr>
+<h2 id="강화학습-기반-하이퍼파라미터-최적화">강화학습 기반 하이퍼파라미터 최적화</h2>
+<p>GAN 학습에서 가장 까다로운 부분은 <strong>하이퍼파라미터 튜닝</strong> 이다. 이 프로젝트는 수동 탐색 대신 <strong>강화학습(RL)</strong> 으로 자동화했다.</p>
+<h3 id="최적화-대상-하이퍼파라미터">최적화 대상 하이퍼파라미터</h3>
+<table>
+  <thead>
+      <tr>
+          <th>파라미터</th>
+          <th>설명</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>batch_size</td>
+          <td>배치 크기</td>
+      </tr>
+      <tr>
+          <td>cnn_lr</td>
+          <td>Discriminator 학습률</td>
+      </tr>
+      <tr>
+          <td>strides</td>
+          <td>CNN 스트라이드</td>
+      </tr>
+      <tr>
+          <td>lrelu_alpha</td>
+          <td>LeakyReLU 기울기</td>
+      </tr>
+      <tr>
+          <td>batchnorm_momentum</td>
+          <td>BatchNorm 모멘텀</td>
+      </tr>
+      <tr>
+          <td>padding</td>
+          <td>CNN 패딩</td>
+      </tr>
+      <tr>
+          <td>kernel_size</td>
+          <td>CNN 커널 크기</td>
+      </tr>
+      <tr>
+          <td>dropout</td>
+          <td>드롭아웃 비율</td>
+      </tr>
+      <tr>
+          <td>filters</td>
+          <td>CNN 필터 수</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="rl-환경-설계">RL 환경 설계</h3>
+<pre class="mermaid">flowchart TD
+    subgraph Environment["환경 = GAN"]
+        GAN["GAN 모델<br>200 에포크 학습"]
+    end
+
+    subgraph Agent["에이전트 = RL"]
+        RL["Rainbow DQN<br>또는 PPO"]
+    end
+
+    subgraph Reward["보상 함수"]
+        R["R = 2 × loss_G + loss_D<br>+ accuracy_G"]
+    end
+
+    RL -->|"액션: 하이퍼파라미터 변경"| GAN
+    GAN -->|"상태: 손실값, 정확도"| Reward
+    Reward -->|"보상 신호"| RL
+
+    classDef env fill:#3B82F6,stroke:#2563EB,color:#FFFFFF
+    classDef agent fill:#EF4444,stroke:#DC2626,color:#FFFFFF
+    classDef reward fill:#F59E0B,stroke:#D97706,color:#1A1A1A
+
+    class GAN env
+    class RL agent
+    class R reward</pre><p>핵심 설계:</p>
+<ul>
+<li><strong>환경(Environment)</strong> = GAN 모델 자체 (1 에피소드 = 200 에포크 GAN 학습)</li>
+<li><strong>액션(Action)</strong> = 하이퍼파라미터 변경</li>
+<li><strong>보상(Reward)</strong> = <code>R = 2 × loss_G + loss_D + accuracy_G</code></li>
+<li><strong>총 10 에피소드</strong> 실행 (각 에피소드에서 200 에포크 GAN을 처음부터 학습)</li>
+</ul>
+<h3 id="rainbow-dqn--7개-알고리즘의-통합">Rainbow DQN — 7개 알고리즘의 통합</h3>
+<p><strong>Rainbow DQN</strong> 은 Deep Q-Network의 6가지 핵심 개선을 하나로 통합한 알고리즘이다:</p>
+<pre class="mermaid">flowchart TD
+    DQN["기본 DQN"] --> R["Rainbow DQN"]
+
+    DDQN["1. Double DQN<br>과대추정 편향 감소"] --> R
+    PER["2. Prioritized Replay<br>중요 경험 우선 학습"] --> R
+    DUEL["3. Dueling Networks<br>상태가치 + 행동이점 분리"] --> R
+    MULTI["4. Multi-step Learning<br>n-step 리턴으로 빠른 전파"] --> R
+    DIST["5. Distributional RL<br>리턴 분포 전체 모델링"] --> R
+    NOISY["6. Noisy Nets<br>학습된 노이즈로 탐색"] --> R
+
+    classDef base fill:#6B7280,stroke:#4B5563,color:#FFFFFF
+    classDef improve fill:#3B82F6,stroke:#2563EB,color:#FFFFFF
+    classDef rainbow fill:#8B5CF6,stroke:#7C3AED,color:#FFFFFF
+
+    class DQN base
+    class DDQN,PER,DUEL,MULTI,DIST,NOISY improve
+    class R rainbow</pre><p>각 구성 요소의 역할:</p>
+<table>
+  <thead>
+      <tr>
+          <th>알고리즘</th>
+          <th>해결하는 문제</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Double DQN</strong></td>
+          <td>Q-값 과대추정 편향 감소 — 행동 선택과 가치 추정을 분리</td>
+      </tr>
+      <tr>
+          <td><strong>Prioritized Experience Replay</strong></td>
+          <td>학습 효율 향상 — 정보량이 큰 경험을 우선 재생</td>
+      </tr>
+      <tr>
+          <td><strong>Dueling Networks</strong></td>
+          <td>상태 가치와 행동 이점을 별도 추정 후 결합</td>
+      </tr>
+      <tr>
+          <td><strong>Multi-step Learning</strong></td>
+          <td>n-step 리턴으로 보상 전파 가속</td>
+      </tr>
+      <tr>
+          <td><strong>Distributional RL</strong></td>
+          <td>리턴의 기댓값만이 아닌 전체 분포를 모델링 — 불확실성 포착</td>
+      </tr>
+      <tr>
+          <td><strong>Noisy Nets</strong></td>
+          <td>ε-greedy 대신 학습 가능한 노이즈로 상태 의존적 탐색</td>
+      </tr>
+  </tbody>
+</table>
+<p>Ablation 연구에서 <strong>Distributional RL</strong> 과 <strong>Prioritized Replay</strong> 가 가장 큰 성능 향상을 제공했다.</p>
+<h3 id="ppo--안정적-정책-최적화">PPO — 안정적 정책 최적화</h3>
+<p><strong>PPO(Proximal Policy Optimization)</strong> 는 OpenAI가 제안한 정책 경사(policy gradient) 알고리즘으로, 연속 행동 공간에서 동작한다.</p>
+<p>핵심 메커니즘은 <strong>Clipped Surrogate Objective</strong> 이다:</p>
+
+  <blockquote>
+    <p>L^CLIP(θ) = E[min(r(θ) × A, clip(r(θ), 1-ε, 1+ε) × A)]</p>
+
+  </blockquote>
+
+<p>여기서 <code>r(θ) = π_new(a|s) / π_old(a|s)</code> 는 정책 비율, <code>A</code>는 어드밴티지 추정치, ε는 클리핑 범위(보통 0.2)다.</p>
+<p><strong>왜 PPO가 안정적인가</strong>: 정책 업데이트의 크기를 <code>[1-ε, 1+ε]</code> 범위로 제한하여, 한 번의 업데이트로 정책이 급격히 변하는 것을 방지한다. 이는 하이퍼파라미터 탐색에서 <strong>탐색(exploration) vs 활용(exploitation) 균형</strong> 을 유지하는 데 효과적이다.</p>
+<h3 id="베이지안-최적화">베이지안 최적화</h3>
+<p>RL 외에도 <strong>가우시안 프로세스(Gaussian Process) 기반 베이지안 최적화</strong> 를 추가로 적용했다:</p>
+<ul>
+<li><strong>라이브러리</strong>: <code>bayes_opt</code> (BayesianOptimization)</li>
+<li><strong>Utility 함수</strong>: UCB (Upper Confidence Bound), kappa=2.5, xi=0.0</li>
+<li><strong>원리</strong>: 이전 평가 결과를 기반으로 다음 탐색 지점을 지능적으로 선택 — 무작위 탐색보다 훨씬 효율적</li>
+</ul>
+<pre class="mermaid">flowchart LR
+    A["초기 랜덤<br>하이퍼파라미터"] --> B["GAN 학습<br>성능 평가"]
+    B --> C["가우시안 프로세스<br>사후 분포 갱신"]
+    C --> D["UCB 기반<br>다음 탐색점 선택"]
+    D --> B
+
+    classDef bo fill:#14B8A6,stroke:#0D9488,color:#FFFFFF
+    class A,B,C,D bo</pre><hr>
+<h2 id="프레임워크와-학습-환경">프레임워크와 학습 환경</h2>
+<ul>
+<li><strong>딥러닝 프레임워크</strong>: MXNet + Gluon API</li>
+<li><strong>GPU 지원</strong>: 다중 GPU 학습 가능 (노트북에서는 <code>mx.cpu()</code> 사용)</li>
+<li><strong>GAN 학습</strong>: 에포크당 200회, 총 10 RL 에피소드</li>
+<li><strong>GAN 구현 참고</strong>: <a href="https://github.com/soumith/ganhacks">soumith/ganhacks</a> — GAN 학습 안정화 팁 모음</li>
+</ul>
+<hr>
+<h2 id="실험-결과">실험 결과</h2>
+<p>프로젝트는 4단계에 걸친 예측 결과를 시각적으로 보여준다:</p>
+<table>
+  <thead>
+      <tr>
+          <th>단계</th>
+          <th>설명</th>
+          <th>관찰</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>에포크 1</td>
+          <td>초기 랜덤 예측</td>
+          <td>실제 가격과 큰 괴리</td>
+      </tr>
+      <tr>
+          <td>에포크 50</td>
+          <td>중간 학습</td>
+          <td>추세 방향은 포착, 진폭 부정확</td>
+      </tr>
+      <tr>
+          <td>에포크 200</td>
+          <td>GAN 학습 완료</td>
+          <td>패턴 근사, 일부 지연</td>
+      </tr>
+      <tr>
+          <td>RL 10 에피소드 후</td>
+          <td>최적화 완료</td>
+          <td>가장 정확한 예측</td>
+      </tr>
+  </tbody>
+</table>
+<p>프로젝트 README에는 최종 수치 정확도(RMSE, MAE 등)가 명시적으로 보고되지 않았으며, 4개의 시각적 예측 그래프만 제공된다.</p>
+
+  <blockquote>
+    <p>⚠️ <strong>주의</strong>: 이 프로젝트는 교육 및 연구 목적이다. README에도 명시된 대로, 실제 투자 결정에 사용해서는 안 된다 — &ldquo;The content of this notebook is not an investment advice and is for informational purpose only.&rdquo;</p>
+
+  </blockquote>
+
+<hr>
+<h2 id="핵심-요약">핵심 요약</h2>
+<pre class="mermaid">flowchart TD
+    subgraph Core["핵심 구성 요소"]
+        A["72개 상관 자산 +<br>12개 기술적 지표"]
+        B["BERT NLP<br>감성 점수"]
+        C["푸리에/ARIMA<br>노이즈 제거 + 예측 피처"]
+        D["Stacked Autoencoder<br>잠재 피처 추출"]
+    end
+
+    subgraph Model["GAN 모델"]
+        E["Generator: LSTM<br>112→500→1"]
+        F["Discriminator: CNN<br>Conv1D×3 → Dense×2"]
+    end
+
+    subgraph Opt["최적화"]
+        G["Rainbow DQN<br>7개 알고리즘 통합"]
+        H["PPO<br>Clipped Surrogate"]
+        I["베이지안 최적화<br>가우시안 프로세스"]
+    end
+
+    A & B & C & D --> E
+    E <--> F
+    F --> G & H & I
+    G & H & I -->|"하이퍼파라미터<br>최적화"| E
+
+    classDef core fill:#3B82F6,stroke:#2563EB,color:#FFFFFF
+    classDef model fill:#F59E0B,stroke:#D97706,color:#1A1A1A
+    classDef opt fill:#EF4444,stroke:#DC2626,color:#FFFFFF
+
+    class A,B,C,D core
+    class E,F model
+    class G,H,I opt</pre><table>
+  <thead>
+      <tr>
+          <th>구성 요소</th>
+          <th>역할</th>
+          <th>핵심 기술</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>데이터</strong></td>
+          <td>다차원 시장 맥락 구성</td>
+          <td>72개 상관 자산, BERT 감성 분석, 12개 기술적 지표</td>
+      </tr>
+      <tr>
+          <td><strong>피처 엔지니어링</strong></td>
+          <td>노이즈 제거 + 피처 확장</td>
+          <td>푸리에 변환, ARIMA, Stacked Autoencoder, XGBoost</td>
+      </tr>
+      <tr>
+          <td><strong>GAN Generator</strong></td>
+          <td>미래 주가 생성</td>
+          <td>LSTM (112→500→1), 시퀀스 길이 17일</td>
+      </tr>
+      <tr>
+          <td><strong>GAN Discriminator</strong></td>
+          <td>생성 주가 진위 판별</td>
+          <td>CNN Conv1D×3, LeakyReLU, BatchNorm</td>
+      </tr>
+      <tr>
+          <td><strong>GAN 안정화</strong></td>
+          <td>학습 수렴 보장</td>
+          <td>WGAN (Wasserstein 거리) + MHGAN (MCMC 샘플링)</td>
+      </tr>
+      <tr>
+          <td><strong>하이퍼파라미터 최적화</strong></td>
+          <td>자동 탐색</td>
+          <td>Rainbow DQN (6개 개선 통합), PPO (정책 클리핑)</td>
+      </tr>
+      <tr>
+          <td><strong>보조 최적화</strong></td>
+          <td>효율적 탐색</td>
+          <td>베이지안 최적화 (UCB, 가우시안 프로세스)</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="결론">결론</h2>
+<p>이 프로젝트는 단일 모델의 한계를 인정하고, <strong>각 기법이 고유한 역할을 수행하는 파이프라인</strong> 을 설계했다는 점에서 가치가 있다:</p>
+<ul>
+<li><strong>데이터 레이어</strong>: 상관 자산 + NLP 감성 + 기술적 지표로 다차원 시장 맥락 구성</li>
+<li><strong>신호 처리 레이어</strong>: 푸리에 변환으로 노이즈 제거, ARIMA 예측을 보조 피처로 활용</li>
+<li><strong>생성 모델 레이어</strong>: LSTM Generator + CNN Discriminator의 적대적 학습 (WGAN + MHGAN으로 안정화)</li>
+<li><strong>최적화 레이어</strong>: Rainbow DQN + PPO로 하이퍼파라미터 자동 탐색, 베이지안 최적화로 보완</li>
+</ul>
+<p>주가 예측 자체의 실용성에 대한 논쟁은 별도로, 이 프로젝트는 <strong>현대 딥러닝 기법들이 하나의 시스템에서 어떻게 조합되는지</strong> 를 보여주는 훌륭한 교육 자료다. GAN, LSTM, CNN, RL, NLP, 신호 처리, 전통 통계가 각각의 강점을 발휘하는 구조를 직접 따라가 보는 것만으로도 상당한 학습이 된다.</p>
+<p><strong>참고 자료:</strong></p>
+<ul>
+<li><a href="https://github.com/borisbanushev/stockpredictionai">stockpredictionai GitHub</a></li>
+<li><a href="https://arxiv.org/abs/1810.04805">BERT 논문</a></li>
+<li><a href="https://arxiv.org/pdf/1701.07875.pdf">WGAN 논문</a></li>
+<li><a href="https://arxiv.org/pdf/1710.02298.pdf">Rainbow DQN 논문</a></li>
+<li><a href="https://arxiv.org/pdf/1707.06347.pdf">PPO 논문</a></li>
+<li><a href="https://eng.uber.com/mh-gan/?amp">MHGAN (Uber)</a></li>
+<li><a href="https://github.com/soumith/ganhacks">GAN 학습 팁</a></li>
+<li><a href="https://github.com/fmfn/BayesianOptimization">BayesianOptimization 라이브러리</a></li>
+</ul>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 03월 04일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-03-04-agentic-engineering-9-skills/" rel="prev">
+        <span>에이전틱 엔지니어링의 9가지 핵심 스킬</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-03-04-mcp-is-dead-skills-are-future/" rel="next">
+        <span>MCP는 죽었다? AI 작업 공간의 hidden killer와 스킬의 부상</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#들어가며">들어가며</a></li>
+    <li><a href="#시스템-전체-아키텍처">시스템 전체 아키텍처</a></li>
+    <li><a href="#데이터-수집과-전처리">데이터 수집과 전처리</a>
+      <ul>
+        <li><a href="#기본-데이터-구성">기본 데이터 구성</a></li>
+        <li><a href="#72개-상관-자산">72개 상관 자산</a></li>
+        <li><a href="#통계적-품질-검증">통계적 품질 검증</a></li>
+      </ul>
+    </li>
+    <li><a href="#피처-엔지니어링-파이프라인">피처 엔지니어링 파이프라인</a>
+      <ul>
+        <li><a href="#기술적-지표">기술적 지표</a></li>
+        <li><a href="#bert-감성-분석">BERT 감성 분석</a></li>
+        <li><a href="#푸리에-변환을-이용한-노이즈-제거">푸리에 변환을 이용한 노이즈 제거</a></li>
+        <li><a href="#arima--전통-시계열-예측">ARIMA — 전통 시계열 예측</a></li>
+        <li><a href="#stacked-autoencoder-vae">Stacked Autoencoder (VAE)</a></li>
+        <li><a href="#xgboost-피처-중요도">XGBoost 피처 중요도</a></li>
+      </ul>
+    </li>
+    <li><a href="#gan-기반-주가-예측-모델">GAN 기반 주가 예측 모델</a>
+      <ul>
+        <li><a href="#gan-학습-원리">GAN 학습 원리</a></li>
+        <li><a href="#generator--lstm-아키텍처">Generator — LSTM 아키텍처</a></li>
+        <li><a href="#discriminator--cnn-아키텍처">Discriminator — CNN 아키텍처</a></li>
+        <li><a href="#wasserstein-gan-wgan">Wasserstein GAN (WGAN)</a></li>
+        <li><a href="#metropolis-hastings-gan-mhgan">Metropolis-Hastings GAN (MHGAN)</a></li>
+      </ul>
+    </li>
+    <li><a href="#학습-안정화-기법">학습 안정화 기법</a>
+      <ul>
+        <li><a href="#learning-rate-스케줄러">Learning Rate 스케줄러</a></li>
+        <li><a href="#과적합-방지">과적합 방지</a></li>
+      </ul>
+    </li>
+    <li><a href="#강화학습-기반-하이퍼파라미터-최적화">강화학습 기반 하이퍼파라미터 최적화</a>
+      <ul>
+        <li><a href="#최적화-대상-하이퍼파라미터">최적화 대상 하이퍼파라미터</a></li>
+        <li><a href="#rl-환경-설계">RL 환경 설계</a></li>
+        <li><a href="#rainbow-dqn--7개-알고리즘의-통합">Rainbow DQN — 7개 알고리즘의 통합</a></li>
+        <li><a href="#ppo--안정적-정책-최적화">PPO — 안정적 정책 최적화</a></li>
+        <li><a href="#베이지안-최적화">베이지안 최적화</a></li>
+      </ul>
+    </li>
+    <li><a href="#프레임워크와-학습-환경">프레임워크와 학습 환경</a></li>
+    <li><a href="#실험-결과">실험 결과</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/gan/" class="badge badge-secondary">GAN</a>
+    <a href="/tags/lstm/" class="badge badge-secondary">LSTM</a>
+    <a href="/tags/reinforcement-learning/" class="badge badge-secondary">Reinforcement Learning</a>
+    <a href="/tags/bert/" class="badge badge-secondary">BERT</a>
+    <a href="/tags/stock-prediction/" class="badge badge-secondary">Stock Prediction</a>
+    <a href="/tags/deep-learning/" class="badge badge-secondary">Deep Learning</a>
+    <a href="/tags/cnn/" class="badge badge-secondary">CNN</a>
+    <a href="/tags/xgboost/" class="badge badge-secondary">XGBoost</a>
+    <a href="/tags/bayesian-optimization/" class="badge badge-secondary">Bayesian Optimization</a>
+    <a href="/tags/time-series/" class="badge badge-secondary">Time Series</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
