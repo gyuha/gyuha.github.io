@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Pake: 웹페이지를 데스크톱 앱으로 변환하는 Rust 기반 경량 도구'" />
+  <title>Pake: 웹페이지를 데스크톱 앱으로 변환하는 Rust 기반 경량 도구  | 신규하 블로그</title>
+  <meta property="og:title" content="Pake: 웹페이지를 데스크톱 앱으로 변환하는 Rust 기반 경량 도구" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-03-04"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/2026-03-04-pake/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="pake" />
+  
+  <meta property="og:tags" content="tauri" />
+  
+  <meta property="og:tags" content="rust" />
+  
+  <meta property="og:tags" content="desktop-app" />
+  
+  <meta property="og:tags" content="electron-alternative" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/2026-03-04-pake/">
+          <h1>
+            Pake: 웹페이지를 데스크톱 앱으로 변환하는 Rust 기반 경량 도구
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/2026-03-04-pake/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Electron 기반 데스크톱 앱은 무겁다. 슬랙, VS Code 같은 앱을 실행하면 메모리 수백 MB가 순식간에 사라진다. <strong>Pake</strong> 는 이 문제를 Rust 기반 Tauri 프레임워크로 해결한다. 하나의 명령어로 어떤 웹페이지든 데스크톱 앱으로 변환하며, Electron 대비 20배 작은 용량(약 5MB)을 자랑한다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://github.com/tw93/Pake">GitHub - tw93/Pake</a></li>
+</ul>
+<h2 id="pake란">Pake란?</h2>
+<p>Pake는 &ldquo;Turn any webpage into a desktop app with one command&rdquo; 라는 슬로건처럼, 웹페이지를 네이티브 데스크톱 애플리케이션으로 패키징하는 오픈소스 도구다. macOS, Windows, Linux를 모두 지원하며, 핵심 기술 스택으로 Rust와 Tauri를 사용한다.</p>
+<pre class="mermaid">flowchart LR
+    classDef web fill:#e3f2fd,stroke:#1976d2,color:#0d47a1
+    classDef pake fill:#fff3e0,stroke:#f57c00,color:#e65100
+    classDef app fill:#e8f5e9,stroke:#388e3c,color:#1b5e20
+
+    W[웹페이지 URL]:::web --> P[Pake CLI]:::pake
+    P --> M[macOS 앱]:::app
+    P --> W2[Windows 앱]:::app
+    P --> L[Linux 앱]:::app</pre><h3 id="핵심-특징">핵심 특징</h3>
+<table>
+  <thead>
+      <tr>
+          <th>특징</th>
+          <th>설명</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>경량</strong></td>
+          <td>Electron 대비 20배 작은 용량, 일반적으로 약 5MB</td>
+      </tr>
+      <tr>
+          <td><strong>빠름</strong></td>
+          <td>Rust Tauri 기반, 전통적 JS 프레임워크보다 빠르고 메모리 사용량 낮음</td>
+      </tr>
+      <tr>
+          <td><strong>간편함</strong></td>
+          <td>CLI 또는 온라인 빌드로 원커맨드 패키징, 복잡한 설정 불필요</td>
+      </tr>
+      <tr>
+          <td><strong>풍부한 기능</strong></td>
+          <td>단축키, 몰입형 윈도우, 드래그 앤 드롭, 스타일 커스텀, 광고 제거 지원</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="아키텍처-electron-vs-tauri">아키텍처: Electron vs Tauri</h2>
+<p>Pake가 가벼운 이유는 Tauri 아키텍처에 있다. Electron은 Chromium 전체를 번들에 포함하지만, Tauri는 운영체제의 기본 웹뷰를 사용한다.</p>
+<pre class="mermaid">flowchart TB
+    classDef electron fill:#ffebee,stroke:#d32f2f,color:#b71c1c
+    classDef tauri fill:#e8f5e9,stroke:#388e3c,color:#1b5e20
+    classDef common fill:#fff8e1,stroke:#ffa000,color:#ff6f00
+
+    subgraph Electron["Electron (기존 방식)"]
+        E1[앱 코드]:::electron
+        E2[Node.js]:::electron
+        E3[Chromium 전체]:::electron
+        E4["번들 크기: 100MB+"]:::electron
+    end
+
+    subgraph Tauri["Tauri (Pake)"]
+        T1[앱 코드]:::tauri
+        T2[Rust 백엔드]:::tauri
+        T3[OS WebView]:::tauri
+        T4["번들 크기: ~5MB"]:::tauri
+    end
+
+    Electron -->|무거움| X[높은 메모리 사용]:::common
+    Tauri -->|가벼움| Y[낮은 메모리 사용]:::common</pre><table>
+  <thead>
+      <tr>
+          <th>비교 항목</th>
+          <th>Electron</th>
+          <th>Tauri (Pake)</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>렌더링 엔진</td>
+          <td>Chromium 번들 포함</td>
+          <td>OS 기본 WebView 사용</td>
+      </tr>
+      <tr>
+          <td>백엔드</td>
+          <td>Node.js</td>
+          <td>Rust</td>
+      </tr>
+      <tr>
+          <td>번들 크기</td>
+          <td>100MB+</td>
+          <td>~5MB</td>
+      </tr>
+      <tr>
+          <td>메모리 사용</td>
+          <td>높음</td>
+          <td>낮음</td>
+      </tr>
+      <tr>
+          <td>보안</td>
+          <td>중간</td>
+          <td>높음 (Rust 메모리 안전성)</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="사용-방법">사용 방법</h2>
+<p>Pake는 사용자 수준에 따라 세 가지 방식을 제공한다.</p>
+<pre class="mermaid">flowchart TD
+    classDef beginner fill:#e3f2fd,stroke:#1976d2,color:#0d47a1
+    classDef developer fill:#fff3e0,stroke:#f57c00,color:#e65100
+    classDef advanced fill:#f3e5f5,stroke:#7b1fa2,color:#4a148c
+
+    U[사용자] --> B{수준 선택}
+    B -->|초보자| B1[인기 패키지 다운로드<br/>또는 온라인 빌드]:::beginner
+    B -->|개발자| D1[CLI 도구 설치<br/>원커맨드 패키징]:::developer
+    B -->|고급 사용자| A1[프로젝트 클론<br/>커스텀 개발]:::advanced</pre><h3 id="1-초보자-인기-패키지-다운로드">1. 초보자: 인기 패키지 다운로드</h3>
+<p>개발 환경 없이 바로 사용할 수 있는 패키지들을 Releases 에서 다운로드할 수 있다.</p>
+<h3 id="2-개발자-cli-도구">2. 개발자: CLI 도구</h3>
+<p>CLI 를 사용하면 어떤 웹사이트든 커맨드 한 줄로 앱으로 변환할 수 있다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># Pake CLI 설치</span>
+</span></span><span style="display:flex;"><span>pnpm install -g pake-cli
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 기본 사용법 - 웹사이트 아이콘 자동 가져오기</span>
+</span></span><span style="display:flex;"><span>pake https://github.com --name GitHub
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 고급 옵션</span>
+</span></span><span style="display:flex;"><span>pake https://weekly.tw93.fun --name Weekly <span style="color:#0a3069">\
+</span></span></span><span style="display:flex;"><span>  --icon https://cdn.tw93.fun/pake/weekly.icns <span style="color:#0a3069">\
+</span></span></span><span style="display:flex;"><span>  --width <span style="color:#0550ae">1200</span> --height <span style="color:#0550ae">800</span> --hide-title-bar
+</span></span></code></pre></div><p>첫 패키징은 환경 설정 때문에 느릴 수 있지만, 이후 빌드는 빠르다.</p>
+<h3 id="3-고급-사용자-커스텀-개발">3. 고급 사용자: 커스텀 개발</h3>
+<p>프로젝트를 클론하여 스타일 커스터마이징, 기능 확장, 컨테이너 통신 등 고급 기능을 사용할 수 있다.</p>
+<p><strong>개발 환경 요구사항:</strong></p>
+<ul>
+<li>Rust &gt;= 1.85</li>
+<li>Node &gt;= 22</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># 의존성 설치</span>
+</span></span><span style="display:flex;"><span>pnpm i
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 로컬 개발 [우클릭으로 디버그 모드]</span>
+</span></span><span style="display:flex;"><span>pnpm run dev
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 애플리케이션 빌드</span>
+</span></span><span style="display:flex;"><span>pnpm run build
+</span></span></code></pre></div><h2 id="인기-패키지">인기 패키지</h2>
+<p>Pake로 만들어진 인기 앱들은 Releases에서 다운로드할 수 있다:</p>
+<table>
+  <thead>
+      <tr>
+          <th>앱</th>
+          <th>플랫폼</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>WeRead</td>
+          <td>macOS, Windows, Linux</td>
+      </tr>
+      <tr>
+          <td>Twitter</td>
+          <td>macOS, Windows, Linux</td>
+      </tr>
+      <tr>
+          <td>Grok</td>
+          <td>macOS, Windows, Linux</td>
+      </tr>
+      <tr>
+          <td>DeepSeek</td>
+          <td>macOS, Windows, Linux</td>
+      </tr>
+      <tr>
+          <td>ChatGPT</td>
+          <td>macOS, Windows, Linux</td>
+      </tr>
+      <tr>
+          <td>Gemini</td>
+          <td>macOS, Windows, Linux</td>
+      </tr>
+      <tr>
+          <td>YouTube Music</td>
+          <td>macOS, Windows, Linux</td>
+      </tr>
+      <tr>
+          <td>YouTube</td>
+          <td>macOS, Windows, Linux</td>
+      </tr>
+      <tr>
+          <td>Excalidraw</td>
+          <td>macOS, Windows, Linux</td>
+      </tr>
+      <tr>
+          <td>XiaoHongShu</td>
+          <td>macOS, Windows, Linux</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="단축키">단축키</h2>
+<p>Pake 앱에서 사용할 수 있는 기본 단축키들이다.</p>
+<pre class="mermaid">flowchart LR
+    classDef nav fill:#e8eaf6,stroke:#3949ab,color:#1a237e
+    classDef view fill:#fff3e0,stroke:#f57c00,color:#e65100
+    classDef debug fill:#fce4ec,stroke:#c2185b,color:#880e4f
+
+    subgraph Navigation["네비게이션"]
+        N1["⌘ + [ / Ctrl + ←"]:::nav
+        N2["⌘ + ] / Ctrl + →"]:::nav
+        N3["⌘ + ↑ / Ctrl + ↑"]:::nav
+        N4["⌘ + ↓ / Ctrl + ↓"]:::nav
+    end
+
+    subgraph ViewControl["화면 제어"]
+        V1["⌘ + r / Ctrl + r"]:::view
+        V2["⌘ + - / Ctrl + -"]:::view
+        V3["⌘ + = / Ctrl + ="]:::view
+        V4["⌘ + 0 / Ctrl + 0"]:::view
+    end
+
+    subgraph DebugEtc["디버그 & 기타"]
+        D1["⌘ + ⌥ + I / Ctrl + Shift + I"]:::debug
+        D2["⌘ + ⇧ + ⌫ / Ctrl + Shift + Del"]:::debug
+    end</pre><table>
+  <thead>
+      <tr>
+          <th>Mac</th>
+          <th>Windows/Linux</th>
+          <th>기능</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>⌘</code> + <code>[</code></td>
+          <td><code>Ctrl</code> + <code>←</code></td>
+          <td>이전 페이지</td>
+      </tr>
+      <tr>
+          <td><code>⌘</code> + <code>]</code></td>
+          <td><code>Ctrl</code> + <code>→</code></td>
+          <td>다음 페이지</td>
+      </tr>
+      <tr>
+          <td><code>⌘</code> + <code>↑</code></td>
+          <td><code>Ctrl</code> + <code>↑</code></td>
+          <td>페이지 맨 위로 스크롤</td>
+      </tr>
+      <tr>
+          <td><code>⌘</code> + <code>↓</code></td>
+          <td><code>Ctrl</code> + <code>↓</code></td>
+          <td>페이지 맨 아래로 스크롤</td>
+      </tr>
+      <tr>
+          <td><code>⌘</code> + <code>r</code></td>
+          <td><code>Ctrl</code> + <code>r</code></td>
+          <td>페이지 새로고침</td>
+      </tr>
+      <tr>
+          <td><code>⌘</code> + <code>w</code></td>
+          <td><code>Ctrl</code> + <code>w</code></td>
+          <td>윈도우 숨기기 (종료 아님)</td>
+      </tr>
+      <tr>
+          <td><code>⌘</code> + <code>-</code></td>
+          <td><code>Ctrl</code> + <code>-</code></td>
+          <td>페이지 축소</td>
+      </tr>
+      <tr>
+          <td><code>⌘</code> + <code>=</code></td>
+          <td><code>Ctrl</code> + <code>=</code></td>
+          <td>페이지 확대</td>
+      </tr>
+      <tr>
+          <td><code>⌘</code> + <code>0</code></td>
+          <td><code>Ctrl</code> + <code>0</code></td>
+          <td>페이지 확대/축소 리셋</td>
+      </tr>
+      <tr>
+          <td><code>⌘</code> + <code>L</code></td>
+          <td><code>Ctrl</code> + <code>L</code></td>
+          <td>현재 페이지 URL 복사</td>
+      </tr>
+      <tr>
+          <td><code>⌘</code> + <code>⇧</code> + <code>⌥</code> + <code>V</code></td>
+          <td><code>Ctrl</code> + <code>Shift</code> + <code>V</code></td>
+          <td>스타일 일치 붙여넣기</td>
+      </tr>
+      <tr>
+          <td><code>⌘</code> + <code>⇧</code> + <code>H</code></td>
+          <td><code>Ctrl</code> + <code>Shift</code> + <code>H</code></td>
+          <td>홈페이지로 이동</td>
+      </tr>
+      <tr>
+          <td><code>⌘</code> + <code>⌥</code> + <code>I</code></td>
+          <td><code>Ctrl</code> + <code>Shift</code> + <code>I</code></td>
+          <td>개발자 도구 토글 (디버그 전용)</td>
+      </tr>
+      <tr>
+          <td><code>⌘</code> + <code>⇧</code> + <code>⌫</code></td>
+          <td><code>Ctrl</code> + <code>Shift</code> + <code>Del</code></td>
+          <td>캐시 삭제 &amp; 재시작</td>
+      </tr>
+  </tbody>
+</table>
+<p>추가 기능:</p>
+<ul>
+<li>타이틀바 더블클릭으로 전체화면 전환</li>
+<li>Mac 사용자: 제스처로 이전/다음 페이지 이동, 타이틀바 드래그로 윈도우 이동</li>
+<li>새 메뉴에서 네비게이션, 확대/축소, 윈도우 제어 옵션 제공</li>
+</ul>
+<h2 id="pake를-선택해야-하는-이유">Pake를 선택해야 하는 이유</h2>
+<pre class="mermaid">flowchart TD
+    classDef problem fill:#ffebee,stroke:#d32f2f,color:#b71c1c
+    classDef solution fill:#e8f5e9,stroke:#388e3c,color:#1b5e20
+    classDef benefit fill:#e3f2fd,stroke:#1976d2,color:#0d47a1
+
+    subgraph Problems["기존 방식의 문제"]
+        P1[Electron 앱 용량 100MB+]:::problem
+        P2[높은 메모리 사용량]:::problem
+        P3[느린 시작 속도]:::problem
+    end
+
+    subgraph Solutions["Pake 해결책"]
+        S1[Tauri + Rust 기반]:::solution
+        S2[OS WebView 사용]:::solution
+        S3[원커맨드 패키징]:::solution
+    end
+
+    subgraph Benefits["결과"]
+        B1[용량 ~5MB]:::benefit
+        B2[낮은 메모리 사용]:::benefit
+        B3[빠른 성능]:::benefit
+    end
+
+    Problems --> Solutions --> Benefits</pre><table>
+  <thead>
+      <tr>
+          <th>상황</th>
+          <th>권장 도구</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>웹사이트를 데스크톱 앱처럼 사용하고 싶음</td>
+          <td>Pake</td>
+      </tr>
+      <tr>
+          <td>Electron 앱의 무거움에 불만</td>
+          <td>Pake</td>
+      </tr>
+      <tr>
+          <td>개발 없이 바로 사용하고 싶음</td>
+          <td>Pake (인기 패키지)</td>
+      </tr>
+      <tr>
+          <td>커스텀 기능이 필요함</td>
+          <td>Pake (커스텀 개발)</td>
+      </tr>
+      <tr>
+          <td>복잡한 네이티브 기능 필요</td>
+          <td>Electron 또는 Tauri 직접 개발</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li><strong>Pake</strong> 는 하나의 명령어로 웹페이지를 데스크톱 앱으로 변환한다</li>
+<li><strong>Electron 대비 20배 작은 용량</strong> (약 5MB)과 <strong>낮은 메모리 사용량</strong> 이 특징이다</li>
+<li><strong>Rust Tauri</strong> 기반으로 빠르고 안전하다</li>
+<li><strong>macOS, Windows, Linux</strong> 를 모두 지원한다</li>
+<li><strong>CLI, 온라인 빌드, 커스텀 개발</strong> 세 가지 사용 방식을 제공한다</li>
+<li>단축키, 몰입형 윈도우, 스타일 커스텀, 광고 제거 등 풍부한 기능을 지원한다</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>Pake는 웹 앱을 데스크톱 환경에서 사용하고 싶은 사용자에게 완벽한 솔루션이다. Electron 의 무거움 없이 네이티브 앱 경험을 제공하며, 개발자가 아니더라도 인기 패키지를 다운로드하거나 온라인 빌드로 바로 사용할 수 있다. ChatGPT, Gemini, DeepSeek 같은 AI 도구나 YouTube Music, WeRead 같은 서비스를 별도 브라우저 탭이 아닌 독립 앱으로 사용하고 싶다면 Pake를 시도해 보자.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pnpm install -g pake-cli
+</span></span><span style="display:flex;"><span>pake https://your-favorite-site.com --name MyApp
+</span></span></code></pre></div>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 03월 04일 16시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/development">Development</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/tools">Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-03-04-oh-my-claudecode/" rel="prev">
+        <span>oh-my-claudecode: Claude Code를 위한 멀티 에이전트 오케스트레이션 플러그인</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-03-04-anthropic-skilljar-courses/" rel="next">
+        <span>Anthropic Skilljar 공식 강좌 가이드 - Claude AI 마스터하기</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#pake란">Pake란?</a>
+      <ul>
+        <li><a href="#핵심-특징">핵심 특징</a></li>
+      </ul>
+    </li>
+    <li><a href="#아키텍처-electron-vs-tauri">아키텍처: Electron vs Tauri</a></li>
+    <li><a href="#사용-방법">사용 방법</a>
+      <ul>
+        <li><a href="#1-초보자-인기-패키지-다운로드">1. 초보자: 인기 패키지 다운로드</a></li>
+        <li><a href="#2-개발자-cli-도구">2. 개발자: CLI 도구</a></li>
+        <li><a href="#3-고급-사용자-커스텀-개발">3. 고급 사용자: 커스텀 개발</a></li>
+      </ul>
+    </li>
+    <li><a href="#인기-패키지">인기 패키지</a></li>
+    <li><a href="#단축키">단축키</a></li>
+    <li><a href="#pake를-선택해야-하는-이유">Pake를 선택해야 하는 이유</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/pake/" class="badge badge-secondary">Pake</a>
+    <a href="/tags/tauri/" class="badge badge-secondary">Tauri</a>
+    <a href="/tags/rust/" class="badge badge-secondary">Rust</a>
+    <a href="/tags/desktop-app/" class="badge badge-secondary">Desktop-App</a>
+    <a href="/tags/electron-alternative/" class="badge badge-secondary">Electron-Alternative</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
