@@ -131,6 +131,7 @@
     style A fill:#e3f2fd
     style B fill:#ffebee</pre><p>A 엔지니어는 작업 전에 컨텍스트를 먼저 세팅합니다. 레포의 코딩 가이드라인, lint 규칙, 기존 코드 패턴을 LLM에게 주입한 뒤 작업을 시킵니다. 결과물은 처음부터 팀 컨벤션에 맞고, 10분이면 머지 가능한 상태가 됩니다.</p>
 <p>B 엔지니어는 &ldquo;이 함수 리팩토링해줘&quot;로 시작합니다. AI는 일반적인 스타일로 코드를 뱉고, 이후 1시간 동안 &ldquo;우리 팀은 이렇게 안 해&quot;를 반복하며 수정 루프에 갇힙니다.</p>
+<!--more-->
 <h2 id="the-frictionless-harness-맥락이-끊기지-않는-경험">The Frictionless Harness: 맥락이 끊기지 않는 경험</h2>
 <p>Open Interpreter, OpenCode 등 훌륭한 시도들은 많았습니다. 하지만 개발자에게 &lsquo;새로운 도구를 쓴다&rsquo;는 감각은 여전히 미세한 마찰(Friction)을 일으킵니다. 브라우저로 나가서 챗봇에게 코드를 붙여넣는 순간, 문맥 교환(Context Switching) 비용이 발생하기 때문이죠.</p>
 <p>Claude Code가 제공하는 TUI(Terminal User Interface) 환경의 가치는 바로 이 지점에 있다고 생각합니다. 호불호를 떠나, 개발자가 가장 많은 시간을 보내는 터미널 안에서 자연어와 코드가 끊김 없이 섞이는 경험(Seamless Integration)을 제공한다는 점입니다.</p>
@@ -259,15 +260,17 @@
     participant H as Hook Plugin
     participant G as Git
 
+    rect rgb(225, 245, 254)
+        note right of H: Hook Plugin
+    end
+
     D->>C: 커밋 요청
     C->>G: git commit 시도
     H->>H: 현재 브랜치 감지
     H->>C: main 브랜치임을 알림
     C->>D: feature/ 브랜치 생성 제안
     D->>C: 승인
-    C->>G: feature/ 브랜치 생성 및 커밋
-
-    style H fill:#e1f5fe</pre><h3 id="scenario-2-피처-개발-자동화">Scenario 2: 피처 개발 자동화</h3>
+    C->>G: feature/ 브랜치 생성 및 커밋</pre><h3 id="scenario-2-피처-개발-자동화">Scenario 2: 피처 개발 자동화</h3>
 <ol>
 <li><code>/new-feature</code> 입력 → Claude가 대화를 통해 구현할 기능의 맥락을 수집</li>
 <li>Jira 이슈 발급, 브랜치 생성, 구현 계획 작성 → 엔지니어가 계획을 검토/승인</li>
@@ -433,9 +436,9 @@
   </div>
   <div class="widget-content">
      
-    <a href="/tags/llm/" class="badge badge-secondary">Llm</a>
+    <a href="/tags/llm/" class="badge badge-secondary">LLM</a>
     <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
-    <a href="/tags/context-engineering/" class="badge badge-secondary">Context Engineering</a>
+    <a href="/tags/context-engineering/" class="badge badge-secondary">Context-Engineering</a>
     <a href="/tags/harness/" class="badge badge-secondary">Harness</a>
     <a href="/tags/marketplace/" class="badge badge-secondary">Marketplace</a>
     <a href="/tags/%EC%A1%B0%EC%A7%81-%EC%83%9D%EC%82%B0%EC%84%B1/" class="badge badge-secondary">조직 생산성</a>
