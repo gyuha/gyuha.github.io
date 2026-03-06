@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude Code &#43; NotebookLM: 무료 리서치 스택 구축 가이드'" />
+  <title>Claude Code &#43; NotebookLM: 무료 리서치 스택 구축 가이드  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude Code &#43; NotebookLM: 무료 리서치 스택 구축 가이드" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-03-06"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/2026-03-06-claude-code-notebooklm-research-workflow/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="notebooklm" />
+  
+  <meta property="og:tags" content="rag" />
+  
+  <meta property="og:tags" content="research-workflow" />
+  
+  <meta property="og:tags" content="youtube-scraping" />
+  
+  <meta property="og:tags" content="mermaid" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/2026-03-06-claude-code-notebooklm-research-workflow/">
+          <h1>
+            Claude Code &#43; NotebookLM: 무료 리서치 스택 구축 가이드
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/2026-03-06-claude-code-notebooklm-research-workflow/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Claude Code는 강력한 리서치 에이전트지만, 단독으로 사용하면 웹 검색 결과에 의존하는 수준에 머물기 쉽습니다. Chase AI 채널의 영상에서는 Claude Code와 Google NotebookLM을 결합하여 <strong>YouTube 자동 스크래핑 → RAG 분석 → 시각화 산출물</strong>까지 처리하는 무료 워크플로우를 소개합니다. 이 글은 해당 영상을 바탕으로 전체 파이프라인을 단계별로 정리한 노트입니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=usTeU4Uh0iM">https://www.youtube.com/watch?v=usTeU4Uh0iM</a></li>
+</ul>
+<h2 id="전체-워크플로우-개요">전체 워크플로우 개요</h2>
+<p>이 워크플로우의 핵심은 <strong>토큰 소비 없이</strong> 대규모 리서치를 수행하는 것입니다. Claude Code는 YouTube URL 수집과 NotebookLM 요청만 담당하고, 실제 분석은 Google NotebookLM 서버에서 이루어집니다.</p>
+<pre class="mermaid">flowchart LR
+    subgraph 입력단계["1단계: 소스 수집"]
+        A["YouTube 검색<br>(YT-DLP 스크립트)"] --> B["URL 목록 추출<br>(최대 50개)"]
+    end
+    subgraph 분석단계["2단계: RAG 분석"]
+        C["NotebookLM<br>노트 생성"] --> D["자막 기반<br>분석 수행"]
+    end
+    subgraph 산출단계["3단계: 결과물 생성"]
+        E["텍스트 분석"] --> F["시각화 자료<br>(인포그래픽/슬라이드)"]
+    end
+    입력단계 --> 분석단계
+    분석단계 --> 산출단계
+
+    classDef phase1 fill:#4A90D9,stroke:#2E6BA4,color:#fff
+    classDef phase2 fill:#7BC67E,stroke:#5AA05C,color:#fff
+    classDef phase3 fill:#E8A838,stroke:#C48A2D,color:#fff
+    class A,B phase1
+    class C,D phase2
+    class E,F phase3</pre><p><strong>주요 장점:</strong></p>
+<ul>
+<li><strong>무료:</strong> NotebookLM은 Google에서 무료로 제공하는 RAG 시스템입니다 (<a href="https://youtu.be/usTeU4Uh0iM?t=30">t=30</a>)</li>
+<li><strong>토큰 절약:</strong> 분석이 Claude Code가 아닌 Google 서버에서 수행되어 토큰 소비가 최소화됩니다 (<a href="https://youtu.be/usTeU4Uh0iM?t=580">t=580</a>)</li>
+<li><strong>다양한 산출물:</strong> 인포그래픽, 슬라이드 덱, 팟캐스트, 플래시카드 등을 자동 생성합니다 (<a href="https://youtu.be/usTeU4Uh0iM?t=40">t=40</a>)</li>
+</ul>
+<h2 id="데모-한-번의-프롬프트로-끝내는-리서치">데모: 한 번의 프롬프트로 끝내는 리서치</h2>
+<p>영상에서 보여주는 데모는 다음과 같은 단일 프롬프트로 실행됩니다:</p>
+
+  <blockquote>
+    <p>&ldquo;Claude Code skills 관련 최신 트렌딩 YouTube 영상을 찾아서 NotebookLM에 업로드하고, Top 5 Claude Code 스킬을 분석한 후 손글씨 블루프린트 스타일의 인포그래픽을 만들어 줘.&rdquo;</p>
+
+  </blockquote>
+
+<pre class="mermaid">sequenceDiagram
+    participant User as 사용자
+    participant CC as Claude Code
+    participant YT as YouTube
+    participant NLM as NotebookLM
+    participant NB as Nano Banana Pro
+
+    User->>CC: 단일 프롬프트 입력
+    CC->>YT: YouTube 검색 스킬 실행
+    YT-->>CC: 20개 영상 URL 반환
+    CC->>NLM: NotebookLM 스킬로 소스 업로드
+    NLM->>NLM: 자막 기반 분석 수행
+    NLM-->>CC: Top 5 스킬 분석 결과
+    CC->>NB: 인포그래픽 생성 요청
+    NB-->>CC: 블루프린트 스타일 인포그래픽
+    CC-->>User: 최종 결과물 전달</pre><p><strong>실행 결과:</strong></p>
+<ul>
+<li>Claude Code가 YouTube에서 20개 영상 URL을 자동 수집</li>
+<li>NotebookLM에 소스로 업로드 (제목, 크리에이터, 조회수, 재생시간 포함)</li>
+<li>NotebookLM이 Top 5 Claude Code 스킬과 신흥 트렌드 분석</li>
+<li>Nano Banana Pro를 통해 요청한 스타일의 인포그래픽 자동 생성 (<a href="https://youtu.be/usTeU4Uh0iM?t=80">t=80</a>)</li>
+</ul>
+<h2 id="왜-claude-code--notebooklm-조합인가">왜 Claude Code + NotebookLM 조합인가?</h2>
+<h3 id="이유-1-분석-비용-제로">이유 1: 분석 비용 제로</h3>
+<p>기존 방식으로 YouTube 리서치 파이프라인을 구축하려면 다음이 필요합니다:</p>
+<ul>
+<li>스크래핑 시스템</li>
+<li>RAG 시스템 구축</li>
+<li>분석 엔진</li>
+<li>시각화 도구</li>
+</ul>
+<p>이 모든 것을 직접 구축하면 <strong>시간과 비용이 많이 들고 유지보수가 어렵습니다</strong>. 반면 NotebookLM은 이 모든 기능을 무료로 제공합니다 (<a href="https://youtu.be/usTeU4Uh0iM?t=180">t=180</a>).</p>
+<pre class="mermaid">flowchart TD
+    subgraph 기존방식["기존: 직접 구축"]
+        A1["스크래핑 시스템"] --> B1["RAG 구축"]
+        B1 --> C1["분석 엔진"]
+        C1 --> D1["시각화 도구"]
+        D1 --> E1["💰 높은 비용 + 복잡한 유지보수"]
+    end
+    subgraph 새로운방식["Claude Code + NotebookLM"]
+        A2["Claude Code"] --> B2["NotebookLM"]
+        B2 --> C2["🆓 무료 + 간단한 설정"]
+    end
+
+    classDef old fill:#D96B6B,stroke:#B45252,color:#fff
+    classDef new fill:#7BC67E,stroke:#5AA05C,color:#fff
+    class A1,B1,C1,D1,E1 old
+    class A2,B2,C2 new</pre><h3 id="이유-2-claude-code-생태계와의-통합">이유 2: Claude Code 생태계와의 통합</h3>
+<p>NotebookLM만 단독으로 사용해도 되지만, Claude Code와 결합하면 <strong>분석 결과를 Claude Code 생태계로 바로 가져올 수 있습니다</strong>. 이는 단순히 소스 입력 과정을 자동화하는 것 이상의 가치를 제공합니다 (<a href="https://youtu.be/usTeU4Uh0iM?t=140">t=140</a>).</p>
+<h3 id="이유-3-api보다-더-많은-기능">이유 3: API보다 더 많은 기능</h3>
+<p>NotebookLM-py를 사용하면 웹 UI에서 제공하는 기능 외에도 <strong>배치 다운로드, 퀴즈/플래시카드 내보내기</strong> 등 추가 기능을 사용할 수 있습니다 (<a href="https://youtu.be/usTeU4Uh0iM?t=400">t=400</a>).</p>
+<h2 id="설정-가이드-5분-만에-구축하기">설정 가이드: 5분 만에 구축하기</h2>
+<h3 id="전제-조건">전제 조건</h3>
+<pre class="mermaid">flowchart LR
+    A["Claude Code 설치"] --> B["Python 환경"]
+    B --> C["별도 터미널<br>(2개 필요)"]
+    C --> D["Chrome 브라우저"]
+
+    classDef req fill:#4A90D9,stroke:#2E6BA4,color:#fff
+    class A,B,C,D req</pre><h3 id="step-1-youtube-검색-스킬-설치">Step 1: YouTube 검색 스킬 설치</h3>
+<p>YouTube 검색 스킬은 <strong>YT-DLP</strong> 의존성을 사용하여 YouTube 메타데이터를 스크래핑합니다 (<a href="https://youtu.be/usTeU4Uh0iM?t=320">t=320</a>).</p>
+<p><strong>설치 방법 (두 가지 옵션):</strong></p>
+<ol>
+<li><strong>Claude Code에게 구축 요청:</strong> &ldquo;YT-DLP 의존성을 사용해서 YouTube 스크래퍼 스킬을 만들어 줘&rdquo;</li>
+<li><strong>스킬 파일 다운로드:</strong> Chase AI의 무료 Skool 커뮤니티에서 <code>youtube-search-skill-setup.md</code> 파일을 받아 Claude Code에 전달</li>
+</ol>
+<pre class="mermaid">flowchart TD
+    A{"설치 방법 선택"}
+    A -->|"옵션 1"| B["Claude Code에<br>직접 요청"]
+    A -->|"옵션 2"| C["Skool 커뮤니티에서<br>파일 다운로드"]
+    B --> D["스킬 자동 생성"]
+    C --> E["파일을 Claude Code에 전달"]
+    D --> F["YouTube 검색 스킬 완료"]
+    E --> F
+
+    classDef decision fill:#E8A838,stroke:#C48A2D,color:#fff
+    classDef action fill:#4A90D9,stroke:#2E6BA4,color:#fff
+    classDef result fill:#7BC67E,stroke:#5AA05C,color:#fff
+    class A decision
+    class B,C,D,E action
+    class F result</pre><h3 id="step-2-notebooklm-py-설치">Step 2: NotebookLM-py 설치</h3>
+<p>NotebookLM은 공개 API를 제공하지 않지만, <strong>Tang Ling</strong> 이 만든 비공식 Python API를 사용할 수 있습니다 (<a href="https://youtu.be/usTeU4Uh0iM?t=300">t=300</a>).</p>
+<p><strong>설치 명령어 (별도 터미널에서 실행):</strong></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># NotebookLM-py 설치</span>
+</span></span><span style="display:flex;"><span>pip install notebooklm-py
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># NotebookLM 로그인 (최초 1회만 필요)</span>
+</span></span><span style="display:flex;"><span>notebooklm login
+</span></span></code></pre></div><p>로그인 명령어를 실행하면 Chrome 창이 열리고 Google 계정으로 로그인하면 됩니다. 이 과정은 한 번만 수행하면 됩니다 (<a href="https://youtu.be/usTeU4Uh0iM?t=360">t=360</a>).</p>
+<h3 id="step-3-notebooklm-스킬-설치">Step 3: NotebookLM 스킬 설치</h3>
+<p>NotebookLM 스킬은 Claude Code에게 NotebookLM을 어떻게 사용할지 알려주는 프롬프트 파일입니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># 스킬 설치 (터미널에서 실행 또는 Claude Code에 요청)</span>
+</span></span><span style="display:flex;"><span>claude skill add notebooklm
+</span></span></code></pre></div><p><strong>스킬이 포함하는 내용:</strong></p>
+<ul>
+<li>노트 생성 방법</li>
+<li>콘텐츠 생성 방법</li>
+<li>분석 요청 방법</li>
+<li>산출물 내보내기 방법</li>
+</ul>
+<h2 id="실전-사용법-단계별-실행">실전 사용법: 단계별 실행</h2>
+<h3 id="1단계-youtube-소스-수집">1단계: YouTube 소스 수집</h3>
+<p>YouTube 검색 스킬을 사용하여 원하는 주제의 영상을 찾습니다.</p>
+<pre class="mermaid">flowchart LR
+    A["/yt-search 실행"] --> B["query: claude code skills"]
+    B --> C["count: 20"]
+    C --> D["결과 확인<br>(제목/조회수/크리에이터)"]
+    D --> E{"소스 만족?"}
+    E -->|"Yes"| F["다음 단계 진행"]
+    E -->|"No"| G["쿼리 수정"]
+
+    classDef action fill:#4A90D9,stroke:#2E6BA4,color:#fff
+    classDef decision fill:#E8A838,stroke:#C48A2D,color:#fff
+    classDef result fill:#7BC67E,stroke:#5AA05C,color:#fff
+    class A,B,C,D action
+    class E decision
+    class F result
+    class G action</pre><p><strong>사용 예시:</strong></p>
+<ul>
+<li>슬래시 커맨드: <code>/yt-search query=&quot;claude code skills&quot; count=20</code></li>
+<li>자연어: &ldquo;Claude Code 스킬 관련 최신 YouTube 영상 20개를 찾아 줘&rdquo;</li>
+</ul>
+<p>결과로 반환되는 정보:</p>
+<ul>
+<li>영상 제목</li>
+<li>크리에이터 이름</li>
+<li>조회수</li>
+<li>재생 시간</li>
+<li>업로드 날짜</li>
+<li>YouTube URL</li>
+</ul>
+<h3 id="2단계-notebooklm에-소스-업로드">2단계: NotebookLM에 소스 업로드</h3>
+<p>수집한 URL을 NotebookLM 노트로 만듭니다.</p>
+
+  <blockquote>
+    <p>&ldquo;이 소스들을 사용해서 &lsquo;Claude Code Skills Analysis&rsquo;라는 제목의 NotebookLM 노트를 생성해 줘.&rdquo;</p>
+
+  </blockquote>
+
+<pre class="mermaid">flowchart TD
+    A["URL 목록 전달"] --> B["NotebookLM 노트 생성"]
+    B --> C["소스 업로드 시작"]
+    C --> D["자막 추출 및 처리"]
+    D --> E["노트 준비 완료<br>(최대 50개 소스)"]
+
+    classDef action fill:#4A90D9,stroke:#2E6BA4,color:#fff
+    classDef result fill:#7BC67E,stroke:#5AA05C,color:#fff
+    class A,B,C,D action
+    class E result</pre><p><strong>주의사항:</strong> NotebookLM은 <strong>최대 50개 소스</strong>까지만 지원합니다 (<a href="https://youtu.be/usTeU4Uh0iM?t=540">t=540</a>).</p>
+<h3 id="3단계-분석-요청">3단계: 분석 요청</h3>
+<p>노트가 준비되면 NotebookLM에 분석을 요청합니다.</p>
+
+  <blockquote>
+    <p>&ldquo;이 영상들을 바탕으로 NotebookLM이 생각하는 최고의 Claude Code 스킬은 무엇인가?&rdquo;</p>
+
+  </blockquote>
+
+<p><strong>핵심 포인트:</strong> 모든 분석은 Google 서버에서 수행되므로 Claude Code는 <strong>소량의 토큰만 소비</strong>합니다. 요청을 보내고 결과를 받아오는 역할만 하기 때문입니다 (<a href="https://youtu.be/usTeU4Uh0iM?t=580">t=580</a>).</p>
+<h3 id="4단계-산출물-생성">4단계: 산출물 생성</h3>
+<p>NotebookLM에서 제공하는 다양한 산출물을 요청할 수 있습니다:</p>
+<pre class="mermaid">flowchart LR
+    A["NotebookLM<br>분석 완료"] --> B["텍스트 분석"]
+    A --> C["AI 오디오 오버뷰<br>(팟캐스트)"]
+    A --> D["마인드맵"]
+    A --> E["플래시카드"]
+    A --> F["인포그래픽"]
+    A --> G["슬라이드 덱"]
+
+    classDef source fill:#4A90D9,stroke:#2E6BA4,color:#fff
+    classDef output fill:#7BC67E,stroke:#5AA05C,color:#fff
+    class A source
+    class B,C,D,E,F,G output</pre><p><strong>요청 예시:</strong></p>
+<ul>
+<li>&ldquo;이 분석을 바탕으로 인포그래픽을 만들어 줘&rdquo;</li>
+<li>&ldquo;슬라이드 덱을 생성해 줘&rdquo;</li>
+<li>&ldquo;플래시카드로 만들어 줘&rdquo;</li>
+<li>&ldquo;AI 오디오 오버뷰를 생성해 줘&rdquo;</li>
+</ul>
+<h2 id="토큰-절약-메커니즘">토큰 절약 메커니즘</h2>
+<pre class="mermaid">flowchart LR
+    subgraph 기존방식["기존: Claude Code 단독"]
+        direction LR
+        A1["전체 자막 텍스트"] --> B1["Claude가 분석"]
+        B1 --> C1["💰 많은 토큰 소비"]
+    end
+    subgraph 새로운방식["Claude Code + NotebookLM"]
+        direction LR
+        A2["URL만 전달"] --> B2["NotebookLM에서 분석"]
+        B2 --> C2["결과만 반환"]
+        C2 --> D2["🆓 최소 토큰 소비"]
+    end
+
+    classDef old fill:#D96B6B,stroke:#B45252,color:#fff
+    classDef new fill:#7BC67E,stroke:#5AA05C,color:#fff
+    class A1,B1,C1 old
+    class A2,B2,C2,D2 new</pre><p><strong>토큰 절약 원리:</strong></p>
+<ol>
+<li>Claude Code는 YouTube URL만 NotebookLM에 전달</li>
+<li>NotebookLM이 자막을 다운로드하고 분석 수행</li>
+<li>분석 결과만 Claude Code로 반환</li>
+<li>Claude Code는 전체 자막을 처리하지 않음</li>
+</ol>
+<p>이 방식으로 <strong>수천 페이지 분량의 자막</strong>도 처리할 수 있습니다.</p>
+<h2 id="활용-시나리오">활용 시나리오</h2>
+<h3 id="시나리오-1-기술-트렌드-리서치">시나리오 1: 기술 트렌드 리서치</h3>
+<pre class="mermaid">flowchart LR
+    A["특정 기술 키워드<br>YouTube 검색"] --> B["Top 20 영상 수집"]
+    B --> C["NotebookLM 분석"]
+    C --> D["트렌드 리포트 생성"]
+
+    classDef action fill:#4A90D9,stroke:#2E6BA4,color:#fff
+    classDef result fill:#7BC67E,stroke:#5AA05C,color:#fff
+    class A,B action
+    class C,D result</pre><h3 id="시나리오-2-경쟁사-분석">시나리오 2: 경쟁사 분석</h3>
+<ul>
+<li>경쟁사 관련 YouTube 영상 수집</li>
+<li>NotebookLM으로 시장 반응 분석</li>
+<li>인포그래픽으로 시각화</li>
+</ul>
+<h3 id="시나리오-3-학습-자료-정리">시나리오 3: 학습 자료 정리</h3>
+<ul>
+<li>특정 주제의 교육 영상 수집</li>
+<li>NotebookLM으로 핵심 개념 추출</li>
+<li>플래시카드로 변환하여 학습</li>
+</ul>
+<h2 id="한계점과-주의사항">한계점과 주의사항</h2>
+<h3 id="한계점">한계점</h3>
+<ol>
+<li><strong>소스 제한:</strong> NotebookLM은 노트당 최대 50개 소스까지만 지원합니다 (<a href="https://youtu.be/usTeU4Uh0iM?t=540">t=540</a>)</li>
+<li><strong>비공식 API:</strong> NotebookLM-py는 Google에서 공식 지원하지 않는 비공식 라이브러리입니다</li>
+<li><strong>YouTube 자막 의존:</strong> 자막이 없는 영상은 분석할 수 없습니다</li>
+</ol>
+<h3 id="주의사항">주의사항</h3>
+<ol>
+<li><strong>별도 터미널 필요:</strong> NotebookLM-py 설치와 로그인은 Claude Code 터미널이 아닌 <strong>별도 터미널</strong>에서 수행해야 합니다 (<a href="https://youtu.be/usTeU4Uh0iM?t=340">t=340</a>)</li>
+<li><strong>최초 1회 로그인:</strong> <code>notebooklm login</code> 명령어로 Google 계정 인증이 필요합니다</li>
+<li><strong>소스 검증:</strong> NotebookLM 분석 결과는 언제든 NotebookLM 웹 UI에서 직접 확인할 수 있습니다</li>
+</ol>
+<h2 id="핵심-요약">핵심 요약</h2>
+<table>
+  <thead>
+      <tr>
+          <th>항목</th>
+          <th>내용</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>핵심 도구</strong></td>
+          <td>Claude Code + NotebookLM-py + YouTube 검색 스킬</td>
+      </tr>
+      <tr>
+          <td><strong>설정 시간</strong></td>
+          <td>약 5분 (<a href="https://youtu.be/usTeU4Uh0iM?t=20">t=20</a>)</td>
+      </tr>
+      <tr>
+          <td><strong>비용</strong></td>
+          <td>무료</td>
+      </tr>
+      <tr>
+          <td><strong>소스 제한</strong></td>
+          <td>노트당 최대 50개</td>
+      </tr>
+      <tr>
+          <td><strong>주요 산출물</strong></td>
+          <td>텍스트 분석, 인포그래픽, 슬라이드, 팟캐스트, 플래시카드</td>
+      </tr>
+      <tr>
+          <td><strong>토큰 절약</strong></td>
+          <td>분석은 Google 서버에서 수행</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="결론">결론</h2>
+<p>Claude Code와 NotebookLM의 조합은 <strong>무료로 강력한 리서치 파이프라인</strong>을 구축할 수 있게 해줍니다. 직접 RAG 시스템을 구축하는 것보다 훨씬 간단하고, 분석 비용도 들지 않습니다. 특히 YouTube 콘텐츠를 기반으로 지식 베이스를 구축하고 싶은 경우, 이 워크플로우는 매우 실용적인 선택입니다.</p>
+<p>설정이 간단하고(약 5분), 일단 설정하면 자연어로 모든 작업을 수행할 수 있다는 점이 큰 장점입니다. YouTube 리서치를 자주 수행한다면 이 조합을 꼭 활용해 보시길 권장합니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 03월 06일 10시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/productivity">Productivity</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-03-06-claude-code-features-guide/" rel="prev">
+        <span>Claude Code 모든 기능 활용 가이드</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#전체-워크플로우-개요">전체 워크플로우 개요</a></li>
+    <li><a href="#데모-한-번의-프롬프트로-끝내는-리서치">데모: 한 번의 프롬프트로 끝내는 리서치</a></li>
+    <li><a href="#왜-claude-code--notebooklm-조합인가">왜 Claude Code + NotebookLM 조합인가?</a>
+      <ul>
+        <li><a href="#이유-1-분석-비용-제로">이유 1: 분석 비용 제로</a></li>
+        <li><a href="#이유-2-claude-code-생태계와의-통합">이유 2: Claude Code 생태계와의 통합</a></li>
+        <li><a href="#이유-3-api보다-더-많은-기능">이유 3: API보다 더 많은 기능</a></li>
+      </ul>
+    </li>
+    <li><a href="#설정-가이드-5분-만에-구축하기">설정 가이드: 5분 만에 구축하기</a>
+      <ul>
+        <li><a href="#전제-조건">전제 조건</a></li>
+        <li><a href="#step-1-youtube-검색-스킬-설치">Step 1: YouTube 검색 스킬 설치</a></li>
+        <li><a href="#step-2-notebooklm-py-설치">Step 2: NotebookLM-py 설치</a></li>
+        <li><a href="#step-3-notebooklm-스킬-설치">Step 3: NotebookLM 스킬 설치</a></li>
+      </ul>
+    </li>
+    <li><a href="#실전-사용법-단계별-실행">실전 사용법: 단계별 실행</a>
+      <ul>
+        <li><a href="#1단계-youtube-소스-수집">1단계: YouTube 소스 수집</a></li>
+        <li><a href="#2단계-notebooklm에-소스-업로드">2단계: NotebookLM에 소스 업로드</a></li>
+        <li><a href="#3단계-분석-요청">3단계: 분석 요청</a></li>
+        <li><a href="#4단계-산출물-생성">4단계: 산출물 생성</a></li>
+      </ul>
+    </li>
+    <li><a href="#토큰-절약-메커니즘">토큰 절약 메커니즘</a></li>
+    <li><a href="#활용-시나리오">활용 시나리오</a>
+      <ul>
+        <li><a href="#시나리오-1-기술-트렌드-리서치">시나리오 1: 기술 트렌드 리서치</a></li>
+        <li><a href="#시나리오-2-경쟁사-분석">시나리오 2: 경쟁사 분석</a></li>
+        <li><a href="#시나리오-3-학습-자료-정리">시나리오 3: 학습 자료 정리</a></li>
+      </ul>
+    </li>
+    <li><a href="#한계점과-주의사항">한계점과 주의사항</a>
+      <ul>
+        <li><a href="#한계점">한계점</a></li>
+        <li><a href="#주의사항">주의사항</a></li>
+      </ul>
+    </li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/notebooklm/" class="badge badge-secondary">Notebooklm</a>
+    <a href="/tags/rag/" class="badge badge-secondary">Rag</a>
+    <a href="/tags/research-workflow/" class="badge badge-secondary">Research-Workflow</a>
+    <a href="/tags/youtube-scraping/" class="badge badge-secondary">Youtube-Scraping</a>
+    <a href="/tags/mermaid/" class="badge badge-secondary">Mermaid</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
