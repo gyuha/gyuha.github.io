@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '2026년, 그냥 Postgres 쓰세요 — 7개 특화 DB를 대체하는 PostgreSQL 확장 생태계'" />
+  <title>2026년, 그냥 Postgres 쓰세요 — 7개 특화 DB를 대체하는 PostgreSQL 확장 생태계  | 신규하 블로그</title>
+  <meta property="og:title" content="2026년, 그냥 Postgres 쓰세요 — 7개 특화 DB를 대체하는 PostgreSQL 확장 생태계" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-03-08"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/2026-03-08-just-use-postgres-2026/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="PostgreSQL" />
+  
+  <meta property="og:tags" content="pgvector" />
+  
+  <meta property="og:tags" content="TimescaleDB" />
+  
+  <meta property="og:tags" content="Elasticsearch" />
+  
+  <meta property="og:tags" content="pgvectorscale" />
+  
+  <meta property="og:tags" content="BM25" />
+  
+  <meta property="og:tags" content="DiskANN" />
+  
+  <meta property="og:tags" content="database-consolidation" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/2026-03-08-just-use-postgres-2026/">
+          <h1>
+            2026년, 그냥 Postgres 쓰세요 — 7개 특화 DB를 대체하는 PostgreSQL 확장 생태계
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/2026-03-08-just-use-postgres-2026/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>검색에는 Elasticsearch, 벡터에는 Pinecone, 캐시에는 Redis, 문서에는 MongoDB, 큐에는 Kafka, 시계열에는 InfluxDB — 그리고 나머지는 PostgreSQL. 축하합니다. 이제 관리해야 할 데이터베이스가 7개입니다. 7개의 쿼리 언어, 7개의 백업 전략, 7개의 보안 모델, 7개의 모니터링 대시보드. 새벽 3시에 뭔가 터지면? 디버깅을 위한 테스트 환경 구축부터 악몽입니다.</p>
+<p><strong>다른 방법이 있습니다. 그냥 Postgres를 쓰세요.</strong></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.tigerdata.com/blog/its-2026-just-use-postgres">It&rsquo;s 2026, Just Use Postgres — Tiger Data (Raja Rao DV, 2026.02.02)</a> (http 추출)</li>
+</ul>
+<hr>
+<h2 id="집이라는-비유--왜-하나의-db로-충분한가">집이라는 비유 — 왜 하나의 DB로 충분한가</h2>
+<p>원문은 데이터베이스를 <strong>집</strong> 에 비유합니다. 거실, 침실, 욕실, 주방, 차고 — 각 방은 다른 용도로 쓰이지만 모두 하나의 지붕 아래 복도와 문으로 연결되어 있습니다. 요리를 한다고 별도의 레스토랑 건물을 짓지 않고, 차를 세운다고 시내 반대편에 상업용 차고를 만들지 않습니다.</p>
+<p><strong>PostgreSQL이 바로 그런 집입니다.</strong> 검색, 벡터, 시계열, 큐 — 모두 하나의 지붕 아래 있습니다.</p>
+<pre class="mermaid">flowchart TD
+    subgraph House["🏠 PostgreSQL — 하나의 집"]
+        direction TB
+        A["🔍 검색<br>pg_textsearch"]
+        B["🧠 벡터<br>pgvector + pgvectorscale"]
+        C["⏱️ 시계열<br>TimescaleDB"]
+        D["📨 메시지 큐<br>pgmq"]
+        E["📄 문서<br>JSONB"]
+        F["🌍 지리공간<br>PostGIS"]
+        G["⚡ 캐시<br>UNLOGGED tables"]
+        H["⏰ 스케줄러<br>pg_cron"]
+    end
+
+    classDef house fill:#336791,color:#fff,stroke:#fff
+    classDef room fill:#4a90d9,color:#fff,stroke:#336791
+    class House house
+    class A,B,C,D,E,F,G,H room</pre><p>그런데 이것은 특화 데이터베이스 벤더들이 듣고 싶지 않은 이야기입니다. 그들의 마케팅 팀은 수년간 <strong>&ldquo;적합한 도구를 적합한 작업에 사용하라&rdquo;</strong> 는 메시지를 전파해왔습니다. 합리적으로 들리고, 현명하게 들리며, 데이터베이스를 많이 팔아줍니다.</p>
+<hr>
+<h2 id="적합한-도구-함정">&ldquo;적합한 도구&rdquo; 함정</h2>
+<p><strong>&ldquo;적합한 도구를 적합한 작업에 사용하라&rdquo;</strong> — 현명하게 들리는 이 조언의 결과를 봅시다.</p>
+<table>
+  <thead>
+      <tr>
+          <th>#</th>
+          <th>용도</th>
+          <th>선택한 DB</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>검색</td>
+          <td>Elasticsearch</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>벡터</td>
+          <td>Pinecone</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>캐시</td>
+          <td>Redis</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>문서</td>
+          <td>MongoDB</td>
+      </tr>
+      <tr>
+          <td>5</td>
+          <td>큐</td>
+          <td>Kafka</td>
+      </tr>
+      <tr>
+          <td>6</td>
+          <td>시계열</td>
+          <td>InfluxDB</td>
+      </tr>
+      <tr>
+          <td>7</td>
+          <td>나머지</td>
+          <td>PostgreSQL</td>
+      </tr>
+  </tbody>
+</table>
+<p>7개의 데이터베이스. 7개의 쿼리 언어. 7개의 백업 전략. 7개의 보안 감사 대상. 7개의 모니터링 대시보드. <strong>새벽 3시에 장애가 발생하면?</strong> 디버깅을 위한 테스트 환경 하나 띄우는 것도 쉽지 않습니다.</p>
+<pre class="mermaid">flowchart 
+    subgraph Sprawl["DB 스프롤: 7개 시스템 관리"]
+        direction TB
+        ES["Elasticsearch"]
+        PC["Pinecone"]
+        RD["Redis"]
+        MG["MongoDB"]
+        KF["Kafka"]
+        IF["InfluxDB"]
+        PG["PostgreSQL"]
+    end
+
+    subgraph Ops["운영 부담 × 7"]
+        direction TB
+        O1["백업 전략 7개"]
+        O2["모니터링 7개"]
+        O3["보안 패치 7개"]
+        O4["장애 대응 7개"]
+        O5["온콜 런북 7개"]
+    end
+
+    Sprawl --> Ops
+
+    classDef db fill:#e74c3c,color:#fff,stroke:#c0392b
+    classDef ops fill:#f39c12,color:#fff,stroke:#e67e22
+    class ES,PC,RD,MG,KF,IF db
+    class PG fill:#336791,color:#fff,stroke:#2c5f7c
+    class O1,O2,O3,O4,O5 ops</pre><hr>
+<h2 id="ai-에이전트-시대에-이것이-중요한-이유">AI 에이전트 시대에 이것이 중요한 이유</h2>
+<p>이것은 단순히 단순성의 문제가 아닙니다. <strong>AI 에이전트가 데이터베이스 스프롤을 악몽으로 만들었습니다.</strong></p>
+<p>AI 에이전트가 해야 하는 일을 생각해 봅시다:</p>
+<ol>
+<li>프로덕션 데이터로 테스트 데이터베이스를 빠르게 생성</li>
+<li>수정을 시도하거나 실험 수행</li>
+<li>작동 여부 확인</li>
+<li>환경 정리</li>
+</ol>
+<p><strong>데이터베이스가 하나라면?</strong> 단일 명령어로 끝납니다. Fork하고, 테스트하고, 완료.</p>
+<p><strong>데이터베이스가 7개라면?</strong> 이런 과정이 필요합니다:</p>
+<ul>
+<li>Postgres, Elasticsearch, Pinecone, Redis, MongoDB, Kafka 전체의 스냅샷 조율</li>
+<li>모두 동일한 시점인지 확인</li>
+<li>7개의 서로 다른 서비스 기동</li>
+<li>7개의 서로 다른 연결 문자열 구성</li>
+<li>테스트 중 아무것도 드리프트하지 않길 기도</li>
+<li>완료 후 7개 서비스 정리</li>
+</ul>
+<pre class="mermaid">flowchart LR
+    subgraph OneDB["✅ 단일 DB 환경"]
+        direction LR
+        A1["Fork 명령"] --> A2["테스트 실행"] --> A3["정리"]
+    end
+
+    subgraph SevenDB["❌ 7개 DB 환경"]
+        direction LR
+        B1["7개 스냅샷 조율"] --> B2["시점 동기화 확인"]
+        B2 --> B3["7개 서비스 기동"]
+        B3 --> B4["7개 연결 문자열 구성"]
+        B4 --> B5["드리프트 방지 모니터링"]
+        B5 --> B6["테스트 실행"]
+        B6 --> B7["7개 서비스 정리"]
+    end
+
+    classDef good fill:#27ae60,color:#fff,stroke:#1e8449
+    classDef bad fill:#e74c3c,color:#fff,stroke:#c0392b
+    class A1,A2,A3 good
+    class B1,B2,B3,B4,B5,B6,B7 bad</pre><p>이것은 막대한 R&amp;D 없이는 사실상 불가능합니다. AI 시대에 <strong>단순성은 우아함이 아니라 필수</strong> 입니다.</p>
+<hr>
+<h2 id="특화-데이터베이스가-더-좋지-않나에-대한-반론">&ldquo;특화 데이터베이스가 더 좋지 않나?&ldquo;에 대한 반론</h2>
+<h3 id="신화-vs-현실">신화 vs 현실</h3>
+<p><strong>신화</strong>: 특화 데이터베이스는 특정 작업에서 훨씬 뛰어나다.</p>
+<p><strong>현실</strong>: 때때로 좁은 작업에서 약간 더 나을 수 있습니다. 하지만 불필요한 복잡성도 함께 가져옵니다. 매 끼니마다 전용 셰프를 고용하는 것과 같습니다 — 호화로워 보이지만 비용, 조율 오버헤드, 이전에 없던 문제를 만들어냅니다.</p>
+<p><strong>핵심 사실</strong>: 99%의 회사는 특화 데이터베이스가 필요하지 않습니다. 상위 1%는 수천만 사용자와 그에 맞는 대규모 엔지니어링 팀을 보유하고 있습니다. 그들의 블로그 포스트를 읽고 감탄했겠지만, 그것은 그들의 규모, 그들의 팀, 그들의 문제입니다.</p>
+<h3 id="동일한-알고리즘-동일한-성능">동일한 알고리즘, 동일한 성능</h3>
+<p>대부분의 사람들이 모르는 사실이 있습니다. <strong>PostgreSQL 확장은 특화 데이터베이스와 동일하거나 더 나은 알고리즘을 사용합니다.</strong></p>
+<table>
+  <thead>
+      <tr>
+          <th>필요 기능</th>
+          <th>특화 도구</th>
+          <th>PostgreSQL 확장</th>
+          <th>동일 알고리즘?</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>전문 검색</td>
+          <td>Elasticsearch</td>
+          <td>pg_textsearch</td>
+          <td>✅ 모두 BM25 사용</td>
+      </tr>
+      <tr>
+          <td>벡터 검색</td>
+          <td>Pinecone</td>
+          <td>pgvector + pgvectorscale</td>
+          <td>✅ 모두 HNSW/DiskANN 사용</td>
+      </tr>
+      <tr>
+          <td>시계열</td>
+          <td>InfluxDB</td>
+          <td>TimescaleDB</td>
+          <td>✅ 모두 시간 파티셔닝 사용</td>
+      </tr>
+      <tr>
+          <td>캐싱</td>
+          <td>Redis</td>
+          <td>UNLOGGED tables</td>
+          <td>✅ 모두 인메모리 스토리지 사용</td>
+      </tr>
+      <tr>
+          <td>문서</td>
+          <td>MongoDB</td>
+          <td>JSONB</td>
+          <td>✅ 모두 문서 인덱싱 사용</td>
+      </tr>
+      <tr>
+          <td>지리공간</td>
+          <td>특화 GIS</td>
+          <td>PostGIS</td>
+          <td>✅ 2001년부터 업계 표준</td>
+      </tr>
+  </tbody>
+</table>
+<p>이것들은 희석된 버전이 아닙니다. <strong>동일하거나 더 나은 알고리즘</strong> 이며, 실전에서 검증되고, 오픈 소스이며, 종종 동일한 연구자들이 개발했습니다.</p>
+<pre class="mermaid">flowchart LR
+    subgraph Algo["핵심 알고리즘 비교"]
+        direction TB
+        A["BM25 랭킹"]
+        B["HNSW / DiskANN"]
+        C["시간 파티셔닝"]
+        D["문서 인덱싱"]
+    end
+
+    subgraph Special["특화 DB"]
+        ES2["Elasticsearch"]
+        PC2["Pinecone"]
+        IF2["InfluxDB"]
+        MG2["MongoDB"]
+    end
+
+    subgraph PGExt["PostgreSQL 확장"]
+        PT["pg_textsearch"]
+        PV["pgvectorscale"]
+        TS["TimescaleDB"]
+        JB["JSONB"]
+    end
+
+    A --- ES2
+    A --- PT
+    B --- PC2
+    B --- PV
+    C --- IF2
+    C --- TS
+    D --- MG2
+    D --- JB
+
+    classDef algo fill:#9b59b6,color:#fff,stroke:#8e44ad
+    classDef special fill:#e74c3c,color:#fff,stroke:#c0392b
+    classDef pg fill:#27ae60,color:#fff,stroke:#1e8449
+    class A,B,C,D algo
+    class ES2,PC2,IF2,MG2 special
+    class PT,PV,TS,JB pg</pre><h3 id="벤치마크가-이를-뒷받침합니다">벤치마크가 이를 뒷받침합니다</h3>
+<ul>
+<li><strong>pgvectorscale</strong>: Pinecone 대비 <strong>28배 낮은 p95 레이턴시</strong>, 75% 낮은 비용 (99% recall 기준)</li>
+<li><strong>TimescaleDB</strong>: InfluxDB와 동등하거나 능가하면서 완전한 SQL 지원</li>
+<li><strong>pg_textsearch</strong>: Elasticsearch를 구동하는 것과 <strong>정확히 동일한 BM25 랭킹</strong> 알고리즘</li>
+</ul>
+<hr>
+<h2 id="숨겨진-비용의-복리-효과">숨겨진 비용의 복리 효과</h2>
+<p>AI/에이전트 문제를 넘어서, 데이터베이스 스프롤은 복리적으로 비용이 증가합니다.</p>
+<table>
+  <thead>
+      <tr>
+          <th>작업</th>
+          <th>DB 1개</th>
+          <th>DB 7개</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>백업 전략</td>
+          <td>1</td>
+          <td>7</td>
+      </tr>
+      <tr>
+          <td>모니터링 대시보드</td>
+          <td>1</td>
+          <td>7</td>
+      </tr>
+      <tr>
+          <td>보안 패치</td>
+          <td>1</td>
+          <td>7</td>
+      </tr>
+      <tr>
+          <td>온콜 런북</td>
+          <td>1</td>
+          <td>7</td>
+      </tr>
+      <tr>
+          <td>장애 복구 테스트</td>
+          <td>1</td>
+          <td>7</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="인지-부하">인지 부하</h3>
+<p>팀이 알아야 할 것: SQL, Redis 명령어, Elasticsearch Query DSL, MongoDB 집계, Kafka 패턴, InfluxDB의 비네이티브 SQL 우회. 이것은 전문화가 아닙니다. <strong>파편화</strong> 입니다.</p>
+<h3 id="데이터-일관성">데이터 일관성</h3>
+<p>Elasticsearch를 Postgres와 동기화 상태로 유지하는 것을 생각해 봅시다. 동기화 작업을 만듭니다. 실패합니다. 데이터가 드리프트합니다. 조정 작업을 추가합니다. 그것도 실패합니다. 이제 기능을 만드는 대신 인프라를 유지보수하고 있습니다.</p>
+<h3 id="sla-수학">SLA 수학</h3>
+<pre class="mermaid">flowchart LR
+    subgraph SLA["SLA 가용성 계산"]
+        direction TB
+        S1["시스템 1<br>99.9%"] --- S2["시스템 2<br>99.9%"] --- S3["시스템 3<br>99.9%"]
+        S3 --> R["결합 가용성<br><b>99.7%</b>"]
+        R --> D["연간 다운타임<br><b>26시간</b><br>(단일 시스템: 8.7시간)"]
+    end
+
+    classDef sys fill:#3498db,color:#fff,stroke:#2980b9
+    classDef result fill:#e74c3c,color:#fff,stroke:#c0392b
+    classDef down fill:#c0392b,color:#fff,stroke:#922b21
+    class S1,S2,S3 sys
+    class R result
+    class D down</pre><p>세 시스템이 각각 99.9% 가용성일 때 결합 가용성은 <strong>99.7%</strong> 입니다. 연간 8.7시간이 아니라 <strong>26시간의 다운타임</strong> 입니다. 모든 시스템이 장애 모드를 곱합니다.</p>
+<hr>
+<h2 id="현대-postgresql-스택">현대 PostgreSQL 스택</h2>
+<p>이 확장들은 새로운 것이 아닙니다. 수년간 프로덕션에서 검증되었습니다.</p>
+<table>
+  <thead>
+      <tr>
+          <th>확장</th>
+          <th>출시 연도</th>
+          <th>역사</th>
+          <th>주요 사용 사례</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>PostGIS</strong></td>
+          <td>2001년</td>
+          <td>24년</td>
+          <td>OpenStreetMap, Uber</td>
+      </tr>
+      <tr>
+          <td><strong>전문 검색</strong></td>
+          <td>2008년</td>
+          <td>17년</td>
+          <td>PostgreSQL 코어 내장</td>
+      </tr>
+      <tr>
+          <td><strong>JSONB</strong></td>
+          <td>2014년</td>
+          <td>11년</td>
+          <td>MongoDB급 성능 + ACID</td>
+      </tr>
+      <tr>
+          <td><strong>TimescaleDB</strong></td>
+          <td>2017년</td>
+          <td>8년</td>
+          <td>GitHub 21K+ 스타</td>
+      </tr>
+      <tr>
+          <td><strong>pgvector</strong></td>
+          <td>2021년</td>
+          <td>4년</td>
+          <td>GitHub 19K+ 스타</td>
+      </tr>
+  </tbody>
+</table>
+<p>48,000개 이상의 기업이 PostgreSQL을 사용하고 있으며, Netflix, Spotify, Uber, Reddit, Instagram, Discord가 포함됩니다.</p>
+<pre class="mermaid">timeline
+    title PostgreSQL 확장 생태계 타임라인
+    2001 : PostGIS
+         : 지리공간 — 업계 표준
+    2008 : Full-Text Search
+         : PostgreSQL 코어 내장
+    2014 : JSONB
+         : 문서 DB 대체
+    2017 : TimescaleDB
+         : 시계열 DB 대체
+    2021 : pgvector
+         : 벡터 검색 시작
+    2024 : pgvectorscale
+         : DiskANN 알고리즘
+    2025 : pg_textsearch
+         : BM25 네이티브 검색
+    2026 : pgai
+         : AI 파이프라인 통합</pre><h3 id="ai-시대의-새로운-확장들">AI 시대의 새로운 확장들</h3>
+<table>
+  <thead>
+      <tr>
+          <th>확장</th>
+          <th>대체 대상</th>
+          <th>하이라이트</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>pgvectorscale</strong></td>
+          <td>Pinecone, Qdrant</td>
+          <td>Microsoft Research의 DiskANN 알고리즘. 28배 낮은 레이턴시, 75% 낮은 비용</td>
+      </tr>
+      <tr>
+          <td><strong>pg_textsearch</strong></td>
+          <td>Elasticsearch</td>
+          <td>PostgreSQL 네이티브 BM25 랭킹</td>
+      </tr>
+      <tr>
+          <td><strong>pgai</strong></td>
+          <td>외부 AI 파이프라인</td>
+          <td>데이터 변경 시 임베딩 자동 동기화</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>의미</strong>: RAG 앱을 만들기 위해 Postgres + Pinecone + Elasticsearch + 글루 코드가 필요했던 시대는 끝났습니다.</p>
+<p>이제는 <strong>Just Postgres</strong> 입니다. 하나의 데이터베이스. 하나의 쿼리 언어. 하나의 백업. AI 에이전트가 테스트 환경을 띄우기 위한 하나의 fork 명령어.</p>
+<pre class="mermaid">flowchart LR
+    subgraph Before["이전: RAG 앱 구축"]
+        P1["PostgreSQL"] --> GL["글루 코드"]
+        PC3["Pinecone"] --> GL
+        ES3["Elasticsearch"] --> GL
+        GL --> APP1["RAG 앱"]
+    end
+
+    subgraph After["이후: Just Postgres"]
+        PG2["PostgreSQL<br>+ pgvector<br>+ pg_textsearch<br>+ pgai"] --> APP2["RAG 앱"]
+    end
+
+    classDef old fill:#e74c3c,color:#fff,stroke:#c0392b
+    classDef glue fill:#f39c12,color:#fff,stroke:#e67e22
+    classDef new fill:#27ae60,color:#fff,stroke:#1e8449
+    classDef app fill:#3498db,color:#fff,stroke:#2980b9
+    class P1,PC3,ES3 old
+    class GL glue
+    class PG2 new
+    class APP1,APP2 app</pre><hr>
+<h2 id="퀵-스타트-확장-추가하기">퀵 스타트: 확장 추가하기</h2>
+<p>필요한 모든 확장을 한 번에 추가할 수 있습니다:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#57606a">-- BM25 전문 검색
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">CREATE</span><span style="color:#fff"> </span>EXTENSION<span style="color:#fff"> </span>pg_textsearch<span style="color:#1f2328">;</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">-- AI용 벡터 검색
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">CREATE</span><span style="color:#fff"> </span>EXTENSION<span style="color:#fff"> </span>vector<span style="color:#1f2328">;</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">CREATE</span><span style="color:#fff"> </span>EXTENSION<span style="color:#fff"> </span>vectorscale<span style="color:#1f2328">;</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">-- AI 임베딩 &amp; RAG 워크플로
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">CREATE</span><span style="color:#fff"> </span>EXTENSION<span style="color:#fff"> </span>ai<span style="color:#1f2328">;</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">-- 시계열
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">CREATE</span><span style="color:#fff"> </span>EXTENSION<span style="color:#fff"> </span>timescaledb<span style="color:#1f2328">;</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">-- 메시지 큐
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">CREATE</span><span style="color:#fff"> </span>EXTENSION<span style="color:#fff"> </span>pgmq<span style="color:#1f2328">;</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">-- 스케줄 작업
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">CREATE</span><span style="color:#fff"> </span>EXTENSION<span style="color:#fff"> </span>pg_cron<span style="color:#1f2328">;</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">-- 지리공간
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">CREATE</span><span style="color:#fff"> </span>EXTENSION<span style="color:#fff"> </span>postgis<span style="color:#1f2328">;</span><span style="color:#fff">
+</span></span></span></code></pre></div><p>이것으로 끝입니다. 7개의 별도 데이터베이스 대신 8줄의 SQL.</p>
+<hr>
+<h2 id="실전-코드-용도별-구현">실전 코드: 용도별 구현</h2>
+<h3 id="1-전문-검색-elasticsearch-대체">1. 전문 검색 (Elasticsearch 대체)</h3>
+<p><strong>확장</strong>: pg_textsearch (진정한 BM25 랭킹)</p>
+<p><strong>대체 대상</strong>:</p>
+<ul>
+<li><strong>Elasticsearch</strong>: 별도 JVM 클러스터, 복잡한 매핑, 동기화 파이프라인, Java 힙 튜닝</li>
+<li><strong>Solr</strong>: 같은 문제, 다른 래퍼</li>
+<li><strong>Algolia</strong>: 1,000건 검색당 과금, 외부 API 의존성</li>
+</ul>
+<p><strong>얻는 것</strong>: Elasticsearch를 구동하는 것과 <strong>정확히 동일한 BM25 알고리즘</strong> 을 PostgreSQL 안에서 직접 사용.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#57606a">-- 테이블 생성
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">CREATE</span><span style="color:#fff"> </span><span style="color:#cf222e">TABLE</span><span style="color:#fff"> </span>articles<span style="color:#fff"> </span><span style="color:#1f2328">(</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>id<span style="color:#fff"> </span><span style="color:#6639ba">SERIAL</span><span style="color:#fff"> </span><span style="color:#cf222e">PRIMARY</span><span style="color:#fff"> </span><span style="color:#cf222e">KEY</span><span style="color:#1f2328">,</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>title<span style="color:#fff"> </span><span style="color:#6639ba">TEXT</span><span style="color:#1f2328">,</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>content<span style="color:#fff"> </span><span style="color:#6639ba">TEXT</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">);</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">-- BM25 인덱스 생성
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">CREATE</span><span style="color:#fff"> </span><span style="color:#cf222e">INDEX</span><span style="color:#fff"> </span>idx_articles_bm25<span style="color:#fff"> </span><span style="color:#cf222e">ON</span><span style="color:#fff"> </span>articles<span style="color:#fff"> </span><span style="color:#cf222e">USING</span><span style="color:#fff"> </span>bm25<span style="color:#1f2328">(</span>content<span style="color:#1f2328">)</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#cf222e">WITH</span><span style="color:#fff"> </span><span style="color:#1f2328">(</span>text_config<span style="color:#fff"> </span><span style="color:#0550ae">=</span><span style="color:#fff"> </span><span style="color:#0a3069">&#39;english&#39;</span><span style="color:#1f2328">);</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">-- BM25 스코어링으로 검색
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">SELECT</span><span style="color:#fff"> </span>title<span style="color:#1f2328">,</span><span style="color:#fff"> </span><span style="color:#0550ae">-</span><span style="color:#1f2328">(</span>content<span style="color:#fff"> </span><span style="color:#0550ae">&lt;@&gt;</span><span style="color:#fff"> </span><span style="color:#0a3069">&#39;database optimization&#39;</span><span style="color:#1f2328">)</span><span style="color:#fff"> </span><span style="color:#cf222e">as</span><span style="color:#fff"> </span>score<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">FROM</span><span style="color:#fff"> </span>articles<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">ORDER</span><span style="color:#fff"> </span><span style="color:#cf222e">BY</span><span style="color:#fff"> </span>content<span style="color:#fff"> </span><span style="color:#0550ae">&lt;@&gt;</span><span style="color:#fff"> </span><span style="color:#0a3069">&#39;database optimization&#39;</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">LIMIT</span><span style="color:#fff"> </span><span style="color:#0550ae">10</span><span style="color:#1f2328">;</span><span style="color:#fff">
+</span></span></span></code></pre></div><h3 id="2-벡터-검색-pinecone-대체">2. 벡터 검색 (Pinecone 대체)</h3>
+<p><strong>확장</strong>: pgvector + pgvectorscale</p>
+<p><strong>대체 대상</strong>:</p>
+<ul>
+<li><strong>Pinecone</strong>: 월 최소 $70, 별도 인프라, 데이터 동기화 문제</li>
+<li><strong>Qdrant, Milvus, Weaviate</strong>: 추가 인프라 관리</li>
+</ul>
+<p><strong>얻는 것</strong>: pgvectorscale은 Microsoft Research의 <strong>DiskANN 알고리즘</strong> 을 사용하여 99% recall 기준으로 Pinecone 대비 <strong>28배 낮은 p95 레이턴시</strong> 와 <strong>16배 높은 처리량</strong> 을 달성합니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#57606a">-- 확장 활성화
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">CREATE</span><span style="color:#fff"> </span>EXTENSION<span style="color:#fff"> </span>vector<span style="color:#1f2328">;</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">CREATE</span><span style="color:#fff"> </span>EXTENSION<span style="color:#fff"> </span>vectorscale<span style="color:#fff"> </span><span style="color:#cf222e">CASCADE</span><span style="color:#1f2328">;</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">-- 임베딩 포함 테이블
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">CREATE</span><span style="color:#fff"> </span><span style="color:#cf222e">TABLE</span><span style="color:#fff"> </span>documents<span style="color:#fff"> </span><span style="color:#1f2328">(</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>id<span style="color:#fff"> </span><span style="color:#6639ba">SERIAL</span><span style="color:#fff"> </span><span style="color:#cf222e">PRIMARY</span><span style="color:#fff"> </span><span style="color:#cf222e">KEY</span><span style="color:#1f2328">,</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>content<span style="color:#fff"> </span><span style="color:#6639ba">TEXT</span><span style="color:#1f2328">,</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>embedding<span style="color:#fff"> </span>vector<span style="color:#1f2328">(</span><span style="color:#0550ae">1536</span><span style="color:#1f2328">)</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">);</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">-- 고성능 인덱스 (DiskANN)
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">CREATE</span><span style="color:#fff"> </span><span style="color:#cf222e">INDEX</span><span style="color:#fff"> </span>idx_docs_embedding<span style="color:#fff"> </span><span style="color:#cf222e">ON</span><span style="color:#fff"> </span>documents<span style="color:#fff"> </span><span style="color:#cf222e">USING</span><span style="color:#fff"> </span>diskann<span style="color:#1f2328">(</span>embedding<span style="color:#1f2328">);</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">-- 유사 문서 검색
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">SELECT</span><span style="color:#fff"> </span>content<span style="color:#1f2328">,</span><span style="color:#fff"> </span>embedding<span style="color:#fff"> </span><span style="color:#0550ae">&lt;=&gt;</span><span style="color:#fff"> </span><span style="color:#0a3069">&#39;[0.1, 0.2, ...]&#39;</span><span style="color:#1f2328">::</span>vector<span style="color:#fff"> </span><span style="color:#cf222e">as</span><span style="color:#fff"> </span>distance<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">FROM</span><span style="color:#fff"> </span>documents<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">ORDER</span><span style="color:#fff"> </span><span style="color:#cf222e">BY</span><span style="color:#fff"> </span>embedding<span style="color:#fff"> </span><span style="color:#0550ae">&lt;=&gt;</span><span style="color:#fff"> </span><span style="color:#0a3069">&#39;[0.1, 0.2, ...]&#39;</span><span style="color:#1f2328">::</span>vector<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">LIMIT</span><span style="color:#fff"> </span><span style="color:#0550ae">10</span><span style="color:#1f2328">;</span><span style="color:#fff">
+</span></span></span></code></pre></div><p><strong>pgai로 임베딩 자동 동기화</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#cf222e">SELECT</span><span style="color:#fff"> </span>ai<span style="color:#1f2328">.</span>create_vectorizer<span style="color:#1f2328">(</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#0a3069">&#39;documents&#39;</span><span style="color:#1f2328">::</span>regclass<span style="color:#1f2328">,</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>loading<span style="color:#fff"> </span><span style="color:#0550ae">=&gt;</span><span style="color:#fff"> </span>ai<span style="color:#1f2328">.</span>loading_column<span style="color:#1f2328">(</span><span style="color:#cf222e">column_name</span><span style="color:#0550ae">=&gt;</span><span style="color:#0a3069">&#39;content&#39;</span><span style="color:#1f2328">),</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>embedding<span style="color:#fff"> </span><span style="color:#0550ae">=&gt;</span><span style="color:#fff"> </span>ai<span style="color:#1f2328">.</span>embedding_openai<span style="color:#1f2328">(</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span>model<span style="color:#0550ae">=&gt;</span><span style="color:#0a3069">&#39;text-embedding-3-small&#39;</span><span style="color:#1f2328">,</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span>dimensions<span style="color:#0550ae">=&gt;</span><span style="color:#0a3069">&#39;1536&#39;</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#1f2328">)</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">);</span><span style="color:#fff">
+</span></span></span></code></pre></div><p>이제 모든 INSERT/UPDATE가 자동으로 임베딩을 재생성합니다. 동기화 작업 없음. 드리프트 없음. 새벽 3시 페이지 없음.</p>
+<h3 id="3-하이브리드-검색-bm25--벡터">3. 하이브리드 검색 (BM25 + 벡터)</h3>
+<p>AI 애플리케이션에서는 키워드 검색과 시맨틱 검색 <strong>모두</strong> 필요한 경우가 많습니다:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#57606a">-- Reciprocal Rank Fusion: 키워드 + 시맨틱 검색 결합
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">WITH</span><span style="color:#fff"> </span>bm25<span style="color:#fff"> </span><span style="color:#cf222e">AS</span><span style="color:#fff"> </span><span style="color:#1f2328">(</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#cf222e">SELECT</span><span style="color:#fff"> </span>id<span style="color:#1f2328">,</span><span style="color:#fff"> </span>ROW_NUMBER<span style="color:#1f2328">()</span><span style="color:#fff"> </span>OVER<span style="color:#fff"> </span><span style="color:#1f2328">(</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span><span style="color:#cf222e">ORDER</span><span style="color:#fff"> </span><span style="color:#cf222e">BY</span><span style="color:#fff"> </span>content<span style="color:#fff"> </span><span style="color:#0550ae">&lt;@&gt;</span><span style="color:#fff"> </span><span style="color:#f6f8fa;background-color:#82071e">$</span><span style="color:#0550ae">1</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#1f2328">)</span><span style="color:#fff"> </span><span style="color:#cf222e">as</span><span style="color:#fff"> </span>rank<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#cf222e">FROM</span><span style="color:#fff"> </span>documents<span style="color:#fff"> </span><span style="color:#cf222e">LIMIT</span><span style="color:#fff"> </span><span style="color:#0550ae">20</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">),</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span>vectors<span style="color:#fff"> </span><span style="color:#cf222e">AS</span><span style="color:#fff"> </span><span style="color:#1f2328">(</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#cf222e">SELECT</span><span style="color:#fff"> </span>id<span style="color:#1f2328">,</span><span style="color:#fff"> </span>ROW_NUMBER<span style="color:#1f2328">()</span><span style="color:#fff"> </span>OVER<span style="color:#fff"> </span><span style="color:#1f2328">(</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span><span style="color:#cf222e">ORDER</span><span style="color:#fff"> </span><span style="color:#cf222e">BY</span><span style="color:#fff"> </span>embedding<span style="color:#fff"> </span><span style="color:#0550ae">&lt;=&gt;</span><span style="color:#fff"> </span><span style="color:#f6f8fa;background-color:#82071e">$</span><span style="color:#0550ae">2</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#1f2328">)</span><span style="color:#fff"> </span><span style="color:#cf222e">as</span><span style="color:#fff"> </span>rank<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#cf222e">FROM</span><span style="color:#fff"> </span>documents<span style="color:#fff"> </span><span style="color:#cf222e">LIMIT</span><span style="color:#fff"> </span><span style="color:#0550ae">20</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">)</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">SELECT</span><span style="color:#fff"> </span>d<span style="color:#1f2328">.</span><span style="color:#0550ae">*</span><span style="color:#1f2328">,</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#0550ae">1</span><span style="color:#1f2328">.</span><span style="color:#0550ae">0</span><span style="color:#0550ae">/</span><span style="color:#1f2328">(</span><span style="color:#0550ae">60</span><span style="color:#fff"> </span><span style="color:#0550ae">+</span><span style="color:#fff"> </span>COALESCE<span style="color:#1f2328">(</span>b<span style="color:#1f2328">.</span>rank<span style="color:#1f2328">,</span><span style="color:#fff"> </span><span style="color:#0550ae">1000</span><span style="color:#1f2328">))</span><span style="color:#fff"> </span><span style="color:#0550ae">+</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#0550ae">1</span><span style="color:#1f2328">.</span><span style="color:#0550ae">0</span><span style="color:#0550ae">/</span><span style="color:#1f2328">(</span><span style="color:#0550ae">60</span><span style="color:#fff"> </span><span style="color:#0550ae">+</span><span style="color:#fff"> </span>COALESCE<span style="color:#1f2328">(</span>v<span style="color:#1f2328">.</span>rank<span style="color:#1f2328">,</span><span style="color:#fff"> </span><span style="color:#0550ae">1000</span><span style="color:#1f2328">))</span><span style="color:#fff"> </span><span style="color:#cf222e">as</span><span style="color:#fff"> </span>score<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">FROM</span><span style="color:#fff"> </span>documents<span style="color:#fff"> </span>d<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">LEFT</span><span style="color:#fff"> </span><span style="color:#cf222e">JOIN</span><span style="color:#fff"> </span>bm25<span style="color:#fff"> </span>b<span style="color:#fff"> </span><span style="color:#cf222e">ON</span><span style="color:#fff"> </span>d<span style="color:#1f2328">.</span>id<span style="color:#fff"> </span><span style="color:#0550ae">=</span><span style="color:#fff"> </span>b<span style="color:#1f2328">.</span>id<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">LEFT</span><span style="color:#fff"> </span><span style="color:#cf222e">JOIN</span><span style="color:#fff"> </span>vectors<span style="color:#fff"> </span>v<span style="color:#fff"> </span><span style="color:#cf222e">ON</span><span style="color:#fff"> </span>d<span style="color:#1f2328">.</span>id<span style="color:#fff"> </span><span style="color:#0550ae">=</span><span style="color:#fff"> </span>v<span style="color:#1f2328">.</span>id<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">WHERE</span><span style="color:#fff"> </span>b<span style="color:#1f2328">.</span>id<span style="color:#fff"> </span><span style="color:#cf222e">IS</span><span style="color:#fff"> </span><span style="color:#cf222e">NOT</span><span style="color:#fff"> </span><span style="color:#cf222e">NULL</span><span style="color:#fff"> </span><span style="color:#cf222e">OR</span><span style="color:#fff"> </span>v<span style="color:#1f2328">.</span>id<span style="color:#fff"> </span><span style="color:#cf222e">IS</span><span style="color:#fff"> </span><span style="color:#cf222e">NOT</span><span style="color:#fff"> </span><span style="color:#cf222e">NULL</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">ORDER</span><span style="color:#fff"> </span><span style="color:#cf222e">BY</span><span style="color:#fff"> </span>score<span style="color:#fff"> </span><span style="color:#cf222e">DESC</span><span style="color:#fff"> </span><span style="color:#cf222e">LIMIT</span><span style="color:#fff"> </span><span style="color:#0550ae">10</span><span style="color:#1f2328">;</span><span style="color:#fff">
+</span></span></span></code></pre></div><p>Elasticsearch + Pinecone로 이것을 시도해 보세요. 두 개의 API 호출, 결과 병합, 실패 처리, 이중 레이턴시가 필요합니다.</p>
+<p>PostgreSQL에서는: <strong>하나의 쿼리, 하나의 트랜잭션, 하나의 결과</strong> 입니다.</p>
+<h3 id="4-시계열-influxdb-대체">4. 시계열 (InfluxDB 대체)</h3>
+<p><strong>확장</strong>: TimescaleDB (GitHub 21K+ 스타)</p>
+<p><strong>대체 대상</strong>:</p>
+<ul>
+<li><strong>InfluxDB</strong>: 별도 데이터베이스, Flux 쿼리 언어 또는 비네이티브 SQL</li>
+<li><strong>Prometheus</strong>: 메트릭에 좋지만 애플리케이션 데이터가 아님</li>
+</ul>
+<p><strong>얻는 것</strong>: 자동 시간 파티셔닝, 최대 90% 압축, 연속 집계. 완전한 SQL.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#57606a">-- TimescaleDB 활성화
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">CREATE</span><span style="color:#fff"> </span>EXTENSION<span style="color:#fff"> </span>timescaledb<span style="color:#1f2328">;</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">-- 테이블 생성
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">CREATE</span><span style="color:#fff"> </span><span style="color:#cf222e">TABLE</span><span style="color:#fff"> </span>metrics<span style="color:#fff"> </span><span style="color:#1f2328">(</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>time<span style="color:#fff"> </span>TIMESTAMPTZ<span style="color:#fff"> </span><span style="color:#cf222e">NOT</span><span style="color:#fff"> </span><span style="color:#cf222e">NULL</span><span style="color:#1f2328">,</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>device_id<span style="color:#fff"> </span><span style="color:#6639ba">TEXT</span><span style="color:#1f2328">,</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>temperature<span style="color:#fff"> </span>DOUBLE<span style="color:#fff"> </span><span style="color:#cf222e">PRECISION</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">);</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">-- 하이퍼테이블로 변환
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">SELECT</span><span style="color:#fff"> </span>create_hypertable<span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;metrics&#39;</span><span style="color:#1f2328">,</span><span style="color:#fff"> </span><span style="color:#0a3069">&#39;time&#39;</span><span style="color:#1f2328">);</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">-- 시간 버킷으로 쿼리
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">SELECT</span><span style="color:#fff"> </span>time_bucket<span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;1 hour&#39;</span><span style="color:#1f2328">,</span><span style="color:#fff"> </span>time<span style="color:#1f2328">)</span><span style="color:#fff"> </span><span style="color:#cf222e">as</span><span style="color:#fff"> </span>hour<span style="color:#1f2328">,</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">       </span><span style="color:#cf222e">AVG</span><span style="color:#1f2328">(</span>temperature<span style="color:#1f2328">)</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">FROM</span><span style="color:#fff"> </span>metrics<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">WHERE</span><span style="color:#fff"> </span>time<span style="color:#fff"> </span><span style="color:#0550ae">&gt;</span><span style="color:#fff"> </span>NOW<span style="color:#1f2328">()</span><span style="color:#fff"> </span><span style="color:#0550ae">-</span><span style="color:#fff"> </span><span style="color:#6639ba">INTERVAL</span><span style="color:#fff"> </span><span style="color:#0a3069">&#39;24 hours&#39;</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">GROUP</span><span style="color:#fff"> </span><span style="color:#cf222e">BY</span><span style="color:#fff"> </span>hour<span style="color:#1f2328">;</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">-- 오래된 데이터 자동 삭제
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">SELECT</span><span style="color:#fff"> </span>add_retention_policy<span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;metrics&#39;</span><span style="color:#1f2328">,</span><span style="color:#fff"> </span><span style="color:#6639ba">INTERVAL</span><span style="color:#fff"> </span><span style="color:#0a3069">&#39;30 days&#39;</span><span style="color:#1f2328">);</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">-- 압축 (90% 스토리지 감소)
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">ALTER</span><span style="color:#fff"> </span><span style="color:#cf222e">TABLE</span><span style="color:#fff"> </span>metrics<span style="color:#fff"> </span><span style="color:#cf222e">SET</span><span style="color:#fff"> </span><span style="color:#1f2328">(</span>timescaledb<span style="color:#1f2328">.</span>compress<span style="color:#1f2328">);</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">SELECT</span><span style="color:#fff"> </span>add_compression_policy<span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;metrics&#39;</span><span style="color:#1f2328">,</span><span style="color:#fff"> </span><span style="color:#6639ba">INTERVAL</span><span style="color:#fff"> </span><span style="color:#0a3069">&#39;7 days&#39;</span><span style="color:#1f2328">);</span><span style="color:#fff">
+</span></span></span></code></pre></div><h3 id="5-캐싱-redis-대체">5. 캐싱 (Redis 대체)</h3>
+<p><strong>기능</strong>: UNLOGGED 테이블 + JSONB</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#57606a">-- UNLOGGED = WAL 오버헤드 없음, 더 빠른 쓰기
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">CREATE</span><span style="color:#fff"> </span>UNLOGGED<span style="color:#fff"> </span><span style="color:#cf222e">TABLE</span><span style="color:#fff"> </span><span style="color:#cf222e">cache</span><span style="color:#fff"> </span><span style="color:#1f2328">(</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#cf222e">key</span><span style="color:#fff"> </span><span style="color:#6639ba">TEXT</span><span style="color:#fff"> </span><span style="color:#cf222e">PRIMARY</span><span style="color:#fff"> </span><span style="color:#cf222e">KEY</span><span style="color:#1f2328">,</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>value<span style="color:#fff"> </span>JSONB<span style="color:#1f2328">,</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>expires_at<span style="color:#fff"> </span>TIMESTAMPTZ<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">);</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">-- 만료 시간 포함 설정
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">INSERT</span><span style="color:#fff"> </span><span style="color:#cf222e">INTO</span><span style="color:#fff"> </span><span style="color:#cf222e">cache</span><span style="color:#fff"> </span><span style="color:#1f2328">(</span><span style="color:#cf222e">key</span><span style="color:#1f2328">,</span><span style="color:#fff"> </span>value<span style="color:#1f2328">,</span><span style="color:#fff"> </span>expires_at<span style="color:#1f2328">)</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">VALUES</span><span style="color:#fff"> </span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;user:123&#39;</span><span style="color:#1f2328">,</span><span style="color:#fff"> </span><span style="color:#0a3069">&#39;{&#34;name&#34;: &#34;Alice&#34;}&#39;</span><span style="color:#1f2328">,</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">        </span>NOW<span style="color:#1f2328">()</span><span style="color:#fff"> </span><span style="color:#0550ae">+</span><span style="color:#fff"> </span><span style="color:#6639ba">INTERVAL</span><span style="color:#fff"> </span><span style="color:#0a3069">&#39;1 hour&#39;</span><span style="color:#1f2328">)</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">ON</span><span style="color:#fff"> </span>CONFLICT<span style="color:#fff"> </span><span style="color:#1f2328">(</span><span style="color:#cf222e">key</span><span style="color:#1f2328">)</span><span style="color:#fff"> </span><span style="color:#cf222e">DO</span><span style="color:#fff"> </span><span style="color:#cf222e">UPDATE</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">SET</span><span style="color:#fff"> </span>value<span style="color:#fff"> </span><span style="color:#0550ae">=</span><span style="color:#fff"> </span>EXCLUDED<span style="color:#1f2328">.</span>value<span style="color:#1f2328">;</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">-- 조회
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">SELECT</span><span style="color:#fff"> </span>value<span style="color:#fff"> </span><span style="color:#cf222e">FROM</span><span style="color:#fff"> </span><span style="color:#cf222e">cache</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">WHERE</span><span style="color:#fff"> </span><span style="color:#cf222e">key</span><span style="color:#fff"> </span><span style="color:#0550ae">=</span><span style="color:#fff"> </span><span style="color:#0a3069">&#39;user:123&#39;</span><span style="color:#fff"> </span><span style="color:#cf222e">AND</span><span style="color:#fff"> </span>expires_at<span style="color:#fff"> </span><span style="color:#0550ae">&gt;</span><span style="color:#fff"> </span>NOW<span style="color:#1f2328">();</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">-- 정리 (pg_cron으로 스케줄)
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">DELETE</span><span style="color:#fff"> </span><span style="color:#cf222e">FROM</span><span style="color:#fff"> </span><span style="color:#cf222e">cache</span><span style="color:#fff"> </span><span style="color:#cf222e">WHERE</span><span style="color:#fff"> </span>expires_at<span style="color:#fff"> </span><span style="color:#0550ae">&lt;</span><span style="color:#fff"> </span>NOW<span style="color:#1f2328">();</span><span style="color:#fff">
+</span></span></span></code></pre></div><h3 id="6-메시지-큐-kafka-대체">6. 메시지 큐 (Kafka 대체)</h3>
+<p><strong>확장</strong>: pgmq</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#cf222e">CREATE</span><span style="color:#fff"> </span>EXTENSION<span style="color:#fff"> </span>pgmq<span style="color:#1f2328">;</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">SELECT</span><span style="color:#fff"> </span>pgmq<span style="color:#1f2328">.</span><span style="color:#cf222e">create</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;my_queue&#39;</span><span style="color:#1f2328">);</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">-- 전송
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">SELECT</span><span style="color:#fff"> </span>pgmq<span style="color:#1f2328">.</span>send<span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;my_queue&#39;</span><span style="color:#1f2328">,</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#0a3069">&#39;{&#34;event&#34;: &#34;signup&#34;, &#34;user_id&#34;: 123}&#39;</span><span style="color:#1f2328">);</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">-- 수신 (visibility timeout 포함)
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">SELECT</span><span style="color:#fff"> </span><span style="color:#0550ae">*</span><span style="color:#fff"> </span><span style="color:#cf222e">FROM</span><span style="color:#fff"> </span>pgmq<span style="color:#1f2328">.</span><span style="color:#cf222e">read</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;my_queue&#39;</span><span style="color:#1f2328">,</span><span style="color:#fff"> </span><span style="color:#0550ae">30</span><span style="color:#1f2328">,</span><span style="color:#fff"> </span><span style="color:#0550ae">5</span><span style="color:#1f2328">);</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">-- 처리 후 삭제
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">SELECT</span><span style="color:#fff"> </span>pgmq<span style="color:#1f2328">.</span><span style="color:#cf222e">delete</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;my_queue&#39;</span><span style="color:#1f2328">,</span><span style="color:#fff"> </span>msg_id<span style="color:#1f2328">);</span><span style="color:#fff">
+</span></span></span></code></pre></div><p><strong>또는 네이티브 SKIP LOCKED 패턴</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#cf222e">CREATE</span><span style="color:#fff"> </span><span style="color:#cf222e">TABLE</span><span style="color:#fff"> </span>jobs<span style="color:#fff"> </span><span style="color:#1f2328">(</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>id<span style="color:#fff"> </span><span style="color:#6639ba">SERIAL</span><span style="color:#fff"> </span><span style="color:#cf222e">PRIMARY</span><span style="color:#fff"> </span><span style="color:#cf222e">KEY</span><span style="color:#1f2328">,</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>payload<span style="color:#fff"> </span>JSONB<span style="color:#1f2328">,</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>status<span style="color:#fff"> </span><span style="color:#6639ba">TEXT</span><span style="color:#fff"> </span><span style="color:#cf222e">DEFAULT</span><span style="color:#fff"> </span><span style="color:#0a3069">&#39;pending&#39;</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">);</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">-- 워커가 원자적으로 작업 획득
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">UPDATE</span><span style="color:#fff"> </span>jobs<span style="color:#fff"> </span><span style="color:#cf222e">SET</span><span style="color:#fff"> </span>status<span style="color:#fff"> </span><span style="color:#0550ae">=</span><span style="color:#fff"> </span><span style="color:#0a3069">&#39;processing&#39;</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">WHERE</span><span style="color:#fff"> </span>id<span style="color:#fff"> </span><span style="color:#0550ae">=</span><span style="color:#fff"> </span><span style="color:#1f2328">(</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#cf222e">SELECT</span><span style="color:#fff"> </span>id<span style="color:#fff"> </span><span style="color:#cf222e">FROM</span><span style="color:#fff"> </span>jobs<span style="color:#fff"> </span><span style="color:#cf222e">WHERE</span><span style="color:#fff"> </span>status<span style="color:#fff"> </span><span style="color:#0550ae">=</span><span style="color:#fff"> </span><span style="color:#0a3069">&#39;pending&#39;</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#cf222e">FOR</span><span style="color:#fff"> </span><span style="color:#cf222e">UPDATE</span><span style="color:#fff"> </span>SKIP<span style="color:#fff"> </span>LOCKED<span style="color:#fff"> </span><span style="color:#cf222e">LIMIT</span><span style="color:#fff"> </span><span style="color:#0550ae">1</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">)</span><span style="color:#fff"> </span>RETURNING<span style="color:#fff"> </span><span style="color:#0550ae">*</span><span style="color:#1f2328">;</span><span style="color:#fff">
+</span></span></span></code></pre></div><h3 id="7-문서-mongodb-대체">7. 문서 (MongoDB 대체)</h3>
+<p><strong>기능</strong>: 네이티브 JSONB</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#cf222e">CREATE</span><span style="color:#fff"> </span><span style="color:#cf222e">TABLE</span><span style="color:#fff"> </span>users<span style="color:#fff"> </span><span style="color:#1f2328">(</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>id<span style="color:#fff"> </span><span style="color:#6639ba">SERIAL</span><span style="color:#fff"> </span><span style="color:#cf222e">PRIMARY</span><span style="color:#fff"> </span><span style="color:#cf222e">KEY</span><span style="color:#1f2328">,</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#cf222e">data</span><span style="color:#fff"> </span>JSONB<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">);</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">-- 중첩 문서 삽입
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">INSERT</span><span style="color:#fff"> </span><span style="color:#cf222e">INTO</span><span style="color:#fff"> </span>users<span style="color:#fff"> </span><span style="color:#1f2328">(</span><span style="color:#cf222e">data</span><span style="color:#1f2328">)</span><span style="color:#fff"> </span><span style="color:#cf222e">VALUES</span><span style="color:#fff"> </span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;{
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">  &#34;name&#34;: &#34;Alice&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">  &#34;profile&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">    &#34;bio&#34;: &#34;Developer&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">    &#34;links&#34;: [&#34;github.com/alice&#34;]
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">  }
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">}&#39;</span><span style="color:#1f2328">);</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">-- 중첩 필드 쿼리
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">SELECT</span><span style="color:#fff"> </span><span style="color:#cf222e">data</span><span style="color:#0550ae">-&gt;&gt;</span><span style="color:#0a3069">&#39;name&#39;</span><span style="color:#1f2328">,</span><span style="color:#fff"> </span><span style="color:#cf222e">data</span><span style="color:#0550ae">-&gt;</span><span style="color:#0a3069">&#39;profile&#39;</span><span style="color:#0550ae">-&gt;&gt;</span><span style="color:#0a3069">&#39;bio&#39;</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">FROM</span><span style="color:#fff"> </span>users<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">WHERE</span><span style="color:#fff"> </span><span style="color:#cf222e">data</span><span style="color:#0550ae">-&gt;</span><span style="color:#0a3069">&#39;profile&#39;</span><span style="color:#0550ae">-&gt;&gt;</span><span style="color:#0a3069">&#39;bio&#39;</span><span style="color:#fff"> </span><span style="color:#cf222e">LIKE</span><span style="color:#fff"> </span><span style="color:#0a3069">&#39;%Developer%&#39;</span><span style="color:#1f2328">;</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">-- JSON 필드 인덱스
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">CREATE</span><span style="color:#fff"> </span><span style="color:#cf222e">INDEX</span><span style="color:#fff"> </span>idx_users_email<span style="color:#fff"> </span><span style="color:#cf222e">ON</span><span style="color:#fff"> </span>users<span style="color:#fff"> </span><span style="color:#1f2328">((</span><span style="color:#cf222e">data</span><span style="color:#0550ae">-&gt;&gt;</span><span style="color:#0a3069">&#39;email&#39;</span><span style="color:#1f2328">));</span><span style="color:#fff">
+</span></span></span></code></pre></div><h3 id="8-지리공간-전문-gis-대체">8. 지리공간 (전문 GIS 대체)</h3>
+<p><strong>확장</strong>: PostGIS</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#cf222e">CREATE</span><span style="color:#fff"> </span>EXTENSION<span style="color:#fff"> </span>postgis<span style="color:#1f2328">;</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">CREATE</span><span style="color:#fff"> </span><span style="color:#cf222e">TABLE</span><span style="color:#fff"> </span>stores<span style="color:#fff"> </span><span style="color:#1f2328">(</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>id<span style="color:#fff"> </span><span style="color:#6639ba">SERIAL</span><span style="color:#fff"> </span><span style="color:#cf222e">PRIMARY</span><span style="color:#fff"> </span><span style="color:#cf222e">KEY</span><span style="color:#1f2328">,</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>name<span style="color:#fff"> </span><span style="color:#6639ba">TEXT</span><span style="color:#1f2328">,</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#cf222e">location</span><span style="color:#fff"> </span>GEOGRAPHY<span style="color:#1f2328">(</span>POINT<span style="color:#1f2328">,</span><span style="color:#fff"> </span><span style="color:#0550ae">4326</span><span style="color:#1f2328">)</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">);</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">-- 5km 이내 매장 검색
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">SELECT</span><span style="color:#fff"> </span>name<span style="color:#1f2328">,</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>ST_Distance<span style="color:#1f2328">(</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span><span style="color:#cf222e">location</span><span style="color:#1f2328">,</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span>ST_MakePoint<span style="color:#1f2328">(</span><span style="color:#0550ae">-</span><span style="color:#0550ae">122</span><span style="color:#1f2328">.</span><span style="color:#0550ae">4</span><span style="color:#1f2328">,</span><span style="color:#fff"> </span><span style="color:#0550ae">37</span><span style="color:#1f2328">.</span><span style="color:#0550ae">78</span><span style="color:#1f2328">)::</span>geography<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#1f2328">)</span><span style="color:#fff"> </span><span style="color:#cf222e">as</span><span style="color:#fff"> </span>meters<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">FROM</span><span style="color:#fff"> </span>stores<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">WHERE</span><span style="color:#fff"> </span>ST_DWithin<span style="color:#1f2328">(</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#cf222e">location</span><span style="color:#1f2328">,</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>ST_MakePoint<span style="color:#1f2328">(</span><span style="color:#0550ae">-</span><span style="color:#0550ae">122</span><span style="color:#1f2328">.</span><span style="color:#0550ae">4</span><span style="color:#1f2328">,</span><span style="color:#fff"> </span><span style="color:#0550ae">37</span><span style="color:#1f2328">.</span><span style="color:#0550ae">78</span><span style="color:#1f2328">)::</span>geography<span style="color:#1f2328">,</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#0550ae">5000</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">);</span><span style="color:#fff">
+</span></span></span></code></pre></div><h3 id="9-퍼지-검색-오타-허용">9. 퍼지 검색 (오타 허용)</h3>
+<p><strong>확장</strong>: pg_trgm (PostgreSQL 내장)</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#cf222e">CREATE</span><span style="color:#fff"> </span>EXTENSION<span style="color:#fff"> </span>pg_trgm<span style="color:#1f2328">;</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">CREATE</span><span style="color:#fff"> </span><span style="color:#cf222e">INDEX</span><span style="color:#fff"> </span>idx_name_trgm<span style="color:#fff"> </span><span style="color:#cf222e">ON</span><span style="color:#fff"> </span>products<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#cf222e">USING</span><span style="color:#fff"> </span>GIN<span style="color:#fff"> </span><span style="color:#1f2328">(</span>name<span style="color:#fff"> </span>gin_trgm_ops<span style="color:#1f2328">);</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">-- 오타가 있어도 &#34;PostgreSQL&#34; 검색
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">SELECT</span><span style="color:#fff"> </span>name<span style="color:#fff"> </span><span style="color:#cf222e">FROM</span><span style="color:#fff"> </span>products<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">WHERE</span><span style="color:#fff"> </span>name<span style="color:#fff"> </span><span style="color:#0550ae">%</span><span style="color:#fff"> </span><span style="color:#0a3069">&#39;posgresql&#39;</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">ORDER</span><span style="color:#fff"> </span><span style="color:#cf222e">BY</span><span style="color:#fff"> </span>similarity<span style="color:#1f2328">(</span>name<span style="color:#1f2328">,</span><span style="color:#fff"> </span><span style="color:#0a3069">&#39;posgresql&#39;</span><span style="color:#1f2328">)</span><span style="color:#fff"> </span><span style="color:#cf222e">DESC</span><span style="color:#1f2328">;</span><span style="color:#fff">
+</span></span></span></code></pre></div><h3 id="10-그래프-순회-그래프-db-대체">10. 그래프 순회 (그래프 DB 대체)</h3>
+<p><strong>기능</strong>: 재귀 CTE</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#57606a">-- 관리자 아래 모든 보고 체계 검색 (조직도)
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">WITH</span><span style="color:#fff"> </span><span style="color:#cf222e">RECURSIVE</span><span style="color:#fff"> </span>org_tree<span style="color:#fff"> </span><span style="color:#cf222e">AS</span><span style="color:#fff"> </span><span style="color:#1f2328">(</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#cf222e">SELECT</span><span style="color:#fff"> </span>id<span style="color:#1f2328">,</span><span style="color:#fff"> </span>name<span style="color:#1f2328">,</span><span style="color:#fff"> </span>manager_id<span style="color:#1f2328">,</span><span style="color:#fff"> </span><span style="color:#0550ae">1</span><span style="color:#fff"> </span><span style="color:#cf222e">as</span><span style="color:#fff"> </span>depth<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#cf222e">FROM</span><span style="color:#fff"> </span>employees<span style="color:#fff"> </span><span style="color:#cf222e">WHERE</span><span style="color:#fff"> </span>id<span style="color:#fff"> </span><span style="color:#0550ae">=</span><span style="color:#fff"> </span><span style="color:#0550ae">42</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#cf222e">UNION</span><span style="color:#fff"> </span><span style="color:#cf222e">ALL</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#cf222e">SELECT</span><span style="color:#fff"> </span>e<span style="color:#1f2328">.</span>id<span style="color:#1f2328">,</span><span style="color:#fff"> </span>e<span style="color:#1f2328">.</span>name<span style="color:#1f2328">,</span><span style="color:#fff"> </span>e<span style="color:#1f2328">.</span>manager_id<span style="color:#1f2328">,</span><span style="color:#fff"> </span>t<span style="color:#1f2328">.</span>depth<span style="color:#fff"> </span><span style="color:#0550ae">+</span><span style="color:#fff"> </span><span style="color:#0550ae">1</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#cf222e">FROM</span><span style="color:#fff"> </span>employees<span style="color:#fff"> </span>e<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#cf222e">JOIN</span><span style="color:#fff"> </span>org_tree<span style="color:#fff"> </span>t<span style="color:#fff"> </span><span style="color:#cf222e">ON</span><span style="color:#fff"> </span>e<span style="color:#1f2328">.</span>manager_id<span style="color:#fff"> </span><span style="color:#0550ae">=</span><span style="color:#fff"> </span>t<span style="color:#1f2328">.</span>id<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#cf222e">WHERE</span><span style="color:#fff"> </span>t<span style="color:#1f2328">.</span>depth<span style="color:#fff"> </span><span style="color:#0550ae">&lt;</span><span style="color:#fff"> </span><span style="color:#0550ae">10</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">)</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">SELECT</span><span style="color:#fff"> </span><span style="color:#0550ae">*</span><span style="color:#fff"> </span><span style="color:#cf222e">FROM</span><span style="color:#fff"> </span>org_tree<span style="color:#1f2328">;</span><span style="color:#fff">
+</span></span></span></code></pre></div><h3 id="11-스케줄-작업-cron-대체">11. 스케줄 작업 (Cron 대체)</h3>
+<p><strong>확장</strong>: pg_cron</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#cf222e">CREATE</span><span style="color:#fff"> </span>EXTENSION<span style="color:#fff"> </span>pg_cron<span style="color:#1f2328">;</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">-- 매 시간 실행
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">SELECT</span><span style="color:#fff"> </span>cron<span style="color:#1f2328">.</span>schedule<span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;cleanup&#39;</span><span style="color:#1f2328">,</span><span style="color:#fff"> </span><span style="color:#0a3069">&#39;0 * * * *&#39;</span><span style="color:#1f2328">,</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#f6f8fa;background-color:#82071e">$$</span><span style="color:#cf222e">DELETE</span><span style="color:#fff"> </span><span style="color:#cf222e">FROM</span><span style="color:#fff"> </span><span style="color:#cf222e">cache</span><span style="color:#fff"> </span><span style="color:#cf222e">WHERE</span><span style="color:#fff"> </span>expires_at<span style="color:#fff"> </span><span style="color:#0550ae">&lt;</span><span style="color:#fff"> </span>NOW<span style="color:#1f2328">()</span><span style="color:#f6f8fa;background-color:#82071e">$$</span><span style="color:#1f2328">);</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">-- 야간 롤업
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">SELECT</span><span style="color:#fff"> </span>cron<span style="color:#1f2328">.</span>schedule<span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;rollup&#39;</span><span style="color:#1f2328">,</span><span style="color:#fff"> </span><span style="color:#0a3069">&#39;0 2 * * *&#39;</span><span style="color:#1f2328">,</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#f6f8fa;background-color:#82071e">$$</span>REFRESH<span style="color:#fff"> </span>MATERIALIZED<span style="color:#fff"> </span><span style="color:#cf222e">VIEW</span><span style="color:#fff"> </span>CONCURRENTLY<span style="color:#fff"> </span>daily_stats$$<span style="color:#1f2328">);</span><span style="color:#fff">
+</span></span></span></code></pre></div><hr>
+<h2 id="postgresql-확장-아키텍처-전체-맵">PostgreSQL 확장 아키텍처 전체 맵</h2>
+<pre class="mermaid">flowchart TD
+    subgraph Core["PostgreSQL 코어"]
+        PG["PostgreSQL 17+<br>ACID, SQL, MVCC"]
+    end
+
+    subgraph Search["검색 레이어"]
+        FTS["pg_textsearch<br>BM25 랭킹"]
+        TRG["pg_trgm<br>퍼지 검색"]
+    end
+
+    subgraph AI["AI/ML 레이어"]
+        VEC["pgvector<br>HNSW 인덱스"]
+        VCS["pgvectorscale<br>DiskANN 알고리즘"]
+        PAI["pgai<br>임베딩 자동 동기화"]
+    end
+
+    subgraph TimeSeries["시계열 레이어"]
+        TSB["TimescaleDB<br>하이퍼테이블, 압축"]
+    end
+
+    subgraph Data["데이터 레이어"]
+        JSON["JSONB<br>문서 스토어"]
+        GIS["PostGIS<br>지리공간"]
+    end
+
+    subgraph Ops["운영 레이어"]
+        MQ["pgmq<br>메시지 큐"]
+        CRON["pg_cron<br>스케줄러"]
+        UNL["UNLOGGED tables<br>캐시"]
+    end
+
+    PG --> Search
+    PG --> AI
+    PG --> TimeSeries
+    PG --> Data
+    PG --> Ops
+
+    classDef core fill:#336791,color:#fff,stroke:#2c5f7c
+    classDef search fill:#e67e22,color:#fff,stroke:#d35400
+    classDef ai fill:#9b59b6,color:#fff,stroke:#8e44ad
+    classDef ts fill:#27ae60,color:#fff,stroke:#1e8449
+    classDef data fill:#3498db,color:#fff,stroke:#2980b9
+    classDef ops fill:#f39c12,color:#fff,stroke:#e67e22
+    class PG core
+    class FTS,TRG search
+    class VEC,VCS,PAI ai
+    class TSB ts
+    class JSON,GIS data
+    class MQ,CRON,UNL ops</pre><hr>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ol>
+<li><strong>&ldquo;적합한 도구&rdquo; 함정</strong>: 특화 DB 벤더의 마케팅 메시지일 뿐, 99%의 회사에는 PostgreSQL이면 충분합니다</li>
+<li><strong>동일한 알고리즘</strong>: pg_textsearch는 Elasticsearch와 동일한 BM25, pgvectorscale은 DiskANN, TimescaleDB는 시간 파티셔닝 — 희석된 버전이 아닌 동일하거나 더 나은 구현입니다</li>
+<li><strong>벤치마크 증거</strong>: pgvectorscale은 Pinecone 대비 28배 낮은 p95 레이턴시에 75% 낮은 비용을 달성합니다</li>
+<li><strong>AI 에이전트 시대의 필수</strong>: 단일 DB는 fork → test → teardown이 한 명령어지만, 7개 DB는 조율 자체가 불가능에 가깝습니다</li>
+<li><strong>복리적 운영 비용</strong>: 백업, 모니터링, 보안, 온콜이 DB 수만큼 곱해지고, SLA는 시스템 수만큼 낮아집니다 (3개 시스템 99.9% → 결합 99.7%, 연간 26시간 다운타임)</li>
+<li><strong>검증된 생태계</strong>: PostGIS(24년), 전문 검색(17년), JSONB(11년), TimescaleDB(8년) — 48,000+ 기업이 사용 중</li>
+</ol>
+<hr>
+<h2 id="결론">결론</h2>
+<p>99%의 회사에게 PostgreSQL은 필요한 모든 것을 처리합니다. 나머지 1%는 수백 개 노드에서 페타바이트 로그를 처리하거나, Kibana의 특정 대시보드가 필요하거나, PostgreSQL이 실제로 감당할 수 없는 이국적 요구사항이 있는 경우입니다.</p>
+<p>하지만 핵심은 이것입니다: <strong>1%에 해당한다면 스스로 알 수 있습니다.</strong> 벤더의 마케팅 팀이 알려줄 필요가 없습니다. 직접 벤치마크를 돌리고 실제 벽에 부딪혀 봤을 것입니다.</p>
+<p>그때까지는 누군가 &ldquo;적합한 도구를 적합한 작업에 사용하라&quot;고 했다는 이유로 데이터를 7개 건물에 흩뿌리지 마세요. 그 조언은 데이터베이스를 팔아줄 뿐, 여러분에게 도움이 되지 않습니다.</p>
+<p>PostgreSQL로 시작하세요. PostgreSQL과 함께하세요. 복잡성은 그 필요를 직접 입증했을 때만 추가하세요.</p>
+<p><strong>2026년, 그냥 Postgres를 쓰세요.</strong></p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 03월 08일 14시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/database">Database</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/infrastructure">Infrastructure</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-03-08-openai-scaling-postgresql/" rel="prev">
+        <span>OpenAI의 PostgreSQL 스케일링: 8억 ChatGPT 사용자를 지탱하는 데이터베이스 전략</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-03-08-ui-ux-pro-max-skill/" rel="next">
+        <span>UI UX Pro Max Skill: AI 기반 디자인 시스템 생성 도구 완벽 가이드</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#집이라는-비유--왜-하나의-db로-충분한가">집이라는 비유 — 왜 하나의 DB로 충분한가</a></li>
+    <li><a href="#적합한-도구-함정">&ldquo;적합한 도구&rdquo; 함정</a></li>
+    <li><a href="#ai-에이전트-시대에-이것이-중요한-이유">AI 에이전트 시대에 이것이 중요한 이유</a></li>
+    <li><a href="#특화-데이터베이스가-더-좋지-않나에-대한-반론">&ldquo;특화 데이터베이스가 더 좋지 않나?&ldquo;에 대한 반론</a>
+      <ul>
+        <li><a href="#신화-vs-현실">신화 vs 현실</a></li>
+        <li><a href="#동일한-알고리즘-동일한-성능">동일한 알고리즘, 동일한 성능</a></li>
+        <li><a href="#벤치마크가-이를-뒷받침합니다">벤치마크가 이를 뒷받침합니다</a></li>
+      </ul>
+    </li>
+    <li><a href="#숨겨진-비용의-복리-효과">숨겨진 비용의 복리 효과</a>
+      <ul>
+        <li><a href="#인지-부하">인지 부하</a></li>
+        <li><a href="#데이터-일관성">데이터 일관성</a></li>
+        <li><a href="#sla-수학">SLA 수학</a></li>
+      </ul>
+    </li>
+    <li><a href="#현대-postgresql-스택">현대 PostgreSQL 스택</a>
+      <ul>
+        <li><a href="#ai-시대의-새로운-확장들">AI 시대의 새로운 확장들</a></li>
+      </ul>
+    </li>
+    <li><a href="#퀵-스타트-확장-추가하기">퀵 스타트: 확장 추가하기</a></li>
+    <li><a href="#실전-코드-용도별-구현">실전 코드: 용도별 구현</a>
+      <ul>
+        <li><a href="#1-전문-검색-elasticsearch-대체">1. 전문 검색 (Elasticsearch 대체)</a></li>
+        <li><a href="#2-벡터-검색-pinecone-대체">2. 벡터 검색 (Pinecone 대체)</a></li>
+        <li><a href="#3-하이브리드-검색-bm25--벡터">3. 하이브리드 검색 (BM25 + 벡터)</a></li>
+        <li><a href="#4-시계열-influxdb-대체">4. 시계열 (InfluxDB 대체)</a></li>
+        <li><a href="#5-캐싱-redis-대체">5. 캐싱 (Redis 대체)</a></li>
+        <li><a href="#6-메시지-큐-kafka-대체">6. 메시지 큐 (Kafka 대체)</a></li>
+        <li><a href="#7-문서-mongodb-대체">7. 문서 (MongoDB 대체)</a></li>
+        <li><a href="#8-지리공간-전문-gis-대체">8. 지리공간 (전문 GIS 대체)</a></li>
+        <li><a href="#9-퍼지-검색-오타-허용">9. 퍼지 검색 (오타 허용)</a></li>
+        <li><a href="#10-그래프-순회-그래프-db-대체">10. 그래프 순회 (그래프 DB 대체)</a></li>
+        <li><a href="#11-스케줄-작업-cron-대체">11. 스케줄 작업 (Cron 대체)</a></li>
+      </ul>
+    </li>
+    <li><a href="#postgresql-확장-아키텍처-전체-맵">PostgreSQL 확장 아키텍처 전체 맵</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/postgresql/" class="badge badge-secondary">Postgresql</a>
+    <a href="/tags/pgvector/" class="badge badge-secondary">Pgvector</a>
+    <a href="/tags/timescaledb/" class="badge badge-secondary">TimescaleDB</a>
+    <a href="/tags/elasticsearch/" class="badge badge-secondary">Elasticsearch</a>
+    <a href="/tags/pgvectorscale/" class="badge badge-secondary">Pgvectorscale</a>
+    <a href="/tags/bm25/" class="badge badge-secondary">BM25</a>
+    <a href="/tags/diskann/" class="badge badge-secondary">DiskANN</a>
+    <a href="/tags/database-consolidation/" class="badge badge-secondary">Database-Consolidation</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
