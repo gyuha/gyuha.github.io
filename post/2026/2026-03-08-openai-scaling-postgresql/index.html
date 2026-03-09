@@ -305,26 +305,26 @@
 <table>
   <thead>
       <tr>
-          <th>지표</th>
-          <th>PgBouncer 도입 전</th>
-          <th>PgBouncer 도입 후</th>
+          <th style="text-align: left">지표</th>
+          <th style="text-align: left">PgBouncer 도입 전</th>
+          <th style="text-align: left">PgBouncer 도입 후</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td>커넥션 생성 시간</td>
-          <td>~50ms (TCP + TLS + PG 핸드셰이크)</td>
-          <td>~5ms (이미 열린 커넥션 재사용)</td>
+          <td style="text-align: left">커넥션 생성 시간</td>
+          <td style="text-align: left">~50ms (TCP + TLS + PG 핸드셰이크)</td>
+          <td style="text-align: left">~5ms (이미 열린 커넥션 재사용)</td>
       </tr>
       <tr>
-          <td>최대 클라이언트 커넥션</td>
-          <td>Azure 제한에 묶임</td>
-          <td>10,000+ (PgBouncer에서 흡수)</td>
+          <td style="text-align: left">최대 클라이언트 커넥션</td>
+          <td style="text-align: left">Azure 제한에 묶임</td>
+          <td style="text-align: left">10,000+ (PgBouncer에서 흡수)</td>
       </tr>
       <tr>
-          <td>DB 실제 커넥션 수</td>
-          <td>수천 개 (풀링 없이)</td>
-          <td>수십~수백 개 (풀링된 커넥션)</td>
+          <td style="text-align: left">DB 실제 커넥션 수</td>
+          <td style="text-align: left">수천 개 (풀링 없이)</td>
+          <td style="text-align: left">수십~수백 개 (풀링된 커넥션)</td>
       </tr>
   </tbody>
 </table>
@@ -473,31 +473,31 @@
 <table>
   <thead>
       <tr>
-          <th>구분</th>
-          <th>직접 복제 (캐스케이딩 없이)</th>
-          <th>캐스케이딩 복제</th>
+          <th style="text-align: left">구분</th>
+          <th style="text-align: left">직접 복제 (캐스케이딩 없이)</th>
+          <th style="text-align: left">캐스케이딩 복제</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td>Primary 부담</td>
-          <td>50개 복제본에 WAL 직접 전송</td>
-          <td>2~3개 중간 복제본에만 전송</td>
+          <td style="text-align: left">Primary 부담</td>
+          <td style="text-align: left">50개 복제본에 WAL 직접 전송</td>
+          <td style="text-align: left">2~3개 중간 복제본에만 전송</td>
       </tr>
       <tr>
-          <td>확장성</td>
-          <td>복제본 추가마다 Primary 부하 증가</td>
-          <td>중간 복제본 추가로 100개 이상 가능</td>
+          <td style="text-align: left">확장성</td>
+          <td style="text-align: left">복제본 추가마다 Primary 부하 증가</td>
+          <td style="text-align: left">중간 복제본 추가로 100개 이상 가능</td>
       </tr>
       <tr>
-          <td>복제 지연</td>
-          <td>낮음 (직접 연결)</td>
-          <td>약간 높음 (한 홉 추가)</td>
+          <td style="text-align: left">복제 지연</td>
+          <td style="text-align: left">낮음 (직접 연결)</td>
+          <td style="text-align: left">약간 높음 (한 홉 추가)</td>
       </tr>
       <tr>
-          <td>Primary 장애 영향</td>
-          <td>모든 복제본 영향</td>
-          <td>동일하게 영향</td>
+          <td style="text-align: left">Primary 장애 영향</td>
+          <td style="text-align: left">모든 복제본 영향</td>
+          <td style="text-align: left">동일하게 영향</td>
       </tr>
   </tbody>
 </table>
@@ -608,26 +608,26 @@
     class D,E,F ctx</pre><table>
   <thead>
       <tr>
-          <th>지표</th>
-          <th>수치</th>
+          <th style="text-align: left">지표</th>
+          <th style="text-align: left">수치</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td><strong>p99 지연시간</strong></td>
-          <td>낮은 두 자릿수 밀리초 (low double-digit ms)</td>
+          <td style="text-align: left"><strong>p99 지연시간</strong></td>
+          <td style="text-align: left">낮은 두 자릿수 밀리초 (low double-digit ms)</td>
       </tr>
       <tr>
-          <td><strong>가용성</strong></td>
-          <td>Five-Nines (99.999%)</td>
+          <td style="text-align: left"><strong>가용성</strong></td>
+          <td style="text-align: left">Five-Nines (99.999%)</td>
       </tr>
       <tr>
-          <td><strong>지난 12개월 SEV-0 수</strong></td>
-          <td>1건</td>
+          <td style="text-align: left"><strong>지난 12개월 SEV-0 수</strong></td>
+          <td style="text-align: left">1건</td>
       </tr>
       <tr>
-          <td><strong>SEV-0 원인</strong></td>
-          <td>ImageGen 출시 (주간 1억 사용자, 쓰기 10배 급증)</td>
+          <td style="text-align: left"><strong>SEV-0 원인</strong></td>
+          <td style="text-align: left">ImageGen 출시 (주간 1억 사용자, 쓰기 10배 급증)</td>
       </tr>
   </tbody>
 </table>
@@ -637,56 +637,56 @@
 <table>
   <thead>
       <tr>
-          <th>전략</th>
-          <th>목적</th>
-          <th>핵심 기법</th>
+          <th style="text-align: left">전략</th>
+          <th style="text-align: left">목적</th>
+          <th style="text-align: left">핵심 기법</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td><strong>쓰기 오프로드</strong></td>
-          <td>Primary 부하 감소</td>
-          <td>샤딩 가능한 워크로드 → Cosmos DB, 신규 테이블 금지 정책</td>
+          <td style="text-align: left"><strong>쓰기 오프로드</strong></td>
+          <td style="text-align: left">Primary 부하 감소</td>
+          <td style="text-align: left">샤딩 가능한 워크로드 → Cosmos DB, 신규 테이블 금지 정책</td>
       </tr>
       <tr>
-          <td><strong>PgBouncer</strong></td>
-          <td>커넥션 병목 해소</td>
-          <td>K8s 배포, 트랜잭션 모드, 50ms → 5ms 연결 시간</td>
+          <td style="text-align: left"><strong>PgBouncer</strong></td>
+          <td style="text-align: left">커넥션 병목 해소</td>
+          <td style="text-align: left">K8s 배포, 트랜잭션 모드, 50ms → 5ms 연결 시간</td>
       </tr>
       <tr>
-          <td><strong>쿼리 최적화</strong></td>
-          <td>비효율 쿼리 제거</td>
-          <td>ORM 리뷰, idle 세션 타임아웃, 조인 수 제한</td>
+          <td style="text-align: left"><strong>쿼리 최적화</strong></td>
+          <td style="text-align: left">비효율 쿼리 제거</td>
+          <td style="text-align: left">ORM 리뷰, idle 세션 타임아웃, 조인 수 제한</td>
       </tr>
       <tr>
-          <td><strong>고가용성</strong></td>
-          <td>SPOF 완화</td>
-          <td>Hot Standby, 빠른 승격, Azure Safe Failover</td>
+          <td style="text-align: left"><strong>고가용성</strong></td>
+          <td style="text-align: left">SPOF 완화</td>
+          <td style="text-align: left">Hot Standby, 빠른 승격, Azure Safe Failover</td>
       </tr>
       <tr>
-          <td><strong>워크로드 격리</strong></td>
-          <td>우선순위 보장</td>
-          <td>고/저 우선순위 복제본 그룹 분리</td>
+          <td style="text-align: left"><strong>워크로드 격리</strong></td>
+          <td style="text-align: left">우선순위 보장</td>
+          <td style="text-align: left">고/저 우선순위 복제본 그룹 분리</td>
       </tr>
       <tr>
-          <td><strong>캐시 락킹</strong></td>
-          <td>Thundering Herd 방지</td>
-          <td>단일 리더 패턴, 후속 요청 대기</td>
+          <td style="text-align: left"><strong>캐시 락킹</strong></td>
+          <td style="text-align: left">Thundering Herd 방지</td>
+          <td style="text-align: left">단일 리더 패턴, 후속 요청 대기</td>
       </tr>
       <tr>
-          <td><strong>캐스케이딩 복제</strong></td>
-          <td>복제본 확장</td>
-          <td>중간 복제본 WAL 릴레이, 100개 이상 가능</td>
+          <td style="text-align: left"><strong>캐스케이딩 복제</strong></td>
+          <td style="text-align: left">복제본 확장</td>
+          <td style="text-align: left">중간 복제본 WAL 릴레이, 100개 이상 가능</td>
       </tr>
       <tr>
-          <td><strong>다계층 Rate Limiting</strong></td>
-          <td>트래픽 폭증 방어</td>
-          <td>앱/풀러/프록시/쿼리 레벨 4중 제한</td>
+          <td style="text-align: left"><strong>다계층 Rate Limiting</strong></td>
+          <td style="text-align: left">트래픽 폭증 방어</td>
+          <td style="text-align: left">앱/풀러/프록시/쿼리 레벨 4중 제한</td>
       </tr>
       <tr>
-          <td><strong>스키마 관리</strong></td>
-          <td>무중단 운영</td>
-          <td>경량 DDL만 허용, 5초 타임아웃, 느린 백필</td>
+          <td style="text-align: left"><strong>스키마 관리</strong></td>
+          <td style="text-align: left">무중단 운영</td>
+          <td style="text-align: left">경량 DDL만 허용, 5초 타임아웃, 느린 백필</td>
       </tr>
   </tbody>
 </table>
