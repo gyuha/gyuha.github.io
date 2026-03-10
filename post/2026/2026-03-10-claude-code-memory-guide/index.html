@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude Code Memory 완전 가이드: CLAUDE.md, .claude/rules, Auto Memory를 어떻게 같이 써야 하나'" />
+  <title>Claude Code Memory 완전 가이드: CLAUDE.md, .claude/rules, Auto Memory를 어떻게 같이 써야 하나  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude Code Memory 완전 가이드: CLAUDE.md, .claude/rules, Auto Memory를 어떻게 같이 써야 하나" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-03-10"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/2026-03-10-claude-code-memory-guide/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="memory" />
+  
+  <meta property="og:tags" content="claude-md" />
+  
+  <meta property="og:tags" content="auto-memory" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/2026-03-10-claude-code-memory-guide/">
+          <h1>
+            Claude Code Memory 완전 가이드: CLAUDE.md, .claude/rules, Auto Memory를 어떻게 같이 써야 하나
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/2026-03-10-claude-code-memory-guide/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Claude Code의 메모리는 단순히 &ldquo;대화를 기억한다&rdquo; 수준이 아닙니다.<br>공식 문서 기준으로 보면 Claude Code는 <strong>사람이 적는 지침형 메모리</strong> 와 <strong>Claude가 스스로 축적하는 자동 메모리</strong> 를 분리해서 운영합니다.<br>이 글에서는 <code>CLAUDE.md</code>, <code>.claude/rules/</code>, <code>Auto memory</code>, <code>/memory</code> 명령까지 하나의 운영 체계로 연결해서 정리합니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://code.claude.com/docs/en/memory">https://code.claude.com/docs/en/memory</a></li>
+</ul>
+<h2 id="1-claude-code-메모리는-왜-두-종류로-나뉘는가">1. Claude Code 메모리는 왜 두 종류로 나뉘는가</h2>
+<p>공식 문서의 출발점은 분명합니다.<br>Claude Code 세션은 매번 새로운 컨텍스트 윈도우로 시작하고, 그 공백을 메우는 방식이 두 가지라는 점입니다.</p>
+<ul>
+<li><code>CLAUDE.md</code>: 사용자가 직접 쓰는 지속 지침</li>
+<li>Auto memory: Claude가 작업하면서 스스로 남기는 학습 노트</li>
+</ul>
+<p>이 둘은 비슷해 보이지만 목적이 다릅니다.</p>
+<ul>
+<li><strong><code>CLAUDE.md</code></strong> 는 &ldquo;이 프로젝트에서 어떻게 행동해야 하는가&quot;를 정하는 쪽에 가깝습니다.</li>
+<li><strong>Auto memory</strong> 는 &ldquo;이 프로젝트에서 일하다 보니 앞으로도 기억해 두면 좋은 사실&quot;을 축적하는 쪽에 가깝습니다.</li>
+</ul>
+<p>공식 비교표를 실무적으로 다시 해석하면 아래처럼 볼 수 있습니다.</p>
+<pre class="mermaid">flowchart TD
+    A["Claude Code 시작"] --> B["지침형 메모리<br>CLAUDE.md"]
+    A --> C["학습형 메모리<br>Auto memory"]
+    B --> D["코딩 규칙<br>워크플로우<br>아키텍처 원칙"]
+    C --> E["빌드 명령<br>디버깅 메모<br>반복 선호"]
+    D --> F["세션 시작 즉시 컨텍스트 반영"]
+    E --> F
+
+    classDef core fill:#c5dcef,stroke:#6b9ac4,color:#333
+    classDef detail fill:#c0ecd3,stroke:#67a97c,color:#333
+    class A,B,C core
+    class D,E,F detail</pre><p>중요한 포인트는 Claude가 둘 다 <strong>&ldquo;강제 설정&quot;이 아니라 컨텍스트로 취급한다</strong> 는 점입니다.<br>즉 설정 파일처럼 100% 기계적으로 집행되는 것이 아니라, 더 구체적이고 더 간결할수록 잘 따라갑니다.<br>그래서 Memory 설계에서 가장 중요한 원칙은 &ldquo;많이 적는 것&quot;이 아니라 <strong>충돌 없이 짧고 검증 가능하게 적는 것</strong> 입니다.</p>
+<h2 id="2-claudemd는-어디에-두고-어떤-우선순위로-읽히는가">2. <code>CLAUDE.md</code>는 어디에 두고, 어떤 우선순위로 읽히는가</h2>
+<p>공식 문서는 <code>CLAUDE.md</code>를 여러 레벨에 둘 수 있다고 설명합니다.</p>
+<ul>
+<li>조직 관리 정책: OS별 시스템 경로</li>
+<li>프로젝트 지침: <code>./CLAUDE.md</code> 또는 <code>./.claude/CLAUDE.md</code></li>
+<li>사용자 지침: <code>~/.claude/CLAUDE.md</code></li>
+</ul>
+<p>핵심은 <strong>더 구체적인 위치가 더 넓은 범위보다 우선한다</strong> 는 점입니다.<br>예를 들어 개인 선호보다 프로젝트 규칙이 더 중요하고, 특정 하위 디렉토리의 규칙은 더 좁은 범위에서 더 강하게 작동합니다.</p>
+<pre class="mermaid">flowchart TD
+    A["조직 정책<br>Managed CLAUDE.md"] --> D["최종 세션 컨텍스트"]
+    B["사용자 지침<br>~/.claude/CLAUDE.md"] --> D
+    C["프로젝트 지침<br>./CLAUDE.md"] --> D
+    E["하위 디렉토리 지침<br>필요 시 지연 로드"] --> D
+
+    classDef broad fill:#fde8c0,stroke:#d4a64a,color:#333
+    classDef narrow fill:#e0c8ef,stroke:#9b6db0,color:#333
+    classDef result fill:#c0ecd3,stroke:#67a97c,color:#333
+    class A,B broad
+    class C,E narrow
+    class D result</pre><p>로드 방식도 실무적으로 꽤 중요합니다.</p>
+<ul>
+<li>현재 작업 디렉토리에서 상위 디렉토리 방향으로 올라가며 <code>CLAUDE.md</code>를 찾습니다.</li>
+<li>상위 경로의 <code>CLAUDE.md</code>는 세션 시작 시 로드됩니다.</li>
+<li>현재 작업 디렉토리 아래에 있는 하위 디렉토리의 <code>CLAUDE.md</code>는 처음부터 다 읽지 않고, Claude가 그 경로의 파일을 실제로 읽을 때 로드됩니다.</li>
+</ul>
+<p>이 구조 덕분에 대형 저장소에서도 모든 규칙을 한 번에 밀어 넣지 않고, 필요한 규칙만 늦게 불러오는 방식이 가능합니다.<br>문서가 <code>claudeMdExcludes</code> 설정을 별도로 설명하는 이유도 여기에 있습니다.<br>모노레포처럼 범위가 넓은 환경에서는 다른 팀의 <code>CLAUDE.md</code>까지 따라 들어오는 것을 막아야 할 때가 있기 때문입니다.</p>
+<h2 id="3-큰-프로젝트에서는-clauderules를-어떻게-써야-하나">3. 큰 프로젝트에서는 <code>.claude/rules/</code>를 어떻게 써야 하나</h2>
+<p>문서가 <code>CLAUDE.md</code>만 강조하는 것처럼 보일 수 있지만, 실제 운영에서는 <code>.claude/rules/</code>가 더 중요해지는 구간이 빠르게 옵니다.<br><code>CLAUDE.md</code> 하나에 모든 규칙을 넣기 시작하면 파일이 길어지고, 그만큼 컨텍스트 비용과 지시 일관성 문제가 같이 커지기 때문입니다.</p>
+<p>공식 문서가 제안하는 해법은 두 가지입니다.</p>
+<ol>
+<li><code>@path/to/file</code> 형태로 추가 파일을 import하기</li>
+<li><code>.claude/rules/</code> 아래에 주제별 규칙 파일을 분리하기</li>
+</ol>
+<p>특히 <code>.claude/rules/</code>의 장점은 <strong>경로별로 규칙을 스코프할 수 있다</strong> 는 점입니다.<br>예를 들어 <code>src/api/**/*.ts</code>에만 적용되는 API 규칙, <code>tests/**/*.ts</code>에만 적용되는 테스트 규칙을 따로 둘 수 있습니다.</p>
+<pre class="mermaid">flowchart TD
+    A["프로젝트 규칙 설계"] --> B["작은 공통 지침<br>CLAUDE.md"]
+    A --> C["주제별 규칙<br>.claude/rules/*.md"]
+    C --> D["무조건 로드 규칙"]
+    C --> E["paths frontmatter 기반 조건부 규칙"]
+    E --> F["매칭 파일을 읽을 때만 로드"]
+
+    classDef root fill:#c5dcef,stroke:#6b9ac4,color:#333
+    classDef rules fill:#e0c8ef,stroke:#9b6db0,color:#333
+    classDef selective fill:#ffc8c4,stroke:#d97c73,color:#333
+    class A,B root
+    class C,D rules
+    class E,F selective</pre><p>이 패턴이 중요한 이유는 분명합니다.</p>
+<ul>
+<li>공통 규칙은 항상 읽히게 유지할 수 있습니다.</li>
+<li>세부 규칙은 필요한 파일에만 묶어서 컨텍스트 낭비를 줄일 수 있습니다.</li>
+<li>팀 단위로 규칙 파일을 나누고 관리하기 쉬워집니다.</li>
+</ul>
+<p>문서는 rules 디렉토리가 재귀적으로 탐색된다고 설명합니다.<br>즉 <code>frontend/</code>, <code>backend/</code>, <code>security/</code>처럼 서브디렉토리 구조를 잡아도 됩니다.<br>또한 symlink도 지원하므로 여러 프로젝트에 공통 규칙 묶음을 재사용하는 방식도 가능합니다.</p>
+<h2 id="4-auto-memory는-무엇을-저장하고-어디에-쌓이는가">4. Auto memory는 무엇을 저장하고, 어디에 쌓이는가</h2>
+<p>Auto memory는 사용자가 직접 작성하는 파일이 아니라 Claude가 세션 중에 스스로 축적하는 메모리입니다.<br>공식 문서는 여기서 중요한 경계선을 하나 명확히 긋습니다.<br>Claude는 <strong>매 세션마다 반드시 저장하는 것이 아니라</strong>, 미래 대화에 유용할 만한 정보만 골라서 저장합니다.</p>
+<p>문서가 예시로 든 항목들은 아래와 같습니다.</p>
+<ul>
+<li>빌드 명령</li>
+<li>디버깅 인사이트</li>
+<li>아키텍처 메모</li>
+<li>코드 스타일 선호</li>
+<li>반복적으로 드러난 워크플로우 습관</li>
+</ul>
+<p>저장 위치는 <code>~/.claude/projects/&lt;project&gt;/memory/</code> 입니다.<br>그리고 이 메모리 디렉토리 구조는 아래처럼 구성됩니다.</p>
+<pre class="mermaid">flowchart TD
+    A["~/.claude/projects/<project>/memory/"] --> B["MEMORY.md<br>진입점 인덱스"]
+    A --> C["debugging.md"]
+    A --> D["api-conventions.md"]
+    A --> E["기타 토픽 파일"]
+    B --> F["세션 시작 시 앞 200줄 자동 로드"]
+    C --> G["필요 시 온디맨드 읽기"]
+    D --> G
+    E --> G
+
+    classDef storage fill:#fde8c0,stroke:#d4a64a,color:#333
+    classDef files fill:#c5dcef,stroke:#6b9ac4,color:#333
+    classDef runtime fill:#c0ecd3,stroke:#67a97c,color:#333
+    class A storage
+    class B,C,D,E files
+    class F,G runtime</pre><p>여기서 실무적으로 특히 중요하게 봐야 할 문장들은 세 가지입니다.</p>
+<p>첫째, <strong>세션 시작 시 자동으로 로드되는 것은 <code>MEMORY.md</code>의 앞 200줄뿐</strong> 입니다.<br>이 말은 <code>MEMORY.md</code>를 인덱스처럼 짧게 유지하고, 자세한 내용은 토픽 파일로 밀어내는 운영이 필요하다는 뜻입니다.</p>
+<p>둘째, <strong>토픽 파일은 시작할 때 자동 로드되지 않습니다</strong>.<br>Claude가 필요할 때 일반 파일 읽기 도구처럼 읽어 옵니다.<br>즉 Auto memory도 사실상 &ldquo;요약 인덱스 + 상세 문서&rdquo; 구조입니다.</p>
+<p>셋째, <strong>Auto memory는 machine-local</strong> 입니다.<br>문서 기준으로 이 메모리는 다른 머신이나 클라우드 환경과 자동 동기화되지 않습니다.<br>그래서 개인 노트북과 원격 개발 환경이 분리되어 있다면 동일한 기억을 공유한다고 가정하면 안 됩니다.</p>
+<h2 id="5-auto-memory의-경계-무엇이-공유되고-무엇이-공유되지-않는가">5. Auto memory의 경계: 무엇이 공유되고 무엇이 공유되지 않는가</h2>
+<p>이 문서에서 혼동하기 쉬운 부분은 &ldquo;프로젝트별 메모리&quot;와 &ldquo;작업 디렉토리별 메모리&quot;를 어떻게 이해해야 하느냐입니다.<br>문서 기준으로 Auto memory 디렉토리는 git repository를 기준으로 파생됩니다.<br>그래서 <strong>같은 저장소 안의 worktree와 하위 디렉토리는 같은 auto memory 디렉토리를 공유</strong> 합니다.</p>
+<p>즉 다음처럼 해석하는 것이 맞습니다.</p>
+<ul>
+<li>같은 git repo 안의 여러 worktree: 공유</li>
+<li>같은 repo 아래 하위 디렉토리: 공유</li>
+<li>git repo 밖의 별도 프로젝트 루트: 별도 메모리</li>
+<li>다른 머신: 공유되지 않음</li>
+</ul>
+<pre class="mermaid">flowchart TD
+    A["같은 Git 저장소"] --> B["worktree A"]
+    A --> C["worktree B"]
+    A --> D["subdir 작업"]
+    B --> E["같은 auto memory 디렉토리 공유"]
+    C --> E
+    D --> E
+    F["다른 머신 또는 클라우드 환경"] --> G["공유 안 됨"]
+
+    classDef repo fill:#c5dcef,stroke:#6b9ac4,color:#333
+    classDef shared fill:#c0ecd3,stroke:#67a97c,color:#333
+    classDef isolated fill:#ffc8c4,stroke:#d97c73,color:#333
+    class A,B,C,D repo
+    class E shared
+    class F,G isolated</pre><p>이 차이는 운영 관점에서 꽤 큽니다.<br>예를 들어 로컬 worktree를 여러 개 써서 병렬 작업을 한다면 메모리도 함께 누적된다고 기대할 수 있습니다.<br>반대로 ephemeral container나 별도 원격 머신에서 실행하는 경우에는 같은 프로젝트라도 메모리가 이어지지 않을 수 있습니다.</p>
+<p>또 문서는 subagent도 별도의 auto memory를 유지할 수 있다고 짧게 언급합니다.<br>즉 메인 에이전트와 서브에이전트가 메모리를 완전히 동일하게 공유한다고 단정하면 안 되고, 해당 기능을 별도로 설정하고 이해해야 합니다.</p>
+<h2 id="6-memory-설정-토글-환경-변수는-어떻게-역할이-갈리는가">6. <code>/memory</code>, 설정 토글, 환경 변수는 어떻게 역할이 갈리는가</h2>
+<p>공식 문서는 메모리 관리 인터페이스를 세 층으로 설명합니다.</p>
+<ul>
+<li><code>/memory</code> 명령</li>
+<li><code>autoMemoryEnabled</code> 설정</li>
+<li><code>CLAUDE_CODE_DISABLE_AUTO_MEMORY=1</code> 환경 변수</li>
+</ul>
+<p>이 셋은 같은 기능처럼 보여도 운영 레벨이 다릅니다.</p>
+<h3 id="memory-명령의-역할"><code>/memory</code> 명령의 역할</h3>
+<p><code>/memory</code>는 현재 세션에서 로드된 <code>CLAUDE.md</code> 및 rules 파일 목록을 보여주고, auto memory on/off 토글과 auto memory 폴더 열기까지 제공합니다.<br>즉 단순 편집기가 아니라 <strong>현재 어떤 메모리 레이어가 작동 중인지 점검하는 진입점</strong> 입니다.</p>
+<p>또 사용자가 &ldquo;pnpm만 써라&rdquo;, &ldquo;이 API 테스트는 Redis가 필요하다&rdquo; 같은 내용을 기억하라고 요청하면 Claude는 이를 auto memory에 저장할 수 있고, 반대로 <code>CLAUDE.md</code>에 들어가야 하는 규칙은 명시적으로 &ldquo;add this to CLAUDE.md&quot;처럼 지시해야 한다고 문서는 설명합니다.</p>
+<h3 id="설정-파일과-환경-변수의-역할">설정 파일과 환경 변수의 역할</h3>
+<p>설정 파일에서는 아래처럼 <code>autoMemoryEnabled</code>를 켜고 끌 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;autoMemoryEnabled&#34;</span><span style="color:#1f2328">:</span> <span style="color:#cf222e">false</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><p>환경 변수는 더 강한 레벨의 제어 수단입니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#953800">CLAUDE_CODE_DISABLE_AUTO_MEMORY</span><span style="color:#0550ae">=</span><span style="color:#0550ae">1</span>
+</span></span></code></pre></div><p>문서상 의미는 명확합니다.<br>자동 메모리를 잠깐 끄고 싶을 때는 세션 인터페이스나 설정이 유용하지만, 특정 실행 환경에서 확실히 차단해야 할 때는 환경 변수가 더 직접적인 스위치가 됩니다.</p>
+<h2 id="7-문서가-권장하는-좋은-claudemd-작성법">7. 문서가 권장하는 좋은 <code>CLAUDE.md</code> 작성법</h2>
+<p>이 페이지의 실전 가치가 가장 큰 부분은 사실 기능 소개보다도 <strong>좋은 지침을 쓰는 법</strong> 입니다.<br>문서는 <code>CLAUDE.md</code>가 설정이 아니라 컨텍스트이므로, 글쓰기 방식 자체가 성능에 영향을 준다고 설명합니다.</p>
+<p>핵심 원칙은 아래 네 가지로 압축할 수 있습니다.</p>
+<ol>
+<li><strong>짧게 유지하기</strong>: 목표 크기는 200줄 이하</li>
+<li><strong>구조화하기</strong>: 헤더와 불릿으로 섹션을 나누기</li>
+<li><strong>구체적으로 쓰기</strong>: &ldquo;잘 포맷하라&rdquo; 대신 &ldquo;2-space indentation&rdquo;</li>
+<li><strong>충돌 제거하기</strong>: 상충하는 규칙을 주기적으로 정리하기</li>
+</ol>
+<p>이 원칙은 단순한 문서 미학이 아니라 실제 동작 품질과 직결됩니다.<br>길고 추상적인 <code>CLAUDE.md</code>는 컨텍스트만 많이 먹고, 실제 행동 지침으로는 약해집니다.<br>반면 짧고 측정 가능한 문장은 Claude가 더 안정적으로 따르기 쉽습니다.</p>
+<p>문서가 import 기능과 <code>.claude/rules/</code>를 같이 설명하는 이유도 이 때문입니다.<br>무조건 파일을 하나로 키우지 말고, 상시 필요한 지침과 조건부 지침을 분리하라는 뜻입니다.</p>
+<h2 id="실전-적용-포인트--핵심-요약">실전 적용 포인트 / 핵심 요약</h2>
+<ul>
+<li>Claude Code 메모리는 <code>CLAUDE.md</code>와 Auto memory의 이중 구조다.</li>
+<li><code>CLAUDE.md</code>는 사람이 쓰는 지침이고, Auto memory는 Claude가 쌓는 학습 노트다.</li>
+<li>큰 프로젝트에서는 <code>.claude/rules/</code>와 <code>paths</code> frontmatter로 규칙을 쪼개는 것이 효율적이다.</li>
+<li>Auto memory는 <code>~/.claude/projects/&lt;project&gt;/memory/</code>에 저장되며, <code>MEMORY.md</code> 앞 200줄만 세션 시작 시 자동 로드된다.</li>
+<li>같은 git repo의 worktree와 하위 디렉토리는 메모리를 공유하지만, 다른 머신과 클라우드 환경까지 자동 공유되지는 않는다.</li>
+<li><code>/memory</code>, 설정 파일, 환경 변수는 각각 점검 UI, 일반 토글, 강제 차단 스위치 역할을 가진다.</li>
+</ul>
+<p>공식 문서를 실제 운영 원칙으로 번역하면 아래처럼 정리할 수 있습니다.</p>
+<ol>
+<li>프로젝트 루트의 <code>CLAUDE.md</code>에는 항상 필요한 최소 공통 규칙만 둡니다.</li>
+<li>세부 규칙은 <code>.claude/rules/</code>로 분리하고, 가능하면 <code>paths</code>를 써서 조건부 로드로 바꿉니다.</li>
+<li>Auto memory의 <code>MEMORY.md</code>는 인덱스처럼 짧게 유지하고, 긴 메모는 토픽 파일로 내립니다.</li>
+<li>메모리가 &ldquo;적용 안 된다&quot;고 느껴질 때는 먼저 <code>/memory</code>로 실제 로드 상태를 확인합니다.</li>
+<li>개인 선호와 팀 규칙을 같은 파일에 섞기보다, 사용자 레벨과 프로젝트 레벨을 분리해서 충돌을 줄입니다.</li>
+<li>원격 환경이나 다른 머신에서 동일한 기억을 기대한다면, Auto memory가 아니라 버전 관리되는 <code>CLAUDE.md</code> 계열에 넣어야 합니다.</li>
+</ol>
+<h2 id="결론">결론</h2>
+<p>Claude Code의 Memory는 &ldquo;무엇이든 오래 기억하는 기능&quot;이 아니라, <strong>지침은 <code>CLAUDE.md</code> 계층으로 관리하고, 학습은 Auto memory로 축적하는 운영 시스템</strong> 에 가깝습니다.<br>공식 문서를 그대로 따라가면 좋은 기본 원칙은 분명합니다.<br>상시 규칙은 짧고 명확하게, 조건부 규칙은 <code>.claude/rules/</code>로 분리하고, 반복적으로 드러나는 작업 지식은 Auto memory가 맡게 하는 구조가 가장 안정적입니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 03월 10일 18시 30분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/development">Development</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/engineering">Engineering</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-03-10-gsd-get-shit-done-context-engineering/" rel="prev">
+        <span>GSD (Get Shit Done) — AI 코딩 에이전트를 위한 컨텍스트 엔지니어링 &amp; 스펙 기반 개발 시스템 완전 가이드</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-claude-code-메모리는-왜-두-종류로-나뉘는가">1. Claude Code 메모리는 왜 두 종류로 나뉘는가</a></li>
+    <li><a href="#2-claudemd는-어디에-두고-어떤-우선순위로-읽히는가">2. <code>CLAUDE.md</code>는 어디에 두고, 어떤 우선순위로 읽히는가</a></li>
+    <li><a href="#3-큰-프로젝트에서는-clauderules를-어떻게-써야-하나">3. 큰 프로젝트에서는 <code>.claude/rules/</code>를 어떻게 써야 하나</a></li>
+    <li><a href="#4-auto-memory는-무엇을-저장하고-어디에-쌓이는가">4. Auto memory는 무엇을 저장하고, 어디에 쌓이는가</a></li>
+    <li><a href="#5-auto-memory의-경계-무엇이-공유되고-무엇이-공유되지-않는가">5. Auto memory의 경계: 무엇이 공유되고 무엇이 공유되지 않는가</a></li>
+    <li><a href="#6-memory-설정-토글-환경-변수는-어떻게-역할이-갈리는가">6. <code>/memory</code>, 설정 토글, 환경 변수는 어떻게 역할이 갈리는가</a>
+      <ul>
+        <li><a href="#memory-명령의-역할"><code>/memory</code> 명령의 역할</a></li>
+        <li><a href="#설정-파일과-환경-변수의-역할">설정 파일과 환경 변수의 역할</a></li>
+      </ul>
+    </li>
+    <li><a href="#7-문서가-권장하는-좋은-claudemd-작성법">7. 문서가 권장하는 좋은 <code>CLAUDE.md</code> 작성법</a></li>
+    <li><a href="#실전-적용-포인트--핵심-요약">실전 적용 포인트 / 핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/memory/" class="badge badge-secondary">Memory</a>
+    <a href="/tags/claude-md/" class="badge badge-secondary">Claude-Md</a>
+    <a href="/tags/auto-memory/" class="badge badge-secondary">Auto-Memory</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

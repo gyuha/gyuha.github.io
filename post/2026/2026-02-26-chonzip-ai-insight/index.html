@@ -177,27 +177,27 @@
     style F fill:#e8f5e9</pre><hr>
 <h2 id="step-1-매물-등록과-job-발행">Step 1: 매물 등록과 Job 발행</h2>
 <p>매물을 DB에 저장하고 AI 분석 Job을 큐에 넣는다. <code>property.service.ts</code>의 <code>create()</code> 메서드가 매물을 저장한 뒤 fire-and-forget 방식으로 세 가지 비동기 작업을 큐에 넣는다.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#998;font-style:italic">// AI insight 사전 계산 (비동기, 실패해도 매물 등록에 영향 없음)
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">this</span>.insightJobService
-</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">?</span>.enqueueFullPropertyInsight(savedProperty.id, <span style="color:#d14">&#34;created&#34;</span>)
-</span></span><span style="display:flex;"><span>  .<span style="color:#000;font-weight:bold">catch</span>((error) <span style="color:#000;font-weight:bold">=&gt;</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">this</span>.logger.error(<span style="color:#d14">&#34;Failed to enqueue insight jobs&#34;</span>, error);
-</span></span><span style="display:flex;"><span>  });
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#57606a">// AI insight 사전 계산 (비동기, 실패해도 매물 등록에 영향 없음)
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">this</span><span style="color:#1f2328">.</span><span style="color:#1f2328">insightJobService</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">?</span><span style="color:#1f2328">.</span><span style="color:#1f2328">enqueueFullPropertyInsight</span><span style="color:#1f2328">(</span><span style="color:#1f2328">savedProperty</span><span style="color:#1f2328">.</span><span style="color:#1f2328">id</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#34;created&#34;</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">.</span><span style="color:#cf222e">catch</span><span style="color:#1f2328">((</span><span style="color:#1f2328">error</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">=&gt;</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">this</span><span style="color:#1f2328">.</span><span style="color:#1f2328">logger</span><span style="color:#1f2328">.</span><span style="color:#1f2328">error</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;Failed to enqueue insight jobs&#34;</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">error</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">});</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic">// Market snapshot 사전 계산 (비동기)
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">this</span>.insightJobService
-</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">?</span>.enqueueMarketSnapshot(savedProperty.id, <span style="color:#d14">&#34;created&#34;</span>)
-</span></span><span style="display:flex;"><span>  .<span style="color:#000;font-weight:bold">catch</span>((error) <span style="color:#000;font-weight:bold">=&gt;</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">this</span>.logger.error(<span style="color:#d14">&#34;Failed to enqueue market snapshot&#34;</span>, error);
-</span></span><span style="display:flex;"><span>  });
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// Market snapshot 사전 계산 (비동기)
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">this</span><span style="color:#1f2328">.</span><span style="color:#1f2328">insightJobService</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">?</span><span style="color:#1f2328">.</span><span style="color:#1f2328">enqueueMarketSnapshot</span><span style="color:#1f2328">(</span><span style="color:#1f2328">savedProperty</span><span style="color:#1f2328">.</span><span style="color:#1f2328">id</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#34;created&#34;</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">.</span><span style="color:#cf222e">catch</span><span style="color:#1f2328">((</span><span style="color:#1f2328">error</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">=&gt;</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">this</span><span style="color:#1f2328">.</span><span style="color:#1f2328">logger</span><span style="color:#1f2328">.</span><span style="color:#1f2328">error</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;Failed to enqueue market snapshot&#34;</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">error</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">});</span>
 </span></span></code></pre></div><p><code>enqueueFullPropertyInsight</code>는 내부적으로 두 개의 Job을 큐에 넣는다.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">async</span> enqueueFullPropertyInsight(
-</span></span><span style="display:flex;"><span>  propertyId: <span style="color:#458;font-weight:bold">number</span>,
-</span></span><span style="display:flex;"><span>  reason: <span style="color:#458;font-weight:bold">InsightJobReason</span>,
-</span></span><span style="display:flex;"><span>)<span style="color:#000;font-weight:bold">:</span> Promise&lt;<span style="color:#000080">void</span>&gt; {
-</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">await</span> <span style="color:#000;font-weight:bold">this</span>.enqueuePropertyFactExtract(propertyId, reason);
-</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">await</span> <span style="color:#000;font-weight:bold">this</span>.enqueuePropertyInsightGenerate(propertyId, reason);
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#cf222e">async</span> <span style="color:#1f2328">enqueueFullPropertyInsight</span><span style="color:#1f2328">(</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">propertyId</span>: <span style="color:#cf222e">number</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">reason</span>: <span style="color:#cf222e">InsightJobReason</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">)</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">Promise</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">void</span><span style="color:#1f2328">&gt;</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">await</span> <span style="color:#cf222e">this</span><span style="color:#1f2328">.</span><span style="color:#1f2328">enqueuePropertyFactExtract</span><span style="color:#1f2328">(</span><span style="color:#1f2328">propertyId</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">reason</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">await</span> <span style="color:#cf222e">this</span><span style="color:#1f2328">.</span><span style="color:#1f2328">enqueuePropertyInsightGenerate</span><span style="color:#1f2328">(</span><span style="color:#1f2328">propertyId</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">reason</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
 </span></span></code></pre></div><p><strong>핵심 설계 포인트:</strong></p>
 <ul>
 <li>비동기이므로 매물 등록 API는 Job 결과를 기다리지 않고 바로 200 OK 반환</li>
@@ -223,30 +223,30 @@
 <table>
   <thead>
       <tr>
-          <th style="text-align: left">데이터 소스</th>
-          <th style="text-align: left">API</th>
-          <th style="text-align: left">가져오는 정보</th>
-          <th style="text-align: left">캐시 TTL</th>
+          <th>데이터 소스</th>
+          <th>API</th>
+          <th>가져오는 정보</th>
+          <th>캐시 TTL</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td style="text-align: left">data.go.kr</td>
-          <td style="text-align: left">국토교통부 주택/토지 거래 API</td>
-          <td style="text-align: left">거래 건수, 평균가, 평당가, 가격 범위</td>
-          <td style="text-align: left">24시간</td>
+          <td>data.go.kr</td>
+          <td>국토교통부 주택/토지 거래 API</td>
+          <td>거래 건수, 평균가, 평당가, 가격 범위</td>
+          <td>24시간</td>
       </tr>
       <tr>
-          <td style="text-align: left">V-World</td>
-          <td style="text-align: left">개별공시지가 API</td>
-          <td style="text-align: left">공시지가(원/㎡), 전년 대비 변동률</td>
-          <td style="text-align: left">24시간</td>
+          <td>V-World</td>
+          <td>개별공시지가 API</td>
+          <td>공시지가(원/㎡), 전년 대비 변동률</td>
+          <td>24시간</td>
       </tr>
       <tr>
-          <td style="text-align: left">V-World</td>
-          <td style="text-align: left">토지이용계획 API</td>
-          <td style="text-align: left">용도지역, 건폐율, 용적률, 건축/농사 가능 여부</td>
-          <td style="text-align: left">24시간</td>
+          <td>V-World</td>
+          <td>토지이용계획 API</td>
+          <td>용도지역, 건폐율, 용적률, 건축/농사 가능 여부</td>
+          <td>24시간</td>
       </tr>
   </tbody>
 </table>
@@ -287,31 +287,31 @@
 <p>공공데이터 없이 텍스트만 넣으면 할루시네이션 확률이 높다.</p>
 <h3 id="2-4-claude-api-호출--팩트-추출">2-4. Claude API 호출 — 팩트 추출</h3>
 <p>수집한 데이터를 <code>extractFacts</code> 프롬프트에 넣어서 Claude를 호출한다.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> response <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">await</span> <span style="color:#000;font-weight:bold">this</span>.anthropic.messages.create({
-</span></span><span style="display:flex;"><span>  model: <span style="color:#458;font-weight:bold">this.model</span>,
-</span></span><span style="display:flex;"><span>  max_tokens: <span style="color:#458;font-weight:bold">4096</span>,
-</span></span><span style="display:flex;"><span>  system<span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">`</span><span style="color:#d14">${</span>system<span style="color:#d14">}</span><span style="color:#a61717;background-color:#e3d2d2">\</span><span style="color:#d14">n</span><span style="color:#a61717;background-color:#e3d2d2">\</span><span style="color:#d14">nIMPORTANT: You MUST respond with ONLY valid JSON.`</span>,
-</span></span><span style="display:flex;"><span>  messages<span style="color:#000;font-weight:bold">:</span> [{ role<span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#34;user&#34;</span>, content: <span style="color:#458;font-weight:bold">userMessage</span> }],
-</span></span><span style="display:flex;"><span>  temperature: <span style="color:#458;font-weight:bold">0.3</span>,
-</span></span><span style="display:flex;"><span>});
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#cf222e">const</span> <span style="color:#1f2328">response</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">await</span> <span style="color:#cf222e">this</span><span style="color:#1f2328">.</span><span style="color:#1f2328">anthropic</span><span style="color:#1f2328">.</span><span style="color:#1f2328">messages</span><span style="color:#1f2328">.</span><span style="color:#1f2328">create</span><span style="color:#1f2328">({</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">model</span>: <span style="color:#cf222e">this.model</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">max_tokens</span>: <span style="color:#cf222e">4096</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">system</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">`</span><span style="color:#0a3069">${</span><span style="color:#1f2328">system</span><span style="color:#0a3069">}</span><span style="color:#f6f8fa;background-color:#82071e">\</span><span style="color:#0a3069">n</span><span style="color:#f6f8fa;background-color:#82071e">\</span><span style="color:#0a3069">nIMPORTANT: You MUST respond with ONLY valid JSON.`</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">messages</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">[{</span> <span style="color:#1f2328">role</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#34;user&#34;</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">content</span>: <span style="color:#cf222e">userMessage</span> <span style="color:#1f2328">}],</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">temperature</span>: <span style="color:#cf222e">0.3</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">});</span>
 </span></span></code></pre></div><p><strong>설계 결정 사항:</strong></p>
 <ol>
 <li><strong>temperature: 0.3</strong> — 매물 분석은 같은 매물을 넣으면 거의 같은 결과가 나와야 하므로 변동성을 낮춤</li>
 <li><strong>SYSTEM/USER 분리</strong> — Anthropic API 권장 방식 적용</li>
 <li><strong>응답 후처리</strong> — Claude가 마크다운 코드블록으로 감싸도 3단계 폴백으로 JSON 추출</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">private</span> extractJson(raw: <span style="color:#458;font-weight:bold">string</span>)<span style="color:#000;font-weight:bold">:</span> <span style="color:#458;font-weight:bold">string</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#998;font-style:italic">// 1. 마크다운 코드블록에서 추출 시도
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>  <span style="color:#000;font-weight:bold">const</span> codeBlockMatch <span style="color:#000;font-weight:bold">=</span> raw.match(<span style="color:#009926">/```(?:json)?\s*\n?([\s\S]*?)\n?```/</span>);
-</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">if</span> (codeBlockMatch) <span style="color:#000;font-weight:bold">return</span> codeBlockMatch[<span style="color:#099">1</span>].trim();
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#cf222e">private</span> <span style="color:#1f2328">extractJson</span><span style="color:#1f2328">(</span><span style="color:#1f2328">raw</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">)</span><span style="color:#0550ae">:</span> <span style="color:#cf222e">string</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// 1. 마크다운 코드블록에서 추출 시도
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">codeBlockMatch</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">raw</span><span style="color:#1f2328">.</span><span style="color:#1f2328">match</span><span style="color:#1f2328">(</span><span style="color:#0a3069">/```(?:json)?\s*\n?([\s\S]*?)\n?```/</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">codeBlockMatch</span><span style="color:#1f2328">)</span> <span style="color:#cf222e">return</span> <span style="color:#1f2328">codeBlockMatch</span><span style="color:#1f2328">[</span><span style="color:#0550ae">1</span><span style="color:#1f2328">].</span><span style="color:#1f2328">trim</span><span style="color:#1f2328">();</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#998;font-style:italic">// 2. JSON 객체/배열 패턴 찾기
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>  <span style="color:#000;font-weight:bold">const</span> jsonMatch <span style="color:#000;font-weight:bold">=</span> raw.match(<span style="color:#009926">/(\{[\s\S]*\}|\[[\s\S]*\])/</span>);
-</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">if</span> (jsonMatch) <span style="color:#000;font-weight:bold">return</span> jsonMatch[<span style="color:#099">1</span>].trim();
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// 2. JSON 객체/배열 패턴 찾기
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">jsonMatch</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">raw</span><span style="color:#1f2328">.</span><span style="color:#1f2328">match</span><span style="color:#1f2328">(</span><span style="color:#0a3069">/(\{[\s\S]*\}|\[[\s\S]*\])/</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">jsonMatch</span><span style="color:#1f2328">)</span> <span style="color:#cf222e">return</span> <span style="color:#1f2328">jsonMatch</span><span style="color:#1f2328">[</span><span style="color:#0550ae">1</span><span style="color:#1f2328">].</span><span style="color:#1f2328">trim</span><span style="color:#1f2328">();</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#998;font-style:italic">// 3. 그대로 반환
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>  <span style="color:#000;font-weight:bold">return</span> raw.trim();
-</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// 3. 그대로 반환
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> <span style="color:#1f2328">raw</span><span style="color:#1f2328">.</span><span style="color:#1f2328">trim</span><span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
 </span></span></code></pre></div><p>추출 결과는 13개 카테고리로 분류된다: location, price, sizes, property_type, access, utilities, surroundings, market_context, official_land_price, land_use, notable_features, evidence, uncertainties</p>
 <h3 id="2-5-저장">2-5. 저장</h3>
 <ul>
@@ -334,38 +334,38 @@
     style D fill:#fff3e0
     style E fill:#e8f5e9</pre><p><strong>왜 순차 실행인가?</strong></p>
 <p>Summary가 앞선 3개 분석 결과를 입력으로 받기 때문이다. 실제 코드:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> generatedInsights: <span style="color:#458;font-weight:bold">Record</span>&lt;<span style="color:#000080">string</span><span style="color:#a61717;background-color:#e3d2d2">,</span> <span style="color:#008080">Record</span><span style="color:#a61717;background-color:#e3d2d2">&lt;</span><span style="color:#008080">string</span><span style="color:#a61717;background-color:#e3d2d2">,</span> <span style="color:#008080">any</span>&gt;<span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#000;font-weight:bold">=</span> {};
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#cf222e">const</span> <span style="color:#1f2328">generatedInsights</span>: <span style="color:#cf222e">Record</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">string</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">Record</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">string</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">any</span><span style="color:#1f2328">&gt;&gt;</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">{};</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">for</span> (<span style="color:#000;font-weight:bold">const</span> { insightType, promptKey } <span style="color:#000;font-weight:bold">of</span> types) {
-</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">const</span> context: <span style="color:#458;font-weight:bold">Record</span>&lt;<span style="color:#000080">string</span><span style="color:#a61717;background-color:#e3d2d2">,</span> <span style="color:#008080">string</span>&gt; <span style="color:#000;font-weight:bold">=</span> {
-</span></span><span style="display:flex;"><span>    ...baseContext,
-</span></span><span style="display:flex;"><span>    property_facts_json: <span style="color:#458;font-weight:bold">factsJson</span>,
-</span></span><span style="display:flex;"><span>  };
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">const</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">insightType</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">promptKey</span> <span style="color:#1f2328">}</span> <span style="color:#cf222e">of</span> <span style="color:#1f2328">types</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">context</span>: <span style="color:#cf222e">Record</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">string</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">string</span><span style="color:#1f2328">&gt;</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">...</span><span style="color:#1f2328">baseContext</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">property_facts_json</span>: <span style="color:#cf222e">factsJson</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">};</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#998;font-style:italic">// Summary 프롬프트에는 앞의 3개 결과 주입
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>  <span style="color:#000;font-weight:bold">if</span> (insightType <span style="color:#000;font-weight:bold">===</span> <span style="color:#d14">&#34;summary&#34;</span>) {
-</span></span><span style="display:flex;"><span>    context.strengths_bullets <span style="color:#000;font-weight:bold">=</span> JSON.stringify(
-</span></span><span style="display:flex;"><span>      generatedInsights.strengthsAnalysis <span style="color:#000;font-weight:bold">??</span> {},
-</span></span><span style="display:flex;"><span>    );
-</span></span><span style="display:flex;"><span>    context.lifestyle_json <span style="color:#000;font-weight:bold">=</span> JSON.stringify(
-</span></span><span style="display:flex;"><span>      generatedInsights.lifestyleInterpretation <span style="color:#000;font-weight:bold">??</span> {},
-</span></span><span style="display:flex;"><span>    );
-</span></span><span style="display:flex;"><span>    context.risks_json <span style="color:#000;font-weight:bold">=</span> JSON.stringify(
-</span></span><span style="display:flex;"><span>      generatedInsights.riskAnalysis <span style="color:#000;font-weight:bold">??</span> {},
-</span></span><span style="display:flex;"><span>    );
-</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// Summary 프롬프트에는 앞의 3개 결과 주입
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">insightType</span> <span style="color:#0550ae">===</span> <span style="color:#0a3069">&#34;summary&#34;</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">context</span><span style="color:#1f2328">.</span><span style="color:#1f2328">strengths_bullets</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">JSON</span><span style="color:#1f2328">.</span><span style="color:#1f2328">stringify</span><span style="color:#1f2328">(</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">generatedInsights</span><span style="color:#1f2328">.</span><span style="color:#1f2328">strengthsAnalysis</span> <span style="color:#0550ae">??</span> <span style="color:#1f2328">{},</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">context</span><span style="color:#1f2328">.</span><span style="color:#1f2328">lifestyle_json</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">JSON</span><span style="color:#1f2328">.</span><span style="color:#1f2328">stringify</span><span style="color:#1f2328">(</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">generatedInsights</span><span style="color:#1f2328">.</span><span style="color:#1f2328">lifestyleInterpretation</span> <span style="color:#0550ae">??</span> <span style="color:#1f2328">{},</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">context</span><span style="color:#1f2328">.</span><span style="color:#1f2328">risks_json</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">JSON</span><span style="color:#1f2328">.</span><span style="color:#1f2328">stringify</span><span style="color:#1f2328">(</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">generatedInsights</span><span style="color:#1f2328">.</span><span style="color:#1f2328">riskAnalysis</span> <span style="color:#0550ae">??</span> <span style="color:#1f2328">{},</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">const</span> result <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">await</span> <span style="color:#000;font-weight:bold">this</span>.aiInsightService.getOrGeneratePropertyInsight(
-</span></span><span style="display:flex;"><span>    propertyId,
-</span></span><span style="display:flex;"><span>    insightType,
-</span></span><span style="display:flex;"><span>    promptKey,
-</span></span><span style="display:flex;"><span>    context,
-</span></span><span style="display:flex;"><span>  );
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">result</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">await</span> <span style="color:#cf222e">this</span><span style="color:#1f2328">.</span><span style="color:#1f2328">aiInsightService</span><span style="color:#1f2328">.</span><span style="color:#1f2328">getOrGeneratePropertyInsight</span><span style="color:#1f2328">(</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">propertyId</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">insightType</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">promptKey</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">context</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">);</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">if</span> (result.resultJson) {
-</span></span><span style="display:flex;"><span>    generatedInsights[insightType] <span style="color:#000;font-weight:bold">=</span> result.resultJson;
-</span></span><span style="display:flex;"><span>  }
-</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">result</span><span style="color:#1f2328">.</span><span style="color:#1f2328">resultJson</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">generatedInsights</span><span style="color:#1f2328">[</span><span style="color:#1f2328">insightType</span><span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">result</span><span style="color:#1f2328">.</span><span style="color:#1f2328">resultJson</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
 </span></span></code></pre></div><p><strong>순차 실행의 장점:</strong></p>
 <ul>
 <li>강점 분석만 바뀌면 Summary만 다시 만들면 된다 (부분 재계산)</li>
@@ -378,42 +378,42 @@
 <table>
   <thead>
       <tr>
-          <th style="text-align: left">필드</th>
-          <th style="text-align: left">설명</th>
+          <th>필드</th>
+          <th>설명</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td style="text-align: left">spi</td>
-          <td style="text-align: left">Spatial Price Index (공간 가격 지수)</td>
+          <td>spi</td>
+          <td>Spatial Price Index (공간 가격 지수)</td>
       </tr>
       <tr>
-          <td style="text-align: left">volatilityIndex</td>
-          <td style="text-align: left">가격 변동성 지수</td>
+          <td>volatilityIndex</td>
+          <td>가격 변동성 지수</td>
       </tr>
       <tr>
-          <td style="text-align: left">changeRate3y</td>
-          <td style="text-align: left">3년간 가격 변화율</td>
+          <td>changeRate3y</td>
+          <td>3년간 가격 변화율</td>
       </tr>
       <tr>
-          <td style="text-align: left">transactionCount</td>
-          <td style="text-align: left">주변 거래 건수</td>
+          <td>transactionCount</td>
+          <td>주변 거래 건수</td>
       </tr>
       <tr>
-          <td style="text-align: left">trendData</td>
-          <td style="text-align: left">월별 가격·거래량 추이 (JSONB)</td>
+          <td>trendData</td>
+          <td>월별 가격·거래량 추이 (JSONB)</td>
       </tr>
       <tr>
-          <td style="text-align: left">aiSummary</td>
-          <td style="text-align: left">AI가 만든 시세 요약</td>
+          <td>aiSummary</td>
+          <td>AI가 만든 시세 요약</td>
       </tr>
       <tr>
-          <td style="text-align: left">aiRiskInsight</td>
-          <td style="text-align: left">AI가 만든 시세 리스크</td>
+          <td>aiRiskInsight</td>
+          <td>AI가 만든 시세 리스크</td>
       </tr>
       <tr>
-          <td style="text-align: left">aiOpportunityInsight</td>
-          <td style="text-align: left">AI가 만든 기회 요인</td>
+          <td>aiOpportunityInsight</td>
+          <td>AI가 만든 기회 요인</td>
       </tr>
   </tbody>
 </table>
@@ -435,26 +435,26 @@
 <table>
   <thead>
       <tr>
-          <th style="text-align: left">플래그</th>
-          <th style="text-align: left">의미</th>
+          <th>플래그</th>
+          <th>의미</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td style="text-align: left">cached: true</td>
-          <td style="text-align: left">DB에서 기존 데이터를 가져옴</td>
+          <td>cached: true</td>
+          <td>DB에서 기존 데이터를 가져옴</td>
       </tr>
       <tr>
-          <td style="text-align: left">stale: true</td>
-          <td style="text-align: left">데이터가 있긴 한데 오래돼서 갱신 중</td>
+          <td>stale: true</td>
+          <td>데이터가 있긴 한데 오래돼서 갱신 중</td>
       </tr>
       <tr>
-          <td style="text-align: left">recomputeTriggered: true</td>
-          <td style="text-align: left">백그라운드에서 새 분석 시작</td>
+          <td>recomputeTriggered: true</td>
+          <td>백그라운드에서 새 분석 시작</td>
       </tr>
       <tr>
-          <td style="text-align: left">preparing: true</td>
-          <td style="text-align: left">아직 분석 데이터가 없음</td>
+          <td>preparing: true</td>
+          <td>아직 분석 데이터가 없음</td>
       </tr>
   </tbody>
 </table>
@@ -462,54 +462,54 @@
 <hr>
 <h2 id="프롬프트-관리-prompthash-기반-캐시-무효화">프롬프트 관리: promptHash 기반 캐시 무효화</h2>
 <p>프롬프트 파일을 수정하면 기존 인사이트가 자동으로 다시 만들어지는 구조다. 핵심은 <strong>promptHash</strong>다.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">export</span> <span style="color:#000;font-weight:bold">function</span> getPromptHash(key: <span style="color:#458;font-weight:bold">PromptKey</span>)<span style="color:#000;font-weight:bold">:</span> <span style="color:#458;font-weight:bold">string</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">const</span> template <span style="color:#000;font-weight:bold">=</span> getPromptTemplate(key);
-</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">const</span> hash <span style="color:#000;font-weight:bold">=</span> createHash(<span style="color:#d14">&#34;sha256&#34;</span>).update(template).digest(<span style="color:#d14">&#34;hex&#34;</span>);
-</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">return</span> hash;
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#cf222e">export</span> <span style="color:#cf222e">function</span> <span style="color:#1f2328">getPromptHash</span><span style="color:#1f2328">(</span><span style="color:#1f2328">key</span>: <span style="color:#cf222e">PromptKey</span><span style="color:#1f2328">)</span><span style="color:#0550ae">:</span> <span style="color:#cf222e">string</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">template</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">getPromptTemplate</span><span style="color:#1f2328">(</span><span style="color:#1f2328">key</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">hash</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">createHash</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;sha256&#34;</span><span style="color:#1f2328">).</span><span style="color:#1f2328">update</span><span style="color:#1f2328">(</span><span style="color:#1f2328">template</span><span style="color:#1f2328">).</span><span style="color:#1f2328">digest</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;hex&#34;</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> <span style="color:#1f2328">hash</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
 </span></span></code></pre></div><p><strong>왜 변수 치환 전 원본 기준인가?</strong></p>
 <ul>
 <li>프롬프트 문구를 수정하면 → 해시 바뀜 → 기존 인사이트 모두 stale → 자동 재생성</li>
 <li>같은 프롬프트 + 다른 매물 데이터 → 해시 같음 → DB에서 캐시 조회</li>
 </ul>
 <p><strong>프롬프트별 토큰 예산 최적화:</strong></p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> PROMPT_MAX_TOKENS <span style="color:#000;font-weight:bold">=</span> {
-</span></span><span style="display:flex;"><span>  <span style="color:#d14">&#34;property/extractFacts&#34;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#099">4096</span>,      <span style="color:#998;font-style:italic">// 12개 카테고리 구조화
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>  <span style="color:#d14">&#34;property/strengthsAnalysis&#34;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#099">4096</span>, <span style="color:#998;font-style:italic">// 근거 기반 상세 분석
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>  <span style="color:#d14">&#34;property/riskAnalysis&#34;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#099">4096</span>,      <span style="color:#998;font-style:italic">// risk + unknown 분리
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>  <span style="color:#d14">&#34;property/lifestyleInterpretation&#34;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#099">2048</span>, <span style="color:#998;font-style:italic">// 서술형
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>  <span style="color:#d14">&#34;property/summary&#34;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#099">1024</span>,            <span style="color:#998;font-style:italic">// 간결한 요약
-</span></span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"></span>};
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#cf222e">const</span> <span style="color:#1f2328">PROMPT_MAX_TOKENS</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0a3069">&#34;property/extractFacts&#34;</span><span style="color:#0550ae">:</span> <span style="color:#0550ae">4096</span><span style="color:#1f2328">,</span>      <span style="color:#57606a">// 12개 카테고리 구조화
+</span></span></span><span style="display:flex;"><span>  <span style="color:#0a3069">&#34;property/strengthsAnalysis&#34;</span><span style="color:#0550ae">:</span> <span style="color:#0550ae">4096</span><span style="color:#1f2328">,</span> <span style="color:#57606a">// 근거 기반 상세 분석
+</span></span></span><span style="display:flex;"><span>  <span style="color:#0a3069">&#34;property/riskAnalysis&#34;</span><span style="color:#0550ae">:</span> <span style="color:#0550ae">4096</span><span style="color:#1f2328">,</span>      <span style="color:#57606a">// risk + unknown 분리
+</span></span></span><span style="display:flex;"><span>  <span style="color:#0a3069">&#34;property/lifestyleInterpretation&#34;</span><span style="color:#0550ae">:</span> <span style="color:#0550ae">2048</span><span style="color:#1f2328">,</span> <span style="color:#57606a">// 서술형
+</span></span></span><span style="display:flex;"><span>  <span style="color:#0a3069">&#34;property/summary&#34;</span><span style="color:#0550ae">:</span> <span style="color:#0550ae">1024</span><span style="color:#1f2328">,</span>            <span style="color:#57606a">// 간결한 요약
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
 </span></span></code></pre></div><p>Claude API 비용은 출력 토큰에 비례하므로, 응답 길이에 따라 예산을 달리 설정한다.</p>
 <hr>
 <h2 id="전체-타임라인">전체 타임라인</h2>
 <table>
   <thead>
       <tr>
-          <th style="text-align: left">단계</th>
-          <th style="text-align: left">소요 시간</th>
+          <th>단계</th>
+          <th>소요 시간</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td style="text-align: left">매물 등록 API 응답</td>
-          <td style="text-align: left">~0.1초</td>
+          <td>매물 등록 API 응답</td>
+          <td>~0.1초</td>
       </tr>
       <tr>
-          <td style="text-align: left">Fact Extraction (Claude 1회)</td>
-          <td style="text-align: left">3-5초</td>
+          <td>Fact Extraction (Claude 1회)</td>
+          <td>3-5초</td>
       </tr>
       <tr>
-          <td style="text-align: left">인사이트 4종 (Claude 4회)</td>
-          <td style="text-align: left">12-20초</td>
+          <td>인사이트 4종 (Claude 4회)</td>
+          <td>12-20초</td>
       </tr>
       <tr>
-          <td style="text-align: left">시세 스냅샷</td>
-          <td style="text-align: left">병렬 실행</td>
+          <td>시세 스냅샷</td>
+          <td>병렬 실행</td>
       </tr>
       <tr>
-          <td style="text-align: left"><strong>전체 파이프라인</strong></td>
-          <td style="text-align: left"><strong>약 25-30초</strong></td>
+          <td><strong>전체 파이프라인</strong></td>
+          <td><strong>약 25-30초</strong></td>
       </tr>
   </tbody>
 </table>
@@ -529,28 +529,28 @@
 <li>지목: 전</li>
 </ul>
 <p><strong>Claude 분석 결과 — 강점:</strong></p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>  <span style="color:#000080">&#34;items&#34;</span>: [{
-</span></span><span style="display:flex;"><span>    <span style="color:#000080">&#34;title&#34;</span>: <span style="color:#d14">&#34;주변 시세 대비 저렴한 평당가&#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#000080">&#34;description&#34;</span>: <span style="color:#d14">&#34;이 매물의 평당가는 약 49만원으로, 서종면 최근 6개월 토지 평균 평당가 73만원 대비 약 33% 저렴합니다.&#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#000080">&#34;evidence&#34;</span>: [
-</span></span><span style="display:flex;"><span>      <span style="color:#d14">&#34;매물 평당가: 9,900만원 ÷ 200평 ≈ 49만원/평&#34;</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#d14">&#34;공공데이터 평균: 73만원/평 (최근 5건)&#34;</span>
-</span></span><span style="display:flex;"><span>    ]
-</span></span><span style="display:flex;"><span>  }]
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;items&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">[{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;title&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;주변 시세 대비 저렴한 평당가&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;description&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;이 매물의 평당가는 약 49만원으로, 서종면 최근 6개월 토지 평균 평당가 73만원 대비 약 33% 저렴합니다.&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;evidence&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">[</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0a3069">&#34;매물 평당가: 9,900만원 ÷ 200평 ≈ 49만원/평&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0a3069">&#34;공공데이터 평균: 73만원/평 (최근 5건)&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">]</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}]</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
 </span></span></code></pre></div><p><strong>Claude 분석 결과 — 리스크:</strong></p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>  <span style="color:#000080">&#34;risks&#34;</span>: [{
-</span></span><span style="display:flex;"><span>    <span style="color:#000080">&#34;title&#34;</span>: <span style="color:#d14">&#34;거래 유동성 낮음&#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#000080">&#34;why&#34;</span>: <span style="color:#d14">&#34;최근 6개월간 서종면 토지 거래가 5건에 불과합니다.&#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#000080">&#34;severity&#34;</span>: <span style="color:#d14">&#34;medium&#34;</span>
-</span></span><span style="display:flex;"><span>  }],
-</span></span><span style="display:flex;"><span>  <span style="color:#000080">&#34;unknowns&#34;</span>: [{
-</span></span><span style="display:flex;"><span>    <span style="color:#000080">&#34;question&#34;</span>: <span style="color:#d14">&#34;진입 도로의 폭과 포장 상태는?&#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#000080">&#34;why_it_matters&#34;</span>: <span style="color:#d14">&#34;건축 허가 시 도로 폭 4m 이상이 필요합니다.&#34;</span>
-</span></span><span style="display:flex;"><span>  }]
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;risks&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">[{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;title&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;거래 유동성 낮음&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;why&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;최근 6개월간 서종면 토지 거래가 5건에 불과합니다.&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;severity&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;medium&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}],</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;unknowns&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">[{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;question&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;진입 도로의 폭과 포장 상태는?&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;why_it_matters&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;건축 허가 시 도로 폭 4m 이상이 필요합니다.&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}]</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
 </span></span></code></pre></div><p>핵심: &ldquo;주변 평균 대비 33% 저렴&rdquo; 같은 구체적 수치는 공공데이터가 있었기 때문에 가능하다.</p>
 <hr>
 <h2 id="만들면서-배운-것들--컨텍스트-프롬프팅">만들면서 배운 것들 — 컨텍스트 프롬프팅</h2>
@@ -559,18 +559,18 @@
 <table>
   <thead>
       <tr>
-          <th style="text-align: left">컨텍스트 추가</th>
-          <th style="text-align: left">분석 결과 변화</th>
+          <th>컨텍스트 추가</th>
+          <th>분석 결과 변화</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td style="text-align: left">주변 실거래가 3건 + 공시지가</td>
-          <td style="text-align: left">&ldquo;주변 평균 대비 20% 저렴&rdquo; — 근거 있는 문장</td>
+          <td>주변 실거래가 3건 + 공시지가</td>
+          <td>&ldquo;주변 평균 대비 20% 저렴&rdquo; — 근거 있는 문장</td>
       </tr>
       <tr>
-          <td style="text-align: left">토지이용계획 추가</td>
-          <td style="text-align: left">&ldquo;농림지역이라 증축 제한&rdquo; — 실질적 리스크</td>
+          <td>토지이용계획 추가</td>
+          <td>&ldquo;농림지역이라 증축 제한&rdquo; — 실질적 리스크</td>
       </tr>
   </tbody>
 </table>
