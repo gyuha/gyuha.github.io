@@ -131,24 +131,40 @@
 <hr>
 <h2 id="일반-프롬프트의-한계-왜-전문-에이전트인가">일반 프롬프트의 한계, 왜 전문 에이전트인가</h2>
 <p>AI 코딩 어시스턴트를 사용할 때 흔히 &ldquo;개발자처럼 행동해&rdquo; 같은 일반적인 프롬프트를 작성한다. 하지만 이런 범용 프롬프트는 <strong>도메인 깊이가 부족</strong> 하고, 일관된 품질을 보장하지 못한다. Agency Agents는 이 문제에 대한 근본적인 해법을 제시한다.</p>
-<pre class="mermaid">flowchart TD
-    A["일반 프롬프트<br>'개발자처럼 행동해'"]
-    B["전문 에이전트 시스템<br>Agency Agents"]
+<pre class="mermaid">flowchart LR
+    TitleBad["일반 프롬프트<br>'개발자처럼 행동해'"]
+    TitleGood["전문 에이전트 시스템<br>Agency Agents"]
 
-    A --> A1["도메인 전문성 부족"]
-    A --> A2["일관성 없는 출력"]
-    A --> A3["측정 불가능한 품질"]
-    A --> A4["워크플로우 없음"]
+    subgraph BadGroup[" "]
+        A["도메인 전문성 부족"]
+        B["일관성 없는 출력"]
+        C["측정 불가능한 품질"]
+        D["워크플로우 없음"]
+    end
 
-    B --> B1["깊은 도메인 전문성"]
-    B --> B2["고유 성격과 커뮤니케이션 스타일"]
-    B --> B3["측정 가능한 성공 지표"]
-    B --> B4["검증된 워크플로우"]
+    subgraph GoodGroup[" "]
+        E["깊은 도메인 전문성"]
+        F["고유 성격과 커뮤니케이션 스타일"]
+        G["측정 가능한 성공 지표"]
+        H["검증된 워크플로우"]
+    end
 
+    TitleBad --> A
+    TitleBad --> B
+    TitleBad --> C
+    TitleBad --> D
+
+    TitleGood --> E
+    TitleGood --> F
+    TitleGood --> G
+    TitleGood --> H
+
+    classDef title fill:#fff,stroke:none,color:#333,font-size:14px
     classDef bad fill:#ffc8c4,stroke:#d44,color:#333
     classDef good fill:#c0ecd3,stroke:#3a3,color:#333
-    class A,A1,A2,A3,A4 bad
-    class B,B1,B2,B3,B4 good</pre><p>Agency Agents의 핵심 차별점은 다음 네 가지 설계 원칙에 있다:</p>
+    class TitleBad,TitleGood title
+    class A,B,C,D bad
+    class E,F,G,H good</pre><p>Agency Agents의 핵심 차별점은 다음 네 가지 설계 원칙에 있다:</p>
 <ul>
 <li><strong>전문화(Specialized)</strong>: 범용 템플릿이 아닌, 각 도메인에 깊이 있는 전문성을 보유</li>
 <li><strong>성격 기반(Personality-Driven)</strong>: 고유한 음성, 커뮤니케이션 스타일, 접근 방식</li>
@@ -201,7 +217,7 @@
 <hr>
 <h2 id="11개-디비전-구조-완전한-ai-에이전시">11개 디비전 구조: 완전한 AI 에이전시</h2>
 <p>Agency Agents의 가장 두드러지는 특징은 실제 에이전시 조직처럼 <strong>디비전(부서) 단위</strong> 로 에이전트를 구성한다는 점이다. 각 디비전은 명확한 역할 경계를 가지며, 실제 프로젝트에서 팀을 조립하듯 필요한 에이전트를 골라 쓸 수 있다.</p>
-<pre class="mermaid">flowchart TD
+<pre class="mermaid">flowchart LR
     Agency["Agency Agents<br>112+ 전문 에이전트"]
 
     Agency --> Eng["Engineering<br>8 에이전트"]
@@ -305,7 +321,7 @@
 
 <h3 id="game-development-division-게임-개발">Game Development Division (게임 개발)</h3>
 <p>가장 세분화된 디비전으로, 엔진별로 특화된 에이전트를 제공한다:</p>
-<pre class="mermaid">flowchart TD
+<pre class="mermaid">flowchart LR
     GD["Game Development Division"]
 
     GD --> Cross["Cross-Engine<br>(엔진 무관)"]
@@ -361,7 +377,7 @@
 <hr>
 <h2 id="에이전트-설계-철학-5가지-핵심-원칙">에이전트 설계 철학: 5가지 핵심 원칙</h2>
 <p>각 에이전트 파일은 단순한 프롬프트가 아니라, 아래 5가지 요소를 모두 갖춘 <strong>완전한 에이전트 시스템</strong> 이다:</p>
-<pre class="mermaid">flowchart TD
+<pre class="mermaid">flowchart LR
     Agent["에이전트 파일 구조"]
 
     Agent --> P["Strong Personality<br>고유한 성격과 음성"]
@@ -399,7 +415,7 @@
 <hr>
 <h2 id="멀티-도구-통합-9개-에이전틱-코딩-도구-지원">멀티 도구 통합: 9개 에이전틱 코딩 도구 지원</h2>
 <p>Agency Agents의 또 다른 강점은 <strong>단일 소스에서 다수의 도구로 변환</strong> 할 수 있다는 점이다. 한 번 에이전트를 작성하면, 변환 스크립트를 통해 모든 주요 에이전틱 코딩 도구에서 사용할 수 있다.</p>
-<pre class="mermaid">flowchart TD
+<pre class="mermaid">flowchart LR
     Source["에이전트 소스 파일<br>(.md)"]
 
     Source --> CC["Claude Code<br>~/.claude/agents/"]
@@ -833,9 +849,9 @@
     <a href="/tags/ai-agents/" class="badge badge-secondary">Ai-Agents</a>
     <a href="/tags/claude-code/" class="badge badge-secondary">Claude Code</a>
     <a href="/tags/cursor/" class="badge badge-secondary">Cursor</a>
-    <a href="/tags/prompt-engineering/" class="badge badge-secondary">Prompt Engineering</a>
+    <a href="/tags/prompt-engineering/" class="badge badge-secondary">Prompt-Engineering</a>
     <a href="/tags/multi-agent/" class="badge badge-secondary">Multi-Agent</a>
-    <a href="/tags/open-source/" class="badge badge-secondary">Open-Source</a>
+    <a href="/tags/open-source/" class="badge badge-secondary">Open Source</a>
     <a href="/tags/agentic-coding/" class="badge badge-secondary">Agentic-Coding</a>
   </div>
 </div>
