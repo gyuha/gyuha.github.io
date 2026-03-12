@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Scrapling: 적응형 웹 스크래핑 프레임워크 완전 정복'" />
+  <title>Scrapling: 적응형 웹 스크래핑 프레임워크 완전 정복  | 신규하 블로그</title>
+  <meta property="og:title" content="Scrapling: 적응형 웹 스크래핑 프레임워크 완전 정복" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-03-12"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/2026-03-12-scrapling/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="Python" />
+  
+  <meta property="og:tags" content="Web Scraping" />
+  
+  <meta property="og:tags" content="Scrapling" />
+  
+  <meta property="og:tags" content="Framework" />
+  
+  <meta property="og:tags" content="LLM" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/2026-03-12-scrapling/">
+          <h1>
+            Scrapling: 적응형 웹 스크래핑 프레임워크 완전 정복
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/2026-03-12-scrapling/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>웹 스크래핑은 데이터 수집의 핵심 기술이지만, 정적 페이지와 동적 페이지, 다양한 anti-bot 시스템 등으로 인해 복잡도가 계속 증가하고 있습니다. 이러한 복잡성을 해결하기 위해 등장한 <strong>Scrapling</strong>은 단일 요청부터 대규모 크롤링까지 처리하는 적응형 웹 스크래핑 프레임워크를 제공합니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://github.com/D4Vinci/Scrapling.git">https://github.com/D4Vinci/Scrapling.git</a></li>
+</ul>
+<h2 id="scrapling이란">Scrapling이란?</h2>
+<p><strong>Scrapling</strong>은 Python 기반의 적응형 웹 스크래핑 프레임워크로, 단순한 단일 요청부터 대규모 크롤링 작업까지 처리할 수 있는 통합 솔루션입니다. BSD-3-Clause 라이선스로 제공되며, 현재 GitHub에서 28.4k stars, 2.1k forks를 기록할 만큼 개발자들 사이에서 인기를 얻고 있습니다.</p>
+<h3 id="주요-특징">주요 특징</h3>
+<p>Scrapling의 핵심 가치는 &ldquo;적응형(Adaptive)&ldquo;에 있습니다. 상황에 따라 최적의 전략을 자동으로 선택하고, 다양한 fetching 방식과 파싱 기술을 유연하게 활용할 수 있습니다.</p>
+<pre class="mermaid">graph LR
+    A[Scrapling] --> B[Fetching Strategies]
+    A --> C[Adaptive Parser]
+    A --> D[Spiders Framework]
+    A --> E[MCP Integration]
+
+    B --> B1[HTTP]
+    B --> B2[Stealthy]
+    B --> B3[Dynamic]
+
+    C --> C1[Auto Detection]
+    C --> C2[Best Strategy]
+
+    D --> D1[Spider Creation]
+    D --> D2[Auto Deployment]
+    D --> D3[Scale Crawling]
+
+    E --> E1[LLM Integration]
+    E --> E2[MCP Server]
+
+    style A fill:#c5dcef,stroke:#333,stroke-width:2px
+    style B fill:#c0ecd3,stroke:#333
+    style C fill:#ffc8c4,stroke:#333
+    style D fill:#fde8c0,stroke:#333
+    style E fill:#e0c8ef,stroke:#333</pre><h2 id="핵심-기술-아키텍처">핵심 기술 아키텍처</h2>
+<h3 id="fetching-전략">Fetching 전략</h3>
+<p>Scrapling은 세 가지 fetching 전략을 제공하여 상황에 맞는 최적의 방법을 선택할 수 있습니다.</p>
+<pre class="mermaid">flowchart LR
+    A[스크래핑 요청] --> B{페이지 유형 분석}
+    B -->|정적 페이지| C[HTTP Fetching]
+    B -->|Anti-Bot 보호| D[Stealthy Fetching]
+    B -->|JavaScript 렌더링| E[Dynamic Fetching]
+
+    C --> F[빠르고 효율적]
+    D --> G[우회 기술 활용]
+    E --> H[브라우저 엔진 사용]
+
+    style A fill:#c5dcef,stroke:#333,stroke-width:2px
+    style C fill:#c0ecd3,stroke:#333
+    style D fill:#ffc8c4,stroke:#333
+    style E fill:#fde8c0,stroke:#333</pre><h4 id="http-fetching">HTTP Fetching</h4>
+<p>가장 기본적인 fetching 방식으로, 정적 페이지에 적합합니다. 빠르고 효율적이며 리소스 소모가 적습니다.</p>
+<pre class="mermaid">sequenceDiagram
+    participant Client
+    participant HTTP as HTTP Fetcher
+    participant Server
+
+    Client->>HTTP: 요청 시작
+    HTTP->>Server: HTTP GET/POST
+    Server-->>HTTP: HTML 응답
+    HTTP-->>Client: 파싱된 데이터
+
+    note over HTTP: 빠르고 가벼운<br/>정적 페이지에 최적</pre><h4 id="stealthy-fetching">Stealthy Fetching</h4>
+<p>Anti-bot 시스템을 우회하는 고급 기술을 활용합니다. User-Agent 스위핑, 요청 패턴 무작위화, 프록시 지원 등의 기능을 제공합니다.</p>
+<pre class="mermaid">graph TD
+    A[Stealthy Request] --> B[User-Agent Rotation]
+    A --> C[Request Pattern Randomization]
+    A --> D[Proxy Support]
+    A --> E[Header Mimicking]
+
+    B --> F[Anti-Bot 우회]
+    C --> F
+    D --> F
+    E --> F
+
+    style A fill:#c5dcef,stroke:#333,stroke-width:2px
+    style F fill:#c0ecd3,stroke:#333,stroke-width:2px</pre><h4 id="dynamic-fetching">Dynamic Fetching</h4>
+<p>JavaScript가 필요한 동적 페이지를 처리하기 위해 실제 브라우저 엔진을 활용합니다. Playwright 같은 도구와 통합하여 SPA(Single Page Application)도 스크래핑할 수 있습니다.</p>
+<pre class="mermaid">sequenceDiagram
+    participant Client
+    participant Dynamic as Dynamic Fetcher
+    participant Browser
+
+    Client->>Dynamic: JS 렌더링 필요
+    Dynamic->>Browser: 브라우저 시작
+    Browser->>Browser: JavaScript 실행
+    Browser-->>Dynamic: 렌더링된 HTML
+    Dynamic-->>Client: 파싱된 데이터
+
+    note over Browser: 실제 브라우저 환경</pre><h3 id="adaptive-parser">Adaptive Parser</h3>
+<p>Scrapling의 적응형 파서는 자동으로 최적의 파싱 전략을 선택합니다. HTML 구조를 분석하고 가장 효율적인 선택자와 추출 방법을 결정합니다.</p>
+<pre class="mermaid">flowchart TD
+    A[HTML 입력] --> B[구조 분석]
+    B --> C{파싱 전략 선택}
+
+    C -->|단순 구조| D[CSS Selector]
+    C -->|복잡한 구조| E[XPath]
+    C -->|동적 콘텐츠| F[Wait Strategies]
+
+    D --> G[데이터 추출]
+    E --> G
+    F --> G
+
+    G --> H[정형화된 출력]
+
+    style A fill:#c5dcef,stroke:#333,stroke-width:2px
+    style H fill:#c0ecd3,stroke:#333,stroke-width:2px</pre><h3 id="spiders-framework">Spiders Framework</h3>
+<p>Scrapling의 진정한 힘은 Spiders Framework에서 발휘됩니다. Spider를 생성하고 배포하며, 자동으로 여러 페이지를 크롤링할 수 있습니다.</p>
+<pre class="mermaid">graph TD
+    A[Spider 정의] --> B[Start URLs]
+    A --> C[Parsing Rules]
+    A --> D[Follow Patterns]
+
+    B --> E[Spider 배포]
+    C --> E
+    D --> E
+
+    E --> F[자동 크롤링]
+    F --> G[페이지 발견]
+    G --> H[데이터 추출]
+    H --> I[다음 링크 추적]
+
+    I --> F
+
+    style A fill:#c5dcef,stroke:#333,stroke-width:2px
+    style E fill:#fde8c0,stroke:#333,stroke-width:2px</pre><p>Spider의 핵심 기능:</p>
+<ul>
+<li><strong>자동 링크 추적</strong>: 정의한 패턴에 따라 자동으로 다음 페이지를 찾습니다</li>
+<li><strong>분산 처리</strong>: 대규모 크롤링을 위한 병렬 처리 지원</li>
+<li><strong>에러 복구</strong>: 실패한 요청을 자동으로 재시도합니다</li>
+<li><strong>데이터 파이프라인</strong>: 추출한 데이터를 변환하고 저장하는 파이프라인을 제공합니다</li>
+</ul>
+<pre class="mermaid">sequenceDiagram
+    participant User
+    participant Spider
+    participant Scheduler
+    participant Fetcher
+    participant Parser
+
+    User->>Spider: Spider 시작
+    Spider->>Scheduler: 초기 URLs 등록
+    Scheduler->>Fetcher: 페이지 요청
+    Fetcher-->>Scheduler: HTML 응답
+    Scheduler->>Parser: 파싱 요청
+    Parser-->>Scheduler: 추출 데이터 + 새 URLs
+
+    Scheduler->>Scheduler: 새 URLs 큐에 추가
+
+    loop 각 페이지
+        Scheduler->>Fetcher: 다음 URL 요청
+    end
+
+    Parser-->>User: 최종 데이터
+
+    note over Spider: 자동 확장 크롤링</pre><h2 id="설치-및-빠른-시작">설치 및 빠른 시작</h2>
+<h3 id="설치">설치</h3>
+<p>Scrapling은 pip를 통해 간단하게 설치할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install scrapling
+</span></span></code></pre></div><h3 id="기본-사용-예시">기본 사용 예시</h3>
+<p>간단한 HTTP fetching 예시:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#cf222e">from</span> <span style="color:#24292e">scrapling</span> <span style="color:#cf222e">import</span> Fetcher
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 기본 HTTP fetching</span>
+</span></span><span style="display:flex;"><span>fetcher <span style="color:#0550ae">=</span> Fetcher<span style="color:#1f2328">()</span>
+</span></span><span style="display:flex;"><span>result <span style="color:#0550ae">=</span> fetcher<span style="color:#0550ae">.</span>get<span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;https://example.com&#39;</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">print</span><span style="color:#1f2328">(</span>result<span style="color:#0550ae">.</span>text<span style="color:#1f2328">)</span>
+</span></span></code></pre></div><p>Stealthy fetching으로 anti-bot 우회:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#cf222e">from</span> <span style="color:#24292e">scrapling</span> <span style="color:#cf222e">import</span> StealthyFetcher
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Anti-bot 우회</span>
+</span></span><span style="display:flex;"><span>fetcher <span style="color:#0550ae">=</span> StealthyFetcher<span style="color:#1f2328">()</span>
+</span></span><span style="display:flex;"><span>result <span style="color:#0550ae">=</span> fetcher<span style="color:#0550ae">.</span>get<span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;https://protected-site.com&#39;</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">print</span><span style="color:#1f2328">(</span>result<span style="color:#0550ae">.</span>text<span style="color:#1f2328">)</span>
+</span></span></code></pre></div><p>Dynamic fetching으로 JavaScript 렌더링 처리:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#cf222e">from</span> <span style="color:#24292e">scrapling</span> <span style="color:#cf222e">import</span> DynamicFetcher
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># JavaScript 렌더링 필요한 페이지</span>
+</span></span><span style="display:flex;"><span>fetcher <span style="color:#0550ae">=</span> DynamicFetcher<span style="color:#1f2328">()</span>
+</span></span><span style="display:flex;"><span>result <span style="color:#0550ae">=</span> fetcher<span style="color:#0550ae">.</span>get<span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;https://spa-site.com&#39;</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">print</span><span style="color:#1f2328">(</span>result<span style="color:#0550ae">.</span>text<span style="color:#1f2328">)</span>
+</span></span></code></pre></div><h2 id="성능-벤치마크">성능 벤치마크</h2>
+<p>Scrapling은 벤치마크에서 BeautifulSoup과 Parsel보다 현저히 빠른 성능을 보여줍니다.</p>
+<pre class="mermaid">graph LR
+    A["BeautifulSoup<br/>(기준선)"] -->|100%| B["기준 성능"]
+    C["Parsel"] -->|~80%| B
+    D["Scrapling"] -->|"현저히 빠름"| E["최고 성능"]
+
+    style A fill:#ffc8c4,stroke:#333
+    style C fill:#fde8c0,stroke:#333
+    style D fill:#c0ecd3,stroke:#333,stroke-width:3px
+    style E fill:#c5dcef,stroke:#333,stroke-width:2px</pre><p>성능 향상의 주요 원인:</p>
+<ul>
+<li><strong>비동기 처리</strong>: 효율적인 비동기 I/O 활용</li>
+<li><strong>최적화된 파서</strong>: 불필요한 처리를 최소화하는 맞춤형 파서</li>
+<li><strong>커넥션 풀링</strong>: HTTP 연결 재사용으로 오버헤드 감소</li>
+<li><strong>적응형 전략</strong>: 상황에 맞는 최적의 방법 자동 선택</li>
+</ul>
+<h2 id="mcp-서버-통합">MCP 서버 통합</h2>
+<p>Scrapling은 MCP (Model Context Protocol) 서버와 통합하여 LLM (Large Language Model)과 쉽게 연동할 수 있습니다. 이를 통해 AI 에이전트가 실시간 웹 데이터를 수집하고 활용할 수 있습니다.</p>
+<pre class="mermaid">flowchart TD
+    A[LLM / AI Agent] --> B[MCP Server]
+    B --> C[Scrapling]
+
+    C --> D[HTTP Fetching]
+    C --> E[Stealthy Fetching]
+    C --> F[Dynamic Fetching]
+
+    D --> G[Web Data]
+    E --> G
+    F --> G
+
+    G --> B
+    B --> A
+
+    style A fill:#e0c8ef,stroke:#333,stroke-width:2px
+    style B fill:#c5dcef,stroke:#333,stroke-width:2px
+    style C fill:#c0ecd3,stroke:#333,stroke-width:2px</pre><p>MCP 통합의 장점:</p>
+<ul>
+<li><strong>실시간 데이터</strong>: LLM이 최신 웹 정보에 접근 가능</li>
+<li><strong>자동화된 스크래핑</strong>: AI 에이전트가 자율적으로 데이터 수집</li>
+<li><strong>구조화된 출력</strong>: LLM이 바로 활용할 수 있는 정형 데이터 제공</li>
+</ul>
+<pre class="mermaid">sequenceDiagram
+    participant LLM
+    participant MCP
+    participant Scrapling
+    participant Web
+
+    LLM->>MCP: 데이터 요청
+    MCP->>Scrapling: 스크래핑 명령
+    Scrapling->>Web: HTTP/Stealthy/Dynamic
+    Web-->>Scrapling: HTML 데이터
+    Scrapling-->>MCP: 구조화된 데이터
+    MCP-->>LLM: JSON 응답
+
+    note over LLM,Web: 실시간 웹 데이터 통합</pre><h2 id="핵심-요약">핵심 요약</h2>
+<table>
+  <thead>
+      <tr>
+          <th>항목</th>
+          <th>내용</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>프로젝트</strong></td>
+          <td>Scrapling - 적응형 웹 스크래핑 프레임워크</td>
+      </tr>
+      <tr>
+          <td><strong>라이선스</strong></td>
+          <td>BSD-3-Clause</td>
+      </tr>
+      <tr>
+          <td><strong>인기도</strong></td>
+          <td>28.4k stars, 2.1k forks</td>
+      </tr>
+      <tr>
+          <td><strong>핵심 기능</strong></td>
+          <td>HTTP/Stealthy/Dynamic Fetching, Adaptive Parser, Spiders Framework</td>
+      </tr>
+      <tr>
+          <td><strong>설치</strong></td>
+          <td><code>pip install scrapling</code></td>
+      </tr>
+      <tr>
+          <td><strong>성능</strong></td>
+          <td>BeautifulSoup, Parsel보다 현저히 빠름</td>
+      </tr>
+      <tr>
+          <td><strong>LLM 통합</strong></td>
+          <td>MCP 서버를 통한 AI 에이전트 연동 지원</td>
+      </tr>
+  </tbody>
+</table>
+<pre class="mermaid">mindmap
+    root((Scrapling))
+        Fetching
+            HTTP
+            Stealthy
+            Dynamic
+        Parser
+            Adaptive
+            Auto Detection
+        Spiders
+            Auto Crawl
+            Scale
+            Error Recovery
+        Integration
+            MCP Server
+            LLM Support
+        Performance
+            Fast
+            Async
+            Optimized</pre><h2 id="결론">결론</h2>
+<p>Scrapling은 단순한 스크래핑 라이브러리를 넘어, <strong>상황에 적응하는 지능형 프레임워크</strong>입니다. 정적 페이지부터 동적 SPA, anti-bot 보호 사이트까지 다양한 환경에서 최적의 전략을 자동으로 선택하여 효율적인 데이터 수집을 가능하게 합니다.</p>
+<p>특히 Spiders Framework와 MCP 통합은 단순한 스크래핑을 넘어 <strong>자율적인 데이터 수집 에이전트</strong> 구축을 가능하게 하며, LLM과의 결합을 통해 AI 기반 데이터 분석 파이프라인 구축에도 활용할 수 있습니다.</p>
+<p>웹 스크래핑 프로젝트를 계획 중이라면, Scrapling은 강력하고 유연한 선택지가 될 것입니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 03월 12일 17시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/development">Development</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/web-scraping">Web Scraping</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-03-12-promptfoo/" rel="prev">
+        <span>Promptfoo: LLM 프롬프트 평가와 레드팀 보안 테스팅 도구</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-03-12-openrag-langflow-rag-platform/" rel="next">
+        <span>OpenRAG: Langflow 기반 통합 RAG 플랫폼</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#scrapling이란">Scrapling이란?</a>
+      <ul>
+        <li><a href="#주요-특징">주요 특징</a></li>
+      </ul>
+    </li>
+    <li><a href="#핵심-기술-아키텍처">핵심 기술 아키텍처</a>
+      <ul>
+        <li><a href="#fetching-전략">Fetching 전략</a></li>
+        <li><a href="#adaptive-parser">Adaptive Parser</a></li>
+        <li><a href="#spiders-framework">Spiders Framework</a></li>
+      </ul>
+    </li>
+    <li><a href="#설치-및-빠른-시작">설치 및 빠른 시작</a>
+      <ul>
+        <li><a href="#설치">설치</a></li>
+        <li><a href="#기본-사용-예시">기본 사용 예시</a></li>
+      </ul>
+    </li>
+    <li><a href="#성능-벤치마크">성능 벤치마크</a></li>
+    <li><a href="#mcp-서버-통합">MCP 서버 통합</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/python/" class="badge badge-secondary">Python</a>
+    <a href="/tags/web-scraping/" class="badge badge-secondary">Web Scraping</a>
+    <a href="/tags/scrapling/" class="badge badge-secondary">Scrapling</a>
+    <a href="/tags/framework/" class="badge badge-secondary">Framework</a>
+    <a href="/tags/llm/" class="badge badge-secondary">LLM</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
