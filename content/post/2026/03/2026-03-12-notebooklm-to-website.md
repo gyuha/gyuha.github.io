@@ -1,10 +1,8 @@
 ---
 title: "NotebookLM + Gemini로 코드 없이 연구 노트를 프리미엄 웹사이트로 변환하기"
 date: 2026-03-12T10:00:00+09:00
+categories: [Automation]
 draft: false
-categories:
-  - AI
-  - Productivity
 tags:
   - NotebookLM
   - Google Gemini

@@ -1,9 +1,9 @@
 ---
 title: "NotebookLM 신기능 실전 정리: 스마트폰에서 AI 리서치→인포그래픽→영상까지 5단계 워크플로우"
 date: 2026-02-21T18:25:00+09:00
+categories: [Automation]
 draft: false
 description: "Julian Goldie SEO 영상(https://www.youtube.com/watch?v=MeUemwjlGSk)을 바탕으로 NotebookLM의 Gemini 3 업데이트와 모바일 Video Overview 제작 흐름을 실무 관점으로 정리합니다."
-categories: [AI, Productivity]
 tags: [notebooklm, gemini, ai-video, prompt-workflow, content-automation, seo, mermaid]
 ---
 

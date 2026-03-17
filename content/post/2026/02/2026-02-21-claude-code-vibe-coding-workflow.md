@@ -1,9 +1,9 @@
 ---
 title: "Claude Code 바이브 코딩 워크플로우: Skill·MCP·Agent·검증·Context 운영 한 번에 정리"
 date: 2026-02-21T23:35:00+09:00
+categories: [AI]
 draft: false
 description: "공식 문서와 실전 사례를 바탕으로 Claude Code 바이브 코딩 워크플로우를 정리합니다. Skill/MCP/Agent 역할 분리, 개발 검증 루프, 추천 폴더 구조, plan-context-tasks 운영법까지 실무 기준으로 묶었습니다."
-categories: [AI, Development, Productivity]
 tags: [claude-code, workflow, skills, mcp, subagent, hooks, verification, context-engineering]
 ---
 

@@ -1,9 +1,8 @@
 ---
 title: "Claude HUD: Claude Code를 위한 실시간 상태 표시줄(Statusline) 플러그인"
 date: 2026-03-05T21:25:00+09:00
+categories: [Developer Tools]
 draft: false
-categories:
-  - claude-code
 tags:
   - claude-code
   - claude-code-plugin

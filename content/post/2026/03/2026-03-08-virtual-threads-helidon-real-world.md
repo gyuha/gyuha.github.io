@@ -1,10 +1,8 @@
 ---
 title: "Virtual Threads 실전 적용기: Helidon 4로 빠르고 안정적인 Java 마이크로서비스 만들기"
 date: 2026-03-08T09:00:00+09:00
+categories: [Engineering]
 draft: false
-categories:
-  - Java
-  - Backend
 tags:
   - Java
   - Virtual Threads

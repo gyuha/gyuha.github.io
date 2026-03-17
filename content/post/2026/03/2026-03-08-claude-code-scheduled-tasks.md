@@ -1,9 +1,8 @@
 ---
 title: "Claude Code 2.0 Scheduled Tasks 완벽 가이드"
 date: 2026-03-08T10:00:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
 tags:
   - Claude Code
   - Anthropic

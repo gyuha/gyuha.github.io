@@ -1,11 +1,8 @@
 ---
 title: "Claude Code 프레임워크 비교: GSD, oh-my-claudecode, Superpowers 중 무엇을 써야 할까"
 date: 2026-03-15T11:48:34+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
-  - Productivity
 tags:
   - Claude Code
   - GSD

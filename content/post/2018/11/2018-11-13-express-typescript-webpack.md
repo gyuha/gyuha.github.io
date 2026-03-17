@@ -1,8 +1,8 @@
 ---
 title: "Express Typescript Webpack"
 date: 2018-11-13T23:11:37+09:00
+categories: [Web]
 draft: true
-categories: [javascript]
 tags: [webpack,typescript,express,node]
 ---
 

@@ -1,10 +1,8 @@
 ---
 title: "Claude Code에서 oh-my-claudecode, pm-skills, superpowers, ui-ux-pro-max를 함께 쓰는 방법"
 date: 2026-03-10T21:30:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
 tags:
   - Claude Code
   - oh-my-claudecode

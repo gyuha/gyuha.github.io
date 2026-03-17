@@ -1,11 +1,8 @@
 ---
 title: "AGENTS.md는 정말 도움이 될까: AGENTbench 논문으로 본 컨텍스트 파일의 실제 효과"
 date: 2026-03-01T05:20:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
-  - Engineering
 tags:
   - AGENTS.md
   - AGENTbench

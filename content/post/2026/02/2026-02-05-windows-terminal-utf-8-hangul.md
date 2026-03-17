@@ -1,6 +1,7 @@
 ---
 title: "Windows Terminal Git Bash 한글 깨짐 해결하기"
 date: 2026-02-05T08:30:00+09:00
+categories: [Developer Tools]
 draft: false
 description: "Windows Terminal에서 Git Bash 사용 시 한글이 깨지는 문제를 Git 설정과 .bashrc, .inputrc 수정을 통해 해결하는 방법을 소개합니다."
 tags: ["Windows Terminal", "Git Bash", "UTF-8"]

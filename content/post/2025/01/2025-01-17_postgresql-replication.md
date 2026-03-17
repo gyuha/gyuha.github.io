@@ -1,8 +1,8 @@
 ---
 title: "PostgreSQL Replication과 Connection Pooling 구현하기"
 date: 2025-01-17T19:41:48+09:00
+categories: [Data]
 draft: true
-categories: [system]
 tags: [docker, postgresql]
 ---
 

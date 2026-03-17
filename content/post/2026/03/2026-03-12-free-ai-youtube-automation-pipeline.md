@@ -1,11 +1,8 @@
 ---
 title: "2026년 무료 AI 유튜브 제작 파이프라인: Whisk, Grok, Gemini Canvas를 한 번에 엮는 법"
 date: 2026-03-12T22:30:00+09:00
+categories: [Automation]
 draft: false
-categories:
-  - AI
-  - YouTube
-  - 자동화
 tags:
   - AI
   - YouTube

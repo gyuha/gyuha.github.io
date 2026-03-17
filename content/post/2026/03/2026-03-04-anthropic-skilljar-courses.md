@@ -1,9 +1,8 @@
 ---
 title: "Anthropic Skilljar 공식 강좌 가이드 - Claude AI 마스터하기"
 date: 2026-03-04T17:00:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
 tags:
   - Anthropic
   - Claude

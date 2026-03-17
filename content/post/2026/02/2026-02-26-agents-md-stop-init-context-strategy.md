@@ -1,11 +1,8 @@
 ---
 title: "/init로 만든 AGENTS.md는 왜 성능을 깎을까: 최소 컨텍스트와 계층형 운영 전략"
 date: 2026-02-26T00:05:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
-  - Engineering
 tags:
   - AGENTS.md
   - Claude Code

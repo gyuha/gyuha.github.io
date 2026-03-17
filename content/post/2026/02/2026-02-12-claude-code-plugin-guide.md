@@ -1,6 +1,7 @@
 ---
 title: "Claude Code 플러그인 완전 가이드: 개발부터 활용까지"
 date: 2026-02-12T10:00:00+09:00
+categories: [Developer Tools]
 draft: true
 description: "Claude Code의 플러그인 시스템을 통해 프로젝트와 팀 전체에서 공유할 수 있는 사용자 정의 기능으로 확장하는 방법을 소개합니다."
 tags: ["Claude Code", "Plugin", "AI Coding", "Automation"]

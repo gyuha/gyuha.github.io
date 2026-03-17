@@ -1,11 +1,8 @@
 ---
 title: "위스크 종료 후 대안: 무료로 AI 롱폼 영상 자동 제작하는 완벽한 워크플로우"
 date: 2026-03-13T17:00:00+09:00
+categories: [Automation]
 draft: false
-categories:
-  - AI
-  - 영상 제작
-  - 자동화
 tags:
   - AI
   - Flow

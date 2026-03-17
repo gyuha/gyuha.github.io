@@ -1,10 +1,8 @@
 ---
 title: "클로드 코드 토큰 녹는 분들, 이 6가지만 바꾸세요"
 date: 2026-02-26T21:00:00+09:00
+categories: [Productivity]
 draft: false
-categories:
-  - AI
-  - Development
 tags:
   - Claude Code
   - Token Optimization

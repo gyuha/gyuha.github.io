@@ -1,10 +1,8 @@
 ---
 title: "MCP는 죽었다? AI 작업 공간의 hidden killer와 스킬의 부상"
 date: 2026-03-04T10:00:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
 tags:
   - MCP
   - Claude Code

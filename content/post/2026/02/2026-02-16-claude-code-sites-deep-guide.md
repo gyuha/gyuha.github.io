@@ -1,9 +1,9 @@
 ---
 title: "Claude Code 사용자라면 꼭 알아둘 사이트 6선: 스킬/에이전트 생태계 실전 가이드"
 date: 2026-02-16T01:58:00+09:00
+categories: [AI]
 draft: true
 description: "Claude Code 관련 추천 링크 6개, 각 사이트의 역할, 강점, 추천 사용 시나리오, 주의점, 시작 방법까지 실무 관점으로 정리했습니다."
-categories: [AI, Development, Productivity]
 tags: [claude, claude-code, skills, agents, mcp, workflow, automation]
 ---
 

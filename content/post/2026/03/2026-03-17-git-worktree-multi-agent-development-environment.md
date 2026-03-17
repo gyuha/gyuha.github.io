@@ -1,11 +1,8 @@
 ---
 title: "Git Worktree 예제로 익히기: 새 작업, 긴급 hotfix, 병렬 작업까지 한 번에"
 date: 2026-03-17T20:44:02+09:00
+categories: [Developer Tools]
 draft: false
-categories:
-  - Git
-  - Developer Tools
-  - Productivity
 tags:
   - Git Worktree
   - Bare Repository

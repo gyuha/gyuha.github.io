@@ -1,10 +1,8 @@
 ---
 title: "실무에서 10개월 써본 MCP 9개 정리: 2026년 필수 vs 대체 가능 vs 주의 필요"
 date: 2026-03-04T00:30:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
 tags:
   - MCP
   - Claude Code

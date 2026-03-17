@@ -1,9 +1,9 @@
 ---
 title: "Caddy vs Nginx 비교와 Caddy 사용법: 예제로 이해하는 웹서버 선택 가이드"
 date: 2026-02-19T11:50:00+09:00
+categories: [Infrastructure]
 draft: false
 description: "Caddy와 Nginx를 HTTPS, 리버스 프록시, 정적 파일 서빙 예제로 비교하고, Caddy를 실제로 설치/실행/운영하는 기본 사용법을 정리합니다."
-categories: [DevOps, WebServer]
 tags: [caddy, nginx, reverse-proxy, https, letsencrypt, web-server]
 ---
 

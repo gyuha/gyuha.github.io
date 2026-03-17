@@ -1,8 +1,8 @@
 ---
 title: "안드로이드 APK 리소스 편집하기"
 date: 2020-05-20T22:39:10+09:00
+categories: [Developer Tools]
 draft: true
-categories: [utillity]
 tags: [android,apk]
 ---
 

@@ -1,10 +1,8 @@
 ---
 title: "촌집 AI Insight: 매물 등록 시 분석이 만들어지는 과정"
 date: 2026-02-26T21:00:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - Backend
-  - AI/ML
 tags:
   - AI
   - Backend

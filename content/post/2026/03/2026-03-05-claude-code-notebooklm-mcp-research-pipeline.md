@@ -1,11 +1,8 @@
 ---
 title: "Claude Code에서 /research 한 번으로 끝내기: NotebookLM MCP 리서치 파이프라인 정리"
 date: 2026-03-05T23:20:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
-  - Productivity
 tags:
   - Claude Code
   - NotebookLM

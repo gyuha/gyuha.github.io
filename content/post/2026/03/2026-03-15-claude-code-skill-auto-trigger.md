@@ -1,10 +1,8 @@
 ---
 title: "Claude Code 스킬 자동 발동 가이드"
 date: 2026-03-15T01:41:05+09:00
+categories: [AI]
 draft: true
-categories:
-  - Development
-  - AI
 tags:
   - claude-code
   - skills

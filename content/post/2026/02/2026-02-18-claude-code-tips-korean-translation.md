@@ -1,9 +1,9 @@
 ---
 title: "ykdojo/claude-code-tips 한글 번역·정리: 45개 팁(0~45) 실무 요약"
 date: 2026-02-18T20:40:00+09:00
+categories: [Productivity]
 draft: false
 description: "GitHub 저장소 ykdojo/claude-code-tips의 핵심 팁을 한국어로 번역하고, 실무 적용 기준으로 다시 구조화한 요약 가이드입니다."
-categories: [AI, Development, Productivity]
 tags: [claude-code, tips, workflow, automation, mcp, github-cli, translation, mermaid]
 ---
 

@@ -1,9 +1,8 @@
 ---
 title: "tmux와 Feature Design 파일로 병렬 코딩 에이전트 구축하기"
 date: 2026-03-07T17:00:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
 tags:
   - claude-code
   - parallel-agents

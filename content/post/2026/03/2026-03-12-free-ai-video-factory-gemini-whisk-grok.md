@@ -1,11 +1,8 @@
 ---
 title: "제작비 0원으로 AI 영상 공장 만들기: Gemini-Whisk-Grok 무료 자동화 파이프라인 해부"
 date: 2026-03-12T21:41:25+09:00
+categories: [Automation]
 draft: false
-categories:
-  - AI
-  - YouTube
-  - 자동화
 tags:
   - Gemini
   - Whisk

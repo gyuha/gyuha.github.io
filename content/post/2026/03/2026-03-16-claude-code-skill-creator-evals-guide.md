@@ -1,10 +1,8 @@
 ---
 title: "Claude Code Skill Creator 업데이트 정리: 평가, 벤치마크, 트리거 튜닝으로 스킬을 더 강하게 만드는 법"
 date: 2026-03-16T17:07:49+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
 tags:
   - Claude Code
   - Anthropic

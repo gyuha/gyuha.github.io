@@ -1,8 +1,8 @@
 ---
 title: "VSCode에 live2d 사용하기"
 date: 2019-01-22T23:42:22+09:00
+categories: [Developer Tools]
 draft: true
-categories: [utillity]
 tags: [vscode, live2d]
 ---
 

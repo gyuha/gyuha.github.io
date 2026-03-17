@@ -1,11 +1,8 @@
 ---
 title: "Claude Code 업데이트 심화 정리: Memory, Skills(번들 스킬), Remote Control, Ralph Loop 실전 운영"
 date: 2026-03-02T11:45:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
-  - Engineering
 tags:
   - claude-code
   - memory

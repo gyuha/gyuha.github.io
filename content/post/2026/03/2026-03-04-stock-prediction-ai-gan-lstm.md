@@ -1,7 +1,7 @@
 ---
 title: "AI 주가 예측 완전 해부: GAN, LSTM, 강화학습, BERT를 결합한 Goldman Sachs 주가 예측 시스템"
 date: 2026-03-04
-categories: ["AI"]
+categories: [Data]
 tags: ["GAN", "LSTM", "Reinforcement Learning", "BERT", "Stock Prediction", "Deep Learning", "CNN", "XGBoost", "Bayesian Optimization", "Time Series"]
 description: "GAN(LSTM Generator + CNN Discriminator), 강화학습(Rainbow DQN + PPO), BERT NLP, 푸리에 변환, ARIMA, Stacked Autoencoder를 결합한 AI 주가 예측 시스템의 전체 아키텍처와 구현 원리를 심층 분석합니다."
 ---

@@ -1,11 +1,8 @@
 ---
 title: "바이브 코딩 외주 플레이북: 포트폴리오·견적·계약·성장 전략 한 번에 정리"
 date: 2026-03-16T21:20:00+09:00
+categories: [Insights]
 draft: false
-categories:
-  - AI
-  - Freelance
-  - Development
 tags:
   - vibe-coding
   - freelance

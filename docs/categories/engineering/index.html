@@ -85,20 +85,14 @@
 
 <article class="post">
   <div class="post-title">
-    <a href="https://gyuha.com/post/2026/03/2026-03-14-claude-code-project-structure-guide/" title="Claude Code 프로젝트 구조 가이드: CLAUDE.md, hooks, skills, docs, tools, src를 어떻게 나눌까">
+    <a href="https://gyuha.com/post/2026/03/2026-03-10-spec-driven-development-for-vibe-coding/" title="Vibe Coding 시대의 스펙 주도 개발: AI 코딩을 감각이 아니라 명세로 통제하는 방법">
       <div class="post-meta">
-        <h2>Claude Code 프로젝트 구조 가이드: CLAUDE.md, hooks, skills, docs, tools, src를 어떻게 나눌까</h2>
+        <h2>Vibe Coding 시대의 스펙 주도 개발: AI 코딩을 감각이 아니라 명세로 통제하는 방법</h2>
         <time>
           <i class="far fa-clock"></i>
-          2026년 03월 14일 15시 10분
+          2026년 03월 10일 00시 00분
         </time>
          
-        <i class="far fa-folder"></i>
-        <a href="https://gyuha.com//categories/ai">AI</a>
-        
-        <i class="far fa-folder"></i>
-        <a href="https://gyuha.com//categories/development">Development</a>
-        
         <i class="far fa-folder"></i>
         <a href="https://gyuha.com//categories/engineering">Engineering</a>
         
@@ -106,11 +100,10 @@
     </a>
   </div>
   <div class="post-summary">
-    Claude Code를 조금만 깊게 써 보면 금방 부딪히는 문제가 있습니다. 규칙은 CLAUDE.md에 몰아넣고, 자동화는 훅에 넣고, 반복 작업은 스킬로 빼야 한다는 말은 알겠는데, 실제로 레포를 어떻게 나눠야 할지 애매합니다.
-특히 프로젝트가 커질수록 &ldquo;무엇을 항상 읽게 할지&rdquo;, &ldquo;무엇을 필요할 때만 불러올지&rdquo;, &ldquo;무엇을 문서로 남길지&quot;가 섞이기 시작합니다.
-이번 글은 temp/claude-structor.md의 간단한 구조 예시를 출발점으로, 실제로 운영 가능한 Claude Code 프로젝트 디렉터리 구조로 확장한 버전입니다. 단순히 폴더 이름만 나열하지 않고, 각 폴더가 왜 필요한지, 어떤 파일을 넣어야 하는지, 그리고 바로 가져다 쓸 수 있는 샘플 예제까지 같이 정리합니다.
+    AI 코딩 도구가 좋아질수록 개발은 빨라집니다. 하지만 속도가 올라간다고 해서 프로젝트가 자동으로 좋아지지는 않습니다. 오히려 방향을 잃은 채 빠르게 달리면, 더 빨리 망가집니다.
+바로 이 지점에서 많은 팀이 말하는 것이 &ldquo;Vibe Coding&rdquo; 입니다. 아이디어와 감각만으로 AI에게 계속 구현을 맡기는 방식입니다. 초기에는 놀라울 정도로 빠르지만, 프로젝트가 조금만 커져도 요구사항이 흔들리고 구조가 무너지기 시작합니다.
  
-    <a href="/post/2026/03/2026-03-14-claude-code-project-structure-guide/" class="summary-more">더보기</a>
+    <a href="/post/2026/03/2026-03-10-spec-driven-development-for-vibe-coding/" class="summary-more">더보기</a>
     
   </div>
   <hr class="summary-sep" />
@@ -119,20 +112,14 @@
 
 <article class="post">
   <div class="post-title">
-    <a href="https://gyuha.com/post/2026/03/2026-03-10-claude-code-memory-guide/" title="Claude Code Memory 완전 가이드: CLAUDE.md, .claude/rules, Auto Memory를 어떻게 같이 써야 하나">
+    <a href="https://gyuha.com/post/2026/03/2026-03-08-virtual-threads-helidon-real-world/" title="Virtual Threads 실전 적용기: Helidon 4로 빠르고 안정적인 Java 마이크로서비스 만들기">
       <div class="post-meta">
-        <h2>Claude Code Memory 완전 가이드: CLAUDE.md, .claude/rules, Auto Memory를 어떻게 같이 써야 하나</h2>
+        <h2>Virtual Threads 실전 적용기: Helidon 4로 빠르고 안정적인 Java 마이크로서비스 만들기</h2>
         <time>
           <i class="far fa-clock"></i>
-          2026년 03월 10일 18시 30분
+          2026년 03월 08일 09시 00분
         </time>
          
-        <i class="far fa-folder"></i>
-        <a href="https://gyuha.com//categories/ai">AI</a>
-        
-        <i class="far fa-folder"></i>
-        <a href="https://gyuha.com//categories/development">Development</a>
-        
         <i class="far fa-folder"></i>
         <a href="https://gyuha.com//categories/engineering">Engineering</a>
         
@@ -140,11 +127,35 @@
     </a>
   </div>
   <div class="post-summary">
-    Claude Code의 메모리는 단순히 &ldquo;대화를 기억한다&rdquo; 수준이 아닙니다.
-공식 문서 기준으로 보면 Claude Code는 사람이 적는 지침형 메모리 와 Claude가 스스로 축적하는 자동 메모리 를 분리해서 운영합니다.
-이 글에서는 CLAUDE.md, .claude/rules/, Auto memory, /memory 명령까지 하나의 운영 체계로 연결해서 정리합니다.
+    Java 21에서 정식 도입된 Virtual Threads(JEP 444) 는 &ldquo;가벼운 스레드를 수백만 개 만들 수 있다&quot;는 개념만으로도 관심을 끌었습니다. 하지만 실제 프로덕션에서 어떤 문제가 생기고, 프레임워크 수준에서 어떻게 설계해야 하는지를 다루는 자료는 많지 않습니다. 이 글은 Oracle Helidon 팀 Joe DiPalma의 발표를 기반으로, Virtual Threads를 프레임워크 설계 중심 에 놓았을 때 무엇이 달라지는지, 그리고 운영에서 반드시 알아야 할 핀닝·동시성 제어·Thread Local 이슈를 정리합니다.
  
-    <a href="/post/2026/03/2026-03-10-claude-code-memory-guide/" class="summary-more">더보기</a>
+    <a href="/post/2026/03/2026-03-08-virtual-threads-helidon-real-world/" class="summary-more">더보기</a>
+    
+  </div>
+  <hr class="summary-sep" />
+</article>
+ 
+
+<article class="post">
+  <div class="post-title">
+    <a href="https://gyuha.com/post/2026/03/2026-03-07-agentic-engineering-patterns/" title="에이전트 엔지니어링 패턴 - Simon Willison의 코딩 에이전트 활용 가이드">
+      <div class="post-meta">
+        <h2>에이전트 엔지니어링 패턴 - Simon Willison의 코딩 에이전트 활용 가이드</h2>
+        <time>
+          <i class="far fa-clock"></i>
+          2026년 03월 07일 10시 00분
+        </time>
+         
+        <i class="far fa-folder"></i>
+        <a href="https://gyuha.com//categories/engineering">Engineering</a>
+        
+      </div>
+    </a>
+  </div>
+  <div class="post-summary">
+    Claude Code, OpenAI Codex 같은 코딩 에이전트를 효과적으로 활용하기 위한 패턴들을 정리한 Simon Willison의 가이드를 소개합니다.
+ 
+    <a href="/post/2026/03/2026-03-07-agentic-engineering-patterns/" class="summary-more">더보기</a>
     
   </div>
   <hr class="summary-sep" />
@@ -179,20 +190,14 @@
 
 <article class="post">
   <div class="post-title">
-    <a href="https://gyuha.com/post/2026/03/2026-03-02-claude-code-update-ralph-remote-memory-skills/" title="Claude Code 업데이트 심화 정리: Memory, Skills(번들 스킬), Remote Control, Ralph Loop 실전 운영">
+    <a href="https://gyuha.com/post/2026/02/2026-02-23-ai-coding-ddd-survival-guide/" title="AI 코딩 시대, DDD를 모르면 왜 유지보수가 무너지는가">
       <div class="post-meta">
-        <h2>Claude Code 업데이트 심화 정리: Memory, Skills(번들 스킬), Remote Control, Ralph Loop 실전 운영</h2>
+        <h2>AI 코딩 시대, DDD를 모르면 왜 유지보수가 무너지는가</h2>
         <time>
           <i class="far fa-clock"></i>
-          2026년 03월 02일 11시 45분
+          2026년 02월 23일 01시 55분
         </time>
          
-        <i class="far fa-folder"></i>
-        <a href="https://gyuha.com//categories/ai">AI</a>
-        
-        <i class="far fa-folder"></i>
-        <a href="https://gyuha.com//categories/development">Development</a>
-        
         <i class="far fa-folder"></i>
         <a href="https://gyuha.com//categories/engineering">Engineering</a>
         
@@ -200,11 +205,10 @@
     </a>
   </div>
   <div class="post-summary">
-    이번 글은 아래 5개 공식 링크를 기준으로 Claude Code의 핵심 업데이트를 &ldquo;기능 소개&quot;가 아니라 &ldquo;운영 설계&rdquo; 관점에서 다시 정리한 문서입니다.
-특히 Memory, Skills, Remote Control, Ralph Loop를 각각 이해한 뒤, 마지막에 하나의 루프로 합치는 방법까지 다룹니다.
-문서 확인 시점은 2026-03-02 입니다.
+    AI가 코드를 빠르게 만들어 주는 시대에도, 팀이 오래 살아남는 코드는 여전히 구조에서 결정됩니다. 이번 영상은 &ldquo;AI가 못해서&quot;가 아니라 &ldquo;AI가 이해할 틀을 주지 않아서&rdquo; 코드 품질이 무너진다는 점을 강조하고, 그 틀로 DDD(Domain-Driven Design)를 제시합니다.
+핵심 메시지는 단순합니다. 도메인 경계가 명확하고, 비즈니스 용어와 코드 이름이 일치하며, AI가 읽을 범위를 좁혀주면 생성 코드의 일관성과 유지보수성이 크게 좋아진다는 것입니다.
  
-    <a href="/post/2026/03/2026-03-02-claude-code-update-ralph-remote-memory-skills/" class="summary-more">더보기</a>
+    <a href="/post/2026/02/2026-02-23-ai-coding-ddd-survival-guide/" class="summary-more">더보기</a>
     
   </div>
   <hr class="summary-sep" />
@@ -213,20 +217,14 @@
 
 <article class="post">
   <div class="post-title">
-    <a href="https://gyuha.com/post/2026/03/2026-03-01-agents-md-standard-rule-file-guide/" title="AGENTS.md 표준 규칙 파일 운영 가이드: 분산된 에이전트 규칙을 하나로 묶는 방법">
+    <a href="https://gyuha.com/post/2026/01/2026-01-01-claude-code-commit/" title="효율적인 Git 커밋 전략: 작업을 논리적 단위로 나누기">
       <div class="post-meta">
-        <h2>AGENTS.md 표준 규칙 파일 운영 가이드: 분산된 에이전트 규칙을 하나로 묶는 방법</h2>
+        <h2>효율적인 Git 커밋 전략: 작업을 논리적 단위로 나누기</h2>
         <time>
           <i class="far fa-clock"></i>
-          2026년 03월 01일 20시 30분
+          2026년 01월 01일 23시 32분
         </time>
          
-        <i class="far fa-folder"></i>
-        <a href="https://gyuha.com//categories/ai">AI</a>
-        
-        <i class="far fa-folder"></i>
-        <a href="https://gyuha.com//categories/development">Development</a>
-        
         <i class="far fa-folder"></i>
         <a href="https://gyuha.com//categories/engineering">Engineering</a>
         
@@ -234,10 +232,9 @@
     </a>
   </div>
   <div class="post-summary">
-    Intro 코딩 에이전트를 여러 개 병행해서 쓰기 시작하면, 규칙 파일이 가장 먼저 운영 비용으로 돌아옵니다. 어떤 도구는 CLAUDE.md, 어떤 도구는 자체 규칙 포맷을 요구하다 보니, 같은 팀 규칙이 파일 이름만 바꿔 중복 관리되는 상황이 반복됩니다.
-이번 영상은 이 문제를 AGENTS.md라는 공통 규칙 파일로 정리하자는 제안이며, 핵심은 &ldquo;파일을 하나 더 늘리는 것&quot;이 아니라 &ldquo;규칙의 기준면을 하나로 맞추는 것&quot;입니다.
+    Claude code에서 commit 명령을 간단하게 실행하는 방법을 공유합니다.
  
-    <a href="/post/2026/03/2026-03-01-agents-md-standard-rule-file-guide/" class="summary-more">더보기</a>
+    <a href="/post/2026/01/2026-01-01-claude-code-commit/" class="summary-more">더보기</a>
     
   </div>
   <hr class="summary-sep" />
@@ -246,20 +243,14 @@
 
 <article class="post">
   <div class="post-title">
-    <a href="https://gyuha.com/post/2026/03/2026-03-01-agentbench-context-files-evaluation/" title="AGENTS.md는 정말 도움이 될까: AGENTbench 논문으로 본 컨텍스트 파일의 실제 효과">
+    <a href="https://gyuha.com/post/2024/12/2024-12-20_usefull_aop/" title="유용한 Aspect-Oriented Programming(AOP) 모음">
       <div class="post-meta">
-        <h2>AGENTS.md는 정말 도움이 될까: AGENTbench 논문으로 본 컨텍스트 파일의 실제 효과</h2>
+        <h2>유용한 Aspect-Oriented Programming(AOP) 모음</h2>
         <time>
           <i class="far fa-clock"></i>
-          2026년 03월 01일 05시 20분
+          2024년 12월 20일 13시 15분
         </time>
          
-        <i class="far fa-folder"></i>
-        <a href="https://gyuha.com//categories/ai">AI</a>
-        
-        <i class="far fa-folder"></i>
-        <a href="https://gyuha.com//categories/development">Development</a>
-        
         <i class="far fa-folder"></i>
         <a href="https://gyuha.com//categories/engineering">Engineering</a>
         
@@ -267,42 +258,9 @@
     </a>
   </div>
   <div class="post-summary">
-    Intro AGENTS.md 같은 저장소 수준 컨텍스트 파일은 이제 많은 팀의 기본 관행이 되었습니다. 하지만 &ldquo;권장된다&quot;는 사실과 &ldquo;실제로 성능이 좋아진다&quot;는 사실은 다를 수 있습니다. 이 글은 Evaluating AGENTS.md: Are Repository-Level Context Files Helpful for Coding Agents?(arXiv:2602.11988v1)의 실험 설계와 결과를 중심으로, 언제 컨텍스트 파일이 도움이 되고 언제 오히려 비용만 키우는지 정리합니다.
+    Aspect-Oriented Programming(AOP)은 Spring에서 횡단 관심사를 처리하기 위한 강력한 도구입니다.
  
-    <a href="/post/2026/03/2026-03-01-agentbench-context-files-evaluation/" class="summary-more">더보기</a>
-    
-  </div>
-  <hr class="summary-sep" />
-</article>
- 
-
-<article class="post">
-  <div class="post-title">
-    <a href="https://gyuha.com/post/2026/02/2026-02-26-agents-md-stop-init-context-strategy/" title="/init로 만든 AGENTS.md는 왜 성능을 깎을까: 최소 컨텍스트와 계층형 운영 전략">
-      <div class="post-meta">
-        <h2>/init로 만든 AGENTS.md는 왜 성능을 깎을까: 최소 컨텍스트와 계층형 운영 전략</h2>
-        <time>
-          <i class="far fa-clock"></i>
-          2026년 02월 26일 00시 05분
-        </time>
-         
-        <i class="far fa-folder"></i>
-        <a href="https://gyuha.com//categories/ai">AI</a>
-        
-        <i class="far fa-folder"></i>
-        <a href="https://gyuha.com//categories/development">Development</a>
-        
-        <i class="far fa-folder"></i>
-        <a href="https://gyuha.com//categories/engineering">Engineering</a>
-        
-      </div>
-    </a>
-  </div>
-  <div class="post-summary">
-    Intro 에이전트 도입 초기에 많은 팀이 /init로 AGENTS.md를 만들고 그대로 저장합니다. 겉보기에는 &ldquo;에이전트 온보딩&quot;처럼 보이지만, Addy Osmani의 2026년 글은 반대로 묻습니다. 정말 도움이 되는 문맥은 무엇이고, 어떤 문맥은 오히려 탐색 비용과 추론 비용만 늘리는가?
-이 글은 원문의 핵심 주장과 원문에서 인용한 연구들을 함께 묶어, AGENTS.md를 &ldquo;많이 쓰는 파일&quot;이 아니라 &ldquo;정밀하게 관리하는 운영 레이어&quot;로 다루는 방법을 정리합니다.
- 
-    <a href="/post/2026/02/2026-02-26-agents-md-stop-init-context-strategy/" class="summary-more">더보기</a>
+    <a href="/post/2024/12/2024-12-20_usefull_aop/" class="summary-more">더보기</a>
     
   </div>
   <hr class="summary-sep" />
@@ -361,75 +319,15 @@
         </a>
       </li>
       <li class="widget__item">
-        <a class="widget__link" href="/categories/ai/ml/">
-          <i class="far fa-folder"></i>
-          AI/ML
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/animation/">
-          <i class="far fa-folder"></i>
-          Animation
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/architecture/">
-          <i class="far fa-folder"></i>
-          Architecture
-        </a>
-      </li>
-      <li class="widget__item">
         <a class="widget__link" href="/categories/automation/">
           <i class="far fa-folder"></i>
           Automation
         </a>
       </li>
       <li class="widget__item">
-        <a class="widget__link" href="/categories/backend/">
+        <a class="widget__link" href="/categories/data/">
           <i class="far fa-folder"></i>
-          Backend
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/claude/">
-          <i class="far fa-folder"></i>
-          Claude
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/claude-code/">
-          <i class="far fa-folder"></i>
-          Claude-Code
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/cloud/">
-          <i class="far fa-folder"></i>
-          Cloud
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/data-engineering/">
-          <i class="far fa-folder"></i>
-          Data Engineering
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/database/">
-          <i class="far fa-folder"></i>
-          Database
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/design/">
-          <i class="far fa-folder"></i>
-          Design
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/dev/">
-          <i class="far fa-folder"></i>
-          Dev
+          Data
         </a>
       </li>
       <li class="widget__item">
@@ -439,51 +337,9 @@
         </a>
       </li>
       <li class="widget__item">
-        <a class="widget__link" href="/categories/developer-experience/">
-          <i class="far fa-folder"></i>
-          Developer-Experience
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/development/">
-          <i class="far fa-folder"></i>
-          Development
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/devops/">
-          <i class="far fa-folder"></i>
-          DevOps
-        </a>
-      </li>
-      <li class="widget__item">
         <a class="widget__link" href="/categories/engineering/">
           <i class="far fa-folder"></i>
           Engineering
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/freelance/">
-          <i class="far fa-folder"></i>
-          Freelance
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/frontend/">
-          <i class="far fa-folder"></i>
-          Frontend
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/git/">
-          <i class="far fa-folder"></i>
-          Git
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/guide/">
-          <i class="far fa-folder"></i>
-          Guide
         </a>
       </li>
       <li class="widget__item">
@@ -493,63 +349,15 @@
         </a>
       </li>
       <li class="widget__item">
-        <a class="widget__link" href="/categories/java/">
+        <a class="widget__link" href="/categories/insights/">
           <i class="far fa-folder"></i>
-          Java
+          Insights
         </a>
       </li>
       <li class="widget__item">
-        <a class="widget__link" href="/categories/javascript/">
+        <a class="widget__link" href="/categories/product/">
           <i class="far fa-folder"></i>
-          JavaScript
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/llm/">
-          <i class="far fa-folder"></i>
-          LLM
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/macos/">
-          <i class="far fa-folder"></i>
-          MacOS
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/neovim/">
-          <i class="far fa-folder"></i>
-          Neovim
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/open-source/">
-          <i class="far fa-folder"></i>
-          Open Source
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/optimization/">
-          <i class="far fa-folder"></i>
-          Optimization
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/os/">
-          <i class="far fa-folder"></i>
-          Os
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/product-design/">
-          <i class="far fa-folder"></i>
-          Product Design
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/product-management/">
-          <i class="far fa-folder"></i>
-          Product Management
+          Product
         </a>
       </li>
       <li class="widget__item">
@@ -559,213 +367,9 @@
         </a>
       </li>
       <li class="widget__item">
-        <a class="widget__link" href="/categories/python/">
-          <i class="far fa-folder"></i>
-          Python
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/quant-finance/">
-          <i class="far fa-folder"></i>
-          Quant Finance
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/rag/">
-          <i class="far fa-folder"></i>
-          RAG
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/react/">
-          <i class="far fa-folder"></i>
-          React
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/saas/">
-          <i class="far fa-folder"></i>
-          SaaS
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/security/">
-          <i class="far fa-folder"></i>
-          Security
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/simulation/">
-          <i class="far fa-folder"></i>
-          Simulation
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/software-architecture/">
-          <i class="far fa-folder"></i>
-          Software Architecture
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/spark/">
-          <i class="far fa-folder"></i>
-          Spark
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/spring/">
-          <i class="far fa-folder"></i>
-          Spring
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/system/">
-          <i class="far fa-folder"></i>
-          System
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/tool/">
-          <i class="far fa-folder"></i>
-          Tool
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/tooling/">
-          <i class="far fa-folder"></i>
-          Tooling
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/tools/">
-          <i class="far fa-folder"></i>
-          Tools
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/trading/">
-          <i class="far fa-folder"></i>
-          Trading
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/typescript/">
-          <i class="far fa-folder"></i>
-          Typescript
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/utillity/">
-          <i class="far fa-folder"></i>
-          Utillity
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/vim/">
-          <i class="far fa-folder"></i>
-          Vim
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/vscode/">
-          <i class="far fa-folder"></i>
-          VSCode
-        </a>
-      </li>
-      <li class="widget__item">
         <a class="widget__link" href="/categories/web/">
           <i class="far fa-folder"></i>
           Web
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/web-development/">
-          <i class="far fa-folder"></i>
-          Web Development
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/web-scraping/">
-          <i class="far fa-folder"></i>
-          Web Scraping
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/webserver/">
-          <i class="far fa-folder"></i>
-          WebServer
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/workflow/">
-          <i class="far fa-folder"></i>
-          Workflow
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/youtube/">
-          <i class="far fa-folder"></i>
-          YouTube
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/%EA%B0%9C%EB%B0%9C/">
-          <i class="far fa-folder"></i>
-          개발
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/%EA%B0%9C%EB%B0%9C%EB%8F%84%EA%B5%AC/">
-          <i class="far fa-folder"></i>
-          개발도구
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/%EA%B0%9C%EB%B0%9C%EB%AC%B8%ED%99%94/">
-          <i class="far fa-folder"></i>
-          개발문화
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/%EA%B8%B0%EC%88%A0-%EB%85%B8%ED%8A%B8/">
-          <i class="far fa-folder"></i>
-          기술 노트
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/%EA%B8%B0%EC%88%A0%EB%8F%99%ED%96%A5/">
-          <i class="far fa-folder"></i>
-          기술동향
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/%EC%82%AC%ED%9A%8C/">
-          <i class="far fa-folder"></i>
-          사회
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/%EC%83%9D%EC%82%B0%EC%84%B1/">
-          <i class="far fa-folder"></i>
-          생산성
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/%EC%8B%AC%EB%A6%AC/">
-          <i class="far fa-folder"></i>
-          심리
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/%EC%98%81%EC%83%81-%EC%A0%9C%EC%9E%91/">
-          <i class="far fa-folder"></i>
-          영상 제작
-        </a>
-      </li>
-      <li class="widget__item">
-        <a class="widget__link" href="/categories/%EC%9E%90%EB%8F%99%ED%99%94/">
-          <i class="far fa-folder"></i>
-          자동화
         </a>
       </li>
     </ul>
@@ -784,7 +388,7 @@
     <a href="/tags/agent/" class="badge badge-secondary">Agent</a>
     <a href="/tags/agent-engineering/" class="badge badge-secondary">Agent Engineering</a>
     <a href="/tags/agent-orchestration/" class="badge badge-secondary">Agent Orchestration</a>
-    <a href="/tags/agent-teams/" class="badge badge-secondary">Agent Teams</a>
+    <a href="/tags/agent-teams/" class="badge badge-secondary">Agent-Teams</a>
     <a href="/tags/agent-workflow/" class="badge badge-secondary">Agent Workflow</a>
     <a href="/tags/agent-sdk/" class="badge badge-secondary">Agent-Sdk</a>
     <a href="/tags/agent-team/" class="badge badge-secondary">Agent-Team</a>
@@ -800,9 +404,9 @@
     <a href="/tags/agents-md/" class="badge badge-secondary">Agents-Md</a>
     <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
     <a href="/tags/ai/" class="badge badge-secondary">Ai</a>
-    <a href="/tags/ai-agents/" class="badge badge-secondary">AI Agents</a>
+    <a href="/tags/ai-agents/" class="badge badge-secondary">Ai-Agents</a>
     <a href="/tags/ai-animation/" class="badge badge-secondary">AI Animation</a>
-    <a href="/tags/ai-coding/" class="badge badge-secondary">AI Coding</a>
+    <a href="/tags/ai-coding/" class="badge badge-secondary">Ai-Coding</a>
     <a href="/tags/ai-development/" class="badge badge-secondary">AI Development</a>
     <a href="/tags/ai-education/" class="badge badge-secondary">AI Education</a>
     <a href="/tags/ai-product/" class="badge badge-secondary">AI Product</a>
@@ -810,7 +414,7 @@
     <a href="/tags/ai-tools/" class="badge badge-secondary">AI Tools</a>
     <a href="/tags/ai-workflow/" class="badge badge-secondary">AI Workflow</a>
     <a href="/tags/ai-%EC%9E%90%EB%8F%99%ED%99%94/" class="badge badge-secondary">AI 자동화</a>
-    <a href="/tags/ai-agent/" class="badge badge-secondary">AI Agent</a>
+    <a href="/tags/ai-agent/" class="badge badge-secondary">Ai-Agent</a>
     <a href="/tags/ai-productivity/" class="badge badge-secondary">Ai-Productivity</a>
     <a href="/tags/ai-security/" class="badge badge-secondary">Ai-Security</a>
     <a href="/tags/ai-video/" class="badge badge-secondary">Ai-Video</a>
@@ -892,7 +496,7 @@
     <a href="/tags/ddd/" class="badge badge-secondary">DDD</a>
     <a href="/tags/deep-learning/" class="badge badge-secondary">Deep Learning</a>
     <a href="/tags/deep-research/" class="badge badge-secondary">Deep-Research</a>
-    <a href="/tags/design-system/" class="badge badge-secondary">Design-System</a>
+    <a href="/tags/design-system/" class="badge badge-secondary">Design System</a>
     <a href="/tags/desktop-app/" class="badge badge-secondary">Desktop-App</a>
     <a href="/tags/dev-docs/" class="badge badge-secondary">Dev-Docs</a>
     <a href="/tags/developer/" class="badge badge-secondary">Developer</a>
@@ -995,7 +599,7 @@
     <a href="/tags/manager/" class="badge badge-secondary">Manager</a>
     <a href="/tags/marketplace/" class="badge badge-secondary">Marketplace</a>
     <a href="/tags/math/" class="badge badge-secondary">Math</a>
-    <a href="/tags/mcp/" class="badge badge-secondary">MCP</a>
+    <a href="/tags/mcp/" class="badge badge-secondary">Mcp</a>
     <a href="/tags/mem0/" class="badge badge-secondary">Mem0</a>
     <a href="/tags/memory/" class="badge badge-secondary">Memory</a>
     <a href="/tags/mermaid/" class="badge badge-secondary">Mermaid</a>
@@ -1006,7 +610,7 @@
     <a href="/tags/motion-design/" class="badge badge-secondary">Motion-Design</a>
     <a href="/tags/mpv/" class="badge badge-secondary">Mpv</a>
     <a href="/tags/multi-tenant/" class="badge badge-secondary">Multi Tenant</a>
-    <a href="/tags/multi-agent/" class="badge badge-secondary">Multi-Agent</a>
+    <a href="/tags/multi-agent/" class="badge badge-secondary">Multi Agent</a>
     <a href="/tags/mvcc/" class="badge badge-secondary">MVCC</a>
     <a href="/tags/nanobana/" class="badge badge-secondary">Nanobana</a>
     <a href="/tags/neovim/" class="badge badge-secondary">Neovim</a>
@@ -1054,7 +658,7 @@
     <a href="/tags/pm-skills/" class="badge badge-secondary">Pm-Skills</a>
     <a href="/tags/pm2/" class="badge badge-secondary">Pm2</a>
     <a href="/tags/portfolio/" class="badge badge-secondary">Portfolio</a>
-    <a href="/tags/postgresql/" class="badge badge-secondary">Postgresql</a>
+    <a href="/tags/postgresql/" class="badge badge-secondary">PostgreSQL</a>
     <a href="/tags/ppt/" class="badge badge-secondary">Ppt</a>
     <a href="/tags/presentation/" class="badge badge-secondary">Presentation</a>
     <a href="/tags/product-management/" class="badge badge-secondary">Product-Management</a>
@@ -1065,7 +669,7 @@
     <a href="/tags/project-structure/" class="badge badge-secondary">Project Structure</a>
     <a href="/tags/prompt/" class="badge badge-secondary">Prompt</a>
     <a href="/tags/prompt-caching/" class="badge badge-secondary">Prompt-Caching</a>
-    <a href="/tags/prompt-engineering/" class="badge badge-secondary">Prompt-Engineering</a>
+    <a href="/tags/prompt-engineering/" class="badge badge-secondary">Prompt Engineering</a>
     <a href="/tags/prompt-optimization/" class="badge badge-secondary">Prompt Optimization</a>
     <a href="/tags/prompt-strategy/" class="badge badge-secondary">Prompt Strategy</a>
     <a href="/tags/prompt-injection/" class="badge badge-secondary">Prompt-Injection</a>
@@ -1114,9 +718,9 @@
     <a href="/tags/skill/" class="badge badge-secondary">Skill</a>
     <a href="/tags/skill-creator/" class="badge badge-secondary">Skill Creator</a>
     <a href="/tags/skills/" class="badge badge-secondary">Skills</a>
-    <a href="/tags/slash-commands/" class="badge badge-secondary">Slash Commands</a>
+    <a href="/tags/slash-commands/" class="badge badge-secondary">Slash-Commands</a>
     <a href="/tags/solidjs/" class="badge badge-secondary">SolidJS</a>
-    <a href="/tags/spec-driven-development/" class="badge badge-secondary">Spec-Driven Development</a>
+    <a href="/tags/spec-driven-development/" class="badge badge-secondary">Spec-Driven-Development</a>
     <a href="/tags/spring/" class="badge badge-secondary">Spring</a>
     <a href="/tags/sqlite/" class="badge badge-secondary">SQLite</a>
     <a href="/tags/ssh/" class="badge badge-secondary">Ssh</a>
@@ -1162,7 +766,7 @@
     <a href="/tags/vector-database/" class="badge badge-secondary">Vector Database</a>
     <a href="/tags/verification/" class="badge badge-secondary">Verification</a>
     <a href="/tags/vertex-ai/" class="badge badge-secondary">Vertex AI</a>
-    <a href="/tags/vibe-coding/" class="badge badge-secondary">Vibe-Coding</a>
+    <a href="/tags/vibe-coding/" class="badge badge-secondary">Vibe Coding</a>
     <a href="/tags/vim/" class="badge badge-secondary">Vim</a>
     <a href="/tags/virtual-threads/" class="badge badge-secondary">Virtual Threads</a>
     <a href="/tags/vite/" class="badge badge-secondary">Vite</a>

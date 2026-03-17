@@ -1,10 +1,8 @@
 ---
 title: "OpenRAG: Langflow 기반 통합 RAG 플랫폼"
 date: 2026-03-12T17:00:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI/ML
-  - RAG
 tags:
   - RAG
   - Langflow

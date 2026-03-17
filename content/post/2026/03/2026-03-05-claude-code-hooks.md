@@ -1,10 +1,8 @@
 ---
 title: "Claude Code Hooks 완전 정복: 이벤트/결정 제어/비동기까지 한 번에 이해하기"
 date: 2026-03-05T22:10:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
 tags:
   - Claude Code
   - Hooks

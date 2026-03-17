@@ -1,8 +1,8 @@
 ---
 title: "Python의 uv 패키지 매니저"
 date: 2025-04-14T21:35:29+09:00
+categories: [Developer Tools]
 draft: true
-categories: [python]
 tags: [python]
 ---
 

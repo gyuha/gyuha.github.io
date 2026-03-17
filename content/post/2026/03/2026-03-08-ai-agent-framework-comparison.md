@@ -1,10 +1,8 @@
 ---
 title: "AI 에이전트 프레임워크 선택 가이드: 랭체인, 랭그래프, ADK, 파이덴틱 AI, 클로드 에이전트 SDK 비교"
 date: 2026-03-08T10:00:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - 개발
 tags:
   - AI에이전트
   - LangChain

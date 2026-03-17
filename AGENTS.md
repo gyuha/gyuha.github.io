@@ -113,7 +113,7 @@ Prefer local patterns over global rewrites.
 ### Types and naming
 - This repo is mostly Hugo/SCSS/JS/Markdown; no project-wide TypeScript policy is defined.
 - If touching typed code in future, prefer strict explicit types and no `any` escapes.
-- Use existing naming/file conventions: partials use lowercase underscores (for example `side_recent.html`), post files use `content/post/YYYY/YYYY-MM-DD-slug.md`.
+- Use existing naming/file conventions: partials use lowercase underscores (for example `side_recent.html`), post files use `content/post/YYYY/MM/YYYY-MM-DD-slug.md`.
 
 ### Markdown and frontmatter (`content/post/**/*.md`)
 - Frontmatter format is YAML (`metaDataFormat = "yaml"` in `config.toml`).
@@ -123,12 +123,26 @@ Prefer local patterns over global rewrites.
   - `draft`
 - For new posts, set `date` to the actual writing/publishing time (current local time), not a future timestamp, to avoid posts being hidden from list pages.
 - Preferred post metadata for new content: `categories` (plural), `tags`, optional `description`.
+- Always use `categories` as a YAML array, even when there is only one category.
+- Assign exactly one category per post. Do not stack multiple categories on a single post.
+- Allowed categories are limited to these 10 canonical values only:
+  - `AI`
+  - `Engineering`
+  - `Web`
+  - `Data`
+  - `Infrastructure`
+  - `Developer Tools`
+  - `Productivity`
+  - `Automation`
+  - `Product`
+  - `Insights`
+- When categorizing a new post, pick the single best-fit canonical category from the list above instead of inventing a new label.
 - For charts/diagrams in posts, use Mermaid by default.
 - For line breaks in post content, use HTML `<br>` instead of `\n`.
 - When bolding Korean text, separate any trailing particle with a space (for example, `**스킬** 은`, `**훅** 을`) to avoid emphasis rendering issues.
 - When bolding quoted text, use `"**text**"` (quotes outside bold) not `**"text"**` (bold outside quotes) for proper rendering.
 - Use `<!--more-->` for excerpt split in longer posts.
-- Legacy variance exists (`category` singular, occasional underscore filenames). Keep existing posts stable; use current dominant pattern for new posts.
+- Legacy variance exists (`category` singular, occasional underscore filenames). Normalize touched posts to the current dominant pattern.
 
 ## Comparison Diagram Vertical Stacking Rule
 When a blog post section includes comparison diagrams (before/after, option A vs option B, old vs new architecture, generic vs specialized, etc.), **always stack them vertically**.
@@ -188,7 +202,7 @@ Delegation contract:
 1. Follow the skill workflow and quality checklist as the source of truth.
 2. Accept `youtube.com/watch`, `youtu.be`, and `youtube.com/shorts` formats.
 3. If multiple YouTube URLs are provided, keep input order and produce one unified post by default.
-4. Preserve core output guarantees: `content/post/YYYY/YYYY-MM-DD-slug.md`, required YAML frontmatter, `<!--more-->`, source URL(s) near top, and Mermaid-first structure.
+4. Preserve core output guarantees: `content/post/YYYY/MM/YYYY-MM-DD-slug.md`, required YAML frontmatter, `<!--more-->`, source URL(s) near top, and Mermaid-first structure.
 5. Enforce timestamped evidence links for transcript-backed claims (`https://youtu.be/<id>?t=<seconds>`; `&t=` or `?t=` accepted).
 6. Enforce accuracy gates from the skill: no invented details, explicit uncertainty handling, and `task build` before handoff.
 

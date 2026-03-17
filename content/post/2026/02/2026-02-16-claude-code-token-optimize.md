@@ -1,9 +1,9 @@
 ---
 title: "Claude Code 토큰 최적화 총정리: 프롬프트 습관부터 MCP 전략까지"
 date: 2026-02-16T02:05:00+09:00
+categories: [Productivity]
 draft: true
 description: "Claude Code 토큰 절약 전략을 한 번에 정리한 요약 포스팅입니다."
-categories: [AI, Development, Productivity]
 tags: [claude, claude-code, token, prompt, mcp, optimization]
 ---
 

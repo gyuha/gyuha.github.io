@@ -1,10 +1,8 @@
 ---
 title: "프롬프트 한 줄로 50분 AI 애니메이션 뽑는 매직 라이트 완전 정복"
 date: 2026-03-13T20:00:00+09:00
+categories: [Automation]
 draft: false
-categories:
-  - AI
-  - 영상 제작
 tags:
   - AI Animation
   - Magic Light

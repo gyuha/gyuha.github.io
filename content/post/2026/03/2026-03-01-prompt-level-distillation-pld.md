@@ -1,10 +1,8 @@
 ---
 title: "Prompt-Level Distillation(PLD): 미세튜닝 없이 추론 성능을 끌어올리는 비파라메트릭 접근"
 date: 2026-03-01T05:20:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - LLM
 tags:
   - Prompt Engineering
   - Distillation

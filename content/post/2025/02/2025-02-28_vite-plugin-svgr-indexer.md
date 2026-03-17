@@ -1,8 +1,8 @@
 ---
 title: "SVG 아이콘의 인덱스 파일을 생성하는 Vite 플러그인"
 date: 2025-02-28T09:15:19+09:00
+categories: [Web]
 draft: true
-categories: [React]
 tags: [svg, react, typescript, vite]
 ---
 

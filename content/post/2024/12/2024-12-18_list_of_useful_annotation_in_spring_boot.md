@@ -1,8 +1,8 @@
 ---
 title: "Spring Boot에서 자주 사용되는 애노테이션"
 date: 2024-12-18T10:04:00+09:00
+categories: [Engineering]
 draft: true
-categories: ["Spring"]
 tags: ["annotation", "spring"]
 ---
 

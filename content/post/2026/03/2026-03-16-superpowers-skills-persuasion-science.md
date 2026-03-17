@@ -1,10 +1,8 @@
 ---
 title: "Superpowers: 스킬(Skills)이라는 추상화와 설득의 과학"
 date: 2026-03-16T15:45:47+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
 tags:
   - Claude Code
   - Agents

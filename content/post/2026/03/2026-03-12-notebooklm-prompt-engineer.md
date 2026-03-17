@@ -1,9 +1,8 @@
 ---
 title: "NotebookLM으로 프롬프트 엔지니어링 자동화 시스템 구축하기"
 date: 2026-03-12T10:00:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
 tags:
   - NotebookLM
   - Prompt Engineering

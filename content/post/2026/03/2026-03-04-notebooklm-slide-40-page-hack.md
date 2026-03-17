@@ -1,11 +1,9 @@
 ---
 title: "NotebookLM 슬라이드 15장 제한 뚫기: PPT 40장 무한 생성 3단계 해킹법"
 date: 2026-03-04T20:00:00+09:00
+categories: [Automation]
 draft: false
 description: "NotebookLM의 슬라이드 15~20장 제한을 우회하여 40장 이상의 프레젠테이션을 만드는 3단계 해킹법을 정리합니다. 디자인 프롬프트 추출, 마스터 대본 생성, 코드형 명령어를 활용한 실전 워크플로우를 다룹니다."
-categories:
-  - AI
-  - Productivity
 tags:
   - notebooklm
   - google

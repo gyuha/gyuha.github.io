@@ -1,10 +1,8 @@
 ---
 title: "개발자라면 다 아는 AI 보안 상식 7가지"
 date: 2026-03-04
+categories: [Infrastructure]
 draft: false
-categories:
-  - security
-  - ai
 tags:
   - ai-security
   - api-key

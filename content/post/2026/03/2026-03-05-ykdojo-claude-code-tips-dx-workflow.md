@@ -1,9 +1,9 @@
 ---
 title: "ykdojo/claude-code-tips 실전 운영 가이드: 46개 팁(0-45)을 워크플로우로 엮기"
 date: 2026-03-05T22:10:00+09:00
+categories: [Productivity]
 draft: false
 description: "ykdojo/claude-code-tips(46개 팁)을 단순 나열이 아니라 측정 - 컨텍스트 - 검증 - 격리 - 패키징 관점의 운영 워크플로우로 재구성합니다. status line 스크립트, handoff/half-clone, dx 플러그인, setup.sh까지 포함합니다."
-categories: [AI, Development, Productivity]
 tags: [claude-code, tips, workflow, context, statusline, dx-plugin, automation, tmux, github-cli, testing, containers, mermaid]
 ---
 

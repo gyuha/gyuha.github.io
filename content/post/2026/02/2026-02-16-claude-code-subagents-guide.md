@@ -1,9 +1,9 @@
 ---
 title: "Claude Code Subagent 만들기: 실무에서 바로 쓰는 설계/구현 가이드"
 date: 2026-02-16T01:40:00+09:00
+categories: [AI]
 draft: true
 description: "Claude Code Subagent를 직접 만들고 운영하는 방법을 공식 문서 기준으로 정리하고, 블로그 자동화 사례를 통해 Agent/Skill 분리, 권한 설계, 병렬 실행 패턴까지 설명합니다."
-categories: [AI, Development, Productivity]
 tags: [claude, claude-code, subagent, multi-agent, automation, agent-sdk]
 ---
 

@@ -1,10 +1,8 @@
 ---
 title: "GSD (Get Shit Done) — AI 코딩 에이전트를 위한 컨텍스트 엔지니어링 & 스펙 기반 개발 시스템 완전 가이드"
 date: 2026-03-10T00:00:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
 tags:
   - AI
   - Claude Code

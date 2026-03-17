@@ -1,10 +1,8 @@
 ---
 title: "클로드 코드(Claude Code) 200% 활용법: 앤스트로픽 총책임자 보리스의 팁과 실전 가이드"
 date: 2026-02-26T10:00:00+09:00
+categories: [Productivity]
 draft: false
-categories:
-  - AI
-  - Development
 tags:
   - Claude Code
   - Anthropic

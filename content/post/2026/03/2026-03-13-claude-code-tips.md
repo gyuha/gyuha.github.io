@@ -1,8 +1,8 @@
 ---
 title: "Claude Code 45가지 꿀팁 정리"
 date: 2026-03-13
+categories: [Productivity]
 draft: false
-categories: [dev, ai]
 tags: [claude, ai, productivity, tips]
 ---
 

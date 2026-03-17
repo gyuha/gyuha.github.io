@@ -1,10 +1,8 @@
 ---
 title: "에이전트 엔지니어링 패턴 - Simon Willison의 코딩 에이전트 활용 가이드"
 date: 2026-03-07T10:00:00+09:00
+categories: [Engineering]
 draft: false
-categories:
-  - AI
-  - 개발
 tags:
   - coding-agents
   - claude-code

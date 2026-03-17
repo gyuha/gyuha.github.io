@@ -1,10 +1,10 @@
 ---
 title: "Anthropic 2026 Agentic Coding Trends Report: AI가 바꾸는 개발의 미래"
 date: 2026-03-05T08:30:00+09:00
+categories: [Insights]
 draft: false
 description: "Anthropic이 2026년 2월에 공개한 2026 Agentic Coding Trends Report를 소개합니다. AI가 단순히 코딩을 돕는 도구를 넘어, 개발 프로세스 자체를 근본적으로 변화시키고 있다는 내용을 정리했습니다."
 tags: [AI, AgenticCoding, Claude, Anthropic, 개발트렌드, SDLC]
-categories: [기술동향]
 ---
 
 ## 요약

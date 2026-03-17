@@ -1,10 +1,8 @@
 ---
 title: "OpenAI의 PostgreSQL 스케일링: 8억 ChatGPT 사용자를 지탱하는 데이터베이스 전략"
 date: 2026-03-08T11:00:00+09:00
+categories: [Data]
 draft: false
-categories:
-  - Database
-  - Infrastructure
 tags:
   - PostgreSQL
   - OpenAI

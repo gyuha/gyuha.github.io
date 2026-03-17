@@ -1,11 +1,8 @@
 ---
 title: "PM Skills Marketplace: Claude를 위한 100+ 제품 관리 스킬 모음"
 date: 2026-03-12T10:00:00+09:00
+categories: [Product]
 draft: false
-categories:
-  - AI
-  - Product Management
-  - Tools
 tags:
   - Claude
   - Product Management

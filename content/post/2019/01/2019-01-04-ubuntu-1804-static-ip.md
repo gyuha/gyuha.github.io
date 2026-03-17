@@ -1,8 +1,8 @@
 ---
 title: "Ubuntu 18.04에서 netplan을 사용한 static ip 설정"
 date: 2019-01-04T10:30:30+09:00
+categories: [Infrastructure]
 draft: true
-categories: [system]
 tags: [ubuntu,setting]
 ---
 

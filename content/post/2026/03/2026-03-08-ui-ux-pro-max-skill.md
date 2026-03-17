@@ -1,9 +1,8 @@
 ---
 title: "UI UX Pro Max Skill: AI 기반 디자인 시스템 생성 도구 완벽 가이드"
 date: 2026-03-08T17:00:00+09:00
+categories: [Product]
 draft: false
-categories:
-  - Development
 tags:
   - AI
   - UI/UX

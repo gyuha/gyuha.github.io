@@ -1,10 +1,8 @@
 ---
 title: "Claude Code 핵심 기능 활용 가이드"
 date: 2026-03-06T10:00:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
 tags:
   - claude-code
   - ai-coding

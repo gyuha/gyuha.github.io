@@ -1,9 +1,9 @@
 ---
 title: "개발자가 AI를 길들이는 6개월 시스템: Hook·Skill·품질게이트로 재현성 높이기"
 date: 2026-02-21T18:40:00+09:00
+categories: [AI]
 draft: false
 description: "메이커 에반 영상(https://www.youtube.com/watch?v=7vihh_G_434)을 바탕으로, AI가 중간에 맥락을 잃는 문제를 줄이기 위해 Hook 제동 장치, Skill 분업 구조, 자동 품질게이트를 결합한 운영 체계를 실무 관점에서 정리합니다."
-categories: [AI, Engineering]
 tags: [hooks, skills, automation, quality-gate]
 ---
 

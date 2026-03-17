@@ -1,11 +1,8 @@
 ---
 title: "AI는 왜 똑똑한데 일관되지 않을까: 폴더형 스킬이 팀 전문성을 만드는 방식"
 date: 2026-03-11T09:30:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
-  - Automation
 tags:
   - AI Skills
   - Anthropic

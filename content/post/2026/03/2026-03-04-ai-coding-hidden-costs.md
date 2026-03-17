@@ -1,10 +1,8 @@
 ---
 title: "AI 코딩의 숨은 비용: 당신의 뇌가 변하고 있다"
 date: 2026-03-04T10:00:00+09:00
+categories: [Insights]
 draft: false
-categories:
-  - AI
-  - 개발문화
 tags:
   - AI코딩
   - 인지부채

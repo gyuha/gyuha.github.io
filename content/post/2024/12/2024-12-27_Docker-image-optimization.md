@@ -1,8 +1,8 @@
 ---
 title: "Docker 이미지 최적화: 더 빠른 배포를 위한 크기 줄이기"
 date: 2024-12-27T22:00:06+09:00
+categories: [Infrastructure]
 draft: true
-categories: [system]
 tags: [docker, "docker compose", "ci/cd"]
 ---
 

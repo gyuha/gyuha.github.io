@@ -1,11 +1,8 @@
 ---
 title: "Mem0 기능 정리와 실전 활용: YouTube Shorts 요약부터 멀티테넌트 메모리 설계까지"
 date: 2026-02-24T21:35:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
-  - Architecture
 tags:
   - Mem0
   - AI Agent

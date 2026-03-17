@@ -1,11 +1,8 @@
 ---
 title: "Claude Code Worktree 병렬 실행 가이드: 충돌 없이 여러 세션 운영하기"
 date: 2026-02-22T23:15:00+09:00
+categories: [Developer Tools]
 draft: false
-categories:
-  - AI
-  - Developer Tools
-  - Productivity
 tags:
   - Claude Code
   - Git Worktree

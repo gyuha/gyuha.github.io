@@ -1,9 +1,9 @@
 ---
 title: "Claude Code CLAUDE.md 완성 가이드: 공식 문서 + 실전 패턴으로 만드는 고성능 프로젝트 메모리"
 date: 2026-02-22T19:55:00+09:00
+categories: [AI]
 draft: false
 description: "CLAUDE.md를 제대로 설계하면 코드 품질, 토큰 효율, 작업 속도가 함께 올라갑니다. Anthropic 공식 문서와 고신뢰 커뮤니티 사례를 합쳐, 계층 구조, /init 활용, 점진적 공개, 금지 규칙, 운영 체크리스트를 한 번에 정리합니다."
-categories: [AI, Development, Productivity]
 tags: [claude-code, claude-md, context-engineering, prompt-ops, workflow, memory, rules, mermaid]
 ---
 

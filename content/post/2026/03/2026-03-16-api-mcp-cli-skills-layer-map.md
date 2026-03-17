@@ -1,11 +1,8 @@
 ---
 title: "API, MCP, CLI, Skills는 대체 관계가 아니다: AI 도구를 보는 4레이어 맵"
 date: 2026-03-16T23:18:21+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
-  - Productivity
 tags:
   - API
   - MCP

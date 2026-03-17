@@ -1,8 +1,8 @@
 ---
 title: "Windows 10 subsystem Ubuntu에서 ssh 설치 하기"
 date: 2018-11-23T10:19:45+09:00
+categories: [Infrastructure]
 draft: true
-categories: [os]
 tags: [windows]
 ---
 

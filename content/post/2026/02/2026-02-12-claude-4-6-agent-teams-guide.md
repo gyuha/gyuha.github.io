@@ -1,8 +1,8 @@
 ---
 title: "Claude 4.6 Agent Teams 완전 가이드: 활성화 방법, 트리거 기법 및 5대 실전 시나리오"
 date: 2026-02-12T22:45:04+09:00
+categories: [AI]
 draft: false
-categories: [AI, Development, Productivity]
 tags: [claude, claude-code, anthropic, agent-teams, opus-4-6, collaboration]
 ---
 

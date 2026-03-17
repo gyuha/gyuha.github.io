@@ -1,11 +1,8 @@
 ---
 title: "cmux: AI 코딩 에이전트를 위한 네이티브 macOS 터미널"
 date: 2026-02-26T21:00:00+09:00
+categories: [Developer Tools]
 draft: false
-categories:
-  - Tool
-  - macOS
-  - Developer-Experience
 tags:
   - cmux
   - terminal

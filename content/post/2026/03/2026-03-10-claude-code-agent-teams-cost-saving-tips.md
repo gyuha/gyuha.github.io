@@ -1,10 +1,8 @@
 ---
 title: "Claude Code 에이전트 팀 비용 50% 줄이는 4가지 비법 정리"
 date: 2026-03-10T21:17:11+09:00
+categories: [Productivity]
 draft: false
-categories:
-  - AI
-  - Development
 tags:
   - Claude Code
   - Agent Teams

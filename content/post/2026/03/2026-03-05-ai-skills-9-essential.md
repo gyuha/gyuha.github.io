@@ -1,10 +1,8 @@
 ---
 title: "AI 스킬 9가지: 이것만 알면 내년에 도태되지 않습니다"
 date: 2026-03-05T10:00:00+09:00
+categories: [Insights]
 draft: false
-categories:
-  - AI
-  - 생산성
 tags:
   - AI
   - 생산성

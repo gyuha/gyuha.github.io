@@ -1,12 +1,9 @@
 ---
 title: "Claude Code 프로젝트 구조 가이드: CLAUDE.md, hooks, skills, docs, tools, src를 어떻게 나눌까"
 date: 2026-03-14T15:10:00+09:00
+categories: [AI]
 draft: false
 description: "Claude Code 프로젝트를 운영할 때 `CLAUDE.md`, `.claude/hooks`, `.claude/skills`, `docs`, `tools`, `src/**/CLAUDE.md`를 어떻게 나누면 좋은지, 폴더별 역할과 샘플 예제를 함께 정리합니다."
-categories:
-  - AI
-  - Development
-  - Engineering
 tags:
   - Claude Code
   - CLAUDE.md

@@ -1,9 +1,9 @@
 ---
 title: "LLM에서 RAG vs CAG 비교: 언제 검색하고, 언제 캐시할까?"
 date: 2026-02-18T00:25:00+09:00
+categories: [AI]
 draft: false
 description: "RAG(Retrieval-Augmented Generation)와 CAG(Cache-Augmented Generation)의 구조, 장단점, 비용·지연시간 트레이드오프를 비교하고 Mermaid 흐름도로 선택 기준을 정리합니다."
-categories: [LLM, AI]
 tags: [rag, cag, retrieval-augmented-generation, cache-augmented-generation, llm, prompt-caching, architecture]
 ---
 

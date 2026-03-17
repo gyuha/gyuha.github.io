@@ -1,9 +1,9 @@
 ---
 title: "하니스 엔지니어링이 AI 성과를 가른다: 컨텍스트를 넘어 환경을 설계하는 법"
 date: 2026-02-18T20:55:00+09:00
+categories: [AI]
 draft: false
 description: "YouTube 영상(https://www.youtube.com/watch?v=BssPGKsP60s&t=12s)을 바탕으로, 프롬프트 엔지니어링에서 컨텍스트 엔지니어링을 거쳐 하니스 엔지니어링으로 넘어가는 흐름과 실무 적용 포인트를 정리했습니다."
-categories: [AI, Development, Productivity]
 tags: [harness-engineering, context-engineering, ai-agent, mcp, claude, workflow, mermaid]
 ---
 

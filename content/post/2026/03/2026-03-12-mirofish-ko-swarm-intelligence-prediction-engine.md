@@ -1,11 +1,8 @@
 ---
 title: "MiroFish-Ko는 어떻게 미래를 리허설하나: 군집 지능 예측 엔진 구조 읽기"
 date: 2026-03-12T08:30:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
-  - Simulation
 tags:
   - MiroFish
   - Swarm Intelligence

@@ -1,9 +1,9 @@
 ---
 title: "tmux 사용법 완전 정리: 세션 관리부터 생산성 꿀팁까지"
 date: 2026-02-14T08:35:00+09:00
+categories: [Developer Tools]
 draft: true
 description: "tmux의 기본 사용법(세션/윈도우/패널)부터 실무에서 바로 쓰는 고급 팁, 플러그인(TPM/Resurrect/Continuum), 클립보드 설정까지 한 번에 정리합니다."
-categories: [System, Tooling, Productivity]
 tags: [tmux, terminal, linux, productivity, devtools]
 ---
 

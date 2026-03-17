@@ -1,9 +1,9 @@
 ---
 title: "구글 WebMCP 핵심 정리: 웹사이트를 에이전트 친화적으로 바꾸는 가장 현실적인 방법"
 date: 2026-02-21T22:00:00+09:00
+categories: [Web]
 draft: false
 description: "YouTube 영상(https://www.youtube.com/watch?v=8zEh7eYz4Pc)을 바탕으로 WebMCP의 문제의식, 선언형/명령형 구현, 운영 체크포인트를 실무 관점으로 정리합니다."
-categories: [AI, Web]
 tags: [webmcp, mcp, chrome, ai-agent, agentic-web, react, automation, mermaid]
 ---
 

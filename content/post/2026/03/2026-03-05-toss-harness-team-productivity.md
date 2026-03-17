@@ -1,9 +1,8 @@
 ---
 title: "Software 3.0 시대, Harness를 통한 조직 생산성 저점 높이기"
 date: 2026-03-05
+categories: [Insights]
 draft: false
-categories:
-  - AI
 tags:
   - LLM
   - Claude Code

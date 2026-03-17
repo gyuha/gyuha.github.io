@@ -1,10 +1,8 @@
 ---
 title: "낯선 사람에게 말 걸기의 비밀: 왜 우리는 모르는 사람과 대화해야 하는가"
 date: 2026-03-04T10:00:00+09:00
+categories: [Insights]
 draft: false
-categories:
-  - 사회
-  - 심리
 tags:
   - 소통
   - 사회적 불안

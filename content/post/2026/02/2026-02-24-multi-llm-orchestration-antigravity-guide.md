@@ -1,11 +1,8 @@
 ---
 title: "Antigravity 기반 멀티 LLM 오케스트레이션: GPT·Claude Code·Codex를 한 워크플로우로 묶는 방법"
 date: 2026-02-24T20:20:00+09:00
+categories: [Automation]
 draft: false
-categories:
-  - AI
-  - Development
-  - Automation
 tags:
   - Multi Agent
   - Antigravity

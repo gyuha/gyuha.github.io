@@ -1,8 +1,8 @@
 ---
 title: "Claude Code 완벽 활용 가이드: 31가지 필수 꿀팁"
 date: 2026-01-01T22:50:07+09:00
+categories: [Productivity]
 draft: true
-categories: [AI, Tooling, Productivity]
 tags: [claude, claude-code, anthropic, productivity, prompts, automation, tips]
 ---
 

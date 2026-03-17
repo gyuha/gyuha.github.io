@@ -1,9 +1,9 @@
 ---
 title: "클로드 코드, 이렇게 쓰면 생산성이 벌어진다: 30일 실전에서 뽑은 핵심 원칙"
 date: 2026-02-17T23:40:00+09:00
+categories: [Productivity]
 draft: false
 description: "메이커 에반 영상(클로드 이렇게 쓰면 100배 차이 납니다)을 바탕으로, Claude Code를 시스템처럼 운용하기 위한 설정/기억/훅/프로젝트 구조 원칙을 실무 관점에서 정리했습니다."
-categories: [AI, Development, Productivity]
 tags: [claude, claude-code, prompt, hooks, workflow, monorepo, productivity]
 ---
 

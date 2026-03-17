@@ -1,10 +1,8 @@
 ---
 title: "Claude Code Superpowers 가이드: 질문, 계획, TDD, 서브에이전트를 자동 흐름으로 묶는 법"
 date: 2026-03-16T15:02:56+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
 tags:
   - Claude Code
   - Superpowers

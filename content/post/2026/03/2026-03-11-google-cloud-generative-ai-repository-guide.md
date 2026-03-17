@@ -1,10 +1,8 @@
 ---
 title: "Google Cloud Generative AI 저장소 완벽 가이드"
 date: 2026-03-11T20:30:00+09:00
+categories: [Infrastructure]
 draft: false
-categories:
-  - AI
-  - Cloud
 tags:
   - Google Cloud
   - Vertex AI

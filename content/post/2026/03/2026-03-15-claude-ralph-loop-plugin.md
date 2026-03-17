@@ -1,10 +1,8 @@
 ---
 title: "Claude가 알아서 완벽하게 일 처리하게 만드는 법 - Ralph Loop"
 date: 2026-03-15T10:00:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Claude
 tags:
   - Claude
   - Ralph Loop

@@ -1,8 +1,8 @@
 ---
 title: "효율적인 Git 커밋 전략: 작업을 논리적 단위로 나누기"
 date: 2026-01-01T23:32:27+09:00
+categories: [Engineering]
 draft: false
-categories: ["개발"]
 tags: ["Git", "버전관리", "커밋전략", "개발워크플로우"]
 ---
 

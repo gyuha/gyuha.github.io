@@ -1,11 +1,8 @@
 ---
 title: "Claude Code Infrastructure Showcase 실전 적용 가이드: 자동 스킬 활성화를 안전하게 이식하는 법"
 date: 2026-02-23T21:45:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
-  - Engineering
 tags:
   - Claude Code
   - Skills

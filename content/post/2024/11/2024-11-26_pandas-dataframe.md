@@ -1,8 +1,8 @@
 ---
 title: "Pandas의 DataFrame에서 자주 사용되는 유용한 메서드들 소개"
 date: 2024-11-26T08:18:54+09:00
+categories: [Data]
 draft: true
-categoies: ["Python"]
 tags: ["pandas", "python"]
 ---
 

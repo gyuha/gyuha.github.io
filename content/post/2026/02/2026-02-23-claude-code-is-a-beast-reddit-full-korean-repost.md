@@ -1,11 +1,8 @@
 ---
 title: "Claude Code is a Beast 레딧 글 완전 정리: 6개월 하드코어 운영 팁 한국어 재포스팅"
 date: 2026-02-23T21:35:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
-  - Productivity
 tags:
   - claude-code
   - agents

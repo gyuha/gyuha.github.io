@@ -1,10 +1,8 @@
 ---
 title: "GSD - AI 코드 개발을 위한 컨텍스트 엔지니어링 및 스펙 기반 개발 시스템"
 date: 2026-03-13T17:00:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - 개발도구
 tags:
   - Claude Code
   - Meta Prompting

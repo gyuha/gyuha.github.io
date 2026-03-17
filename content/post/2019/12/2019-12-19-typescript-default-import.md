@@ -1,8 +1,8 @@
 ---
 title: "Typescript에서 default import 개선.."
 date: 2019-12-19T21:32:11+09:00
+categories: [Web]
 draft: true
-categories: [javascript]
 tags: [javascript,typescript]
 ---
 

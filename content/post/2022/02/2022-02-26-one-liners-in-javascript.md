@@ -1,8 +1,8 @@
 ---
 title: "유용한 한 줄 자바스크립트"
 date: 2022-02-26T10:17:42+09:00
+categories: [Web]
 draft: true
-categories: [javascript]
 tags: [javascript]
 ---
 

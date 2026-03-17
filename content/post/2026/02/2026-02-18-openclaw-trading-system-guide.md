@@ -1,9 +1,9 @@
 ---
 title: "OpenClaw Trading 실전 구축기: AI 자동매매 시스템을 데이터-전략-분석-집행으로 운영하는 방법"
 date: 2026-02-18T00:45:00+09:00
+categories: [Automation]
 draft: false
 description: "OpenClaw Trading 가이드 영상과 문서를 바탕으로, 키움 REST API·OpenDART·Supabase를 연결해 4계층 자동매매 시스템을 구축하고 운영할 때 필요한 절차와 리스크 관리 포인트를 정리했습니다."
-categories: [AI, Trading, Automation]
 tags: [openclaw, trading, kiwoom, opendart, supabase, cron, heartbeat, webhook, ai-agent]
 ---
 

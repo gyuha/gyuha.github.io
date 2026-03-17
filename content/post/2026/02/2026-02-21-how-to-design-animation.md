@@ -1,9 +1,9 @@
 ---
 title: "애니메이션 설계는 감각이 아니라 그래프다: 실무에 바로 쓰는 분해·조합 프레임워크"
 date: 2026-02-21T08:05:00+09:00
+categories: [Product]
 draft: false
 description: "kciter의 '애니메이션을 설계하는 방법' 글을 바탕으로, 이징·지수적 접근·스프링·상태 전환을 어떻게 설계 관점으로 연결할지 실무용으로 정리합니다."
-categories: [Frontend, Animation]
 tags: [animation, easing, spring, motion-design, interaction, frontend, math, mermaid]
 ---
 

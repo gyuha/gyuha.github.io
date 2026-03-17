@@ -1,11 +1,8 @@
 ---
 title: "AI 코딩 시대, DDD를 모르면 왜 유지보수가 무너지는가"
 date: 2026-02-23T01:55:00+09:00
+categories: [Engineering]
 draft: false
-categories:
-  - AI
-  - Software Architecture
-  - Development
 tags:
   - DDD
   - Domain-Driven Design

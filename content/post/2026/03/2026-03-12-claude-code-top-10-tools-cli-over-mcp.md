@@ -1,10 +1,8 @@
 ---
 title: "Claude Code 생산성을 높이는 10가지 도구: MCP보다 CLI, 그리고 스킬 조합"
 date: 2026-03-12T19:30:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Claude Code
 tags:
   - Claude Code
   - CLI

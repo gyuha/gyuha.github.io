@@ -1,11 +1,8 @@
 ---
 title: "Paperclip: AI 직원으로 구동되는 자율 회사 오픈소스 오케스트레이션"
 date: 2026-03-13T17:00:00+09:00
+categories: [Automation]
 draft: false
-categories:
-  - AI
-  - DevOps
-  - SaaS
 tags:
   - AI
   - Orchestration

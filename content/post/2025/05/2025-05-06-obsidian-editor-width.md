@@ -1,9 +1,8 @@
 ---
 title: 옵시디언에서 편집창 폭 넓히기
 date: 2025-05-06T21:35:29+09:00
+categories: [Productivity]
 draft: true
-categories:
-  - utillity
 tags:
   - obsidian
   - application

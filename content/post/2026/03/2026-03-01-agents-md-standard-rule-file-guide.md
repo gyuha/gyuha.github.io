@@ -1,11 +1,8 @@
 ---
 title: "AGENTS.md 표준 규칙 파일 운영 가이드: 분산된 에이전트 규칙을 하나로 묶는 방법"
 date: 2026-03-01T20:30:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
-  - Engineering
 tags:
   - AGENTS.md
   - Coding Agent

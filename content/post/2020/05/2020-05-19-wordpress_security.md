@@ -1,8 +1,8 @@
 ---
 title: "워드프레스 보안 설정"
 date: 2020-05-19T10:37:23+09:00
+categories: [Infrastructure]
 draft: true
-categories: [utillity]
 tags: [security,php,wordpress]
 ---
 

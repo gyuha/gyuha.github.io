@@ -1,10 +1,8 @@
 ---
 title: "Toward Expert Investment Teams: 세밀한 태스크 분해가 LLM 트레이딩 팀 성능을 끌어올리는 방식"
 date: 2026-02-28T11:55:00+09:00
+categories: [Data]
 draft: false
-categories:
-  - AI
-  - Quant Finance
 tags:
   - LLM
   - Multi-Agent

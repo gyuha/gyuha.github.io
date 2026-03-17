@@ -1,6 +1,7 @@
 ---
 title: "linux mpv 자막 번역기"
 date: 2026-01-16T22:04:30+09:00
+categories: [Productivity]
 draft: true
 description: "mpv 플레이어에서 실시간으로 자막을 번역해주는 도구를 소개합니다. Linux 환경에서 mpv와 함께 사용하여 외국어 영상 시청 시 편리한 번역 기능을 제공합니다."
 tags: ["mpv", "자막 번역", "Linux", "동영상 플레이어"]

@@ -1,10 +1,8 @@
 ---
 title: "Spark AQE, 왜 체감 성능이 크게 달라질까: 동적 쿼리 최적화 핵심 정리"
 date: 2026-02-27T21:45:00+09:00
+categories: [Data]
 draft: false
-categories:
-  - Data Engineering
-  - Spark
 tags:
   - Apache Spark
   - AQE

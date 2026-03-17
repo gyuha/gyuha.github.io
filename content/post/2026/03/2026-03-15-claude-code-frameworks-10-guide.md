@@ -1,11 +1,8 @@
 ---
 title: "Claude Code 개발 프레임워크 10선: GSD, oh-my-claudecode, Superpowers와 비슷한 시스템 총정리"
 date: 2026-03-15T12:02:48+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
-  - Productivity
 tags:
   - Claude Code
   - AI Agents

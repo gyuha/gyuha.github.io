@@ -1,10 +1,8 @@
 ---
 title: "Claude Code 9개월 실전기: 계획 주도 워크플로우가 AI 코딩의 품질을 바꾸는 이유"
 date: 2026-02-24T22:30:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
 tags:
   - Claude Code
   - AI Coding

@@ -1,10 +1,8 @@
 ---
 title: "테스트는 새로운 해자인가: AI 시대 오픈소스 경쟁력의 재정의"
 date: 2026-03-02T11:50:00+09:00
+categories: [Insights]
 draft: false
-categories:
-  - AI
-  - Open Source
 tags:
   - Testing
   - API Contracts

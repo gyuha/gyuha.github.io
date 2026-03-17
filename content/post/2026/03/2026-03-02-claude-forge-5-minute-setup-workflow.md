@@ -1,11 +1,8 @@
 ---
 title: "Claude Forge 5분 세팅 가이드: CLAUDE.md, 에이전트, 훅으로 Claude Code를 운영 환경으로 바꾸는 방법"
 date: 2026-03-02T21:05:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
-  - Workflow
 tags:
   - Claude Code
   - Claude Forge

@@ -1,10 +1,8 @@
 ---
 title: "2026 웹 개발 전환점: Frameworks Don't Matter Anymore의 핵심 정리"
 date: 2026-02-28T11:40:00+09:00
+categories: [Web]
 draft: false
-categories:
-  - Web Development
-  - JavaScript
 tags:
   - React
   - Framework

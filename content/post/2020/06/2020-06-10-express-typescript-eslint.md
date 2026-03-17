@@ -1,8 +1,8 @@
 ---
 title: "Typescript를 사용한 Express 프로젝트 설정하기(with Eslint)"
 date: 2020-06-10T23:36:41+09:00
+categories: [Web]
 draft: true
-categories: [typescript]
 tags: [express,typescript,node]
 ---
 

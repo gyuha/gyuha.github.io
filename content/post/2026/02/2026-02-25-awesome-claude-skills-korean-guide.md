@@ -1,9 +1,9 @@
 ---
 title: "Awesome Claude Skills 생태계 완전 가이드 — 2026년 스킬·훅·오케스트레이터 카탈로그"
 date: 2026-02-25T17:30:00+09:00
+categories: [AI]
 draft: false
 description: "Claude Code Skills 생태계의 모든 것 — Anthropic 공식 17개 스킬부터 Microsoft 129개, Trail of Bits 보안 22개, 커뮤니티 스킬·훅·오케스트레이터·CLAUDE.md 표준화까지 총망라한 한국어 카탈로그"
-categories: [AI, Engineering]
 tags: [claude, skills, ecosystem, hooks, orchestrator, mermaid, trail-of-bits, claude-md]
 ---
 

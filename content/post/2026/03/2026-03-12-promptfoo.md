@@ -1,11 +1,8 @@
 ---
 title: "Promptfoo: LLM 평가와 레드팀을 하나의 CLI로 운영하는 방법"
 date: 2026-03-12T18:10:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
-  - Security
 tags:
   - promptfoo
   - llm-evals

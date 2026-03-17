@@ -1,11 +1,8 @@
 ---
 title: "Claude Code 기본 설정의 10% 함정: CLAUDE.md, 에이전트 팀, 보안 훅, Forge로 작업 시스템 만드는 법"
 date: 2026-03-02T23:10:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
-  - Productivity
 tags:
   - claude-code
   - claude-md

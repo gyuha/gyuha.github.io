@@ -1,10 +1,8 @@
 ---
 title: "2026년 데이터 엔지니어링 5대 트렌드: 1,101명 실무자 설문이 말하는 현실"
 date: 2026-02-24T22:30:00+09:00
+categories: [Data]
 draft: false
-categories:
-  - Data Engineering
-  - AI
 tags:
   - Data Engineering
   - Data Modeling

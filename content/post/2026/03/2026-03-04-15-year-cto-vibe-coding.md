@@ -1,10 +1,8 @@
 ---
 title: "15년차 CTO가 바이브 코딩하는 방법: 증강형 코딩과 tdd-go-loop 워크플로우"
 date: 2026-01-09T10:00:00+09:00
+categories: [Insights]
 draft: false
-categories:
-  - AI
-  - 개발문화
 tags:
   - AI코딩
   - 바이브코딩

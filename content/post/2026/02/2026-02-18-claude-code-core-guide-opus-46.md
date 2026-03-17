@@ -1,9 +1,9 @@
 ---
 title: "Claude Code 핵심 가이드: 설치부터 Agent Team까지 (2026년 2월, Opus 4.6 기준)"
 date: 2026-02-18T23:29:00+09:00
+categories: [AI]
 draft: false
 description: "Claude Code를 처음 설정하는 단계부터 실전 워크플로우, Skill/MCP/Sub Agent/Agent Team 확장까지 한 번에 정리한 실전형 요약 가이드입니다."
-categories: [AI, Development, Productivity]
 tags: [claude, claude-code, opus-4-6, workflow, skill, mcp, sub-agent, agent-team]
 ---
 

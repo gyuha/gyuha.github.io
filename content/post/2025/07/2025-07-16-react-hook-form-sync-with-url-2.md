@@ -1,9 +1,8 @@
 ---
 title: Next.js에서 react-hook-form과 URL을 우아하게 동기화하는 법 2 🚀
 date: 2025-07-16T21:00:01+09:00
+categories: [Web]
 draft: true
-category:
-  - react
 tags:
   - next.js
   - react-hook-form

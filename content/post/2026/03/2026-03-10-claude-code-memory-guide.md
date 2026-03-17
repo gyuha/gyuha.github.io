@@ -1,11 +1,8 @@
 ---
 title: "Claude Code Memory 완전 가이드: CLAUDE.md, .claude/rules, Auto Memory를 어떻게 같이 써야 하나"
 date: 2026-03-10T18:30:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
-  - Engineering
 tags:
   - claude-code
   - memory

@@ -1,9 +1,9 @@
 ---
 title: "좋은 CLAUDE.md 작성법: 지시를 줄이고 성능을 올리는 실전 가이드"
 date: 2026-02-22T18:35:00+09:00
+categories: [AI]
 draft: false
 description: "HumanLayer의 Writing a good CLAUDE.md 글을 바탕으로, 왜 CLAUDE.md를 짧고 보편적으로 유지해야 하는지와 점진적 공개(Progressive Disclosure), 검증 자동화, 운영 체크리스트를 한국어로 정리했습니다."
-categories: [AI, Development, Productivity]
 tags: [claude-md, agents-md, context-engineering, coding-agent, instruction-design, progressive-disclosure]
 ---
 

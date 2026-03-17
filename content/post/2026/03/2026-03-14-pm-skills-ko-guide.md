@@ -1,11 +1,8 @@
 ---
 title: "pm-skills-ko 분석: 한국어 PM 스킬 마켓플레이스를 실제로 쓰기 좋은 구조로 옮긴 방식"
 date: 2026-03-14T12:00:00+09:00
+categories: [Product]
 draft: false
-categories:
-  - AI
-  - Product Management
-  - Tools
 tags:
   - pm-skills
   - claude

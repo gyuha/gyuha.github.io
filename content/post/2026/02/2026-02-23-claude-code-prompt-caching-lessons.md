@@ -1,11 +1,8 @@
 ---
 title: "Claude Code 프롬프트 캐싱 실전 레슨: 비용·지연·운영 안정성을 같이 잡는 법"
 date: 2026-02-23T01:20:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
-  - Engineering
 tags:
   - Claude Code
   - Prompt Caching

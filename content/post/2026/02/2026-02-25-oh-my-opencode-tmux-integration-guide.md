@@ -1,11 +1,8 @@
 ---
 title: "oh-my-opencode-slim Tmux 통합 가이드: AI 에이전트가 일하는 모습을 실시간으로 보는 법"
 date: 2026-02-25T22:20:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
-  - Automation
 tags:
   - Multi Agent
   - OpenCode

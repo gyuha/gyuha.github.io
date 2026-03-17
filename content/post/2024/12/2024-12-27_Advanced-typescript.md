@@ -1,8 +1,8 @@
 ---
 title: "TypeScript Interface와 Type"
 date: 2024-12-27T22:00:06+09:00
+categories: [Web]
 draft: true
-categories: [typescript]
 tags: [typescript]
 ---
 

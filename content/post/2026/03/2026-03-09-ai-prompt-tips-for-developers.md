@@ -1,10 +1,8 @@
 ---
 title: "개발자를 위한 AI 프롬프트 작성 5가지 원칙"
 date: 2026-03-09T17:00:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
 tags:
   - AI
   - Prompt Engineering

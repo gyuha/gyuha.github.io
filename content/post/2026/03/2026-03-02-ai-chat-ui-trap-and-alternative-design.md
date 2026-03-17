@@ -1,10 +1,8 @@
 ---
 title: "AI 서비스 만들었는데 왜 아무도 안 쓸까: 채팅 UI 함정과 대안 설계"
 date: 2026-03-02T20:55:00+09:00
+categories: [Product]
 draft: false
-categories:
-  - AI
-  - Product Design
 tags:
   - Chat UI
   - AI Product

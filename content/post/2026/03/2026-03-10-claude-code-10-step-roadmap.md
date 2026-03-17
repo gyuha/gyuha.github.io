@@ -1,10 +1,8 @@
 ---
 title: "Claude Code 왜 나만 느릴까: 10단계 성장 로드맵 정리"
 date: 2026-03-10T21:17:11+09:00
+categories: [Productivity]
 draft: false
-categories:
-  - AI
-  - Development
 tags:
   - Claude Code
   - Workflow

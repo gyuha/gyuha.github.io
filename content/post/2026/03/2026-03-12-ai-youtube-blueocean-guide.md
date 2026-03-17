@@ -1,11 +1,8 @@
 ---
 title: "2026년 AI 유튜브 블루오션: 완벽한 파이프라인과 자동화 도구"
 date: 2026-03-12T17:00:00+09:00
+categories: [Automation]
 draft: false
-categories:
-  - AI
-  - YouTube
-  - 자동화
 tags:
   - AI
   - YouTube

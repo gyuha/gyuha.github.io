@@ -1,10 +1,8 @@
 ---
 title: "하니스 완전 공개 — Claude Code AI를 내 전담 직원으로 만드는 법"
 date: 2026-03-10T21:15:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
 tags:
   - claude-code
   - harness

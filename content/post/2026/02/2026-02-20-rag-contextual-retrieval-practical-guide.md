@@ -1,9 +1,9 @@
 ---
 title: "아직도 RAG 쓰세요? 단순 RAG는 줄이고, Contextual Retrieval로 올리는 실전 가이드"
 date: 2026-02-20T22:00:00+09:00
+categories: [AI]
 draft: false
 description: "Maker Evan 영상(https://www.youtube.com/watch?v=2jcOpJnHKBw)을 바탕으로, 단순 RAG의 한계와 하이브리드 검색·맥락 주석·요약 검색+원문 전달 전략을 실무 관점으로 정리합니다."
-categories: [AI, LLM]
 tags: [rag, contextual-retrieval, hybrid-search, long-context, anthropic, retrieval, llm, mermaid]
 ---
 

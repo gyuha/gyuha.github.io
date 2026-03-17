@@ -1,10 +1,8 @@
 ---
 title: "2026년, 그냥 Postgres 쓰세요 — 7개 특화 DB를 대체하는 PostgreSQL 확장 생태계"
 date: 2026-03-08T14:00:00+09:00
+categories: [Data]
 draft: false
-categories:
-  - Database
-  - Infrastructure
 tags:
   - PostgreSQL
   - pgvector

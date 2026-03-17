@@ -1,10 +1,8 @@
 ---
 title: "찐 개발자 바이브 코딩 워크플로우: Claude Code를 사람 주도 루프로 운용하는 방법"
 date: 2026-02-28T23:10:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
 tags:
   - claude-code
   - vibe-coding

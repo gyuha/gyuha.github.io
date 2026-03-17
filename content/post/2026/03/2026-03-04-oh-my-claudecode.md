@@ -1,10 +1,8 @@
 ---
 title: "oh-my-claudecode: Claude Code를 위한 멀티 에이전트 오케스트레이션 플러그인"
 date: 2026-03-04T15:00:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
 tags:
   - claude-code
   - multi-agent

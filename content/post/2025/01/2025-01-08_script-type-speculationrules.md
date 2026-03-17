@@ -1,8 +1,8 @@
 ---
 title: "Speculation Rules 사이트 로딩 속도 개선하기"
 date: 2025-01-08T11:13:22+09:00
+categories: [Web]
 draft: true
-categories: [web]
 tags: [html, javascript]
 ---
 

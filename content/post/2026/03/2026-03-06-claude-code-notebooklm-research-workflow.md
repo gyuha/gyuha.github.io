@@ -1,11 +1,9 @@
 ---
 title: "Claude Code + NotebookLM: 무료 리서치 스택 구축 가이드"
 date: 2026-03-06T10:00:00+09:00
+categories: [AI]
 draft: false
 description: "Claude Code와 Google NotebookLM을 결합하여 YouTube 영상 자동 수집, RAG 기반 분석, 인포그래픽 생성까지 한 번에 처리하는 무료 리서치 워크플로우를 구축하는 방법을 정리합니다."
-categories:
-  - AI
-  - Productivity
 tags:
   - claude-code
   - notebooklm

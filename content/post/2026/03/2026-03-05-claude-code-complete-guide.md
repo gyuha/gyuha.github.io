@@ -1,10 +1,8 @@
 ---
 title: "Claude Code 완전 가이드: 바이브 코딩에서 에이전틱 엔지니어링까지"
 date: 2026-03-05T10:00:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
 tags:
   - Claude Code
   - Vibe Coding

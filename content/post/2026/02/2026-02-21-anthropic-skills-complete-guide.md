@@ -1,9 +1,9 @@
 ---
 title: "Anthropic Skill 가이드 전체 재구성: 설계, 테스트, 배포, 트러블슈팅까지"
 date: 2026-02-21T17:30:00+09:00
+categories: [AI]
 draft: false
 description: "The Complete Guide to Building Skills for Claude(PDF) 전 장(Introduction~Reference C)을 한국어로 재구성해, Skill 구조·MCP 연계·테스트·배포·운영 체크리스트까지 한 번에 정리합니다."
-categories: [AI, Engineering]
 tags: [anthropic, claude, skills, mcp, workflow, testing, yaml, mermaid]
 ---
 

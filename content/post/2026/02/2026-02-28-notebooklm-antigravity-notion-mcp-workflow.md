@@ -1,10 +1,8 @@
 ---
 title: "NotebookLM + Antigravity + Notion MCP 실전 자동화 워크플로우"
 date: 2026-02-28T11:30:00+09:00
+categories: [Automation]
 draft: false
-categories:
-  - AI
-  - Productivity
 tags:
   - notebooklm
   - mcp

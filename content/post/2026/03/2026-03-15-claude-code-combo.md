@@ -1,11 +1,8 @@
 ---
 title: "🚀 GSD + PM-Skills + UI-UX-Pro-Max: 최강의 바이브코딩 3종 세트 완벽 가이드"
 date: 2026-03-15T12:44:58+09:00
+categories: [Productivity]
 draft: false
-categories:
-  - AI
-  - Development
-  - Productivity
 tags:
   - Claude Code
   - AI Agents

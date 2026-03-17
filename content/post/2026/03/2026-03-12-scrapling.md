@@ -1,10 +1,8 @@
 ---
 title: "Scrapling: 적응형 웹 스크래핑 프레임워크 완전 정복"
 date: 2026-03-12T17:00:00+09:00
+categories: [Automation]
 draft: false
-categories:
-  - Development
-  - Web Scraping
 tags:
   - Python
   - Web Scraping

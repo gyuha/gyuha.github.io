@@ -1,11 +1,9 @@
 ---
 title: "NotebookLM 7가지 핵심 기술: 상위 2% 활용법 완전 정리"
 date: 2026-02-24T22:00:00+09:00
+categories: [Productivity]
 draft: false
 description: "Google NotebookLM을 제대로 활용하는 7가지 핵심 기술을 단계별로 정리합니다. 맞춤 설정, 딥 리서치, 소스 검증, 소스 필터링, 멀티모달 전략, AI 오디오 오버뷰, 시각화 자료 제작까지 실전 워크플로우를 다룹니다."
-categories:
-  - AI
-  - Productivity
 tags:
   - notebooklm
   - google

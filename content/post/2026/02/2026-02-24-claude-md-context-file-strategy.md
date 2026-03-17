@@ -1,11 +1,8 @@
 ---
 title: "CLAUDE.md 지워야 할까?: 컨텍스트 파일이 에이전트 성능을 떨어뜨리는 이유와 실무 대응"
 date: 2026-02-24T19:40:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Development
-  - Engineering
 tags:
   - Claude Code
   - CLAUDE.md

@@ -1,11 +1,8 @@
 ---
 title: "파일 업로드 최적화: 두 개의 AI로 비용 절감과 성능 향상"
 date: 2026-02-22T20:00:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - LLM
-  - Optimization
 tags:
   - AI
   - LLM

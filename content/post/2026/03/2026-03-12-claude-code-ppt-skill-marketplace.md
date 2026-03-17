@@ -1,10 +1,8 @@
 ---
 title: "클로드 코드로 PPT 만들기: 스킬 제작부터 마켓플레이스 배포까지"
 date: 2026-03-12T10:00:00+09:00
+categories: [AI]
 draft: false
-categories:
-  - AI
-  - Claude Code
 tags:
   - Claude Code
   - 스킬
