@@ -82,4 +82,4 @@ task deploy
 
 ## 사용중인 theme
 
-- [Beautiful Hugo - A port of Beautiful Jekyll Theme](https://github.com/halogenica/beautifulhugo)
+- [Hago Theme - created by GYUHA](https://github.com/gyuha/hago)
