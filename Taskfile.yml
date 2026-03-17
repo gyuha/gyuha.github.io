@@ -1,0 +1,46 @@
+version: "3"
+
+vars:
+  HUGO: hugo
+  PUBLIC_DIR: public
+
+tasks:
+  run:
+    desc: Run Hugo server with drafts
+    cmds:
+      - "{{.HUGO}} server -D --bind=0.0.0.0"
+
+  dev:
+    desc: Run Hugo server with drafts and disable fast render
+    cmds:
+      - "{{.HUGO}} server -D --bind=0.0.0.0 --disableFastRender"
+
+  build:
+    desc: Build Hugo site with drafts
+    cmds:
+      - "{{.HUGO}} -D"
+
+  clone:
+    desc: Clone GitHub Pages repository to public folder
+    cmds:
+      - rm -rf public
+      - git clone https://github.com/gyuha/gyuha.github.io.git
+      - mv gyuha.github.io public
+
+  new:
+    desc: "Create a new post (usage: task new -- my-post-title)"
+    cmds:
+      - "{{.HUGO}} new post/$(date +%Y)/$(date +%Y-%m-%d)-{{.CLI_ARGS}}.md"
+
+  deploy:
+    desc: Build and deploy to GitHub
+    cmds:
+      - 'echo -e "\033[0;32mDeploying updates to GitHub...\033[0m"'
+      - 'git pull origin master --no-rebase'
+      - 'cd {{.PUBLIC_DIR}} && git reset --hard && git clean -fdx'
+      - 'cd {{.PUBLIC_DIR}} && git checkout master && git pull'
+      - "{{.HUGO}} -D"
+      - 'cd {{.PUBLIC_DIR}} && git add . && git diff --staged --quiet || git commit -m "build: rebuild site $(date +%Y-%m-%d\ %H:%M:%S)"'
+      - 'cd {{.PUBLIC_DIR}} && git push'
+      - 'git add . && git diff --staged --quiet || git commit -m "update blog source"'
+      - 'git push'

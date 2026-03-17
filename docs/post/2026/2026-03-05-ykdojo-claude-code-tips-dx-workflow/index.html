@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'ykdojo/claude-code-tips 실전 운영 가이드: 46개 팁(0-45)을 워크플로우로 엮기'" />
+  <title>ykdojo/claude-code-tips 실전 운영 가이드: 46개 팁(0-45)을 워크플로우로 엮기  | 신규하 블로그</title>
+  <meta property="og:title" content="ykdojo/claude-code-tips 실전 운영 가이드: 46개 팁(0-45)을 워크플로우로 엮기" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-03-05"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/2026-03-05-ykdojo-claude-code-tips-dx-workflow/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="tips" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+  <meta property="og:tags" content="context" />
+  
+  <meta property="og:tags" content="statusline" />
+  
+  <meta property="og:tags" content="dx-plugin" />
+  
+  <meta property="og:tags" content="automation" />
+  
+  <meta property="og:tags" content="tmux" />
+  
+  <meta property="og:tags" content="github-cli" />
+  
+  <meta property="og:tags" content="testing" />
+  
+  <meta property="og:tags" content="containers" />
+  
+  <meta property="og:tags" content="mermaid" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/2026-03-05-ykdojo-claude-code-tips-dx-workflow/">
+          <h1>
+            ykdojo/claude-code-tips 실전 운영 가이드: 46개 팁(0-45)을 워크플로우로 엮기
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/2026-03-05-ykdojo-claude-code-tips-dx-workflow/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>ykdojo/claude-code-tips는 Claude Code를 오래 쓰면서 생기는 문제(컨텍스트 비대화, 검증 루프 부재, 위험한 자동화, 반복 설정)를 46개의 팁(0-45)과 스크립트/스킬/플러그인 형태로 정리한 저장소입니다. 단순히 &ldquo;팁을 많이 안다&rdquo; 보다 중요한 건, 팁을 시스템으로 엮어서 매번 같은 품질로 실행하는 것인데, 이 글은 그 관점(측정 - 컨텍스트 - 검증 - 격리 - 패키징)으로 재구성합니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://github.com/ykdojo/claude-code-tips">https://github.com/ykdojo/claude-code-tips</a></li>
+</ul>
+<h2 id="이-저장소가-반복해서-강조하는-운영-원칙">이 저장소가 반복해서 강조하는 운영 원칙</h2>
+<p>README의 46개 항목을 그대로 외우기보다, &ldquo;반복되는 패턴&quot;으로 묶으면 적용/검증이 쉬워집니다.</p>
+<pre class="mermaid">flowchart TD
+  A["측정: 지금 상태를 보이게"] --> B["컨텍스트: 신선하게 유지"]
+  B --> C["검증: write - test 루프"]
+  C --> D["격리: 위험 작업은 샌드박스"]
+  D --> E["패키징: 규칙/자동화를 재사용"]
+  E --> F["학습/공유: 피드백 루프"]
+
+  classDef meas fill:#E3F2FD,stroke:#1565C0,color:#0D47A1;
+  classDef ctx fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20;
+  classDef ver fill:#FFF3E0,stroke:#EF6C00,color:#E65100;
+  classDef iso fill:#F3E5F5,stroke:#6A1B9A,color:#4A148C;
+  classDef pkg fill:#FCE4EC,stroke:#AD1457,color:#880E4F;
+  classDef learn fill:#ECEFF1,stroke:#455A64,color:#263238;
+
+  class A meas;
+  class B ctx;
+  class C ver;
+  class D iso;
+  class E pkg;
+  class F learn;</pre><p>이 원칙은 각각 README의 여러 팁을 관통합니다.</p>
+<ul>
+<li>측정: status line 커스터마이징(Tip 0), /usage(Tip 1), 컨텍스트 사용량 추적(Tip 8, Tip 15)</li>
+<li>컨텍스트: 짧은 세션(Tip 5), /compact + handoff(Tip 8), clone/half-clone(Tip 23)</li>
+<li>검증: write-test cycle(Tip 9), PR 리뷰(Tip 26), 다양한 검증 전략(Tip 28), TDD(Tip 34)</li>
+<li>격리: 컨테이너로 위험 작업 분리(Tip 21)</li>
+<li>패키징: CLAUDE.md/Skills/Slash/Plugins 구조 이해(Tip 25), dx plugin(Tip 44), setup.sh(Tip 45)</li>
+<li>학습/공유: 배우고 공유하기(Tip 42, Tip 43)</li>
+</ul>
+<h2 id="tip-0-status-line을-측정기로-만들기">tip 0: status line을 &ldquo;측정기&quot;로 만들기</h2>
+<p>이 저장소가 제공하는 가장 즉시 체감되는 개선은 status line 스크립트입니다. README는 status line에 모델/디렉터리/브랜치/미커밋 파일 수/원격 동기 상태/토큰 사용률/마지막 메시지를 보여주도록 구성했다고 설명합니다(Tip 0).</p>
+<p>scripts/README.md는 context-bar.sh의 목적을 더 구체적으로 적습니다. Claude Code가 status line 커맨드에 세션 메타데이터를 stdin JSON으로 전달하고, 그 필드(model.display_name, cwd, context_window, transcript_path 등)를 사용해 컨텍스트 사용률을 계산한다고 설명합니다(<code>scripts/README.md#L56-L64</code>).</p>
+<pre class="mermaid">flowchart LR
+  CC["Claude Code"] -->|"stdin JSON"| SH["context-bar.sh"]
+  SH -->|"jq -r"| PARSE["필드 파싱"]
+  PARSE --> GIT["git 상태/업스트림"]
+  PARSE --> TX["transcript_path 기반 토큰 계산"]
+  GIT --> OUT["2-line status line"]
+  TX --> OUT
+
+  classDef src fill:#E3F2FD,stroke:#1565C0,color:#0D47A1;
+  classDef proc fill:#FFF3E0,stroke:#EF6C00,color:#E65100;
+  classDef out fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20;
+
+  class CC src;
+  class SH,PARSE,GIT,TX proc;
+  class OUT out;</pre><p>여기서 중요한 포인트는 &ldquo;표시&quot;가 아니라 &ldquo;측정 가능한 루프&quot;입니다.</p>
+<ul>
+<li>토큰 사용량을 시각화하면(Tip 0) 언제 /compact 또는 half-clone을 해야 하는지 감으로가 아니라 숫자로 판단하기 쉬워집니다.</li>
+<li>스크립트가 transcript를 읽어서 input_tokens/caching 관련 토큰을 합산하는 방식은, 단순히 &ldquo;터미널 상태바&quot;를 넘어 컨텍스트 관리 전략(Tip 5/8/23)을 실행으로 연결합니다.</li>
+</ul>
+<p>설치 방법은 scripts/README.md에 그대로 나옵니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mkdir -p ~/.claude/scripts
+</span></span><span style="display:flex;"><span>cp context-bar.sh ~/.claude/scripts/
+</span></span><span style="display:flex;"><span>chmod +x ~/.claude/scripts/context-bar.sh
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;statusLine&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;type&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;command&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;command&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;~/.claude/scripts/context-bar.sh&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><p>Color 테마는 context-bar.sh 상단의 COLOR 변수를 바꿔서 적용합니다(<code>scripts/README.md#L34-L41</code>, <code>scripts/context-bar.sh#L3-L22</code>).</p>
+<h2 id="컨텍스트를-신선하게-유지하는-4가지-액션">컨텍스트를 신선하게 유지하는 4가지 액션</h2>
+<p>README에서 컨텍스트를 &ldquo;우유&quot;에 비유합니다. 길어질수록 성능이 떨어지므로, 주제별로 새 세션을 여는 편이 유리하다는 주장입니다(Tip 5). 이 원칙을 실제 운영으로 옮기려면, &ldquo;어떻게 끊고 이어갈지&quot;가 필요합니다.</p>
+<p>저장소는 크게 네 가지 액션을 제안합니다.</p>
+<ol>
+<li>새 세션으로 리셋(Tip 5)</li>
+<li>&ldquo;/compact&quot;를 적극적으로 사용(Tip 8)</li>
+<li>handoff 문서로 상태를 외부화(Tip 8, skills/handoff/SKILL.md)</li>
+<li>clone/half-clone으로 대화를 분기/절단(Tip 23, scripts/clone-conversation.sh, scripts/half-clone-conversation.sh)</li>
+</ol>
+<pre class="mermaid">sequenceDiagram
+  participant U as "You"
+  participant CC as "Claude Code"
+  participant FS as "Handoff/clone files"
+
+  U->>CC: "작업 진행"
+  CC-->>U: "컨텍스트 증가"
+
+  alt "topic change" (Tip 5)
+    U->>CC: "새 세션"
+  else "needs summarize" (Tip 8)
+    U->>CC: "/compact"
+  else "handoff" (Tip 8)
+    U->>CC: "HANDOFF.md 작성/업데이트"
+    CC->>FS: "Write HANDOFF.md"
+  else "branch or reduce" (Tip 23)
+    U->>CC: "clone / half-clone"
+    CC->>FS: "새 jsonl 생성"
+  end</pre><p>여기서 handoff와 half-clone은 비슷해 보이지만 용도가 다릅니다.</p>
+<ul>
+<li>handoff(Tip 8)는 &ldquo;요약 + 다음 작업자에게 넘겨줄 구조&quot;를 문서로 남겨, 다음 에이전트가 최소 컨텍스트로 시작하도록 합니다.</li>
+<li>half-clone(Tip 23)은 &ldquo;대화를 절반만 남기는&rdquo; 기계적 절단으로, 요약을 믿기 싫거나(또는 요약이 손실이 크다고 느낄 때) 최근 메시지를 그대로 유지하고 싶을 때 쓰는 패턴입니다.</li>
+</ul>
+<p>Tip 23은 half-clone을 자동 제안하는 hook까지 제공합니다. scripts/check-context.sh는 컨텍스트 사용률이 85% 이상이면 stop hook에서 /half-clone 실행을 요청하는 block 결정을 출력하도록 되어 있습니다(<code>scripts/check-context.sh#L1-L52</code>).</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;hooks&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;Stop&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">[</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#0550ae">&#34;hooks&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">[</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#0550ae">&#34;type&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;command&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#0550ae">&#34;command&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;~/.claude/scripts/check-context.sh&#34;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#1f2328">]</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">]</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><h2 id="검증-루프를-기본값으로-만들기">검증 루프를 기본값으로 만들기</h2>
+<p>Tip 9은 자율 실행을 안정화하려면 write-test cycle을 완성해야 한다고 말합니다. 예시로 tmux를 사용해 claude 세션을 띄우고, /context를 실행한 뒤 출력 캡처로 성공 여부를 확인하는 흐름을 보여줍니다(<code>README.md#L339-L364</code>).</p>
+<pre class="mermaid">flowchart TD
+  W["Write: 코드/설정 생성"] --> T["Test: 실행/재현"]
+  T --> V{"Verify: 기대 결과?"}
+  V -->|"yes"| S["Ship: PR/적용"]
+  V -->|"no"| F["Fix: 원인 좁히기"]
+  F --> T
+
+  classDef step fill:#FFF3E0,stroke:#EF6C00,color:#E65100;
+  classDef gate fill:#E3F2FD,stroke:#1565C0,color:#0D47A1;
+  classDef done fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20;
+
+  class W,T,F step;
+  class V gate;
+  class S done;</pre><p>Tip 4/26/28/29/34는 이 루프의 변형들입니다.</p>
+<ul>
+<li>Git/gh 작업은 초안을 만들고(draft PR) 사람이 검토한 뒤 진행(Tip 4)</li>
+<li>PR 리뷰는 one-shot 평가가 아니라 대화형 점검으로 운영(Tip 26)</li>
+<li>검증 방법을 여러 겹으로 쌓기: 테스트, 시각적 Git 클라이언트, self-check 프롬프트(Tip 28)</li>
+<li>GitHub Actions 장애 분석을 반복 작업으로 고정(Tip 29, skills/gha/SKILL.md)</li>
+<li>테스트를 많이 쓰고, TDD로 계약을 만들기(Tip 34)</li>
+</ul>
+<p>여기서 중요한 메시지는 &ldquo;모델이 똑똑해졌으니 덜 검증해도 된다&quot;가 아니라 반대입니다. 모델이 빨라질수록, 검증 비용을 자동화해서 병목을 줄여야 전체 시스템이 빨라집니다.</p>
+<h2 id="규칙을-어디에-둘-것인가-claudemd---skills---slash-commands---plugins">규칙을 어디에 둘 것인가: CLAUDE.md - skills - slash commands - plugins</h2>
+<p>Tip 25는 기능이 비슷해 보여서 헷갈리는 네 가지를 구분합니다.</p>
+<ul>
+<li>CLAUDE.md: 매 대화 시작 시 항상 로드되는 기본 프롬프트(Tip 25)</li>
+<li>skills: 필요할 때만 로드되도록 구조화된 규칙 묶음(Tip 25)</li>
+<li>slash commands: 사용자가 의도적으로 호출하는 명령형 패키징(Tip 25)</li>
+<li>plugins: skills/commands/agents/hooks/MCP 등을 묶어 배포하는 포맷(Tip 25)</li>
+</ul>
+<pre class="mermaid">flowchart TB
+  C0["CLAUDE.md<br>(always loaded)"] --> C1["Skills<br>(on-demand)"]
+  C1 --> C2["Slash commands<br>(manual invoke)"]
+  C2 --> C3["Plugins<br>(distribution bundle)"]
+
+  classDef always fill:#FFEBEE,stroke:#C62828,color:#B71C1C;
+  classDef ondemand fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20;
+  classDef manual fill:#E3F2FD,stroke:#1565C0,color:#0D47A1;
+  classDef bundle fill:#F3E5F5,stroke:#6A1B9A,color:#4A148C;
+
+  class C0 always;
+  class C1 ondemand;
+  class C2 manual;
+  class C3 bundle;</pre><p>이 저장소의 dx 플러그인은 이 구조를 실제로 보여주는 예시입니다(Tip 44).</p>
+<h2 id="고급-컨테이너-워커-멀티-모델-system-prompt-패치">고급: 컨테이너 워커, 멀티 모델, system prompt 패치</h2>
+<p>Tip 21은 위험하거나 장시간 작업을 컨테이너로 분리하는 패턴을 설명합니다. 특히 &ldquo;외부 Claude가 컨테이너 내부 Claude를 tmux로 제어&quot;하는 방식(컨테이너 워커)을 제안합니다(<code>README.md#L593-L607</code>).</p>
+<pre class="mermaid">flowchart LR
+  OUTER["host Claude"] -->|"tmux send-keys"| TMUX["tmux session"]
+  TMUX -->|"docker exec"| C["container"]
+  C -->|"claude --dangerously-skip-permissions"| WORKER["worker Claude"]
+  WORKER -->|"output"| TMUX
+  TMUX -->|"capture-pane"| OUTER
+
+  classDef host fill:#E3F2FD,stroke:#1565C0,color:#0D47A1;
+  classDef infra fill:#FFF3E0,stroke:#EF6C00,color:#E65100;
+  classDef worker fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20;
+
+  class OUTER host;
+  class TMUX,C infra;
+  class WORKER worker;</pre><p>system-prompt 폴더는 Claude Code CLI의 system prompt/tool 정의 토큰 오버헤드를 줄이기 위한 패치 시스템을 담고 있고(Tip 15), UPGRADING.md는 새 버전이 나올 때 패치를 업데이트하는 절차를 문서화합니다(<code>system-prompt/UPGRADING.md#L1-L31</code>). 또한 patch-cli.js가 <code>${...}</code> 패턴을 regex로 매칭해 minified 변수명이 바뀌어도 적응한다는 설명이 들어 있습니다(<code>system-prompt/UPGRADING.md#L5-L6</code>).</p>
+<p>참고로 공식 문서에서는 npm 설치가 deprecated라고 명시되어 있어, &ldquo;npm 설치 기반 패치&quot;의 실용성은 시간이 지날수록 떨어질 수 있습니다.</p>
+<ul>
+<li>deprecated npm installation: <a href="https://code.claude.com/docs/en/setup.md#deprecated-npm-installation">https://code.claude.com/docs/en/setup.md#deprecated-npm-installation</a></li>
+</ul>
+<p>이 영역은 생산성 이득이 크지만, 작업 난이도와 리스크도 큽니다. README도 host에서 무작정 위험 플래그를 쓰기보다 컨테이너로 격리하라는 논지를 반복합니다(Tip 21).</p>
+<h2 id="dx-plugin과-setupsh로-패키징을-완성하기">dx plugin과 setup.sh로 &ldquo;패키징&quot;을 완성하기</h2>
+<p>Tip 44는 이 저장소 자체가 Claude Code 플러그인(dx)로도 배포된다고 말하며, 플러그인이 묶는 기능 목록과 설치 커맨드를 제공합니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>claude plugin marketplace add ykdojo/claude-code-tips
+</span></span><span style="display:flex;"><span>claude plugin install dx@ykdojo
+</span></span></code></pre></div><p>위 명령은 이 저장소 README/scripts에서 사용되는 형태입니다. 다만 공식 문서에서는 마켓플레이스 추가를 대화 내 명령(<code>/plugin marketplace add ...</code>)로 설명하는 편이라, 사용 중인 Claude Code 버전에 따라 명령 형태가 다를 수 있습니다.</p>
+<ul>
+<li>공식 문서(마켓플레이스 추가): <a href="https://code.claude.com/docs/en/discover-plugins.md#add-marketplaces">https://code.claude.com/docs/en/discover-plugins.md#add-marketplaces</a></li>
+<li>공식 문서(플러그인 설치/매니페스트): <a href="https://code.claude.com/docs/en/plugins-reference.md#plugin-install">https://code.claude.com/docs/en/plugins-reference.md#plugin-install</a></li>
+</ul>
+<p>또한 setup.sh는 <code>settings.json</code>의 env를 만지는데, <code>ENABLE_TOOL_SEARCH</code>와 <code>DISABLE_AUTOUPDATER</code>는 공식 문서에도 언급됩니다.</p>
+<ul>
+<li>DISABLE_AUTOUPDATER: <a href="https://code.claude.com/docs/en/setup.md#disable-auto-updates">https://code.claude.com/docs/en/setup.md#disable-auto-updates</a></li>
+<li>ENABLE_TOOL_SEARCH (Tool search): <a href="https://code.claude.com/docs/en/mcp#configure-tool-search">https://code.claude.com/docs/en/mcp#configure-tool-search</a></li>
+</ul>
+<pre class="mermaid">flowchart LR
+  SRC["repo: ykdojo/claude-code-tips"] --> MP["marketplace add"]
+  MP --> INS["plugin install: dx@ykdojo"]
+  INS --> CMD["/dx:* commands"]
+  INS --> SK["skills (e.g., reddit-fetch)"]
+  CMD --> SETUP["optional: setup.sh"]
+  SK --> SETUP
+  SETUP --> CFG["~/.claude/settings.json + shell rc"]
+
+  classDef src fill:#E3F2FD,stroke:#1565C0,color:#0D47A1;
+  classDef op fill:#FFF3E0,stroke:#EF6C00,color:#E65100;
+  classDef out fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20;
+
+  class SRC src;
+  class MP,INS,SETUP op;
+  class CMD,SK,CFG out;</pre><p>plugin.json/marketplace.json을 보면 dx의 설명과 버전(0.14.9)이 일치합니다(<code>.claude-plugin/plugin.json#L2-L11</code>, <code>.claude-plugin/marketplace.json#L8-L13</code>).</p>
+<p>Tip 45의 setup.sh는 status line, auto-updates 비활성화, MCP lazy-load, 권한(읽기) 추가, attribution 제거, alias 추가 등 여러 권장 설정을 한번에 적용하는 스크립트입니다. 스크립트는 적용 항목을 번호로 보여주고, 건너뛸 항목을 입력받는 형태입니다(<code>scripts/setup.sh#L42-L66</code>).</p>
+<h2 id="46개-팁을-묶어서-적용하는-방법그룹-해설">46개 팁을 묶어서 적용하는 방법(그룹 해설)</h2>
+<p>46개 팁을 &ldquo;랜덤하게 하나씩&rdquo; 넣으면, 나중에 왜 좋아졌는지(혹은 왜 위험해졌는지)를 추적하기 어렵습니다. README가 보여주는 패턴을 기준으로 묶으면, 도입 순서와 검증 포인트가 선명해집니다.</p>
+<pre class="mermaid">flowchart LR
+  I["입력/조작<br>Tip 1,2,6,7,10,24,38"] --> C["컨텍스트<br>Tip 5,8,13,15,23"]
+  C --> V["검증/리뷰<br>Tip 4,9,26,28,29,34"]
+  V --> S["안전/격리<br>Tip 21,33"]
+  S --> P["패키징/자동화<br>Tip 25,41,44,45"]
+  P --> L["학습/공유<br>Tip 42,43"]
+
+  classDef a fill:#E3F2FD,stroke:#1565C0,color:#0D47A1;
+  classDef b fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20;
+  classDef c fill:#FFF3E0,stroke:#EF6C00,color:#E65100;
+  classDef d fill:#F3E5F5,stroke:#6A1B9A,color:#4A148C;
+  classDef e fill:#FCE4EC,stroke:#AD1457,color:#880E4F;
+  classDef f fill:#ECEFF1,stroke:#455A64,color:#263238;
+
+  class I a;
+  class C b;
+  class V c;
+  class S d;
+  class P e;
+  class L f;</pre><h3 id="1-입력조작-빨라지는-것보다-덜-새는-것이-먼저">1) 입력/조작: 빨라지는 것보다 &ldquo;덜 새는 것&quot;이 먼저</h3>
+<p>Tip 1은 슬래시 커맨드를 몇 개만 알아도 운영이 쉬워진다고 말합니다. 예시로 /usage(레이트리밋 확인), /chrome(브라우저 통합 토글), /mcp(MCP 서버 관리), /stats(사용량 그래프), /clear(세션 초기화)를 듭니다.</p>
+<p>Tip 6은 &ldquo;터미널 출력이 깨끗하게 복사되지 않는다&quot;는 현실적인 문제를 다룹니다. /copy로 마지막 응답을 마크다운으로 복사하거나, pbcopy로 바로 클립보드에 넣거나, 파일로 저장 후 에디터에서 복사하는 방식 등을 제안합니다.</p>
+<p>Tip 7은 alias를 통해 반복 실행 비용을 줄입니다. 예시로 c/ch/gb/co/q를 두고, c -c(continue), c -r(recent)로 최근 세션을 이어가는 방식을 듭니다.</p>
+<p>Tip 38은 입력 상자의 readline 계열 단축키(Ctrl+A/E/W/U/K/G)와, 멀티라인 입력을 위한 &ldquo;백슬래시 + Enter&rdquo;, /terminal-setup, 이미지 붙여넣기(Ctrl+V)까지 정리합니다. 긴 지시를 &ldquo;정확하게&rdquo; 넣는 능력은, 곧 수정 횟수를 줄여 전체 토큰을 절약하는 능력입니다.</p>
+<p>Tip 2는 음성 입력을 본격적으로 추천합니다. superwhisper/MacWhisper/Super Voice Assistant 같은 로컬 전사 도구를 언급하고, 오탈자가 있어도 Claude가 의도를 추론해 준다고 설명합니다. (README에는 built-in voice mode 업데이트 링크도 포함됩니다.)</p>
+<p>Tip 10은 막힌 URL이나 터미널 출력에 대해 &ldquo;Cmd/Ctrl + A로 전체 선택 - 복사 - 붙여넣기&quot;를 강조합니다. 이건 단순 요령이 아니라, &ldquo;도구가 막힐 때도 컨텍스트를 잃지 않는 백업 경로&quot;입니다.</p>
+<p>Tip 24는 다른 폴더의 파일을 가리킬 때 realpath로 절대 경로를 전달하라고 합니다. 이 한 줄이, 잘못된 파일 편집/읽기 같은 실수를 줄여 줍니다.</p>
+<h3 id="2-컨텍스트-compact는-버튼이고-handoff는-프로토콜이다">2) 컨텍스트: /compact는 버튼이고, handoff는 프로토콜이다</h3>
+<p>Tip 5는 &ldquo;세션은 짧고 선명하게&quot;라는 원칙을 제시합니다.</p>
+<p>Tip 8은 /compact를 수동으로 운영하는 이유와, handoff 문서(HANDOFF.md)로 상태를 넘기는 방법(그리고 /handoff 커맨드/스킬)을 설명합니다. 또한 plan mode(/plan 또는 Shift+Tab)로 다음 에이전트가 필요한 컨텍스트를 계획 형태로 넘기는 방식도 제안합니다.</p>
+<p>Tip 13은 대화 기록이 로컬(~/.claude/projects)에 저장되며, 프로젝트 경로를 기반으로 폴더명이 만들어진다고 설명합니다. 이걸 알면 &ldquo;어제 했던 말&quot;을 다시 찾는 비용이 줄어듭니다.</p>
+<p>Tip 23은 clone/half-clone을 통해 대화를 분기하거나 절반만 남기는 패턴을 제공합니다. 동시에 최근 버전에서는 /fork와 &ndash;fork-session 같은 내장 기능이 있다는 점도 언급합니다.</p>
+<p>Tip 15는 컨텍스트 오버헤드를 줄이는 두 축을 말합니다.</p>
+<ul>
+<li>system prompt/tool 설명 자체를 패치해서 줄이기</li>
+<li>MCP 도구 정의를 lazy-load하도록 설정(ENABLE_TOOL_SEARCH)</li>
+</ul>
+<p>추가로 DISABLE_AUTOUPDATER를 통해 자동 업데이트를 막고(패치 유지 목적), 필요할 때 수동 업데이트하는 전략을 제안합니다.</p>
+<h3 id="3-검증리뷰-사람이-하는-건-판단이고-반복은-자동화한다">3) 검증/리뷰: 사람이 하는 건 &ldquo;판단&quot;이고, 반복은 자동화한다</h3>
+<p>Tip 9의 write-test cycle은, 자율 실행을 &ldquo;검증 가능&quot;하게 만드는 핵심입니다.</p>
+<p>Tip 4는 git/gh를 Claude에게 맡기되, 특히 push는 리스크가 크니 보수적으로 운영한다는 관점을 보여줍니다. 또 기본적으로 커밋/PR에 붙는 attribution(Co-Authored-By 등)을 settings.json으로 끌 수 있다고 설명합니다.</p>
+<p>Tip 26은 PR 리뷰를 대화형으로 진행할 수 있다는 점을 강조합니다.</p>
+<p>Tip 28은 검증을 한 가지로 고정하지 말고(테스트만, 또는 눈으로만), 여러 레이어(테스트, 드래프트 PR, 시각적 Git 클라이언트, self-check 프롬프트)를 조합하라고 말합니다.</p>
+<p>Tip 29는 GitHub Actions 장애 분석을 /gha 같은 커맨드로 스킬화할 수 있다고 설명합니다(저장소에는 skills/gha/SKILL.md가 있습니다).</p>
+<p>Tip 34는 테스트와 TDD를 &ldquo;AI가 빨라질수록 더 중요해진다&quot;는 논리로 연결합니다.</p>
+<h3 id="4-안전격리-위험-플래그는-기능이-아니라-경계선이다">4) 안전/격리: 위험 플래그는 기능이 아니라 경계선이다</h3>
+<p>Tip 21은 컨테이너 세션을 &ldquo;위험하거나 장기 작업&quot;에 사용하라고 권합니다. 특히 컨테이너 내부에서 &ndash;dangerously-skip-permissions 같은 모드를 쓰는 접근을 소개하며, tmux를 제어 레이어로 삼아 컨테이너 워커를 오케스트레이션하는 예시도 듭니다.</p>
+<p>Tip 33은 승인된 명령을 정기적으로 감사하라고 말하며, cc-safe라는 CLI를 만들어 위험 패턴(rm -rf, sudo 등)을 탐지한다고 설명합니다.</p>
+<h3 id="5-패키징자동화-자동화의-자동화를-자산으로-남기기">5) 패키징/자동화: &ldquo;자동화의 자동화&quot;를 자산으로 남기기</h3>
+<p>Tip 41은 automation of automation이라는 관점을 직접적으로 말합니다. 반복을 발견하면 CLAUDE.md에 규칙을 넣거나(Tip 30), skills/commands로 분리하거나(Tip 25), 스크립트로 고정하고(Tip 45), 플러그인으로 묶어 배포(Tip 44)하는 식입니다.</p>
+<p>Tip 12는 이 투자를 &ldquo;내 워크플로를 제품처럼&rdquo; 대하라는 메시지로 확장합니다.</p>
+<h3 id="6-학습공유-기능이-바뀌면-습관도-바뀐다">6) 학습/공유: 기능이 바뀌면 습관도 바뀐다</h3>
+<p>Tip 42는 공유와 기여가 일방향이 아니라 피드백 루프라고 말합니다.</p>
+<p>Tip 43은 학습 경로로 /release-notes, 커뮤니티, DevRel 콘텐츠를 언급합니다.</p>
+<p>이 두 팁은 &ldquo;설정 파일&quot;보다 느리게 보이지만, 결국 시스템을 업데이트 가능한 상태로 유지합니다.</p>
+<h2 id="46개-팁0-45-빠른-인덱스">46개 팁(0-45) 빠른 인덱스</h2>
+<p>아래는 &ldquo;빠르게 다시 찾기&rdquo; 목적의 인덱스입니다. 각 항목은 원문 앵커로 연결됩니다.</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: right">Tip</th>
+          <th>원문 제목</th>
+          <th>한 줄 요약</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: right">0</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-0-customize-your-status-line">Customize your status line</a></td>
+          <td>status line을 측정기로 만들어 컨텍스트/작업 상태를 상시 확인</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">1</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-1-learn-a-few-essential-slash-commands">Learn a few essential slash commands</a></td>
+          <td>/usage, /chrome, /mcp, /stats, /clear 같은 기본 명령 익히기</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">2</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-2-talk-to-claude-code-with-your-voice">Talk to Claude Code with your voice</a></td>
+          <td>로컬 음성 인식으로 입력 속도/밀도를 높이기</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">3</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-3-break-down-large-problems-into-smaller-ones">Break down large problems into smaller ones</a></td>
+          <td>큰 문제를 더 작은 문제로 계속 쪼개어 해결 가능 상태로 만들기</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">4</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-4-using-git-and-github-cli-like-a-pro">Using Git and GitHub CLI like a pro</a></td>
+          <td>git/gh 작업을 대화형으로 위임하되 위험도 높은 작업은 보수적으로</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">5</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-5-ai-context-is-like-milk-its-best-served-fresh-and-condensed">AI context is like milk</a></td>
+          <td>길어진 세션을 끊고 신선한 컨텍스트로 운영</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">6</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-6-getting-output-out-of-your-terminal">Getting output out of your terminal</a></td>
+          <td>/copy, pbcopy, 파일 저장 등으로 출력 전달을 깔끔하게</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">7</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-7-set-up-terminal-aliases-for-quick-access">Set up terminal aliases</a></td>
+          <td>alias로 실행 비용 줄이기</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">8</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-8-proactively-compact-your-context">Proactively compact your context</a></td>
+          <td>/compact, handoff, plan mode로 컨텍스트 정리/교체</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">9</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-9-complete-the-write-test-cycle-for-autonomous-tasks">Complete the write-test cycle</a></td>
+          <td>자율 실행은 write-test 루프가 없으면 불안정</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">10</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-10-cmda-and-ctrla-are-your-friends">Cmd+A and Ctrl+A</a></td>
+          <td>접근 불가 페이지/출력은 선택-복사-붙여넣기로 컨텍스트 주입</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">11</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-11-use-gemini-cli-as-a-fallback-for-blocked-sites">Use Gemini CLI as a fallback</a></td>
+          <td>WebFetch가 막히면 Gemini CLI를 skill로 연결</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">12</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-12-invest-in-your-own-workflow">Invest in your own workflow</a></td>
+          <td>내 워크플로 자체를 제품처럼 개선</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">13</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-13-search-through-your-conversation-history">Search conversation history</a></td>
+          <td>~/.claude/projects의 대화 로그를 검색해 회수</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">14</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-14-multitasking-with-terminal-tabs">Multitasking with terminal tabs</a></td>
+          <td>탭을 캐스케이드로 운영해 멀티태스킹 정돈</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">15</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-15-slim-down-the-system-prompt">Slim down the system prompt</a></td>
+          <td>system prompt/tool 오버헤드 절감(패치, MCP lazy-load)</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">16</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-16-git-worktrees-for-parallel-branch-work">Git worktrees</a></td>
+          <td>병렬 브랜치 작업을 worktree로 분리</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">17</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-17-manual-exponential-backoff-for-long-running-jobs">Manual exponential backoff</a></td>
+          <td>장기 작업 상태 확인을 지수 백오프로 토큰 절약</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">18</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-18-claude-code-as-a-writing-assistant">Writing assistant</a></td>
+          <td>글쓰기 초안 - 리뷰 루프를 Claude Code로 운영</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">19</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-19-markdown-is-the-st">Markdown</a></td>
+          <td>문서 기본 포맷을 Markdown으로 두기</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">20</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-20-use-notion-to-preserve-links-when-pasting">Notion to preserve links</a></td>
+          <td>링크 보존/변환을 Notion으로 우회</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">21</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-21-containers-for-long-running-risky-tasks">Containers for risky tasks</a></td>
+          <td>위험/장기 작업은 컨테이너로 격리</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">22</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-22-the-best-way-to-get-better-at-using-claude-code-is-by-using-it">Get better by using it</a></td>
+          <td>결국 많이 써서 감각을 만든다</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">23</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-23-clonefork-and-half-clone-conversations">Clone/fork and half-clone</a></td>
+          <td>세션 분기/절단으로 컨텍스트를 가볍게 유지</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">24</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-24-use-realpath-to-get-absolute-paths">realpath</a></td>
+          <td>다른 디렉터리 파일은 절대 경로로 전달</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">25</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-25-understanding-claudemd-vs-skills-vs-slash-commands-vs-plugins">CLAUDE.md vs skills vs commands vs plugins</a></td>
+          <td>규칙의 &ldquo;적재 시점&rdquo; 기준으로 배치</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">26</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-26-interactive-pr-reviews">Interactive PR reviews</a></td>
+          <td>PR 리뷰를 대화형으로 운영</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">27</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-27-claude-code-as-a-research-tool">Research tool</a></td>
+          <td>리서치/로그/코드 조사에 Claude Code 활용</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">28</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-28-mastering-different-ways-of-verifying-its-output">Verify output</a></td>
+          <td>테스트/PR/시각적 diff/self-check 등 다층 검증</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">29</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-29-claude-code-as-a-devops-engineer">DevOps engineer</a></td>
+          <td>GHA 실패 분석을 자동화(스킬화)</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">30</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-30-keep-claudemd-simple-and-review-it-periodically">Keep CLAUDE.md simple</a></td>
+          <td>CLAUDE.md를 짧게 유지하고 주기적으로 리뷰</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">31</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-31-claude-code-as-the-universal-interface">Universal interface</a></td>
+          <td>Claude Code를 컴퓨터 작업의 범용 인터페이스로 보기</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">32</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-32-its-all-about-choosing-the-right-level-of-abstraction">Right abstraction level</a></td>
+          <td>상황에 따라 추상화 수준을 조절</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">33</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-33-audit-your-approved-commands">Audit approved commands</a></td>
+          <td>승인된 위험 명령을 정기 감사(예: cc-safe)</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">34</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-34-write-lots-of-tests-and-use-tdd">Write lots of tests</a></td>
+          <td>테스트/TDD로 품질 계약 만들기</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">35</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-35-be-braver-in-the-unknown-iterative-problem-solving">Be braver in the unknown</a></td>
+          <td>모르는 영역도 반복 탐색으로 접근</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">36</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-36-running-bash-commands-and-subagents-in-the-background">Background bash/subagents</a></td>
+          <td>긴 작업은 백그라운드로 보내 병렬화</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">37</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-37-the-era-of-personalized-software-is-here">Personalized software era</a></td>
+          <td>개인 맞춤 소프트웨어를 빠르게 만드는 시대</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">38</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-38-navigating-and-editing-your-input-box">Input box shortcuts</a></td>
+          <td>입력 상자 단축키로 긴 프롬프트 편집</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">39</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-39-spend-some-time-planning-but-also-prototype-quickly">Plan then prototype</a></td>
+          <td>계획과 프로토타입을 균형 있게</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">40</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-40-simplify-overcomplicated-code">Simplify code</a></td>
+          <td>과한 구현을 단순화하고 의도를 캐묻기</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">41</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-41-automation-of-automation">Automation of automation</a></td>
+          <td>반복을 자동화하는 자동화</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">42</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-42-share-your-knowledge-and-contribute-where-you-can">Share and contribute</a></td>
+          <td>공유/기여로 피드백 루프 만들기</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">43</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-43-keep-learning">Keep learning</a></td>
+          <td>/release-notes, 커뮤니티, DevRel 채널로 학습</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">44</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-44-install-the-dx-plugin">Install the dx plugin</a></td>
+          <td>반복 작업을 플러그인으로 묶어 설치</td>
+      </tr>
+      <tr>
+          <td style="text-align: right">45</td>
+          <td><a href="https://github.com/ykdojo/claude-code-tips#tip-45-quick-setup-script">Quick setup script</a></td>
+          <td>setup.sh로 권장 셋업을 일괄 적용</td>
+      </tr>
+  </tbody>
+</table>
+<p>원문 링크는 각 tip 앵커(예: <code>https://github.com/ykdojo/claude-code-tips#tip-0-customize-your-status-line</code>)로 접근하면 됩니다.</p>
+<h2 id="repo의-content-폴더-추가-읽을거리">repo의 content/ 폴더: 추가 읽을거리</h2>
+<p>이 저장소는 README 외에도 content/에 여러 글을 둡니다.</p>
+<ul>
+<li>10-tips-for-newer-users.md: 터미널/VS Code/desktop/Cowork 비교, 특정 버전 설치 예시, 훅/브라우저 통합 등 입문자용 가이드</li>
+<li>5-new-tips.md: /copy, /fork, plan mode handoff, CLAUDE.md 리뷰, Parakeet 음성 인식 같은 추가 팁</li>
+<li>spectrum-of-agentic-coding.md: vibe coding - discipline - software engineering - high-quality의 연속선(스펙트럼) 설명</li>
+<li>boris-claude-code-tips.md: Claude Code 제작자 Boris의 팁 10개 요약</li>
+<li>how-i-saved-10k-with-claude-code.md / how-i-got-a-job-with-claude-code.md: 사례 글</li>
+<li>dx-submissions.md: dx 플러그인 제출/등재 트래킹</li>
+</ul>
+<h2 id="핵심-요약">핵심 요약</h2>
+<h3 id="5줄-요약">5줄 요약</h3>
+<ol>
+<li>status line으로 측정부터 붙인다(Tip 0, scripts/README.md).</li>
+<li>컨텍스트가 길어지면 handoff/half-clone으로 &ldquo;끊고 이어&quot;간다(Tip 8, Tip 23).</li>
+<li>자율 실행은 write-test 루프 없이는 금지한다(Tip 9).</li>
+<li>위험 작업은 컨테이너로 격리한다(Tip 21).</li>
+<li>반복은 dx plugin/setup.sh로 패키징한다(Tip 44, Tip 45).</li>
+</ol>
+<h3 id="최소-셋업짧고-강하게">최소 셋업(짧고 강하게)</h3>
+<ul>
+<li>status line 설치(Tip 0)</li>
+<li>alias 2-3개만 추가(Tip 7)</li>
+<li>/copy로 출력 전달 표준화(Tip 6)</li>
+<li>/compact + handoff 중 하나를 기본 루틴으로(Tip 8)</li>
+<li>승인 명령 감사 루틴 만들기(Tip 33)</li>
+</ul>
+<h3 id="고급-기능은-격리부터">고급 기능은 &ldquo;격리&quot;부터</h3>
+<p>system prompt 패치(Tip 15)나 <code>--dangerously-skip-permissions</code> 기반 자동화(Tip 21)는, 효과가 큰 만큼 리스크도 큽니다. README가 제안하는 방식대로 컨테이너 격리를 먼저 설계하고, 그 다음에 확장하는 편이 안전합니다.</p>
+<h2 id="결론">결론</h2>
+<p>claude-code-tips의 요지는 &ldquo;더 잘 프롬프트하기&quot;가 아니라 &ldquo;운영 체계를 만들기&quot;에 가깝습니다. status line으로 측정하고, 컨텍스트를 신선하게 유지하며, write-test로 검증하고, 위험 작업을 격리하고, 재사용 가능한 패키지(dx/setup)로 묶으면, 팁이 지식이 아니라 시스템이 됩니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 03월 05일 22시 10분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/development">Development</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/productivity">Productivity</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-03-05-claude-hud-statusline-plugin/" rel="prev">
+        <span>Claude HUD: Claude Code를 위한 실시간 상태 표시줄(Statusline) 플러그인</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-03-05-claude-code-hooks/" rel="next">
+        <span>Claude Code Hooks 완전 정복: 이벤트/결정 제어/비동기까지 한 번에 이해하기</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#이-저장소가-반복해서-강조하는-운영-원칙">이 저장소가 반복해서 강조하는 운영 원칙</a></li>
+    <li><a href="#tip-0-status-line을-측정기로-만들기">tip 0: status line을 &ldquo;측정기&quot;로 만들기</a></li>
+    <li><a href="#컨텍스트를-신선하게-유지하는-4가지-액션">컨텍스트를 신선하게 유지하는 4가지 액션</a></li>
+    <li><a href="#검증-루프를-기본값으로-만들기">검증 루프를 기본값으로 만들기</a></li>
+    <li><a href="#규칙을-어디에-둘-것인가-claudemd---skills---slash-commands---plugins">규칙을 어디에 둘 것인가: CLAUDE.md - skills - slash commands - plugins</a></li>
+    <li><a href="#고급-컨테이너-워커-멀티-모델-system-prompt-패치">고급: 컨테이너 워커, 멀티 모델, system prompt 패치</a></li>
+    <li><a href="#dx-plugin과-setupsh로-패키징을-완성하기">dx plugin과 setup.sh로 &ldquo;패키징&quot;을 완성하기</a></li>
+    <li><a href="#46개-팁을-묶어서-적용하는-방법그룹-해설">46개 팁을 묶어서 적용하는 방법(그룹 해설)</a>
+      <ul>
+        <li><a href="#1-입력조작-빨라지는-것보다-덜-새는-것이-먼저">1) 입력/조작: 빨라지는 것보다 &ldquo;덜 새는 것&quot;이 먼저</a></li>
+        <li><a href="#2-컨텍스트-compact는-버튼이고-handoff는-프로토콜이다">2) 컨텍스트: /compact는 버튼이고, handoff는 프로토콜이다</a></li>
+        <li><a href="#3-검증리뷰-사람이-하는-건-판단이고-반복은-자동화한다">3) 검증/리뷰: 사람이 하는 건 &ldquo;판단&quot;이고, 반복은 자동화한다</a></li>
+        <li><a href="#4-안전격리-위험-플래그는-기능이-아니라-경계선이다">4) 안전/격리: 위험 플래그는 기능이 아니라 경계선이다</a></li>
+        <li><a href="#5-패키징자동화-자동화의-자동화를-자산으로-남기기">5) 패키징/자동화: &ldquo;자동화의 자동화&quot;를 자산으로 남기기</a></li>
+        <li><a href="#6-학습공유-기능이-바뀌면-습관도-바뀐다">6) 학습/공유: 기능이 바뀌면 습관도 바뀐다</a></li>
+      </ul>
+    </li>
+    <li><a href="#46개-팁0-45-빠른-인덱스">46개 팁(0-45) 빠른 인덱스</a></li>
+    <li><a href="#repo의-content-폴더-추가-읽을거리">repo의 content/ 폴더: 추가 읽을거리</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a>
+      <ul>
+        <li><a href="#5줄-요약">5줄 요약</a></li>
+        <li><a href="#최소-셋업짧고-강하게">최소 셋업(짧고 강하게)</a></li>
+        <li><a href="#고급-기능은-격리부터">고급 기능은 &ldquo;격리&quot;부터</a></li>
+      </ul>
+    </li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/tips/" class="badge badge-secondary">Tips</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+    <a href="/tags/context/" class="badge badge-secondary">Context</a>
+    <a href="/tags/statusline/" class="badge badge-secondary">Statusline</a>
+    <a href="/tags/dx-plugin/" class="badge badge-secondary">Dx-Plugin</a>
+    <a href="/tags/automation/" class="badge badge-secondary">Automation</a>
+    <a href="/tags/tmux/" class="badge badge-secondary">Tmux</a>
+    <a href="/tags/github-cli/" class="badge badge-secondary">Github-Cli</a>
+    <a href="/tags/testing/" class="badge badge-secondary">Testing</a>
+    <a href="/tags/containers/" class="badge badge-secondary">Containers</a>
+    <a href="/tags/mermaid/" class="badge badge-secondary">Mermaid</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

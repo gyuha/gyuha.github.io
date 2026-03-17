@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude Code 2.0 Scheduled Tasks 완벽 가이드'" />
+  <title>Claude Code 2.0 Scheduled Tasks 완벽 가이드  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude Code 2.0 Scheduled Tasks 완벽 가이드" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-03-08"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/2026-03-08-claude-code-scheduled-tasks/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="Claude Code" />
+  
+  <meta property="og:tags" content="Anthropic" />
+  
+  <meta property="og:tags" content="자동화" />
+  
+  <meta property="og:tags" content="Agentic Workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/2026-03-08-claude-code-scheduled-tasks/">
+          <h1>
+            Claude Code 2.0 Scheduled Tasks 완벽 가이드
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/2026-03-08-claude-code-scheduled-tasks/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Claude Code가 이제 24/7 AI 직원이 되었습니다. Anthropic이 드디어 Claude Code에 <strong>네이티브 Scheduled Tasks</strong> 기능을 추가했기 때문입니다. 이 기능이 의미하는 바는 단순합니다. 여러분이 자고 있을 때도, 회의 중일 때도, Claude Code는 정해진 시간에 자동으로 깨어나 작업을 수행합니다.</p>
+<p>기존에 구축한 모든 스킬, 워크플로우, 자동화가 이 한 번의 업데이트로 <strong>10배 더 강력해졌습니다</strong>. 그리고 설정은 놀라울 정도로 간단합니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=BlNJFa3Btm8">Claude Code 2.0 Is Finally Here - Nate Herk | AI Automation</a></li>
+</ul>
+<h2 id="scheduled-tasks란-무엇인가">Scheduled Tasks란 무엇인가</h2>
+<p>Scheduled Tasks는 Claude Code가 정해진 시간에 자동으로 세션을 시작하고, 프롬프트를 읽고, 프로젝트 파일들을 분석하며, 필요한 작업을 수행한 후 완료되면 종료하는 기능입니다.</p>
+<pre class="mermaid">flowchart LR
+    subgraph Schedule["스케줄 트리거"]
+        Cron["Cron<br/>매시/매일/매주"]
+    end
+
+    subgraph Execution["실행 사이클"]
+        Start["세션 시작"]
+        Read["프롬프트 읽기"]
+        Analyze["프로젝트 분석"]
+        Work["작업 수행"]
+        Complete["완료 및 종료"]
+    end
+
+    Cron --> Start
+    Start --> Read
+    Read --> Analyze
+    Analyze --> Work
+    Work --> Complete
+
+    style Cron fill:#e1f5fe
+    style Complete fill:#e8f5e9</pre><p>이것이 기존의 결정론적(Deterministic) 워크플로우와 결정적으로 다른 점은 <strong>Agentic</strong>하다는 것입니다. Python 스크립트나 TypeScript 코드로 작성된 전통적인 자동화는 항상 1단계, 2단계, 3단계가 고정되어 있습니다. 에러가 발생하면 그냥 실패하고 알림만 보냅니다.</p>
+<p>하지만 Claude Code의 Scheduled Tasks는 여러분이 대화할 때와 <strong>동일한 방식</strong>으로 작동합니다 (<a href="https://youtu.be/BlNJFa3Btm8?t=60">영상 1:00</a>). 에러를 만나면 &ldquo;그냥 시도해봤는데 안 됐어&quot;라고 포기하지 않습니다. 대신 세 가지 대안을 시도해보고, 그중 가장 잘 작동한 것을 기억했다가 다음에는 같은 에러를 만나지 않도록 스스로를 개선합니다.</p>
+<h2 id="설정-방법">설정 방법</h2>
+<h3 id="두-가지-접근-방식">두 가지 접근 방식</h3>
+<p>Scheduled Tasks를 설정하는 방법은 두 가지입니다:</p>
+<ol>
+<li><strong>Schedule 탭 사용</strong>: 사이드바의 Schedule 탭 클릭 → New Task</li>
+<li><strong>슬래시 커맨드 사용</strong>: 기존 세션에서 <code>/schedule</code> 입력</li>
+</ol>
+<pre class="mermaid">flowchart TD
+    subgraph Setup["설정 옵션"]
+        A["New Task 클릭"]
+        B["이름 & 설명 입력"]
+        C["프롬프트 작성"]
+        D["모델 선택"]
+        E["모드 선택"]
+        F["폴더 선택"]
+        G["스케줄 설정<br/>매시/매일/매주"]
+    end
+
+    A --> B --> C --> D --> E --> F --> G
+
+    style A fill:#fff3e0
+    style G fill:#e8f5e9</pre><h3 id="실제-설정-예시-morning-coffee">실제 설정 예시: Morning Coffee</h3>
+<p>영상에서 소개된 <strong>Morning Coffee</strong> 스킬은 매일 아침 6시에 자동 실행되도록 설정할 수 있습니다. 이 스킬은 다음을 수행합니다:</p>
+<ul>
+<li>하루 일정 계획</li>
+<li>커밋먼트 확인</li>
+<li>팀 활동 파악</li>
+<li>프로젝트 상태 업데이트</li>
+</ul>
+<p>설정 방법은 믿기 힘들 정도로 간단합니다:</p>
+
+  <blockquote>
+    <p>&ldquo;Take a look at my morning coffee skill. I would like to turn this into a scheduled task that goes off every morning at 6am. Help me get this set up.&rdquo; (<a href="https://youtu.be/BlNJFa3Btm8?t=150">영상 2:30</a>)</p>
+
+  </blockquote>
+
+<p>이 프롬프트 하나로 Claude Code가 스킬을 읽고, 한두 개의 clarifying question을 물어본 후, 1분 내로 자동화가 완성됩니다.</p>
+<h2 id="agentic-vs-deterministic-워크플로우">Agentic vs Deterministic 워크플로우</h2>
+<p>이 기능의 진정한 파워는 <strong>Agentic</strong> 특성에서 나옵니다.</p>
+<pre class="mermaid">flowchart LR
+    subgraph Agentic["에이전트 워크플로우"]
+        direction LR
+        A1["작업 시작"]
+        A2["에러 발생"]
+        A3["대안 3가지 시도"]
+        A4["최선의 방법 선택"]
+        A5["자기 개선"]
+        A6["✅ 작업 완료"]
+
+        A1 --> A2 --> A3 --> A4 --> A5 --> A6
+    end
+
+    subgraph Deterministic["결정론적 워크플로우"]
+        direction LR
+        D1["Step 1"]
+        D2["Step 2"]
+        D3["Step 3"]
+        D_Error["❌ 에러 발생"]
+        D_Fail["실패 및 알림"]
+
+        D1 --> D2 --> D3 --> D_Error --> D_Fail
+    end
+
+
+    style D_Error fill:#ffebee
+    style D_Fail fill:#ffebee
+    style A5 fill:#e8f5e9
+    style A6 fill:#e8f5e9</pre><h3 id="agentic-워크플로우의-장점">Agentic 워크플로우의 장점</h3>
+<table>
+  <thead>
+      <tr>
+          <th>특성</th>
+          <th>설명</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Self-Healing</strong></td>
+          <td>에러 발생 시 스스로 복구 시도</td>
+      </tr>
+      <tr>
+          <td><strong>전체 프로젝트 컨텍스트</strong></td>
+          <td>모든 파일에 접근 가능</td>
+      </tr>
+      <tr>
+          <td><strong>도구 활용</strong></td>
+          <td>Claude Code의 모든 도구 사용 가능</td>
+      </tr>
+      <tr>
+          <td><strong>자기 개선</strong></td>
+          <td>성공/실패 경험을 통해 지속적으로 개선</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="결정론적-제어가-필요한-경우">결정론적 제어가 필요한 경우</h3>
+<p>완전한 제어가 필요하다면, Scheduled Task가 단순히 스크립트를 실행하도록 설정할 수도 있습니다. 이렇게 하면 100% 결정론적인 동작이 보장됩니다.</p>
+<h2 id="제한사항과-주의점">제한사항과 주의점</h2>
+<h3 id="1-컴퓨터가-켜져-있어야-함">1. 컴퓨터가 켜져 있어야 함</h3>
+<p>가장 중요한 제한사항은 <strong>컴퓨터가 켜져 있고 데스크톱 앱이 실행 중이어야</strong> 한다는 것입니다. 컴퓨터를 끄면 자동화도 실행되지 않습니다.</p>
+<p>하지만 희소식이 있습니다. 6시에 예약된 작업이 있었는데 8시에 컴퓨터를 켰다면, Claude Code는 <strong>최대 7일 전까지</strong> 놓친 작업을 확인하고 따라잡습니다 (<a href="https://youtu.be/BlNJFa3Btm8?t=180">영상 3:00</a>). 물론 시간 민감한 작업에는 완벽하지 않지만, 이런 복구 기능이 있다는 것 자체가 유용합니다.</p>
+<pre class="mermaid">timeline
+    title 놓친 작업 복구 타임라인
+    section Day 1
+        오전 6시 : 작업 예약됨
+        오전 8시 : 컴퓨터 부팅
+        오전 8시 01분 : Claude Code가 7일간의 놓친 작업 스캔
+        오전 8시 02분 : 놓친 작업 실행</pre><h3 id="2-무감독-실행으로-인한-위험">2. 무감독 실행으로 인한 위험</h3>
+<p>사용자 감독 없이 실행되므로, <strong>권한 설정</strong>이 중요합니다. 특히:</p>
+<ul>
+<li>GitHub 저장소에 대한 major change 방지</li>
+<li>파일 삭제 명령 차단</li>
+</ul>
+<p>영상에서 추천하는 방법 (<a href="https://youtu.be/BlNJFa3Btm8?t=210">영상 3:30</a>):</p>
+
+  <blockquote>
+    <p>&ldquo;How can I put this in your settings? Deny a bash command that does any deletes or removes.&rdquo;</p>
+
+  </blockquote>
+
+<p>이 프롬프트로 Claude Code가 삭제 관련 명령을 거부하도록 설정할 수 있습니다.</p>
+<h3 id="3-stateless-특성">3. Stateless 특성</h3>
+<p>각 실행은 <strong>완전히 새로운 세션</strong>에서 이루어집니다. 이전 실행의 컨텍스트가 자동으로 전달되지 않습니다.</p>
+<pre class="mermaid">flowchart LR
+    subgraph Run1["실행 1"]
+        R1["새 세션"]
+        R1_Task["작업 수행"]
+        R1_End["종료"]
+        R1 --> R1_Task --> R1_End
+    end
+
+    subgraph Run2["실행 2"]
+        R2["새 세션"]
+        R2_Task["작업 수행"]
+        R2_End["종료"]
+        R2 --> R2_Task --> R2_End
+    end
+
+    subgraph Run3["실행 3"]
+        R3["새 세션"]
+        R3_Task["작업 수행"]
+        R3_End["종료"]
+        R3 --> R3_Task --> R3_End
+    end
+
+    Run1 -.->|"컨텍스트 없음"| Run2
+    Run2 -.->|"컨텍스트 없음"| Run3
+
+    style R1 fill:#e3f2fd
+    style R2 fill:#e3f2fd
+    style R3 fill:#e3f2fd</pre><h3 id="4-수동-테스트-필수">4. 수동 테스트 필수</h3>
+<p>새 작업을 만든 후 <strong>반드시 수동으로 먼저 실행</strong>해봐야 합니다. 그래야 권한 요청으로 멈추지 않는지 확인할 수 있습니다.</p>
+<h2 id="자기-개선-루프-구축하기">자기 개선 루프 구축하기</h2>
+<p>Stateless 특성을 극복하고 진정한 자율 개선 시스템을 만드는 방법이 있습니다.</p>
+<h3 id="3계층-개선-구조">3계층 개선 구조</h3>
+<pre class="mermaid">flowchart TD
+    subgraph Layer1["계층 1: 스크립트 수정"]
+        L1_Error["에러 발생"]
+        L1_Fix["코드 수정"]
+        L1_Update["스크립트 업데이트"]
+        L1_Error --> L1_Fix --> L1_Update
+    end
+
+    subgraph Layer2["계층 2: 프롬프트 개선"]
+        L2_Opportunity["개선 기회 발견"]
+        L2_Rewrite["프롬프트 재작성"]
+        L2_NewPrompt["새 프롬프트 적용"]
+        L2_Opportunity --> L2_Rewrite --> L2_NewPrompt
+    end
+
+    subgraph Layer3["계층 3: 메모리 로그"]
+        L3_Run["실행 완료"]
+        L3_Log["상태 로그 작성"]
+        L3_Next["다음 실행 시 참조"]
+        L3_Run --> L3_Log --> L3_Next
+    end
+
+    Layer1 --> Layer2 --> Layer3
+
+    style L1_Update fill:#e8f5e9
+    style L2_NewPrompt fill:#e8f5e9
+    style L3_Next fill:#e8f5e9</pre><h3 id="lean-전략-파일-하나로-컨텍스트-공유">Lean 전략: 파일 하나로 컨텍스트 공유</h3>
+<p>Claude Code가 추천한 최적의 전략은 <strong>작업당 하나의 파일</strong>을 유지하는 것입니다 (<a href="https://youtu.be/BlNJFa3Btm8?t=300">영상 5:00</a>):</p>
+<pre class="mermaid">sequenceDiagram
+    participant Agent as 새 에이전트
+    participant File as 상태 파일
+    participant Task as 실제 작업
+
+    Agent->>File: 1. 이전 실행 상태 읽기
+    File-->>Agent: 마지막 실행 정보 반환
+    Agent->>Task: 2. 실제 작업 수행
+    Agent->>File: 3. 상태 파일 덮어쓰기<br/>(last_run, duration, issues)</pre><p>이 방식이 append 로그보다 나은 이유는 간단합니다. 1,000번 실행했다고 1,000개의 로그가 쌓이지 않습니다. 항상 최신 상태만 유지됩니다.</p>
+<h3 id="프롬프트-구조-예시">프롬프트 구조 예시</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>1. 먼저 status.md 파일을 읽어서 마지막 실행 상태 확인
+</span></span><span style="display:flex;"><span>2. 실제 작업 수행
+</span></span><span style="display:flex;"><span>3. 작업 완료 후 status.md 덮어쓰기 (현재 이슈, 상태 등)
+</span></span></code></pre></div><h2 id="알림-설정">알림 설정</h2>
+<h3 id="데스크톱-앱-알림의-한계">데스크톱 앱 알림의 한계</h3>
+<p>데스크톱 앱에 기본 알림이 있지만, 영상에서 언급된 바와 같이 소리가 나지 않고 주의를 끌지 못한다고 합니다.</p>
+<h3 id="hook을-활용한-사운드-알림">Hook을 활용한 사운드 알림</h3>
+<p>Hook을 설정하면 세션이 완료될 때마다 사운드를 재생할 수 있습니다 (<a href="https://youtu.be/BlNJFa3Btm8?t=360">영상 6:00</a>):</p>
+
+  <blockquote>
+    <p>&ldquo;Set up a hook. I want you to play a sound every time you finish talking to me.&rdquo;</p>
+
+  </blockquote>
+
+<p>1분 내로 설정이 완료됩니다.</p>
+<h3 id="외부-메시징-연동">외부 메시징 연동</h3>
+<p>프롬프트 마지막에 다음과 같이 추가하면 ClickUp 등으로 메시지를 보낼 수 있습니다:</p>
+
+  <blockquote>
+    <p>&ldquo;Once this is done, just shoot me a ClickUp message and say that this happened.&rdquo;</p>
+
+  </blockquote>
+
+<h2 id="현재-플랫폼-제한">현재 플랫폼 제한</h2>
+<p>현재 Scheduled Tasks는 <strong>데스크톱 앱에서만</strong> 사용할 수 있습니다 (<a href="https://youtu.be/BlNJFa3Btm8?t=420">영상 7:00</a>). 이유는 간단합니다. 모든 cron 로직과 메타데이터가 데스크톱 앱에 저장되기 때문입니다.</p>
+<pre class="mermaid">flowchart TD
+    subgraph Desktop["데스크톱 앱"]
+        Cron["Cron 스케줄러"]
+        Meta["작업 메타데이터"]
+        Files["작업 정의 파일"]
+    end
+
+    subgraph Other["터미널 / VS Code"]
+        View["파일 읽기<br/>✅ 가능"]
+        Edit["파일 수정<br/>✅ 가능"]
+        Create["새 작업 생성<br/>❌ 불가능"]
+        Run["작업 실행<br/>❌ 불가능"]
+    end
+
+    Files --> View
+    Files --> Edit
+    Cron -.->|"접근 불가"| Create
+    Cron -.->|"접근 불가"| Run
+
+    style Create fill:#ffebee
+    style Run fill:#ffebee</pre><p>하지만 이것은 큰 문제가 아닙니다. VS Code에서 작업하면서 백그라운드에 데스크톱 앱을 열어두면, 모든 예약 작업이 정상적으로 실행됩니다.</p>
+<p>Anthropic은 매우 빠르게 배포하고 있으므로, 곧 터미널과 IDE 확장에서도 이 기능을 사용할 수 있을 것으로 예상됩니다.</p>
+<h2 id="활용-시나리오">활용 시나리오</h2>
+<pre class="mermaid">mindmap
+  root((Scheduled Tasks))
+    일일 자동화
+      Morning Coffee
+      일일 리포트 생성
+      백업 확인
+    주간 자동화
+      코드 리뷰 요약
+      팀 활동 파악
+      의존성 업데이트 체크
+    모니터링
+      API 상태 확인
+      에러 로그 분석
+      성능 메트릭 수집
+    콘텐츠
+      블로그 초안 작성
+      소셜 미디어 포스팅
+      뉴스레터 준비</pre><h2 id="핵심-요약">핵심 요약</h2>
+<table>
+  <thead>
+      <tr>
+          <th>항목</th>
+          <th>내용</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>기능</strong></td>
+          <td>Claude Code가 정해진 시간에 자동으로 작업 수행</td>
+      </tr>
+      <tr>
+          <td><strong>설정 방법</strong></td>
+          <td>Schedule 탭 또는 <code>/schedule</code> 커맨드</td>
+      </tr>
+      <tr>
+          <td><strong>필요 조건</strong></td>
+          <td>데스크톱 앱 실행 중, 컴퓨터 켜짐</td>
+      </tr>
+      <tr>
+          <td><strong>특징</strong></td>
+          <td>Agentic (자기 치유, 자기 개선 가능)</td>
+      </tr>
+      <tr>
+          <td><strong>제한</strong></td>
+          <td>Stateless, 권한 설정 필요, 데스크톱 앱만 지원</td>
+      </tr>
+      <tr>
+          <td><strong>팁</strong></td>
+          <td>수동 테스트 필수, Hook으로 알림 설정</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="결론">결론</h2>
+<p>Claude Code의 Scheduled Tasks는 단순한 cron 작업 이상입니다. 이것은 진정한 <strong>24/7 AI 직원</strong>을 만드는 기능입니다. 기존 스킬과 워크플로우에 시간 차원을 더해, 여러분이 자고 있을 때도, 다른 일에 집중하고 있을 때도, 프로젝트가 계속 진화할 수 있습니다.</p>
+<p>물론 아직 완벽하지 않습니다. 컴퓨터가 켜져 있어야 하고, 데스크톱 앱만 지원하며, stateless 특성을 직접 관리해야 합니다. 하지만 이것이 의미하는 방향성은 분명합니다. 우리는 &ldquo;무엇이든 자동화할 수 있는&rdquo; 시대에 접어들고 있습니다.</p>
+<p>지금 바로 여러분의 프로젝트에서 가장 반복적인 작업 하나를 골라 Scheduled Task로 만들어 보세요. 그것이 하루 10분을 절약하든, 아니면 여러분이 잠든 사이 중요한 모니터링을 수행하든, 이 작은 시작이 큰 생산성 향상으로 이어질 것입니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 03월 08일 10시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-03-08-virtual-threads-helidon-real-world/" rel="prev">
+        <span>Virtual Threads 실전 적용기: Helidon 4로 빠르고 안정적인 Java 마이크로서비스 만들기</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-03-08-ai-agent-framework-comparison/" rel="next">
+        <span>AI 에이전트 프레임워크 선택 가이드: 랭체인, 랭그래프, ADK, 파이덴틱 AI, 클로드 에이전트 SDK 비교</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#scheduled-tasks란-무엇인가">Scheduled Tasks란 무엇인가</a></li>
+    <li><a href="#설정-방법">설정 방법</a>
+      <ul>
+        <li><a href="#두-가지-접근-방식">두 가지 접근 방식</a></li>
+        <li><a href="#실제-설정-예시-morning-coffee">실제 설정 예시: Morning Coffee</a></li>
+      </ul>
+    </li>
+    <li><a href="#agentic-vs-deterministic-워크플로우">Agentic vs Deterministic 워크플로우</a>
+      <ul>
+        <li><a href="#agentic-워크플로우의-장점">Agentic 워크플로우의 장점</a></li>
+        <li><a href="#결정론적-제어가-필요한-경우">결정론적 제어가 필요한 경우</a></li>
+      </ul>
+    </li>
+    <li><a href="#제한사항과-주의점">제한사항과 주의점</a>
+      <ul>
+        <li><a href="#1-컴퓨터가-켜져-있어야-함">1. 컴퓨터가 켜져 있어야 함</a></li>
+        <li><a href="#2-무감독-실행으로-인한-위험">2. 무감독 실행으로 인한 위험</a></li>
+        <li><a href="#3-stateless-특성">3. Stateless 특성</a></li>
+        <li><a href="#4-수동-테스트-필수">4. 수동 테스트 필수</a></li>
+      </ul>
+    </li>
+    <li><a href="#자기-개선-루프-구축하기">자기 개선 루프 구축하기</a>
+      <ul>
+        <li><a href="#3계층-개선-구조">3계층 개선 구조</a></li>
+        <li><a href="#lean-전략-파일-하나로-컨텍스트-공유">Lean 전략: 파일 하나로 컨텍스트 공유</a></li>
+        <li><a href="#프롬프트-구조-예시">프롬프트 구조 예시</a></li>
+      </ul>
+    </li>
+    <li><a href="#알림-설정">알림 설정</a>
+      <ul>
+        <li><a href="#데스크톱-앱-알림의-한계">데스크톱 앱 알림의 한계</a></li>
+        <li><a href="#hook을-활용한-사운드-알림">Hook을 활용한 사운드 알림</a></li>
+        <li><a href="#외부-메시징-연동">외부 메시징 연동</a></li>
+      </ul>
+    </li>
+    <li><a href="#현재-플랫폼-제한">현재 플랫폼 제한</a></li>
+    <li><a href="#활용-시나리오">활용 시나리오</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/anthropic/" class="badge badge-secondary">Anthropic</a>
+    <a href="/tags/%EC%9E%90%EB%8F%99%ED%99%94/" class="badge badge-secondary">자동화</a>
+    <a href="/tags/agentic-workflow/" class="badge badge-secondary">Agentic Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
