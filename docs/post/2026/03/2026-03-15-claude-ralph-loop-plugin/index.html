@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude가 알아서 완벽하게 일 처리하게 만드는 법 - Ralph Loop'" />
+  <title>Claude가 알아서 완벽하게 일 처리하게 만드는 법 - Ralph Loop  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude가 알아서 완벽하게 일 처리하게 만드는 법 - Ralph Loop" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-03-15"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/03/2026-03-15-claude-ralph-loop-plugin/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="Claude" />
+  
+  <meta property="og:tags" content="Ralph Loop" />
+  
+  <meta property="og:tags" content="AI 자동화" />
+  
+  <meta property="og:tags" content="Stop Hooks" />
+  
+  <meta property="og:tags" content="Docker Sandbox" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/03/2026-03-15-claude-ralph-loop-plugin/">
+          <h1>
+            Claude가 알아서 완벽하게 일 처리하게 만드는 법 - Ralph Loop
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/03/2026-03-15-claude-ralph-loop-plugin/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Claude를 사용하다 보면 &ldquo;성공적으로 완료했습니다&quot;라는 메시지를 자주 보게 됩니다. 하지만 실제로 테스트를 돌려보면 실패하거나 린트 에러가 발생하는 경우가 많습니다. 그러면 또다시 에러 메시지를 복사해서 Claude에 붙여넣고 &ldquo;이거 에러 고쳐줘&quot;라고 요청해야 합니다. 이 과정을 사람이 계속 붙어서 해야 하는 귀찮은 일이 발생합니다. <a href="https://youtu.be/wz7oFfIR7LA?t=0">https://youtu.be/wz7oFfIR7LA?t=0</a></p>
+<p>이 문제를 해결하는 방법이 있습니다. 바로 <strong>Ralph Loop</strong>입니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=wz7oFfIR7LA">클로드가 알아서 완벽하게 일 처리하게 만드는 법 - YouTube</a></li>
+<li><a href="https://github.com/PageAI-Pro/ralph-loop">PageAI-Pro/ralph-loop - GitHub</a></li>
+</ul>
+<h2 id="ralph-loop란-무엇인가">Ralph Loop란 무엇인가</h2>
+<p>Ralph Loop는 심슨 가족에 나오는 <strong>Ralph Wiggum</strong>이라는 캐릭터의 이름을 본따서 만든 장기 실행 AI 에이전트 루프입니다. <a href="https://youtu.be/wz7oFfIR7LA?t=30">https://youtu.be/wz7oFfIR7LA?t=30</a></p>
+<p>Ralph는 뇌가 살짝 순수한 캐릭터지만 매우 행복해하고 계속해서 도전하는 특징이 있습니다. 이 친구의 핵심 특징은 <strong>절대 멈추지 않는다</strong>는 것입니다. 이것은 AI가 <strong>며칠이고 코딩을 계속할 수 있게 해주는</strong> 장기 실행 에이전트 루프를 구현합니다. <a href="https://youtu.be/wz7oFfIR7LA?t=45">https://youtu.be/wz7oFfIR7LA?t=45</a></p>
+<pre class="mermaid">flowchart TD
+    subgraph Ralph Loop 특징
+        A[장기 실행<br/>Long-running]
+        B[태스크 기반<br/>Task-based]
+        C[자동 검증<br/>Auto-verification]
+        D[샌드박스 보안<br/>Docker Sandbox]
+    end
+
+    style A fill:#c5dcef
+    style B fill:#c0ecd3
+    style C fill:#fde8c0
+    style D fill:#ffc8c4</pre><h3 id="놀이터-비유">놀이터 비유</h3>
+<p>이 기법을 만든 개발자가 아주 좋은 비유를 했습니다. Ralph는 놀이터를 만드는 데 매우 적합합니다:</p>
+<ol>
+<li>맨 처음 놀이터를 만듭니다</li>
+<li>거기서 놀다가 멍투성이가 됩니다 (미끄럼틀에서 뛰어내렸거든요)</li>
+<li>미끄럼틀 옆에 표지판을 붙입니다 (&ldquo;앉아서 내려가세요&rdquo;)</li>
+<li>다음번에는 Ralph가 표지판을 보고 앉아서 내려갑니다</li>
+<li>계속해서 표지판이 하나씩 늘어납니다</li>
+</ol>
+<p>이렇게 무한 반복하면서 시도해 보고, 아파보고, 수정하면서 Ralph는 <strong>완벽한 놀이터</strong>를 만들 수 있게 됩니다. <a href="https://youtu.be/wz7oFfIR7LA?t=55">https://youtu.be/wz7oFfIR7LA?t=55</a></p>
+<pre class="mermaid">flowchart TD
+    A[놀이터 설계] --> B[놀이터 건설]
+    B --> C[테스트 놀이]
+    C --> D{부상 발생?}
+    D -->|예| E[표지판 추가]
+    E --> B
+    D -->|아니오| F[완벽한 놀이터 완성]
+
+    style A fill:#c5dcef
+    style B fill:#c0ecd3
+    style C fill:#fde8c0
+    style D fill:#ffc8c4
+    style E fill:#e0c8ef
+    style F fill:#c0ecd3</pre><h3 id="핵심-철학">핵심 철학</h3>
+<p>Ralph Loop의 핵심 철학은 다음과 같습니다:</p>
+
+  <blockquote>
+    <p><strong>반복해서 완벽하게 만들어라. 처음부터 완벽을 추구하지 말고 계속 시도하면서 실패한 결과를 기반으로 발전시켜 나가라.</strong></p>
+
+  </blockquote>
+
+<p>이것은 <strong>실패의 데이터를 통해 성공할 수 있다</strong>는 것을 의미합니다. <a href="https://youtu.be/wz7oFfIR7LA?t=120">https://youtu.be/wz7oFfIR7LA?t=120</a></p>
+<h2 id="ralph-loop-동작-원리">Ralph Loop 동작 원리</h2>
+<h3 id="핵심-동작-흐름">핵심 동작 흐름</h3>
+<p>Ralph Loop의 핵심 동작은 다음과 같습니다:</p>
+<pre class="mermaid">flowchart LR
+    A[작업 수행] --> B[완료 시도]
+    B --> C{Stop Hooks<br/>검사}
+    C -->|통과| D[종료]
+    C -->|실패| E[프롬프트 재주입]
+    E --> A
+
+    style A fill:#c5dcef
+    style B fill:#c0ecd3
+    style C fill:#fde8c0
+    style D fill:#c0ecd3
+    style E fill:#ffc8c4</pre><h3 id="각-iteration의-동작">각 Iteration의 동작</h3>
+<p>각 iteration마다 Ralph는 다음 작업을 수행합니다:</p>
+<pre class="mermaid">flowchart TD
+    A[시작] --> B[가장 높은 우선순위의<br/>미완료 태스크 찾기]
+    B --> C[태스크 단계 수행]
+    C --> D[테스트, 린트,<br/>타입 체크 실행]
+    D --> E{검증 통과?}
+    E -->|아니오| F[수정]
+    F --> C
+    E -->|예| G[태스크 완료 처리]
+    G --> H[스크린샷 촬영]
+    H --> I[변경사항 커밋]
+    I --> J{모든 태스크 완료?}
+    J -->|아니오| B
+    J -->|예| K[종료]
+
+    style A fill:#c5dcef
+    style B fill:#c0ecd3
+    style C fill:#c0ecd3
+    style D fill:#fde8c0
+    style E fill:#ffc8c4
+    style F fill:#ffc8c4
+    style G fill:#c0ecd3
+    style H fill:#e0c8ef
+    style I fill:#c0ecd3
+    style J fill:#fde8c0
+    style K fill:#c0ecd3</pre><ol>
+<li><code>.agent/tasks.json</code>에서 가장 높은 우선순위의 미완료 태스크를 찾습니다</li>
+<li><code>.agent/tasks/TASK-{ID}.json</code>에 정의된 태스크 단계를 수행합니다</li>
+<li>테스트, 린트, 타입 체크를 실행합니다</li>
+<li>태스크를 완료하고, 스크린샷을 찍고, 태스크 상태를 업데이트하고, 변경사항을 커밋합니다</li>
+<li>모든 태스크가 통과하거나 최대 iteration에 도달할 때까지 반복합니다</li>
+</ol>
+<h3 id="stop-hooks-메커니즘">Stop Hooks 메커니즘</h3>
+<p><strong>Stop Hooks</strong>는 Claude 내에서 동작을 완료했을 때 특정 동작을 수행하는 규칙입니다. 이 규칙에서 특정 조건을 만족하는지를 확인합니다. <a href="https://youtu.be/wz7oFfIR7LA?t=150">https://youtu.be/wz7oFfIR7LA?t=150</a></p>
+<pre class="mermaid">sequenceDiagram
+    participant U as 사용자
+    participant C as Claude/AI Agent
+    participant H as Stop Hooks
+    participant L as .agent/logs/
+
+    U->>C: 작업 요청
+    loop 완료될 때까지
+        C->>C: 태스크 수행
+        C->>H: 완료했다고 판단
+        H->>C: "진짜 완료된 거 맞아?"
+        C->>C: 검증 실행
+        alt 검증 실패
+            C->>C: 수정 후 재시도
+        else 검증 성공
+            C->>L: 로그 저장
+            C->>H: Promise Tag 출력
+            H->>U: 작업 완료
+        end
+    end</pre><h2 id="ralph-loop의-핵심-기능">Ralph Loop의 핵심 기능</h2>
+<h3 id="주요-기능-목록">주요 기능 목록</h3>
+<p>Ralph Loop는 단순한 반복문이 아니라 다음과 같은 풍부한 기능을 제공합니다:</p>
+<pre class="mermaid">mindmap
+  root((Ralph Loop 기능))
+    PRD 관리
+      PRD 자동 생성
+      태스크 분해
+      단계 생성
+    태스크 관리
+      조회 테이블
+      개별 스펙
+      우선순위
+    모니터링
+      Iteration 추적
+      스트림 프리뷰
+      단계 감지
+      스크린샷 캡처
+    안전장치
+      알림
+      히스토리 로깅
+      타이밍 메트릭
+      스티어링</pre><table>
+  <thead>
+      <tr>
+          <th>기능</th>
+          <th>설명</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>PRD 생성</strong></td>
+          <td>요구사항에서 PRD와 태스크 목록 자동 생성</td>
+      </tr>
+      <tr>
+          <td><strong>태스크 조회 테이블 생성</strong></td>
+          <td>PRD에서 태스크 조회 테이블 생성</td>
+      </tr>
+      <tr>
+          <td><strong>태스크 분해 + 단계 생성</strong></td>
+          <td>각 태스크를 관리 가능한 단계로 분해</td>
+      </tr>
+      <tr>
+          <td><strong>Iteration 추적</strong></td>
+          <td>타이밍과 함께 진행 상황 표시</td>
+      </tr>
+      <tr>
+          <td><strong>스트림 프리뷰</strong></td>
+          <td>에이전트의 라이브 출력 표시</td>
+      </tr>
+      <tr>
+          <td><strong>단계 감지</strong></td>
+          <td>현재 활동 식별 (Thinking, Implementing, Testing 등)</td>
+      </tr>
+      <tr>
+          <td><strong>스크린샷 캡처</strong></td>
+          <td>현재 화면 캡처</td>
+      </tr>
+      <tr>
+          <td><strong>알림</strong></td>
+          <td>인간 입력이 필요할 때 알림</td>
+      </tr>
+      <tr>
+          <td><strong>히스토리 로깅</strong></td>
+          <td>각 iteration의 깨끗한 출력 저장</td>
+      </tr>
+      <tr>
+          <td><strong>타이밍</strong></td>
+          <td>각 iteration과 총 시간에 대한 타이밍 메트릭</td>
+      </tr>
+      <tr>
+          <td><strong>스티어링</strong></td>
+          <td>루프가 계속되기 전에 수행해야 할 중요 작업 우선 처리</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="다른-ralph들과의-차별점">다른 Ralph들과의 차별점</h3>
+<p>Ralph Loop는 다음과 같은 점에서 독특합니다:</p>
+<ul>
+<li><strong>해킹 가능한 스크립트</strong> - 자신의 환경과 좋아하는 agentic AI CLI에 맞게 구성 가능</li>
+<li><strong>구조화되지 않은 요구사항을 덤프</strong>하고 에이전트가 PRD와 태스크 목록을 생성</li>
+<li><strong>태스크 조회 테이블</strong>과 개별 상세 단계 사용 → 수백 개의 태스크를 처리할 때 더 확장 가능</li>
+<li><strong>샌드박스로 보안 강화</strong></li>
+<li><strong>진행 상황과 통계 표시</strong>로 작업 내용 모니터링 가능</li>
+<li><strong>자동화된 테스트와 스크린샷</strong>을 태스크별로 작성하고 실행하도록 지시</li>
+<li><strong>관찰 가능성과 추적 가능성</strong> 제공, 출력 스트림과 iteration별 전체 히스토리 로그 캡처</li>
+</ul>
+<h2 id="설치-및-설정">설치 및 설정</h2>
+<h3 id="step-1-ralph-설치">Step 1: Ralph 설치</h3>
+<p>프로젝트 디렉토리에서 다음 명령어를 실행합니다:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>npm install @pageai/ralph-loop
+</span></span></code></pre></div><p>또는 Claude Code 내에서 플러그인으로 설치: <a href="https://youtu.be/wz7oFfIR7LA?t=240">https://youtu.be/wz7oFfIR7LA?t=240</a></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/install ralph-loop claude-plugins-official
+</span></span></code></pre></div><h3 id="step-2-prd--태스크-목록-생성">Step 2: PRD + 태스크 목록 생성</h3>
+<p><code>prd-creator</code> 스킬을 사용하여 요구사항에서 PRD를 생성합니다. Claude Code나 Cursor 등을 열고 요구사항을 프롬프트합니다:</p>
+<pre tabindex="0"><code>Use the prd-creator skill to help me create a PRD and task list for the below requirements.
+
+An app is already set up with React, Tailwind CSS and TypeScript.
+
+Requirements:
+
+- A SaaS product that helps users manage their finances.
+- Target audience: Small business owners and freelancers.
+- Core features:
+  - Track income and expenses.
+  - Create and send invoices.
+  - Track payments and receipts.
+  - Generate reports and insights.
+- Use the shadcn/ui library for components.
+- Integrate with Stripe for payments.
+- Use Supabase for database.
+</code></pre><p><strong>Pro tips:</strong></p>
+<ul>
+<li>사용할 라이브러리와 프레임워크를 명시하세요</li>
+<li>환경 변수(DB, API 키 등)를 <code>.env</code>에 저장하고 <code>.gitignore</code>에 추가하세요</li>
+<li>사용자 흐름과 여정을 설명하세요</li>
+<li>관련 문서와 UI 참조를 <code>/docs</code>에 추가하고 요구사항에서 언급하세요</li>
+<li>최대한 자세히 설명하세요</li>
+<li>자신의 언어로 작성해도 됩니다</li>
+</ul>
+<h3 id="step-3-docker-샌드박스-설정">Step 3: Docker 샌드박스 설정</h3>
+<p>Docker 샌드박스 내에서 Claude를 인증합니다:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker sandbox run claude .
+</span></span></code></pre></div><p>그리고 지침에 따라 Claude Code에 로그인합니다.</p>
+
+  <blockquote>
+    <p><strong>중요</strong>: <code>Bypass Permissions mode</code>에 &ldquo;Yes&quot;라고 답하세요. 이것이 Docker 샌드박스를 사용하는 정확한 이유입니다.</p>
+
+  </blockquote>
+
+<h3 id="step-4-ralph-실행">Step 4: Ralph 실행</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./ralph.sh -n <span style="color:#0550ae">50</span> <span style="color:#57606a"># 50회 iteration으로 Ralph Loop 실행</span>
+</span></span></code></pre></div>
+  <blockquote>
+    <p>첫 번째 iteration은 샌드박스 환경이 올바르게 설정되었는지 확인하는 데 사용됩니다. 완료하는 데 약 5분이 소요됩니다.</p>
+
+  </blockquote>
+
+<h2 id="사용법">사용법</h2>
+<h3 id="기본-명령어">기본 명령어</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># 기본 에이전트 루프 실행 (기본값: 10회 iteration)</span>
+</span></span><span style="display:flex;"><span>./ralph.sh
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 커스텀 iteration 제한으로 실행</span>
+</span></span><span style="display:flex;"><span>./ralph.sh <span style="color:#0550ae">5</span>
+</span></span><span style="display:flex;"><span>./ralph.sh -n <span style="color:#0550ae">5</span>
+</span></span><span style="display:flex;"><span>./ralph.sh --max-iterations <span style="color:#0550ae">5</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 정확히 한 번의 iteration 실행</span>
+</span></span><span style="display:flex;"><span>./ralph.sh --once
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 도움말 표시</span>
+</span></span><span style="display:flex;"><span>./ralph.sh --help
+</span></span></code></pre></div>
+  <blockquote>
+    <p>NB: 스크립트를 실행 가능하게 만들려면 <code>chmod +x ralph.sh</code>를 실행해야 할 수 있습니다.</p>
+
+  </blockquote>
+
+<h3 id="claude-code-내에서-사용">Claude Code 내에서 사용</h3>
+<p>Ralph Loop 명령어는 다음 문법을 따릅니다:</p>
+<pre tabindex="0"><code>/ralph-loop [프롬프트] --max-iteration [횟수] --completion-promise [완료 문구]
+</code></pre><h4 id="옵션-설명">옵션 설명</h4>
+<table>
+  <thead>
+      <tr>
+          <th>옵션</th>
+          <th>설명</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>프롬프트</td>
+          <td>할 일을 적어 주는 곳</td>
+      </tr>
+      <tr>
+          <td><code>--max-iteration</code></td>
+          <td>최대 몇 번 반복할지 (피드백 받고 얼마나 다시 제시도할지)</td>
+      </tr>
+      <tr>
+          <td><code>--completion-promise</code></td>
+          <td>특정 문구를 출력하면 종료시키겠다는 의미</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>중요</strong>: 옵션들을 안 넣으면 무한 루프를 돌게 되는데, 그러면 토큰이 살살 녹을 것입니다. 웬만하면 최대 횟수를 적어 주는 것을 추천합니다. <a href="https://youtu.be/wz7oFfIR7LA?t=300">https://youtu.be/wz7oFfIR7LA?t=300</a></p>
+<h3 id="간단한-예제">간단한 예제</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/ralph-loop <span style="color:#0a3069">&#34;할 일 목록을 위한 REST API를 구축해 주세요. 완료되면 DONE을 출력합니다&#34;</span> --max-iteration <span style="color:#0550ae">50</span> --completion-promise DONE
+</span></span></code></pre></div><p>이렇게 하면:</p>
+<ul>
+<li>할 일 목록 REST API를 구축하라는 프롬프트</li>
+<li>최대 50번까지 반복</li>
+<li>&ldquo;DONE&quot;이라는 문자를 출력하면 완료로 간주</li>
+</ul>
+<h2 id="디렉토리-구조">디렉토리 구조</h2>
+<p>Ralph Loop는 다음과 같은 디렉토리 구조를 사용합니다:</p>
+<pre tabindex="0"><code>.agent/
+├── PROMPT.md           # 각 iteration마다 에이전트에 전송되는 프롬프트
+├── tasks.json          # 태스크 조회 테이블 (필수)
+├── tasks/              # 개별 태스크 스펙 (TASK-{ID}.json)
+├── prd/
+│   ├── PRD.md          # 제품 요구사항 문서
+│   └── SUMMARY.md      # 각 iteration마다 에이전트에 전송되는 짧은 프로젝트 개요
+├── logs/
+│   └── LOG.md          # 진행 로그 (자동 생성)
+├── history/            # Iteration 출력 로그
+└── skills/             # 공유 스킬 (source of truth)
+</code></pre><pre class="mermaid">flowchart TD
+    subgraph .agent/ 디렉토리
+        A[PROMPT.md<br/>매 iteration 프롬프트]
+        B[tasks.json<br/>태스크 조회 테이블]
+        C[tasks/<br/>개별 태스크 스펙]
+        D[prd/PRD.md<br/>제품 요구사항]
+        E[prd/SUMMARY.md<br/>프로젝트 개요]
+        F[logs/LOG.md<br/>진행 로그]
+        G[history/<br/>iteration 로그]
+        H[skills/<br/>공유 스킬]
+    end
+
+    style A fill:#c5dcef
+    style B fill:#c0ecd3
+    style C fill:#c0ecd3
+    style D fill:#fde8c0
+    style E fill:#fde8c0
+    style F fill:#e0c8ef
+    style G fill:#e0c8ef
+    style H fill:#ffc8c4</pre><h2 id="promise-tags와-exit-codes">Promise Tags와 Exit Codes</h2>
+<h3 id="promise-tags">Promise Tags</h3>
+<p>Ralph는 상태를 전달하기 위해 시맨틱 태그를 사용합니다:</p>
+<table>
+  <thead>
+      <tr>
+          <th>태그</th>
+          <th>의미</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>&lt;promise&gt;COMPLETE&lt;/promise&gt;</code></td>
+          <td>모든 태스크가 성공적으로 완료됨</td>
+      </tr>
+      <tr>
+          <td><code>&lt;promise&gt;BLOCKED:reason&lt;/promise&gt;</code></td>
+          <td>에이전트가 인간의 도움이 필요함</td>
+      </tr>
+      <tr>
+          <td><code>&lt;promise&gt;DECIDE:question&lt;/promise&gt;</code></td>
+          <td>에이전트가 결정이 필요함</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="exit-codes">Exit Codes</h3>
+<table>
+  <thead>
+      <tr>
+          <th>코드</th>
+          <th>의미</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>0</td>
+          <td>COMPLETE - 모든 태스크 완료</td>
+      </tr>
+      <tr>
+          <td>1</td>
+          <td>MAX_ITERATIONS - 제한 도달</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>BLOCKED - 인간 도움 필요</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>DECIDE - 인간 결정 필요</td>
+      </tr>
+  </tbody>
+</table>
+<pre class="mermaid">flowchart TD
+    A[Ralph Loop 실행] --> B{종료 조건}
+    B -->|모든 태스크 완료| C[Exit 0<br/>COMPLETE]
+    B -->|최대 iteration 도달| D[Exit 1<br/>MAX_ITERATIONS]
+    B -->|인간 도움 필요| E[Exit 2<br/>BLOCKED]
+    B -->|인간 결정 필요| F[Exit 3<br/>DECIDE]
+
+    style C fill:#c0ecd3
+    style D fill:#fde8c0
+    style E fill:#ffc8c4
+    style F fill:#e0c8ef</pre><h2 id="에이전트-스티어링">에이전트 스티어링</h2>
+<p>경우에 따라 에이전트가 어려움을 겪거나, 느려지거나, 차단기를 극복하지 못하는 것을 발견할 수 있습니다.</p>
+<p>루프가 실행되는 동안 <code>.agent/STEERING.md</code> 파일을 편집하여 루프가 계속되기 전에 수행해야 할 중요한 작업을 추가할 수 있습니다.</p>
+<p>에이전트는 각 iteration마다 이 파일을 확인하고 중요한 작업이 있으면 태스크를 건너뛰고 중요한 작업을 먼저 완료합니다.</p>
+<pre class="mermaid">flowchart LR
+    A[Iteration 시작] --> B[STEERING.md 확인]
+    B --> C{중요 작업 있음?}
+    C -->|예| D[중요 작업 우선 수행]
+    D --> E[일반 태스크]
+    C -->|아니오| E
+    E --> F[다음 Iteration]
+
+    style A fill:#c5dcef
+    style B fill:#fde8c0
+    style C fill:#ffc8c4
+    style D fill:#e0c8ef
+    style E fill:#c0ecd3
+    style F fill:#c0ecd3</pre><h2 id="skills-시스템">Skills 시스템</h2>
+<p>Skills는 특화된 지식과 워크플로우를 제공하는 재사용 가능한 에이전트 기능입니다.</p>
+<h3 id="사용-가능한-skills">사용 가능한 Skills</h3>
+<table>
+  <thead>
+      <tr>
+          <th>Skill</th>
+          <th>설명</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>component-refactoring</code></td>
+          <td>React 컴포넌트 분할 및 리팩토링 패턴</td>
+      </tr>
+      <tr>
+          <td><code>e2e-tester</code></td>
+          <td>End-to-end 테스트 워크플로우</td>
+      </tr>
+      <tr>
+          <td><code>frontend-code-review</code></td>
+          <td>코드 품질 및 성능 리뷰 가이드라인</td>
+      </tr>
+      <tr>
+          <td><code>frontend-testing</code></td>
+          <td>단위 및 통합 테스트 패턴</td>
+      </tr>
+      <tr>
+          <td><code>prd-creator</code></td>
+          <td>Ralph용 PRD 및 태스크 분해 생성</td>
+      </tr>
+      <tr>
+          <td><code>skill-creator</code></td>
+          <td>새로운 스킬 생성</td>
+      </tr>
+      <tr>
+          <td><code>vercel-react-best-practices</code></td>
+          <td>React/Next.js 성능 패턴</td>
+      </tr>
+      <tr>
+          <td><code>mysql</code></td>
+          <td>MySQL/InnoDB 스키마, 인덱싱, 쿼리 튜닝</td>
+      </tr>
+      <tr>
+          <td><code>postgres</code></td>
+          <td>PostgreSQL 모범 사례 및 쿼리 최적화</td>
+      </tr>
+      <tr>
+          <td><code>web-design-guidelines</code></td>
+          <td>UI/UX 디자인 원칙</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="skills-디렉토리-구조">Skills 디렉토리 구조</h3>
+<p>Skills는 <code>.agent/skills/</code>에서 여러 위치로 심볼릭 링크됩니다:</p>
+<pre tabindex="0"><code># Source of truth
+.agent/skills/
+    ├── component-refactoring/
+    ├── e2e-tester/
+    ├── postgres/
+    └── ...
+
+# Symlinks -&gt; .agent/skills/*
+.agents/skills/*
+.claude/skills/*
+.codex/skills/*
+.cursor/skills/*
+</code></pre><h2 id="다양한-agentic-cli-지원">다양한 Agentic CLI 지원</h2>
+<p>Ralph Loop는 Claude Code뿐만 아니라 다양한 agentic AI CLI를 지원합니다:</p>
+<pre class="mermaid">flowchart TD
+    subgraph 지원되는 CLI
+        A[Claude Code]
+        B[Codex CLI]
+        C[Gemini CLI]
+        D[GitHub Copilot]
+        E[OpenCode]
+        F[CAgent]
+        G[Kiro]
+    end
+
+    H[Ralph Loop] --> A
+    H --> B
+    H --> C
+    H --> D
+    H --> E
+    H --> F
+    H --> G
+
+    style H fill:#c5dcef
+    style A fill:#c0ecd3
+    style B fill:#c0ecd3
+    style C fill:#c0ecd3
+    style D fill:#c0ecd3
+    style E fill:#c0ecd3
+    style F fill:#c0ecd3
+    style G fill:#c0ecd3</pre><p>다른 agentic CLI를 사용하려면 <code>ralph.sh</code> 스크립트에서 <code># This is the main command loop.</code> 부분을 찾아 수정합니다:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker sandbox run codex . <span style="color:#57606a"># for Codex CLI</span>
+</span></span><span style="display:flex;"><span>docker sandbox run gemini . <span style="color:#57606a"># for Gemini CLI</span>
+</span></span></code></pre></div><h2 id="테스트-프레임워크-설정">테스트 프레임워크 설정</h2>
+<h3 id="playwright-설정-e2e-테스트">Playwright 설정 (E2E 테스트)</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">defineConfig</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">devices</span> <span style="color:#1f2328">}</span> <span style="color:#cf222e">from</span> <span style="color:#0a3069">&#39;@playwright/test&#39;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">export</span> <span style="color:#cf222e">default</span> <span style="color:#1f2328">defineConfig</span><span style="color:#1f2328">({</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">testDir</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;./tests&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">fullyParallel</span>: <span style="color:#cf222e">true</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">globalTimeout</span>: <span style="color:#cf222e">30</span> <span style="color:#0550ae">*</span> <span style="color:#0550ae">60</span> <span style="color:#0550ae">*</span> <span style="color:#0550ae">1000</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">forbidOnly</span><span style="color:#0550ae">:</span> <span style="color:#0550ae">!!</span><span style="color:#1f2328">process</span><span style="color:#1f2328">.</span><span style="color:#1f2328">env</span><span style="color:#1f2328">.</span><span style="color:#1f2328">CI</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">retries</span>: <span style="color:#cf222e">process.env.CI</span> <span style="color:#0550ae">?</span> <span style="color:#1f2328">2</span> : <span style="color:#cf222e">1</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">workers</span>: <span style="color:#cf222e">process.env.CI</span> <span style="color:#0550ae">?</span> <span style="color:#1f2328">3</span> : <span style="color:#cf222e">6</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">reporter</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;html&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">use</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">baseURL</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;http://localhost:3000&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">trace</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;on-first-retry&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">},</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">projects</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">[</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">name</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;chromium&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">use</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">...</span><span style="color:#1f2328">devices</span><span style="color:#1f2328">[</span><span style="color:#0a3069">&#39;Desktop Chrome&#39;</span><span style="color:#1f2328">]</span> <span style="color:#1f2328">},</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">],</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">});</span>
+</span></span></code></pre></div><h3 id="vitest-설정-단위-테스트">Vitest 설정 (단위 테스트)</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">defineConfig</span> <span style="color:#1f2328">}</span> <span style="color:#cf222e">from</span> <span style="color:#0a3069">&#34;vitest/config&#34;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#1f2328">react</span> <span style="color:#cf222e">from</span> <span style="color:#0a3069">&#34;@vitejs/plugin-react&#34;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#1f2328">path</span> <span style="color:#cf222e">from</span> <span style="color:#0a3069">&#34;path&#34;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">export</span> <span style="color:#cf222e">default</span> <span style="color:#1f2328">defineConfig</span><span style="color:#1f2328">({</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">plugins</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">[</span><span style="color:#1f2328">react</span><span style="color:#1f2328">()],</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">test</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">environment</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#34;node&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">globals</span>: <span style="color:#cf222e">true</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">include</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">[</span><span style="color:#0a3069">&#34;lib/**/*.test.ts&#34;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#34;lib/**/*.test.tsx&#34;</span><span style="color:#1f2328">],</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">},</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">resolve</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">alias</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0a3069">&#34;@&#34;</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">path</span><span style="color:#1f2328">.</span><span style="color:#1f2328">resolve</span><span style="color:#1f2328">(</span><span style="color:#1f2328">__dirname</span><span style="color:#1f2328">),</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">},</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">},</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">});</span>
+</span></span></code></pre></div><h2 id="ralph-loop의-놀라운-성과">Ralph Loop의 놀라운 성과</h2>
+<p>이 간단한 명령어만으로 다음과 같은 성과를 달성했다고 합니다: <a href="https://youtu.be/wz7oFfIR7LA?t=210">https://youtu.be/wz7oFfIR7LA?t=210</a></p>
+<ul>
+<li><strong>6개의 저장소</strong>를 만들고</li>
+<li><strong>5만 달러의 계약</strong>을 따내고</li>
+<li><strong>Curse</strong>라는 프로그래밍 언어 자체를 만들었다</li>
+</ul>
+<pre class="mermaid">mindmap
+  root((Ralph Loop 성과))
+    저장소
+      6개 프로젝트 생성
+      자동화된 코드베이스
+    비즈니스
+      5만 달러 계약 체결
+    프로그래밍 언어
+      Curse 언어 개발</pre><h2 id="언제-사용하면-좋은가">언제 사용하면 좋은가</h2>
+<p>Ralph Loop를 잘 사용하기 위한 판단 기준은 다음과 같습니다: <a href="https://youtu.be/wz7oFfIR7LA?t=600">https://youtu.be/wz7oFfIR7LA?t=600</a></p>
+<h3 id="적합한-작업">적합한 작업</h3>
+<ol>
+<li><strong>명확한 성공 기준을 잘 갖춘 정의된 과제</strong></li>
+<li><strong>자동으로 검증할 수 있는 작업</strong> (테스트 실행, 린트 실행 등)</li>
+<li><strong>정확한 방향성을 찔러 줄 수 있는 규칙이 있는 상황</strong></li>
+</ol>
+<pre class="mermaid">flowchart LR
+    subgraph 적합한 작업
+        A1[테스트 가능한 코드 작성]
+        A2[린트 통과해야 하는 작업]
+        A3[명확한 완료 조건]
+        A4[PRD 기반 개발]
+    end
+
+    subgraph 부적합한 작업
+        B1[설계 과정 필요]
+        B2[인간 판단 필요]
+        B3[다양한 방식이 가능한 작업]
+    end</pre><h3 id="부적합한-작업">부적합한 작업</h3>
+<ul>
+<li>하나를 구현하는데 A, B, C라는 다양한 방식이 있다면 Ralph Loop는 어디로 가야 할지 정확히 모릅니다</li>
+<li>인간의 판단이나 설계 과정이 필요한 작업에는 사용하지 않는 것이 좋습니다</li>
+</ul>
+<h2 id="주의사항">주의사항</h2>
+<h3 id="토큰-비용">토큰 비용</h3>
+<p>Ralph Loop는 반복적으로 작업을 수행하므로 토큰 비용이 많이 들 수 있습니다. 댓글에서도 많은 사용자들이 비용에 대한 우려를 표했습니다:</p>
+<ul>
+<li>&ldquo;다 좋은데 비용이 많이 들어서 손도 못대겠어요&rdquo;</li>
+<li>&ldquo;오푸스 쓰면 크일 날 듯.. 회사는 쓸 듯. 개인은 힘들 듯&rdquo;</li>
+<li>&ldquo;연습용으로 돌리기에는 설명만 들어도 비용이 녹는 소리가&hellip;&rdquo;</li>
+</ul>
+<h3 id="검증-습관-기르기">검증 습관 기르기</h3>
+<p>물론 Ralph를 전적으로 믿어서는 안 됩니다. 항상 검증을 어떻게 하면 좋을지 고민해 보는 습관을 기르는 것이 좋습니다.</p>
+<h3 id="실패에서-배우기">실패에서 배우기</h3>
+<p>Ralph Loop를 통해 다음과 같은 철학을 깨우칠 수 있습니다:</p>
+
+  <blockquote>
+    <p>처음에는 그냥 마구잡이로 만들어 보세요. 그리고 실패했을 때마다 표지판을 옆에서 추가해 주면 됩니다. &ldquo;통합 테스트를 추가해라&rdquo;, &ldquo;연동할 때 플레이라이트 MCP를 이용해라&quot;처럼 말이죠.</p>
+
+  </blockquote>
+
+<p>결국 이 실패들을 옆에서 보면서 올바른 검증을 할 수 있게 만든다면, <strong>반복을 통해 완벽을 만들 수 있습니다</strong>.</p>
+<pre class="mermaid">flowchart TD
+    A[첫 시도<br/>마구잡이로] --> B[실패 발생]
+    B --> C[표지판 추가<br/>검증 규칙]
+    C --> D[재시도]
+    D --> E{성공?}
+    E -->|아니오| B
+    E -->|예| F[완벽한 결과]
+
+    style A fill:#c5dcef
+    style B fill:#ffc8c4
+    style C fill:#e0c8ef
+    style D fill:#c0ecd3
+    style E fill:#fde8c0
+    style F fill:#c0ecd3</pre><h2 id="지속적인-개발">지속적인 개발</h2>
+<p>Ralph가 태스크를 구현하면서 일부 조정, 기능 또는 버그 수정이 필요할 수 있습니다.</p>
+<p>그러려면 <code>prd-creator</code> 스킬을 계속 사용하여 PRD와 태스크 목록을 업데이트해야 합니다.</p>
+<p>예시:</p>
+<pre tabindex="0"><code>I would like to expand the PRD / tasks with these tasks:
+
+- there is a bug in X that should be fixed by doing Y
+- create a new feature that implement Z
+
+etc.
+</code></pre><p>여러 태스크를 한 번에 추가해도 괜찮습니다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<table>
+  <thead>
+      <tr>
+          <th>항목</th>
+          <th>내용</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>문제</strong></td>
+          <td>Claude가 &ldquo;완료&quot;라고 해도 실제로는 테스트 실패, 린트 에러 발생</td>
+      </tr>
+      <tr>
+          <td><strong>해결책</strong></td>
+          <td>Ralph Loop로 자동 검증 및 수정 반복</td>
+      </tr>
+      <tr>
+          <td><strong>핵심 철학</strong></td>
+          <td>반복해서 완벽하게 만들어라. 처음부터 완벽을 추구하지 말 것</td>
+      </tr>
+      <tr>
+          <td><strong>동작 원리</strong></td>
+          <td>태스크 수행 → 검증 → 실패 시 재시도 → 완료 시 커밋</td>
+      </tr>
+      <tr>
+          <td><strong>설치</strong></td>
+          <td><code>npm install @pageai/ralph-loop</code></td>
+      </tr>
+      <tr>
+          <td><strong>주요 옵션</strong></td>
+          <td><code>--max-iterations</code>, <code>--once</code>, Promise Tags</td>
+      </tr>
+      <tr>
+          <td><strong>지원 CLI</strong></td>
+          <td>Claude, Codex, Gemini, Copilot, OpenCode 등</td>
+      </tr>
+      <tr>
+          <td><strong>보안</strong></td>
+          <td>Docker 샌드박스</td>
+      </tr>
+      <tr>
+          <td><strong>적합한 작업</strong></td>
+          <td>명확한 성공 기준, 자동 검증 가능, PRD 기반</td>
+      </tr>
+      <tr>
+          <td><strong>주의사항</strong></td>
+          <td>토큰 비용 고려, 검증 습관 기르기</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="결론">결론</h2>
+<p>Ralph Loop는 Claude가 &ldquo;완료했다&quot;고 판단했을 때 진짜로 완료되었는지 다시 한번 확인하고, 문제가 있으면 스스로 수정하는 장기 실행 자동화 워크플로우를 제공합니다.</p>
+<p>핵심은 **&ldquo;처음부터 완벽하지 않아도 된다&rdquo;**는 것입니다. 실패할 때마다 검증 규칙(표지판)을 추가하면서 반복하다 보면, 결국 완벽한 결과에 도달할 수 있습니다.</p>
+<p>Ralph Loop의 가장 큰 장점은:</p>
+<ul>
+<li><strong>Docker 샌드박스</strong>로 보안 강화</li>
+<li><strong>PRD 자동 생성</strong>으로 요구사항 관리</li>
+<li><strong>태스크 기반</strong>으로 체계적인 진행</li>
+<li><strong>다양한 CLI 지원</strong>으로 유연성 확보</li>
+<li><strong>Skills 시스템</strong>으로 확장 가능</li>
+</ul>
+<p>다만 토큰 비용을 고려하여 적절한 <code>--max-iterations</code>을 설정하고, 명확한 성공 기준이 있는 작업에 사용하는 것이 좋습니다. 인간의 판단이나 설계가 필요한 작업보다는 자동으로 검증할 수 있는 작업에 활용해 보세요.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 03월 15일 10시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/claude">Claude</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/03/2026-03-15-claude-code-features-skills-guide/" rel="prev">
+        <span>Claude Code 기능 가이드: Memory, Slash Commands, Agents, Skills, Hooks, Plugins를 언제 써야 할까</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/03/2026-03-15-claude-code-frameworks-gsd-omc-superpowers/" rel="next">
+        <span>Claude Code 프레임워크 비교: GSD, oh-my-claudecode, Superpowers 중 무엇을 써야 할까</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#ralph-loop란-무엇인가">Ralph Loop란 무엇인가</a>
+      <ul>
+        <li><a href="#놀이터-비유">놀이터 비유</a></li>
+        <li><a href="#핵심-철학">핵심 철학</a></li>
+      </ul>
+    </li>
+    <li><a href="#ralph-loop-동작-원리">Ralph Loop 동작 원리</a>
+      <ul>
+        <li><a href="#핵심-동작-흐름">핵심 동작 흐름</a></li>
+        <li><a href="#각-iteration의-동작">각 Iteration의 동작</a></li>
+        <li><a href="#stop-hooks-메커니즘">Stop Hooks 메커니즘</a></li>
+      </ul>
+    </li>
+    <li><a href="#ralph-loop의-핵심-기능">Ralph Loop의 핵심 기능</a>
+      <ul>
+        <li><a href="#주요-기능-목록">주요 기능 목록</a></li>
+        <li><a href="#다른-ralph들과의-차별점">다른 Ralph들과의 차별점</a></li>
+      </ul>
+    </li>
+    <li><a href="#설치-및-설정">설치 및 설정</a>
+      <ul>
+        <li><a href="#step-1-ralph-설치">Step 1: Ralph 설치</a></li>
+        <li><a href="#step-2-prd--태스크-목록-생성">Step 2: PRD + 태스크 목록 생성</a></li>
+        <li><a href="#step-3-docker-샌드박스-설정">Step 3: Docker 샌드박스 설정</a></li>
+        <li><a href="#step-4-ralph-실행">Step 4: Ralph 실행</a></li>
+      </ul>
+    </li>
+    <li><a href="#사용법">사용법</a>
+      <ul>
+        <li><a href="#기본-명령어">기본 명령어</a></li>
+        <li><a href="#claude-code-내에서-사용">Claude Code 내에서 사용</a></li>
+        <li><a href="#간단한-예제">간단한 예제</a></li>
+      </ul>
+    </li>
+    <li><a href="#디렉토리-구조">디렉토리 구조</a></li>
+    <li><a href="#promise-tags와-exit-codes">Promise Tags와 Exit Codes</a>
+      <ul>
+        <li><a href="#promise-tags">Promise Tags</a></li>
+        <li><a href="#exit-codes">Exit Codes</a></li>
+      </ul>
+    </li>
+    <li><a href="#에이전트-스티어링">에이전트 스티어링</a></li>
+    <li><a href="#skills-시스템">Skills 시스템</a>
+      <ul>
+        <li><a href="#사용-가능한-skills">사용 가능한 Skills</a></li>
+        <li><a href="#skills-디렉토리-구조">Skills 디렉토리 구조</a></li>
+      </ul>
+    </li>
+    <li><a href="#다양한-agentic-cli-지원">다양한 Agentic CLI 지원</a></li>
+    <li><a href="#테스트-프레임워크-설정">테스트 프레임워크 설정</a>
+      <ul>
+        <li><a href="#playwright-설정-e2e-테스트">Playwright 설정 (E2E 테스트)</a></li>
+        <li><a href="#vitest-설정-단위-테스트">Vitest 설정 (단위 테스트)</a></li>
+      </ul>
+    </li>
+    <li><a href="#ralph-loop의-놀라운-성과">Ralph Loop의 놀라운 성과</a></li>
+    <li><a href="#언제-사용하면-좋은가">언제 사용하면 좋은가</a>
+      <ul>
+        <li><a href="#적합한-작업">적합한 작업</a></li>
+        <li><a href="#부적합한-작업">부적합한 작업</a></li>
+      </ul>
+    </li>
+    <li><a href="#주의사항">주의사항</a>
+      <ul>
+        <li><a href="#토큰-비용">토큰 비용</a></li>
+        <li><a href="#검증-습관-기르기">검증 습관 기르기</a></li>
+        <li><a href="#실패에서-배우기">실패에서 배우기</a></li>
+      </ul>
+    </li>
+    <li><a href="#지속적인-개발">지속적인 개발</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude/" class="badge badge-secondary">Claude</a>
+    <a href="/tags/ralph-loop/" class="badge badge-secondary">Ralph-Loop</a>
+    <a href="/tags/ai-%EC%9E%90%EB%8F%99%ED%99%94/" class="badge badge-secondary">AI 자동화</a>
+    <a href="/tags/stop-hooks/" class="badge badge-secondary">Stop Hooks</a>
+    <a href="/tags/docker-sandbox/" class="badge badge-secondary">Docker Sandbox</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

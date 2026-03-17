@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude HUD: Claude Code를 위한 실시간 상태 표시줄(Statusline) 플러그인'" />
+  <title>Claude HUD: Claude Code를 위한 실시간 상태 표시줄(Statusline) 플러그인  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude HUD: Claude Code를 위한 실시간 상태 표시줄(Statusline) 플러그인" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-03-05"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/03/2026-03-05-claude-hud-statusline-plugin/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="claude-code-plugin" />
+  
+  <meta property="og:tags" content="statusline" />
+  
+  <meta property="og:tags" content="claude-hud" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/03/2026-03-05-claude-hud-statusline-plugin/">
+          <h1>
+            Claude HUD: Claude Code를 위한 실시간 상태 표시줄(Statusline) 플러그인
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/03/2026-03-05-claude-hud-statusline-plugin/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Claude Code와 같은 에이전트형 CLI 도구가 등장하면서, 개발자들은 터미널을 떠나지 않고 코딩 작업을 AI에게 위임하는 경우가 늘고 있습니다. 하지만 긴 세션을 유지하다 보면 <strong>컨텍스트 윈도우가 얼마나 찼는지</strong>, <strong>에이전트가 무한 루프에 빠진 것은 아닌지</strong> 파악해야 할 필요성이 커졌습니다. Claude HUD는 이러한 문제를 해결하는 실시간 모니터링 도구입니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://discuss.pytorch.kr/t/claude-hud-claude-code-statusline/8690">Claude HUD: Claude Code를 위한 실시간 상태 표시줄(Statusline) 플러그인 - 파이토치 한국 사용자 모임</a></li>
+</ul>
+<h2 id="claude-hud-소개">Claude HUD 소개</h2>
+<p><strong>Claude HUD</strong> 는 Anthropic의 CLI 도구인 Claude Code 환경에서 실행되는 실시간 상태 표시줄(Statusline) 플러그인입니다. 터미널 하단에 항상 표시되며, 현재 AI 세션의 상태를 직관적으로 시각화해 줍니다.</p>
+<p>Claude HUD는 개발자가 터미널에서 AI 에이전트와 협업할 때 발생하는 <strong>&ldquo;블랙박스&rdquo;</strong> 문제를 해결합니다. 보통 AI에게 작업을 시키면 &ldquo;처리 중&quot;이라는 메시지만 뜨고 구체적으로 어떤 파일을 읽고 있는지, 토큰은 얼마나 썼는지 알기 어렵습니다. Claude HUD는 이러한 정보를 실시간으로 렌더링하여 투명성을 제공합니다.</p>
+<h2 id="claude-hud-아키텍처">Claude HUD 아키텍처</h2>
+<pre class="mermaid">flowchart LR
+    subgraph Input["입력 소스"]
+        A[Claude Code]
+        B[Transcript JSONL]
+    end
+
+    subgraph Processing["claude-hud 처리"]
+        C[stdin JSON<br/>파싱]
+        D[Transcript<br/>파싱]
+        E[데이터 통합]
+    end
+
+    subgraph Output["출력"]
+        F[stdout 렌더링]
+        G[터미널 하단<br/>HUD 표시]
+    end
+
+    A -->|"JSON 데이터<br/>(모델, 토큰)"| C
+    B -->|"도구, 에이전트,<br/>Todo 항목"| D
+    C --> E
+    D --> E
+    E -->|"터미널 제어 문자"| F
+    F --> G
+
+    style A fill:#e1f5fe
+    style B fill:#fff3e0
+    style E fill:#e8f5e9
+    style G fill:#fce4ec</pre><p>Claude HUD는 단순한 텍스트 출력이 아니라, Claude Code의 데이터 스트림을 가로채 분석하는 방식으로 작동합니다. 구체적인 처리 과정은 다음과 같습니다.</p>
+<h3 id="1-input-stream-입력-스트림">1. Input Stream (입력 스트림)</h3>
+<p>Claude Code로부터 <strong>JSON 형태의 데이터</strong> (모델 정보, 토큰 사용량 등) 를 <code>stdin</code> 으로 받습니다. 이를 통해 현재 세션의 기본 상태를 실시간으로 파악할 수 있습니다.</p>
+<h3 id="2-transcript-parsing-트랜스크립트-파싱">2. Transcript Parsing (트랜스크립트 파싱)</h3>
+<p>세션의 기록이 담긴 <strong>JSONL(Transcript) 파일</strong> 을 실시간으로 파싱하여 다음 정보를 추출합니다.</p>
+<ul>
+<li>도구 사용 내역 (Read, Edit, Grep 등)</li>
+<li>에이전트 활동 (서브 에이전트 실행 상태)</li>
+<li>Todo 항목 (할 일 진행 상황)</li>
+</ul>
+<h3 id="3-rendering-렌더링">3. Rendering (렌더링)</h3>
+<p>수집된 데이터를 바탕으로 <strong>터미널 제어 문자</strong> 를 포함한 텍스트를 생성하여 <code>stdout</code> 으로 내보냅니다. Claude Code가 이를 화면 하단에 렌더링합니다.</p>
+<h3 id="4-tech-stack-기술-스택">4. Tech Stack (기술 스택)</h3>
+<ul>
+<li><strong>TypeScript</strong> 로 작성</li>
+<li><strong>Node.js</strong> 환경에서 동작</li>
+</ul>
+<h2 id="claude-hud가-제공하는-정보">Claude HUD가 제공하는 정보</h2>
+<pre class="mermaid">graph TB
+    subgraph HUD["Claude HUD 표시 정보"]
+        S1["세션 정보<br/>(Session Info)"]
+        S2["도구 활동<br/>(Tool Activity)"]
+        S3["에이전트 상태<br/>(Agent Status)"]
+        S4["할 일 진행도<br/>(Todo Progress)"]
+    end
+
+    subgraph SessionInfo["세션 정보 구성요소"]
+        M["모델 (Opus, Sonnet)"]
+        P["요금제 (Pro, Max, Team)"]
+        C["컨텍스트 바<br/>(초록→노랑→빨강)"]
+        PR["프로젝트 경로"]
+        GB["Git 브랜치"]
+        CF["설정 파일 수<br/>(CLAUDE.md, MCP, Hooks)"]
+        UL["사용량 제한<br/>(5h Rate Limit)"]
+        D["경과 시간"]
+    end
+
+    S1 --> SessionInfo
+
+    style S1 fill:#bbdefb
+    style S2 fill:#c8e6c9
+    style S3 fill:#ffe0b2
+    style S4 fill:#f8bbd0</pre><p>Claude HUD는 터미널 하단에 여러 줄의 정보를 표시합니다. 각 줄은 세션의 특정 측면을 모니터링합니다.</p>
+<h3 id="세션-정보-session-info">세션 정보 (Session Info)</h3>
+<p>가장 윗줄은 현재 AI 모델과 프로젝트 환경의 전반적인 상태를 요약하여 보여줍니다.</p>
+<pre tabindex="0"><code>[Opus | Pro] █████░░░░░ 45% | my-project git:(main) | 2 CLAUDE.md | 5h: 25% | ⏱️ 5m
+</code></pre><table>
+  <thead>
+      <tr>
+          <th>구성 요소</th>
+          <th>설명</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>모델 (Model)</strong></td>
+          <td>현재 사용 중인 AI 모델 (예: Opus, Sonnet 등)</td>
+      </tr>
+      <tr>
+          <td><strong>요금제 (Plan)</strong></td>
+          <td>사용자의 구독 등급 (예: Pro, Max, Team). 사용량 제한 기능이 활성화된 경우에만 표시</td>
+      </tr>
+      <tr>
+          <td><strong>컨텍스트 바 (Context Bar)</strong></td>
+          <td>현재 세션의 컨텍스트 윈도우 사용량을 시각적 게이지로 표시. 사용량이 늘어날수록 색상이 변함 (초록 → 노랑 → 빨강). 빨간색에 가까워지면 <code>/compact</code> 명령어로 대화 내용 정리 필요</td>
+      </tr>
+      <tr>
+          <td><strong>프로젝트 경로 (Project Path)</strong></td>
+          <td>현재 작업 중인 디렉토리 경로. 기본값은 1단계 깊이, 설정에 따라 1~3단계까지 표시 가능</td>
+      </tr>
+      <tr>
+          <td><strong>현재 브랜치 (Git Branch)</strong></td>
+          <td>현재 체크아웃된 Git 브랜치 이름 (설정으로 끄고 켤 수 있음)</td>
+      </tr>
+      <tr>
+          <td><strong>설정 파일 수 (Config Counts)</strong></td>
+          <td>현재 로드된 CLAUDE.md 파일, 규칙(Rules), MCP 서버, 훅(Hooks) 등의 개수</td>
+      </tr>
+      <tr>
+          <td><strong>사용량 제한 (Usage Limits)</strong></td>
+          <td>5시간 동안의 메시지 전송량 제한 대비 현재 사용률 (Pro/Max/Team 플랜 전용)</td>
+      </tr>
+      <tr>
+          <td><strong>경과 시간 (Duration)</strong></td>
+          <td>현재 세션이 시작된 후 경과한 시간</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="도구-활동-tool-activity">도구 활동 (Tool Activity)</h3>
+<p>Claude가 수행한 기술적인 작업 내역을 추적합니다.</p>
+<pre tabindex="0"><code>✓ TaskOutput ×2 | ✓ mcp_context7 ×1 | ✓ Glob ×1 | ✓ Skill ×1
+</code></pre><table>
+  <thead>
+      <tr>
+          <th>구성 요소</th>
+          <th>설명</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Running Tools (실행 중)</strong></td>
+          <td>현재 실행 중인 도구는 회전하는 스피너 아이콘과 함께 타겟 파일명 표시. 멈춘 것이 아니라 작업 중임을 알려줌</td>
+      </tr>
+      <tr>
+          <td><strong>Completed Tools (완료됨)</strong></td>
+          <td>이미 완료된 작업은 도구 유형별로 집계. 동일한 도구 사용은 ×2, ×3과 같이 숫자로 묶어서 간결하게 표시</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="에이전트-상태-agent-status">에이전트 상태 (Agent Status)</h3>
+<p>메인 Claude 에이전트가 특정 작업을 위해 호출한 <strong>하위 에이전트(Sub-agent)</strong> 의 활동을 보여줍니다.</p>
+<pre tabindex="0"><code>✓ Explore: Explore home directory structure (5s)
+✓ open-source-librarian: Research React hooks patterns (2s)
+</code></pre><table>
+  <thead>
+      <tr>
+          <th>구성 요소</th>
+          <th>설명</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>에이전트 종류 및 작업</strong></td>
+          <td>현재 실행 중인 에이전트의 이름(예: Explore, open-source-librarian)과 해당 에이전트가 수행 중인 구체적인 작업 내용</td>
+      </tr>
+      <tr>
+          <td><strong>진행 시간</strong></td>
+          <td>각 에이전트가 해당 작업을 수행하는 데 걸린 시간(초 단위). 특정 작업이 비정상적으로 오래 걸리는지 파악 가능</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="할-일-진행도-todo-progress">할 일 진행도 (Todo Progress)</h3>
+<p>Claude에게 맡긴 작업 목록(Todo)의 진행 상황을 보여줍니다.</p>
+<pre tabindex="0"><code>✓ All todos complete (5/5)
+</code></pre><table>
+  <thead>
+      <tr>
+          <th>구성 요소</th>
+          <th>설명</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>현재 작업</strong></td>
+          <td>현재 진행 중인 할 일 항목이나 전체 완료 상태</td>
+      </tr>
+      <tr>
+          <td><strong>진행 개수</strong></td>
+          <td>전체 할 일 개수 대비 완료된 개수를 (완료/전체) 형태로 표시</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="claude-hud-설치-및-사용-방법">Claude HUD 설치 및 사용 방법</h2>
+<pre class="mermaid">flowchart LR
+    subgraph Step1["1단계: 마켓플레이스 추가"]
+        A["/plugin marketplace add<br/>jarrodwatts/claude-hud"]
+    end
+
+    subgraph Step2["2단계: 플러그인 설치"]
+        B["/plugin install claude-hud"]
+    end
+
+    subgraph Step3["3단계: 설정 초기화"]
+        C["/claude-hud:setup"]
+        D["HUD 즉시 표시<br/>(재시작 불필요)"]
+    end
+
+    Step1 --> Step2 --> Step3
+
+    style A fill:#e3f2fd
+    style B fill:#e8f5e9
+    style C fill:#fff3e0
+    style D fill:#fce4ec</pre><p>Claude HUD 플러그인은 <strong>Claude Code (v1.0.80 이상)</strong> 이 설치된 환경에서 작동합니다. Claude Code 세션 내부에서 다음 명령어들을 순차적으로 입력하여 설치합니다.</p>
+<h3 id="1단계-마켓플레이스-추가">1단계: 마켓플레이스 추가</h3>
+<p>먼저 플러그인 소스를 마켓플레이스에 등록합니다.</p>
+<pre tabindex="0"><code>/plugin marketplace add jarrodwatts/claude-hud
+</code></pre><h3 id="2단계-플러그인-설치">2단계: 플러그인 설치</h3>
+<p>등록된 소스에서 플러그인을 설치합니다.</p>
+<pre tabindex="0"><code>/plugin install claude-hud
+</code></pre><h3 id="3단계-설정-초기화">3단계: 설정 초기화</h3>
+<p>설치 후 설정을 적용하면 즉시 하단에 HUD가 나타납니다. <strong>재시작할 필요가 없습니다</strong>.</p>
+<pre tabindex="0"><code>/claude-hud:setup
+</code></pre><h2 id="라이선스">라이선스</h2>
+<p>Claude HUD 프로젝트는 <strong>MIT License</strong> 로 공개 및 배포되고 있습니다.</p>
+<ul>
+<li><strong>GitHub 저장소</strong>: <a href="https://github.com/jarrodwatts/claude-hud">jarrodwatts/claude-hud</a></li>
+</ul>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li><strong>Claude HUD</strong> 는 Claude Code용 실시간 상태 표시줄 플러그인으로, 터미널 하단에 AI 세션 상태를 시각화합니다.</li>
+<li><strong>stdin JSON</strong> 으로 모델/토큰 정보를 받고, <strong>JSONL Transcript</strong> 를 파싱하여 도구/에이전트/Todo 정보를 추출합니다.</li>
+<li><strong>세션 정보</strong>, <strong>도구 활동</strong>, <strong>에이전트 상태</strong>, <strong>할 일 진행도</strong> 를 실시간으로 모니터링합니다.</li>
+<li><strong>3단계 설치</strong> (마켓플레이스 추가 → 플러그인 설치 → 설정 초기화) 로 즉시 사용 가능합니다.</li>
+<li><strong>MIT License</strong> 로 공개된 오픈소스 프로젝트입니다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>Claude HUD는 AI 에이전트와의 협업에서 발생하는 &ldquo;블랙박스&rdquo; 문제를 해결하는 실용적인 도구입니다. 컨텍스트 사용량, 실행 중인 도구, 에이전트 활동, 작업 진행 상황을 한눈에 파악할 수 있어, 긴 세션에서도 AI의 동작을 투명하게 모니터링할 수 있습니다. Claude Code를 적극적으로 활용하는 개발자라면 설치해 볼 가치가 있는 플러그인입니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 03월 05일 21시 25분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/claude-code">claude-code</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/03/2026-03-05-ai-skills-9-essential/" rel="prev">
+        <span>AI 스킬 9가지: 이것만 알면 내년에 도태되지 않습니다</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/03/2026-03-05-ykdojo-claude-code-tips-dx-workflow/" rel="next">
+        <span>ykdojo/claude-code-tips 실전 운영 가이드: 46개 팁(0-45)을 워크플로우로 엮기</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#claude-hud-소개">Claude HUD 소개</a></li>
+    <li><a href="#claude-hud-아키텍처">Claude HUD 아키텍처</a>
+      <ul>
+        <li><a href="#1-input-stream-입력-스트림">1. Input Stream (입력 스트림)</a></li>
+        <li><a href="#2-transcript-parsing-트랜스크립트-파싱">2. Transcript Parsing (트랜스크립트 파싱)</a></li>
+        <li><a href="#3-rendering-렌더링">3. Rendering (렌더링)</a></li>
+        <li><a href="#4-tech-stack-기술-스택">4. Tech Stack (기술 스택)</a></li>
+      </ul>
+    </li>
+    <li><a href="#claude-hud가-제공하는-정보">Claude HUD가 제공하는 정보</a>
+      <ul>
+        <li><a href="#세션-정보-session-info">세션 정보 (Session Info)</a></li>
+        <li><a href="#도구-활동-tool-activity">도구 활동 (Tool Activity)</a></li>
+        <li><a href="#에이전트-상태-agent-status">에이전트 상태 (Agent Status)</a></li>
+        <li><a href="#할-일-진행도-todo-progress">할 일 진행도 (Todo Progress)</a></li>
+      </ul>
+    </li>
+    <li><a href="#claude-hud-설치-및-사용-방법">Claude HUD 설치 및 사용 방법</a>
+      <ul>
+        <li><a href="#1단계-마켓플레이스-추가">1단계: 마켓플레이스 추가</a></li>
+        <li><a href="#2단계-플러그인-설치">2단계: 플러그인 설치</a></li>
+        <li><a href="#3단계-설정-초기화">3단계: 설정 초기화</a></li>
+      </ul>
+    </li>
+    <li><a href="#라이선스">라이선스</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/claude-code-plugin/" class="badge badge-secondary">Claude-Code-Plugin</a>
+    <a href="/tags/statusline/" class="badge badge-secondary">Statusline</a>
+    <a href="/tags/claude-hud/" class="badge badge-secondary">Claude-Hud</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

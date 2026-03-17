@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'VSCode에서 Neovim Extension 설정하기: macOS &amp; Windows 가이드'" />
+  <title>VSCode에서 Neovim Extension 설정하기: macOS &amp; Windows 가이드  | 신규하 블로그</title>
+  <meta property="og:title" content="VSCode에서 Neovim Extension 설정하기: macOS &amp; Windows 가이드" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2025-07-24"> 
+  <meta property="og:url" content="https://gyuha.com/post/2025/07/2025-07-24-vscode-neovim-extension/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="vscode" />
+  
+  <meta property="og:tags" content="neovim" />
+  
+  <meta property="og:tags" content="vim" />
+  
+  <meta property="og:tags" content="macos" />
+  
+  <meta property="og:tags" content="windows" />
+  
+  <meta property="og:tags" content="hop.nvim" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2025/07/2025-07-24-vscode-neovim-extension/">
+          <h1>
+            VSCode에서 Neovim Extension 설정하기: macOS &amp; Windows 가이드
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2025/07/2025-07-24-vscode-neovim-extension/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <h2 id="vim에서-neovim으로-전향한-이유">Vim에서 Neovim으로 전향한 이유</h2>
+<p>VSCode에서 Vim extension을 오랫동안 사용해왔습니다. Vim의 강력한 편집 기능을 VSCode에서도 사용할 수 있다는 점은 매우 매력적이었죠. 하지만 한 가지 치명적인 문제가 있었습니다. 바로 <strong>한글 입력 시 타이밍이 밀리는 현상</strong>이었습니다.</p>
+<p>한글을 빠르게 타이핑하다 보면 글자가 제대로 입력되지 않거나, 입력 순서가 뒤바뀌는 등의 문제가 자주 발생했습니다. 이는 작업 효율성을 크게 떨어뜨렸고, 결국 대안을 찾게 되었습니다. 그 대안이 바로 <strong>VSCode Neovim Extension</strong>입니다.</p>
+<p>Neovim Extension은 실제 Neovim 프로세스를 백그라운드에서 실행하여 VSCode와 통신하는 방식으로 작동합니다. 이로 인해 Vim extension보다 더 안정적이고, 한글 입력 문제도 해결되었습니다.</p>
+<h2 id="macos에서-neovim-설치하기">macOS에서 Neovim 설치하기</h2>
+<h3 id="1-homebrew를-통한-설치">1. Homebrew를 통한 설치</h3>
+<p>macOS에서는 Homebrew를 통해 쉽게 Neovim을 설치할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># Homebrew가 설치되어 있지 않다면 먼저 설치</span>
+</span></span><span style="display:flex;"><span>/bin/bash -c <span style="color:#0a3069">&#34;</span><span style="color:#cf222e">$(</span>curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span style="color:#cf222e">)</span><span style="color:#0a3069">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Neovim 설치</span>
+</span></span><span style="display:flex;"><span>brew install neovim
+</span></span></code></pre></div><h3 id="2-설치-확인">2. 설치 확인</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>nvim --version
+</span></span></code></pre></div><p>정상적으로 설치되었다면 Neovim 버전 정보가 출력됩니다.</p>
+<h2 id="windows에서-neovim-설치하기">Windows에서 Neovim 설치하기</h2>
+<h3 id="1-chocolatey를-통한-설치">1. Chocolatey를 통한 설치</h3>
+<p>Windows에서는 Chocolatey 패키지 매니저를 사용하는 것이 가장 간편합니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#57606a"># PowerShell을 관리자 권한으로 실행 후</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Chocolatey가 설치되어 있지 않다면 먼저 설치</span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">Set-ExecutionPolicy</span> Bypass -Scope <span style="color:#cf222e">Process</span> -Force<span style="color:#1f2328">;</span> <span style="color:#1f2328">[</span><span style="color:#0550ae">System.Net.ServicePointManager</span><span style="color:#1f2328">]::</span>SecurityProtocol <span style="color:#1f2328">=</span> <span style="color:#1f2328">[</span><span style="color:#0550ae">System.Net.ServicePointManager</span><span style="color:#1f2328">]::</span>SecurityProtocol <span style="color:#0550ae">-bor</span> <span style="color:#0550ae">3072</span><span style="color:#1f2328">;</span> <span style="color:#6639ba">iex </span><span style="color:#1f2328">((</span><span style="color:#6639ba">New-Object</span> System<span style="color:#1f2328">.</span>Net<span style="color:#1f2328">.</span>WebClient<span style="color:#1f2328">).</span>DownloadString<span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;https://community.chocolatey.org/install.ps1&#39;</span><span style="color:#1f2328">))</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Neovim 설치</span>
+</span></span><span style="display:flex;"><span>choco install neovim
+</span></span></code></pre></div><h3 id="2-scoop을-통한-설치-대안">2. Scoop을 통한 설치 (대안)</h3>
+<p>Scoop을 선호한다면 다음과 같이 설치할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#57606a"># Scoop 설치</span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">iwr </span>-useb get<span style="color:#1f2328">.</span>scoop<span style="color:#1f2328">.</span>sh <span style="color:#1f2328">|</span> <span style="color:#6639ba">iex
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Neovim 설치</span>
+</span></span><span style="display:flex;"><span>scoop install neovim
+</span></span></code></pre></div><h3 id="3-수동-설치">3. 수동 설치</h3>
+<p>공식 GitHub 릴리즈 페이지에서 직접 다운로드할 수도 있습니다.</p>
+<ol>
+<li><a href="https://github.com/neovim/neovim/releases">Neovim GitHub Releases</a>에서 최신 Windows 버전 다운로드</li>
+<li>zip 파일 압축 해제</li>
+<li>시스템 환경 변수 PATH에 <code>nvim.exe</code>가 있는 폴더 경로 추가</li>
+</ol>
+<h2 id="vscode-neovim-extension-설치-및-설정">VSCode Neovim Extension 설치 및 설정</h2>
+<h3 id="1-extension-설치">1. Extension 설치</h3>
+<p>VSCode Extension 마켓플레이스에서 &ldquo;vscode-neovim&quot;을 검색하여 설치합니다.</p>
+<h3 id="2-extension-설정">2. Extension 설정</h3>
+<p><code>settings.json</code>에 다음 설정을 추가합니다:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// Neovim 실행 파일 경로 (필요한 경우)
+</span></span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;vscode-neovim.neovimExecutablePaths.darwin&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;/opt/homebrew/bin/nvim&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;vscode-neovim.neovimExecutablePaths.win32&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;C:\\tools\\neovim\\nvim-win64\\bin\\nvim.exe&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// 기타 유용한 설정
+</span></span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;vscode-neovim.neovimInitVimPaths.darwin&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;$HOME/.config/nvim/init.lua&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;vscode-neovim.neovimInitVimPaths.win32&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;$HOME/AppData/Local/nvim/init.lua&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><h2 id="neovim-설정-파일-작성">Neovim 설정 파일 작성</h2>
+<h3 id="1-설정-파일-위치">1. 설정 파일 위치</h3>
+<ul>
+<li><strong>macOS/Linux</strong>: <code>~/.config/nvim/init.lua</code></li>
+<li><strong>Windows</strong>: <code>~/AppData/Local/nvim/init.lua</code></li>
+</ul>
+<h3 id="2-기본-설정-파일-생성">2. 기본 설정 파일 생성</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># macOS/Linux</span>
+</span></span><span style="display:flex;"><span>mkdir -p ~/.config/nvim
+</span></span><span style="display:flex;"><span>touch ~/.config/nvim/init.lua
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Windows (PowerShell)</span>
+</span></span><span style="display:flex;"><span>New-Item -Path <span style="color:#0a3069">&#34;</span><span style="color:#953800">$env</span><span style="color:#0a3069">:LOCALAPPDATA\nvim&#34;</span> -ItemType Directory -Force
+</span></span><span style="display:flex;"><span>New-Item -Path <span style="color:#0a3069">&#34;</span><span style="color:#953800">$env</span><span style="color:#0a3069">:LOCALAPPDATA\nvim\init.lua&#34;</span> -ItemType File -Force
+</span></span></code></pre></div><h3 id="3-packer-플러그인-매니저-설치">3. Packer 플러그인 매니저 설치</h3>
+<p>Neovim의 플러그인을 관리하기 위해 Packer를 먼저 설치해야 합니다:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># macOS/Linux</span>
+</span></span><span style="display:flex;"><span>git clone --depth <span style="color:#0550ae">1</span> https://github.com/wbthomason/packer.nvim <span style="color:#0a3069">\
+</span></span></span><span style="display:flex;"><span>  ~/.local/share/nvim/site/pack/packer/start/packer.nvim
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Windows (PowerShell)</span>
+</span></span><span style="display:flex;"><span>git clone --depth <span style="color:#0550ae">1</span> https://github.com/wbthomason/packer.nvim <span style="color:#0a3069">`</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0a3069">&#34;</span><span style="color:#953800">$env</span><span style="color:#0a3069">:LOCALAPPDATA\nvim-data\site\pack\packer\start\packer.nvim&#34;</span>
+</span></span></code></pre></div><h3 id="4-initlua-작성">4. init.lua 작성</h3>
+<p>다음은 제가 사용하는 <code>init.lua</code> 설정입니다:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#57606a">-- Packer 설치 (플러그인 매니저)</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">local</span> ensure_packer <span style="color:#0550ae">=</span> <span style="color:#cf222e">function</span><span style="color:#1f2328">()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">local</span> fn <span style="color:#0550ae">=</span> vim.fn
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">local</span> install_path <span style="color:#0550ae">=</span> fn.stdpath<span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;data&#39;</span><span style="color:#1f2328">)</span><span style="color:#0550ae">..</span><span style="color:#0a3069">&#39;/site/pack/packer/start/packer.nvim&#39;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">if</span> fn.empty<span style="color:#1f2328">(</span>fn.glob<span style="color:#1f2328">(</span>install_path<span style="color:#1f2328">))</span> <span style="color:#0550ae">&gt;</span> <span style="color:#0550ae">0</span> <span style="color:#cf222e">then</span>
+</span></span><span style="display:flex;"><span>    fn.system<span style="color:#1f2328">({</span><span style="color:#0a3069">&#39;git&#39;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#39;clone&#39;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#39;--depth&#39;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#39;1&#39;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#39;https://github.com/wbthomason/packer.nvim&#39;</span><span style="color:#1f2328">,</span> install_path<span style="color:#1f2328">})</span>
+</span></span><span style="display:flex;"><span>    vim.cmd <span style="color:#0a3069">[[packadd packer.nvim]]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">return</span> <span style="color:#cf222e">true</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">end</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> <span style="color:#cf222e">false</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">local</span> packer_bootstrap <span style="color:#0550ae">=</span> ensure_packer<span style="color:#1f2328">()</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">-- 플러그인 설정</span>
+</span></span><span style="display:flex;"><span>require<span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;packer&#39;</span><span style="color:#1f2328">).</span>startup<span style="color:#1f2328">(</span><span style="color:#cf222e">function</span><span style="color:#1f2328">(</span>use<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>  use <span style="color:#0a3069">&#39;wbthomason/packer.nvim&#39;</span>
+</span></span><span style="display:flex;"><span>  use <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0a3069">&#39;easymotion/vim-easymotion&#39;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">end</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">-- OS별 클립보드 설정</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">if</span> vim.fn<span style="color:#1f2328">.</span>has<span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;win32&#39;</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">==</span> <span style="color:#0550ae">1</span> <span style="color:#cf222e">then</span>
+</span></span><span style="display:flex;"><span>  vim.opt<span style="color:#1f2328">.</span>clipboard <span style="color:#0550ae">=</span> <span style="color:#0a3069">&#34;unnamed,unnamedplus&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">elseif</span> vim.fn<span style="color:#1f2328">.</span>has<span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;macunix&#39;</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">==</span> <span style="color:#0550ae">1</span> <span style="color:#cf222e">then</span>
+</span></span><span style="display:flex;"><span>  vim.opt<span style="color:#1f2328">.</span>clipboard <span style="color:#0550ae">=</span> <span style="color:#0a3069">&#34;unnamedplus&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>vim.g<span style="color:#1f2328">.</span>mapleader <span style="color:#0550ae">=</span> <span style="color:#0a3069">&#34;,&#34;</span>        <span style="color:#57606a">-- Leader 키 설정</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">-- EasyMotion 키맵 설정</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">local</span> opts <span style="color:#0550ae">=</span> <span style="color:#1f2328">{</span> noremap <span style="color:#0550ae">=</span> <span style="color:#cf222e">true</span><span style="color:#1f2328">,</span> silent <span style="color:#0550ae">=</span> <span style="color:#cf222e">true</span> <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">-- EasyMotion 키맵들</span>
+</span></span><span style="display:flex;"><span>vim.api<span style="color:#1f2328">.</span>nvim_set_keymap<span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;n&#39;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#39;&lt;leader&gt;&lt;leader&gt;f&#39;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#39;&lt;Plug&gt;(easymotion-bd-f)&#39;</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">{})</span>
+</span></span><span style="display:flex;"><span>vim.api<span style="color:#1f2328">.</span>nvim_set_keymap<span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;n&#39;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#39;&lt;leader&gt;&lt;leader&gt;w&#39;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#39;&lt;Plug&gt;(easymotion-w)&#39;</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">{})</span>
+</span></span><span style="display:flex;"><span>vim.api<span style="color:#1f2328">.</span>nvim_set_keymap<span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;n&#39;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#39;&lt;leader&gt;&lt;leader&gt;b&#39;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#39;&lt;Plug&gt;(easymotion-b)&#39;</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">{})</span>
+</span></span><span style="display:flex;"><span>vim.api<span style="color:#1f2328">.</span>nvim_set_keymap<span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;n&#39;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#39;&lt;leader&gt;&lt;leader&gt;j&#39;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#39;&lt;Plug&gt;(easymotion-j)&#39;</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">{})</span>
+</span></span><span style="display:flex;"><span>vim.api<span style="color:#1f2328">.</span>nvim_set_keymap<span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;n&#39;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#39;&lt;leader&gt;&lt;leader&gt;k&#39;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#39;&lt;Plug&gt;(easymotion-k)&#39;</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">{})</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">-- Y를 누르면 라인 yank가 되도록 설정</span>
+</span></span><span style="display:flex;"><span>vim.api<span style="color:#1f2328">.</span>nvim_set_keymap<span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;n&#39;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#39;Y&#39;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#39;yy&#39;</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">{</span> noremap <span style="color:#0550ae">=</span> <span style="color:#cf222e">true</span> <span style="color:#1f2328">})</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">-- Visual Block 모드를 위한 여러 키 바인딩</span>
+</span></span><span style="display:flex;"><span>vim.api<span style="color:#1f2328">.</span>nvim_set_keymap<span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;n&#39;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#39;&lt;C-q&gt;&#39;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#39;&lt;C-v&gt;&#39;</span><span style="color:#1f2328">,</span> opts<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>vim.api<span style="color:#1f2328">.</span>nvim_set_keymap<span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;v&#39;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#39;&lt;C-q&gt;&#39;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#39;&lt;C-v&gt;&#39;</span><span style="color:#1f2328">,</span> opts<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">-- 추가 대안 (leader 키 사용)</span>
+</span></span><span style="display:flex;"><span>vim.api<span style="color:#1f2328">.</span>nvim_set_keymap<span style="color:#1f2328">(</span><span style="color:#0a3069">&#39;n&#39;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#39;&lt;leader&gt;v&#39;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#39;&lt;C-v&gt;&#39;</span><span style="color:#1f2328">,</span> opts<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">-- 상태라인에 모드 표시 (선택사항)</span>
+</span></span><span style="display:flex;"><span>vim.opt<span style="color:#1f2328">.</span>showmode <span style="color:#0550ae">=</span> <span style="color:#cf222e">true</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">-- 완성 메뉴 메시지 숨기기</span>
+</span></span><span style="display:flex;"><span>vim.opt<span style="color:#1f2328">.</span>shortmess<span style="color:#1f2328">:</span>append<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;c&#34;</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>vim.opt<span style="color:#1f2328">.</span>ignorecase <span style="color:#0550ae">=</span> <span style="color:#cf222e">true</span>
+</span></span><span style="display:flex;"><span>vim.opt<span style="color:#1f2328">.</span>smartcase <span style="color:#0550ae">=</span> <span style="color:#cf222e">true</span>
+</span></span></code></pre></div><h3 id="5-플러그인-설치">5. 플러그인 설치</h3>
+<p>init.lua 파일을 작성한 후, Neovim을 실행하여 플러그인을 설치해야 합니다:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># Neovim 실행</span>
+</span></span><span style="display:flex;"><span>nvim
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Neovim 내에서 다음 명령어 입력</span>
+</span></span><span style="display:flex;"><span>:PackerInstall
+</span></span></code></pre></div><p>처음 실행 시 Packer가 자동으로 설치되며, 이후 hop.nvim을 포함한 설정된 플러그인들이 설치됩니다. 설치가 완료되면 Neovim을 재시작하세요.</p>
+<h2 id="hopnvim-플러그인-사용법">hop.nvim 플러그인 사용법</h2>
+<h3 id="왜-hopnvim인가">왜 hop.nvim인가?</h3>
+<p>VSCode의 Vim Extension을 사용할 때는 EasyMotion이라는 훌륭한 기능이 내장되어 있었습니다. 하지만 Neovim Extension으로 전환하면서 이 기능이 없어진 것을 발견했습니다. EasyMotion은 화면에 보이는 텍스트로 빠르게 이동할 수 있게 해주는 필수적인 기능이었기에, 이를 대체할 플러그인이 필요했습니다.</p>
+<p>hop.nvim은 EasyMotion의 Neovim 버전으로, 동일한 기능을 제공합니다. 화면의 특정 위치로 빠르게 이동할 수 있게 해주는 이 플러그인은 생산성 향상에 큰 도움이 됩니다.</p>
+<h3 id="사용법">사용법</h3>
+<ul>
+<li><code>,,f</code>: 화면의 모든 단어로 점프</li>
+<li><code>,,w</code>: 커서 이후의 단어로 점프</li>
+<li><code>,,b</code>: 커서 이전의 단어로 점프</li>
+<li><code>,,j</code>: 아래쪽 라인으로 점프</li>
+<li><code>,,k</code>: 위쪽 라인으로 점프</li>
+</ul>
+<h2 id="키맵-및-클립보드-설정-설명">키맵 및 클립보드 설정 설명</h2>
+<h3 id="leader-키">Leader 키</h3>
+<p><code>,</code>를 Leader 키로 설정했습니다. 이는 사용자 정의 단축키의 prefix로 사용됩니다.</p>
+<h3 id="클립보드-통합">클립보드 통합</h3>
+<p>OS별로 시스템 클립보드와 Neovim의 클립보드를 통합했습니다. 이제 <code>y</code>로 복사한 내용을 다른 프로그램에서도 붙여넣을 수 있습니다.</p>
+<h3 id="visual-block-모드">Visual Block 모드</h3>
+<p>일부 터미널에서 <code>Ctrl+V</code>가 붙여넣기로 사용되는 경우를 위해 <code>Ctrl+Q</code>를 Visual Block 모드로 매핑했습니다.</p>
+<h2 id="마무리">마무리</h2>
+<p>VSCode Neovim Extension을 사용하면 Vim의 강력한 기능을 VSCode에서 안정적으로 사용할 수 있습니다. 특히 한글 입력 문제가 해결되어 한국어로 작업하는 개발자들에게 큰 도움이 될 것입니다.</p>
+<p>설정이 완료되면 VSCode를 재시작하고, Neovim의 모든 기능을 VSCode에서 즐기세요!</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2025년 07월 24일 23시 17분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/vscode">VSCode</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/neovim">Neovim</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/vim">Vim</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2025/07/2025-07-16-react-hook-form-sync-with-url-2/" rel="prev">
+        <span>Next.js에서 react-hook-form과 URL을 우아하게 동기화하는 법 2 🚀</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2025/07/2025-07-25-vim-esc/" rel="next">
+        <span>Windows에서 ESC 키를 누르면 자동으로 영어 입력 상태로 전환하는 방법</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#vim에서-neovim으로-전향한-이유">Vim에서 Neovim으로 전향한 이유</a></li>
+    <li><a href="#macos에서-neovim-설치하기">macOS에서 Neovim 설치하기</a>
+      <ul>
+        <li><a href="#1-homebrew를-통한-설치">1. Homebrew를 통한 설치</a></li>
+        <li><a href="#2-설치-확인">2. 설치 확인</a></li>
+      </ul>
+    </li>
+    <li><a href="#windows에서-neovim-설치하기">Windows에서 Neovim 설치하기</a>
+      <ul>
+        <li><a href="#1-chocolatey를-통한-설치">1. Chocolatey를 통한 설치</a></li>
+        <li><a href="#2-scoop을-통한-설치-대안">2. Scoop을 통한 설치 (대안)</a></li>
+        <li><a href="#3-수동-설치">3. 수동 설치</a></li>
+      </ul>
+    </li>
+    <li><a href="#vscode-neovim-extension-설치-및-설정">VSCode Neovim Extension 설치 및 설정</a>
+      <ul>
+        <li><a href="#1-extension-설치">1. Extension 설치</a></li>
+        <li><a href="#2-extension-설정">2. Extension 설정</a></li>
+      </ul>
+    </li>
+    <li><a href="#neovim-설정-파일-작성">Neovim 설정 파일 작성</a>
+      <ul>
+        <li><a href="#1-설정-파일-위치">1. 설정 파일 위치</a></li>
+        <li><a href="#2-기본-설정-파일-생성">2. 기본 설정 파일 생성</a></li>
+        <li><a href="#3-packer-플러그인-매니저-설치">3. Packer 플러그인 매니저 설치</a></li>
+        <li><a href="#4-initlua-작성">4. init.lua 작성</a></li>
+        <li><a href="#5-플러그인-설치">5. 플러그인 설치</a></li>
+      </ul>
+    </li>
+    <li><a href="#hopnvim-플러그인-사용법">hop.nvim 플러그인 사용법</a>
+      <ul>
+        <li><a href="#왜-hopnvim인가">왜 hop.nvim인가?</a></li>
+        <li><a href="#사용법">사용법</a></li>
+      </ul>
+    </li>
+    <li><a href="#키맵-및-클립보드-설정-설명">키맵 및 클립보드 설정 설명</a>
+      <ul>
+        <li><a href="#leader-키">Leader 키</a></li>
+        <li><a href="#클립보드-통합">클립보드 통합</a></li>
+        <li><a href="#visual-block-모드">Visual Block 모드</a></li>
+      </ul>
+    </li>
+    <li><a href="#마무리">마무리</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/vscode/" class="badge badge-secondary">Vscode</a>
+    <a href="/tags/neovim/" class="badge badge-secondary">Neovim</a>
+    <a href="/tags/vim/" class="badge badge-secondary">Vim</a>
+    <a href="/tags/macos/" class="badge badge-secondary">Macos</a>
+    <a href="/tags/windows/" class="badge badge-secondary">Windows</a>
+    <a href="/tags/hop.nvim/" class="badge badge-secondary">Hop.nvim</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

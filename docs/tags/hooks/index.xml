@@ -10,93 +10,93 @@
     <atom:link href="https://gyuha.com/tags/hooks/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Claude Code 기능 가이드: Memory, Slash Commands, Agents, Skills, Hooks, Plugins를 언제 써야 할까</title>
-      <link>https://gyuha.com/post/2026/2026-03-15-claude-code-features-skills-guide/</link>
+      <link>https://gyuha.com/post/2026/03/2026-03-15-claude-code-features-skills-guide/</link>
       <pubDate>Sun, 15 Mar 2026 09:00:00 +0900</pubDate>
-      <guid>https://gyuha.com/post/2026/2026-03-15-claude-code-features-skills-guide/</guid>
+      <guid>https://gyuha.com/post/2026/03/2026-03-15-claude-code-features-skills-guide/</guid>
       <description>&lt;p&gt;ProductTalk의 글은 Claude Code를 이루는 building block을 6개로 나눠 설명합니다.&lt;br&gt;Markdown files, slash commands, agents, skills, hooks, plugins를 각각 언제 써야 하는지 사용자 관점에서 매우 잘 정리한 글입니다.&lt;br&gt;특히 &amp;ldquo;무엇을 어떤 상황에서 꺼내 써야 하는가&amp;quot;라는 실전 감각을 잡는 데 도움이 됩니다.&lt;/p&gt;&#xA;&lt;p&gt;다만 한 가지는 반드시 최신 기준으로 보정해서 읽어야 합니다.&lt;br&gt;ProductTalk 글은 slash commands를 독립 기능처럼 설명하지만, 현재 Anthropic 공식 문서는 &lt;strong&gt;&amp;ldquo;Custom commands have been merged into skills&amp;rdquo;&lt;/strong&gt; 라고 명시합니다.&lt;br&gt;즉 지금은 &amp;ldquo;슬래시 커맨드 vs 스킬&amp;quot;을 완전히 분리해서 보기보다, &lt;strong&gt;사용자가 &lt;code&gt;/&lt;/code&gt; 로 호출하는 표면과 Skill 기반 실행 모델이 점점 하나로 합쳐지는 중&lt;/strong&gt; 이라고 이해하는 편이 더 정확합니다.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Claude Code 스킬 자동 발동 가이드</title>
-      <link>https://gyuha.com/post/2026/2026-03-15-claude-code-skill-auto-trigger/</link>
+      <link>https://gyuha.com/post/2026/03/2026-03-15-claude-code-skill-auto-trigger/</link>
       <pubDate>Sun, 15 Mar 2026 01:41:05 +0900</pubDate>
-      <guid>https://gyuha.com/post/2026/2026-03-15-claude-code-skill-auto-trigger/</guid>
+      <guid>https://gyuha.com/post/2026/03/2026-03-15-claude-code-skill-auto-trigger/</guid>
       <description>&lt;h2 id=&#34;핵심-요약&#34;&gt;핵심 요약&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;스킬 자동 발동은 &amp;lsquo;좋은 skill 설명 + 좋은 시작 프롬프트 + 적절한 프로젝트 메모리 + 필요한 곳만 수동 호출&amp;rsquo; 조합일 때 가장 잘 됩니다.&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;Claude Code는 skill의 &lt;code&gt;description&lt;/code&gt; 필드를 보고 언제 쓸지 판단합니다. 관련 있을 때 자동으로 로드하거나 &lt;code&gt;/skill-name&lt;/code&gt;으로 직접 호출할 수 있습니다.&lt;/p&gt;&#xA;&lt;pre class=&#34;mermaid&#34;&gt;flowchart TD&#xA;    A[사용자 요청] --&gt; B{description 매칭}&#xA;    B --&gt;|키워드 일치| C[스킬 자동 발동]&#xA;    B --&gt;|애매함| D[수동 호출 필요]&#xA;    C --&gt; E[작업 수행]&#xA;    D --&gt; F[&#34;/skill-name 직접 호출&#34;]&#xA;    F --&gt; E&#xA;&#xA;    style A fill:#c5dcef&#xA;    style C fill:#c0ecd3&#xA;    style D fill:#ffc8c4&#xA;    style E fill:#fde8c0&lt;/pre&gt;</description>
     </item>
     <item>
       <title>Claude Code 프로젝트 구조 가이드: CLAUDE.md, hooks, skills, docs, tools, src를 어떻게 나눌까</title>
-      <link>https://gyuha.com/post/2026/2026-03-14-claude-code-project-structure-guide/</link>
+      <link>https://gyuha.com/post/2026/03/2026-03-14-claude-code-project-structure-guide/</link>
       <pubDate>Sat, 14 Mar 2026 15:10:00 +0900</pubDate>
-      <guid>https://gyuha.com/post/2026/2026-03-14-claude-code-project-structure-guide/</guid>
+      <guid>https://gyuha.com/post/2026/03/2026-03-14-claude-code-project-structure-guide/</guid>
       <description>&lt;p&gt;Claude Code를 조금만 깊게 써 보면 금방 부딪히는 문제가 있습니다. 규칙은 &lt;code&gt;CLAUDE.md&lt;/code&gt;에 몰아넣고, 자동화는 훅에 넣고, 반복 작업은 스킬로 빼야 한다는 말은 알겠는데, 실제로 레포를 어떻게 나눠야 할지 애매합니다.&lt;br&gt;특히 프로젝트가 커질수록 &amp;ldquo;무엇을 항상 읽게 할지&amp;rdquo;, &amp;ldquo;무엇을 필요할 때만 불러올지&amp;rdquo;, &amp;ldquo;무엇을 문서로 남길지&amp;quot;가 섞이기 시작합니다.&lt;/p&gt;&#xA;&lt;p&gt;이번 글은 &lt;code&gt;temp/claude-structor.md&lt;/code&gt;의 간단한 구조 예시를 출발점으로, &lt;strong&gt;실제로 운영 가능한 Claude Code 프로젝트 디렉터리 구조&lt;/strong&gt;로 확장한 버전입니다. 단순히 폴더 이름만 나열하지 않고, 각 폴더가 왜 필요한지, 어떤 파일을 넣어야 하는지, 그리고 바로 가져다 쓸 수 있는 샘플 예제까지 같이 정리합니다.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Claude Code 에이전트 팀 비용 50% 줄이는 4가지 비법 정리</title>
-      <link>https://gyuha.com/post/2026/2026-03-10-claude-code-agent-teams-cost-saving-tips/</link>
+      <link>https://gyuha.com/post/2026/03/2026-03-10-claude-code-agent-teams-cost-saving-tips/</link>
       <pubDate>Tue, 10 Mar 2026 21:17:11 +0900</pubDate>
-      <guid>https://gyuha.com/post/2026/2026-03-10-claude-code-agent-teams-cost-saving-tips/</guid>
+      <guid>https://gyuha.com/post/2026/03/2026-03-10-claude-code-agent-teams-cost-saving-tips/</guid>
       <description>&lt;p&gt;Claude Code의 에이전트 팀은 분명 강력하지만, 아무 생각 없이 팀원 수를 늘리고 바로 구현에 들어가면 토큰이 빠르게 소모됩니다. 이 영상의 핵심은 단순합니다. &lt;strong&gt;에이전트 팀이 비싼 이유를 구조적으로 이해하고, 그에 맞는 운영 규칙을 프롬프트와 워크플로에 먼저 심어야 한다&lt;/strong&gt; 는 것입니다.&lt;/p&gt;&#xA;&lt;p&gt;영상은 특히 네 가지를 강조합니다. 첫째, 팀원과 서브에이전트는 태어나는 방식이 다르며, 둘째, 구현 전에 계획 승인을 강제해야 낭비를 막을 수 있고, 셋째, 리드와 팀원의 모델을 섞어 써야 비용이 내려가며, 넷째, 훅을 이용해 완료 시점의 품질 게이트를 자동화해야 한다는 점입니다. 이 네 가지를 이해하면 “팀을 쓸수록 더 비싸고 더 불안정해진다”는 감각을 꽤 많이 줄일 수 있습니다. &lt;a href=&#34;https://youtu.be/NIXTycy26hI?t=13&#34;&gt;근거 영상&lt;/a&gt;&lt;/p&gt;</description>
     </item>
     <item>
       <title>Claude Code Hooks 완전 정복: 이벤트/결정 제어/비동기까지 한 번에 이해하기</title>
-      <link>https://gyuha.com/post/2026/2026-03-05-claude-code-hooks/</link>
+      <link>https://gyuha.com/post/2026/03/2026-03-05-claude-code-hooks/</link>
       <pubDate>Thu, 05 Mar 2026 22:10:00 +0900</pubDate>
-      <guid>https://gyuha.com/post/2026/2026-03-05-claude-code-hooks/</guid>
+      <guid>https://gyuha.com/post/2026/03/2026-03-05-claude-code-hooks/</guid>
       <description>&lt;p&gt;Claude Code의 hooks는 “언젠가 LLM이 알아서 하겠지”가 아니라, 특정 시점에 특정 검사를 반드시 실행하도록 만드는 장치입니다. 이 글은 공식 문서의 참조 스키마를 기준으로, 어떤 이벤트가 있고(언제 발화하고), matcher가 무엇을 필터링하며, 훅이 어떤 방식으로 Claude Code의 동작을 &lt;em&gt;허용/차단/계속 작업 유도&lt;/em&gt; 할 수 있는지까지 한 번에 정리합니다.&lt;/p&gt;&#xA;&lt;p&gt;핵심은 2가지입니다.&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;훅은 &lt;strong&gt;명령(Exit code)&lt;/strong&gt; 과 &lt;strong&gt;구조화된 JSON 출력&lt;/strong&gt; 두 축으로 동작을 제어합니다.&lt;/li&gt;&#xA;&lt;li&gt;“차단 가능 여부”는 이벤트마다 다릅니다. &lt;code&gt;PreToolUse&lt;/code&gt;는 실행 전이라 차단이 되지만 &lt;code&gt;PostToolUse&lt;/code&gt;는 실행 후라 차단이 아닌 &lt;em&gt;피드백&lt;/em&gt; 으로 작동합니다.&lt;/li&gt;&#xA;&lt;/ol&gt;</description>
     </item>
     <item>
       <title>Claude Code 기본 설정의 10% 함정: CLAUDE.md, 에이전트 팀, 보안 훅, Forge로 작업 시스템 만드는 법</title>
-      <link>https://gyuha.com/post/2026/2026-03-02-claude-code-setup-10-percent-trap-and-forge-system/</link>
+      <link>https://gyuha.com/post/2026/03/2026-03-02-claude-code-setup-10-percent-trap-and-forge-system/</link>
       <pubDate>Mon, 02 Mar 2026 23:10:00 +0900</pubDate>
-      <guid>https://gyuha.com/post/2026/2026-03-02-claude-code-setup-10-percent-trap-and-forge-system/</guid>
+      <guid>https://gyuha.com/post/2026/03/2026-03-02-claude-code-setup-10-percent-trap-and-forge-system/</guid>
       <description>&lt;p&gt;Claude Code를 설치하고 바로 쓰면 빠르게 결과가 나오지만, 팀 규칙 부재·검증 자동화 부재·역할 분리 부재 때문에 곧 한계에 부딪힙니다.&lt;br&gt;이 글은 Threads 연속 포스트(원글 + 1~5번 설명)를 근거로, &amp;ldquo;기본 설정 10%&amp;ldquo;라는 표현이 실제로 어떤 작업 병목을 뜻하는지 구조적으로 해석한 문서입니다.&lt;br&gt;문서 확인 시점은 &lt;strong&gt;2026-03-02&lt;/strong&gt; 입니다.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Claude Forge 5분 세팅 가이드: CLAUDE.md, 에이전트, 훅으로 Claude Code를 운영 환경으로 바꾸는 방법</title>
-      <link>https://gyuha.com/post/2026/2026-03-02-claude-forge-5-minute-setup-workflow/</link>
+      <link>https://gyuha.com/post/2026/03/2026-03-02-claude-forge-5-minute-setup-workflow/</link>
       <pubDate>Mon, 02 Mar 2026 21:05:00 +0900</pubDate>
-      <guid>https://gyuha.com/post/2026/2026-03-02-claude-forge-5-minute-setup-workflow/</guid>
+      <guid>https://gyuha.com/post/2026/03/2026-03-02-claude-forge-5-minute-setup-workflow/</guid>
       <description>&lt;p&gt;이 영상의 핵심 메시지는 단순합니다. Claude Code를 기본값으로만 쓰면 잠재력의 일부만 쓰게 되고, &lt;code&gt;CLAUDE.md&lt;/code&gt; + 에이전트 + 훅을 함께 설계해야 실제 개발 생산성이 올라간다는 주장입니다. 영상 화자는 이를 &amp;ldquo;밀키트&amp;rdquo; 비유로 설명하면서, 수동 반복 세팅을 줄이는 패키지형 접근(Claude Forge)을 제안합니다. &lt;a href=&#34;https://youtu.be/3lMjX5Gq1zE?t=13&#34;&gt;근거 1&lt;/a&gt;, &lt;a href=&#34;https://youtu.be/3lMjX5Gq1zE?t=45&#34;&gt;근거 2&lt;/a&gt;, &lt;a href=&#34;https://youtu.be/3lMjX5Gq1zE?t=166&#34;&gt;근거 3&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;추가로, 영상 자막은 자동 생성(ko)이라 일부 고유명사는 문맥 보정이 필요합니다. 이 글에서는 영상 타임스탬프 근거를 우선으로 두고, 숫자/구성 요소(에이전트 수, 커맨드 수 등)는 영상 설명란의 GitHub README를 교차 확인해 정확도를 보완했습니다. &lt;a href=&#34;https://youtu.be/3lMjX5Gq1zE?t=222&#34;&gt;영상 설명 근거&lt;/a&gt;, &lt;a href=&#34;https://github.com/sangrokjung/claude-forge&#34;&gt;README&lt;/a&gt;&lt;/p&gt;</description>
     </item>
     <item>
       <title>Awesome Claude Skills 생태계 완전 가이드 — 2026년 스킬·훅·오케스트레이터 카탈로그</title>
-      <link>https://gyuha.com/post/2026/2026-02-25-awesome-claude-skills-korean-guide/</link>
+      <link>https://gyuha.com/post/2026/02/2026-02-25-awesome-claude-skills-korean-guide/</link>
       <pubDate>Wed, 25 Feb 2026 17:30:00 +0900</pubDate>
-      <guid>https://gyuha.com/post/2026/2026-02-25-awesome-claude-skills-korean-guide/</guid>
+      <guid>https://gyuha.com/post/2026/02/2026-02-25-awesome-claude-skills-korean-guide/</guid>
       <description>&lt;p&gt;2026년 2월 현재, Claude Code의 Skills 생태계는 폭발적으로 성장했다. Anthropic 공식 17개 스킬, Microsoft의 129개 Azure SDK 스킬, Trail of Bits의 22개 보안 전문 스킬, OpenAI의 27개 크로스 플랫폼 스킬, 그리고 수백 개의 커뮤니티 스킬이 등장했다. 여기에 9개 이상의 오케스트레이터, 15개 훅 이벤트, 슬래시 커맨드, Status Line 확장까지 — 이제 Claude Code는 단순한 AI 코딩 도구를 넘어 하나의 &lt;strong&gt;개발 플랫폼 생태계&lt;/strong&gt;로 진화하고 있다.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Claude Code Infrastructure Showcase 실전 적용 가이드: 자동 스킬 활성화를 안전하게 이식하는 법</title>
-      <link>https://gyuha.com/post/2026/2026-02-23-claude-code-infrastructure-showcase-integration-guide/</link>
+      <link>https://gyuha.com/post/2026/02/2026-02-23-claude-code-infrastructure-showcase-integration-guide/</link>
       <pubDate>Mon, 23 Feb 2026 21:45:00 +0900</pubDate>
-      <guid>https://gyuha.com/post/2026/2026-02-23-claude-code-infrastructure-showcase-integration-guide/</guid>
+      <guid>https://gyuha.com/post/2026/02/2026-02-23-claude-code-infrastructure-showcase-integration-guide/</guid>
       <description>&lt;p&gt;&lt;code&gt;diet103/claude-code-infrastructure-showcase&lt;/code&gt;는 &amp;ldquo;앱 템플릿&amp;quot;이 아니라 &amp;ldquo;인프라 패턴 라이브러리&amp;quot;입니다. 즉, 이 저장소의 가치는 코드 실행 자체보다 &lt;strong&gt;Claude Code 운영 체계(스킬 자동 활성화, 모듈형 스킬, 에이전트 분업)&lt;/strong&gt; 를 재사용 가능하게 정리했다는 데 있습니다.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Claude Code is a Beast 레딧 글 완전 정리: 6개월 하드코어 운영 팁 한국어 재포스팅</title>
-      <link>https://gyuha.com/post/2026/2026-02-23-claude-code-is-a-beast-reddit-full-korean-repost/</link>
+      <link>https://gyuha.com/post/2026/02/2026-02-23-claude-code-is-a-beast-reddit-full-korean-repost/</link>
       <pubDate>Mon, 23 Feb 2026 21:35:00 +0900</pubDate>
-      <guid>https://gyuha.com/post/2026/2026-02-23-claude-code-is-a-beast-reddit-full-korean-repost/</guid>
+      <guid>https://gyuha.com/post/2026/02/2026-02-23-claude-code-is-a-beast-reddit-full-korean-repost/</guid>
       <description>&lt;p&gt;이 글은 Reddit의 &lt;strong&gt;Claude Code is a Beast – Tips from 6 Months of Hardcore Use&lt;/strong&gt;를 한국어로 다시 정리한 재포스팅입니다. 원문에서 전달한 핵심 맥락과 세부 운영 팁이 빠지지 않도록, 주장-근거-실행 흐름 순서로 재구성했습니다.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Claude Code 바이브 코딩 워크플로우: Skill·MCP·Agent·검증·Context 운영 한 번에 정리</title>
-      <link>https://gyuha.com/post/2026/2026-02-21-claude-code-vibe-coding-workflow/</link>
+      <link>https://gyuha.com/post/2026/02/2026-02-21-claude-code-vibe-coding-workflow/</link>
       <pubDate>Sat, 21 Feb 2026 23:35:00 +0900</pubDate>
-      <guid>https://gyuha.com/post/2026/2026-02-21-claude-code-vibe-coding-workflow/</guid>
+      <guid>https://gyuha.com/post/2026/02/2026-02-21-claude-code-vibe-coding-workflow/</guid>
       <description>&lt;p&gt;Claude Code를 &amp;ldquo;그냥 잘 답하는 도구&amp;quot;로 쓰면 세션이 길어질수록 품질이 흔들리고, 같은 작업도 매번 다시 설명하게 됩니다. 반대로 &lt;strong&gt;Skill-MCP-Agent-검증-Context 문서화&lt;/strong&gt;를 체계로 묶으면, 바이브 코딩도 재현 가능한 개발 프로세스로 바뀝니다.&lt;/p&gt;</description>
     </item>
     <item>
       <title>개발자가 AI를 길들이는 6개월 시스템: Hook·Skill·품질게이트로 재현성 높이기</title>
-      <link>https://gyuha.com/post/2026/2026-02-21-ai-developer-six-month-control-system/</link>
+      <link>https://gyuha.com/post/2026/02/2026-02-21-ai-developer-six-month-control-system/</link>
       <pubDate>Sat, 21 Feb 2026 18:40:00 +0900</pubDate>
-      <guid>https://gyuha.com/post/2026/2026-02-21-ai-developer-six-month-control-system/</guid>
+      <guid>https://gyuha.com/post/2026/02/2026-02-21-ai-developer-six-month-control-system/</guid>
       <description>&lt;p&gt;&amp;ldquo;AI가 똑똑한데도 일관되게 못 끝내는 이유&amp;quot;를 팀 운영 관점에서 풀어낸 영상입니다.&#xA;핵심은 모델 성능 비교가 아니라, AI가 흔들리는 지점을 시스템으로 감싸서 생산성을 올리는 방법입니다.&lt;/p&gt;&#xA;&lt;h2 id=&#34;sources&#34;&gt;Sources&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=7vihh_G_434&#34;&gt;https://www.youtube.com/watch?v=7vihh_G_434&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
     </item>
     <item>
       <title>클로드 코드, 이렇게 쓰면 생산성이 벌어진다: 30일 실전에서 뽑은 핵심 원칙</title>
-      <link>https://gyuha.com/post/2026/2026-02-18-claude-code-100x-usage-guide/</link>
+      <link>https://gyuha.com/post/2026/02/2026-02-18-claude-code-100x-usage-guide/</link>
       <pubDate>Tue, 17 Feb 2026 23:40:00 +0900</pubDate>
-      <guid>https://gyuha.com/post/2026/2026-02-18-claude-code-100x-usage-guide/</guid>
+      <guid>https://gyuha.com/post/2026/02/2026-02-18-claude-code-100x-usage-guide/</guid>
       <description>&lt;p&gt;AI 코딩 도구를 쓰고 있는데도 결과가 들쑥날쑥하다면, 문제는 모델 성능보다 사용 방식일 가능성이 큽니다.&lt;/p&gt;&#xA;&lt;p&gt;이번 글은 메이커 에반님의 영상 **&amp;ldquo;클로드 이렇게 쓰면 100배 차이 납니다&amp;rdquo;**를 참고해, Claude Code를 단순 챗봇이 아니라 &lt;strong&gt;재현 가능한 작업 시스템&lt;/strong&gt;으로 쓰는 방법을 정리한 포스팅입니다.&lt;/p&gt;</description>
     </item>
   </channel>

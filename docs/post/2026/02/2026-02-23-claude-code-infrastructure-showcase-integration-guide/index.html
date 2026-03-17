@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude Code Infrastructure Showcase 실전 적용 가이드: 자동 스킬 활성화를 안전하게 이식하는 법'" />
+  <title>Claude Code Infrastructure Showcase 실전 적용 가이드: 자동 스킬 활성화를 안전하게 이식하는 법  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude Code Infrastructure Showcase 실전 적용 가이드: 자동 스킬 활성화를 안전하게 이식하는 법" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-02-23"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/02/2026-02-23-claude-code-infrastructure-showcase-integration-guide/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="Claude Code" />
+  
+  <meta property="og:tags" content="Skills" />
+  
+  <meta property="og:tags" content="Hooks" />
+  
+  <meta property="og:tags" content="Agents" />
+  
+  <meta property="og:tags" content="Prompt Engineering" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/02/2026-02-23-claude-code-infrastructure-showcase-integration-guide/">
+          <h1>
+            Claude Code Infrastructure Showcase 실전 적용 가이드: 자동 스킬 활성화를 안전하게 이식하는 법
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/02/2026-02-23-claude-code-infrastructure-showcase-integration-guide/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p><code>diet103/claude-code-infrastructure-showcase</code>는 &ldquo;앱 템플릿&quot;이 아니라 &ldquo;인프라 패턴 라이브러리&quot;입니다. 즉, 이 저장소의 가치는 코드 실행 자체보다 <strong>Claude Code 운영 체계(스킬 자동 활성화, 모듈형 스킬, 에이전트 분업)</strong> 를 재사용 가능하게 정리했다는 데 있습니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://github.com/diet103/claude-code-infrastructure-showcase">Claude Code Infrastructure Showcase</a></li>
+</ul>
+<h2 id="1-이-저장소를-보는-올바른-프레임-완성품이-아니라-조립식-레퍼런스">1) 이 저장소를 보는 올바른 프레임: &ldquo;완성품&quot;이 아니라 &ldquo;조립식 레퍼런스&rdquo;</h2>
+<p>README에서 가장 먼저 강조하는 문장은 &ldquo;This is NOT a working application - it&rsquo;s a reference library&quot;입니다. 따라서 통째로 가져와 실행하는 접근보다, 필요한 조각만 선택해 현재 프로젝트 구조에 맞게 붙이는 접근이 맞습니다.</p>
+<p>핵심은 네 가지 축입니다.</p>
+<ol>
+<li>Hooks: 스킬 자동 제안과 변경 파일 추적</li>
+<li>Skills: 500라인 규칙 기반의 모듈형 운영 지식</li>
+<li>Agents: 복잡 작업 전용 서브 에이전트</li>
+<li>Dev Docs 패턴: 컨텍스트 리셋 이후에도 이어지는 작업 문맥</li>
+</ol>
+<pre class="mermaid">flowchart LR
+  A["사용자 프롬프트"] --> B["훅"]
+  B --> C["스킬 활성화"]
+  C --> D["안내 실행"]
+  D --> E["특화된 에이전트"]
+  E --> F["개발 문서 연속성"]
+
+  classDef input fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
+  classDef control fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+  classDef output fill:#fff3e0,stroke:#ef6c00,color:#e65100
+  class A input
+  class B,C,D,E control
+  class F output</pre><p>실무 관점에서 이 프레임이 중요한 이유는 단순합니다. 모델 성능 편차를 직접 통제할 수는 없지만, <strong>모델이 일하는 방식(입력 구조, 검사 포인트, 작업 분해 방식)</strong> 은 팀이 통제할 수 있기 때문입니다.</p>
+<h2 id="2-가장-먼저-이식할-최소-단위-essential-hooks-2개">2) 가장 먼저 이식할 최소 단위: &ldquo;Essential Hooks 2개&rdquo;</h2>
+<p><code>.claude/hooks/README.md</code>와 통합 가이드는 공통적으로 두 개의 훅을 최소 구성으로 권장합니다.</p>
+<ul>
+<li><code>skill-activation-prompt</code> (<code>UserPromptSubmit</code>): 사용자 프롬프트와 파일 문맥을 분석해 관련 스킬을 자동 제안</li>
+<li><code>post-tool-use-tracker</code> (<code>PostToolUse</code>): 편집된 파일을 기록해 현재 작업 컨텍스트를 유지</li>
+</ul>
+<p>여기서 중요한 포인트는 이 두 훅이 &ldquo;대체로 무커스터마이징&quot;으로 동작한다는 점입니다. 반대로 Stop 훅(<code>tsc-check</code>, <code>trigger-build-resolver</code>)은 모노레포 구조에 강하게 의존하므로, 바로 복사하면 오작동 위험이 큽니다.</p>
+<pre class="mermaid">flowchart TD
+  A["프롬프트 제출됨"] --> B["UserPromptSubmit 훅"]
+  B --> C["skill-rules.json 매칭"]
+  C --> D["스킬 제안 주입"]
+  D --> E["Claude 실행"]
+  E --> F["PostToolUse 훅"]
+  F --> G["수정된 파일 추적"]
+
+  H["Stop 훅 (선택사항)"] --> I["타입체크/빌드 게이트"]
+
+  classDef safe fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+  classDef caution fill:#ffebee,stroke:#c62828,color:#b71c1c
+  class A,B,C,D,E,F,G safe
+  class H,I caution</pre><p>운영적으로는 &ldquo;자동화 범위를 넓히는 것&quot;보다 &ldquo;안전하게 좁게 시작하는 것&quot;이 더 빠릅니다. 먼저 필수 2개 훅으로 가치 검증을 끝내고, 이후에 Stop 훅을 점진적으로 붙이는 순서가 실패 비용을 최소화합니다.</p>
+<h2 id="3-modular-skills-500-line-rule-길이를-줄이는-게-아니라-로딩-전략을-바꾸는-것">3) Modular Skills (500-Line Rule): 길이를 줄이는 게 아니라 로딩 전략을 바꾸는 것</h2>
+<p>README에서 강조하는 500라인 규칙은 &ldquo;문서를 짧게 써라&quot;가 목적이 아니라, <strong>Claude가 필요한 지식만 단계적으로 읽게 하라</strong> 는 운영 규칙입니다.</p>
+<ul>
+<li><code>SKILL.md</code>: 500라인 이하의 라우팅 문서(개요, 언제 쓰는지, 어디를 더 읽을지)</li>
+<li><code>resources/*.md</code>: 주제별 심화 규칙(라우팅, 컨트롤러, 테스트, 에러 처리 등)</li>
+</ul>
+<pre class="mermaid">flowchart TD
+  A["사용자 작업"] --> B["먼저 SKILL.md 로드"]
+  B --> C{"더 깊은 상세 정보가 필요한가?"}
+  C -->|"아니오"| D["가벼운 컨텍스트로 실행"]
+  C -->|"예"| E["특정 리소스 파일 로드"]
+  E --> F["대상 깊이로 실행"]
+
+  classDef base fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+  classDef decision fill:#fff8e1,stroke:#ff8f00,color:#e65100
+  classDef output fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
+  class A,B,E base
+  class C decision
+  class D,F output</pre><p>이 구조는 컨텍스트 토큰 사용량을 줄이면서도 정확도를 지킵니다. 즉, &ldquo;크게 한 번에&quot;가 아니라 &ldquo;작게 나눠서 필요할 때만&rdquo; 읽는 방식으로 일관성을 확보합니다.</p>
+<p>추가로 <code>skill-rules.json</code>의 트리거(키워드/의도/경로)가 함께 맞물려야 실제 자동 활성화가 동작합니다. 예시 경로를 그대로 두면 스킬은 존재해도 거의 호출되지 않습니다.</p>
+<h2 id="4-repository-structure-왜-이-디렉터리-배치가-운영에-유리한가">4) Repository Structure: 왜 이 디렉터리 배치가 운영에 유리한가</h2>
+<p>이 저장소는 컴포넌트별 역할이 분리된 구조를 명확하게 드러냅니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>.claude/
+</span></span><span style="display:flex;"><span>├── skills/
+</span></span><span style="display:flex;"><span>│   ├── backend-dev-guidelines/
+</span></span><span style="display:flex;"><span>│   ├── frontend-dev-guidelines/
+</span></span><span style="display:flex;"><span>│   ├── skill-developer/
+</span></span><span style="display:flex;"><span>│   ├── route-tester/
+</span></span><span style="display:flex;"><span>│   ├── error-tracking/
+</span></span><span style="display:flex;"><span>│   └── skill-rules.json
+</span></span><span style="display:flex;"><span>├── hooks/
+</span></span><span style="display:flex;"><span>│   ├── skill-activation-prompt.*
+</span></span><span style="display:flex;"><span>│   ├── post-tool-use-tracker.sh
+</span></span><span style="display:flex;"><span>│   └── (optional stop hooks)
+</span></span><span style="display:flex;"><span>├── agents/
+</span></span><span style="display:flex;"><span>│   └── *.md
+</span></span><span style="display:flex;"><span>└── commands/
+</span></span><span style="display:flex;"><span>    └── *.md
+</span></span></code></pre></div><p>이 배치의 장점은 &ldquo;책임 분리&quot;입니다.</p>
+<ol>
+<li><code>hooks</code>: 언제 개입할지(타이밍)를 정의</li>
+<li><code>skills</code>: 무엇을 기준으로 코딩할지(규칙)를 정의</li>
+<li><code>agents</code>: 어떤 복잡 작업을 위임할지(역할)를 정의</li>
+<li><code>commands</code>: 반복 실행 흐름을 단축(진입점) 정의</li>
+</ol>
+<p>그래서 프로젝트 이식 시에도 우선순위가 명확해집니다. 훅으로 자동화 기반을 먼저 만들고, 스킬로 규칙을 붙이고, 이후 에이전트/커맨드를 확장하는 방식이 가장 안정적입니다.</p>
+<h2 id="5-agentscommands를-붙일-때의-판단-기준">5) Agents/Commands를 붙일 때의 판단 기준</h2>
+<p><code>.claude/agents/README.md</code> 기준으로 에이전트는 대체로 단독 복사가 가능하지만, 인증/경로 의존성이 있는 에이전트는 사전 점검이 필요합니다.</p>
+<ul>
+<li>상대적으로 안전: <code>code-architecture-reviewer</code>, <code>plan-reviewer</code>, <code>documentation-architect</code></li>
+<li>조건부: <code>auth-route-tester</code>, <code>auth-route-debugger</code> (JWT 쿠키 인증 전제)</li>
+<li>경로 확인 필요: 스크린샷 저장 경로, 하드코딩된 로컬 경로 참조</li>
+</ul>
+<p>Commands도 동일합니다. 명령 자체보다 내부 경로(<code>dev/active/...</code>)가 현재 프로젝트와 맞는지 먼저 맞춰야 합니다.</p>
+<p>결론적으로 &ldquo;복사&quot;보다 &ldquo;전제 확인&quot;이 먼저입니다. 이 저장소가 좋은 이유는 정답 코드를 주기 때문이 아니라, <strong>무엇을 질문해야 안전하게 이식되는지</strong> 까지 같이 알려주기 때문입니다.</p>
+<h2 id="6-15-30분-통합-플로우실전-버전">6) 15-30분 통합 플로우(실전 버전)</h2>
+<p>README의 통합 흐름을 실제 적용 관점으로 재배열하면 다음 순서가 가장 안정적입니다.</p>
+<pre class="mermaid">sequenceDiagram
+  participant U as 사용자팀
+  participant P as 프로젝트
+  participant H as 훅
+  participant S as 스킬
+
+  U->>P: 스택과 디렉터리 구조 확인
+  U->>H: 필수 훅 2개 추가
+  H->>P: UserPromptSubmit 및 PostToolUse 활성화
+  U->>S: 우선순위가 가장 높은 스킬 1개 추가
+  S->>P: skill-rules pathPatterns를 프로젝트에 맞게 조정
+  U->>P: 실제 수정 파일 기준 스모크 테스트 실행
+  P-->>U: 추가 스킬과 에이전트로 반복 개선</pre><p>이 흐름에서 절대 건너뛰지 말아야 할 단계는 &ldquo;경로 패턴 검증&quot;입니다. 자동 활성화 시스템의 성공/실패는 모델 품질이 아니라 경로 매칭 정확도에서 대부분 갈립니다.</p>
+<h2 id="practical-takeaways">Practical Takeaways</h2>
+<ol>
+<li>이 저장소는 실행 프로젝트가 아니라 운영 패턴 레퍼런스이므로, 전량 복사보다 선택적 이식이 정답입니다.</li>
+<li>초기에 가장 높은 ROI는 <code>UserPromptSubmit</code> + <code>PostToolUse</code> 두 훅입니다.</li>
+<li>Stop 훅은 구조 의존성이 크므로, 모노레포가 아니면 나중으로 미루는 편이 안전합니다.</li>
+<li>스킬 도입은 한 번에 여러 개보다 &ldquo;핵심 1개 + 트리거 튜닝&quot;이 실제 활성화율을 더 빨리 올립니다.</li>
+<li>통합 성공 여부는 코드 양이 아니라 <code>skill-rules.json</code>의 <code>pathPatterns</code> 정합성으로 판단해야 합니다.</li>
+</ol>
+<h2 id="conclusion">Conclusion</h2>
+<p><code>claude-code-infrastructure-showcase</code>의 핵심 가치는 &ldquo;좋은 프롬프트&quot;를 모아둔 데 있지 않습니다. 훅, 규칙 파일, 모듈형 스킬, 에이전트를 결합해 <strong>Claude Code의 동작을 시스템으로 통제</strong> 하게 만든 점이 본질입니다. 팀에 도입할 때는 필수 훅 2개와 스킬 1개로 작게 시작하고, 실제 활성화 로그를 기준으로 점진 확장하는 방식이 가장 현실적인 경로입니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 02월 23일 21시 45분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/development">Development</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/engineering">Engineering</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/02/2026-02-23-claude-code-is-a-beast-reddit-full-korean-repost/" rel="prev">
+        <span>Claude Code is a Beast 레딧 글 완전 정리: 6개월 하드코어 운영 팁 한국어 재포스팅</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/02/2026-02-24-claude-md-context-file-strategy/" rel="next">
+        <span>CLAUDE.md 지워야 할까?: 컨텍스트 파일이 에이전트 성능을 떨어뜨리는 이유와 실무 대응</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-이-저장소를-보는-올바른-프레임-완성품이-아니라-조립식-레퍼런스">1) 이 저장소를 보는 올바른 프레임: &ldquo;완성품&quot;이 아니라 &ldquo;조립식 레퍼런스&rdquo;</a></li>
+    <li><a href="#2-가장-먼저-이식할-최소-단위-essential-hooks-2개">2) 가장 먼저 이식할 최소 단위: &ldquo;Essential Hooks 2개&rdquo;</a></li>
+    <li><a href="#3-modular-skills-500-line-rule-길이를-줄이는-게-아니라-로딩-전략을-바꾸는-것">3) Modular Skills (500-Line Rule): 길이를 줄이는 게 아니라 로딩 전략을 바꾸는 것</a></li>
+    <li><a href="#4-repository-structure-왜-이-디렉터리-배치가-운영에-유리한가">4) Repository Structure: 왜 이 디렉터리 배치가 운영에 유리한가</a></li>
+    <li><a href="#5-agentscommands를-붙일-때의-판단-기준">5) Agents/Commands를 붙일 때의 판단 기준</a></li>
+    <li><a href="#6-15-30분-통합-플로우실전-버전">6) 15-30분 통합 플로우(실전 버전)</a></li>
+    <li><a href="#practical-takeaways">Practical Takeaways</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/skills/" class="badge badge-secondary">Skills</a>
+    <a href="/tags/hooks/" class="badge badge-secondary">Hooks</a>
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+    <a href="/tags/prompt-engineering/" class="badge badge-secondary">Prompt-Engineering</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

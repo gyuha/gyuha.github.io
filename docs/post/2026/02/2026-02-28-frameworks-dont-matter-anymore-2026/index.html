@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '2026 웹 개발 전환점: Frameworks Don&#39;t Matter Anymore의 핵심 정리'" />
+  <title>2026 웹 개발 전환점: Frameworks Don&#39;t Matter Anymore의 핵심 정리  | 신규하 블로그</title>
+  <meta property="og:title" content="2026 웹 개발 전환점: Frameworks Don&#39;t Matter Anymore의 핵심 정리" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-02-28"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/02/2026-02-28-frameworks-dont-matter-anymore-2026/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="React" />
+  
+  <meta property="og:tags" content="Framework" />
+  
+  <meta property="og:tags" content="Isomorphic" />
+  
+  <meta property="og:tags" content="Remix" />
+  
+  <meta property="og:tags" content="SolidJS" />
+  
+  <meta property="og:tags" content="Architecture" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/02/2026-02-28-frameworks-dont-matter-anymore-2026/">
+          <h1>
+            2026 웹 개발 전환점: Frameworks Don&#39;t Matter Anymore의 핵심 정리
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/02/2026-02-28-frameworks-dont-matter-anymore-2026/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>2026년 웹 개발 담론에서 가장 흥미로운 변화는 &ldquo;프레임워크 선택 자체의 중요도&quot;가 내려가고, 애플리케이션 구조를 어떻게 설계하는지가 더 중요해졌다는 주장입니다. 영상은 이 변화를 React 비판, AI 코드 생성 편향, 그리고 isomorphic-first 재정렬이라는 세 축으로 풀어냅니다 (근거: <a href="https://youtu.be/wkXvv0iJffg?t=35">t=35</a>, <a href="https://youtu.be/wkXvv0iJffg?t=299">t=299</a>).</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=wkXvv0iJffg">https://www.youtube.com/watch?v=wkXvv0iJffg</a></li>
+</ul>
+<h2 id="1-프레임워크-전쟁의-종료-선택보다-구조가-중요해진-이유">1) 프레임워크 전쟁의 종료: 선택보다 구조가 중요해진 이유</h2>
+<p>영상의 핵심 메시지는 &ldquo;이제 어떤 프레임워크를 고르느냐&quot;보다, 서버와 클라이언트를 어떤 경계로 나누고 어떤 데이터 흐름을 기본값으로 삼느냐가 더 본질적이라는 점입니다. 즉, 프레임워크는 제품 아키텍처를 구현하는 수단으로 수렴하고 있고, 차별점은 런타임 모델과 DX/운영 모델에서 갈립니다 (근거: <a href="https://youtu.be/wkXvv0iJffg?t=30">t=30</a>, <a href="https://youtu.be/wkXvv0iJffg?t=395">t=395</a>).</p>
+<pre class="mermaid">flowchart LR
+    A["2010s 중심 질문<br>어떤 프레임워크인가?"] --> B["2026 중심 질문<br>어떤 실행 모델인가?"]
+    B --> C["서버/클라이언트 경계 설계"]
+    B --> D["상태 변화 단위 설계"]
+    B --> E["데이터 스트리밍/변이 전략"]
+
+    classDef old fill:#FFE0B2,stroke:#E65100,color:#4E342E
+    classDef now fill:#BBDEFB,stroke:#1565C0,color:#0D47A1
+    classDef detail fill:#C8E6C9,stroke:#2E7D32,color:#1B5E20
+
+    class A old
+    class B now
+    class C,D,E detail</pre><h2 id="2-react가-마주한-구조적-비용-virtual-dom-rsc-컴파일러-계층">2) React가 마주한 구조적 비용: Virtual DOM, RSC, 컴파일러 계층</h2>
+<p>영상은 React 생태계가 &ldquo;간단한 UI 라이브러리&quot;에서 &ldquo;정신적 부하가 큰 아키텍처 묶음&quot;으로 확장됐다고 지적합니다. Virtual DOM 의존, React Server Components의 경계 모호성, 그리고 컴파일러 기반 자동 최적화가 합쳐지며 학습/디버깅 비용이 커졌다는 관점입니다 (근거: <a href="https://youtu.be/wkXvv0iJffg?t=70">t=70</a>, <a href="https://youtu.be/wkXvv0iJffg?t=98">t=98</a>, <a href="https://youtu.be/wkXvv0iJffg?t=122">t=122</a>).</p>
+<p>여기서 중요한 포인트는 &ldquo;컴파일러가 문제를 해결했다&quot;가 아니라 &ldquo;기존 설계 부채를 다른 레이어로 이동시켰다&quot;는 해석입니다. 컴포넌트 전체 함수 단위 반응성에서 오는 비용을 정적 분석으로 상쇄하려다 보니, 도구가 강력해질수록 내부 동작을 파악하기 어려워질 수 있다는 문제 제기입니다 (근거: <a href="https://youtu.be/wkXvv0iJffg?t=146">t=146</a>).</p>
+<pre class="mermaid">flowchart TD
+    A["컴포넌트 단위 반응성"] --> B["불필요 렌더/메모이제이션 부담"]
+    B --> C["컴파일러가 정적 분석으로 보정"]
+    C --> D["자동화 이점"]
+    C --> E["디버깅 난이도 증가"]
+    E --> F["구조적 부채가 숨겨짐"]
+
+    classDef source fill:#D1C4E9,stroke:#512DA8,color:#311B92
+    classDef cost fill:#FFCDD2,stroke:#B71C1C,color:#B71C1C
+    classDef tool fill:#B3E5FC,stroke:#0277BD,color:#01579B
+    classDef outcome fill:#C8E6C9,stroke:#2E7D32,color:#1B5E20
+
+    class A source
+    class B,E,F cost
+    class C tool
+    class D outcome</pre><h2 id="3-ai-시대의-react-회귀-루프-학습-데이터-규모가-만드는-역설">3) AI 시대의 React 회귀 루프: 학습 데이터 규모가 만드는 역설</h2>
+<p>영상은 &ldquo;React를 AI가 잘 생성한다&quot;는 장점이 동시에 한계가 될 수 있다고 말합니다. 이유는 명확합니다. React는 학습 데이터가 매우 많고, 그 안에는 서로 다른 시대의 패턴이 섞여 있어 평균적인 결과물로 수렴하기 쉽습니다. 그 결과, 오래된 의존성/패턴이 다시 등장하는 회귀 루프가 발생할 수 있습니다 (근거: <a href="https://youtu.be/wkXvv0iJffg?t=180">t=180</a>, <a href="https://youtu.be/wkXvv0iJffg?t=210">t=210</a>).</p>
+<p>이 지점의 실무적 함의는 &ldquo;AI가 코드를 잘 써준다&quot;가 끝이 아니라는 것입니다. 어떤 프롬프트 가이드와 리뷰 규칙으로 코드 품질을 통제할지, 그리고 팀이 허용하는 아키텍처 경계가 무엇인지가 더 중요해집니다 (근거: <a href="https://youtu.be/wkXvv0iJffg?t=238">t=238</a>).</p>
+<h2 id="4-isomorphic-first-재정렬-서버-편향-이후-다시-균형으로">4) Isomorphic-first 재정렬: 서버 편향 이후 다시 균형으로</h2>
+<p>영상은 최근 프레임워크 흐름을 &ldquo;서버로 과도하게 밀었다가 다시 상호작용 중심 균형으로 돌아오는 단계&quot;로 해석합니다. Islands/RSC 모델이 초기 렌더와 점수 최적화에는 강점이 있지만, 긴 사용자 플로우와 지속 상태에서 경계 비용이 누적된다는 설명입니다 (근거: <a href="https://youtu.be/wkXvv0iJffg?t=282">t=282</a>, <a href="https://youtu.be/wkXvv0iJffg?t=319">t=319</a>).</p>
+<p>특히 TanStack Start, SvelteKit, SolidStart 사례를 언급하며 Out-of-Order Streaming, Server Functions, Granular Optimistic UI, Single-Flight mutations 같은 패턴이 다시 중심으로 올라온다고 정리합니다. 요약하면 새로운 개념의 발명이라기보다, 앱 상호작용을 유지하기 위한 현실적 재조합에 가깝습니다 (근거: <a href="https://youtu.be/wkXvv0iJffg?t=361">t=361</a>, <a href="https://youtu.be/wkXvv0iJffg?t=389">t=389</a>, <a href="https://youtu.be/wkXvv0iJffg?t=425">t=425</a>).</p>
+<pre class="mermaid">flowchart LR
+    A["SPA 중심"] --> B["서버 중심 회귀<br>(Islands/RSC 확장)"]
+    B --> C["상호작용 경계 비용 증가"]
+    C --> D["Isomorphic-first 재균형"]
+    D --> E["Out-of-Order Streaming"]
+    D --> F["Granular Optimistic UI"]
+    D --> G["Single-Flight Mutations"]
+
+    classDef phase fill:#FFE082,stroke:#F9A825,color:#5D4037
+    classDef issue fill:#FFAB91,stroke:#D84315,color:#BF360C
+    classDef solution fill:#80CBC4,stroke:#00695C,color:#004D40
+    classDef feature fill:#B2DFDB,stroke:#00796B,color:#004D40
+
+    class A,B,D phase
+    class C issue
+    class E,F,G feature</pre><h2 id="5-meteor-사례와-바닐라-회귀-신호가-주는-교훈">5) Meteor 사례와 &ldquo;바닐라 회귀&rdquo; 신호가 주는 교훈</h2>
+<p>영상 후반은 isomorphic 접근이 새 개념이 아니라 Meteor 시기부터 반복되어 왔음을 상기시킵니다. 즉, &ldquo;새 프레임워크가 모든 문제를 끝낸다&quot;는 서사는 역사적으로 반복해서 실패했고, 결국 운영 가능한 단순성과 팀의 이해 가능성이 생존 조건이었다는 점을 강조합니다 (근거: <a href="https://youtu.be/wkXvv0iJffg?t=432">t=432</a>, <a href="https://youtu.be/wkXvv0iJffg?t=451">t=451</a>).</p>
+<p>또한 발표자는 &ldquo;툴은 이미 충분히 좋다&quot;는 피로감과 함께, 필요할 때는 바닐라 JS로 내려가도 된다는 관점을 제시합니다. 이는 최신 프레임워크를 버리자는 주장이 아니라, 기술 선택의 기준을 &ldquo;혁신성&quot;보다 &ldquo;문제-해결 적합성&quot;으로 되돌리자는 메시지로 읽을 수 있습니다 (근거: <a href="https://youtu.be/wkXvv0iJffg?t=472">t=472</a>).</p>
+<h2 id="practical-takeaways">Practical Takeaways</h2>
+<ol>
+<li>React 사용 여부보다, 서버/클라이언트 경계와 상태 갱신 단위를 먼저 설계하세요.</li>
+<li>AI 생성 코드 도입 팀이라면 &ldquo;허용 패턴 목록&quot;과 &ldquo;금지 패턴 목록&quot;을 리뷰 체크리스트로 명시하세요.</li>
+<li>RSC/Islands를 쓰더라도 긴 상호작용 플로우에서 경계 비용이 커지는 지점을 별도로 계측하세요.</li>
+<li>Out-of-Order Streaming, Optimistic UI, Single-Flight 같은 기능은 유행어보다 &ldquo;실패 모드 감소&rdquo; 관점에서 평가하세요.</li>
+<li>프레임워크 마이그레이션 판단 기준을 &ldquo;새로움&quot;이 아닌 &ldquo;운영 단순성 + 디버깅 가능성&quot;으로 고정하세요.</li>
+</ol>
+<h2 id="conclusion">Conclusion</h2>
+<p>이 영상의 결론은 단순합니다. 프레임워크 경쟁은 끝난 것이 아니라, 경쟁의 축이 바뀌었습니다. 이제 승부는 &ldquo;무엇을 쓰느냐&quot;보다 &ldquo;복잡성을 어디에 두고 어떻게 통제하느냐&quot;에서 갈립니다.</p>
+<p>2026년의 실무자는 프레임워크 팬이기보다 시스템 설계자가 되어야 합니다. 그리고 그 기준은 화려한 추상화가 아니라, 사용자 상호작용과 운영 현실을 견디는 아키텍처입니다 (근거: <a href="https://youtu.be/wkXvv0iJffg?t=395">t=395</a>, <a href="https://youtu.be/wkXvv0iJffg?t=472">t=472</a>).</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 02월 28일 11시 40분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/web-development">Web Development</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/javascript">JavaScript</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/02/2026-02-28-notebooklm-antigravity-notion-mcp-workflow/" rel="prev">
+        <span>NotebookLM &#43; Antigravity &#43; Notion MCP 실전 자동화 워크플로우</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/02/2026-02-28-expert-investment-teams-fine-grained-llm/" rel="next">
+        <span>Toward Expert Investment Teams: 세밀한 태스크 분해가 LLM 트레이딩 팀 성능을 끌어올리는 방식</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-프레임워크-전쟁의-종료-선택보다-구조가-중요해진-이유">1) 프레임워크 전쟁의 종료: 선택보다 구조가 중요해진 이유</a></li>
+    <li><a href="#2-react가-마주한-구조적-비용-virtual-dom-rsc-컴파일러-계층">2) React가 마주한 구조적 비용: Virtual DOM, RSC, 컴파일러 계층</a></li>
+    <li><a href="#3-ai-시대의-react-회귀-루프-학습-데이터-규모가-만드는-역설">3) AI 시대의 React 회귀 루프: 학습 데이터 규모가 만드는 역설</a></li>
+    <li><a href="#4-isomorphic-first-재정렬-서버-편향-이후-다시-균형으로">4) Isomorphic-first 재정렬: 서버 편향 이후 다시 균형으로</a></li>
+    <li><a href="#5-meteor-사례와-바닐라-회귀-신호가-주는-교훈">5) Meteor 사례와 &ldquo;바닐라 회귀&rdquo; 신호가 주는 교훈</a></li>
+    <li><a href="#practical-takeaways">Practical Takeaways</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/react/" class="badge badge-secondary">React</a>
+    <a href="/tags/framework/" class="badge badge-secondary">Framework</a>
+    <a href="/tags/isomorphic/" class="badge badge-secondary">Isomorphic</a>
+    <a href="/tags/remix/" class="badge badge-secondary">Remix</a>
+    <a href="/tags/solidjs/" class="badge badge-secondary">SolidJS</a>
+    <a href="/tags/architecture/" class="badge badge-secondary">Architecture</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

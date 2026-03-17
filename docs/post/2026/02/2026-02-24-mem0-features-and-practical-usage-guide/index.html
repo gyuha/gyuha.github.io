@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Mem0 기능 정리와 실전 활용: YouTube Shorts 요약부터 멀티테넌트 메모리 설계까지'" />
+  <title>Mem0 기능 정리와 실전 활용: YouTube Shorts 요약부터 멀티테넌트 메모리 설계까지  | 신규하 블로그</title>
+  <meta property="og:title" content="Mem0 기능 정리와 실전 활용: YouTube Shorts 요약부터 멀티테넌트 메모리 설계까지" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-02-24"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/02/2026-02-24-mem0-features-and-practical-usage-guide/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="Mem0" />
+  
+  <meta property="og:tags" content="AI Agent" />
+  
+  <meta property="og:tags" content="Long-term Memory" />
+  
+  <meta property="og:tags" content="Multi Tenant" />
+  
+  <meta property="og:tags" content="Personalization" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/02/2026-02-24-mem0-features-and-practical-usage-guide/">
+          <h1>
+            Mem0 기능 정리와 실전 활용: YouTube Shorts 요약부터 멀티테넌트 메모리 설계까지
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/02/2026-02-24-mem0-features-and-practical-usage-guide/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>이번 Shorts의 요지는 명확합니다. 1:1 대화에서는 크게 필요하지 않을 수 있지만, 여러 고객을 동시에 상대하는 AI 에이전트 SaaS에서는 &ldquo;고객별 기억 분리&quot;가 필수이며 그 지점에서 Mem0가 유용하다는 주장입니다. (<a href="https://youtu.be/qVLvBZpuH1M?t=20">영상 근거</a>) 이 글에서는 그 메시지를 출발점으로, Mem0 공식 문서/공식 레포 근거로 기능과 활용법을 실무 관점에서 정리합니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.youtube.com/shorts/qVLvBZpuH1M">https://www.youtube.com/shorts/qVLvBZpuH1M</a></li>
+<li><a href="https://docs.mem0.ai/">https://docs.mem0.ai/</a></li>
+<li><a href="https://docs.mem0.ai/open-source/python-quickstart">https://docs.mem0.ai/open-source/python-quickstart</a></li>
+<li><a href="https://docs.mem0.ai/core-concepts/memory-operations/add">https://docs.mem0.ai/core-concepts/memory-operations/add</a></li>
+<li><a href="https://docs.mem0.ai/components/vectordbs/overview">https://docs.mem0.ai/components/vectordbs/overview</a></li>
+<li><a href="https://docs.mem0.ai/platform/platform-vs-oss">https://docs.mem0.ai/platform/platform-vs-oss</a></li>
+<li><a href="https://docs.mem0.ai/integrations/openai-agents-sdk">https://docs.mem0.ai/integrations/openai-agents-sdk</a></li>
+<li><a href="https://github.com/mem0ai/mem0">https://github.com/mem0ai/mem0</a></li>
+</ul>
+<h2 id="1-shorts-핵심-요약-멀티-고객-환경에서-왜-메모리-레이어가-필요한가">1) Shorts 핵심 요약: &ldquo;멀티 고객 환경&quot;에서 왜 메모리 레이어가 필요한가</h2>
+<p>영상은 Mem0를 &ldquo;복잡한 기억이 필요한 상황&quot;에 쓰는 서비스로 소개합니다. 핵심 포인트는 고객 A/B/C의 정보가 섞이면 개인화 품질 저하를 넘어 개인정보 이슈가 될 수 있으므로, 사용자 단위로 기억을 분리하고 해당 사용자 맥락만 불러와야 한다는 점입니다. (<a href="https://youtu.be/qVLvBZpuH1M?t=30">영상 근거</a>)</p>
+<p>또한 Shorts에서는 Mem0가 클라우드/오픈소스 양쪽을 제공하고, 기억 압축과 추적성을 제공한다고 설명합니다. 즉, 단순 저장소가 아니라 &ldquo;추출-압축-조회-추적&quot;이 붙은 메모리 계층으로 이해하는 것이 맞습니다. (<a href="https://youtu.be/qVLvBZpuH1M?t=55">영상 근거</a>)</p>
+<h2 id="2-mem0-기능-구조-add-파이프라인과-검색-모델">2) Mem0 기능 구조: add 파이프라인과 검색 모델</h2>
+<p>공식 문서 기준으로 Mem0의 <code>add</code> 동작은 크게 3단계입니다. (1) 정보 추출, (2) 충돌 해결/중복 처리, (3) 저장입니다. 기본값 <code>infer=True</code>에서는 구조화 추출 및 충돌 처리까지 수행하고, <code>infer=False</code>에서는 원문을 그대로 적재하므로 중복 관리 전략을 따로 세워야 합니다. (docs: Add Memory)</p>
+<p>검색 측면에서는 사용자/세션/실행 단위 식별자와 메타데이터 필터를 통해 필요한 기억만 불러오는 모델을 채택합니다. 이 패턴은 &ldquo;전체 대화 이력 통째 주입&rdquo; 대비 토큰 사용량과 노이즈를 줄이는 데 유리합니다.</p>
+<pre class="mermaid">flowchart LR
+  A["대화 메시지 입력"] --> B["핵심 정보 추출"]
+  B --> C["중복 및 충돌 해결"]
+  C --> D["벡터 또는 그래프 저장"]
+  D --> E["질의 시 관련 기억 검색"]
+  E --> F["응답 컨텍스트 주입"]
+
+  classDef input fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
+  classDef process fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+  classDef output fill:#fff3e0,stroke:#ef6c00,color:#e65100
+
+  class A input
+  class B,C,D,E process
+  class F output</pre><h2 id="3-공식-기능-요약-platform-vs-oss-저장소-선택-통합">3) 공식 기능 요약: Platform vs OSS, 저장소 선택, 통합</h2>
+<p>Mem0는 관리형 Platform과 OSS를 병행합니다. Platform은 빠른 시작/운영 편의, OSS는 인프라 통제와 커스터마이징이 강점입니다. 공식 비교 페이지에서도 이 차이를 시간·운영 책임·확장 방식 기준으로 명시합니다. (docs: Platform vs Open Source)</p>
+<p>저장 계층은 Qdrant, Chroma, PGVector, Pinecone, Milvus 등 다양한 벡터DB를 지원하며, 설정이 없으면 기본적으로 Qdrant를 사용합니다. (docs: Vector DB Overview) 또한 OpenAI Agents SDK 통합 예시에서 <code>search_memory</code>/<code>save_memory</code> 도구 패턴을 통해 멀티 에이전트 핸드오프에도 기억을 연결하는 방법을 제시합니다. (docs: OpenAI Agents SDK)</p>
+<h2 id="4-실전-활용-패턴-6가지-what--why--how">4) 실전 활용 패턴 6가지 (What / Why / How)</h2>
+<h3 id="4-1-chat-memory-loop">4-1) Chat Memory Loop</h3>
+<ul>
+<li>What: 질의 전 검색, 답변 후 저장 루프를 고정합니다.</li>
+<li>Why: 매 턴마다 필요한 기억만 주입해 컨텍스트 과부하를 줄입니다.</li>
+<li>How: <code>search -&gt; answer -&gt; add</code> 순서를 래퍼 함수로 강제합니다.</li>
+</ul>
+<h3 id="4-2-멀티테넌트-분리">4-2) 멀티테넌트 분리</h3>
+<ul>
+<li>What: <code>user_id</code>, <code>agent_id</code>, <code>run_id</code>, <code>app_id</code> 스코프를 명시합니다.</li>
+<li>Why: 고객 간 메모리 오염과 유출 리스크를 낮춥니다.</li>
+<li>How: 검색 필터를 &ldquo;기본 ON&quot;으로 두고, 무필터 조회를 금지합니다.</li>
+</ul>
+<h3 id="4-3-personalization--rag-보강">4-3) Personalization + RAG 보강</h3>
+<ul>
+<li>What: 검색/추천 에이전트 프롬프트에 사용자 기억을 함께 주입합니다.</li>
+<li>Why: 동일 질문이라도 사용자 선호에 맞는 응답을 만들 수 있습니다.</li>
+<li>How: 검색 결과와 기억 결과를 분리 수집 후 프롬프트에서 합성합니다.</li>
+</ul>
+<h3 id="4-4-에이전트-핸드오프-메모리-공유">4-4) 에이전트 핸드오프 메모리 공유</h3>
+<ul>
+<li>What: 라우팅 에이전트와 전문 에이전트가 공용 메모리 레이어를 봅니다.</li>
+<li>Why: 에이전트가 바뀌어도 사용자 맥락이 끊기지 않습니다.</li>
+<li>How: 공통 도구 함수(<code>save_memory</code>, <code>search_memory</code>)를 에이전트별로 재사용합니다.</li>
+</ul>
+<h3 id="4-5-메모리-수명-관리">4-5) 메모리 수명 관리</h3>
+<ul>
+<li>What: 중요도/만료일 기반으로 기억을 단기/장기로 분리합니다.</li>
+<li>Why: 오래된 기억 누적으로 발생하는 노이즈를 줄입니다.</li>
+<li>How: 메타데이터 + 만료 정책으로 아카이브/삭제를 자동화합니다.</li>
+</ul>
+<h3 id="4-6-운영-가시성-확보">4-6) 운영 가시성 확보</h3>
+<ul>
+<li>What: 어떤 기억이 응답에 사용됐는지 추적 로그를 남깁니다.</li>
+<li>Why: 잘못된 개인화의 원인을 빠르게 역추적할 수 있습니다.</li>
+<li>How: 메모리 이벤트 훅/웹훅 또는 자체 감사 로그를 연결합니다.</li>
+</ul>
+<pre class="mermaid">sequenceDiagram
+  participant U as User
+  participant A as Agent
+  participant M as Mem0
+  participant L as LLM
+
+  U->>A: 질문 입력
+  A->>M: 관련 기억 검색
+  M-->>A: 사용자 맞춤 기억 반환
+  A->>L: 질문과 기억 함께 전달
+  L-->>A: 개인화 응답 생성
+  A->>M: 새 대화 내용 저장
+  A-->>U: 응답 전달</pre><h2 id="5-도입-시-주의할-점">5) 도입 시 주의할 점</h2>
+<ol>
+<li><code>infer=True</code>와 <code>infer=False</code>를 혼용하면 중복/정합성 이슈가 생길 수 있으므로 사용 정책을 먼저 고정해야 합니다.</li>
+<li>벡터 차원(embedding dims)과 DB 설정이 맞지 않으면 검색 품질 저하 또는 오류가 발생할 수 있습니다.</li>
+<li>메모리를 많이 저장하는 것보다, 검색 필터와 만료 정책으로 &ldquo;필요한 것만 남기는 운영&quot;이 더 중요합니다.</li>
+<li>&ldquo;기억이 많으면 무조건 성능 향상&quot;은 성립하지 않습니다. 평가 셋으로 회귀 테스트를 붙여야 합니다.</li>
+</ol>
+<h2 id="practical-takeaways">Practical Takeaways</h2>
+<ol>
+<li>Mem0는 채팅 저장소가 아니라 &ldquo;개인화 가능한 메모리 레이어&quot;로 도입해야 효과가 난다.</li>
+<li>멀티 고객 SaaS라면 사용자 스코프 분리(<code>user_id</code> 중심)를 설계 초기에 고정해야 한다.</li>
+<li>첫 PoC는 Platform으로 빠르게 검증하고, 통제 요구가 커질 때 OSS로 확장하는 전략이 현실적이다.</li>
+<li>운영 품질은 저장량보다 검색 정책, 만료 전략, 감사 가능성에서 결정된다.</li>
+<li>영상의 메시지처럼 1:1 대화보다 &ldquo;다수 사용자 대응 에이전트&quot;에서 Mem0의 가치가 크게 드러난다. (<a href="https://youtu.be/qVLvBZpuH1M?t=70">영상 근거</a>)</li>
+</ol>
+<h2 id="conclusion">Conclusion</h2>
+<p>Mem0의 본질은 &ldquo;기억을 많이 쌓는 도구&quot;가 아니라 &ldquo;필요한 기억만 정확히 꺼내 쓰게 만드는 계층&quot;입니다. Shorts가 던진 문제의식(고객별 기억 분리)은 실무에서 매우 타당하며, 공식 문서가 제공하는 추출-충돌해결-저장-검색 파이프라인을 기준으로 설계하면 과장 없이 안정적인 개인화 에이전트를 만들 수 있습니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 02월 24일 21시 35분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/development">Development</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/architecture">Architecture</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/02/2026-02-24-multi-llm-orchestration-antigravity-guide/" rel="prev">
+        <span>Antigravity 기반 멀티 LLM 오케스트레이션: GPT·Claude Code·Codex를 한 워크플로우로 묶는 방법</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/02/2026-02-24-notebooklm-7-techniques-top-2-percent/" rel="next">
+        <span>NotebookLM 7가지 핵심 기술: 상위 2% 활용법 완전 정리</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-shorts-핵심-요약-멀티-고객-환경에서-왜-메모리-레이어가-필요한가">1) Shorts 핵심 요약: &ldquo;멀티 고객 환경&quot;에서 왜 메모리 레이어가 필요한가</a></li>
+    <li><a href="#2-mem0-기능-구조-add-파이프라인과-검색-모델">2) Mem0 기능 구조: add 파이프라인과 검색 모델</a></li>
+    <li><a href="#3-공식-기능-요약-platform-vs-oss-저장소-선택-통합">3) 공식 기능 요약: Platform vs OSS, 저장소 선택, 통합</a></li>
+    <li><a href="#4-실전-활용-패턴-6가지-what--why--how">4) 실전 활용 패턴 6가지 (What / Why / How)</a>
+      <ul>
+        <li><a href="#4-1-chat-memory-loop">4-1) Chat Memory Loop</a></li>
+        <li><a href="#4-2-멀티테넌트-분리">4-2) 멀티테넌트 분리</a></li>
+        <li><a href="#4-3-personalization--rag-보강">4-3) Personalization + RAG 보강</a></li>
+        <li><a href="#4-4-에이전트-핸드오프-메모리-공유">4-4) 에이전트 핸드오프 메모리 공유</a></li>
+        <li><a href="#4-5-메모리-수명-관리">4-5) 메모리 수명 관리</a></li>
+        <li><a href="#4-6-운영-가시성-확보">4-6) 운영 가시성 확보</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-도입-시-주의할-점">5) 도입 시 주의할 점</a></li>
+    <li><a href="#practical-takeaways">Practical Takeaways</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/mem0/" class="badge badge-secondary">Mem0</a>
+    <a href="/tags/ai-agent/" class="badge badge-secondary">AI Agent</a>
+    <a href="/tags/long-term-memory/" class="badge badge-secondary">Long-Term Memory</a>
+    <a href="/tags/multi-tenant/" class="badge badge-secondary">Multi Tenant</a>
+    <a href="/tags/personalization/" class="badge badge-secondary">Personalization</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Next.js에서 react-hook-form과 URL을 우아하게 동기화하는 법 2 🚀'" />
+  <title>Next.js에서 react-hook-form과 URL을 우아하게 동기화하는 법 2 🚀  | 신규하 블로그</title>
+  <meta property="og:title" content="Next.js에서 react-hook-form과 URL을 우아하게 동기화하는 법 2 🚀" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2025-07-16"> 
+  <meta property="og:url" content="https://gyuha.com/post/2025/07/2025-07-16-react-hook-form-sync-with-url-2/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="next.js" />
+  
+  <meta property="og:tags" content="react-hook-form" />
+  
+  <meta property="og:tags" content="typescript" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2025/07/2025-07-16-react-hook-form-sync-with-url-2/">
+          <h1>
+            Next.js에서 react-hook-form과 URL을 우아하게 동기화하는 법 2 🚀
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2025/07/2025-07-16-react-hook-form-sync-with-url-2/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>지난포스트에서는 Next.js 프로젝트를 진행하면서 유용하게 사용할 수 있는 자작 커스텀 훅, <code>useFormUrlSync</code>을 개선한 버전에 대해서 이야기 해 봅니다.</p>
+<h2 id="전체-소스-코드">전체 소스 코드</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span><span style="color:#0a3069">&#34;use client&#34;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#cf222e">type</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">AliasAny</span> <span style="color:#1f2328">}</span> <span style="color:#cf222e">from</span> <span style="color:#0a3069">&#34;@/types/alias.types&#34;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">isNumber</span> <span style="color:#1f2328">}</span> <span style="color:#cf222e">from</span> <span style="color:#0a3069">&#34;es-toolkit/compat&#34;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">useRouter</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">useSearchParams</span> <span style="color:#1f2328">}</span> <span style="color:#cf222e">from</span> <span style="color:#0a3069">&#34;next/navigation&#34;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">useCallback</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">useEffect</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">useRef</span> <span style="color:#1f2328">}</span> <span style="color:#cf222e">from</span> <span style="color:#0a3069">&#34;react&#34;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#1f2328">{</span> <span style="color:#cf222e">type</span> <span style="color:#1f2328">DefaultValues</span><span style="color:#1f2328">,</span> <span style="color:#cf222e">type</span> <span style="color:#1f2328">FieldValues</span><span style="color:#1f2328">,</span> <span style="color:#cf222e">type</span> <span style="color:#1f2328">UseFormProps</span><span style="color:#1f2328">,</span> <span style="color:#cf222e">type</span> <span style="color:#1f2328">UseFormReturn</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">useForm</span> <span style="color:#1f2328">}</span> <span style="color:#cf222e">from</span> <span style="color:#0a3069">&#34;react-hook-form&#34;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> * useFormUrlSync 훅의 옵션 타입
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> * @template T - 폼 필드 값들의 타입
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> */</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">type</span> <span style="color:#1f2328">UseFormUrlSyncOptions</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">T</span> <span style="color:#1f2328">extends</span> <span style="color:#1f2328">FieldValues</span><span style="color:#1f2328">&gt;</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">Omit</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">UseFormProps</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">T</span><span style="color:#1f2328">&gt;,</span> <span style="color:#0a3069">&#34;defaultValues&#34;</span><span style="color:#1f2328">&gt;</span> <span style="color:#0550ae">&amp;</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">/** URL 동기화에서 제외할 필드명들 */</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">excludeFromUrl</span><span style="color:#0550ae">?:</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">keyof</span> <span style="color:#1f2328">T</span><span style="color:#1f2328">)[];</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">/** URL 변경 시 replace 사용 여부 (기본값: true) */</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">replace?</span>: <span style="color:#cf222e">boolean</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">/** 폼의 기본값들 */</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">defaultValues</span>: <span style="color:#cf222e">DefaultValues</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">T</span><span style="color:#1f2328">&gt;;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">/** URL 실시간 동기화 여부 (기본값: true) */</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">sync?</span>: <span style="color:#cf222e">boolean</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> * useFormUrlSync 훅의 반환 타입
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> * @template T - 폼 필드 값들의 타입
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> */</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">type</span> <span style="color:#1f2328">UseFormUrlSyncReturn</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">T</span> <span style="color:#1f2328">extends</span> <span style="color:#1f2328">FieldValues</span><span style="color:#1f2328">&gt;</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">UseFormReturn</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">T</span><span style="color:#1f2328">&gt;</span> <span style="color:#0550ae">&amp;</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">/** URL을 수동으로 동기화하는 함수 */</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">syncToUrl</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">()</span> <span style="color:#0550ae">=&gt;</span> <span style="color:#cf222e">void</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> * URL 파라미터 값을 적절한 타입으로 파싱합니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> * @param value - 파싱할 문자열 값
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> * @returns 파싱된 값 (string | number | boolean)
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> */</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">function</span> <span style="color:#1f2328">parseUrlValue</span><span style="color:#1f2328">(</span><span style="color:#1f2328">value</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">)</span><span style="color:#0550ae">:</span> <span style="color:#cf222e">string</span> <span style="color:#0550ae">|</span> <span style="color:#cf222e">number</span> <span style="color:#0550ae">|</span> <span style="color:#cf222e">boolean</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">value</span> <span style="color:#0550ae">===</span> <span style="color:#0a3069">&#34;&#34;</span><span style="color:#1f2328">)</span> <span style="color:#cf222e">return</span> <span style="color:#1f2328">value</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">value</span> <span style="color:#0550ae">===</span> <span style="color:#0a3069">&#34;true&#34;</span><span style="color:#1f2328">)</span> <span style="color:#cf222e">return</span> <span style="color:#cf222e">true</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">value</span> <span style="color:#0550ae">===</span> <span style="color:#0a3069">&#34;false&#34;</span><span style="color:#1f2328">)</span> <span style="color:#cf222e">return</span> <span style="color:#cf222e">false</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">numValue</span> <span style="color:#0550ae">=</span> <span style="color:#6639ba">Number</span><span style="color:#1f2328">(</span><span style="color:#1f2328">value</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">isNumber</span><span style="color:#1f2328">(</span><span style="color:#1f2328">numValue</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">&amp;&amp;</span> <span style="color:#0550ae">!</span><span style="color:#6639ba">Number</span><span style="color:#1f2328">.</span><span style="color:#6639ba">isNaN</span><span style="color:#1f2328">(</span><span style="color:#1f2328">numValue</span><span style="color:#1f2328">))</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">return</span> <span style="color:#1f2328">numValue</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> <span style="color:#1f2328">value</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> * URL 검색 파라미터에서 초기값을 추출합니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> * @template T - 폼 필드 값들의 타입
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> * @param searchParams - URL 검색 파라미터
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> * @param excludeFromUrl - URL 동기화에서 제외할 필드명들
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> * @returns URL에서 추출한 초기값들
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> */</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">function</span> <span style="color:#1f2328">extractInitialValuesFromUrl</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">T</span> <span style="color:#1f2328">extends</span> <span style="color:#1f2328">FieldValues</span><span style="color:#1f2328">&gt;(</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">searchParams</span>: <span style="color:#cf222e">URLSearchParams</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">excludeFromUrl</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">keyof</span> <span style="color:#1f2328">T</span><span style="color:#1f2328">)[],</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">)</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">Partial</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">T</span><span style="color:#1f2328">&gt;</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">urlValues</span>: <span style="color:#cf222e">Partial</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">T</span><span style="color:#1f2328">&gt;</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">{};</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">const</span> <span style="color:#1f2328">[</span><span style="color:#1f2328">key</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">value</span><span style="color:#1f2328">]</span> <span style="color:#cf222e">of</span> <span style="color:#1f2328">searchParams</span><span style="color:#1f2328">.</span><span style="color:#1f2328">entries</span><span style="color:#1f2328">())</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#0550ae">!</span><span style="color:#1f2328">excludeFromUrl</span><span style="color:#1f2328">.</span><span style="color:#1f2328">includes</span><span style="color:#1f2328">(</span><span style="color:#1f2328">key</span> <span style="color:#cf222e">as</span> <span style="color:#cf222e">keyof</span> <span style="color:#1f2328">T</span><span style="color:#1f2328">))</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">(</span><span style="color:#1f2328">urlValues</span> <span style="color:#cf222e">as</span> <span style="color:#1f2328">AliasAny</span><span style="color:#1f2328">)[</span><span style="color:#1f2328">key</span><span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">parseUrlValue</span><span style="color:#1f2328">(</span><span style="color:#1f2328">value</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> <span style="color:#1f2328">urlValues</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> * 폼 값들로부터 URL 파라미터를 생성합니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> * @template T - 폼 필드 값들의 타입
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> * @param values - 폼 값들
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> * @param currentParams - 현재 URL 파라미터
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> * @param excludeFromUrl - URL 동기화에서 제외할 필드명들
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> * @returns 새로운 URLSearchParams 객체
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> */</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">function</span> <span style="color:#1f2328">createUrlParamsFromValues</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">T</span> <span style="color:#1f2328">extends</span> <span style="color:#1f2328">FieldValues</span><span style="color:#1f2328">&gt;(</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">values</span>: <span style="color:#cf222e">T</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">currentParams</span>: <span style="color:#cf222e">URLSearchParams</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">excludeFromUrl</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">keyof</span> <span style="color:#1f2328">T</span><span style="color:#1f2328">)[],</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">)</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">URLSearchParams</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">params</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">new</span> <span style="color:#1f2328">URLSearchParams</span><span style="color:#1f2328">(</span><span style="color:#1f2328">currentParams</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">const</span> <span style="color:#1f2328">[</span><span style="color:#1f2328">key</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">value</span><span style="color:#1f2328">]</span> <span style="color:#cf222e">of</span> <span style="color:#6639ba">Object</span><span style="color:#1f2328">.</span><span style="color:#1f2328">entries</span><span style="color:#1f2328">(</span><span style="color:#1f2328">values</span><span style="color:#1f2328">))</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">excludeFromUrl</span><span style="color:#1f2328">.</span><span style="color:#1f2328">includes</span><span style="color:#1f2328">(</span><span style="color:#1f2328">key</span> <span style="color:#cf222e">as</span> <span style="color:#cf222e">keyof</span> <span style="color:#1f2328">T</span><span style="color:#1f2328">))</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#cf222e">continue</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">value</span> <span style="color:#0550ae">!==</span> <span style="color:#cf222e">undefined</span> <span style="color:#0550ae">&amp;&amp;</span> <span style="color:#1f2328">value</span> <span style="color:#0550ae">!==</span> <span style="color:#cf222e">null</span> <span style="color:#0550ae">&amp;&amp;</span> <span style="color:#1f2328">value</span> <span style="color:#0550ae">!==</span> <span style="color:#0a3069">&#34;&#34;</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">params</span><span style="color:#1f2328">.</span><span style="color:#cf222e">set</span><span style="color:#1f2328">(</span><span style="color:#1f2328">key</span><span style="color:#1f2328">,</span> <span style="color:#6639ba">String</span><span style="color:#1f2328">(</span><span style="color:#1f2328">value</span><span style="color:#1f2328">));</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">}</span> <span style="color:#cf222e">else</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">params</span><span style="color:#1f2328">.</span><span style="color:#cf222e">delete</span><span style="color:#1f2328">(</span><span style="color:#1f2328">key</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> <span style="color:#1f2328">params</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> * 두 객체의 깊은 비교를 수행합니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> * @param obj1 - 비교할 첫 번째 객체
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> * @param obj2 - 비교할 두 번째 객체
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> * @returns 객체들이 동일한지 여부
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> */</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">function</span> <span style="color:#1f2328">deepEqual</span><span style="color:#1f2328">(</span><span style="color:#1f2328">obj1</span>: <span style="color:#cf222e">AliasAny</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">obj2</span>: <span style="color:#cf222e">AliasAny</span><span style="color:#1f2328">)</span><span style="color:#0550ae">:</span> <span style="color:#cf222e">boolean</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> <span style="color:#1f2328">JSON</span><span style="color:#1f2328">.</span><span style="color:#1f2328">stringify</span><span style="color:#1f2328">(</span><span style="color:#1f2328">obj1</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">===</span> <span style="color:#1f2328">JSON</span><span style="color:#1f2328">.</span><span style="color:#1f2328">stringify</span><span style="color:#1f2328">(</span><span style="color:#1f2328">obj2</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> * React Hook Form과 URL 검색 파라미터를 양방향으로 동기화하는 커스텀 훅입니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> *
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> * @template T - 폼 필드 값들의 타입, FieldValues를 확장해야 함
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> * @param options - 훅 설정 옵션
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> * @returns React Hook Form의 UseFormReturn 객체
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> *
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> * @remarks
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> * URL 파라미터는 자동으로 적절한 타입(string, number, boolean)으로 파싱됩니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> * 빈 문자열, null, undefined 값은 URL에서 제거됩니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> * Next.js의 useRouter와 useSearchParams를 사용하므로 Next.js 환경에서만 동작합니다.
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"> */</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">export</span> <span style="color:#cf222e">function</span> <span style="color:#1f2328">useFormUrlSync</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">T</span> <span style="color:#1f2328">extends</span> <span style="color:#1f2328">FieldValues</span><span style="color:#1f2328">&gt;(</span><span style="color:#1f2328">options</span>: <span style="color:#cf222e">UseFormUrlSyncOptions</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">T</span><span style="color:#1f2328">&gt;)</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">UseFormUrlSyncReturn</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">T</span><span style="color:#1f2328">&gt;</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">router</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">useRouter</span><span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">searchParams</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">useSearchParams</span><span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">excludeFromUrl</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">[],</span> <span style="color:#1f2328">replace</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">true</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">defaultValues</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">sync</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">true</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">...</span><span style="color:#1f2328">formOptions</span> <span style="color:#1f2328">}</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">options</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">isUpdatingFromUrl</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">useRef</span><span style="color:#1f2328">(</span><span style="color:#cf222e">false</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">getUrlValues</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">useCallback</span><span style="color:#1f2328">(()</span> <span style="color:#0550ae">=&gt;</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">return</span> <span style="color:#1f2328">extractInitialValuesFromUrl</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">T</span><span style="color:#1f2328">&gt;(</span><span style="color:#1f2328">searchParams</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">excludeFromUrl</span> <span style="color:#cf222e">as</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">keyof</span> <span style="color:#1f2328">T</span><span style="color:#1f2328">)[]);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">},</span> <span style="color:#1f2328">[</span><span style="color:#1f2328">searchParams</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">excludeFromUrl</span><span style="color:#1f2328">]);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">initialValues</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">...</span><span style="color:#1f2328">defaultValues</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">...</span><span style="color:#1f2328">getUrlValues</span><span style="color:#1f2328">(),</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span> <span style="color:#cf222e">as</span> <span style="color:#1f2328">DefaultValues</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">T</span><span style="color:#1f2328">&gt;;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">form</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">useForm</span><span style="color:#1f2328">({</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">...</span><span style="color:#1f2328">formOptions</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">defaultValues</span>: <span style="color:#cf222e">initialValues</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">});</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">watch</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">reset</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">getValues</span> <span style="color:#1f2328">}</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">form</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">updateUrl</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">useCallback</span><span style="color:#1f2328">(</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">(</span><span style="color:#1f2328">values</span>: <span style="color:#cf222e">T</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">=&gt;</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#cf222e">const</span> <span style="color:#1f2328">params</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">createUrlParamsFromValues</span><span style="color:#1f2328">(</span><span style="color:#1f2328">values</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">searchParams</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">excludeFromUrl</span> <span style="color:#cf222e">as</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">keyof</span> <span style="color:#1f2328">T</span><span style="color:#1f2328">)[]);</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#cf222e">const</span> <span style="color:#1f2328">newSearchString</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">params</span><span style="color:#1f2328">.</span><span style="color:#1f2328">toString</span><span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#cf222e">const</span> <span style="color:#1f2328">currentSearchString</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">new</span> <span style="color:#1f2328">URLSearchParams</span><span style="color:#1f2328">(</span><span style="color:#6639ba">window</span><span style="color:#1f2328">.</span><span style="color:#1f2328">location</span><span style="color:#1f2328">.</span><span style="color:#1f2328">search</span><span style="color:#1f2328">).</span><span style="color:#1f2328">toString</span><span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">newSearchString</span> <span style="color:#0550ae">!==</span> <span style="color:#1f2328">currentSearchString</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">const</span> <span style="color:#1f2328">newUrl</span> <span style="color:#0550ae">=</span> <span style="color:#0a3069">`</span><span style="color:#0a3069">${</span><span style="color:#6639ba">window</span><span style="color:#1f2328">.</span><span style="color:#1f2328">location</span><span style="color:#1f2328">.</span><span style="color:#1f2328">pathname</span><span style="color:#0a3069">}</span><span style="color:#0a3069">?</span><span style="color:#0a3069">${</span><span style="color:#1f2328">newSearchString</span><span style="color:#0a3069">}</span><span style="color:#0a3069">`</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">replace</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#1f2328">router</span><span style="color:#1f2328">.</span><span style="color:#1f2328">replace</span><span style="color:#1f2328">(</span><span style="color:#1f2328">newUrl</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">scroll</span>: <span style="color:#cf222e">false</span> <span style="color:#1f2328">});</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#1f2328">}</span> <span style="color:#cf222e">else</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#1f2328">router</span><span style="color:#1f2328">.</span><span style="color:#1f2328">push</span><span style="color:#1f2328">(</span><span style="color:#1f2328">newUrl</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">scroll</span>: <span style="color:#cf222e">false</span> <span style="color:#1f2328">});</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">},</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">[</span><span style="color:#1f2328">router</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">searchParams</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">excludeFromUrl</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">replace</span><span style="color:#1f2328">],</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">syncToUrl</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">useCallback</span><span style="color:#1f2328">(()</span> <span style="color:#0550ae">=&gt;</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">const</span> <span style="color:#1f2328">values</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">getValues</span><span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">updateUrl</span><span style="color:#1f2328">(</span><span style="color:#1f2328">values</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">},</span> <span style="color:#1f2328">[</span><span style="color:#1f2328">getValues</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">updateUrl</span><span style="color:#1f2328">]);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">useEffect</span><span style="color:#1f2328">(()</span> <span style="color:#0550ae">=&gt;</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">sync</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#cf222e">const</span> <span style="color:#1f2328">subscription</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">watch</span><span style="color:#1f2328">(</span><span style="color:#1f2328">values</span> <span style="color:#0550ae">=&gt;</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">isUpdatingFromUrl</span><span style="color:#1f2328">.</span><span style="color:#1f2328">current</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#cf222e">return</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#1f2328">updateUrl</span><span style="color:#1f2328">(</span><span style="color:#1f2328">values</span> <span style="color:#cf222e">as</span> <span style="color:#1f2328">T</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">});</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#cf222e">return</span> <span style="color:#1f2328">()</span> <span style="color:#0550ae">=&gt;</span> <span style="color:#1f2328">subscription</span><span style="color:#1f2328">.</span><span style="color:#1f2328">unsubscribe</span><span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">},</span> <span style="color:#1f2328">[</span><span style="color:#1f2328">watch</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">updateUrl</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">sync</span><span style="color:#1f2328">]);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">useEffect</span><span style="color:#1f2328">(()</span> <span style="color:#0550ae">=&gt;</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">const</span> <span style="color:#1f2328">urlValues</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">getUrlValues</span><span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">const</span> <span style="color:#1f2328">currentFormValues</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">getValues</span><span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">const</span> <span style="color:#1f2328">relevantFormValues</span>: <span style="color:#cf222e">Partial</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">T</span><span style="color:#1f2328">&gt;</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">{};</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">const</span> <span style="color:#1f2328">key</span> <span style="color:#cf222e">in</span> <span style="color:#1f2328">urlValues</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#6639ba">Object</span><span style="color:#1f2328">.</span><span style="color:#1f2328">prototype</span><span style="color:#1f2328">.</span><span style="color:#1f2328">hasOwnProperty</span><span style="color:#1f2328">.</span><span style="color:#1f2328">call</span><span style="color:#1f2328">(</span><span style="color:#1f2328">urlValues</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">key</span><span style="color:#1f2328">))</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#1f2328">relevantFormValues</span><span style="color:#1f2328">[</span><span style="color:#1f2328">key</span> <span style="color:#cf222e">as</span> <span style="color:#cf222e">keyof</span> <span style="color:#1f2328">T</span><span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">currentFormValues</span><span style="color:#1f2328">[</span><span style="color:#1f2328">key</span> <span style="color:#cf222e">as</span> <span style="color:#cf222e">keyof</span> <span style="color:#1f2328">T</span><span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#0550ae">!</span><span style="color:#1f2328">deepEqual</span><span style="color:#1f2328">(</span><span style="color:#1f2328">urlValues</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">relevantFormValues</span><span style="color:#1f2328">))</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">isUpdatingFromUrl</span><span style="color:#1f2328">.</span><span style="color:#1f2328">current</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">true</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">reset</span><span style="color:#1f2328">({</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#1f2328">...</span><span style="color:#1f2328">currentFormValues</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#1f2328">...</span><span style="color:#1f2328">urlValues</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">}</span> <span style="color:#cf222e">as</span> <span style="color:#1f2328">DefaultValues</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">T</span><span style="color:#1f2328">&gt;);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">setTimeout</span><span style="color:#1f2328">(()</span> <span style="color:#0550ae">=&gt;</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#1f2328">isUpdatingFromUrl</span><span style="color:#1f2328">.</span><span style="color:#1f2328">current</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">false</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">},</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">},</span> <span style="color:#1f2328">[</span><span style="color:#1f2328">getUrlValues</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">reset</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">getValues</span><span style="color:#1f2328">]);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">...</span><span style="color:#1f2328">form</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">syncToUrl</span>: <span style="color:#cf222e">syncToUrl</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><p>웹 애플리케이션에서 필터나 검색 기능을 구현할 때, 사용자가 설정한 상태를 URL에 반영하고 싶은 경우가 많습니다. 예를 들어, 사용자가 상품 목록에서 카테고리를 선택하고 가격 범위를 설정했을 때, 이 정보가 URL에 반영되어 페이지를 새로고침하거나 다른 사람과 공유해도 동일한 필터 상태를 유지할 수 있어야 합니다.</p>
+<p>이런 요구사항을 해결하기 위해 React Hook Form과 URL 검색 파라미터를 양방향으로 동기화하는 <code>useFormUrlSync</code> 커스텀 훅을 소개합니다.</p>
+<h2 id="주요-기능">주요 기능</h2>
+<h3 id="1-양방향-동기화">1. 양방향 동기화</h3>
+<ul>
+<li><strong>폼 → URL</strong>: 폼 값이 변경되면 자동으로 URL이 업데이트됩니다</li>
+<li><strong>URL → 폼</strong>: URL 파라미터가 변경되면 폼 상태도 자동으로 업데이트됩니다</li>
+</ul>
+<h3 id="2-타입-안전성">2. 타입 안전성</h3>
+<p>URL 파라미터는 기본적으로 문자열이지만, 이 훅은 자동으로 적절한 타입으로 변환합니다:</p>
+<ul>
+<li><code>&quot;true&quot;</code> → <code>true</code> (boolean)</li>
+<li><code>&quot;false&quot;</code> → <code>false</code> (boolean)</li>
+<li><code>&quot;42&quot;</code> → <code>42</code> (number)</li>
+<li><code>&quot;hello&quot;</code> → <code>&quot;hello&quot;</code> (string)</li>
+</ul>
+<h3 id="3-선택적-필드-제외">3. 선택적 필드 제외</h3>
+<p>특정 필드를 URL 동기화에서 제외할 수 있습니다. 예를 들어, 비밀번호나 임시 상태 같은 민감한 정보는 URL에 노출되지 않도록 할 수 있습니다.</p>
+<h3 id="4-실시간-동기화-제어">4. 실시간 동기화 제어</h3>
+<p><code>sync</code> 옵션으로 실시간 동기화를 활성화/비활성화할 수 있으며, 수동으로 동기화할 수 있는 <code>syncToUrl</code> 함수도 제공됩니다.</p>
+<h2 id="사용-방법">사용 방법</h2>
+<h3 id="기본-사용법">기본 사용법</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">useFormUrlSync</span> <span style="color:#1f2328">}</span> <span style="color:#cf222e">from</span> <span style="color:#0a3069">&#39;./useFormUrlSync&#39;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">type</span> <span style="color:#1f2328">FilterForm</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">category</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">minPrice</span>: <span style="color:#cf222e">number</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">maxPrice</span>: <span style="color:#cf222e">number</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">inStock</span>: <span style="color:#cf222e">boolean</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">function</span> <span style="color:#1f2328">ProductFilter() {</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">form</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">useFormUrlSync</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">FilterForm</span><span style="color:#1f2328">&gt;({</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">defaultValues</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">category</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">minPrice</span>: <span style="color:#cf222e">0</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">maxPrice</span>: <span style="color:#cf222e">1000</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">inStock</span>: <span style="color:#cf222e">false</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">},</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">});</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">register</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">watch</span> <span style="color:#1f2328">}</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">form</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">values</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">watch</span><span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> <span style="color:#1f2328">(</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">&lt;</span><span style="color:#0550ae">form</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">&lt;</span><span style="color:#0550ae">select</span> <span style="color:#1f2328">{</span><span style="color:#1f2328">...register</span><span style="color:#f6f8fa;background-color:#82071e">(</span><span style="color:#0a3069">&#39;category&#39;</span><span style="color:#f6f8fa;background-color:#82071e">)</span><span style="color:#1f2328">}&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#1f2328">&lt;</span><span style="color:#0550ae">option</span> <span style="color:#1f2328">value</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;&#34;</span><span style="color:#1f2328">&gt;</span><span style="color:#f6f8fa;background-color:#82071e">전체</span> <span style="color:#f6f8fa;background-color:#82071e">카테고리</span><span style="color:#1f2328">&lt;/</span><span style="color:#0550ae">option</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#1f2328">&lt;</span><span style="color:#0550ae">option</span> <span style="color:#1f2328">value</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;electronics&#34;</span><span style="color:#1f2328">&gt;</span><span style="color:#f6f8fa;background-color:#82071e">전자제품</span><span style="color:#1f2328">&lt;/</span><span style="color:#0550ae">option</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#1f2328">&lt;</span><span style="color:#0550ae">option</span> <span style="color:#1f2328">value</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;clothing&#34;</span><span style="color:#1f2328">&gt;</span><span style="color:#f6f8fa;background-color:#82071e">의류</span><span style="color:#1f2328">&lt;/</span><span style="color:#0550ae">option</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">&lt;/</span><span style="color:#0550ae">select</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span>      
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">&lt;</span><span style="color:#0550ae">input</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#1f2328">type</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;number&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#1f2328">{</span><span style="color:#1f2328">...register</span><span style="color:#f6f8fa;background-color:#82071e">(</span><span style="color:#0a3069">&#39;minPrice&#39;</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">valueAsNumber</span><span style="color:#f6f8fa;background-color:#82071e">:</span> <span style="color:#1f2328">true</span> <span style="color:#1f2328">}</span><span style="color:#f6f8fa;background-color:#82071e">)</span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#1f2328">placeholder</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;최소 가격&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">/&gt;</span>
+</span></span><span style="display:flex;"><span>      
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">&lt;</span><span style="color:#0550ae">input</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#1f2328">type</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;number&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#1f2328">{</span><span style="color:#1f2328">...register</span><span style="color:#f6f8fa;background-color:#82071e">(</span><span style="color:#0a3069">&#39;maxPrice&#39;</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">valueAsNumber</span><span style="color:#f6f8fa;background-color:#82071e">:</span> <span style="color:#1f2328">true</span> <span style="color:#1f2328">}</span><span style="color:#f6f8fa;background-color:#82071e">)</span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#1f2328">placeholder</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;최대 가격&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">/&gt;</span>
+</span></span><span style="display:flex;"><span>      
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">&lt;</span><span style="color:#0550ae">label</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#1f2328">&lt;</span><span style="color:#0550ae">input</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#1f2328">type</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;checkbox&#34;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#1f2328">{</span><span style="color:#1f2328">...register</span><span style="color:#f6f8fa;background-color:#82071e">(</span><span style="color:#0a3069">&#39;inStock&#39;</span><span style="color:#f6f8fa;background-color:#82071e">)</span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#1f2328">/&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f6f8fa;background-color:#82071e">재고</span> <span style="color:#f6f8fa;background-color:#82071e">있는</span> <span style="color:#f6f8fa;background-color:#82071e">상품만</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">&lt;/</span><span style="color:#0550ae">label</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">&lt;/</span><span style="color:#0550ae">form</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><h3 id="옵션-상세-설명">옵션 상세 설명</h3>
+<h4 id="excludefromurl"><code>excludeFromUrl</code></h4>
+<p>특정 필드를 URL 동기화에서 제외합니다:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#cf222e">const</span> <span style="color:#1f2328">form</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">useFormUrlSync</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">FilterForm</span><span style="color:#1f2328">&gt;({</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">defaultValues</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">{</span> <span style="color:#57606a">/* ... */</span> <span style="color:#1f2328">},</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">excludeFromUrl</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">[</span><span style="color:#0a3069">&#39;password&#39;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#39;temporaryState&#39;</span><span style="color:#1f2328">],</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">});</span>
+</span></span></code></pre></div><h4 id="replace"><code>replace</code></h4>
+<p>URL 변경 시 브라우저 히스토리 관리 방식을 결정합니다:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#cf222e">const</span> <span style="color:#1f2328">form</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">useFormUrlSync</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">FilterForm</span><span style="color:#1f2328">&gt;({</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">defaultValues</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">{</span> <span style="color:#57606a">/* ... */</span> <span style="color:#1f2328">},</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">replace</span>: <span style="color:#cf222e">false</span><span style="color:#1f2328">,</span> <span style="color:#57606a">// push 사용 (기본값: true)
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">});</span>
+</span></span></code></pre></div><h4 id="sync"><code>sync</code></h4>
+<p>실시간 동기화 여부를 제어합니다:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#cf222e">const</span> <span style="color:#1f2328">form</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">useFormUrlSync</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">FilterForm</span><span style="color:#1f2328">&gt;({</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">defaultValues</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">{</span> <span style="color:#57606a">/* ... */</span> <span style="color:#1f2328">},</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">sync</span>: <span style="color:#cf222e">false</span><span style="color:#1f2328">,</span> <span style="color:#57606a">// 실시간 동기화 비활성화
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">});</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// 수동으로 동기화
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">const</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">syncToUrl</span> <span style="color:#1f2328">}</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">form</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">const</span> <span style="color:#1f2328">handleSubmit</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">()</span> <span style="color:#0550ae">=&gt;</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">syncToUrl</span><span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
+</span></span></code></pre></div><h2 id="구현-상세-설명">구현 상세 설명</h2>
+<h3 id="1-url-값-파싱-parseurlvalue">1. URL 값 파싱 (<code>parseUrlValue</code>)</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#cf222e">function</span> <span style="color:#1f2328">parseUrlValue</span><span style="color:#1f2328">(</span><span style="color:#1f2328">value</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">)</span><span style="color:#0550ae">:</span> <span style="color:#cf222e">string</span> <span style="color:#0550ae">|</span> <span style="color:#cf222e">number</span> <span style="color:#0550ae">|</span> <span style="color:#cf222e">boolean</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">value</span> <span style="color:#0550ae">===</span> <span style="color:#0a3069">&#34;&#34;</span><span style="color:#1f2328">)</span> <span style="color:#cf222e">return</span> <span style="color:#1f2328">value</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">value</span> <span style="color:#0550ae">===</span> <span style="color:#0a3069">&#34;true&#34;</span><span style="color:#1f2328">)</span> <span style="color:#cf222e">return</span> <span style="color:#cf222e">true</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">value</span> <span style="color:#0550ae">===</span> <span style="color:#0a3069">&#34;false&#34;</span><span style="color:#1f2328">)</span> <span style="color:#cf222e">return</span> <span style="color:#cf222e">false</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">numValue</span> <span style="color:#0550ae">=</span> <span style="color:#6639ba">Number</span><span style="color:#1f2328">(</span><span style="color:#1f2328">value</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">isNumber</span><span style="color:#1f2328">(</span><span style="color:#1f2328">numValue</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">&amp;&amp;</span> <span style="color:#0550ae">!</span><span style="color:#6639ba">Number</span><span style="color:#1f2328">.</span><span style="color:#6639ba">isNaN</span><span style="color:#1f2328">(</span><span style="color:#1f2328">numValue</span><span style="color:#1f2328">))</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">return</span> <span style="color:#1f2328">numValue</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> <span style="color:#1f2328">value</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><p>이 함수는 URL의 문자열 파라미터를 적절한 타입으로 변환합니다. 문자열이 boolean이나 number로 변환 가능한지 확인하고, 그렇지 않으면 원본 문자열을 반환합니다.</p>
+<h3 id="2-초기값-추출-extractinitialvaluesfromurl">2. 초기값 추출 (<code>extractInitialValuesFromUrl</code>)</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#cf222e">function</span> <span style="color:#1f2328">extractInitialValuesFromUrl</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">T</span> <span style="color:#1f2328">extends</span> <span style="color:#1f2328">FieldValues</span><span style="color:#1f2328">&gt;(</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">searchParams</span>: <span style="color:#cf222e">URLSearchParams</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">excludeFromUrl</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">keyof</span> <span style="color:#1f2328">T</span><span style="color:#1f2328">)[],</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">)</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">Partial</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">T</span><span style="color:#1f2328">&gt;</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">urlValues</span>: <span style="color:#cf222e">Partial</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">T</span><span style="color:#1f2328">&gt;</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">{};</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">const</span> <span style="color:#1f2328">[</span><span style="color:#1f2328">key</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">value</span><span style="color:#1f2328">]</span> <span style="color:#cf222e">of</span> <span style="color:#1f2328">searchParams</span><span style="color:#1f2328">.</span><span style="color:#1f2328">entries</span><span style="color:#1f2328">())</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#0550ae">!</span><span style="color:#1f2328">excludeFromUrl</span><span style="color:#1f2328">.</span><span style="color:#1f2328">includes</span><span style="color:#1f2328">(</span><span style="color:#1f2328">key</span> <span style="color:#cf222e">as</span> <span style="color:#cf222e">keyof</span> <span style="color:#1f2328">T</span><span style="color:#1f2328">))</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">(</span><span style="color:#1f2328">urlValues</span> <span style="color:#cf222e">as</span> <span style="color:#1f2328">AliasAny</span><span style="color:#1f2328">)[</span><span style="color:#1f2328">key</span><span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">parseUrlValue</span><span style="color:#1f2328">(</span><span style="color:#1f2328">value</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> <span style="color:#1f2328">urlValues</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><p>페이지 로드 시 URL에서 초기값을 추출하여 폼의 기본값과 병합합니다. <code>excludeFromUrl</code>에 포함된 필드는 제외됩니다.</p>
+<h3 id="3-url-파라미터-생성-createurlparamsfromvalues">3. URL 파라미터 생성 (<code>createUrlParamsFromValues</code>)</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#cf222e">function</span> <span style="color:#1f2328">createUrlParamsFromValues</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">T</span> <span style="color:#1f2328">extends</span> <span style="color:#1f2328">FieldValues</span><span style="color:#1f2328">&gt;(</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">values</span>: <span style="color:#cf222e">T</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">currentParams</span>: <span style="color:#cf222e">URLSearchParams</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">excludeFromUrl</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">keyof</span> <span style="color:#1f2328">T</span><span style="color:#1f2328">)[],</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">)</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">URLSearchParams</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">params</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">new</span> <span style="color:#1f2328">URLSearchParams</span><span style="color:#1f2328">(</span><span style="color:#1f2328">currentParams</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">const</span> <span style="color:#1f2328">[</span><span style="color:#1f2328">key</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">value</span><span style="color:#1f2328">]</span> <span style="color:#cf222e">of</span> <span style="color:#6639ba">Object</span><span style="color:#1f2328">.</span><span style="color:#1f2328">entries</span><span style="color:#1f2328">(</span><span style="color:#1f2328">values</span><span style="color:#1f2328">))</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">excludeFromUrl</span><span style="color:#1f2328">.</span><span style="color:#1f2328">includes</span><span style="color:#1f2328">(</span><span style="color:#1f2328">key</span> <span style="color:#cf222e">as</span> <span style="color:#cf222e">keyof</span> <span style="color:#1f2328">T</span><span style="color:#1f2328">))</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#cf222e">continue</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">value</span> <span style="color:#0550ae">!==</span> <span style="color:#cf222e">undefined</span> <span style="color:#0550ae">&amp;&amp;</span> <span style="color:#1f2328">value</span> <span style="color:#0550ae">!==</span> <span style="color:#cf222e">null</span> <span style="color:#0550ae">&amp;&amp;</span> <span style="color:#1f2328">value</span> <span style="color:#0550ae">!==</span> <span style="color:#0a3069">&#34;&#34;</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">params</span><span style="color:#1f2328">.</span><span style="color:#cf222e">set</span><span style="color:#1f2328">(</span><span style="color:#1f2328">key</span><span style="color:#1f2328">,</span> <span style="color:#6639ba">String</span><span style="color:#1f2328">(</span><span style="color:#1f2328">value</span><span style="color:#1f2328">));</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">}</span> <span style="color:#cf222e">else</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">params</span><span style="color:#1f2328">.</span><span style="color:#cf222e">delete</span><span style="color:#1f2328">(</span><span style="color:#1f2328">key</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> <span style="color:#1f2328">params</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><p>폼 값들을 URL 파라미터로 변환합니다. 빈 값(<code>undefined</code>, <code>null</code>, <code>&quot;&quot;</code>)은 URL에서 제거되어 깔끔한 URL을 유지합니다.</p>
+<h3 id="4-무한-루프-방지">4. 무한 루프 방지</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#cf222e">const</span> <span style="color:#1f2328">isUpdatingFromUrl</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">useRef</span><span style="color:#1f2328">(</span><span style="color:#cf222e">false</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">useEffect</span><span style="color:#1f2328">(()</span> <span style="color:#0550ae">=&gt;</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">sync</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">const</span> <span style="color:#1f2328">subscription</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">watch</span><span style="color:#1f2328">(</span><span style="color:#1f2328">values</span> <span style="color:#0550ae">=&gt;</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">isUpdatingFromUrl</span><span style="color:#1f2328">.</span><span style="color:#1f2328">current</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">return</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">updateUrl</span><span style="color:#1f2328">(</span><span style="color:#1f2328">values</span> <span style="color:#cf222e">as</span> <span style="color:#1f2328">T</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">});</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">return</span> <span style="color:#1f2328">()</span> <span style="color:#0550ae">=&gt;</span> <span style="color:#1f2328">subscription</span><span style="color:#1f2328">.</span><span style="color:#1f2328">unsubscribe</span><span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">},</span> <span style="color:#1f2328">[</span><span style="color:#1f2328">watch</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">updateUrl</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">sync</span><span style="color:#1f2328">]);</span>
+</span></span></code></pre></div><p><code>useRef</code>를 사용하여 URL 업데이트로 인한 폼 변경과 폼 변경으로 인한 URL 업데이트를 구분합니다. 이를 통해 무한 루프를 방지합니다.</p>
+<h3 id="5-깊은-비교-deepequal">5. 깊은 비교 (<code>deepEqual</code>)</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#cf222e">function</span> <span style="color:#1f2328">deepEqual</span><span style="color:#1f2328">(</span><span style="color:#1f2328">obj1</span>: <span style="color:#cf222e">AliasAny</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">obj2</span>: <span style="color:#cf222e">AliasAny</span><span style="color:#1f2328">)</span><span style="color:#0550ae">:</span> <span style="color:#cf222e">boolean</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> <span style="color:#1f2328">JSON</span><span style="color:#1f2328">.</span><span style="color:#1f2328">stringify</span><span style="color:#1f2328">(</span><span style="color:#1f2328">obj1</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">===</span> <span style="color:#1f2328">JSON</span><span style="color:#1f2328">.</span><span style="color:#1f2328">stringify</span><span style="color:#1f2328">(</span><span style="color:#1f2328">obj2</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><p>객체의 깊은 비교를 통해 실제로 값이 변경되었을 때만 폼을 업데이트하여 불필요한 렌더링을 방지합니다.</p>
+<h2 id="실제-활용-예시">실제 활용 예시</h2>
+<h3 id="검색-필터-페이지">검색 필터 페이지</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#cf222e">type</span> <span style="color:#1f2328">SearchFilters</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">query</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">category</span>: <span style="color:#cf222e">string</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">sortBy</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;price&#39;</span> <span style="color:#0550ae">|</span> <span style="color:#0a3069">&#39;name&#39;</span> <span style="color:#0550ae">|</span> <span style="color:#0a3069">&#39;date&#39;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">priceRange</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">[</span><span style="color:#cf222e">number</span><span style="color:#1f2328">,</span> <span style="color:#cf222e">number</span><span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">isAvailable</span>: <span style="color:#cf222e">boolean</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">function</span> <span style="color:#1f2328">SearchPage() {</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">form</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">useFormUrlSync</span><span style="color:#1f2328">&lt;</span><span style="color:#0550ae">SearchFilters</span><span style="color:#1f2328">&gt;({</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">defaultValues</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">query</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">category</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">sortBy</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;name&#39;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">priceRange</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">[</span><span style="color:#0550ae">0</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">1000</span><span style="color:#1f2328">],</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">isAvailable</span>: <span style="color:#cf222e">false</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">},</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">excludeFromUrl</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">[</span><span style="color:#0a3069">&#39;priceRange&#39;</span><span style="color:#1f2328">],</span> <span style="color:#57606a">// 복잡한 객체는 URL에서 제외
+</span></span></span><span style="display:flex;"><span>  <span style="color:#1f2328">});</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">register</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">watch</span> <span style="color:#1f2328">}</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">form</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">filters</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">watch</span><span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// 필터 변경 시 자동으로 URL 업데이트되고
+</span></span></span><span style="display:flex;"><span>  <span style="color:#57606a">// 검색 결과도 자동으로 업데이트됨
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">data</span>: <span style="color:#cf222e">products</span> <span style="color:#1f2328">}</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">useQuery</span><span style="color:#1f2328">({</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">queryKey</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">[</span><span style="color:#0a3069">&#39;products&#39;</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">filters</span><span style="color:#1f2328">],</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">queryFn</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">()</span> <span style="color:#0550ae">=&gt;</span> <span style="color:#1f2328">fetchProducts</span><span style="color:#1f2328">(</span><span style="color:#1f2328">filters</span><span style="color:#1f2328">),</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">});</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> <span style="color:#1f2328">(</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">&lt;</span><span style="color:#0550ae">div</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">&lt;</span><span style="color:#0550ae">form</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#1f2328">&lt;</span><span style="color:#0550ae">input</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#1f2328">{</span><span style="color:#1f2328">...register</span><span style="color:#f6f8fa;background-color:#82071e">(</span><span style="color:#0a3069">&#39;query&#39;</span><span style="color:#f6f8fa;background-color:#82071e">)</span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#1f2328">placeholder</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;검색어 입력&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#1f2328">/&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#1f2328">&lt;</span><span style="color:#0550ae">select</span> <span style="color:#1f2328">{</span><span style="color:#1f2328">...register</span><span style="color:#f6f8fa;background-color:#82071e">(</span><span style="color:#0a3069">&#39;category&#39;</span><span style="color:#f6f8fa;background-color:#82071e">)</span><span style="color:#1f2328">}&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#1f2328">&lt;</span><span style="color:#0550ae">option</span> <span style="color:#1f2328">value</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;&#34;</span><span style="color:#1f2328">&gt;</span><span style="color:#f6f8fa;background-color:#82071e">전체</span><span style="color:#1f2328">&lt;/</span><span style="color:#0550ae">option</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#1f2328">&lt;</span><span style="color:#0550ae">option</span> <span style="color:#1f2328">value</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;electronics&#34;</span><span style="color:#1f2328">&gt;</span><span style="color:#f6f8fa;background-color:#82071e">전자제품</span><span style="color:#1f2328">&lt;/</span><span style="color:#0550ae">option</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#1f2328">&lt;</span><span style="color:#0550ae">option</span> <span style="color:#1f2328">value</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;books&#34;</span><span style="color:#1f2328">&gt;</span><span style="color:#f6f8fa;background-color:#82071e">도서</span><span style="color:#1f2328">&lt;/</span><span style="color:#0550ae">option</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#1f2328">&lt;/</span><span style="color:#0550ae">select</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#1f2328">&lt;</span><span style="color:#0550ae">select</span> <span style="color:#1f2328">{</span><span style="color:#1f2328">...register</span><span style="color:#f6f8fa;background-color:#82071e">(</span><span style="color:#0a3069">&#39;sortBy&#39;</span><span style="color:#f6f8fa;background-color:#82071e">)</span><span style="color:#1f2328">}&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#1f2328">&lt;</span><span style="color:#0550ae">option</span> <span style="color:#1f2328">value</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;name&#34;</span><span style="color:#1f2328">&gt;</span><span style="color:#f6f8fa;background-color:#82071e">이름순</span><span style="color:#1f2328">&lt;/</span><span style="color:#0550ae">option</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#1f2328">&lt;</span><span style="color:#0550ae">option</span> <span style="color:#1f2328">value</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;price&#34;</span><span style="color:#1f2328">&gt;</span><span style="color:#f6f8fa;background-color:#82071e">가격순</span><span style="color:#1f2328">&lt;/</span><span style="color:#0550ae">option</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#1f2328">&lt;</span><span style="color:#0550ae">option</span> <span style="color:#1f2328">value</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;date&#34;</span><span style="color:#1f2328">&gt;</span><span style="color:#f6f8fa;background-color:#82071e">날짜순</span><span style="color:#1f2328">&lt;/</span><span style="color:#0550ae">option</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#1f2328">&lt;/</span><span style="color:#0550ae">select</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#1f2328">&lt;</span><span style="color:#0550ae">label</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#1f2328">&lt;</span><span style="color:#0550ae">input</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#1f2328">type</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;checkbox&#34;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#1f2328">{</span><span style="color:#1f2328">...register</span><span style="color:#f6f8fa;background-color:#82071e">(</span><span style="color:#0a3069">&#39;isAvailable&#39;</span><span style="color:#f6f8fa;background-color:#82071e">)</span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#1f2328">/&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f6f8fa;background-color:#82071e">구매</span> <span style="color:#f6f8fa;background-color:#82071e">가능한</span> <span style="color:#f6f8fa;background-color:#82071e">상품만</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#1f2328">&lt;/</span><span style="color:#0550ae">label</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">&lt;/</span><span style="color:#0550ae">form</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span>      
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">&lt;</span><span style="color:#0550ae">ProductList</span> <span style="color:#1f2328">products</span><span style="color:#0550ae">=</span><span style="color:#1f2328">{</span><span style="color:#1f2328">products</span><span style="color:#1f2328">}</span> <span style="color:#1f2328">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">&lt;/</span><span style="color:#0550ae">div</span><span style="color:#1f2328">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><h2 id="주의사항-및-한계">주의사항 및 한계</h2>
+<h3 id="1-nextjs-클라이언트-컴포넌트-전용">1. Next.js 클라이언트 컴포넌트 전용</h3>
+<p>이 훅은 Next.js의 <code>useRouter</code>와 <code>useSearchParams</code>를 사용하므로:</p>
+<ul>
+<li>클라이언트 컴포넌트에서만 동작합니다</li>
+<li>컴포넌트 상단에 <code>&quot;use client&quot;</code> 지시어가 필요합니다</li>
+</ul>
+<h3 id="2-복잡한-객체-타입-제한">2. 복잡한 객체 타입 제한</h3>
+<p>URL 파라미터의 특성상 복잡한 객체나 배열은 직접 지원하지 않습니다. 이런 경우 <code>excludeFromUrl</code> 옵션을 사용하거나 별도의 직렬화 로직을 구현해야 합니다.</p>
+<h3 id="3-히스토리-관리">3. 히스토리 관리</h3>
+<p>기본적으로 <code>replace: true</code>로 설정되어 있어 뒤로 가기 버튼으로 필터 변경 이력을 탐색할 수 없습니다. 필요에 따라 <code>replace: false</code>로 설정할 수 있습니다.</p>
+<h3 id="4-성능-고려사항">4. 성능 고려사항</h3>
+<p>실시간 동기화가 활성화되어 있으면 모든 폼 변경이 URL 업데이트를 트리거합니다. 성능이 중요한 경우 <code>sync: false</code>로 설정하고 수동으로 동기화하는 것을 고려해보세요.</p>
+<h2 id="마무리">마무리</h2>
+<p><code>useFormUrlSync</code> 훅은 React Hook Form과 URL 상태를 간편하게 동기화할 수 있는 강력한 도구입니다. 특히 검색이나 필터 기능이 있는 페이지에서 사용자 경험을 크게 향상시킬 수 있습니다.</p>
+<p>주요 장점:</p>
+<ul>
+<li><strong>공유 가능한 URL</strong>: 사용자가 설정한 필터 상태를 URL로 공유 가능</li>
+<li><strong>새로고침 안정성</strong>: 페이지 새로고침 후에도 설정 유지</li>
+<li><strong>타입 안전성</strong>: TypeScript를 통한 완전한 타입 지원</li>
+<li><strong>유연한 설정</strong>: 다양한 옵션으로 프로젝트 요구사항에 맞게 조정 가능</li>
+</ul>
+<p>이 훅을 활용하여 더 나은 사용자 경험을 제공하는 웹 애플리케이션을 만들어보세요!</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2025년 07월 16일 21시 00분
+</time>
+  
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2025/06/2025-06-13-react-hook-form-sync-with-url/" rel="prev">
+        <span>Next.js에서 react-hook-form과 URL을 우아하게 동기화하는 법 🚀</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2025/07/2025-07-24-vscode-neovim-extension/" rel="next">
+        <span>VSCode에서 Neovim Extension 설정하기: macOS &amp; Windows 가이드</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#전체-소스-코드">전체 소스 코드</a></li>
+    <li><a href="#주요-기능">주요 기능</a>
+      <ul>
+        <li><a href="#1-양방향-동기화">1. 양방향 동기화</a></li>
+        <li><a href="#2-타입-안전성">2. 타입 안전성</a></li>
+        <li><a href="#3-선택적-필드-제외">3. 선택적 필드 제외</a></li>
+        <li><a href="#4-실시간-동기화-제어">4. 실시간 동기화 제어</a></li>
+      </ul>
+    </li>
+    <li><a href="#사용-방법">사용 방법</a>
+      <ul>
+        <li><a href="#기본-사용법">기본 사용법</a></li>
+        <li><a href="#옵션-상세-설명">옵션 상세 설명</a></li>
+      </ul>
+    </li>
+    <li><a href="#구현-상세-설명">구현 상세 설명</a>
+      <ul>
+        <li><a href="#1-url-값-파싱-parseurlvalue">1. URL 값 파싱 (<code>parseUrlValue</code>)</a></li>
+        <li><a href="#2-초기값-추출-extractinitialvaluesfromurl">2. 초기값 추출 (<code>extractInitialValuesFromUrl</code>)</a></li>
+        <li><a href="#3-url-파라미터-생성-createurlparamsfromvalues">3. URL 파라미터 생성 (<code>createUrlParamsFromValues</code>)</a></li>
+        <li><a href="#4-무한-루프-방지">4. 무한 루프 방지</a></li>
+        <li><a href="#5-깊은-비교-deepequal">5. 깊은 비교 (<code>deepEqual</code>)</a></li>
+      </ul>
+    </li>
+    <li><a href="#실제-활용-예시">실제 활용 예시</a>
+      <ul>
+        <li><a href="#검색-필터-페이지">검색 필터 페이지</a></li>
+      </ul>
+    </li>
+    <li><a href="#주의사항-및-한계">주의사항 및 한계</a>
+      <ul>
+        <li><a href="#1-nextjs-클라이언트-컴포넌트-전용">1. Next.js 클라이언트 컴포넌트 전용</a></li>
+        <li><a href="#2-복잡한-객체-타입-제한">2. 복잡한 객체 타입 제한</a></li>
+        <li><a href="#3-히스토리-관리">3. 히스토리 관리</a></li>
+        <li><a href="#4-성능-고려사항">4. 성능 고려사항</a></li>
+      </ul>
+    </li>
+    <li><a href="#마무리">마무리</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/next.js/" class="badge badge-secondary">Next.js</a>
+    <a href="/tags/react-hook-form/" class="badge badge-secondary">React-Hook-Form</a>
+    <a href="/tags/typescript/" class="badge badge-secondary">Typescript</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

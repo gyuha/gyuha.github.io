@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'oh-my-opencode-slim Tmux 통합 가이드: AI 에이전트가 일하는 모습을 실시간으로 보는 법'" />
+  <title>oh-my-opencode-slim Tmux 통합 가이드: AI 에이전트가 일하는 모습을 실시간으로 보는 법  | 신규하 블로그</title>
+  <meta property="og:title" content="oh-my-opencode-slim Tmux 통합 가이드: AI 에이전트가 일하는 모습을 실시간으로 보는 법" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-02-25"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/02/2026-02-25-oh-my-opencode-tmux-integration-guide/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="Multi Agent" />
+  
+  <meta property="og:tags" content="OpenCode" />
+  
+  <meta property="og:tags" content="Tmux" />
+  
+  <meta property="og:tags" content="oh-my-opencode" />
+  
+  <meta property="og:tags" content="CLI" />
+  
+  <meta property="og:tags" content="DevOps" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/02/2026-02-25-oh-my-opencode-tmux-integration-guide/">
+          <h1>
+            oh-my-opencode-slim Tmux 통합 가이드: AI 에이전트가 일하는 모습을 실시간으로 보는 법
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/02/2026-02-25-oh-my-opencode-tmux-integration-guide/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>멀티 에이전트 코딩 시스템에서 가장 답답한 순간은 &ldquo;지금 에이전트가 뭘 하고 있는 건지 모를 때&quot;입니다. oh-my-opencode-slim은 Tmux 통합을 통해 이 문제를 해결합니다. Orchestrator가 서브 에이전트를 실행하면 새로운 Tmux 패널이 자동으로 생성되어 각 에이전트의 작업을 실시간으로 볼 수 있습니다. 더 이상 암흑 속에서 기다릴 필요가 없습니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://github.com/alvinunreal/oh-my-opencode-slim/blob/master/docs/tmux-integration.md">https://github.com/alvinunreal/oh-my-opencode-slim/blob/master/docs/tmux-integration.md</a></li>
+<li><a href="https://github.com/alvinunreal/oh-my-opencode-slim">https://github.com/alvinunreal/oh-my-opencode-slim</a></li>
+</ul>
+<h2 id="1-oh-my-opencode-slim이란-6개-전문-에이전트의-오케스트레이션">1) oh-my-opencode-slim이란: 6개 전문 에이전트의 오케스트레이션</h2>
+<p>oh-my-opencode-slim은 OpenCode(오픈소스 AI 코딩 에이전트) 위에서 동작하는 멀티 에이전트 오케스트레이션 플러그인입니다. 핵심 아이디어는 단일 LLM에게 모든 작업을 맡기는 대신, <strong>역할별로 특화된 6개 에이전트</strong>가 협업하도록 설계하는 것입니다.</p>
+<table>
+  <thead>
+      <tr>
+          <th>에이전트</th>
+          <th>역할</th>
+          <th>추천 모델</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Orchestrator</strong></td>
+          <td>전략 조율, 태스크 위임</td>
+          <td>kimi-for-coding/k2p5, openai/gpt-5.2-codex</td>
+      </tr>
+      <tr>
+          <td><strong>Explorer</strong></td>
+          <td>코드베이스 탐색, 패턴 파악</td>
+          <td>cerebras/zai-glm-4.7, google/gemini-3-flash</td>
+      </tr>
+      <tr>
+          <td><strong>Oracle</strong></td>
+          <td>아키텍처 자문, 고난도 디버깅</td>
+          <td>openai/gpt-5.2-codex, kimi-for-coding/k2p5</td>
+      </tr>
+      <tr>
+          <td><strong>Librarian</strong></td>
+          <td>외부 문서·라이브러리 검색</td>
+          <td>google/gemini-3-flash</td>
+      </tr>
+      <tr>
+          <td><strong>Designer</strong></td>
+          <td>UI/UX 구현 및 시각 최적화</td>
+          <td>google/gemini-3-flash</td>
+      </tr>
+      <tr>
+          <td><strong>Fixer</strong></td>
+          <td>빠른 구현, 코드 수정</td>
+          <td>cerebras/zai-glm-4.7, google/gemini-3-flash</td>
+      </tr>
+  </tbody>
+</table>
+<p>각 에이전트에 서로 다른 LLM 모델을 할당할 수 있다는 점이 핵심 차별점입니다. 비용이 높은 추론 모델은 Oracle처럼 판단이 중요한 역할에, 속도가 빠른 모델은 Explorer나 Fixer에 배치하면 비용과 속도를 동시에 최적화할 수 있습니다.</p>
+<pre class="mermaid">flowchart TD
+  O["Orchestrator<br>전략 조율·태스크 위임"] --> E["Explorer<br>코드 탐색"]
+  O --> OR["Oracle<br>아키텍처 자문"]
+  O --> L["Librarian<br>문서 검색"]
+  O --> D["Designer<br>UI/UX"]
+  O --> F["Fixer<br>구현·수정"]
+
+  E --> |"탐색 결과"| O
+  OR --> |"판단 결과"| O
+  L --> |"참조 자료"| O
+
+  classDef orchestrator fill:#ede7f6,stroke:#5e35b1,color:#311b92
+  classDef fast fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+  classDef heavy fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
+  classDef support fill:#fff3e0,stroke:#ef6c00,color:#e65100
+
+  class O orchestrator
+  class E,F fast
+  class OR heavy
+  class L,D support</pre><p>이 구조에서 <strong>Tmux 통합이 빛을 발합니다.</strong> Orchestrator가 Explorer에게 코드 탐색을 위임하고, 동시에 Librarian에게 문서 검색을 시키면, 각 에이전트 작업이 별도 Tmux 패널에 실시간으로 표시됩니다. 개발자는 어떤 에이전트가 어떤 작업을 하고 있는지 한눈에 파악할 수 있습니다.</p>
+<h2 id="2-tmux-통합-아키텍처-에이전트--패널-자동-스폰-구조">2) Tmux 통합 아키텍처: 에이전트 → 패널 자동 스폰 구조</h2>
+<p>Tmux 통합의 핵심 메커니즘은 단순합니다. Orchestrator가 서브 에이전트나 백그라운드 태스크를 실행하면, 플러그인이 자동으로 새 Tmux 패널을 생성해서 해당 에이전트의 출력을 표시합니다. 작업이 완료되면 패널은 자동으로 정리됩니다.</p>
+<pre class="mermaid">sequenceDiagram
+    participant U as 사용자
+    participant T as Tmux 세션
+    participant OC as OpenCode
+    participant O as Orchestrator
+    participant A as 서브 에이전트
+
+    U->>T: tmux 세션 시작
+    U->>OC: opencode --port 4096
+    U->>O: 작업 요청
+    O->>A: 에이전트 위임
+    A->>T: 자동 패널 생성
+    Note over T: 에이전트 출력 실시간 표시
+    A->>O: 작업 완료 보고
+    A->>T: session.abort() → 패널 정리
+    Note over T: Ctrl+C 전송 → 패널 종료</pre><h3 id="설정-방법">설정 방법</h3>
+<p><code>~/.config/opencode/oh-my-opencode-slim.json</code> (또는 <code>.jsonc</code>) 파일에서 Tmux 통합을 활성화합니다:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;tmux&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;enabled&#34;</span><span style="color:#1f2328">:</span> <span style="color:#cf222e">true</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;layout&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;main-vertical&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;main_pane_size&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0550ae">60</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><table>
+  <thead>
+      <tr>
+          <th>설정</th>
+          <th>타입</th>
+          <th>기본값</th>
+          <th>설명</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>enabled</code></td>
+          <td>boolean</td>
+          <td><code>false</code></td>
+          <td>Tmux 패널 자동 생성 활성화</td>
+      </tr>
+      <tr>
+          <td><code>layout</code></td>
+          <td>string</td>
+          <td><code>&quot;main-vertical&quot;</code></td>
+          <td>패널 배치 레이아웃</td>
+      </tr>
+      <tr>
+          <td><code>main_pane_size</code></td>
+          <td>number</td>
+          <td><code>60</code></td>
+          <td>메인 패널 크기 (%, 20-80)</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="실행-순서">실행 순서</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># 1. Tmux 세션 시작</span>
+</span></span><span style="display:flex;"><span>tmux
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 2. OpenCode를 포트 지정으로 실행</span>
+</span></span><span style="display:flex;"><span>opencode --port <span style="color:#0550ae">4096</span>
+</span></span></code></pre></div>
+  <blockquote>
+    <p><strong>⚠️ 임시 워크어라운드</strong>: OpenCode는 반드시 <code>--port</code> 플래그와 함께 시작해야 합니다. 포트 번호는 <code>OPENCODE_PORT</code> 환경변수와 일치해야 하며(기본값 4096), 이는 업스트림 이슈 <a href="https://github.com/anomalyco/opencode/issues/9099">opencode#9099</a>가 해결될 때까지 필요합니다.</p>
+
+  </blockquote>
+
+<h2 id="3-레이아웃-옵션-화면-구성-전략">3) 레이아웃 옵션: 화면 구성 전략</h2>
+<p>화면 크기와 작업 패턴에 따라 5가지 레이아웃을 선택할 수 있습니다:</p>
+<table>
+  <thead>
+      <tr>
+          <th>레이아웃</th>
+          <th>배치 방식</th>
+          <th>적합한 상황</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>main-vertical</code></td>
+          <td>왼쪽 메인(60%) + 오른쪽 에이전트 스택</td>
+          <td>기본 추천, 일반 개발</td>
+      </tr>
+      <tr>
+          <td><code>main-horizontal</code></td>
+          <td>위쪽 메인(60%) + 아래쪽 에이전트 스택</td>
+          <td>와이드 스크린</td>
+      </tr>
+      <tr>
+          <td><code>tiled</code></td>
+          <td>동일 크기 그리드</td>
+          <td>다수 에이전트 동시 모니터링</td>
+      </tr>
+      <tr>
+          <td><code>even-horizontal</code></td>
+          <td>모든 패널 좌우 나란히</td>
+          <td>2-3개 에이전트 비교</td>
+      </tr>
+      <tr>
+          <td><code>even-vertical</code></td>
+          <td>모든 패널 상하 나란히</td>
+          <td>좁은 화면, 로그 위주</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>와이드 스크린 예시:</strong></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;tmux&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;enabled&#34;</span><span style="color:#1f2328">:</span> <span style="color:#cf222e">true</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;layout&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;main-horizontal&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;main_pane_size&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0550ae">50</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><p><strong>최대 병렬 모니터링 예시:</strong></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;tmux&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;enabled&#34;</span><span style="color:#1f2328">:</span> <span style="color:#cf222e">true</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;layout&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;tiled&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;main_pane_size&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0550ae">50</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><h3 id="tmux-패널-기본-조작">Tmux 패널 기본 조작</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Ctrl+B 방향키       <span style="color:#57606a"># 패널 간 이동</span>
+</span></span><span style="display:flex;"><span>Ctrl+B z            <span style="color:#57606a"># 패널 확대/축소 (줌)</span>
+</span></span><span style="display:flex;"><span>Ctrl+B %            <span style="color:#57606a"># 수평 분할</span>
+</span></span><span style="display:flex;"><span>Ctrl+B <span style="color:#0a3069">&#34;            # 수직 분할
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">Ctrl+B d            # 세션 분리 (백그라운드 유지)
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">tmux attach         # 세션 재접속
+</span></span></span></code></pre></div><h2 id="4-백그라운드-태스크와-세션-라이프사이클">4) 백그라운드 태스크와 세션 라이프사이클</h2>
+<p>Tmux 통합은 단순히 패널을 여는 것에서 끝나지 않습니다. 백그라운드 태스크 도구들과 유기적으로 연결되어 완전한 에이전트 모니터링 체계를 구성합니다.</p>
+<table>
+  <thead>
+      <tr>
+          <th>도구</th>
+          <th>기능</th>
+          <th>Tmux 연동</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>background_task</code></td>
+          <td>에이전트를 비동기로 실행</td>
+          <td>모니터링용 패널 자동 생성</td>
+      </tr>
+      <tr>
+          <td><code>background_output</code></td>
+          <td>태스크 결과 확인</td>
+          <td>패널에 출력 표시</td>
+      </tr>
+      <tr>
+          <td><code>background_cancel</code></td>
+          <td>실행 중인 태스크 중지</td>
+          <td>패널 자동 정리</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="고스트-패널-문제와-해결">고스트 패널 문제와 해결</h3>
+<p>초기 버전에서는 에이전트 작업이 끝나도 Tmux 패널이 남아 있거나 <code>opencode attach</code> 프로세스가 누적되는 &ldquo;고스트 패널&rdquo; 문제가 있었습니다. 최신 버전에서는 세션 라이프사이클 관리가 개선되어 이 문제가 해결되었습니다:</p>
+<pre class="mermaid">flowchart TD
+  A["태스크 실행"] --> B["에이전트 작업 진행"]
+  B --> C{"작업 완료?"}
+  C -->|"Yes"| D["session.abort() 호출"]
+  C -->|"No"| B
+  D --> E["Ctrl+C 전송<br>(Graceful Shutdown)"]
+  E --> F["session.deleted 이벤트 처리"]
+  F --> G["Tmux 패널 종료"]
+  G --> H["프로세스 정리 완료"]
+
+  C -->|"에러 발생"| I["에러 핸들러"]
+  I --> D
+
+  classDef normal fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+  classDef cleanup fill:#fff3e0,stroke:#ef6c00,color:#e65100
+  classDef error fill:#ffebee,stroke:#c62828,color:#b71c1c
+
+  class A,B normal
+  class D,E,F,G,H cleanup
+  class I error</pre><p>만약 여전히 고스트 패널이 보인다면:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># 고아 프로세스 확인</span>
+</span></span><span style="display:flex;"><span>ps aux <span style="color:#1f2328">|</span> grep <span style="color:#0a3069">&#34;opencode attach&#34;</span> <span style="color:#1f2328">|</span> grep -v grep
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 강제 정리</span>
+</span></span><span style="display:flex;"><span>pkill -f <span style="color:#0a3069">&#34;opencode attach&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 특정 패널 수동 종료</span>
+</span></span><span style="display:flex;"><span>tmux kill-pane -t &lt;pane-id&gt;
+</span></span></code></pre></div><h2 id="5-멀티-프로젝트-운영과-고급-활용">5) 멀티 프로젝트 운영과 고급 활용</h2>
+<h3 id="프로젝트별-세션-분리">프로젝트별 세션 분리</h3>
+<p>서로 다른 포트로 여러 프로젝트를 동시에 관리할 수 있습니다:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># 프로젝트 1</span>
+</span></span><span style="display:flex;"><span>tmux new -s project1
+</span></span><span style="display:flex;"><span>opencode --port <span style="color:#0550ae">4096</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 분리 후 프로젝트 2</span>
+</span></span><span style="display:flex;"><span>Ctrl+B d
+</span></span><span style="display:flex;"><span>tmux new -s project2
+</span></span><span style="display:flex;"><span>opencode --port <span style="color:#0550ae">4097</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 프로젝트 간 전환</span>
+</span></span><span style="display:flex;"><span>tmux switch -t project1
+</span></span><span style="display:flex;"><span>tmux switch -t project2
+</span></span></code></pre></div><h3 id="자동-시작-스크립트">자동 시작 스크립트</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"># OpenCode + Tmux 자동 시작 스크립트</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 전용 세션 생성</span>
+</span></span><span style="display:flex;"><span>tmux new -d -s opencode
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 세션에서 OpenCode 실행</span>
+</span></span><span style="display:flex;"><span>tmux send-keys -t opencode:0 <span style="color:#0a3069">&#39;opencode --port 4096&#39;</span> Enter
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 대기 후 접속</span>
+</span></span><span style="display:flex;"><span>sleep <span style="color:#0550ae">2</span>
+</span></span><span style="display:flex;"><span>tmux attach -t opencode
+</span></span></code></pre></div><h3 id="로그-모니터링-병행">로그 모니터링 병행</h3>
+<p>Tmux의 분할 기능을 활용해 로그를 실시간으로 같이 볼 수 있습니다:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># 수평 분할 후 로그 모니터링</span>
+</span></span><span style="display:flex;"><span>tmux split-window -h
+</span></span><span style="display:flex;"><span>tmux send-keys <span style="color:#0a3069">&#39;tail -f ~/.config/opencode/logs/opencode.log&#39;</span> Enter
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 메인 패널로 복귀</span>
+</span></span><span style="display:flex;"><span>tmux <span style="color:#cf222e">select</span>-pane -L
+</span></span></code></pre></div><h3 id="커스텀-tmux-설정-추천">커스텀 Tmux 설정 추천</h3>
+<p><code>~/.tmux.conf</code>에 추가하면 에이전트 모니터링이 더 편해집니다:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># 마우스 지원 (패널 클릭 이동)</span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">set</span> -g mouse on
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 256색 지원</span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">set</span> -g default-terminal <span style="color:#0a3069">&#34;screen-256color&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 상태바에 날짜·호스트 표시</span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">set</span> -g status-right <span style="color:#0a3069">&#34;#H %Y-%m-%d %H:%M&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Vim 스타일 패널 이동</span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">bind</span> h <span style="color:#cf222e">select</span>-pane -L
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">bind</span> j <span style="color:#cf222e">select</span>-pane -D
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">bind</span> k <span style="color:#cf222e">select</span>-pane -U
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">bind</span> l <span style="color:#cf222e">select</span>-pane -R
+</span></span></code></pre></div><h2 id="6-트러블슈팅-가이드">6) 트러블슈팅 가이드</h2>
+<table>
+  <thead>
+      <tr>
+          <th>증상</th>
+          <th>원인</th>
+          <th>해결</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>패널이 생성되지 않음</td>
+          <td>Tmux 비활성화 또는 Tmux 외부 실행</td>
+          <td><code>echo $TMUX</code> 확인, 설정에서 <code>enabled: true</code> 확인</td>
+      </tr>
+      <tr>
+          <td>포트 충돌</td>
+          <td>기존 프로세스가 포트 점유</td>
+          <td><code>pkill -f opencode</code> 후 재시작, 또는 다른 포트 사용</td>
+      </tr>
+      <tr>
+          <td>에이전트 연결 안 됨</td>
+          <td><code>--port</code>와 <code>OPENCODE_PORT</code> 불일치</td>
+          <td>두 값을 동일하게 맞춤 (기본 4096)</td>
+      </tr>
+      <tr>
+          <td>레이아웃 깨짐</td>
+          <td>터미널 크기 부족</td>
+          <td><code>main_pane_size</code> 줄이거나 <code>tiled</code> 레이아웃 사용</td>
+      </tr>
+      <tr>
+          <td>고스트 패널</td>
+          <td>구버전 사용</td>
+          <td>최신 버전 업데이트, <code>pkill -f &quot;opencode attach&quot;</code></td>
+      </tr>
+      <tr>
+          <td>Tmux 설치 안 됨</td>
+          <td>시스템 패키지 없음</td>
+          <td>macOS: <code>brew install tmux</code>, Ubuntu: <code>sudo apt install tmux</code></td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="포트-충돌-상세-해결">포트 충돌 상세 해결</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># 포트 사용 중인 프로세스 확인</span>
+</span></span><span style="display:flex;"><span>netstat -tulpn <span style="color:#1f2328">|</span> grep <span style="color:#0550ae">4096</span>   <span style="color:#57606a"># Linux</span>
+</span></span><span style="display:flex;"><span>lsof -i :4096                <span style="color:#57606a"># macOS</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 다른 포트로 변경</span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">export</span> <span style="color:#953800">OPENCODE_PORT</span><span style="color:#0550ae">=</span><span style="color:#0550ae">5000</span>
+</span></span><span style="display:flex;"><span>opencode --port <span style="color:#0550ae">5000</span>
+</span></span></code></pre></div><h2 id="실전-운영-팁">실전 운영 팁</h2>
+<ul>
+<li><strong><code>main-vertical</code> 레이아웃을 기본으로 시작하세요.</strong> 메인 세션 60%, 에이전트 패널 40%가 가장 범용적입니다.</li>
+<li><strong>프로젝트별로 Named Session을 사용하세요.</strong> <code>tmux new -s project-name</code>으로 세션을 구분하면 컨텍스트 전환이 쉽습니다.</li>
+<li><strong><code>Ctrl+B z</code>(줌)를 적극 활용하세요.</strong> 특정 에이전트의 출력을 자세히 볼 때 패널을 전체 화면으로 확대했다가 원래 레이아웃으로 돌아올 수 있습니다.</li>
+<li><strong>작업 안 할 때는 <code>Ctrl+B d</code>로 분리하세요.</strong> Tmux 세션은 백그라운드에서 계속 돌아가므로, 나중에 <code>tmux attach</code>로 돌아오면 됩니다.</li>
+<li><strong>로그 모니터링 패널을 하나 추가하세요.</strong> <code>tail -f</code>로 OpenCode 로그를 옆에 띄워두면 에이전트 에러를 빠르게 잡을 수 있습니다.</li>
+<li><strong>고스트 패널이 의심되면 즉시 정리하세요.</strong> <code>ps aux | grep &quot;opencode attach&quot;</code>로 확인하고 <code>pkill -f &quot;opencode attach&quot;</code>로 정리합니다.</li>
+</ul>
+<h2 id="마무리">마무리</h2>
+<p>oh-my-opencode-slim의 Tmux 통합은 &ldquo;AI 에이전트가 무슨 일을 하고 있는가&quot;라는 근본적인 투명성 문제를 해결합니다. 설정 3줄(<code>enabled</code>, <code>layout</code>, <code>main_pane_size</code>)로 활성화하면, 에이전트가 실행될 때마다 자동으로 패널이 생기고, 끝나면 스스로 정리됩니다. 멀티 에이전트 코딩을 도입했는데 에이전트가 뭘 하는지 모르겠다면, Tmux 통합부터 켜보세요.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 02월 25일 22시 20분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/development">Development</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/automation">Automation</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/02/2026-02-25-awesome-claude-skills-korean-guide/" rel="prev">
+        <span>Awesome Claude Skills 생태계 완전 가이드 — 2026년 스킬·훅·오케스트레이터 카탈로그</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/02/2026-02-26-agents-md-stop-init-context-strategy/" rel="next">
+        <span>/init로 만든 AGENTS.md는 왜 성능을 깎을까: 최소 컨텍스트와 계층형 운영 전략</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-oh-my-opencode-slim이란-6개-전문-에이전트의-오케스트레이션">1) oh-my-opencode-slim이란: 6개 전문 에이전트의 오케스트레이션</a></li>
+    <li><a href="#2-tmux-통합-아키텍처-에이전트--패널-자동-스폰-구조">2) Tmux 통합 아키텍처: 에이전트 → 패널 자동 스폰 구조</a>
+      <ul>
+        <li><a href="#설정-방법">설정 방법</a></li>
+        <li><a href="#실행-순서">실행 순서</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-레이아웃-옵션-화면-구성-전략">3) 레이아웃 옵션: 화면 구성 전략</a>
+      <ul>
+        <li><a href="#tmux-패널-기본-조작">Tmux 패널 기본 조작</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-백그라운드-태스크와-세션-라이프사이클">4) 백그라운드 태스크와 세션 라이프사이클</a>
+      <ul>
+        <li><a href="#고스트-패널-문제와-해결">고스트 패널 문제와 해결</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-멀티-프로젝트-운영과-고급-활용">5) 멀티 프로젝트 운영과 고급 활용</a>
+      <ul>
+        <li><a href="#프로젝트별-세션-분리">프로젝트별 세션 분리</a></li>
+        <li><a href="#자동-시작-스크립트">자동 시작 스크립트</a></li>
+        <li><a href="#로그-모니터링-병행">로그 모니터링 병행</a></li>
+        <li><a href="#커스텀-tmux-설정-추천">커스텀 Tmux 설정 추천</a></li>
+      </ul>
+    </li>
+    <li><a href="#6-트러블슈팅-가이드">6) 트러블슈팅 가이드</a>
+      <ul>
+        <li><a href="#포트-충돌-상세-해결">포트 충돌 상세 해결</a></li>
+      </ul>
+    </li>
+    <li><a href="#실전-운영-팁">실전 운영 팁</a></li>
+    <li><a href="#마무리">마무리</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/multi-agent/" class="badge badge-secondary">Multi-Agent</a>
+    <a href="/tags/opencode/" class="badge badge-secondary">OpenCode</a>
+    <a href="/tags/tmux/" class="badge badge-secondary">Tmux</a>
+    <a href="/tags/oh-my-opencode/" class="badge badge-secondary">Oh-My-Opencode</a>
+    <a href="/tags/cli/" class="badge badge-secondary">CLI</a>
+    <a href="/tags/devops/" class="badge badge-secondary">DevOps</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

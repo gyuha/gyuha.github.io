@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Paperclip: AI 직원으로 구동되는 자율 회사 오픈소스 오케스트레이션'" />
+  <title>Paperclip: AI 직원으로 구동되는 자율 회사 오픈소스 오케스트레이션  | 신규하 블로그</title>
+  <meta property="og:title" content="Paperclip: AI 직원으로 구동되는 자율 회사 오픈소스 오케스트레이션" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-03-13"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/03/2026-03-13-paperclip-ai-orchestration/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="AI" />
+  
+  <meta property="og:tags" content="Orchestration" />
+  
+  <meta property="og:tags" content="Multi-Agent" />
+  
+  <meta property="og:tags" content="Self-Hosted" />
+  
+  <meta property="og:tags" content="OpenSource" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/03/2026-03-13-paperclip-ai-orchestration/">
+          <h1>
+            Paperclip: AI 직원으로 구동되는 자율 회사 오픈소스 오케스트레이션
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/03/2026-03-13-paperclip-ai-orchestration/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>AI 에이전트가 개발 작업, 글쓰기, 고객 지원을 자동화하는 시대가 되었지만, 여러 에이전트를 조율하고 관리하는 것은 여전히 큰 과제입니다. Claude Code 탭 20개를 열어두고 어디서 뭘 하는지 추적하기 어렵고, 재부팅하면 맥락이 사라지며, 루프가 돌면서 토큰이 수백 달러씩 날아가는 경험을 해보셨을 겁니다.</p>
+<p>Paperclip은 이러한 문제를 해결하기 위해 등장한 <strong>AI 직원들을 관리하는 조직 관리 시스템</strong>입니다. 오픈소스로 제공되며, 조직도, 목표 추적, 비용 관리, 거버넌스를 통합하여 에이전트가 아닌 회사를 운영할 수 있게 해줍니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://paperclip.ing/">Paperclip</a></li>
+<li><a href="https://github.com/paperclipai/paperclip">GitHub Repository</a></li>
+</ul>
+<h2 id="paperclip이란-무엇인가">Paperclip이란 무엇인가</h2>
+<p>Paperclip은 <strong>제로 휴먼(Zero-human) 회사를 위한 오픈소스 오케스트레이션 플랫폼</strong>입니다. 개별 에이전트를 만드는 프레임워크가 아니라, 여러 에이전트로 구성된 조직을 관리하는 시스템입니다.</p>
+<p>핵심 아이디어는 간단합니다: &ldquo;AI 직원을 고용하고, 목표를 설정하면, 업무가 자동화되고 비즈니스가 스스로 돌아간다.&rdquo;</p>
+<h3 id="빠른-시작">빠른 시작</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>npx paperclipai onboard --yes
+</span></span></code></pre></div><p>한 줄의 명령어로 설치가 완료됩니다. 계정 생성 없이 셀프 호스팅 가능하며, 내장된 PostgreSQL로 즉시 시작할 수 있습니다.</p>
+<h2 id="핵심-아키텍처-조직도-거버넌스-비용-관리">핵심 아키텍처: 조직도, 거버넌스, 비용 관리</h2>
+<p>Paperclip은 전통적인 소프트웨어 도구가 아닌 <strong>회사 구조</strong>를 모델링합니다. 이를 이해하기 위해 핵심 구성요소를 살펴보겠습니다.</p>
+<h3 id="조직도org-chart">조직도(Org Chart)</h3>
+<p>에이전트는 프리랜서가 아닌 명확한 상사, 직책, 직무 설명을 가진 직원입니다. 계층 구조, 보고 라인, 역할 분담이 명시됩니다.</p>
+<pre class="mermaid">graph TD
+    subgraph Board["이사회 (사용자)"]
+        User[사용자]
+    end
+
+    subgraph CLevel["C-Level"]
+        CEO[CEO Claude]
+        CMO[CMO OpenClaw]
+        CTO[CTO Cursor]
+        COO[COO Claude]
+    end
+
+    subgraph Engineering["엔지니어링"]
+        CodexEngineer[Codex Coder]
+        ClaudeEngineer[Claude Coder]
+    end
+
+    User --> CEO
+    User --> CMO
+    User --> CTO
+    User --> COO
+
+    CTO --> CodexEngineer
+    CTO --> ClaudeEngineer
+
+    classDef board fill:#ffd166,stroke:#333,stroke-width:2px,color:#333;
+    classDef clevel fill:#06d6a0,stroke:#333,stroke-width:2px,color:#333;
+    classDef eng fill:#118ab2,stroke:#333,stroke-width:2px,color:#333;
+
+    class User board;
+    class CEO,CMO,CTO,COO clevel;
+    class CodexEngineer,ClaudeEngineer eng;</pre><p>이러한 조직 구조 덕분에 업무가 자연스럽게 위임됩니다. CEO는 전략을 수립하고 엔지니어는 실행에 집중합니다. 위임은 조직도를 따라 자동으로 상하로 흐릅니다.</p>
+<h3 id="목표-정렬goal-alignment">목표 정렬(Goal Alignment)</h3>
+<p>모든 작업은 회사 미션으로 추적됩니다. 에이전트는 &ldquo;무엇을&rdquo; 할지뿐만 아니라 &ldquo;왜&rdquo; 해야 하는지 이해합니다.</p>
+<pre class="mermaid">graph TD
+    Mission["회사 미션<br/>#1 AI 노트 앱으로<br/>$1M MRR 달성"]
+    Project["프로젝트 목표<br/>협업 기능 출시"]
+    AgentGoal["에이전트 목표<br/>실시간 동기화 구현"]
+    Task["태스크<br/>문서 업데이트용<br/>WebSocket 핸들러 작성"]
+
+    Mission --> Project --> AgentGoal --> Task
+
+    classDef level1 fill:#ffc8c4,stroke:#333,stroke-width:2px,color:#333;
+    classDef level2 fill:#c0ecd3,stroke:#333,stroke-width:2px,color:#333;
+    classDef level3 fill:#c5dcef,stroke:#333,stroke-width:2px,color:#333;
+    classDef level4 fill:#fde8c0,stroke:#333,stroke-width:2px,color:#333;
+
+    class Mission level1;
+    class Project level2;
+    class AgentGoal level3;
+    class Task level4;</pre><p>이러한 목표 계층 구조 덕분에 에이전트가 컨텍스트를 수동으로 수집할 필요가 없습니다. 작업 할당 시 자동으로 필요한 맥락이 전달됩니다.</p>
+<h3 id="하트비트heartbeats">하트비트(Heartbeats)</h3>
+<p>에이전트는 지속적으로 실행되는 것이 아니라 스케줄에 따라 깨어납니다. 정기적인 업무(블로그 초안 작성, SEO 감사, 소셜 게시)가 자동으로 처리됩니다.</p>
+<pre class="mermaid">timeline
+    title 에이전트 하트비트 스케줄 예시
+    section 컨텐츠 작성자 (4시간)
+        블로그 초안 작성 : 0h : 4h : 8h : 12h : 16h : 20h
+        카피 편집 : 0h : 4h : 8h : 12h : 16h : 20h
+        뉴스레터 작성 : 0h : 4h : 8h : 12h : 16h : 20h
+    section SEO 분석가 (8시간)
+        크롤 감사 : 0h : 8h : 16h : 24h
+        키워드 리서치 : 0h : 8h : 16h : 24h
+        순위 추적 : 0h : 8h : 16h : 24h
+    section 소셜 매니저 (12시간)
+        게시물 스케줄링 : 0h : 12h : 24h
+        답글 참여 : 0h : 12h : 24h</pre><p>하트비트 외에도 티켓 할당이나 멘션 시 에이전트가 깨어날 수 있습니다. 크로스 팀 요청은 최적의 에이전트에게 자동 위임됩니다.</p>
+<h3 id="비용-관리cost-control">비용 관리(Cost Control)</h3>
+<p>모든 에이전트는 월간 예산을 가집니다. 예산에 도달하면 자동으로 멈춥니다. 폭주하는 비용과 예상치 못한 청구서를 방지합니다.</p>
+<table>
+  <thead>
+      <tr>
+          <th>에이전트</th>
+          <th>사용 / 예산</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>CEO Claude</td>
+          <td>$0 / $60</td>
+      </tr>
+      <tr>
+          <td>CMO OpenClaw</td>
+          <td>$0 / $40</td>
+      </tr>
+      <tr>
+          <td>CTO Cursor</td>
+          <td>$0 / $50</td>
+      </tr>
+      <tr>
+          <td>COO Claude</td>
+          <td>$0 / $30</td>
+      </tr>
+      <tr>
+          <td>CodexCoder</td>
+          <td>$0 / $30</td>
+      </tr>
+      <tr>
+          <td>ClaudeCoder</td>
+          <td>$0 / $30</td>
+      </tr>
+      <tr>
+          <td><strong>합계</strong></td>
+          <td><strong>$0 / $240</strong></td>
+      </tr>
+  </tbody>
+</table>
+<p>에이전트별, 태스크별, 프로젝트별, 목표별 비용을 추적할 수 있습니다. 어떤 에이전트가 비싼지, 어떤 태스크가 토큰을 많이 소비하는지, 어떤 프로젝트가 예산을 초과하는지 한눈에 확인할 수 있습니다.</p>
+<h2 id="티켓-시스템과-추적-가능성">티켓 시스템과 추적 가능성</h2>
+<p>에이전트와의 모든 상호작용은 티켓을 통해 이루어집니다. 모든 지시, 응답, 툴 호출, 결정이 완전히 추적됩니다. 어둠 속에서 일어나는 일은 없습니다.</p>
+<pre class="mermaid">sequenceDiagram
+    participant User as 사용자
+    participant Ticket as 티켓 #1042
+    participant CTO as CTO 에이전트
+    participant Test as 테스트 스위트
+    participant Stage as 스테이징
+    participant Prod as 프로덕션
+
+    User->>Ticket: "프로덕션에 가격 페이지 배포<br/>테스트 먼저 실행"
+    Ticket->>CTO: 작업 할당
+
+    CTO->>Test: run_tests()
+    Test-->>CTO: passed
+    CTO->>Stage: deploy_to_staging()
+    Stage-->>CTO: done
+    CTO->>Test: smoke_test()
+    Test-->>CTO: passed
+
+    Note over Ticket: 진행 상태 업데이트
+
+    CTO-->>Ticket: "스모크 테스트 통과 후<br/>프로덕션으로 승격 예정"
+    Ticket-->>User: 알림
+
+    User->>Ticket: "승인. 진행해라."
+    Ticket->>CTO: 승인 전달
+
+    CTO->>Prod: deploy_to_production()
+    Note over Ticket,Prod: 배포 완료</pre><p>티켓 시스템의 핵심 특징:</p>
+<ul>
+<li><strong>구조화된 티켓</strong>: 모든 태스크는 명확한 소유자, 상태, 스레드를 가짐</li>
+<li><strong>완전 추적</strong>: 모든 툴 호출, API 요청, 결정점이 로그로 기록</li>
+<li><strong>불변 감사 로그</strong>: 추가 전용 기록. 수정/삭제 불가. 완전한 책임성</li>
+</ul>
+<h2 id="멀티-컴퍼니-지원">멀티 컴퍼니 지원</h2>
+<p>하나의 배포로 여러 비즈니스를 운영할 수 있습니다. 하나의 AI 회사나 50개의 회사를 운영할 수 있으며, 비즈니스 간 완전한 데이터 격리가 보장됩니다.</p>
+<pre class="mermaid">graph TD
+    subgraph Deployment["Paperclip 배포 (인스턴스)"]
+        subgraph Co1["모바일 마케팅 회사 (8 에이전트)"]
+            Co1_CEO[CEO]
+            Co1_VP_Marketing[VP 마케팅]
+            Co1_VP_Growth[VP 성장]
+            Co1_Content[컨텐츠]
+            Co1_Ads[광고]
+            Co1_SEO[SEO]
+            Co1_Analytics[애널리틱스]
+        end
+
+        subgraph Co2["하이퍼리퀴드 펀드 (14 에이전트)"]
+            Co2_MP[매니징 파트너]
+            Co2_Trading[트레이딩]
+            Co2_Research[리서치]
+            Co2_Risk[리스크]
+            Co2_Quant[쿼트]
+            Co2_Exec[임원 봇]
+            Co2_Scout[스카우트]
+            Co2_Hedger[헤저]
+        end
+
+        subgraph Co3["페이스리스 틱톡 공장 (5 에이전트)"]
+            Co3_Producer[프로듀서]
+            Co3_Script[작가]
+            Co3_Editor[에디터]
+            Co3_Voice[성우]
+            Co3_Thumbnail[썸네일]
+            Co3_Scheduler[스케줄러]
+        end
+    end
+
+    classDef co1 fill:#ffc8c4,stroke:#333,stroke-width:2px,color:#333;
+    classDef co2 fill:#c0ecd3,stroke:#333,stroke-width:2px,color:#333;
+    classDef co3 fill:#c5dcef,stroke:#333,stroke-width:2px,color:#333;
+
+    class Co1_CEO,Co1_VP_Marketing,Co1_VP_Growth,Co1_Content,Co1_Ads,Co1_SEO,Co1_Analytics co1;
+    class Co2_MP,Co2_Trading,Co2_Research,Co2_Risk,Co2_Quant,Co2_Exec,Co2_Scout,Co2_Hedger co2;
+    class Co3_Producer,Co3_Script,Co3_Editor,Co3_Voice,Co3_Thumbnail,Co3_Scheduler co3;</pre><p>이는 여러 벤처를 병행하거나, 전략을 병렬로 테스트하거나, 재사용 가능한 조직 구성을 템플릿화하는 데 유용합니다.</p>
+<h2 id="거버넌스-당신이-이사회입니다">거버넌스: 당신이 이사회입니다</h2>
+<p>Paperclip에서 사용자는 이사회의 역할을 합니다. 채용을 승인하고, 전략을 검토하고, 결정을 오버라이드할 수 있습니다. 에이전트는 당신의 승인 없이 새 에이전트를 고용할 수 없습니다. CEO가 당신이 검토하지 않은 전략을 실행할 수 없습니다.</p>
+<p>언제든지 에이전트를 일시 중지하거나, 태스크를 재할당하거나, 예산을 조정할 수 있습니다. 자율성은 당신이 부여하는 권리이지 기본값이 아닙니다.</p>
+<table>
+  <thead>
+      <tr>
+          <th>작업</th>
+          <th>권한</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>새 에이전트 채용</td>
+          <td>이사회 승인 필요</td>
+      </tr>
+      <tr>
+          <td>전략 실행</td>
+          <td>이사회 리뷰 필요</td>
+      </tr>
+      <tr>
+          <td>태스크 재할당</td>
+          <td>언제든지 가능</td>
+      </tr>
+      <tr>
+          <td>예산 조정</td>
+          <td>언제든지 가능</td>
+      </tr>
+      <tr>
+          <td>에이전트 일시 중지</td>
+          <td>언제든지 가능</td>
+      </tr>
+      <tr>
+          <td>에이전트 종료</td>
+          <td>언제든지 가능</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="bring-your-own-agent-byoa">Bring Your Own Agent (BYOA)</h2>
+<p>Paperclip은 어떤 에이전트 런타임과도 호환됩니다. 하트비트 신호를 받을 수만 있으면 채용됩니다. OpenClaw, Cursor, Codex, Bash, HTTP 웹훅 — 모든 것이 하나의 조직 구조 아래 정리됩니다.</p>
+<pre class="mermaid">graph LR
+    subgraph Paperclip["Paperclip"]
+        Org["조직도 &<br/>거버넌스"]
+    end
+
+    subgraph Agents["에이전트 런타임"]
+        OpenClaw["OpenClaw"]
+        Claude["Claude"]
+        Codex["Codex"]
+        Cursor["Cursor"]
+        Bash["Bash"]
+        HTTP["HTTP"]
+    end
+
+    Org <-->|"하트비트<br/>명령<br/>결과"| OpenClaw
+    Org <-->|"하트비트<br/>명령<br/>결과"| Claude
+    Org <-->|"하트비트<br/>명령<br/>결과"| Codex
+    Org <-->|"하트비트<br/>명령<br/>결과"| Cursor
+    Org <-->|"하트비트<br/>명령<br/>결과"| Bash
+    Org <-->|"하트비트<br/>명령<br/>결과"| HTTP
+
+    classDef paperclip fill:#ffd166,stroke:#333,stroke-width:2px,color:#333;
+    classDef agent fill:#118ab2,stroke:#333,stroke-width:2px,color:#333;
+
+    class Org paperclip;
+    class OpenClaw,Claude,Codex,Cursor,Bash,HTTP agent;</pre><p>어댑터가 Paperclip을 사용하는 실행 환경과 연결해줍니다. 자신의 에이전트를 계속 사용하면서 Paperclip의 오케스트레이션을 활용할 수 있습니다.</p>
+<h2 id="문제-해결-paperclip이-바꾸는-것">문제 해결: Paperclip이 바꾸는 것</h2>
+<p>Paperclip은 AI 에이전트로 작업할 때 마주하는 여러 문제를 해결합니다.</p>
+<table>
+  <thead>
+      <tr>
+          <th>문제</th>
+          <th>Paperclip 없이</th>
+          <th>Paperclip으로</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>맥락 추적</td>
+          <td>20개의 열린 탭, 재부팅 시 소실</td>
+          <td>티켓 기반, 스레드 대화, 재부팅 후 지속</td>
+      </tr>
+      <tr>
+          <td>컨텍스트 전달</td>
+          <td>여러 곳에서 수동 수집</td>
+          <td>작업 → 프로젝트 → 회사 목표로 자동 흐름</td>
+      </tr>
+      <tr>
+          <td>에이전트 조율</td>
+          <td>폴더에 흩어진 설정, 중복 작업</td>
+          <td>조직도, 티켓팅, 위임, 거버넌스 기본 제공</td>
+      </tr>
+      <tr>
+          <td>비용 폭주</td>
+          <td>수백 달러 날아간 뒤 발견</td>
+          <td>예산 추적, 한도 도달 시 자동 차단</td>
+      </tr>
+      <tr>
+          <td>정기 업무</td>
+          <td>매번 수동 시작</td>
+          <td>하트비트로 스케줄링된 자동 실행</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="내부-작동-원리">내부 작동 원리</h2>
+<p>Paperclip은 어려운 오케스트레이션 세부 사항을 올바르게 처리합니다.</p>
+<h3 id="원자적-실행atomic-execution">원자적 실행(Atomic Execution)</h3>
+<p>태스크 체크아웃과 예산 강제는 원자적입니다. 중복 작업 없이, 폭주하는 지출 없이 안전하게 실행됩니다.</p>
+<h3 id="지속형-에이전트-상태persistent-agent-state">지속형 에이전트 상태(Persistent Agent State)</h3>
+<p>에이전트가 하트비트 사이에 동일한 태스크 컨텍스트를 유지합니다. 처음부터 다시 시작하지 않습니다.</p>
+<h3 id="런타임-스킬-주입runtime-skill-injection">런타임 스킬 주입(Runtime Skill Injection)</h3>
+<p>에이전트가 재학습 없이 런타임에 Paperclip 워크플로우와 프로젝트 컨텍스트를 학습할 수 있습니다.</p>
+<h3 id="거버넌스와-롤백governance-with-rollback">거버넌스와 롤백(Governance with Rollback)</h3>
+<p>승인 게이트가 강제되고, 구성 변경이 버전 관리되며, 잘못된 변경이 안전하게 롤백될 수 있습니다.</p>
+<h3 id="목표-인지-실행goal-aware-execution">목표 인지 실행(Goal-Aware Execution)</h3>
+<p>태스크는 완전한 목표 계보를 전달하므로 에이전트가 제목만이 아니라 &ldquo;왜&quot;를 일관되게 볼 수 있습니다.</p>
+<h3 id="이식-가능한-회사-템플릿portable-company-templates">이식 가능한 회사 템플릿(Portable Company Templates)</h3>
+<p>비밀 스크러빙과 충돌 처리로 조직, 에이전트, 스킬을 내보내기/가져오기가 가능합니다.</p>
+<h3 id="진정한-멀티-컴퍼니-격리true-multi-company-isolation">진정한 멀티 컴퍼니 격리(True Multi-Company Isolation)</h3>
+<p>모든 엔티티는 회사 범위를 가지므로, 하나의 배포로 여러 회사를 분리된 데이터와 감사 트레일로 실행할 수 있습니다.</p>
+<h2 id="차별화-paperclip이-아닌-것">차별화: Paperclip이 아닌 것</h2>
+<p>Paperclip은 기존 도구와 명확히 구분됩니다.</p>
+<ul>
+<li><strong>챗봇이 아닙니다</strong>: 대화 인터페이스가 없습니다. 에이전트는 채팅 창이 아니라 직무를 가집니다.</li>
+<li><strong>에이전트 프레임워크가 아닙니다</strong>: 에이전트를 만드는 법을 알려주지 않습니다. 에이전트로 만든 회사를 운영하는 법을 알려줍니다.</li>
+<li><strong>워크플로우 빌더가 아닙니다</strong>: 드래그 앤 드롭 파이프라인이 없습니다. 조직도, 목표, 예산, 거버넌스로 회사를 모델링합니다.</li>
+<li><strong>프롬프트 관리자가 아닙니다</strong>: 에이전트가 자신의 프롬프트, 모델, 런타임을 가져옵니다. Paperclip은 그들이 일하는 조직을 관리합니다.</li>
+<li><strong>단일 에이전트 도구가 아닙니다</strong>: 이것은 팀용입니다. 계층 구조용입니다. 회사용입니다. 에이전트가 하나라면 Paperclip이 필요 없습니다. 20개라면 반드시 필요합니다.</li>
+</ul>
+<h2 id="cliphub-곧-출시">Cliphub: 곧 출시</h2>
+<p>Cliphub은 사전 구축된 회사 템플릿 마켓플레이스입니다. 완전한 조직 구조, 에이전트 구성, 스킬이 포함된 템플릿을 찾아 Paperclip 인스턴스에 몇 초 만에 가져올 수 있습니다.</p>
+<table>
+  <thead>
+      <tr>
+          <th>템플릿</th>
+          <th>설명</th>
+          <th>에이전트</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>콘텐츠 마케팅 에이전시</td>
+          <td>SEO, 블로그, 소셜 미디어 자동화</td>
+          <td>8개</td>
+      </tr>
+      <tr>
+          <td>암호화폐 트레이딩 데스크</td>
+          <td>분석, 실행, 리스크, 컴플라이언스</td>
+          <td>12개</td>
+      </tr>
+      <tr>
+          <td>이커머스 운영자</td>
+          <td>목록, 지원, 재고, 광고</td>
+          <td>10개</td>
+      </tr>
+      <tr>
+          <td>유튜브 공장</td>
+          <td>스크립트, 편집, 썸네일, 스케줄링</td>
+          <td>6개</td>
+      </tr>
+      <tr>
+          <td>개발 에이전시</td>
+          <td>PM, 엔지니어, QA, DevOps 파이프라인</td>
+          <td>9개</td>
+      </tr>
+      <tr>
+          <td>부동상 리드</td>
+          <td>프로스펙팅, 아웃리치, 팔로우업, 클로징</td>
+          <td>7개</td>
+      </tr>
+  </tbody>
+</table>
+<p>자신만의 회사 템플릿을 커뮤니티와 공유할 수도 있습니다.</p>
+<h2 id="faq">FAQ</h2>
+<p><strong>Q: Paperclip은 OpenClaw나 Claude Code 같은 에이전트와 어떻게 다른가요?</strong></p>
+<p>A: Paperclip은 그 에이전트를 사용합니다. 조직도, 예산, 목표, 거버넌스, 책임성이 있는 회사로 오케스트레이션합니다.</p>
+<p><strong>Q: 기존 에이전트를 사용할 수 있나요?</strong></p>
+<p>A: 네. Paperclip은 에이전트 런타임에 대해 독단적이지 않습니다. 에이전트는 Claude Code 세션, OpenClaw 봇, Python 스크립트, 셸 명령, HTTP 웹훅 — 하트비트 신호를 받을 수 있는 모든 것이 될 수 있습니다. 어댑터가 Paperclip을 사용하는 실행 환경과 연결해줍니다.</p>
+<p><strong>Q: 에이전트가 예산 한도에 도달하면 어떻게 되나요?</strong></p>
+<p>A: 예산 활용도 100%에서 에이전트가 자동으로 일시 중지되고 새 태스크가 차단됩니다. 80%에서 경고를 받습니다. 이사회로서 언제든지 한도를 오버라이드하고 에이전트를 재개할 수 있습니다.</p>
+<p><strong>Q: 에이전트가 원하지 않는 작업을 못 하게 하려면?</strong></p>
+<p>A: Paperclip에는 에이전트가 Paperclip을 수정할 수 있는 작업에 대한 거버넌스 및 제어 모듈이 있습니다. 예를 들어 새 에이전트 채용은 기본적으로 이사회 승인으로 게이트됩니다. 하지만 에이전트는 당신의 것이고 원하는 대로 보안할 수 있습니다.</p>
+<p><strong>Q: 에이전트가 지속적으로 실행되나요?</strong></p>
+<p>A: 기본적으로 Paperclip은 에이전트를 스케줄된 하트비트 및/또는 태스크 할당, @멘션 같은 알림으로 실행합니다. 하지만 에이전트는 당신의 것이므로 OpenClaw 같은 지속형 에이전트를 Paperclip에 연결할 수 있습니다.</p>
+<p><strong>Q: OpenClaw를 Asana나 Trello에 연결하는 대신 Paperclip을 써야 하나요?</strong></p>
+<p>A: 에이전트 오케스트레이션에는 누가 작업을 체크아웃했는지 조율하는 방법, 세션을 유지하는 방법, 비용을 모니터링하는 방법, 거버넌스를 설정하는 방법 등의 미묘한 부분이 있습니다. Paperclip이 이를 해결해줍니다. 브링 유어 티켓 시스템은 로드맵에 있습니다.</p>
+<p><strong>Q: 일반적인 설정은 어떻게 생겼나요?</strong></p>
+<p>A: Paperclip을 로컬 인스턴스나 원격 배포로 실행할 수 있습니다. 로컬에서는 단일 Node.js 프로세스가 내장된 PostgreSQL을 자동으로 설정하고 유지하며 데이터를 로컬 파일에 저장합니다. 클라우드가 준비되면 Paperclip이 이를 쉽게 만듭니다 — 에이전트가 Paperclip의 제공된 SKILL.md를 사용할 수 있습니다. 그런 다음 프로젝트(작업 그룹)와 에이전트(어떤 플랫폼이 어떻게 작업을 하는지 정의)를 구성합니다. 태스크를 설정하면 에이전트가 나머지를 처리합니다.</p>
+<p><strong>Q: 여러 회사를 실행할 수 있나요?</strong></p>
+<p>A: 네. 단일 Paperclip 배포로 완전한 데이터 격리로 수십 개의 회사를 실행할 수 있습니다. 별도의 벤처를 실행하거나, 전략을 병렬로 테스트하거나, 재사용 가능한 조직 구성을 템플릿화하는 데 유용합니다.</p>
+<p><strong>Q: Paperclip은 오픈소스인가요?</strong></p>
+<p>A: 네. MIT 라이선스, 셀프 호스팅, Paperclip 계정 불필요. 대화형 설정이 데이터베이스 구성과 첫 번째 회사 생성을 안내합니다. 내장된 데이터베이스로 로컬에서 실행하거나 자신의 Postgres를 지정할 수 있습니다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<p>Paperclip은 AI 에이전트로 구성된 조직을 관리하는 오픈소스 오케스트레이션 플랫폼입니다.</p>
+<p><strong>핵심 기능:</strong></p>
+<ul>
+<li><strong>Bring Your Own Agent</strong>: 하트비트를 받을 수 있는 모든 에이전트와 호환</li>
+<li><strong>조직도</strong>: 계층, 역할, 보고 라인으로 구조화</li>
+<li><strong>목표 정렬</strong>: 모든 작업이 회사 미션으로 추적</li>
+<li><strong>하트비트</strong>: 스케줄에 따른 정기 업무 처리</li>
+<li><strong>비용 관리</strong>: 에이전트별 월 예산과 자동 차단</li>
+<li><strong>멀티 컴퍼니</strong>: 하나의 배포로 여러 비즈니스 운영</li>
+<li><strong>티켓 시스템</strong>: 모든 대화와 결정의 완전 추적</li>
+<li><strong>거버넌스</strong>: 사용자가 이사회로서 완전한 통제권 보유</li>
+</ul>
+<p><strong>설치:</strong></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>npx paperclipai onboard --yes
+</span></span></code></pre></div><p><strong>주요 차별점:</strong></p>
+<ul>
+<li>챗봇이 아닌 조직 관리 시스템</li>
+<li>에이전트 프레임워크가 아닌 오케스트레이션 계층</li>
+<li>단일 에이전트가 아닌 팀/계층/회사용 도구</li>
+<li>오픈소스, MIT 라이선스, 셀프 호스팅</li>
+</ul>
+<p>Paperclip은 개별 에이전트를 만드는 것이 아니라, 에이전트로 구성된 <strong>회사</strong>를 운영할 수 있게 해줍니다. 당신은 이사회가 되고, AI 직원들이 비즈니스를 운영합니다.</p>
+<h2 id="결론">결론</h2>
+<p>Paperclip은 AI 에이전트 시대의 &ldquo;조직 관리 시스템&quot;입니다. 개발자들은 에이전트를 만드는 데 집중하고, Paperclip은 그 에이전트들이 조직으로서 작동할 수 있는 구조를 제공합니다.</p>
+<p>여러 Claude Code 탭, 폴더에 흩어진 설정, 폭주하는 토큰 비용, 잃어버리는 맥락 — 이러한 문제를 해결하고 싶다면 Paperclip이 제공하는 조직도, 목표 추적, 비용 관리, 거버넌스를 활용해보세요.</p>
+<p>곧 출시될 Cliphub에서 사전 구축된 회사 템플릿을 가져와 즉시 자율 비즈니스를 시작할 수도 있습니다. MIT 라이선스로 오픈소스이므로 코드를 검사하고 기여할 수도 있습니다.</p>
+<p>AI 직원을 고용하고, 목표를 설정하고, 업무가 자동화되고, 비즈니스가 스스로 돌아가는 경험 — 그것이 Paperclip이 제공하는 비전입니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 03월 13일 17시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/devops">DevOps</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/saas">SaaS</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/03/2026-03-13-ai-longform-video-free-workflow/" rel="prev">
+        <span>위스크 종료 후 대안: 무료로 AI 롱폼 영상 자동 제작하는 완벽한 워크플로우</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/03/2026-03-13-get-shit-done-spec-driven-development-system/" rel="next">
+        <span>GSD - AI 코드 개발을 위한 컨텍스트 엔지니어링 및 스펙 기반 개발 시스템</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#paperclip이란-무엇인가">Paperclip이란 무엇인가</a>
+      <ul>
+        <li><a href="#빠른-시작">빠른 시작</a></li>
+      </ul>
+    </li>
+    <li><a href="#핵심-아키텍처-조직도-거버넌스-비용-관리">핵심 아키텍처: 조직도, 거버넌스, 비용 관리</a>
+      <ul>
+        <li><a href="#조직도org-chart">조직도(Org Chart)</a></li>
+        <li><a href="#목표-정렬goal-alignment">목표 정렬(Goal Alignment)</a></li>
+        <li><a href="#하트비트heartbeats">하트비트(Heartbeats)</a></li>
+        <li><a href="#비용-관리cost-control">비용 관리(Cost Control)</a></li>
+      </ul>
+    </li>
+    <li><a href="#티켓-시스템과-추적-가능성">티켓 시스템과 추적 가능성</a></li>
+    <li><a href="#멀티-컴퍼니-지원">멀티 컴퍼니 지원</a></li>
+    <li><a href="#거버넌스-당신이-이사회입니다">거버넌스: 당신이 이사회입니다</a></li>
+    <li><a href="#bring-your-own-agent-byoa">Bring Your Own Agent (BYOA)</a></li>
+    <li><a href="#문제-해결-paperclip이-바꾸는-것">문제 해결: Paperclip이 바꾸는 것</a></li>
+    <li><a href="#내부-작동-원리">내부 작동 원리</a>
+      <ul>
+        <li><a href="#원자적-실행atomic-execution">원자적 실행(Atomic Execution)</a></li>
+        <li><a href="#지속형-에이전트-상태persistent-agent-state">지속형 에이전트 상태(Persistent Agent State)</a></li>
+        <li><a href="#런타임-스킬-주입runtime-skill-injection">런타임 스킬 주입(Runtime Skill Injection)</a></li>
+        <li><a href="#거버넌스와-롤백governance-with-rollback">거버넌스와 롤백(Governance with Rollback)</a></li>
+        <li><a href="#목표-인지-실행goal-aware-execution">목표 인지 실행(Goal-Aware Execution)</a></li>
+        <li><a href="#이식-가능한-회사-템플릿portable-company-templates">이식 가능한 회사 템플릿(Portable Company Templates)</a></li>
+        <li><a href="#진정한-멀티-컴퍼니-격리true-multi-company-isolation">진정한 멀티 컴퍼니 격리(True Multi-Company Isolation)</a></li>
+      </ul>
+    </li>
+    <li><a href="#차별화-paperclip이-아닌-것">차별화: Paperclip이 아닌 것</a></li>
+    <li><a href="#cliphub-곧-출시">Cliphub: 곧 출시</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/ai/" class="badge badge-secondary">Ai</a>
+    <a href="/tags/orchestration/" class="badge badge-secondary">Orchestration</a>
+    <a href="/tags/multi-agent/" class="badge badge-secondary">Multi-Agent</a>
+    <a href="/tags/self-hosted/" class="badge badge-secondary">Self-Hosted</a>
+    <a href="/tags/opensource/" class="badge badge-secondary">OpenSource</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

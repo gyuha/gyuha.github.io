@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude Code 프레임워크 비교: GSD, oh-my-claudecode, Superpowers 중 무엇을 써야 할까'" />
+  <title>Claude Code 프레임워크 비교: GSD, oh-my-claudecode, Superpowers 중 무엇을 써야 할까  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude Code 프레임워크 비교: GSD, oh-my-claudecode, Superpowers 중 무엇을 써야 할까" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-03-15"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/03/2026-03-15-claude-code-frameworks-gsd-omc-superpowers/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="Claude Code" />
+  
+  <meta property="og:tags" content="GSD" />
+  
+  <meta property="og:tags" content="oh-my-claudecode" />
+  
+  <meta property="og:tags" content="Superpowers" />
+  
+  <meta property="og:tags" content="PM-Skills" />
+  
+  <meta property="og:tags" content="Agent Workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/03/2026-03-15-claude-code-frameworks-gsd-omc-superpowers/">
+          <h1>
+            Claude Code 프레임워크 비교: GSD, oh-my-claudecode, Superpowers 중 무엇을 써야 할까
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/03/2026-03-15-claude-code-frameworks-gsd-omc-superpowers/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p><code>temp/agent.md</code> 초안을 블로그 글 형식으로 다시 풀어 쓰면, 핵심 질문은 단순합니다.<br><strong>GSD</strong>, <strong>oh-my-claudecode</strong>, <strong>Superpowers</strong> 중 무엇이 더 강하냐가 아니라, <strong>각 도구가 개발 파이프라인의 어느 병목을 풀도록 설계되었느냐</strong> 입니다.</p>
+<p>셋 다 &ldquo;AI 코딩을 더 잘하게 해 주는 프레임워크&quot;처럼 보이지만 실제로는 결이 다릅니다.<br>GSD는 <strong>스펙과 단계 관리</strong>, oh-my-claudecode는 <strong>멀티 에이전트 오케스트레이션</strong>, Superpowers는 <strong>스킬 기반 워크플로우와 품질 규율</strong>에 더 가깝습니다.<br>여기에 <strong>PM-Skills</strong>를 붙이면 기획-실행 연결성이 달라집니다.</p>
+<h2 id="한눈에-먼저-보면">한눈에 먼저 보면</h2>
+<p>세 도구를 같은 축에서 보면 자꾸 헷갈립니다.<br>오히려 &ldquo;어떤 종류의 혼란을 줄이느냐&quot;로 보면 훨씬 선명해집니다.</p>
+<pre class="mermaid">flowchart TD
+    A["AI 코딩에서 가장 큰 병목"] --> B{"무엇이 더 아픈가?"}
+    B -->|"범위와 단계가 자꾸 흔들림"| C["GSD<br>spec-driven 프로젝트 운영"]
+    B -->|"큰 작업을 여러 에이전트로 병렬 처리하고 싶음"| D["oh-my-claudecode<br>멀티 에이전트 오케스트레이션"]
+    B -->|"구현 전에 설계, TDD, 리뷰, 검증 규율이 필요함"| E["Superpowers<br>skill-driven 엔지니어링 워크플로우"]
+
+    classDef input fill:#c5dcef,stroke:#6b9ac4,color:#333
+    classDef decision fill:#fde8c0,stroke:#d9a441,color:#333
+    classDef path1 fill:#c0ecd3,stroke:#67a97c,color:#333
+    classDef path2 fill:#ffc8c4,stroke:#d47a75,color:#333
+    classDef path3 fill:#e0c8ef,stroke:#9b7cc2,color:#333
+    class A input
+    class B decision
+    class C path1
+    class D path2
+    class E path3</pre><p>짧게 줄이면 이렇습니다.</p>
+<table>
+  <thead>
+      <tr>
+          <th>프레임워크</th>
+          <th>한 줄 요약</th>
+          <th>가장 강한 구간</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>GSD</strong></td>
+          <td>프로젝트를 spec-driven 파이프라인으로 고정</td>
+          <td>장기 프로젝트, 단계 관리, 컨텍스트 로트 완화</td>
+      </tr>
+      <tr>
+          <td><strong>oh-my-claudecode</strong></td>
+          <td>여러 에이전트를 팀처럼 굴리는 상위 조정 계층</td>
+          <td>병렬 실행, verify/fix 루프, 멀티 AI 활용</td>
+      </tr>
+      <tr>
+          <td><strong>Superpowers</strong></td>
+          <td>작업 전에 생각하고, 계획하고, 테스트하고, 검증하게 만드는 규율</td>
+          <td>설계, 구현 계획, TDD, 코드 리뷰, 검증</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="gsd-프로젝트를-스펙과-마일스톤으로-고정하는-시스템">GSD: 프로젝트를 스펙과 마일스톤으로 고정하는 시스템</h2>
+<p>GSD(Get Shit Done)의 핵심은 &ldquo;코드를 잘 쓰게 한다&quot;보다 <strong>프로젝트를 흔들리지 않게 만든다</strong> 에 더 가깝습니다.<br>아이디어를 받은 뒤 질문, 연구, 요구사항, 로드맵, 계획, 실행, 검증으로 이어지는 선형 파이프라인을 만들고, 그 흐름을 파일과 상태로 남깁니다.</p>
+<p>특히 GSD가 강조하는 것은 <strong>Context Rot</strong> 문제입니다.<br>세션이 길어질수록 컨텍스트가 더러워지고 품질이 떨어지는 현상을 막기 위해, 작업을 잘게 나누고 새 컨텍스트에서 실행하는 구조를 기본값으로 둡니다.<br>그래서 GSD는 ad-hoc 자동완성 도구보다는 <strong>작업 운영 체계</strong>에 더 가깝습니다.</p>
+<pre class="mermaid">flowchart TD
+    A["아이디어 또는 요구사항"] --> B["Questions"]
+    B --> C["Research"]
+    C --> D["Requirements"]
+    D --> E["Roadmap"]
+    E --> F["Plan Phase"]
+    F --> G["Execute Phase"]
+    G --> H["Verify Work"]
+    H --> I{"완료 여부"}
+    I -->|"No"| F
+    I -->|"Yes"| J["Complete Milestone"]
+
+    classDef input fill:#c5dcef,stroke:#6b9ac4,color:#333
+    classDef process fill:#c0ecd3,stroke:#67a97c,color:#333
+    classDef review fill:#fde8c0,stroke:#d9a441,color:#333
+    classDef result fill:#e0c8ef,stroke:#9b7cc2,color:#333
+    class A input
+    class B,C,D,E,F,G,H process
+    class I review
+    class J result</pre><h3 id="gsd의-강점">GSD의 강점</h3>
+<ul>
+<li>프로젝트 비전, 요구사항, 로드맵, 상태 파일이 분리되어 장기 작업 추적이 쉽습니다.</li>
+<li>각 작업을 비교적 원자적으로 쪼개기 때문에 세션이 바뀌어도 복구가 쉽습니다.</li>
+<li>wave 기반 병렬 실행과 atomic commit 철학 덕분에 큰 작업을 통제하기 좋습니다.</li>
+<li>&ldquo;무엇을 만들고 있는가&quot;가 문서로 남기 때문에 장기적인 정렬 비용이 낮습니다.</li>
+</ul>
+<h3 id="gsd의-한계">GSD의 한계</h3>
+<ul>
+<li>커맨드와 단계 개념이 많아서 처음엔 학습 비용이 분명히 있습니다.</li>
+<li>빠른 즉흥 작업에는 다소 무겁게 느껴질 수 있습니다.</li>
+<li>멀티 AI 오케스트레이션이나 화려한 실시간 가시성은 OMC 쪽이 더 강합니다.</li>
+</ul>
+<p>결론적으로 GSD는 <strong>MVP부터 장기 프로젝트까지 한 줄기 파이프라인으로 끌고 가고 싶은 사람</strong>에게 가장 잘 맞습니다.<br>특히 &ldquo;요구사항이 자꾸 흔들리고, 이전 세션의 결정을 잊고, 구현은 했는데 왜 이렇게 했는지 남지 않는다&quot;는 문제가 큰 팀에서 강합니다.</p>
+<h2 id="oh-my-claudecode-여러-에이전트를-팀처럼-굴리는-오케스트레이션-레이어">oh-my-claudecode: 여러 에이전트를 팀처럼 굴리는 오케스트레이션 레이어</h2>
+<p>oh-my-claudecode는 GSD처럼 스펙 파일 구조를 강하게 밀기보다, <strong>에이전트 팀을 굴리는 운영 계층</strong>으로 이해하는 편이 정확합니다.<br>핵심은 자연어 요청을 받아 planner, executor, verifier, fixer 같은 역할을 분리하고, 필요하면 Codex나 Gemini까지 섞어 병렬 처리하는 데 있습니다.</p>
+<p>그래서 OMC의 질문은 대체로 이쪽입니다.<br>&ldquo;이걸 누가 맡을까&rdquo;, &ldquo;몇 명을 병렬로 돌릴까&rdquo;, &ldquo;검증이 실패하면 어디로 되돌릴까&rdquo;, &ldquo;단일 리드로 갈까 팀 모드로 갈까&rdquo; 같은 질문입니다.</p>
+<pre class="mermaid">flowchart TD
+    A["사용자 요청"] --> B["team-plan"]
+    B --> C["team-prd"]
+    C --> D["team-exec"]
+    D --> E["team-verify"]
+    E --> F{"검증 통과?"}
+    F -->|"No"| G["team-fix"]
+    G --> D
+    F -->|"Yes"| H["완성된 결과"]
+
+    classDef input fill:#c5dcef,stroke:#6b9ac4,color:#333
+    classDef process fill:#c0ecd3,stroke:#67a97c,color:#333
+    classDef review fill:#fde8c0,stroke:#d9a441,color:#333
+    classDef result fill:#e0c8ef,stroke:#9b7cc2,color:#333
+    class A input
+    class B,C,D,G process
+    class E,F review
+    class H result</pre><h3 id="omc의-강점">OMC의 강점</h3>
+<ul>
+<li>32개 특화 에이전트와 다양한 실행 모드로 큰 작업을 병렬화하기 좋습니다.</li>
+<li>Claude, Codex, Gemini를 묶는 multi-AI 오케스트레이션이 강점입니다.</li>
+<li>HUD, 알림, 자동 재개 같은 운영 보조 기능이 풍부합니다.</li>
+<li>&ldquo;ralph&rdquo;, &ldquo;ultrawork&rdquo;, &ldquo;team&quot;처럼 반복 검증이나 대규모 처리에 특화된 모드가 분명합니다.</li>
+</ul>
+<h3 id="omc의-한계">OMC의 한계</h3>
+<ul>
+<li>전체 시스템 복잡도가 높아서 내부를 이해하려고 하면 오히려 부담이 큽니다.</li>
+<li>tmux 기반 워커나 여러 실행 모드는 환경 의존성이 있습니다.</li>
+<li>자체 기획/계획 기능이 꽤 강해서 다른 프레임워크와 섞을 때 역할 충돌이 생기기 쉽습니다.</li>
+</ul>
+<p>즉 OMC는 <strong>대규모 코드베이스, 병렬 작업, 멀티 AI 오케스트레이션</strong>에서 가장 빛납니다.<br>반대로 &ldquo;나는 혼자서 작은 기능 몇 개만 안정적으로 만들면 된다&quot;면, 오히려 과한 장비가 될 수도 있습니다.</p>
+<h2 id="superpowers-생각-계획-구현-리뷰를-강제하는-skill-기반-워크플로우">Superpowers: 생각-계획-구현-리뷰를 강제하는 skill 기반 워크플로우</h2>
+<p>Superpowers는 OMC처럼 멀티 에이전트 플랫폼 자체를 전면에 내세우기보다, <strong>작업을 수행하는 방식에 규율을 주는 스킬 프레임워크</strong>에 가깝습니다.<br>브레인스토밍, worktree, plan, subagent-driven development, TDD, code review, verification을 하나의 습관으로 묶어 줍니다.</p>
+<p>이 프레임워크의 강점은 &ldquo;바로 구현 들어가기&quot;를 막는 데 있습니다.<br>무엇을 만들지, 왜 그렇게 나눌지, 어떤 테스트로 검증할지, 어떤 기준으로 완료를 선언할지를 먼저 생각하게 만듭니다.<br>그래서 생산성보다 느려 보일 때도 있지만, <strong>품질과 재작업 비용</strong> 측면에서는 오히려 더 빨라질 수 있습니다.</p>
+<pre class="mermaid">flowchart TD
+    A["Brainstorming"] --> B["Git Worktree"]
+    B --> C["Writing Plans"]
+    C --> D["Subagent-Driven Development"]
+    D --> E["TDD"]
+    E --> F["Code Review"]
+    F --> G["Verification"]
+    G --> H["Branch Finish"]
+
+    classDef input fill:#c5dcef,stroke:#6b9ac4,color:#333
+    classDef process fill:#c0ecd3,stroke:#67a97c,color:#333
+    classDef review fill:#fde8c0,stroke:#d9a441,color:#333
+    classDef result fill:#e0c8ef,stroke:#9b7cc2,color:#333
+    class A input
+    class B,C,D,E,F,G process
+    class H result</pre><h3 id="superpowers의-강점">Superpowers의 강점</h3>
+<ul>
+<li>구현 전에 설계와 계획을 강제해서 섣부른 코딩을 줄여 줍니다.</li>
+<li>TDD, 리뷰, verification이 workflow 안에 녹아 있어 품질 기준이 높습니다.</li>
+<li>스킬 단위로 포터블해서 팀 간 재사용과 습관화가 쉽습니다.</li>
+<li>worktree와 subagent를 전제로 하기 때문에 격리와 검증 루프가 자연스럽습니다.</li>
+</ul>
+<h3 id="superpowers의-한계">Superpowers의 한계</h3>
+<ul>
+<li>프로젝트 전체 로드맵, 마일스톤, 상태 관리 체계는 GSD보다 약합니다.</li>
+<li>대규모 병렬 오케스트레이션은 OMC 쪽이 더 강력합니다.</li>
+<li>규율이 많기 때문에 &ldquo;빨리 아무거나 찍고 보자&quot;는 스타일과는 잘 맞지 않습니다.</li>
+</ul>
+<p>그래서 Superpowers는 <strong>품질 중심 개발</strong>, <strong>TDD 중심 팀</strong>, <strong>구현 전에 충분히 생각하고 싶은 엔지니어</strong>에게 특히 잘 맞습니다.</p>
+<h2 id="강점과-약점을-한-표로-정리하면">강점과 약점을 한 표로 정리하면</h2>
+<h3 id="강점">강점</h3>
+<table>
+  <thead>
+      <tr>
+          <th>GSD</th>
+          <th>oh-my-claudecode</th>
+          <th>Superpowers</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Context Rot 완화에 강한 spec-driven 구조</td>
+          <td>멀티 에이전트 팀 운영과 병렬 처리에 강함</td>
+          <td>TDD, 리뷰, 검증 중심 품질 규율이 강함</td>
+      </tr>
+      <tr>
+          <td>장기 프로젝트의 단계 관리가 쉬움</td>
+          <td>멀티 AI 오케스트레이션 가능</td>
+          <td>스킬 단위 워크플로우 재사용이 쉬움</td>
+      </tr>
+      <tr>
+          <td>requirements-roadmap-state 연결이 선명함</td>
+          <td>다양한 실행 모드와 운영 도구가 풍부함</td>
+          <td>구현 전에 사고와 계획을 강제함</td>
+      </tr>
+      <tr>
+          <td>atomic commit, wave execution 철학이 명확함</td>
+          <td>HUD, 알림, 자동 재개 같은 운영 기능 제공</td>
+          <td>worktree, subagent, review 루프가 자연스럽게 연결됨</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="약점">약점</h3>
+<table>
+  <thead>
+      <tr>
+          <th>GSD</th>
+          <th>oh-my-claudecode</th>
+          <th>Superpowers</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>진입 시 학습 곡선이 있음</td>
+          <td>시스템 복잡도가 높음</td>
+          <td>장기 프로젝트 관리 기능은 상대적으로 약함</td>
+      </tr>
+      <tr>
+          <td>가벼운 단발성 작업에는 무겁게 느껴질 수 있음</td>
+          <td>tmux 및 다중 실행 환경에 대한 이해가 필요할 수 있음</td>
+          <td>대규모 병렬 오케스트레이션 자체는 핵심 장점이 아님</td>
+      </tr>
+      <tr>
+          <td>멀티 AI 운영 기능은 제한적</td>
+          <td>토큰 사용량이 커질 수 있음</td>
+          <td>프로젝트 전체 상태와 마일스톤 관리 체계는 빈약함</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="어떤-시나리오에서-무엇을-고를까">어떤 시나리오에서 무엇을 고를까</h2>
+<p>실무에서는 &ldquo;무조건 하나&quot;보다 <strong>어떤 실패를 줄이고 싶은가</strong>가 더 중요합니다.</p>
+<pre class="mermaid">flowchart TD
+    A["내 상황은 무엇인가?"] --> B{"핵심 과제"}
+    B -->|"아이디어부터 구현까지<br>장기적으로 관리"| C["GSD"]
+    B -->|"대규모 코드베이스를<br>병렬로 굴리고 싶음"| D["oh-my-claudecode"]
+    B -->|"TDD와 검증 중심으로<br>깔끔하게 만들고 싶음"| E["Superpowers"]
+    B -->|"멀티 AI를 함께 써야 함"| D
+    B -->|"빠른 시작과 낮은 러닝커브가 중요"| E
+
+    classDef input fill:#c5dcef,stroke:#6b9ac4,color:#333
+    classDef decision fill:#fde8c0,stroke:#d9a441,color:#333
+    classDef gsd fill:#c0ecd3,stroke:#67a97c,color:#333
+    classDef omc fill:#ffc8c4,stroke:#d47a75,color:#333
+    classDef sp fill:#e0c8ef,stroke:#9b7cc2,color:#333
+    class A input
+    class B decision
+    class C gsd
+    class D omc
+    class E sp</pre><table>
+  <thead>
+      <tr>
+          <th>시나리오</th>
+          <th>추천</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>솔로 개발자가 MVP를 체계적으로 만들고 싶다</strong></td>
+          <td><strong>GSD</strong></td>
+      </tr>
+      <tr>
+          <td><strong>기존 대규모 코드베이스를 병렬로 리팩터링하고 싶다</strong></td>
+          <td><strong>oh-my-claudecode</strong></td>
+      </tr>
+      <tr>
+          <td><strong>TDD와 코드 품질을 최우선으로 두고 싶다</strong></td>
+          <td><strong>Superpowers</strong></td>
+      </tr>
+      <tr>
+          <td><strong>Claude, Codex, Gemini를 같이 굴리고 싶다</strong></td>
+          <td><strong>oh-my-claudecode</strong></td>
+      </tr>
+      <tr>
+          <td><strong>실행 전에 충분히 생각하고 검증하고 싶다</strong></td>
+          <td><strong>Superpowers</strong></td>
+      </tr>
+      <tr>
+          <td><strong>장기 로드맵과 마일스톤을 붙잡고 싶다</strong></td>
+          <td><strong>GSD</strong></td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="pm-skills를-붙이면-평가가-어떻게-달라지나">PM-Skills를 붙이면 평가가 어떻게 달라지나</h2>
+<p>여기서 중요한 포인트가 하나 더 있습니다.<br>세 프레임워크 모두 제품 기획을 아주 깊게 책임지지는 않습니다.<br>그래서 <strong>PM-Skills</strong> 같은 PM 전용 스킬 세트를 붙이면, &ldquo;무엇을 만들지&quot;와 &ldquo;어떻게 만들지&rdquo; 사이 연결이 좋아집니다.</p>
+<h3 id="gsd--pm-skills-가장-자연스러운-연결">GSD + PM-Skills: 가장 자연스러운 연결</h3>
+<p>이 조합이 가장 강한 이유는 역할 분담이 선명하기 때문입니다.<br>PM-Skills가 discovery, strategy, PRD를 담당하고, GSD가 그것을 requirements, roadmap, plan, execute로 받아 구현 파이프라인에 태웁니다.<br>즉 앞단의 제품 사고와 뒷단의 프로젝트 운영이 거의 끊김 없이 이어집니다.</p>
+<pre class="mermaid">flowchart TD
+    A["PM-Skills<br>discover / strategy / write-prd"] --> B["명확한 제품 입력"]
+    B --> C["GSD new-project"]
+    C --> D["Requirements / Roadmap"]
+    D --> E["Plan Phase"]
+    E --> F["Execute + Verify"]
+
+    classDef pm fill:#c5dcef,stroke:#6b9ac4,color:#333
+    classDef bridge fill:#fde8c0,stroke:#d9a441,color:#333
+    classDef gsd fill:#c0ecd3,stroke:#67a97c,color:#333
+    class A pm
+    class B bridge
+    class C,D,E,F gsd</pre><p>이 조합은 특히 <strong>PM 출신 창업자</strong>, <strong>제품 주도형 MVP</strong>, <strong>장기적 범위 통제가 중요한 팀</strong>에 잘 맞습니다.<br>단점은 문서 체계가 두 겹이 되기 쉽다는 점이므로, 실제 운용에서는 PM-Skills 산출물을 GSD 입력으로 흘려보내는 단방향 흐름이 가장 깔끔합니다.</p>
+<h3 id="oh-my-claudecode--pm-skills-방향성은-좋아지지만-역할-중복이-있다">oh-my-claudecode + PM-Skills: 방향성은 좋아지지만 역할 중복이 있다</h3>
+<p>OMC는 자체적으로 deep-interview, planning, orchestration 계층이 강합니다.<br>그래서 PM-Skills를 붙이면 분명 방향성은 좋아지지만, GSD보다 <strong>기획 레이어 중복</strong>이 더 생깁니다.<br>강점은 PM-Skills가 제품 관점을 잡아 주고, OMC가 그 이후 실행을 대규모로 분산한다는 점입니다.</p>
+<pre class="mermaid">flowchart TD
+    A["PM-Skills<br>discover / strategy"] --> B["제품 방향 정리"]
+    B --> C["OMC deep-interview / plan"]
+    C --> D["team / autopilot / ralph"]
+    D --> E["병렬 구현과 verify-fix 루프"]
+
+    classDef pm fill:#c5dcef,stroke:#6b9ac4,color:#333
+    classDef bridge fill:#fde8c0,stroke:#d9a441,color:#333
+    classDef omc fill:#ffc8c4,stroke:#d47a75,color:#333
+    class A pm
+    class B bridge
+    class C,D,E omc</pre><p>이 조합은 <strong>기술 리더가 팀 단위 AI 오케스트레이션을 돌릴 때</strong> 강합니다.<br>다만 토큰 비용과 복잡성이 같이 커지므로, &ldquo;기획은 PM-Skills, 실행은 OMC&quot;처럼 주도권을 분명히 나누는 편이 좋습니다.</p>
+<h3 id="superpowers--pm-skills-가장-깔끔한-기획-품질-연결">Superpowers + PM-Skills: 가장 깔끔한 기획-품질 연결</h3>
+<p>Superpowers는 기획 프레임워크 그 자체보다는, 기획을 받아 <strong>안전한 구현 프로세스</strong>로 바꾸는 데 강합니다.<br>그래서 PM-Skills와 붙이면 역할이 비교적 덜 충돌합니다.<br>PM-Skills가 제품 정의를, Superpowers가 브레인스토밍-플랜-TDD-리뷰를 맡는 식입니다.</p>
+<pre class="mermaid">flowchart TD
+    A["PM-Skills<br>discover / write-prd"] --> B["제품 정의와 우선순위"]
+    B --> C["Superpowers brainstorming"]
+    C --> D["writing-plans"]
+    D --> E["subagent-driven development"]
+    E --> F["TDD / review / verification"]
+
+    classDef pm fill:#c5dcef,stroke:#6b9ac4,color:#333
+    classDef bridge fill:#fde8c0,stroke:#d9a441,color:#333
+    classDef sp fill:#e0c8ef,stroke:#9b7cc2,color:#333
+    class A pm
+    class B bridge
+    class C,D,E,F sp</pre><p>이 조합은 <strong>제품 감각은 챙기되 코드 품질을 특히 놓치고 싶지 않은 팀</strong>에 적합합니다.<br>반대로 장기적인 로드맵 추적까지 기대하면 아쉬울 수 있습니다.</p>
+<h2 id="최종-궁합-매트릭스">최종 궁합 매트릭스</h2>
+<table>
+  <thead>
+      <tr>
+          <th>조합</th>
+          <th>기획력</th>
+          <th>실행력</th>
+          <th>코드 품질</th>
+          <th>비용 효율</th>
+          <th>프로젝트 관리</th>
+          <th>종합</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>GSD + PM-Skills</strong></td>
+          <td>⭐⭐⭐⭐⭐</td>
+          <td>⭐⭐⭐⭐⭐</td>
+          <td>⭐⭐⭐⭐</td>
+          <td>⭐⭐⭐⭐</td>
+          <td>⭐⭐⭐⭐⭐</td>
+          <td><strong>가장 균형 좋음</strong></td>
+      </tr>
+      <tr>
+          <td><strong>oh-my-claudecode + PM-Skills</strong></td>
+          <td>⭐⭐⭐⭐</td>
+          <td>⭐⭐⭐⭐⭐</td>
+          <td>⭐⭐⭐⭐</td>
+          <td>⭐⭐⭐</td>
+          <td>⭐⭐⭐⭐</td>
+          <td><strong>대규모 실행에 강함</strong></td>
+      </tr>
+      <tr>
+          <td><strong>Superpowers + PM-Skills</strong></td>
+          <td>⭐⭐⭐⭐</td>
+          <td>⭐⭐⭐⭐</td>
+          <td>⭐⭐⭐⭐⭐</td>
+          <td>⭐⭐⭐⭐⭐</td>
+          <td>⭐⭐⭐</td>
+          <td><strong>품질 중심 팀에 적합</strong></td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li><strong>GSD</strong> 는 프로젝트를 spec-driven으로 고정하고 장기 실행을 관리하는 데 가장 강합니다.</li>
+<li><strong>oh-my-claudecode</strong> 는 여러 에이전트와 여러 모델을 팀처럼 굴리는 오케스트레이션 능력이 핵심입니다.</li>
+<li><strong>Superpowers</strong> 는 구현 전에 생각하고, 계획하고, 테스트하고, 검증하게 만드는 개발 규율이 본체입니다.</li>
+<li><strong>PM-Skills</strong> 를 붙이면 세 프레임워크 모두 앞단 제품 정의가 좋아지지만, 가장 자연스러운 연결은 <strong>GSD</strong>, 가장 대규모 실행 친화적인 연결은 <strong>oh-my-claudecode</strong>, 가장 품질 중심 연결은 <strong>Superpowers</strong> 입니다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>세 프레임워크를 같은 선에서 놓고 &ldquo;누가 최고인가&quot;를 묻기 시작하면 답이 자꾸 흐려집니다.<br>더 정확한 질문은 <strong>&ldquo;내가 지금 잃고 있는 것은 범위 통제인가, 병렬 실행인가, 품질 규율인가&rdquo;</strong> 입니다.</p>
+<p>그 질문에 답하면 선택은 의외로 단순해집니다.<br><strong>장기 프로젝트 운영은 GSD</strong>, <strong>대규모 멀티 에이전트 실행은 oh-my-claudecode</strong>, <strong>TDD와 검증 중심 개발은 Superpowers</strong> 가 더 잘 맞습니다.<br>그리고 제품 기획의 앞단을 보강하고 싶다면, 세 경우 모두 <strong>PM-Skills를 앞에 붙이는 방식</strong>이 꽤 강력합니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 03월 15일 11시 48분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/development">Development</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/productivity">Productivity</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/03/2026-03-15-claude-ralph-loop-plugin/" rel="prev">
+        <span>Claude가 알아서 완벽하게 일 처리하게 만드는 법 - Ralph Loop</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/03/2026-03-15-claude-code-frameworks-10-guide/" rel="next">
+        <span>Claude Code 개발 프레임워크 10선: GSD, oh-my-claudecode, Superpowers와 비슷한 시스템 총정리</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#한눈에-먼저-보면">한눈에 먼저 보면</a></li>
+    <li><a href="#gsd-프로젝트를-스펙과-마일스톤으로-고정하는-시스템">GSD: 프로젝트를 스펙과 마일스톤으로 고정하는 시스템</a>
+      <ul>
+        <li><a href="#gsd의-강점">GSD의 강점</a></li>
+        <li><a href="#gsd의-한계">GSD의 한계</a></li>
+      </ul>
+    </li>
+    <li><a href="#oh-my-claudecode-여러-에이전트를-팀처럼-굴리는-오케스트레이션-레이어">oh-my-claudecode: 여러 에이전트를 팀처럼 굴리는 오케스트레이션 레이어</a>
+      <ul>
+        <li><a href="#omc의-강점">OMC의 강점</a></li>
+        <li><a href="#omc의-한계">OMC의 한계</a></li>
+      </ul>
+    </li>
+    <li><a href="#superpowers-생각-계획-구현-리뷰를-강제하는-skill-기반-워크플로우">Superpowers: 생각-계획-구현-리뷰를 강제하는 skill 기반 워크플로우</a>
+      <ul>
+        <li><a href="#superpowers의-강점">Superpowers의 강점</a></li>
+        <li><a href="#superpowers의-한계">Superpowers의 한계</a></li>
+      </ul>
+    </li>
+    <li><a href="#강점과-약점을-한-표로-정리하면">강점과 약점을 한 표로 정리하면</a>
+      <ul>
+        <li><a href="#강점">강점</a></li>
+        <li><a href="#약점">약점</a></li>
+      </ul>
+    </li>
+    <li><a href="#어떤-시나리오에서-무엇을-고를까">어떤 시나리오에서 무엇을 고를까</a></li>
+    <li><a href="#pm-skills를-붙이면-평가가-어떻게-달라지나">PM-Skills를 붙이면 평가가 어떻게 달라지나</a>
+      <ul>
+        <li><a href="#gsd--pm-skills-가장-자연스러운-연결">GSD + PM-Skills: 가장 자연스러운 연결</a></li>
+        <li><a href="#oh-my-claudecode--pm-skills-방향성은-좋아지지만-역할-중복이-있다">oh-my-claudecode + PM-Skills: 방향성은 좋아지지만 역할 중복이 있다</a></li>
+        <li><a href="#superpowers--pm-skills-가장-깔끔한-기획-품질-연결">Superpowers + PM-Skills: 가장 깔끔한 기획-품질 연결</a></li>
+      </ul>
+    </li>
+    <li><a href="#최종-궁합-매트릭스">최종 궁합 매트릭스</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/gsd/" class="badge badge-secondary">GSD</a>
+    <a href="/tags/oh-my-claudecode/" class="badge badge-secondary">Oh-My-Claudecode</a>
+    <a href="/tags/superpowers/" class="badge badge-secondary">Superpowers</a>
+    <a href="/tags/pm-skills/" class="badge badge-secondary">Pm-Skills</a>
+    <a href="/tags/agent-workflow/" class="badge badge-secondary">Agent Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

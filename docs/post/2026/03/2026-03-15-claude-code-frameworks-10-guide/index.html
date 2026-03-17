@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude Code 개발 프레임워크 10선: GSD, oh-my-claudecode, Superpowers와 비슷한 시스템 총정리'" />
+  <title>Claude Code 개발 프레임워크 10선: GSD, oh-my-claudecode, Superpowers와 비슷한 시스템 총정리  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude Code 개발 프레임워크 10선: GSD, oh-my-claudecode, Superpowers와 비슷한 시스템 총정리" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-03-15"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/03/2026-03-15-claude-code-frameworks-10-guide/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="Claude Code" />
+  
+  <meta property="og:tags" content="AI Agents" />
+  
+  <meta property="og:tags" content="Workflow" />
+  
+  <meta property="og:tags" content="Multi-Agent" />
+  
+  <meta property="og:tags" content="GSD" />
+  
+  <meta property="og:tags" content="oh-my-claudecode" />
+  
+  <meta property="og:tags" content="Superpowers" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/03/2026-03-15-claude-code-frameworks-10-guide/">
+          <h1>
+            Claude Code 개발 프레임워크 10선: GSD, oh-my-claudecode, Superpowers와 비슷한 시스템 총정리
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/03/2026-03-15-claude-code-frameworks-10-guide/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Claude Code 생태계를 조금만 깊게 파고들면 금방 비슷한 질문에 부딪힌다.<br><code>GSD</code>, <code>oh-my-claudecode</code>, <code>Superpowers</code> 말고도 쓸 만한 프레임워크가 이렇게 많은데, <strong>도대체 무엇이 무엇을 대신하는지</strong> 가 잘 보이지 않는다.</p>
+<p>핵심은 &ldquo;최고의 프레임워크 하나&quot;를 찾는 것이 아니다.<br>각 시스템은 <strong>프로젝트를 어떻게 분해하는지</strong>, <strong>실행을 어떻게 오케스트레이션하는지</strong>, <strong>부족한 기능을 어떤 스킬과 도구로 메우는지</strong> 에서 차이가 난다.</p>
+<p>이 글은 그 관점에서 비슷한 계열의 10가지를 한 번에 정리한다.<br>비교 기준은 <code>GSD</code>, <code>oh-my-claudecode</code>, <code>Superpowers</code> 이고, 이번 글에서 다루는 10개는 그 주변에서 자주 같이 거론되는 선택지들이다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://github.com/bmad-code-org/BMAD-METHOD">bmad-code-org/BMAD-METHOD</a></li>
+<li><a href="https://github.com/piercelamb/deep-project">piercelamb/deep-project</a></li>
+<li><a href="https://github.com/piercelamb/deep-plan">piercelamb/deep-plan</a></li>
+<li><a href="https://github.com/piercelamb/deep-implement">piercelamb/deep-implement</a></li>
+<li><a href="https://github.com/eyaltoledano/claude-task-master">eyaltoledano/claude-task-master</a></li>
+<li><a href="https://github.com/affaan-m/everything-claude-code">affaan-m/everything-claude-code</a></li>
+<li><a href="https://github.com/catlog22/Claude-Code-Workflow">catlog22/Claude-Code-Workflow</a></li>
+<li><a href="https://github.com/ruvnet/ruflo">ruvnet/ruflo</a></li>
+<li><a href="https://github.com/obie/skills">obie/skills</a></li>
+</ul>
+<h2 id="먼저-지형부터-보면">먼저 지형부터 보면</h2>
+<p>가장 먼저 해야 할 일은 이들을 한 줄로 세워 비교하지 않는 것이다.<br>실제로는 같은 층에 서 있는 도구들이 아니라, 서로 다른 계층에서 병목을 푸는 시스템에 가깝다.</p>
+<pre class="mermaid">flowchart TD
+    A["프로젝트 분해와 기획 계층"] --> A1["BMAD"]
+    A --> A2["Deep Trilogy"]
+    A --> A3["Taskmaster"]
+
+    B["오케스트레이션과 실행 계층"] --> B1["ECC"]
+    B --> B2["CCW"]
+    B --> B3["Claude Flow / Ruflo"]
+    B --> B4["Ralph Loop"]
+
+    C["특화 스킬과 보강 계층"] --> C1["Obie Skills"]
+    C --> C2["Forgetful"]
+    C --> C3["Anthropic 공식 플러그인"]
+
+    D["비교 기준"] --> D1["GSD"]
+    D --> D2["oh-my-claudecode"]
+    D --> D3["Superpowers"]
+
+    classDef planning fill:#c5dcef,stroke:#6b9ac4,color:#333
+    classDef orchestration fill:#c0ecd3,stroke:#67a97c,color:#333
+    classDef addons fill:#fde8c0,stroke:#d9a441,color:#333
+    classDef baseline fill:#e0c8ef,stroke:#9b7cc2,color:#333
+
+    class A,A1,A2,A3 planning
+    class B,B1,B2,B3,B4 orchestration
+    class C,C1,C2,C3 addons
+    class D,D1,D2,D3 baseline</pre><p>이렇게 보면 구조가 단순해진다.</p>
+<ul>
+<li><code>BMAD</code>, <code>Deep Trilogy</code>, <code>Taskmaster</code> 는 <strong>무엇을 만들고 어떤 순서로 갈지</strong> 를 더 잘 다룬다.</li>
+<li><code>ECC</code>, <code>CCW</code>, <code>Claude Flow</code>, <code>Ralph Loop</code> 는 <strong>어떻게 실행하고 어떻게 반복할지</strong> 에 더 강하다.</li>
+<li><code>Obie Skills</code>, <code>Forgetful</code>, 공식 플러그인 생태계는 <strong>부족한 도메인 전문성이나 메모리, 브라우저, 리뷰 능력</strong> 을 보강한다.</li>
+</ul>
+<h2 id="빠르게-훑는-10개-비교표">빠르게 훑는 10개 비교표</h2>
+<table>
+  <thead>
+      <tr>
+          <th>시스템</th>
+          <th>분류</th>
+          <th>가장 강한 지점</th>
+          <th>이런 사람에게 맞음</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>BMAD Method</strong></td>
+          <td>프로젝트 분해</td>
+          <td>역할 기반 가상 애자일 팀</td>
+          <td>큰 프로젝트를 역할 중심으로 운영하고 싶은 팀</td>
+      </tr>
+      <tr>
+          <td><strong>Deep Trilogy</strong></td>
+          <td>계획 파이프라인</td>
+          <td>아이디어 → 계획 → 구현 3단 분리</td>
+          <td>계획 품질과 외부 LLM 교차 검증이 중요한 팀</td>
+      </tr>
+      <tr>
+          <td><strong>Claude Task Master</strong></td>
+          <td>태스크 관리</td>
+          <td>의존성 그래프와 순차 실행</td>
+          <td>컨텍스트를 태스크 단위로 강하게 관리하고 싶은 팀</td>
+      </tr>
+      <tr>
+          <td><strong>Everything Claude Code</strong></td>
+          <td>실행 최적화</td>
+          <td>모델 라우팅, 규칙, 품질 강제</td>
+          <td>Claude Code 하니스를 통째로 최적화하고 싶은 사용자</td>
+      </tr>
+      <tr>
+          <td><strong>Claude-Code-Workflow</strong></td>
+          <td>멀티 CLI 오케스트레이션</td>
+          <td>여러 CLI와 대시보드 기반 운영</td>
+          <td>Gemini, Qwen, Codex까지 함께 쓰고 싶은 사용자</td>
+      </tr>
+      <tr>
+          <td><strong>Claude Flow / Ruflo</strong></td>
+          <td>스웜 실행</td>
+          <td>대규모 병렬 에이전트 실행</td>
+          <td>공유 메모리 기반 스웜을 원하는 엔터프라이즈 성향 팀</td>
+      </tr>
+      <tr>
+          <td><strong>Ralph Loop</strong></td>
+          <td>자율 루프</td>
+          <td>반복 실행과 컨텍스트 리셋</td>
+          <td>잘 정의된 PRD를 오래 돌려 결과를 뽑고 싶은 사용자</td>
+      </tr>
+      <tr>
+          <td><strong>Obie Skills</strong></td>
+          <td>도메인 스킬</td>
+          <td>Rails/Ruby 등 특화 스킬 마켓</td>
+          <td>특정 생태계에 깊은 스킬이 필요한 팀</td>
+      </tr>
+      <tr>
+          <td><strong>Forgetful</strong></td>
+          <td>영속 메모리</td>
+          <td>세션 간 지식 유지</td>
+          <td>메모리 공유가 병목인 멀티 에이전트 환경</td>
+      </tr>
+      <tr>
+          <td><strong>Anthropic 공식 플러그인</strong></td>
+          <td>기능 블록</td>
+          <td>브라우저, 문서, 리뷰, 보안 등 단일 기능 강화</td>
+          <td>범용 프레임워크 위에 부족한 능력을 덧대고 싶은 사용자</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="1-프로젝트-분해와-계획에-강한-계열">1. 프로젝트 분해와 계획에 강한 계열</h2>
+<p>이 계열은 공통적으로 &ldquo;바로 코딩하지 말고 먼저 구조를 세우자&quot;는 철학을 가진다.<br>다만 깊이와 방식은 꽤 다르다.</p>
+<pre class="mermaid">flowchart TD
+    A["모호한 아이디어"] --> B{"어디에 가장 투자할까?"}
+    B -->|"역할과 프로세스"| C["BMAD"]
+    B -->|"계획의 깊이와 리뷰"| D["Deep Trilogy"]
+    B -->|"태스크 의존성 관리"| E["Taskmaster"]
+
+    classDef input fill:#c5dcef,stroke:#6b9ac4,color:#333
+    classDef decision fill:#fde8c0,stroke:#d9a441,color:#333
+    classDef option1 fill:#c0ecd3,stroke:#67a97c,color:#333
+    classDef option2 fill:#ffc8c4,stroke:#d47a75,color:#333
+    classDef option3 fill:#e0c8ef,stroke:#9b7cc2,color:#333
+
+    class A input
+    class B decision
+    class C option1
+    class D option2
+    class E option3</pre><h3 id="bmad-method">BMAD Method</h3>
+<p>BMAD는 12개 이상 전문 에이전트로 구성된 <strong>가상 애자일 팀</strong>에 가깝다.<br>Analyst, PM, Architect, Scrum Master, Developer, QA처럼 역할이 분명하게 나뉘고, 프로젝트 라이프사이클 전체를 그 역할 분담 위에 얹는다.</p>
+<p>초안에서 특히 눈에 띄는 포인트는 세 가지다.</p>
+<ul>
+<li><strong>Scale-Domain-Adaptive</strong>: 작은 버그부터 엔터프라이즈 시스템까지 복잡도에 따라 접근을 조절한다.</li>
+<li><strong>Party Mode</strong>: 여러 에이전트 페르소나를 한 세션에서 토론시키는 식의 활용이 가능하다.</li>
+<li><strong>역할 중심 운영</strong>: GSD처럼 단계 중심으로 보기보다, 사람 조직을 시뮬레이션한 구조에 가깝다.</li>
+</ul>
+<p>그래서 BMAD는 <code>GSD</code> 보다 더 <strong>애자일 프로세스 자체</strong> 를 전면에 내세운다.<br>반대로 소규모 프로젝트에서는 오버헤드가 쉽게 커질 수 있다.</p>
+<h3 id="the-deep-trilogy">The Deep Trilogy</h3>
+<p>Deep Trilogy는 <code>deep-project</code>, <code>deep-plan</code>, <code>deep-implement</code> 로 이어지는 <strong>3단 파이프라인</strong>이다.<br>아이디어를 인터뷰와 분해로 정리하고, 그다음 계획을 깊게 만들고, 마지막에 구현으로 넘기는 구조가 선명하다.</p>
+<p>이 계열의 가장 큰 차별점은 <strong>Multi-LLM Review</strong> 다.<br>계획 단계에서 Gemini나 ChatGPT 같은 외부 LLM에 독립 리뷰를 요청해 블라인드 스팟을 줄이는 접근이 핵심이다.</p>
+<p>즉 이 시스템은 <code>Superpowers</code> 보다 더 <strong>계획 단계의 깊이</strong> 에 투자하고, <code>GSD</code> 보다 더 <strong>외부 모델 교차 검증</strong> 을 전면에 둔다.<br>품질을 높이기 좋은 대신, 속도와 단순함은 희생된다.</p>
+<h3 id="claude-task-master">Claude Task Master</h3>
+<p>Taskmaster는 이름 그대로 <strong>AI 에이전트의 PM</strong> 같은 위치다.<br>PRD를 받아 태스크를 분해하고, 의존성 그래프를 만들고, 복잡도를 평가한 뒤 하나씩 넘겨 준다.</p>
+<p>핵심 강점은 &ldquo;무엇을 먼저 해야 하는가&quot;를 자동으로 잡아 준다는 점이다.</p>
+<ul>
+<li>의존성 체인을 정리해 실행 순서를 잡는다.</li>
+<li>태스크를 하나씩 다루게 해서 컨텍스트를 깔끔하게 유지한다.</li>
+<li>Hooks로 다음 단계 진행을 자동화할 수 있다.</li>
+</ul>
+<p>따라서 Taskmaster는 <code>oh-my-claudecode</code> 같은 실행 엔진의 대체재라기보다, 그 위나 앞단에서 붙는 <strong>태스크 운영 계층</strong> 으로 보는 편이 맞다.</p>
+<h2 id="2-실행과-오케스트레이션에-강한-계열">2. 실행과 오케스트레이션에 강한 계열</h2>
+<p>이 그룹은 계획보다 <strong>운영체계</strong> 에 더 가깝다.<br>에이전트를 어떻게 나누고, 어떤 모델을 붙이고, 실패 시 어디로 되돌리고, 관찰가능성을 어떻게 확보할지가 핵심 질문이다.</p>
+<h3 id="everything-claude-code-ecc">Everything Claude Code (ECC)</h3>
+<p>ECC는 단순한 스킬 모음이 아니라 <strong>Claude Code 하니스 전체를 최적화하는 시스템</strong> 으로 읽는 편이 맞다.<br>초안 기준으로 16개 에이전트, 65개 스킬, 40개 커맨드를 갖고 있고, Smart Model Routing, Continuous Learning, AgentShield, Plankton 통합 같은 요소가 묶여 있다.</p>
+<p>요약하면 ECC는 이런 팀에 맞다.</p>
+<ul>
+<li>복잡도에 따라 모델을 자동 라우팅하고 싶다.</li>
+<li>보안 스캔과 품질 강제를 작업 흐름 안에 넣고 싶다.</li>
+<li>장기 세션에서 메모리와 패턴 재사용을 자동화하고 싶다.</li>
+</ul>
+<p><code>GSD</code> 가 프로젝트 흐름을 정리한다면, ECC는 그 흐름이 올라가는 <strong>실행 하니스의 성능과 규칙</strong> 을 정리한다.</p>
+<h3 id="claude-code-workflow-ccw">Claude-Code-Workflow (CCW)</h3>
+<p>CCW는 JSON 기반 멀티 에이전트 케이던스와 멀티 CLI 오케스트레이션을 함께 가져간다.<br>자연어로 &ldquo;Gemini로 분석해줘&quot;처럼 말하면 적절한 CLI를 호출하는 <strong>Semantic CLI Invocation</strong> 과, 이벤트 기반 <strong>Beat Model</strong> 이 핵심이다.</p>
+<p>즉 CCW는 <code>oh-my-claudecode</code> 와 가까운 영역에 서 있지만, 더 시각적이고 도구 통합적인 느낌이 강하다.</p>
+<ul>
+<li>Gemini, Qwen, Codex 같은 복수 CLI를 깊게 통합한다.</li>
+<li>Terminal Dashboard로 실행 상태를 시각적으로 모니터링한다.</li>
+<li>CodexLens 같은 로컬 시맨틱 검색 기능을 제공한다.</li>
+</ul>
+<p>단점은 자연스럽다.<br>설치와 초기 셋업이 가볍지 않고, 시스템을 온전히 이해하려면 학습 비용이 든다.</p>
+<h3 id="claude-flow--ruflo">Claude Flow / Ruflo</h3>
+<p>Ruflo는 <strong>멀티 에이전트 스웜 플랫폼</strong> 으로 이해하면 된다.<br>64개 특화 에이전트, CRDT 기반 공유 메모리, Stream-JSON chaining, 30개 에이전트 병렬 실행 같은 요소는 분명히 엔터프라이즈 지향적이다.</p>
+<p>이 시스템이 강한 곳은 명확하다.</p>
+<ul>
+<li>병렬성이 매우 큰 작업</li>
+<li>에이전트 간 지식 공유가 중요한 워크플로우</li>
+<li>감사 추적과 관찰가능성이 중요한 환경</li>
+</ul>
+<p>반대로 소규모 프로젝트에서 쓰면 <code>Superpowers</code> 나 <code>GSD</code> 보다 훨씬 무겁게 느껴질 가능성이 높다.<br>토큰 비용과 설정 비용 모두 큰 편이기 때문이다.</p>
+<h3 id="ralph-loop">Ralph Loop</h3>
+<p>Ralph Loop는 위 시스템들과 조금 결이 다르다.<br>핵심은 <strong>루프 자체</strong> 다. Git을 메모리 레이어처럼 쓰고, 반복마다 클린 컨텍스트를 확보하면서 작업을 계속 진행한다.</p>
+<p>초안에서는 두 가지 변형이 대비된다.</p>
+<ul>
+<li>Bash 원본: 반복마다 새 Claude 프로세스를 스폰해 완전히 새 컨텍스트로 간다.</li>
+<li>공식 플러그인: Stop Hook 기반으로 같은 세션 안에서 재진입한다.</li>
+</ul>
+<p>그래서 Ralph는 <code>GSD</code> 같은 상위 파이프라인 안에 들어갈 수도 있고, <code>oh-my-claudecode</code> 같은 오케스트레이터의 한 모드처럼 붙을 수도 있다.<br>강점은 Context Rot 완화, 약점은 <strong>잘 쓰인 PRD에 대한 높은 의존성</strong> 이다.</p>
+<h2 id="3-특화-능력을-덧붙이는-계열">3. 특화 능력을 덧붙이는 계열</h2>
+<p>이 그룹은 혼자서 전체 프레임워크를 대체하기보다, 기존 시스템의 빈 칸을 메운다.<br>그래서 실제 실무에서는 오히려 체감 가치가 아주 클 때가 많다.</p>
+<h3 id="obie-skills">Obie Skills</h3>
+<p>Obie Skills는 Rails/Ruby 생태계를 중심으로 한 <strong>도메인 특화 스킬 마켓</strong>에 가깝다.<br><code>better-stimulus</code>, <code>mcp-oauth-setup</code> 같은 스킬처럼 범용 프레임워크가 잘 못하는 생태계별 깊이를 채우는 역할이다.</p>
+<p>즉 이 프로젝트의 포인트는 &ldquo;큰 프레임워크&quot;가 아니라, <strong>실전 검증된 특정 분야의 기술 지식 묶음</strong> 이라는 점이다.</p>
+<h3 id="forgetful">Forgetful</h3>
+<p>Forgetful은 AI 에이전트용 <strong>영속 메모리 계층</strong> 으로 이해하면 가장 깔끔하다.<br>세션 간 맥락 유지, 여러 에이전트 간 동일 메모리 접근, 시맨틱 검색 기반 리트리벌이 핵심 가치다.</p>
+<p>그래서 이 도구는 단독 프레임워크라기보다 다음과 같은 조합에서 빛난다.</p>
+<ul>
+<li><code>GSD</code> 와 붙여 상태 파일 이상의 메모리 계층을 만들기</li>
+<li><code>oh-my-claudecode</code> 와 붙여 여러 에이전트의 지식 공유 강화하기</li>
+<li><code>ECC</code> 와 붙여 메모리 관련 자동화를 보완하기</li>
+</ul>
+<h3 id="anthropic-공식-플러그인-생태계">Anthropic 공식 플러그인 생태계</h3>
+<p>공식 플러그인 생태계는 프레임워크라기보다 <strong>기능 특화 블록 세트</strong> 다.<br>초안에서 언급된 <code>Frontend Design</code>, <code>Context7</code>, <code>Code Review</code>, <code>Playwright</code>, <code>Security Guidance</code>, <code>Chrome DevTools</code>, <code>Figma MCP</code>, <code>Linear</code> 같은 도구들은 각각 특정 능력을 크게 끌어올린다.</p>
+<p>이 계열이 중요한 이유는 분명하다.<br>거대한 상위 프레임워크를 또 하나 도입하지 않아도, 현재 쓰는 시스템 위에 필요한 능력만 선택적으로 덧댈 수 있기 때문이다.</p>
+<pre class="mermaid">flowchart TD
+    A["기본 워크플로우"] --> B{"어떤 기능이 부족한가?"}
+    B -->|"실시간 문서와 예제"| C["Context7"]
+    B -->|"브라우저 자동화와 검증"| D["Playwright"]
+    B -->|"코드 리뷰와 품질 게이트"| E["Code Review"]
+    B -->|"UI 완성도와 디자인 품질"| F["Frontend Design"]
+    B -->|"보안 스캔"| G["Security Guidance"]
+
+    classDef base fill:#c5dcef,stroke:#6b9ac4,color:#333
+    classDef decision fill:#fde8c0,stroke:#d9a441,color:#333
+    classDef addon fill:#c0ecd3,stroke:#67a97c,color:#333
+
+    class A base
+    class B decision
+    class C,D,E,F,G addon</pre><h2 id="무엇을-골라야-하나">무엇을 골라야 하나</h2>
+<p>이쯤 되면 중요한 것은 이름이 아니라 <strong>내가 지금 어떤 실패를 가장 자주 겪는가</strong> 다.<br>범위가 흔들리는지, 실행 오케스트레이션이 약한지, 메모리가 부족한지, 품질 게이트가 비어 있는지에 따라 답이 갈린다.</p>
+<pre class="mermaid">flowchart TD
+    A["내 병목은 어디인가?"] --> B{"핵심 문제"}
+    B -->|"프로젝트를 어떻게 쪼개야 할지 자꾸 흔들림"| C["BMAD / Deep Trilogy / Taskmaster"]
+    B -->|"에이전트 실행, 병렬화, 관찰가능성이 부족함"| D["ECC / CCW / Claude Flow / Ralph Loop"]
+    B -->|"기억 유지나 특정 도메인 기능이 부족함"| E["Forgetful / Obie Skills / 공식 플러그인"]
+
+    classDef input fill:#c5dcef,stroke:#6b9ac4,color:#333
+    classDef decision fill:#fde8c0,stroke:#d9a441,color:#333
+    classDef path1 fill:#c0ecd3,stroke:#67a97c,color:#333
+    classDef path2 fill:#ffc8c4,stroke:#d47a75,color:#333
+    classDef path3 fill:#e0c8ef,stroke:#9b7cc2,color:#333
+
+    class A input
+    class B decision
+    class C path1
+    class D path2
+    class E path3</pre><p>실전에서는 아래처럼 고르면 큰 방향은 잘 맞는다.</p>
+<table>
+  <thead>
+      <tr>
+          <th>상황</th>
+          <th>추천 출발점</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>역할을 분리한 애자일 팀처럼 운영하고 싶다</strong></td>
+          <td><strong>BMAD Method</strong></td>
+      </tr>
+      <tr>
+          <td><strong>계획 품질과 외부 LLM 교차 검증이 중요하다</strong></td>
+          <td><strong>Deep Trilogy</strong></td>
+      </tr>
+      <tr>
+          <td><strong>태스크 의존성과 순서를 강하게 통제하고 싶다</strong></td>
+          <td><strong>Taskmaster</strong></td>
+      </tr>
+      <tr>
+          <td><strong>Claude Code 하니스를 통째로 최적화하고 싶다</strong></td>
+          <td><strong>ECC</strong></td>
+      </tr>
+      <tr>
+          <td><strong>여러 CLI와 모델을 같이 묶고 싶다</strong></td>
+          <td><strong>CCW</strong></td>
+      </tr>
+      <tr>
+          <td><strong>대규모 병렬 스웜이 필요하다</strong></td>
+          <td><strong>Claude Flow / Ruflo</strong></td>
+      </tr>
+      <tr>
+          <td><strong>클린 컨텍스트 루프가 가장 중요하다</strong></td>
+          <td><strong>Ralph Loop</strong></td>
+      </tr>
+      <tr>
+          <td><strong>특정 도메인 스킬이 부족하다</strong></td>
+          <td><strong>Obie Skills</strong></td>
+      </tr>
+      <tr>
+          <td><strong>세션 간 메모리 공유가 필요하다</strong></td>
+          <td><strong>Forgetful</strong></td>
+      </tr>
+      <tr>
+          <td><strong>현재 프레임워크 위에 기능만 추가하고 싶다</strong></td>
+          <td><strong>공식 플러그인 생태계</strong></td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li><code>BMAD</code>, <code>Deep Trilogy</code>, <code>Taskmaster</code> 는 <strong>프로젝트를 분해하고 계획하는 방식</strong> 에 차이를 만든다.</li>
+<li><code>ECC</code>, <code>CCW</code>, <code>Claude Flow</code>, <code>Ralph Loop</code> 는 <strong>실행 하니스와 운영 구조</strong> 에 차이를 만든다.</li>
+<li><code>Obie Skills</code>, <code>Forgetful</code>, 공식 플러그인은 <strong>기존 시스템의 빈 칸을 메우는 보강재</strong> 에 가깝다.</li>
+<li>따라서 <code>GSD</code>, <code>oh-my-claudecode</code>, <code>Superpowers</code> 와 &ldquo;누가 더 좋나&quot;를 묻기보다, <strong>지금 내 워크플로우의 병목이 어디인가</strong> 를 먼저 보는 편이 훨씬 정확하다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>Claude Code 생태계는 더 이상 하나의 프레임워크가 모든 문제를 해결하는 단계가 아니다.<br>오히려 <strong>분해 시스템</strong>, <strong>오케스트레이션 시스템</strong>, <strong>특화 스킬과 도구</strong> 를 어떻게 조합하느냐가 실제 생산성과 품질을 결정한다.</p>
+<p>그래서 가장 실용적인 접근은 하나를 맹목적으로 고르는 것이 아니라, 기준점을 세우는 것이다.<br>장기 프로젝트 운영은 <code>GSD</code>, 멀티 에이전트 오케스트레이션은 <code>oh-my-claudecode</code>, 품질 규율은 <code>Superpowers</code> 를 기준선으로 두고, 그 주변에 이번 글의 10개를 병목별로 붙이면 선택이 훨씬 쉬워진다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 03월 15일 12시 02분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/development">Development</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/productivity">Productivity</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/03/2026-03-15-claude-code-frameworks-gsd-omc-superpowers/" rel="prev">
+        <span>Claude Code 프레임워크 비교: GSD, oh-my-claudecode, Superpowers 중 무엇을 써야 할까</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/03/2026-03-15-claude-code-combo/" rel="next">
+        <span>🚀 GSD &#43; PM-Skills &#43; UI-UX-Pro-Max: 최강의 바이브코딩 3종 세트 완벽 가이드</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#먼저-지형부터-보면">먼저 지형부터 보면</a></li>
+    <li><a href="#빠르게-훑는-10개-비교표">빠르게 훑는 10개 비교표</a></li>
+    <li><a href="#1-프로젝트-분해와-계획에-강한-계열">1. 프로젝트 분해와 계획에 강한 계열</a>
+      <ul>
+        <li><a href="#bmad-method">BMAD Method</a></li>
+        <li><a href="#the-deep-trilogy">The Deep Trilogy</a></li>
+        <li><a href="#claude-task-master">Claude Task Master</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-실행과-오케스트레이션에-강한-계열">2. 실행과 오케스트레이션에 강한 계열</a>
+      <ul>
+        <li><a href="#everything-claude-code-ecc">Everything Claude Code (ECC)</a></li>
+        <li><a href="#claude-code-workflow-ccw">Claude-Code-Workflow (CCW)</a></li>
+        <li><a href="#claude-flow--ruflo">Claude Flow / Ruflo</a></li>
+        <li><a href="#ralph-loop">Ralph Loop</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-특화-능력을-덧붙이는-계열">3. 특화 능력을 덧붙이는 계열</a>
+      <ul>
+        <li><a href="#obie-skills">Obie Skills</a></li>
+        <li><a href="#forgetful">Forgetful</a></li>
+        <li><a href="#anthropic-공식-플러그인-생태계">Anthropic 공식 플러그인 생태계</a></li>
+      </ul>
+    </li>
+    <li><a href="#무엇을-골라야-하나">무엇을 골라야 하나</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/ai-agents/" class="badge badge-secondary">AI Agents</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+    <a href="/tags/multi-agent/" class="badge badge-secondary">Multi-Agent</a>
+    <a href="/tags/gsd/" class="badge badge-secondary">GSD</a>
+    <a href="/tags/oh-my-claudecode/" class="badge badge-secondary">Oh-My-Claudecode</a>
+    <a href="/tags/superpowers/" class="badge badge-secondary">Superpowers</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

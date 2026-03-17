@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude Code Hooks 완전 정복: 이벤트/결정 제어/비동기까지 한 번에 이해하기'" />
+  <title>Claude Code Hooks 완전 정복: 이벤트/결정 제어/비동기까지 한 번에 이해하기  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude Code Hooks 완전 정복: 이벤트/결정 제어/비동기까지 한 번에 이해하기" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-03-05"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/03/2026-03-05-claude-code-hooks/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="Claude Code" />
+  
+  <meta property="og:tags" content="Hooks" />
+  
+  <meta property="og:tags" content="Automation" />
+  
+  <meta property="og:tags" content="Tooling" />
+  
+  <meta property="og:tags" content="Governance" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/03/2026-03-05-claude-code-hooks/">
+          <h1>
+            Claude Code Hooks 완전 정복: 이벤트/결정 제어/비동기까지 한 번에 이해하기
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/03/2026-03-05-claude-code-hooks/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Claude Code의 hooks는 “언젠가 LLM이 알아서 하겠지”가 아니라, 특정 시점에 특정 검사를 반드시 실행하도록 만드는 장치입니다. 이 글은 공식 문서의 참조 스키마를 기준으로, 어떤 이벤트가 있고(언제 발화하고), matcher가 무엇을 필터링하며, 훅이 어떤 방식으로 Claude Code의 동작을 <em>허용/차단/계속 작업 유도</em> 할 수 있는지까지 한 번에 정리합니다.</p>
+<p>핵심은 2가지입니다.</p>
+<ol>
+<li>훅은 <strong>명령(Exit code)</strong> 과 <strong>구조화된 JSON 출력</strong> 두 축으로 동작을 제어합니다.</li>
+<li>“차단 가능 여부”는 이벤트마다 다릅니다. <code>PreToolUse</code>는 실행 전이라 차단이 되지만 <code>PostToolUse</code>는 실행 후라 차단이 아닌 <em>피드백</em> 으로 작동합니다.</li>
+</ol>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://code.claude.com/docs/ko/hooks">https://code.claude.com/docs/ko/hooks</a> (http)</li>
+</ul>
+<p>추가로 교차 검증/예제를 위해 아래 공식 자료도 함께 참고했습니다.</p>
+<ul>
+<li><a href="https://code.claude.com/docs/ko/hooks-guide">https://code.claude.com/docs/ko/hooks-guide</a> (http)</li>
+<li><a href="https://code.claude.com/docs/ko/settings#hook-configuration">https://code.claude.com/docs/ko/settings#hook-configuration</a> (http)</li>
+<li><a href="https://code.claude.com/docs/ko/plugins-reference#hooks">https://code.claude.com/docs/ko/plugins-reference#hooks</a> (http)</li>
+<li><a href="https://code.claude.com/docs/ko/skills">https://code.claude.com/docs/ko/skills</a> (http)</li>
+<li><a href="https://code.claude.com/docs/ko/sub-agents">https://code.claude.com/docs/ko/sub-agents</a> (http)</li>
+<li><a href="https://github.com/anthropics/claude-code/blob/main/examples/hooks/bash_command_validator_example.py">https://github.com/anthropics/claude-code/blob/main/examples/hooks/bash_command_validator_example.py</a> (http)</li>
+</ul>
+<h2 id="hook-라이프사이클-언제-어떤-일이-일어나나">Hook 라이프사이클: 언제 어떤 일이 일어나나</h2>
+<p>hooks는 Claude Code 세션 중 “특정 지점”에 발화하는 이벤트를 훅 핸들러로 연결하는 구조입니다. 이벤트가 발생하면, matcher가 일치하는 훅들이 실행되고, 입력(JSON)이 훅으로 전달됩니다(명령 훅은 stdin, HTTP 훅은 POST body).</p>
+<p>근거:</p>
+
+  <blockquote>
+    <p>&ldquo;Hook은 Claude Code의 라이프사이클의 특정 지점에서 자동으로 실행되는 사용자 정의 셸 명령, HTTP 엔드포인트 또는 LLM 프롬프트입니다.&rdquo; (<a href="https://code.claude.com/docs/ko/hooks">https://code.claude.com/docs/ko/hooks</a>)</p>
+
+  </blockquote>
+
+<pre class="mermaid">flowchart TD
+    classDef start fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
+    classDef loop fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+    classDef tool fill:#fff3e0,stroke:#ef6c00,color:#e65100
+    classDef stop fill:#fce4ec,stroke:#c2185b,color:#880e4f
+    classDef side fill:#ede7f6,stroke:#5e35b1,color:#311b92
+
+    SS[SessionStart]:::start --> UPS[UserPromptSubmit]:::loop
+    UPS --> PTU[PreToolUse]:::tool
+    PTU --> TU[Tool executes]:::tool
+    TU -->|success| PTUOK[PostToolUse]:::tool
+    TU -->|failure| PTUFAIL[PostToolUseFailure]:::tool
+    PTUOK --> STOP[Stop]:::stop
+    PTUFAIL --> STOP
+    STOP -->|continue work| UPS
+    STOP -->|end| SE[SessionEnd]:::stop
+
+    WC[WorktreeCreate]:::side
+    WR[WorktreeRemove]:::side
+    PC[PreCompact]:::side
+    WC -. independent .- SS
+    PC -. before compaction .- SS
+    SE -. cleanup .- WR</pre><p>위 흐름 외에도 <code>Notification</code>, <code>SubagentStart/Stop</code>, <code>ConfigChange</code>, <code>TeammateIdle</code>, <code>TaskCompleted</code> 등 이벤트가 추가로 존재합니다.</p>
+<h2 id="구성-스키마-이벤트---matcher-그룹---훅-핸들러">구성 스키마: 이벤트 -&gt; matcher 그룹 -&gt; 훅 핸들러</h2>
+<p>hooks 설정은 3층 구조로 정의됩니다.</p>
+<p>근거:</p>
+
+  <blockquote>
+    <p>&ldquo;Hook은 JSON 설정 파일에서 정의됩니다. 구성에는 세 가지 중첩 수준이 있습니다:&rdquo; (<a href="https://code.claude.com/docs/ko/hooks">https://code.claude.com/docs/ko/hooks</a>)</p>
+
+  </blockquote>
+
+<pre class="mermaid">flowchart LR
+    classDef lvl fill:#e0f7fa,stroke:#00838f,color:#004d40
+    classDef evt fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
+    classDef match fill:#fff3e0,stroke:#ef6c00,color:#e65100
+    classDef handler fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+
+    A["1) hook 이벤트<br>예: PreToolUse, Stop"]:::evt --> B["2) matcher 그룹<br>정규식으로 필터링"]:::match --> C["3) hook 핸들러(1..n)<br>command/http/prompt/agent"]:::handler
+    C --> C1["command<br>(script 실행)"]:::lvl
+    C --> C2["http<br>(POST 호출)"]:::lvl
+    C --> C3["prompt<br>(LLM 단일 평가)"]:::lvl
+    C --> C4["agent<br>(subagent로 검증)"]:::lvl</pre><h3 id="hook-위치스코프">Hook 위치(스코프)</h3>
+<p>hooks는 여러 위치에 둘 수 있고, 위치가 곧 범위입니다.</p>
+<p>근거(요약): <code>~/.claude/settings.json</code>(전체 프로젝트), <code>.claude/settings.json</code>(프로젝트 공유), <code>.claude/settings.local.json</code>(로컬), managed 정책, plugin의 <code>hooks/hooks.json</code>, skill/agent frontmatter 등 (<a href="https://code.claude.com/docs/ko/hooks">https://code.claude.com/docs/ko/hooks</a>)</p>
+<p>엔터프라이즈에서는 <code>allowManagedHooksOnly</code>로 사용자/프로젝트/플러그인 훅을 차단할 수 있습니다.</p>
+<p>근거:</p>
+
+  <blockquote>
+    <p>&ldquo;<code>allowManagedHooksOnly</code>가 <code>true</code>일 때의 동작: Managed hooks 및 SDK hooks가 로드됨 / 사용자 hooks, 프로젝트 hooks 및 플러그인 hooks가 차단됨&rdquo; (<a href="https://code.claude.com/docs/ko/settings#hook-configuration">https://code.claude.com/docs/ko/settings#hook-configuration</a>)</p>
+
+  </blockquote>
+
+<h3 id="hooks-메뉴-비활성화-그리고-설정-적용-타이밍">/hooks 메뉴, 비활성화, 그리고 &lsquo;설정 적용 타이밍&rsquo;</h3>
+<p>현장에서 자주 겪는 함정은 두 가지입니다.</p>
+<ol>
+<li>훅을 설정 파일로 직접 편집했는데 바로 적용되지 않는 경우</li>
+<li>특정 훅만 끄고 싶은데 불가능한 경우</li>
+</ol>
+<p>근거:</p>
+
+  <blockquote>
+    <p>&ldquo;Claude Code는 시작 시 hook의 스냅샷을 캡처하고 세션 전체에서 사용합니다.&rdquo; (<a href="https://code.claude.com/docs/ko/hooks">https://code.claude.com/docs/ko/hooks</a>)
+&ldquo;구성에 유지하면서 개별 hook을 비활성화할 수 있는 방법은 없습니다.&rdquo; (<a href="https://code.claude.com/docs/ko/hooks">https://code.claude.com/docs/ko/hooks</a>)</p>
+
+  </blockquote>
+
+<p>따라서 “지금 당장 반영”을 원하면 <code>/hooks</code> 메뉴를 통한 추가/삭제가 더 예측 가능합니다. 반대로 설정 파일을 직접 바꿨다면, <code>/hooks</code>에서 검토를 요구하거나 세션 재시작이 필요할 수 있습니다(가이드).</p>
+<p>또한 <code>disableAllHooks</code>는 “전체 토글”입니다. managed 훅이 있는 환경에서는 사용자/프로젝트 레벨의 <code>disableAllHooks</code>가 managed 훅을 끄지 못합니다.</p>
+<p>근거:</p>
+
+  <blockquote>
+    <p>&ldquo;관리자가 &hellip; hook을 구성한 경우 &hellip; <code>disableAllHooks</code>는 &hellip; 해당 관리형 hook을 비활성화할 수 없습니다.&rdquo; (<a href="https://code.claude.com/docs/ko/hooks">https://code.claude.com/docs/ko/hooks</a>)</p>
+
+  </blockquote>
+
+<p>마지막으로, HTTP 훅은 <code>/hooks</code> 메뉴에서 추가할 수 없고 설정 JSON을 직접 편집해야 합니다.</p>
+<p>근거:</p>
+
+  <blockquote>
+    <p>&ldquo;HTTP hook은 설정 JSON을 직접 편집하여 구성해야 합니다. <code>/hooks</code> 대화형 메뉴는 명령 hook 추가만 지원합니다.&rdquo; (<a href="https://code.claude.com/docs/ko/hooks">https://code.claude.com/docs/ko/hooks</a>)</p>
+
+  </blockquote>
+
+<h3 id="matcher는-무엇을-필터링하나">Matcher는 무엇을 필터링하나</h3>
+<p><code>matcher</code>는 정규식 문자열이고, 이벤트 유형마다 “어떤 필드에 매칭하는지”가 달라집니다.</p>
+<p>근거:</p>
+
+  <blockquote>
+    <p>&ldquo;<code>matcher</code> 필드는 hook이 발생할 때를 필터링하는 정규식 문자열입니다.&rdquo; (<a href="https://code.claude.com/docs/ko/hooks">https://code.claude.com/docs/ko/hooks</a>)</p>
+
+  </blockquote>
+
+<p>특히 아래 이벤트들은 matcher를 지원하지 않아서, <code>matcher</code>를 넣어도 무시됩니다.</p>
+<p>근거:</p>
+
+  <blockquote>
+    <p>&ldquo;<code>UserPromptSubmit</code>, <code>Stop</code>, <code>TeammateIdle</code>, <code>TaskCompleted</code>, <code>WorktreeCreate</code>, <code>WorktreeRemove</code>는 matcher를 지원하지 않으며&hellip; <code>matcher</code> 필드를 추가하면 자동으로 무시됩니다.&rdquo; (<a href="https://code.claude.com/docs/ko/hooks">https://code.claude.com/docs/ko/hooks</a>)</p>
+
+  </blockquote>
+
+<p>또한 MCP 도구는 <code>mcp__&lt;server&gt;__&lt;tool&gt;</code> 이름으로 나타나므로 도구 이벤트에서 정규식으로 타게팅할 수 있습니다.</p>
+<p>근거:</p>
+
+  <blockquote>
+    <p>&ldquo;MCP 도구는 <code>mcp__&lt;server&gt;__&lt;tool&gt;</code> 패턴을 따릅니다.&rdquo; (<a href="https://code.claude.com/docs/ko/hooks">https://code.claude.com/docs/ko/hooks</a>)</p>
+
+  </blockquote>
+
+<h2 id="실행-규칙-병렬-실행--동일-핸들러-중복-제거">실행 규칙: 병렬 실행 + 동일 핸들러 중복 제거</h2>
+<p>일치하는 모든 훅은 병렬로 실행되고, 동일 핸들러는 자동 중복 제거됩니다(명령 훅은 <code>command</code> 문자열 기준, HTTP 훅은 <code>url</code> 기준).</p>
+<p>근거:</p>
+
+  <blockquote>
+    <p>&ldquo;일치하는 모든 hook은 병렬로 실행되며 동일한 핸들러는 자동으로 중복 제거됩니다.&rdquo; (<a href="https://code.claude.com/docs/ko/hooks">https://code.claude.com/docs/ko/hooks</a>)</p>
+
+  </blockquote>
+
+<p>이 성질 때문에, “서로 의존하는 훅”을 여러 개 등록하는 경우에는 경쟁 조건이 생길 수 있습니다. 실전에서는 (1) 한 훅에서 필요한 작업을 모두 수행하거나, (2) 훅이 독립적으로 동작하도록 설계하는 편이 안전합니다.</p>
+<h2 id="입출력과-결정-제어-exit-code-vs-json">입출력과 결정 제어: Exit code vs JSON</h2>
+<h3 id="공통-입력">공통 입력</h3>
+<p>훅은 공통적으로 <code>session_id</code>, <code>transcript_path</code>, <code>cwd</code>, <code>permission_mode</code>, <code>hook_event_name</code> 등을 입력으로 받습니다.</p>
+<p>근거:</p>
+
+  <blockquote>
+    <p>&ldquo;모든 hook 이벤트는 &hellip; JSON으로 이러한 필드를 받습니다.&rdquo; (<a href="https://code.claude.com/docs/ko/hooks">https://code.claude.com/docs/ko/hooks</a>)</p>
+
+  </blockquote>
+
+<h3 id="종료-코드-의미명령-훅">종료 코드 의미(명령 훅)</h3>
+<p>명령 훅은 종료 코드로 “진행/차단/비차단 오류”를 신호합니다.</p>
+<p>근거(핵심):</p>
+
+  <blockquote>
+    <p>&ldquo;종료 0은 성공&hellip; 종료 2는 차단 오류&hellip; 다른 종료 코드는 차단하지 않는 오류&rdquo; (<a href="https://code.claude.com/docs/ko/hooks">https://code.claude.com/docs/ko/hooks</a>)</p>
+
+  </blockquote>
+
+<p>실제 참조 구현에서도 동일하게 사용합니다.</p>
+<p>근거:</p>
+
+  <blockquote>
+    <p>&ldquo;Exit code 2 blocks tool call and shows stderr to Claude&rdquo; (<a href="https://github.com/anthropics/claude-code/blob/main/examples/hooks/bash_command_validator_example.py">https://github.com/anthropics/claude-code/blob/main/examples/hooks/bash_command_validator_example.py</a>)</p>
+
+  </blockquote>
+
+<h3 id="json-출력-더-세밀한-제어">JSON 출력: 더 세밀한 제어</h3>
+<p>Exit code로 허용/차단만 표현할 수 있지만, <code>exit 0</code> + stdout JSON 객체를 출력하면 더 세밀한 제어가 가능합니다.</p>
+<p>근거:</p>
+
+  <blockquote>
+    <p>&ldquo;종료 코드를 사용하면 허용하거나 차단할 수 있지만 JSON 출력은 더 세밀한 제어를 제공합니다.&rdquo; (<a href="https://code.claude.com/docs/ko/hooks">https://code.claude.com/docs/ko/hooks</a>)</p>
+
+  </blockquote>
+
+<p>중요한 제약도 있습니다.</p>
+<p>근거:</p>
+
+  <blockquote>
+    <p>&ldquo;hook당 하나의 접근 방식을 선택해야 합니다&hellip; 종료 2를 하면 JSON은 무시됩니다.&rdquo; (<a href="https://code.claude.com/docs/ko/hooks">https://code.claude.com/docs/ko/hooks</a>)</p>
+
+  </blockquote>
+
+<p>그리고 stdout은 JSON만 있어야 합니다. 셸 프로필의 무조건 <code>echo</code> 같은 출력이 끼면 JSON 파싱이 실패할 수 있습니다.</p>
+<p>근거:</p>
+
+  <blockquote>
+    <p>&ldquo;hook의 stdout은 JSON 객체만 포함해야 합니다.&rdquo; (<a href="https://code.claude.com/docs/ko/hooks">https://code.claude.com/docs/ko/hooks</a>)
+&ldquo;프로필에 무조건적인 <code>echo</code> 문이 포함되어 있으면 해당 출력이 hook의 JSON에 앞에 붙습니다&rdquo; (<a href="https://code.claude.com/docs/ko/hooks-guide">https://code.claude.com/docs/ko/hooks-guide</a>)</p>
+
+  </blockquote>
+
+<h3 id="http-hook의-응답-처리차단을-원하면-2xx--json">HTTP hook의 응답 처리(차단을 원하면 2xx + JSON)</h3>
+<p>HTTP 훅은 종료 코드가 아니라 HTTP 상태 코드/응답 본문으로 처리됩니다. 여기서 중요한 건 “실패해도 기본적으로 계속 진행”한다는 점입니다.</p>
+<p>근거:</p>
+
+  <blockquote>
+    <p>&ldquo;2xx가 아닌 응답, 연결 실패, 시간 초과는 모두 실행을 계속하도록 허용하는 차단하지 않는 오류&rdquo; (<a href="https://code.claude.com/docs/ko/hooks">https://code.claude.com/docs/ko/hooks</a>)
+&ldquo;HTTP hook은 상태 코드만으로 차단 오류를 신호할 수 없습니다.&rdquo; (<a href="https://code.claude.com/docs/ko/hooks">https://code.claude.com/docs/ko/hooks</a>)</p>
+
+  </blockquote>
+
+<p>즉, HTTP 훅으로 차단을 하려면 반드시 2xx로 응답하면서, 이벤트에 맞는 결정 필드가 들어간 JSON 본문을 반환해야 합니다.</p>
+<p>추가로 HTTP 훅 헤더의 환경 변수 보간은 <code>allowedEnvVars</code>에 명시된 변수만 치환되며, 목록에 없는 <code>$VAR</code> 참조는 빈 문자열이 됩니다.</p>
+<p>근거:</p>
+
+  <blockquote>
+    <p>&ldquo;값은 &hellip; 환경 변수 보간을 지원합니다. <code>allowedEnvVars</code>에 나열된 변수만 해결됩니다&rdquo; (<a href="https://code.claude.com/docs/ko/hooks">https://code.claude.com/docs/ko/hooks</a>)</p>
+
+  </blockquote>
+
+<pre class="mermaid">flowchart TD
+    classDef ok fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+    classDef warn fill:#fff3e0,stroke:#ef6c00,color:#e65100
+    classDef deny fill:#ffebee,stroke:#c62828,color:#b71c1c
+    classDef meta fill:#ede7f6,stroke:#5e35b1,color:#311b92
+
+    IN[Hook runs]:::meta --> MODE{어떤 방식으로 제어?}:::warn
+
+    MODE -->|"exit 2"| X2["stderr 피드백 + 차단<br>(이벤트별 의미 상이)"]:::deny
+    MODE -->|"exit 0 + JSON"| J[stdout JSON 객체]:::ok
+    MODE -->|"exit 0 + no JSON"| PASS[추가 제어 없이 진행]:::ok
+
+    J --> G["범용 필드<br>continue/stopReason/systemMessage"]:::ok
+    J --> D1["최상위 decision<br>'block' + reason"]:::deny
+    J --> D2["hookSpecificOutput<br>(PreToolUse, PermissionRequest 등)"]:::deny</pre><h2 id="이벤트별로-달라지는-차단-가능성">이벤트별로 달라지는 &lsquo;차단 가능성&rsquo;</h2>
+<p>문서가 제공하는 &ldquo;종료 코드 2의 이벤트별 동작&rdquo; 표를 보면, 같은 <code>exit 2</code>여도 이벤트마다 효과가 다릅니다.</p>
+<p>예를 들어 <code>PreToolUse</code>는 실행 전이라 도구 호출 자체를 차단할 수 있지만, <code>PostToolUse</code>는 도구가 이미 실행된 뒤라 &ldquo;이미 실행됨&rdquo; 상태에서 stderr를 Claude에게 보여주는 정도로 작동합니다.</p>
+<p>근거:</p>
+
+  <blockquote>
+    <p>&ldquo;PostToolUse: (도구가 이미 실행됨)&rdquo; (<a href="https://code.claude.com/docs/ko/hooks">https://code.claude.com/docs/ko/hooks</a>)</p>
+
+  </blockquote>
+
+<p>실무에서의 해석은 다음처럼 가져가면 안전합니다.</p>
+<table>
+  <thead>
+      <tr>
+          <th>목적</th>
+          <th>추천 이벤트</th>
+          <th>이유</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>위험한 도구 사용 막기</td>
+          <td><code>PreToolUse</code></td>
+          <td>실행 전 차단 가능</td>
+      </tr>
+      <tr>
+          <td>권한 프롬프트 자동 처리</td>
+          <td><code>PreToolUse</code> 또는 <code>PermissionRequest</code></td>
+          <td>headless(-p)에서는 <code>PermissionRequest</code>가 발생하지 않을 수 있음(가이드)</td>
+      </tr>
+      <tr>
+          <td>편집 후 포매팅/테스트</td>
+          <td><code>PostToolUse</code></td>
+          <td>실행 후 후처리</td>
+      </tr>
+      <tr>
+          <td>작업 완료 기준 강제</td>
+          <td><code>Stop</code>(prompt/agent)</td>
+          <td>멈추기 전에 상태 점검</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="promptagent-hooks-규칙이-아니라-판단을-자동화">Prompt/Agent hooks: &lsquo;규칙&rsquo;이 아니라 &lsquo;판단&rsquo;을 자동화</h2>
+<p>명령/HTTP 훅 외에 <code>type: &quot;prompt&quot;</code>와 <code>type: &quot;agent&quot;</code>가 있습니다.</p>
+<p>프롬프트 훅은 LLM 단일 평가로 <code>{ &quot;ok&quot;: true|false, &quot;reason&quot;: &quot;...&quot; }</code>를 반환합니다.</p>
+<p>근거:</p>
+
+  <blockquote>
+    <p>&ldquo;LLM은 다음을 포함하는 JSON으로 응답해야 합니다&rdquo; (<a href="https://code.claude.com/docs/ko/hooks">https://code.claude.com/docs/ko/hooks</a>)</p>
+
+  </blockquote>
+
+<p>에이전트 훅은 subagent를 생성해 도구(Read/Grep/Glob 등)를 사용한 뒤 같은 <code>{ok: ...}</code> 스키마로 결정을 반환합니다(최대 50턴).</p>
+<p>근거:</p>
+
+  <blockquote>
+    <p>&ldquo;최대 50 턴 후 subagent는 구조화된 <code>{ \&quot;ok\&quot;: true/false }</code> 결정을 반환합니다&rdquo; (<a href="https://code.claude.com/docs/ko/hooks">https://code.claude.com/docs/ko/hooks</a>)</p>
+
+  </blockquote>
+
+<p>핵심 차이는 &ldquo;입력 데이터만으로 결정 가능한가&rdquo; vs &ldquo;코드/테스트를 직접 확인해야 하는가&rdquo; 입니다.</p>
+<h2 id="비동기async-hooks-백그라운드-실행의-제약">비동기(async) hooks: 백그라운드 실행의 제약</h2>
+<p><code>async: true</code>는 <code>type: &quot;command&quot;</code> 훅에서만 사용할 수 있고, 비동기 훅은 동작을 차단하거나 결정을 반환할 수 없습니다.</p>
+<p>근거:</p>
+
+  <blockquote>
+    <p>&ldquo;비동기 hook은 차단하거나 Claude의 동작을 제어할 수 없습니다&rdquo; (<a href="https://code.claude.com/docs/ko/hooks">https://code.claude.com/docs/ko/hooks</a>)
+&ldquo;<code>async</code>만 <code>type: &quot;command&quot;</code> hook을 지원합니다&rdquo; (<a href="https://code.claude.com/docs/ko/hooks">https://code.claude.com/docs/ko/hooks</a>)</p>
+
+  </blockquote>
+
+<p>실무적으로는 다음 2가지만 기억하면 됩니다.</p>
+<ol>
+<li>비동기는 <strong>후처리(테스트 실행/배포/로그 기록)</strong> 용도</li>
+<li>차단/검증은 <strong>동기 PreToolUse / Stop(prompt|agent)</strong> 로 처리</li>
+</ol>
+<h2 id="보안디버깅-운영에서-꼭-챙길-것">보안/디버깅: 운영에서 꼭 챙길 것</h2>
+<p>명령 훅은 현재 사용자 권한으로 임의 셸 명령을 실행합니다. 보안 수칙은 단순하지만 반드시 지켜야 합니다.</p>
+<p>근거:</p>
+
+  <blockquote>
+    <p>&ldquo;명령 hook은 시스템 사용자의 전체 권한으로 실행됩니다.&rdquo; (<a href="https://code.claude.com/docs/ko/hooks">https://code.claude.com/docs/ko/hooks</a>)</p>
+
+  </blockquote>
+
+<p>문서가 제시하는 모범 사례 중, 실전에서 사고를 줄이는 핵심만 추리면 아래입니다.</p>
+<ul>
+<li>입력을 신뢰하지 말고 검증/살균</li>
+<li>셸 변수는 항상 따옴표로 감싸기</li>
+<li>경로 순회(<code>..</code>) 차단</li>
+<li>절대 경로 + <code>&quot;$CLAUDE_PROJECT_DIR&quot;</code> 활용</li>
+<li><code>.env</code>, <code>.git/</code>, 키 같은 민감 파일을 훅 로직에서 피하기</li>
+</ul>
+<p>디버깅은 <code>claude --debug</code>와 <code>Ctrl+O</code>(자세한 모드)가 기본입니다.</p>
+<p>근거:</p>
+
+  <blockquote>
+    <p>&ldquo;<code>claude --debug</code>를 실행하여 hook 실행 세부 정보를 확인합니다&hellip; <code>Ctrl+O</code>로 자세한 모드를 전환&rdquo; (<a href="https://code.claude.com/docs/ko/hooks">https://code.claude.com/docs/ko/hooks</a>)</p>
+
+  </blockquote>
+
+<h2 id="실전-적용-포인트--핵심-요약">실전 적용 포인트 / 핵심 요약</h2>
+<h3 id="1-훅은-정책-엔진처럼-쓰는-게-가장-강력하다">1) 훅은 &lsquo;정책 엔진&rsquo;처럼 쓰는 게 가장 강력하다</h3>
+<p>가장 많이 쓰는 패턴은 <code>PreToolUse</code>로 위험 작업을 막고, <code>PostToolUse</code>로 후처리를 자동화하는 조합입니다.</p>
+<p>예: <code>rm -rf</code> 같은 파괴적 커맨드 차단(PreToolUse).</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;hooks&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;PreToolUse&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">[</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#0550ae">&#34;matcher&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;Bash&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#0550ae">&#34;hooks&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">[</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#0550ae">&#34;type&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;command&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#0550ae">&#34;command&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;\&#34;$CLAUDE_PROJECT_DIR\&#34;/.claude/hooks/block-rm.sh&#34;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#1f2328">]</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">]</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><p>문서의 예시처럼 <code>permissionDecision: &quot;deny&quot;</code>를 반환하면 도구 호출을 취소하고 사유를 Claude에 피드백할 수 있습니다.</p>
+<p>근거:</p>
+
+  <blockquote>
+    <p>&ldquo;permissionDecision: &quot;deny&quot;&rdquo; (<a href="https://code.claude.com/docs/ko/hooks">https://code.claude.com/docs/ko/hooks</a>)</p>
+
+  </blockquote>
+
+<h3 id="2-stop은-완료-기준-게이트로-쓰자">2) <code>Stop</code>은 &lsquo;완료 기준 게이트&rsquo;로 쓰자</h3>
+<p><code>Stop</code> 훅은 &ldquo;작업이 완료되었는가&quot;를 체크하는 마지막 관문으로 쓰기 좋습니다. 단, <code>Stop</code>은 &ldquo;작업 완료&quot;뿐 아니라 &ldquo;Claude가 응답을 마칠 때&quot;마다 발화한다는 점은 기억해야 합니다(가이드).</p>
+<p>근거:</p>
+
+  <blockquote>
+    <p>&ldquo;Stop hooks는 작업 완료 시에만이 아니라 Claude가 응답을 완료할 때마다 발생&rdquo; (<a href="https://code.claude.com/docs/ko/hooks-guide">https://code.claude.com/docs/ko/hooks-guide</a>)</p>
+
+  </blockquote>
+
+<p>실전에서는 prompt(빠름) / agent(정확) 중 하나를 택합니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;hooks&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;Stop&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">[</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#0550ae">&#34;hooks&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">[</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#0550ae">&#34;type&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;agent&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#0550ae">&#34;prompt&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;Verify that all unit tests pass. Run the test suite and check the results. $ARGUMENTS&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#0550ae">&#34;timeout&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0550ae">120</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#1f2328">]</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">]</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><h3 id="3-엔터프라이즈팀-환경은-허용-목록을-먼저-확인하자">3) 엔터프라이즈/팀 환경은 &lsquo;허용 목록&rsquo;을 먼저 확인하자</h3>
+<p>HTTP 훅을 쓸 계획이면, 조직 정책에서 <code>allowedHttpHookUrls</code> / <code>httpHookAllowedEnvVars</code>가 제한될 수 있습니다.</p>
+<p>근거:</p>
+
+  <blockquote>
+    <p>&ldquo;HTTP hook URL 제한&rdquo; / &ldquo;HTTP hook 환경 변수 제한&rdquo; (<a href="https://code.claude.com/docs/ko/settings#hook-configuration">https://code.claude.com/docs/ko/settings#hook-configuration</a>)</p>
+
+  </blockquote>
+
+<p>또한 managed 정책에서 <code>allowManagedHooksOnly</code>가 켜져 있으면 사용자/프로젝트/플러그인 훅 자체가 로드되지 않습니다.</p>
+<p>근거:</p>
+
+  <blockquote>
+    <p>&ldquo;사용자 hooks, 프로젝트 hooks 및 플러그인 hooks가 차단됨&rdquo; (<a href="https://code.claude.com/docs/ko/settings#hook-configuration">https://code.claude.com/docs/ko/settings#hook-configuration</a>)</p>
+
+  </blockquote>
+
+<h3 id="4-운영-체크리스트짧게">4) 운영 체크리스트(짧게)</h3>
+<ul>
+<li><code>PreToolUse</code>로 차단/권한을 다루고, <code>PostToolUse</code>는 후처리로 쓴다</li>
+<li>stdout은 JSON만(프로필의 echo 제거/가드)</li>
+<li>비동기 훅은 차단 불가(테스트/배포 같은 후처리용)</li>
+<li><code>claude --debug</code>로 매칭/실행/종료 코드 확인</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>Claude Code hooks는 “자동화”라기보다 <strong>거버넌스 레이어</strong> 입니다. 어떤 이벤트에서 무엇을 검증할지(PreToolUse), 무엇을 자동 실행할지(PostToolUse), 언제 멈출지(Stop)를 분리해 설계하면, LLM의 변동성 위에 안정적인 개발 워크플로우를 얹을 수 있습니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 03월 05일 22시 10분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/development">Development</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/03/2026-03-05-ykdojo-claude-code-tips-dx-workflow/" rel="prev">
+        <span>ykdojo/claude-code-tips 실전 운영 가이드: 46개 팁(0-45)을 워크플로우로 엮기</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/03/2026-03-05-claude-code-notebooklm-mcp-research-pipeline/" rel="next">
+        <span>Claude Code에서 /research 한 번으로 끝내기: NotebookLM MCP 리서치 파이프라인 정리</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#hook-라이프사이클-언제-어떤-일이-일어나나">Hook 라이프사이클: 언제 어떤 일이 일어나나</a></li>
+    <li><a href="#구성-스키마-이벤트---matcher-그룹---훅-핸들러">구성 스키마: 이벤트 -&gt; matcher 그룹 -&gt; 훅 핸들러</a>
+      <ul>
+        <li><a href="#hook-위치스코프">Hook 위치(스코프)</a></li>
+        <li><a href="#hooks-메뉴-비활성화-그리고-설정-적용-타이밍">/hooks 메뉴, 비활성화, 그리고 &lsquo;설정 적용 타이밍&rsquo;</a></li>
+        <li><a href="#matcher는-무엇을-필터링하나">Matcher는 무엇을 필터링하나</a></li>
+      </ul>
+    </li>
+    <li><a href="#실행-규칙-병렬-실행--동일-핸들러-중복-제거">실행 규칙: 병렬 실행 + 동일 핸들러 중복 제거</a></li>
+    <li><a href="#입출력과-결정-제어-exit-code-vs-json">입출력과 결정 제어: Exit code vs JSON</a>
+      <ul>
+        <li><a href="#공통-입력">공통 입력</a></li>
+        <li><a href="#종료-코드-의미명령-훅">종료 코드 의미(명령 훅)</a></li>
+        <li><a href="#json-출력-더-세밀한-제어">JSON 출력: 더 세밀한 제어</a></li>
+        <li><a href="#http-hook의-응답-처리차단을-원하면-2xx--json">HTTP hook의 응답 처리(차단을 원하면 2xx + JSON)</a></li>
+      </ul>
+    </li>
+    <li><a href="#이벤트별로-달라지는-차단-가능성">이벤트별로 달라지는 &lsquo;차단 가능성&rsquo;</a></li>
+    <li><a href="#promptagent-hooks-규칙이-아니라-판단을-자동화">Prompt/Agent hooks: &lsquo;규칙&rsquo;이 아니라 &lsquo;판단&rsquo;을 자동화</a></li>
+    <li><a href="#비동기async-hooks-백그라운드-실행의-제약">비동기(async) hooks: 백그라운드 실행의 제약</a></li>
+    <li><a href="#보안디버깅-운영에서-꼭-챙길-것">보안/디버깅: 운영에서 꼭 챙길 것</a></li>
+    <li><a href="#실전-적용-포인트--핵심-요약">실전 적용 포인트 / 핵심 요약</a>
+      <ul>
+        <li><a href="#1-훅은-정책-엔진처럼-쓰는-게-가장-강력하다">1) 훅은 &lsquo;정책 엔진&rsquo;처럼 쓰는 게 가장 강력하다</a></li>
+        <li><a href="#2-stop은-완료-기준-게이트로-쓰자">2) <code>Stop</code>은 ‘완료 기준 게이트’로 쓰자</a></li>
+        <li><a href="#3-엔터프라이즈팀-환경은-허용-목록을-먼저-확인하자">3) 엔터프라이즈/팀 환경은 &lsquo;허용 목록&rsquo;을 먼저 확인하자</a></li>
+        <li><a href="#4-운영-체크리스트짧게">4) 운영 체크리스트(짧게)</a></li>
+      </ul>
+    </li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/hooks/" class="badge badge-secondary">Hooks</a>
+    <a href="/tags/automation/" class="badge badge-secondary">Automation</a>
+    <a href="/tags/tooling/" class="badge badge-secondary">Tooling</a>
+    <a href="/tags/governance/" class="badge badge-secondary">Governance</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

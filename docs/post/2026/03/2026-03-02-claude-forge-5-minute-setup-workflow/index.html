@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude Forge 5분 세팅 가이드: CLAUDE.md, 에이전트, 훅으로 Claude Code를 운영 환경으로 바꾸는 방법'" />
+  <title>Claude Forge 5분 세팅 가이드: CLAUDE.md, 에이전트, 훅으로 Claude Code를 운영 환경으로 바꾸는 방법  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude Forge 5분 세팅 가이드: CLAUDE.md, 에이전트, 훅으로 Claude Code를 운영 환경으로 바꾸는 방법" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-03-02"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/03/2026-03-02-claude-forge-5-minute-setup-workflow/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="Claude Code" />
+  
+  <meta property="og:tags" content="Claude Forge" />
+  
+  <meta property="og:tags" content="Agents" />
+  
+  <meta property="og:tags" content="Hooks" />
+  
+  <meta property="og:tags" content="TDD" />
+  
+  <meta property="og:tags" content="Security" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/03/2026-03-02-claude-forge-5-minute-setup-workflow/">
+          <h1>
+            Claude Forge 5분 세팅 가이드: CLAUDE.md, 에이전트, 훅으로 Claude Code를 운영 환경으로 바꾸는 방법
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/03/2026-03-02-claude-forge-5-minute-setup-workflow/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>이 영상의 핵심 메시지는 단순합니다. Claude Code를 기본값으로만 쓰면 잠재력의 일부만 쓰게 되고, <code>CLAUDE.md</code> + 에이전트 + 훅을 함께 설계해야 실제 개발 생산성이 올라간다는 주장입니다. 영상 화자는 이를 &ldquo;밀키트&rdquo; 비유로 설명하면서, 수동 반복 세팅을 줄이는 패키지형 접근(Claude Forge)을 제안합니다. <a href="https://youtu.be/3lMjX5Gq1zE?t=13">근거 1</a>, <a href="https://youtu.be/3lMjX5Gq1zE?t=45">근거 2</a>, <a href="https://youtu.be/3lMjX5Gq1zE?t=166">근거 3</a></p>
+<p>추가로, 영상 자막은 자동 생성(ko)이라 일부 고유명사는 문맥 보정이 필요합니다. 이 글에서는 영상 타임스탬프 근거를 우선으로 두고, 숫자/구성 요소(에이전트 수, 커맨드 수 등)는 영상 설명란의 GitHub README를 교차 확인해 정확도를 보완했습니다. <a href="https://youtu.be/3lMjX5Gq1zE?t=222">영상 설명 근거</a>, <a href="https://github.com/sangrokjung/claude-forge">README</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=3lMjX5Gq1zE">https://www.youtube.com/watch?v=3lMjX5Gq1zE</a></li>
+</ul>
+<h2 id="1-왜-설정이-성능을-결정하는가-claudemd-에이전트-훅의-3축">1) 왜 &ldquo;설정&quot;이 성능을 결정하는가: CLAUDE.md, 에이전트, 훅의 3축</h2>
+<p>영상은 Claude Code 활용도를 결정하는 3요소로 <code>CLAUDE.md</code>, 에이전트 시스템, 훅을 제시합니다. 요지는 &ldquo;좋은 모델을 쓰는 것&quot;보다 &ldquo;반복 가능한 운영 규칙을 먼저 심는 것&quot;이 결과 품질을 안정화한다는 것입니다. 특히 <code>CLAUDE.md</code>를 신입 매뉴얼에 비유한 점은, 지시문이 아니라 팀 운영 규약이라는 관점을 강조합니다. <a href="https://youtu.be/3lMjX5Gq1zE?t=45">근거</a>, <a href="https://youtu.be/3lMjX5Gq1zE?t=51">근거</a></p>
+<pre class="mermaid">flowchart TD
+  A["사용자 요청"] --> B["CLAUDE.md<br>방향과 규칙 정의"]
+  A --> C["에이전트 시스템<br>역할 분리와 병렬 실행"]
+  A --> D["훅<br>자동 검사와 차단"]
+  B --> E["출력 일관성 향상"]
+  C --> E
+  D --> E
+
+  classDef input fill:#E3F2FD,stroke:#1E88E5,color:#0D47A1
+  classDef core fill:#FFF3E0,stroke:#FB8C00,color:#E65100
+  classDef out fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+  class A input
+  class B,C,D core
+  class E out</pre><h3 id="증거-노트">증거 노트</h3>
+<ul>
+<li>claim: 활용도 차이는 설정 유무에서 크게 벌어진다.
+<ul>
+<li>transcript quote/time marker: &ldquo;기본으로 쓰시면 &hellip; 10%밖에 활용&rdquo; (00:13-00:17)</li>
+<li>video url: <a href="https://youtu.be/3lMjX5Gq1zE?t=13">https://youtu.be/3lMjX5Gq1zE?t=13</a></li>
+<li>confidence: high</li>
+</ul>
+</li>
+<li>claim: 핵심 3요소는 <code>CLAUDE.md</code>, 에이전트, 훅이다.
+<ul>
+<li>transcript quote/time marker: &ldquo;클로드 MD 그리고 에이전트 그리고 훅&rdquo; (00:45-00:48)</li>
+<li>video url: <a href="https://youtu.be/3lMjX5Gq1zE?t=45">https://youtu.be/3lMjX5Gq1zE?t=45</a></li>
+<li>confidence: high</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-claude-forge가-해결하려는-문제-반복-세팅-비용과-정보-파편화">2) Claude Forge가 해결하려는 문제: 반복 세팅 비용과 정보 파편화</h2>
+<p>영상에서 가장 실무적인 문제정의는 &ldquo;프로젝트마다 2~3시간 세팅 반복&quot;입니다. 단순히 귀찮음 이슈가 아니라, 개발 시간이 초기 세팅으로 소모되고 시작 속도가 느려지는 구조적 손실로 설명합니다. 동시에 자료가 YouTube/블로그/커뮤니티로 흩어져 있어, 개인이 운영 가능한 형태로 합치는 비용이 크다고 말합니다. <a href="https://youtu.be/3lMjX5Gq1zE?t=116">근거</a>, <a href="https://youtu.be/3lMjX5Gq1zE?t=137">근거</a></p>
+<p>이 지점에서 Claude Forge는 &ldquo;밀키트&rdquo; 전략으로 제시됩니다. 즉, 개별 기능을 하나씩 학습/조립하기보다, 기본 운영 부품을 미리 결합한 환경을 먼저 설치해 진입비용을 낮추는 방식입니다. <a href="https://youtu.be/3lMjX5Gq1zE?t=166">근거</a>, <a href="https://youtu.be/3lMjX5Gq1zE?t=170">근거</a></p>
+<pre class="mermaid">flowchart LR
+  A["반복 세팅 2~3시간"] --> D["개발 시작 지연"]
+  B["자료 파편화"] --> D
+  C["영어 문서 의존"] --> D
+  D --> E["Claude Forge 묶음 설치"]
+  E --> F["초기 운영 환경 즉시 확보"]
+
+  classDef pain fill:#FFEBEE,stroke:#E53935,color:#B71C1C
+  classDef bridge fill:#FFF8E1,stroke:#F9A825,color:#E65100
+  classDef gain fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+  class A,B,C,D pain
+  class E bridge
+  class F gain</pre><h3 id="증거-노트-1">증거 노트</h3>
+<ul>
+<li>claim: 프로젝트마다 세팅 반복 비용이 크다.
+<ul>
+<li>transcript quote/time marker: &ldquo;프로젝트마다 최소 두시간씩&rdquo; (01:56-02:00), &ldquo;두시간씩 세시간씩 세팅만&rdquo; (02:09-02:14)</li>
+<li>video url: <a href="https://youtu.be/3lMjX5Gq1zE?t=116">https://youtu.be/3lMjX5Gq1zE?t=116</a></li>
+<li>confidence: high</li>
+</ul>
+</li>
+<li>claim: 정보가 파편화돼 있고 한국어 자료는 상대적으로 적다고 설명한다.
+<ul>
+<li>transcript quote/time marker: &ldquo;정보가 &hellip; 파편화&rdquo;, &ldquo;한국어 자료는 잘 없죠&rdquo; (02:17-02:31)</li>
+<li>video url: <a href="https://youtu.be/3lMjX5Gq1zE?t=137">https://youtu.be/3lMjX5Gq1zE?t=137</a></li>
+<li>confidence: high</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-5분-설치-플로우-github-킥스타트와-guide-검증-포인트">3) 5분 설치 플로우: GitHub 킥스타트와 <code>/guide</code> 검증 포인트</h2>
+<p>설치 시연은 두 가지 경로를 보여 줍니다. 첫째는 GitHub의 킥스타트 명령을 복사해 터미널에서 실행하는 경로, 둘째는 Claude Code 내부에서 저장소 링크를 지정해 로컬 세팅을 요청하는 경로입니다. 어떤 경로를 택하든 &ldquo;설치 완료 확인은 <code>/guide</code> 노출 여부&quot;라는 체크포인트를 명확히 제시합니다. <a href="https://youtu.be/3lMjX5Gq1zE?t=239">근거</a>, <a href="https://youtu.be/3lMjX5Gq1zE?t=272">근거</a></p>
+<p>또한 영상 설명란의 GitHub README에는 <code>/guide</code>가 &ldquo;3-minute tour&quot;로 적혀 있어, 영상의 온보딩 주장과 저장소 문서가 같은 방향을 가리킵니다. <a href="https://raw.githubusercontent.com/sangrokjung/claude-forge/main/README.md">README</a></p>
+<pre class="mermaid">flowchart TD
+  A["GitHub 진입"] --> B{"설치 경로 선택"}
+  B --> C["Kickstart 명령 복사 실행"]
+  B --> D["Claude Code에 로컬 세팅 요청"]
+  C --> E["설치 완료"]
+  D --> E
+  E --> F["/guide 명령 확인"]
+  F --> G["온보딩 투어 시작"]
+
+  classDef step fill:#E3F2FD,stroke:#1E88E5,color:#0D47A1
+  classDef check fill:#FFF3E0,stroke:#FB8C00,color:#E65100
+  classDef done fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+  class A,B,C,D,E step
+  class F check
+  class G done</pre><h3 id="증거-노트-2">증거 노트</h3>
+<ul>
+<li>claim: 설치 후 <code>/guide</code>가 보이면 세팅 완료로 검증한다.
+<ul>
+<li>transcript quote/time marker: &ldquo;슬래시에서 가이드를 &hellip; 세팅 완료&rdquo; (04:32-04:39)</li>
+<li>video url: <a href="https://youtu.be/3lMjX5Gq1zE?t=272">https://youtu.be/3lMjX5Gq1zE?t=272</a></li>
+<li>confidence: high</li>
+</ul>
+</li>
+<li>claim: 설치 시간이 매우 짧다고 강조한다.
+<ul>
+<li>transcript quote/time marker: &ldquo;5분도 안 걸립니다&rdquo; (04:49-04:53)</li>
+<li>video url: <a href="https://youtu.be/3lMjX5Gq1zE?t=289">https://youtu.be/3lMjX5Gq1zE?t=289</a></li>
+<li>confidence: medium</li>
+</ul>
+</li>
+</ul>
+<h2 id="4-워크플로-파이프라인-plan---tdd---review---verify---commitpr">4) 워크플로 파이프라인: Plan -&gt; TDD -&gt; Review -&gt; Verify -&gt; Commit/PR</h2>
+<p>영상의 중반부는 도구 소개보다 운영 시퀀스 제시에 가깝습니다. 핵심은 &ldquo;무작정 개발&rdquo; 대신 계획-테스트-검토-검증-배포를 단계적으로 강제하는 것입니다. 특히 <code>Plan</code>을 별도 계획 에이전트로 분리하고, TDD와 리뷰/검증 단계를 끼워 넣어 결과물 안정성을 높이는 흐름을 강조합니다. <a href="https://youtu.be/3lMjX5Gq1zE?t=322">근거</a>, <a href="https://youtu.be/3lMjX5Gq1zE?t=340">근거</a>, <a href="https://youtu.be/3lMjX5Gq1zE?t=355">근거</a></p>
+<pre class="mermaid">flowchart LR
+  A["/plan"] --> B["/tdd"]
+  B --> C["/review"]
+  C --> D["handoff verify"]
+  D --> E["commit/push/PR"]
+
+  classDef phase fill:#E8EAF6,stroke:#3949AB,color:#1A237E
+  class A,B,C,D,E phase</pre><h3 id="증거-노트-3">증거 노트</h3>
+<ul>
+<li>claim: 계획 이후 TDD로 테스트를 먼저 작성하는 흐름을 설명한다.
+<ul>
+<li>transcript quote/time marker: &ldquo;계획이 완료가 되면 TDD를 통해서 테스트를 먼저&rdquo; (05:40-05:44)</li>
+<li>video url: <a href="https://youtu.be/3lMjX5Gq1zE?t=340">https://youtu.be/3lMjX5Gq1zE?t=340</a></li>
+<li>confidence: high</li>
+</ul>
+</li>
+<li>claim: 코드 리뷰/검증/커밋 푸시까지 하나의 프로세스로 제시한다.
+<ul>
+<li>transcript quote/time marker: &ldquo;리뷰&rdquo;, &ldquo;핸드오프 &hellip; 검증&rdquo;, &ldquo;커밋 푸쉬&rdquo; (05:55-06:35)</li>
+<li>video url: <a href="https://youtu.be/3lMjX5Gq1zE?t=355">https://youtu.be/3lMjX5Gq1zE?t=355</a></li>
+<li>confidence: high</li>
+</ul>
+</li>
+</ul>
+<h2 id="5-보안-자동화-api-키-커밋-차단-시나리오의-실무-의미">5) 보안 자동화: API 키 커밋 차단 시나리오의 실무 의미</h2>
+<p>보안 파트에서 영상은 &ldquo;API 키를 코드에 넣고 커밋하려고 할 때 훅이 차단&quot;하는 시나리오를 반복해서 설명합니다. 이 메시지는 단순 기능 자랑이 아니라, AI 보조개발에서도 시크릿 누출 사고를 기본 가정하고 예방 단계를 자동화해야 한다는 운영 원칙으로 해석할 수 있습니다. <a href="https://youtu.be/3lMjX5Gq1zE?t=420">근거</a>, <a href="https://youtu.be/3lMjX5Gq1zE?t=428">근거</a></p>
+<p>다만 &ldquo;6단계 보안 파이프라인&rdquo; 같은 숫자 표현은 영상 자막만으로 세부 정의를 완전히 복원하기 어렵습니다. 이 부분은 저장소 문서(보안 훅 목록)와 함께 확인하는 방식이 안전합니다. <a href="https://raw.githubusercontent.com/sangrokjung/claude-forge/main/README.md">README</a></p>
+<pre class="mermaid">sequenceDiagram
+  participant Dev as Developer
+  participant CC as Claude Code
+  participant Hook as Security Hook
+  participant Git as Git Commit
+
+  Dev->>CC: 코드 작성/수정
+  Dev->>Git: 커밋 시도
+  Git->>Hook: 사전 검사 트리거
+  Hook-->>Git: 시크릿 감지 시 차단
+  Hook-->>Dev: 차단 이유와 수정 안내
+  Hook-->>Git: 문제 없으면 커밋 허용</pre><h3 id="증거-노트-4">증거 노트</h3>
+<ul>
+<li>claim: API 키가 코드에 있으면 훅이 커밋을 차단한다고 설명한다.
+<ul>
+<li>transcript quote/time marker: &ldquo;API 키를 &hellip; 커밋 &hellip; 훅 시스템이 &hellip; 감지&rdquo; (07:00-07:14)</li>
+<li>video url: <a href="https://youtu.be/3lMjX5Gq1zE?t=420">https://youtu.be/3lMjX5Gq1zE?t=420</a></li>
+<li>confidence: high</li>
+</ul>
+</li>
+<li>claim: 보안 파이프라인이 자동으로 동작한다고 주장한다.
+<ul>
+<li>transcript quote/time marker: &ldquo;자동으로 돌아가고&rdquo;, &ldquo;자동으로 검사&rdquo; (07:27-07:35)</li>
+<li>video url: <a href="https://youtu.be/3lMjX5Gq1zE?t=447">https://youtu.be/3lMjX5Gq1zE?t=447</a></li>
+<li>confidence: high</li>
+</ul>
+</li>
+</ul>
+<h2 id="6-doe-프레임워크로-보는-운영-관점-direction-orchestration-execution">6) DOE 프레임워크로 보는 운영 관점: Direction, Orchestration, Execution</h2>
+<p>영상 후반의 DOE 설명은 사실상 앞선 3요소를 운영 프레임으로 재정리한 것입니다. Direction(방향 제시)은 <code>CLAUDE.md</code>와 지시 설계, Orchestration(조율)은 에이전트 분업, Execution(실행)은 실제 코드 생성/검증 단계에 대응됩니다. 즉 &ldquo;도구 설치&quot;보다 &ldquo;일을 분해하고 통제하는 방식&quot;이 성과를 만든다는 메시지입니다. <a href="https://youtu.be/3lMjX5Gq1zE?t=487">근거</a>, <a href="https://youtu.be/3lMjX5Gq1zE?t=509">근거</a></p>
+<pre class="mermaid">flowchart TD
+  A["Direction<br>무엇을 만들지 명확화"] --> B["Orchestration<br>누가 무엇을 할지 분해"]
+  B --> C["Execution<br>작성/검증/배포 실행"]
+  C --> D["피드백 반영 후 재반복"]
+
+  classDef d fill:#E3F2FD,stroke:#1E88E5,color:#0D47A1
+  classDef o fill:#FFF3E0,stroke:#FB8C00,color:#E65100
+  classDef e fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+  class A d
+  class B o
+  class C,D e</pre><h3 id="증거-노트-5">증거 노트</h3>
+<ul>
+<li>claim: DOE를 방향-조율-실행 프레임으로 제시한다.
+<ul>
+<li>transcript quote/time marker: &ldquo;DOE &hellip; Directives, Orchestration, Execution&rdquo; (08:07-08:26)</li>
+<li>video url: <a href="https://youtu.be/3lMjX5Gq1zE?t=487">https://youtu.be/3lMjX5Gq1zE?t=487</a></li>
+<li>confidence: high</li>
+</ul>
+</li>
+<li>claim: 이 프레임을 Claude Forge 구성요소와 연결해 설명한다.
+<ul>
+<li>transcript quote/time marker: &ldquo;방향 &hellip; 클라우드 MD, 조율 &hellip; 에이전트, 실행 &hellip; 훅&rdquo; (08:29-08:37)</li>
+<li>video url: <a href="https://youtu.be/3lMjX5Gq1zE?t=509">https://youtu.be/3lMjX5Gq1zE?t=509</a></li>
+<li>confidence: high</li>
+</ul>
+</li>
+</ul>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<ol>
+<li>먼저 <code>CLAUDE.md</code>를 &ldquo;규칙 문서&quot;로 작성하고, 코드 생성 요청보다 운영 제약(테스트 필수, 보안 기준, 리뷰 단계)을 선명하게 고정하세요.</li>
+<li>에이전트는 역할별로 3개만 먼저 분리해도 효과가 큽니다(기획/구현/검증). 처음부터 많은 역할을 도입하기보다 팀 병목부터 분해하세요.</li>
+<li>설치 직후에는 <code>/guide</code> 같은 온보딩 커맨드로 실제 동작을 확인하고, 안 보이면 설치 실패로 간주해 바로 원인 점검을 권장합니다.</li>
+<li>워크플로는 &ldquo;Plan -&gt; TDD -&gt; Review -&gt; Verify -&gt; PR&quot;를 기본 파이프라인으로 고정하고, 예외 작업만 별도 분기하는 방식이 유지보수에 유리합니다.</li>
+<li>보안 훅은 선택 기능이 아니라 기본 장치로 두세요. 특히 시크릿 차단은 사고를 줄이는 비용 대비 효과가 가장 큰 자동화입니다.</li>
+</ol>
+<h2 id="결론">결론</h2>
+<p>이 영상을 한 줄로 정리하면, Claude Code 생산성의 핵심은 모델 자체보다 운영 구조에 있습니다. Claude Forge는 그 구조를 빠르게 가져오는 방법으로 제시되며, 실제 현업에서는 <code>CLAUDE.md</code> 규칙화, 역할 분리, 훅 기반 자동 검증을 함께 묶어야 효과가 커집니다.</p>
+<p>다만 영상은 소개 성격이 강하므로, 숫자/구성 디테일은 저장소 문서로 반드시 재확인한 뒤 팀 환경에 맞게 축소 도입하는 접근이 안전합니다. 즉 &ldquo;한 번에 완성&quot;보다 &ldquo;작은 파이프라인을 먼저 고정&quot;하는 전략이 장기적으로 더 실용적입니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 03월 02일 21시 05분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/development">Development</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/workflow">Workflow</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/03/2026-03-02-ai-chat-ui-trap-and-alternative-design/" rel="prev">
+        <span>AI 서비스 만들었는데 왜 아무도 안 쓸까: 채팅 UI 함정과 대안 설계</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/03/2026-03-02-claude-code-setup-10-percent-trap-and-forge-system/" rel="next">
+        <span>Claude Code 기본 설정의 10% 함정: CLAUDE.md, 에이전트 팀, 보안 훅, Forge로 작업 시스템 만드는 법</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-왜-설정이-성능을-결정하는가-claudemd-에이전트-훅의-3축">1) 왜 &ldquo;설정&quot;이 성능을 결정하는가: CLAUDE.md, 에이전트, 훅의 3축</a>
+      <ul>
+        <li><a href="#증거-노트">증거 노트</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-claude-forge가-해결하려는-문제-반복-세팅-비용과-정보-파편화">2) Claude Forge가 해결하려는 문제: 반복 세팅 비용과 정보 파편화</a>
+      <ul>
+        <li><a href="#증거-노트-1">증거 노트</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-5분-설치-플로우-github-킥스타트와-guide-검증-포인트">3) 5분 설치 플로우: GitHub 킥스타트와 <code>/guide</code> 검증 포인트</a>
+      <ul>
+        <li><a href="#증거-노트-2">증거 노트</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-워크플로-파이프라인-plan---tdd---review---verify---commitpr">4) 워크플로 파이프라인: Plan -&gt; TDD -&gt; Review -&gt; Verify -&gt; Commit/PR</a>
+      <ul>
+        <li><a href="#증거-노트-3">증거 노트</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-보안-자동화-api-키-커밋-차단-시나리오의-실무-의미">5) 보안 자동화: API 키 커밋 차단 시나리오의 실무 의미</a>
+      <ul>
+        <li><a href="#증거-노트-4">증거 노트</a></li>
+      </ul>
+    </li>
+    <li><a href="#6-doe-프레임워크로-보는-운영-관점-direction-orchestration-execution">6) DOE 프레임워크로 보는 운영 관점: Direction, Orchestration, Execution</a>
+      <ul>
+        <li><a href="#증거-노트-5">증거 노트</a></li>
+      </ul>
+    </li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/claude-forge/" class="badge badge-secondary">Claude Forge</a>
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+    <a href="/tags/hooks/" class="badge badge-secondary">Hooks</a>
+    <a href="/tags/tdd/" class="badge badge-secondary">TDD</a>
+    <a href="/tags/security/" class="badge badge-secondary">Security</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

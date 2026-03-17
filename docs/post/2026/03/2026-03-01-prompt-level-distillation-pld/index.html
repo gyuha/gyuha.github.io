@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Prompt-Level Distillation(PLD): 미세튜닝 없이 추론 성능을 끌어올리는 비파라메트릭 접근'" />
+  <title>Prompt-Level Distillation(PLD): 미세튜닝 없이 추론 성능을 끌어올리는 비파라메트릭 접근  | 신규하 블로그</title>
+  <meta property="og:title" content="Prompt-Level Distillation(PLD): 미세튜닝 없이 추론 성능을 끌어올리는 비파라메트릭 접근" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-03-01"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/03/2026-03-01-prompt-level-distillation-pld/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="Prompt Engineering" />
+  
+  <meta property="og:tags" content="Distillation" />
+  
+  <meta property="og:tags" content="Chain-of-Thought" />
+  
+  <meta property="og:tags" content="Inference Optimization" />
+  
+  <meta property="og:tags" content="Gemma" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/03/2026-03-01-prompt-level-distillation-pld/">
+          <h1>
+            Prompt-Level Distillation(PLD): 미세튜닝 없이 추론 성능을 끌어올리는 비파라메트릭 접근
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/03/2026-03-01-prompt-level-distillation-pld/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Chain-of-Thought(CoT) 는 정확도를 올리지만, 추론 토큰이 길어질수록 지연과 비용이 함께 증가합니다. 이 논문은 이 문제를 &ldquo;모델 가중치&quot;가 아니라 &ldquo;시스템 프롬프트&quot;에 추론 규칙을 컴파일하는 방식으로 풀며, 이를 Prompt-Level Distillation(PLD) 이라고 정의합니다 (근거: <a href="https://arxiv.org/html/2602.21103v1#S1">https://arxiv.org/html/2602.21103v1#S1</a>, <a href="https://arxiv.org/html/2602.21103v1#S3)">https://arxiv.org/html/2602.21103v1#S3)</a>.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://arxiv.org/html/2602.21103v1">https://arxiv.org/html/2602.21103v1</a></li>
+</ul>
+<p>수집 메모:</p>
+<ul>
+<li>extraction_method: <code>http</code> (webfetch)</li>
+<li>fallback_used: <code>false</code></li>
+</ul>
+<h2 id="1-pld가-풀고자-한-문제-cot-정확도-vs-운영-지연비용">1) PLD가 풀고자 한 문제: CoT 정확도 vs 운영 지연/비용</h2>
+<p>논문은 기존 선택지가 사실상 두 가지였다고 봅니다. (1) CoT 기반 고성능 추론을 유지하되 지연/비용을 감수하거나, (2) 작은 모델의 zero-shot 속도를 택하되 reasoning depth를 포기하는 방식입니다. 저자들은 이 트레이드오프를 &ldquo;런타임에서 추론을 생성&quot;하는 대신 &ldquo;오프라인에서 추론 규칙을 정리&quot;함으로써 완화하려고 합니다 (근거: <a href="https://arxiv.org/html/2602.21103v1#S1">https://arxiv.org/html/2602.21103v1#S1</a>, <a href="https://arxiv.org/html/2602.21103v1#S2.SS1)">https://arxiv.org/html/2602.21103v1#S2.SS1)</a>.</p>
+<p>중요한 차이는, 전통적 KD처럼 student의 파라미터를 업데이트하지 않는다는 점입니다. 즉, reasoning transfer의 저장 위치를 weight에서 prompt로 옮겨, 재학습/아티팩트 관리 부담을 줄이겠다는 접근입니다 (근거: <a href="https://arxiv.org/html/2602.21103v1#S2.SS2)">https://arxiv.org/html/2602.21103v1#S2.SS2)</a>.</p>
+<pre class="mermaid">flowchart LR
+    A["기존 경로 A<br>CoT 추론"] --> B["높은 정확도"]
+    A --> C["긴 출력 토큰"]
+    C --> D["지연/비용 증가"]
+
+    E["기존 경로 B<br>작은 모델 Zero-shot"] --> F["낮은 지연"]
+    E --> G["추론 깊이 손실"]
+
+    H["PLD<br>오프라인 규칙 컴파일"] --> I["System Prompt에 규칙 주입"]
+    I --> J["추론 성능 + 낮은 런타임 오버헤드"]
+
+    classDef old fill:#FFE0B2,stroke:#E65100,color:#4E342E
+    classDef issue fill:#FFCDD2,stroke:#B71C1C,color:#7F1D1D
+    classDef pld fill:#BBDEFB,stroke:#1565C0,color:#0D47A1
+    classDef out fill:#C8E6C9,stroke:#2E7D32,color:#1B5E20
+
+    class A,E old
+    class C,D,G issue
+    class H,I pld
+    class B,F,J out</pre><h2 id="2-핵심-방법론-4단계-파이프라인으로-규칙을-뽑고-다듬기">2) 핵심 방법론: 4단계 파이프라인으로 규칙을 뽑고 다듬기</h2>
+<p>PLD 파이프라인은 네 단계로 구성됩니다: (1) 지도형 instruction 추출, (2) 클러스터링 기반 논리 합성, (3) conflict resolution 루프, (4) 최종 추론 배포. 특히 3단계가 단순 요약과 구분되는 포인트인데, student의 오류 사례를 다시 teacher 계열 모델에 넣어 규칙 충돌을 줄이는 폐루프를 만듭니다 (근거: <a href="https://arxiv.org/html/2602.21103v1#S3">https://arxiv.org/html/2602.21103v1#S3</a>, <a href="https://arxiv.org/html/2602.21103v1#S3.SS3)">https://arxiv.org/html/2602.21103v1#S3.SS3)</a>.</p>
+<p>또한 2단계에서 DBSCAN을 사용해 &ldquo;일반화 불가능한 노이즈 규칙&quot;을 버리고 밀집된 추론 패턴을 합치는 설계는, 규칙 라이브러리의 품질을 높이는 장치로 제시됩니다 (근거: <a href="https://arxiv.org/html/2602.21103v1#S3.SS2)">https://arxiv.org/html/2602.21103v1#S3.SS2)</a>.</p>
+<pre class="mermaid">flowchart TD
+    P1["Phase 1<br>Supervised Instruction Extraction"] --> P2["Phase 2<br>DBSCAN Clustering & Synthesis"]
+    P2 --> P3["Phase 3<br>Conflict Resolution Loop"]
+    P3 --> P4["Phase 4<br>Inference with Consolidated Prompt"]
+
+    P3 --> E1["오답/충돌 규칙 탐지"]
+    E1 --> E2["규칙 갱신"]
+    E2 --> P3
+
+    classDef phase fill:#E3F2FD,stroke:#1565C0,color:#0D47A1
+    classDef loop fill:#FFF9C4,stroke:#F9A825,color:#5D4037
+    classDef final fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+
+    class P1,P2,P3 phase
+    class E1,E2 loop
+    class P4 final</pre><h2 id="3-실험-결과-해석-작은-모델의-추론-역량을-얼마나-끌어올렸나">3) 실험 결과 해석: &ldquo;작은 모델의 추론 역량&quot;을 얼마나 끌어올렸나</h2>
+<p>논문 표에 따르면 Gemma-3 4B 기준으로 StereoSet은 zero-shot 0.57에서 0.90까지, Contract-NLI는 0.67에서 0.83까지 macro-F1이 상승합니다. 즉, 소형 모델에서 PLD의 개선폭이 특히 크게 나타났습니다 (근거: <a href="https://arxiv.org/html/2602.21103v1#S3.T1">https://arxiv.org/html/2602.21103v1#S3.T1</a>, <a href="https://arxiv.org/html/2602.21103v1#S5.SS1)">https://arxiv.org/html/2602.21103v1#S5.SS1)</a>.</p>
+<p>저자 해석의 핵심은 두 가지입니다. 첫째, compact model과 teacher급 모델 간 성능 간극을 줄였다는 점. 둘째, 특히 Contract-NLI처럼 규칙 충돌이 많은 데이터셋에서 conflict resolution 단계가 추가 개선을 만들었다는 점입니다 (근거: <a href="https://arxiv.org/html/2602.21103v1#S5.SS2)">https://arxiv.org/html/2602.21103v1#S5.SS2)</a>.</p>
+<p>주의할 부분도 분명합니다. 본 결과는 특정 데이터셋(Contract-NLI, StereoSet)과 모델 조합에서 측정되었으므로, 다른 도메인으로 일반화할 때는 동일한 추출/합성/검증 루프를 재현해야 합니다 (근거: <a href="https://arxiv.org/html/2602.21103v1#S4.SS3">https://arxiv.org/html/2602.21103v1#S4.SS3</a>, <a href="https://arxiv.org/html/2602.21103v1#S7)">https://arxiv.org/html/2602.21103v1#S7)</a>.</p>
+<h2 id="4-왜-이-방식이-실무에서-의미가-큰가">4) 왜 이 방식이 실무에서 의미가 큰가</h2>
+<p>PLD는 &ldquo;모델을 다시 학습시키는 팀&quot;보다 &ldquo;규칙을 검증하고 업데이트하는 팀&quot;에 더 맞는 운영 모델을 제시합니다. 논문이 강조하듯, 자연어 규칙 형태는 사람 검토가 가능해 규제 도메인(법률/금융/모더레이션)에서 감사 가능성을 높일 수 있습니다 (근거: <a href="https://arxiv.org/html/2602.21103v1#S1">https://arxiv.org/html/2602.21103v1#S1</a>, <a href="https://arxiv.org/html/2602.21103v1#S8)">https://arxiv.org/html/2602.21103v1#S8)</a>.</p>
+<p>다만 규칙 집합이 커질수록 프롬프트 길이 관리와 규칙 충돌 관리가 새 병목이 될 수 있습니다. 따라서 &ldquo;한 번 추출 후 고정&quot;이 아니라, 데이터 분포 변화 시 주기적으로 conflict loop를 다시 돌리는 운영 절차가 필요합니다 (근거: <a href="https://arxiv.org/html/2602.21103v1#S3.SS3">https://arxiv.org/html/2602.21103v1#S3.SS3</a>, <a href="https://arxiv.org/html/2602.21103v1#S7)">https://arxiv.org/html/2602.21103v1#S7)</a>.</p>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<ol>
+<li>먼저 업무를 규칙 기반 분류/판단 태스크로 쪼개고, label 품질이 높은 데이터셋부터 PLD 후보로 선정하세요.</li>
+<li>Phase 1에서 추출된 micro-instruction을 그대로 쓰지 말고, 군집/노이즈 제거를 거쳐 &ldquo;재사용 가능한 규칙&quot;만 남기세요.</li>
+<li>student 오답 샘플을 conflict loop에 재투입해 규칙 충돌을 줄이는 폐루프를 운영 파이프라인으로 고정하세요.</li>
+<li>모델 KPI(정확도)와 운영 KPI(지연, 비용, 감사 가능성)를 동시에 정의해 프롬프트 업데이트 기준을 명문화하세요.</li>
+<li>도메인 확장 시에는 기존 규칙을 복붙하지 말고, 데이터셋별로 규칙 라이브러리를 분리 관리하세요.</li>
+</ol>
+<h2 id="결론">결론</h2>
+<p>PLD의 핵심은 &ldquo;추론을 생성하는 비용&quot;을 런타임에서 오프라인으로 이동시킨다는 점입니다. 이 접근은 작은 모델의 경제성을 유지하면서도, 규칙 기반 reasoning 성능을 유의미하게 끌어올릴 가능성을 보여줍니다.</p>
+<p>결국 이 논문이 던지는 실무 메시지는 명확합니다. 미세튜닝만이 reasoning transfer의 답은 아니며, 잘 설계된 시스템 프롬프트와 conflict-aware 운영 루프만으로도 충분히 경쟁력 있는 추론 시스템을 만들 수 있습니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 03월 01일 05시 20분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/llm">LLM</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/02/2026-02-28-claude-code-human-in-the-loop-vibe-workflow/" rel="prev">
+        <span>찐 개발자 바이브 코딩 워크플로우: Claude Code를 사람 주도 루프로 운용하는 방법</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/03/2026-03-01-agentbench-context-files-evaluation/" rel="next">
+        <span>AGENTS.md는 정말 도움이 될까: AGENTbench 논문으로 본 컨텍스트 파일의 실제 효과</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-pld가-풀고자-한-문제-cot-정확도-vs-운영-지연비용">1) PLD가 풀고자 한 문제: CoT 정확도 vs 운영 지연/비용</a></li>
+    <li><a href="#2-핵심-방법론-4단계-파이프라인으로-규칙을-뽑고-다듬기">2) 핵심 방법론: 4단계 파이프라인으로 규칙을 뽑고 다듬기</a></li>
+    <li><a href="#3-실험-결과-해석-작은-모델의-추론-역량을-얼마나-끌어올렸나">3) 실험 결과 해석: &ldquo;작은 모델의 추론 역량&quot;을 얼마나 끌어올렸나</a></li>
+    <li><a href="#4-왜-이-방식이-실무에서-의미가-큰가">4) 왜 이 방식이 실무에서 의미가 큰가</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/prompt-engineering/" class="badge badge-secondary">Prompt-Engineering</a>
+    <a href="/tags/distillation/" class="badge badge-secondary">Distillation</a>
+    <a href="/tags/chain-of-thought/" class="badge badge-secondary">Chain-of-Thought</a>
+    <a href="/tags/inference-optimization/" class="badge badge-secondary">Inference Optimization</a>
+    <a href="/tags/gemma/" class="badge badge-secondary">Gemma</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

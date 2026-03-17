@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'GSD (Get Shit Done) — AI 코딩 에이전트를 위한 컨텍스트 엔지니어링 &amp; 스펙 기반 개발 시스템 완전 가이드'" />
+  <title>GSD (Get Shit Done) — AI 코딩 에이전트를 위한 컨텍스트 엔지니어링 &amp; 스펙 기반 개발 시스템 완전 가이드  | 신규하 블로그</title>
+  <meta property="og:title" content="GSD (Get Shit Done) — AI 코딩 에이전트를 위한 컨텍스트 엔지니어링 &amp; 스펙 기반 개발 시스템 완전 가이드" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-03-10"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/03/2026-03-10-gsd-get-shit-done-context-engineering/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="AI" />
+  
+  <meta property="og:tags" content="Claude Code" />
+  
+  <meta property="og:tags" content="Context Engineering" />
+  
+  <meta property="og:tags" content="Spec Driven Development" />
+  
+  <meta property="og:tags" content="Agent Orchestration" />
+  
+  <meta property="og:tags" content="OpenCode" />
+  
+  <meta property="og:tags" content="Gemini CLI" />
+  
+  <meta property="og:tags" content="Codex" />
+  
+  <meta property="og:tags" content="GSD" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/03/2026-03-10-gsd-get-shit-done-context-engineering/">
+          <h1>
+            GSD (Get Shit Done) — AI 코딩 에이전트를 위한 컨텍스트 엔지니어링 &amp; 스펙 기반 개발 시스템 완전 가이드
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/03/2026-03-10-gsd-get-shit-done-context-engineering/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>AI 코딩 에이전트(Claude Code, Cursor, Copilot 등)를 사용해 본 개발자라면 한 번쯤 경험했을 것입니다. 처음에는 놀라울 정도로 잘 동작하다가, 프로젝트가 커지면서 점점 품질이 떨어지는 현상 — <strong>컨텍스트 로트(Context Rot)</strong>. GSD(Get Shit Done)는 이 문제를 근본적으로 해결하기 위해 설계된 <strong>메타 프롬프팅 &amp; 컨텍스트 엔지니어링 시스템</strong> 입니다. 단순한 프롬프트 템플릿이 아니라, AI 에이전트가 작업 전체 라이프사이클에서 컨텍스트를 구조화하고, 계획을 세우고, 검증까지 수행하도록 오케스트레이션하는 프레임워크입니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://github.com/gsd-build/get-shit-done">https://github.com/gsd-build/get-shit-done</a> (소스: http)</li>
+<li><a href="https://raw.githubusercontent.com/gsd-build/get-shit-done/main/README.md">https://raw.githubusercontent.com/gsd-build/get-shit-done/main/README.md</a> (소스: http)</li>
+<li><a href="https://raw.githubusercontent.com/gsd-build/get-shit-done/main/docs/USER-GUIDE.md">https://raw.githubusercontent.com/gsd-build/get-shit-done/main/docs/USER-GUIDE.md</a> (소스: http)</li>
+</ul>
+<h2 id="gsd란-무엇인가">GSD란 무엇인가</h2>
+<p><strong>GSD(Get Shit Done)</strong> 는 AI 코딩 에이전트(Claude Code, OpenCode, Gemini CLI, Codex)를 위한 <strong>메타 프롬프팅(meta-prompting), 컨텍스트 엔지니어링(context engineering), 스펙 기반 개발(spec-driven development) 시스템</strong> 입니다. npm 패키지 <code>get-shit-done-cc</code>로 배포되며, <code>npx get-shit-done-cc@latest</code>로 설치할 수 있습니다.</p>
+<p>GSD가 해결하는 핵심 문제는 <strong>컨텍스트 로트</strong> 입니다. LLM은 컨텍스트 윈도우가 채워질수록 품질이 저하됩니다. 프로젝트 초기에는 완벽한 코드를 생성하던 에이전트가, 작업이 누적되면서 이전 결정을 잊고, 일관성이 무너지고, 중복 코드를 생성합니다.</p>
+<p>GSD의 해법은 간단하지만 강력합니다: <strong>코드를 작성하기 전에 먼저 계획하고, 각 단계마다 신선한 컨텍스트를 사용하며, 작업 결과를 구조화된 파일에 기록</strong> 합니다.</p>
+<pre class="mermaid">flowchart LR
+    subgraph Problem["❌ 기존 방식"]
+        A["긴 대화 세션"] --> B["컨텍스트 윈도우<br>점점 가득 참"]
+        B --> C["품질 저하<br>(Context Rot)"]
+        C --> D["버그, 중복,<br>일관성 붕괴"]
+    end
+
+    subgraph Solution["✅ GSD 방식"]
+        E["구조화된 계획<br>(XML 스펙)"] --> F["서브에이전트마다<br>200K 신선한 컨텍스트"]
+        F --> G["파일 기반<br>상태 관리"]
+        G --> H["일관된 고품질<br>코드 출력"]
+    end
+
+    Problem ~~~ Solution
+
+    classDef problem fill:#ffc8c4,stroke:#d44,color:#333
+    classDef solution fill:#c0ecd3,stroke:#2a9,color:#333
+    class A,B,C,D problem
+    class E,F,G,H solution</pre><h3 id="핵심-설계-원칙">핵심 설계 원칙</h3>
+<p>GSD는 세 가지 핵심 원칙 위에 구축되었습니다:</p>
+<ol>
+<li><strong>코드 작성 전에 계획(Plan Before Code)</strong>: 모든 구현은 상세한 XML 기반 계획에서 시작합니다</li>
+<li><strong>구조화된 컨텍스트(Structured Context)</strong>: 프로젝트 상태를 파일 시스템에 기록하여 에이전트가 언제든 최신 상태를 읽을 수 있습니다</li>
+<li><strong>전문 서브에이전트(Specialized Subagents)</strong>: 각 작업 단계에 최적화된 에이전트가 신선한 컨텍스트로 작업합니다</li>
+</ol>
+<h2 id="코어-워크플로우">코어 워크플로우</h2>
+<p>GSD의 개발 워크플로우는 <strong>마일스톤 기반 순차 진행</strong> 방식입니다. 각 단계는 이전 단계의 산출물에 의존하며, 명확한 진입/종료 조건을 가집니다.</p>
+<pre class="mermaid">flowchart TD
+    NP["/gsd:new-project<br>프로젝트 초기화"]
+    DP["/gsd:discuss-phase<br>요구사항 논의"]
+    PP["/gsd:plan-phase<br>계획 수립"]
+    EP["/gsd:execute-phase<br>코드 구현"]
+    VW["/gsd:verify-work<br>작업 검증"]
+    CM["/gsd:complete-milestone<br>마일스톤 완료"]
+    NM{"다음<br>마일스톤?"}
+
+    NP --> DP
+    DP --> PP
+    PP --> EP
+    EP --> VW
+    VW -->|"실패"| EP
+    VW -->|"성공"| CM
+    CM --> NM
+    NM -->|"있음"| DP
+    NM -->|"없음"| DONE["프로젝트 완료"]
+
+    classDef init fill:#c5dcef,stroke:#4a8,color:#333
+    classDef discuss fill:#fde8c0,stroke:#d90,color:#333
+    classDef plan fill:#e0c8ef,stroke:#85a,color:#333
+    classDef exec fill:#c0ecd3,stroke:#2a9,color:#333
+    classDef verify fill:#ffc8c4,stroke:#d44,color:#333
+    classDef complete fill:#d4edda,stroke:#28a745,color:#333
+
+    class NP init
+    class DP discuss
+    class PP plan
+    class EP exec
+    class VW verify
+    class CM complete</pre><h3 id="1단계-프로젝트-초기화-gsdnew-project">1단계: 프로젝트 초기화 (<code>/gsd:new-project</code>)</h3>
+<p>새 프로젝트를 시작하면 GSD는 <code>.planning/</code> 디렉토리를 생성하고, 핵심 컨텍스트 파일들을 초기화합니다:</p>
+<ul>
+<li><strong>PROJECT.md</strong>: 프로젝트 개요, 기술 스택, 아키텍처 결정사항</li>
+<li><strong>REQUIREMENTS.md</strong>: 기능 요구사항, 비기능 요구사항, 제약조건</li>
+<li><strong>STATE.md</strong>: 현재 진행 상태, 완료된 마일스톤, 다음 단계</li>
+<li><strong>config.json</strong>: 모델 프로파일, 워크플로우 토글, 깃 브랜칭 전략 등 설정</li>
+</ul>
+<h3 id="2단계-논의-단계-gsddiscuss-phase">2단계: 논의 단계 (<code>/gsd:discuss-phase</code>)</h3>
+<p>사용자와 AI 에이전트가 <strong>구조화된 대화</strong> 를 통해 요구사항을 구체화합니다. 이 단계에서 에이전트는 질문을 던져 모호한 부분을 해소하고, 기술적 결정사항을 문서화합니다. 결과물은 REQUIREMENTS.md에 반영됩니다.</p>
+<h3 id="3단계-계획-수립-gsdplan-phase">3단계: 계획 수립 (<code>/gsd:plan-phase</code>)</h3>
+<p>GSD의 핵심 차별점입니다. <strong>리서처(Researcher) 에이전트</strong> 가 코드베이스를 분석하고, <strong>플래너(Planner) 에이전트</strong> 가 XML 형식의 구조화된 계획을 수립합니다. 계획에는 각 단계의 파일 변경사항, 의존성, 검증 기준이 포함됩니다.</p>
+<h3 id="4단계-코드-구현-gsdexecute-phase">4단계: 코드 구현 (<code>/gsd:execute-phase</code>)</h3>
+<p>계획의 각 웨이브(Wave)를 순서대로 실행합니다. 독립적인 태스크는 <strong>병렬 실행</strong>, 의존성이 있는 태스크는 <strong>순차 실행</strong> 됩니다. 각 태스크 완료 시 자동으로 <strong>원자적 깃 커밋(Atomic Git Commit)</strong> 이 생성됩니다.</p>
+<h3 id="5단계-작업-검증-gsdverify-work">5단계: 작업 검증 (<code>/gsd:verify-work</code>)</h3>
+<p><strong>검증자(Verifier) 에이전트</strong> 가 구현 결과를 계획과 대조하여 검증합니다. 실패 시 실행 단계로 되돌아갑니다.</p>
+<h3 id="6단계-마일스톤-완료-gsdcomplete-milestone">6단계: 마일스톤 완료 (<code>/gsd:complete-milestone</code>)</h3>
+<p>모든 검증이 통과하면 마일스톤을 완료로 표시하고, STATE.md를 업데이트합니다.</p>
+<h2 id="컨텍스트-엔지니어링-아키텍처">컨텍스트 엔지니어링 아키텍처</h2>
+<p>GSD의 핵심은 <strong>파일 시스템 기반 컨텍스트 관리</strong> 입니다. LLM의 컨텍스트 윈도우에 의존하는 대신, 구조화된 파일에 모든 상태를 기록하고, 각 에이전트가 필요한 시점에 필요한 파일만 읽도록 설계되었습니다.</p>
+<pre class="mermaid">flowchart LR
+    subgraph Planning[".planning/ 디렉토리"]
+        PROJECT["PROJECT.md<br>프로젝트 개요·스택·아키텍처"]
+        REQ["REQUIREMENTS.md<br>기능/비기능 요구사항"]
+        STATE["STATE.md<br>진행 상태·마일스톤 추적"]
+        CONFIG["config.json<br>모델·워크플로우·깃 설정"]
+        PLAN["plans/<br>XML 기반 구현 계획"]
+    end
+
+    subgraph Brownfield[".planning/ (브라운필드 추가)"]
+        STACK["STACK.md<br>기술 스택 분석"]
+        ARCH["ARCHITECTURE.md<br>아키텍처 매핑"]
+        CONV["CONVENTIONS.md<br>코딩 컨벤션"]
+        CONC["CONCERNS.md<br>기존 문제점"]
+    end
+
+    subgraph Agents["서브에이전트"]
+        R["리서처"]
+        P["플래너"]
+        E["실행자"]
+        V["검증자"]
+    end
+
+    R -->|"읽기"| PROJECT
+    R -->|"읽기"| STACK
+    R -->|"읽기"| ARCH
+    P -->|"읽기"| REQ
+    P -->|"쓰기"| PLAN
+    E -->|"읽기"| PLAN
+    E -->|"읽기"| STATE
+    V -->|"읽기"| PLAN
+    V -->|"쓰기"| STATE
+
+    classDef planning fill:#c5dcef,stroke:#47a,color:#333
+    classDef brownfield fill:#fde8c0,stroke:#d90,color:#333
+    classDef agent fill:#e0c8ef,stroke:#85a,color:#333
+
+    class PROJECT,REQ,STATE,CONFIG,PLAN planning
+    class STACK,ARCH,CONV,CONC brownfield
+    class R,P,E,V agent</pre><h3 id="컨텍스트-파일-상세">컨텍스트 파일 상세</h3>
+<table>
+  <thead>
+      <tr>
+          <th>파일</th>
+          <th>역할</th>
+          <th>생성 시점</th>
+          <th>주요 소비자</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>PROJECT.md</strong></td>
+          <td>프로젝트 비전, 기술 스택, 핵심 아키텍처 결정</td>
+          <td><code>/gsd:new-project</code></td>
+          <td>모든 에이전트</td>
+      </tr>
+      <tr>
+          <td><strong>REQUIREMENTS.md</strong></td>
+          <td>기능/비기능 요구사항, 제약조건, 우선순위</td>
+          <td><code>/gsd:discuss-phase</code></td>
+          <td>플래너, 검증자</td>
+      </tr>
+      <tr>
+          <td><strong>STATE.md</strong></td>
+          <td>현재 마일스톤, 완료된 작업, 다음 단계</td>
+          <td>매 단계 자동 업데이트</td>
+          <td>오케스트레이터, 실행자</td>
+      </tr>
+      <tr>
+          <td><strong>config.json</strong></td>
+          <td>모델 프로파일, 워크플로우 토글, 깃 전략</td>
+          <td>설치 시 / 사용자 수정</td>
+          <td>오케스트레이터</td>
+      </tr>
+      <tr>
+          <td><strong>plans/</strong></td>
+          <td>XML 형식 구현 계획 (마일스톤별)</td>
+          <td><code>/gsd:plan-phase</code></td>
+          <td>실행자, 검증자</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="xml-기반-계획-형식">XML 기반 계획 형식</h3>
+<p>GSD의 계획은 <strong>XML 형식</strong> 으로 구조화됩니다. XML을 선택한 이유는 LLM이 XML 태그를 다른 형식보다 정확하게 파싱하고 따르는 경향이 있기 때문입니다.</p>
+<p>계획의 핵심 구조:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#0550ae">&lt;plan&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&lt;milestone</span> <span style="color:#1f2328">name=</span><span style="color:#0a3069">&#34;사용자 인증 시스템&#34;</span><span style="color:#0550ae">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&lt;wave</span> <span style="color:#1f2328">number=</span><span style="color:#0a3069">&#34;1&#34;</span> <span style="color:#1f2328">parallel=</span><span style="color:#0a3069">&#34;true&#34;</span><span style="color:#0550ae">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0550ae">&lt;task</span> <span style="color:#1f2328">id=</span><span style="color:#0a3069">&#34;auth-model&#34;</span><span style="color:#0550ae">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#0550ae">&lt;description&gt;</span>사용자 모델 및 인증 스키마 정의<span style="color:#0550ae">&lt;/description&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#0550ae">&lt;files&gt;</span>src/models/user.ts, src/schemas/auth.ts<span style="color:#0550ae">&lt;/files&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#0550ae">&lt;verification&gt;</span>타입 체크 통과, 스키마 검증 테스트<span style="color:#0550ae">&lt;/verification&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0550ae">&lt;/task&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0550ae">&lt;task</span> <span style="color:#1f2328">id=</span><span style="color:#0a3069">&#34;auth-utils&#34;</span><span style="color:#0550ae">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#0550ae">&lt;description&gt;</span>JWT 토큰 유틸리티 구현<span style="color:#0550ae">&lt;/description&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#0550ae">&lt;files&gt;</span>src/utils/jwt.ts<span style="color:#0550ae">&lt;/files&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#0550ae">&lt;verification&gt;</span>토큰 생성/검증 단위 테스트<span style="color:#0550ae">&lt;/verification&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0550ae">&lt;/task&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&lt;/wave&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&lt;wave</span> <span style="color:#1f2328">number=</span><span style="color:#0a3069">&#34;2&#34;</span> <span style="color:#1f2328">parallel=</span><span style="color:#0a3069">&#34;false&#34;</span><span style="color:#0550ae">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0550ae">&lt;task</span> <span style="color:#1f2328">id=</span><span style="color:#0a3069">&#34;auth-service&#34;</span> <span style="color:#1f2328">depends=</span><span style="color:#0a3069">&#34;auth-model,auth-utils&#34;</span><span style="color:#0550ae">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#0550ae">&lt;description&gt;</span>인증 서비스 레이어 구현<span style="color:#0550ae">&lt;/description&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#0550ae">&lt;files&gt;</span>src/services/auth.ts<span style="color:#0550ae">&lt;/files&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#0550ae">&lt;verification&gt;</span>로그인/회원가입 통합 테스트<span style="color:#0550ae">&lt;/verification&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0550ae">&lt;/task&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&lt;/wave&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&lt;/milestone&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#0550ae">&lt;/plan&gt;</span>
+</span></span></code></pre></div><p>각 <code>&lt;wave&gt;</code> 는 의존성 기반으로 그룹화되며, <code>parallel=&quot;true&quot;</code> 인 웨이브 내의 태스크는 병렬 실행됩니다.</p>
+<h2 id="멀티-에이전트-오케스트레이션">멀티 에이전트 오케스트레이션</h2>
+<p>GSD는 <strong>씬 오케스트레이터(Thin Orchestrator) + 전문 서브에이전트</strong> 패턴을 사용합니다. 메인 에이전트는 가벼운 조정자 역할만 하고, 실제 작업은 각각 <strong>신선한 200K 토큰 컨텍스트</strong> 를 가진 전문 서브에이전트가 수행합니다.</p>
+<pre class="mermaid">flowchart TD
+    ORCH["🎯 오케스트레이터<br>(Thin Orchestrator)"]
+
+    subgraph Research["리서치 에이전트"]
+        R1["코드베이스 리서처"]
+        R2["아키텍처 리서처"]
+    end
+
+    subgraph Planning["계획 에이전트"]
+        P1["플래너"]
+        P2["플랜 체커<br>(8차원 검증)"]
+    end
+
+    subgraph Execution["실행 에이전트"]
+        E1["코드 실행자"]
+        E2["테스트 실행자"]
+    end
+
+    subgraph Verification["검증 에이전트"]
+        V1["검증자"]
+        V2["Nyquist 검증자"]
+    end
+
+    ORCH --> Research
+    ORCH --> Planning
+    ORCH --> Execution
+    ORCH --> Verification
+
+    R1 -->|"분석 결과"| P1
+    P1 -->|"계획"| P2
+    P2 -->|"승인된 계획"| E1
+    E1 -->|"구현 결과"| V1
+    V2 -->|"테스트 커버리지"| P1
+
+    classDef orch fill:#fde8c0,stroke:#d90,color:#333
+    classDef research fill:#c5dcef,stroke:#47a,color:#333
+    classDef plan fill:#e0c8ef,stroke:#85a,color:#333
+    classDef exec fill:#c0ecd3,stroke:#2a9,color:#333
+    classDef verify fill:#ffc8c4,stroke:#d44,color:#333
+
+    class ORCH orch
+    class R1,R2 research
+    class P1,P2 plan
+    class E1,E2 exec
+    class V1,V2 verify</pre><h3 id="에이전트-유형별-역할">에이전트 유형별 역할</h3>
+<p>GSD는 <strong>11가지 전문 에이전트</strong> 를 정의하고, 각 에이전트에 모델 프로파일(quality/balanced/budget)에 따라 다른 LLM을 할당합니다:</p>
+<table>
+  <thead>
+      <tr>
+          <th>에이전트</th>
+          <th>역할</th>
+          <th>Quality</th>
+          <th>Balanced</th>
+          <th>Budget</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Orchestrator</strong></td>
+          <td>워크플로우 조정</td>
+          <td>Opus</td>
+          <td>Opus</td>
+          <td>Sonnet</td>
+      </tr>
+      <tr>
+          <td><strong>Researcher</strong></td>
+          <td>코드베이스 분석</td>
+          <td>Opus</td>
+          <td>Sonnet</td>
+          <td>Haiku</td>
+      </tr>
+      <tr>
+          <td><strong>Planner</strong></td>
+          <td>계획 수립</td>
+          <td>Opus</td>
+          <td>Opus</td>
+          <td>Sonnet</td>
+      </tr>
+      <tr>
+          <td><strong>Plan Checker</strong></td>
+          <td>계획 8차원 검증</td>
+          <td>Opus</td>
+          <td>Opus</td>
+          <td>Sonnet</td>
+      </tr>
+      <tr>
+          <td><strong>Executor</strong></td>
+          <td>코드 구현</td>
+          <td>Opus</td>
+          <td>Sonnet</td>
+          <td>Sonnet</td>
+      </tr>
+      <tr>
+          <td><strong>Verifier</strong></td>
+          <td>결과 검증</td>
+          <td>Opus</td>
+          <td>Sonnet</td>
+          <td>Haiku</td>
+      </tr>
+      <tr>
+          <td><strong>Discuss Agent</strong></td>
+          <td>요구사항 대화</td>
+          <td>Opus</td>
+          <td>Sonnet</td>
+          <td>Sonnet</td>
+      </tr>
+      <tr>
+          <td><strong>Quick Agent</strong></td>
+          <td>빠른 일회성 작업</td>
+          <td>Sonnet</td>
+          <td>Sonnet</td>
+          <td>Haiku</td>
+      </tr>
+      <tr>
+          <td><strong>Security Reviewer</strong></td>
+          <td>보안 점검</td>
+          <td>Opus</td>
+          <td>Opus</td>
+          <td>Sonnet</td>
+      </tr>
+      <tr>
+          <td><strong>Performance Analyst</strong></td>
+          <td>성능 분석</td>
+          <td>Opus</td>
+          <td>Sonnet</td>
+          <td>Haiku</td>
+      </tr>
+      <tr>
+          <td><strong>Nyquist Validator</strong></td>
+          <td>테스트 커버리지 매핑</td>
+          <td>Opus</td>
+          <td>Opus</td>
+          <td>Sonnet</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Quality 프로파일</strong> 은 거의 모든 에이전트에 Opus를 사용하여 최고 품질을 보장하지만 비용이 높고, <strong>Budget 프로파일</strong> 은 Haiku/Sonnet 위주로 빠르고 저렴하지만 복잡한 작업에서 품질이 떨어질 수 있습니다. <strong>Balanced</strong> 가 기본값으로, 계획 수립에는 Opus를, 실행에는 Sonnet을 사용하는 실용적 조합입니다.</p>
+<h3 id="신선한-컨텍스트의-중요성">신선한 컨텍스트의 중요성</h3>
+<p>각 서브에이전트가 <strong>독립적인 200K 토큰 컨텍스트</strong> 를 사용하는 것이 GSD의 핵심 차별점입니다. 일반적인 AI 코딩에서는 하나의 대화 세션에서 모든 작업을 수행하므로, 컨텍스트 윈도우가 점진적으로 오염됩니다. GSD는 각 에이전트가 필요한 컨텍스트 파일만 읽고, 작업 결과를 파일에 기록한 뒤 종료합니다. 다음 에이전트는 깨끗한 컨텍스트에서 시작하여 필요한 파일만 다시 읽습니다.</p>
+<pre class="mermaid">sequenceDiagram
+    participant O as 오케스트레이터
+    participant R as 리서처<br>(200K 신선)
+    participant P as 플래너<br>(200K 신선)
+    participant E as 실행자<br>(200K 신선)
+    participant FS as 파일 시스템
+
+    O->>R: 코드베이스 분석 요청
+    R->>FS: PROJECT.md, 소스코드 읽기
+    R->>FS: 분석 결과 기록
+    R-->>O: 완료
+
+    O->>P: 계획 수립 요청
+    P->>FS: REQUIREMENTS.md, 분석 결과 읽기
+    P->>FS: plans/milestone-1.xml 기록
+    P-->>O: 완료
+
+    O->>E: 태스크 실행 요청
+    E->>FS: plans/milestone-1.xml, STATE.md 읽기
+    E->>FS: 코드 작성 + 커밋
+    E-->>O: 완료</pre><h2 id="웨이브-실행-모델">웨이브 실행 모델</h2>
+<p>GSD의 실행 단계는 <strong>웨이브(Wave) 기반 병렬/순차 실행 모델</strong> 을 사용합니다. 각 마일스톤의 계획은 여러 웨이브로 나뉘며, 웨이브 내부의 태스크는 의존성에 따라 병렬 또는 순차 실행됩니다.</p>
+<pre class="mermaid">flowchart LR
+    subgraph W1["Wave 1 (parallel)"]
+        T1["Task A<br>모델 정의"]
+        T2["Task B<br>유틸리티 함수"]
+        T3["Task C<br>설정 파일"]
+    end
+
+    subgraph W2["Wave 2 (sequential)"]
+        T4["Task D<br>서비스 레이어<br>depends: A, B"]
+    end
+
+    subgraph W3["Wave 3 (parallel)"]
+        T5["Task E<br>API 라우터<br>depends: D"]
+        T6["Task F<br>미들웨어<br>depends: D"]
+    end
+
+    T1 --> T4
+    T2 --> T4
+    T4 --> T5
+    T4 --> T6
+
+    classDef w1 fill:#c5dcef,stroke:#47a,color:#333
+    classDef w2 fill:#fde8c0,stroke:#d90,color:#333
+    classDef w3 fill:#c0ecd3,stroke:#2a9,color:#333
+
+    class T1,T2,T3 w1
+    class T4 w2
+    class T5,T6 w3</pre><h3 id="웨이브-실행-규칙">웨이브 실행 규칙</h3>
+<ol>
+<li><strong>Wave 내부</strong>: <code>parallel=&quot;true&quot;</code> 면 모든 태스크를 동시에 실행, <code>parallel=&quot;false&quot;</code> 면 순서대로 실행</li>
+<li><strong>Wave 간</strong>: 이전 웨이브의 모든 태스크가 완료되어야 다음 웨이브로 진행</li>
+<li><strong>의존성 검증</strong>: <code>depends</code> 속성에 명시된 태스크가 완료되었는지 실행 전에 확인</li>
+<li><strong>실패 처리</strong>: 태스크 실패 시 해당 웨이브를 중단하고 오케스트레이터에 보고</li>
+</ol>
+<h3 id="원자적-깃-커밋-atomic-git-commits">원자적 깃 커밋 (Atomic Git Commits)</h3>
+<p>각 태스크가 성공적으로 완료되면, GSD는 자동으로 <strong>원자적 깃 커밋</strong> 을 생성합니다. 이는 다음과 같은 이점을 제공합니다:</p>
+<ul>
+<li><strong>롤백 용이성</strong>: 문제 발생 시 특정 태스크 단위로 되돌릴 수 있음</li>
+<li><strong>변경 추적</strong>: 각 커밋이 하나의 논리적 변경 단위에 대응</li>
+<li><strong>코드 리뷰 편의</strong>: 리뷰어가 작은 단위로 변경사항을 확인 가능</li>
+</ul>
+<p>깃 브랜칭 전략은 <code>config.json</code>에서 설정할 수 있으며, 세 가지 옵션을 지원합니다:</p>
+<table>
+  <thead>
+      <tr>
+          <th>전략</th>
+          <th>설명</th>
+          <th>적합한 상황</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>none</strong></td>
+          <td>현재 브랜치에 직접 커밋</td>
+          <td>개인 프로젝트, 빠른 프로토타이핑</td>
+      </tr>
+      <tr>
+          <td><strong>phase</strong></td>
+          <td>실행 단계마다 새 브랜치 생성</td>
+          <td>팀 프로젝트에서 단계별 리뷰 필요 시</td>
+      </tr>
+      <tr>
+          <td><strong>milestone</strong></td>
+          <td>마일스톤마다 새 브랜치 생성</td>
+          <td>대규모 프로젝트에서 기능 브랜치 전략 사용 시</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="nyquist-검증-아키텍처">Nyquist 검증 아키텍처</h2>
+<p>GSD의 가장 독특한 기능 중 하나인 <strong>Nyquist 검증</strong> 은 신호 처리 이론의 나이퀴스트 정리에서 영감을 받았습니다. 나이퀴스트 정리가 &ldquo;신호를 정확히 복원하려면 최소 2배의 샘플링 주파수가 필요하다&quot;고 말하듯, Nyquist 검증은 <strong>&ldquo;코드를 작성하기 전에 충분한 테스트 커버리지 계획이 있어야 한다&rdquo;</strong> 는 원칙을 적용합니다.</p>
+<pre class="mermaid">flowchart TD
+    REQ["요구사항<br>(REQUIREMENTS.md)"]
+    PLAN["구현 계획<br>(plans/*.xml)"]
+
+    subgraph Nyquist["Nyquist 검증"]
+        MAP["요구사항 → 테스트<br>매핑 분석"]
+        COV["커버리지 점수<br>산출"]
+        GAP["갭 분석<br>(누락된 테스트 식별)"]
+        REC["보완 권고안<br>생성"]
+    end
+
+    REQ --> MAP
+    PLAN --> MAP
+    MAP --> COV
+    COV -->|"커버리지 < 임계값"| GAP
+    GAP --> REC
+    REC -->|"계획 보완"| PLAN
+    COV -->|"커버리지 ≥ 임계값"| PASS["✅ 검증 통과<br>실행 단계 진행"]
+
+    classDef req fill:#c5dcef,stroke:#47a,color:#333
+    classDef plan fill:#e0c8ef,stroke:#85a,color:#333
+    classDef nyquist fill:#fde8c0,stroke:#d90,color:#333
+    classDef pass fill:#c0ecd3,stroke:#2a9,color:#333
+
+    class REQ req
+    class PLAN plan
+    class MAP,COV,GAP,REC nyquist
+    class PASS pass</pre><h3 id="nyquist-검증의-동작-방식">Nyquist 검증의 동작 방식</h3>
+<ol>
+<li><strong>요구사항-테스트 매핑</strong>: 각 요구사항 항목에 대응하는 테스트 계획이 있는지 분석</li>
+<li><strong>커버리지 점수 산출</strong>: 전체 요구사항 대비 테스트가 계획된 비율을 계산</li>
+<li><strong>갭 분석</strong>: 테스트 계획이 없는 요구사항을 식별</li>
+<li><strong>보완 권고</strong>: 누락된 테스트를 계획에 추가하도록 권고</li>
+</ol>
+<h3 id="플랜-체커의-8차원-검증">플랜 체커의 8차원 검증</h3>
+<p>Nyquist 검증은 <strong>플랜 체커(Plan Checker) 에이전트</strong> 의 8차원 검증 중 하나입니다. 플랜 체커는 계획의 품질을 다음 8가지 차원에서 검증합니다:</p>
+<ol>
+<li><strong>완전성(Completeness)</strong>: 모든 요구사항이 계획에 반영되었는가</li>
+<li><strong>일관성(Consistency)</strong>: 태스크 간 모순이 없는가</li>
+<li><strong>의존성(Dependencies)</strong>: 태스크 간 의존성이 올바르게 정의되었는가</li>
+<li><strong>실현가능성(Feasibility)</strong>: 각 태스크가 기술적으로 구현 가능한가</li>
+<li><strong>검증가능성(Verifiability)</strong>: 각 태스크의 완료 기준이 명확한가</li>
+<li><strong>보안(Security)</strong>: 보안 관련 요구사항이 반영되었는가</li>
+<li><strong>성능(Performance)</strong>: 성능 영향이 고려되었는가</li>
+<li><strong>Nyquist 커버리지</strong>: 테스트 계획이 요구사항을 충분히 커버하는가</li>
+</ol>
+<h3 id="소급-검증-gsdvalidate-phase">소급 검증 (<code>/gsd:validate-phase</code>)</h3>
+<p>이미 실행이 시작된 후에도 <code>/gsd:validate-phase</code> 명령으로 <strong>소급 Nyquist 검증</strong> 을 수행할 수 있습니다. 이는 다음 상황에서 유용합니다:</p>
+<ul>
+<li>계획 단계에서 Nyquist 검증을 건너뛴 경우</li>
+<li>실행 중 요구사항이 변경된 경우</li>
+<li>기존 코드베이스의 테스트 커버리지를 평가하고 싶은 경우</li>
+</ul>
+<h2 id="브라운필드-프로젝트-지원">브라운필드 프로젝트 지원</h2>
+<p>GSD는 새 프로젝트(그린필드)뿐 아니라 <strong>기존 프로젝트(브라운필드)</strong> 도 지원합니다. <code>/gsd:map-codebase</code> 명령은 기존 코드베이스를 분석하여 4개의 컨텍스트 파일을 자동 생성합니다.</p>
+<pre class="mermaid">flowchart LR
+    CMD["/gsd:map-codebase"]
+    CB["기존<br>코드베이스"]
+
+    CMD --> CB
+
+    CB --> STACK["STACK.md<br>기술 스택 분석<br>(언어, 프레임워크,<br>라이브러리, 버전)"]
+    CB --> ARCH["ARCHITECTURE.md<br>아키텍처 매핑<br>(디렉토리 구조,<br>모듈 관계, 패턴)"]
+    CB --> CONV["CONVENTIONS.md<br>코딩 컨벤션<br>(네이밍, 포매팅,<br>테스트 패턴)"]
+    CB --> CONC["CONCERNS.md<br>기존 문제점<br>(기술 부채,<br>보안 이슈, 성능)"]
+
+    classDef cmd fill:#e0c8ef,stroke:#85a,color:#333
+    classDef output fill:#c5dcef,stroke:#47a,color:#333
+    classDef cb fill:#fde8c0,stroke:#d90,color:#333
+
+    class CMD cmd
+    class CB cb
+    class STACK,ARCH,CONV,CONC output</pre><h3 id="브라운필드-컨텍스트-파일-상세">브라운필드 컨텍스트 파일 상세</h3>
+<ul>
+<li>
+<p><strong>STACK.md</strong>: 사용 중인 언어, 프레임워크, 라이브러리, 버전 정보를 분석합니다. 패키지 매니저 파일(package.json, requirements.txt 등)과 설정 파일을 기반으로 기술 스택을 매핑합니다.</p>
+</li>
+<li>
+<p><strong>ARCHITECTURE.md</strong>: 디렉토리 구조, 모듈 간 의존성, 사용 중인 아키텍처 패턴(MVC, 레이어드 등)을 문서화합니다. 새 코드를 작성할 때 기존 아키텍처와 일관성을 유지하는 데 핵심적인 역할을 합니다.</p>
+</li>
+<li>
+<p><strong>CONVENTIONS.md</strong>: 네이밍 규칙, 코드 포매팅 스타일, 테스트 작성 패턴, 에러 처리 방식 등을 추출합니다. AI 에이전트가 기존 코드와 동일한 스타일로 새 코드를 작성하도록 가이드합니다.</p>
+</li>
+<li>
+<p><strong>CONCERNS.md</strong>: 기술 부채, 알려진 버그, 보안 취약점, 성능 병목 등 기존 문제점을 식별합니다. 새 작업을 계획할 때 이 문제들을 악화시키지 않도록 주의를 기울일 수 있습니다.</p>
+</li>
+</ul>
+<h2 id="퀵-모드-quick-mode">퀵 모드 (Quick Mode)</h2>
+<p>모든 작업에 전체 워크플로우가 필요한 것은 아닙니다. <strong>퀵 모드</strong> 는 작은 변경사항이나 일회성 작업을 위한 간소화된 실행 경로입니다.</p>
+<pre class="mermaid">flowchart LR
+    QUICK["/gsd:quick<br>간단한 작업 설명"]
+
+    QUICK --> DEFAULT["기본 모드<br>빠른 실행"]
+    QUICK --> FULL["--full 플래그<br>전체 분석 포함"]
+    QUICK --> DISCUSS["--discuss 플래그<br>논의 단계 포함"]
+
+    DEFAULT --> EXEC["즉시 실행<br>+ 원자적 커밋"]
+    FULL --> EXEC
+    DISCUSS --> TALK["요구사항 논의"] --> EXEC
+
+    classDef quick fill:#fde8c0,stroke:#d90,color:#333
+    classDef flag fill:#c5dcef,stroke:#47a,color:#333
+    classDef exec fill:#c0ecd3,stroke:#2a9,color:#333
+    classDef discuss fill:#e0c8ef,stroke:#85a,color:#333
+
+    class QUICK quick
+    class DEFAULT,FULL,DISCUSS flag
+    class EXEC exec
+    class TALK discuss</pre><h3 id="퀵-모드-플래그">퀵 모드 플래그</h3>
+<table>
+  <thead>
+      <tr>
+          <th>플래그</th>
+          <th>설명</th>
+          <th>사용 예</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>(없음)</td>
+          <td>기본 — 빠른 실행</td>
+          <td><code>/gsd:quick 로그인 버튼 색상 파란색으로 변경</code></td>
+      </tr>
+      <tr>
+          <td><code>--full</code></td>
+          <td>전체 분석(리서치 + 계획) 포함</td>
+          <td><code>/gsd:quick --full 에러 처리 미들웨어 추가</code></td>
+      </tr>
+      <tr>
+          <td><code>--discuss</code></td>
+          <td>사용자 논의 단계 포함</td>
+          <td><code>/gsd:quick --discuss 검색 기능 UX 개선</code></td>
+      </tr>
+  </tbody>
+</table>
+<p>퀵 모드에서도 <strong>원자적 깃 커밋</strong> 은 동일하게 적용됩니다. 작은 변경이라도 롤백 가능한 단위로 기록됩니다.</p>
+<h2 id="설정-시스템-configjson">설정 시스템 (config.json)</h2>
+<p>GSD의 모든 동작은 <code>.planning/config.json</code>을 통해 세밀하게 제어할 수 있습니다.</p>
+<pre class="mermaid">flowchart TD
+    CONFIG["config.json"]
+
+    subgraph ModelProfile["모델 프로파일"]
+        Q["quality<br>Opus 위주, 최고 품질"]
+        B["balanced (기본)<br>Opus 계획 + Sonnet 실행"]
+        BG["budget<br>Sonnet/Haiku 위주, 저비용"]
+    end
+
+    subgraph Workflow["워크플로우 토글"]
+        NY["nyquist_validation<br>테스트 커버리지 검증"]
+        SC["security_review<br>보안 점검"]
+        PA["performance_analysis<br>성능 분석"]
+        AC["auto_commit<br>자동 깃 커밋"]
+    end
+
+    subgraph Git["깃 브랜칭"]
+        GN["none: 현재 브랜치"]
+        GP["phase: 단계별 브랜치"]
+        GM["milestone: 마일스톤 브랜치"]
+    end
+
+    CONFIG --> ModelProfile
+    CONFIG --> Workflow
+    CONFIG --> Git
+
+    classDef config fill:#fde8c0,stroke:#d90,color:#333
+    classDef model fill:#e0c8ef,stroke:#85a,color:#333
+    classDef wf fill:#c5dcef,stroke:#47a,color:#333
+    classDef git fill:#c0ecd3,stroke:#2a9,color:#333
+
+    class CONFIG config
+    class Q,B,BG model
+    class NY,SC,PA,AC wf
+    class GN,GP,GM git</pre><h3 id="speed-vs-quality-프리셋">Speed vs Quality 프리셋</h3>
+<p>프로젝트 상황에 따라 속도와 품질의 균형을 조절할 수 있습니다:</p>
+<table>
+  <thead>
+      <tr>
+          <th>시나리오</th>
+          <th>모델 프로파일</th>
+          <th>Nyquist</th>
+          <th>보안 점검</th>
+          <th>성능 분석</th>
+          <th>브랜칭</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>프로토타이핑</strong></td>
+          <td>budget</td>
+          <td>OFF</td>
+          <td>OFF</td>
+          <td>OFF</td>
+          <td>none</td>
+      </tr>
+      <tr>
+          <td><strong>일반 개발</strong></td>
+          <td>balanced</td>
+          <td>ON</td>
+          <td>OFF</td>
+          <td>OFF</td>
+          <td>phase</td>
+      </tr>
+      <tr>
+          <td><strong>프로덕션</strong></td>
+          <td>quality</td>
+          <td>ON</td>
+          <td>ON</td>
+          <td>ON</td>
+          <td>milestone</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>프로토타이핑</strong> 에서는 비용을 최소화하고 빠르게 반복하는 것이 우선이므로 검증 단계를 최소화합니다. <strong>프로덕션</strong> 에서는 모든 검증을 활성화하고 최고 품질 모델을 사용합니다.</p>
+<h2 id="멀티-런타임-지원">멀티 런타임 지원</h2>
+<p>GSD는 단일 AI 에이전트에 종속되지 않습니다. 다음 네 가지 런타임을 공식 지원합니다:</p>
+<pre class="mermaid">flowchart TD
+    GSD["GSD 설치기<br>npx get-shit-done-cc@latest"]
+
+    CC["Claude Code<br>커스텀 프롬프트 방식"]
+    OC["OpenCode<br>에이전트 파일 방식"]
+    GC["Gemini CLI<br>GEMINI.md 방식"]
+    CX["Codex<br>스킬 파일 방식"]
+
+    GSD --> CC
+    GSD --> OC
+    GSD --> GC
+    GSD --> CX
+
+    classDef gsd fill:#fde8c0,stroke:#d90,color:#333
+    classDef runtime fill:#c5dcef,stroke:#47a,color:#333
+
+    class GSD gsd
+    class CC,OC,GC,CX runtime</pre><h3 id="런타임별-설치-방식">런타임별 설치 방식</h3>
+<table>
+  <thead>
+      <tr>
+          <th>런타임</th>
+          <th>설치 방식</th>
+          <th>설정 파일</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Claude Code</strong></td>
+          <td>커스텀 프롬프트 주입</td>
+          <td><code>.claude/</code> 디렉토리</td>
+      </tr>
+      <tr>
+          <td><strong>OpenCode</strong></td>
+          <td>에이전트 설정 파일</td>
+          <td><code>.opencode/</code> 디렉토리</td>
+      </tr>
+      <tr>
+          <td><strong>Gemini CLI</strong></td>
+          <td>GEMINI.md 파일</td>
+          <td><code>GEMINI.md</code></td>
+      </tr>
+      <tr>
+          <td><strong>Codex</strong></td>
+          <td>스킬 파일</td>
+          <td><code>skills/gsd-*/SKILL.md</code></td>
+      </tr>
+  </tbody>
+</table>
+<p>설치기는 비대화형 모드도 지원합니다:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># 특정 런타임만 설치</span>
+</span></span><span style="display:flex;"><span>npx get-shit-done-cc@latest --claude
+</span></span><span style="display:flex;"><span>npx get-shit-done-cc@latest --opencode
+</span></span><span style="display:flex;"><span>npx get-shit-done-cc@latest --gemini
+</span></span><span style="display:flex;"><span>npx get-shit-done-cc@latest --codex
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 모든 런타임 설치</span>
+</span></span><span style="display:flex;"><span>npx get-shit-done-cc@latest --all
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 글로벌/로컬 설치</span>
+</span></span><span style="display:flex;"><span>npx get-shit-done-cc@latest --global
+</span></span><span style="display:flex;"><span>npx get-shit-done-cc@latest --local
+</span></span></code></pre></div><h3 id="커뮤니티-포트">커뮤니티 포트</h3>
+<p>GSD의 인기로 커뮤니티 포트도 존재합니다:</p>
+<ul>
+<li><strong>gsd-opencode</strong> (rokicool): OpenCode 전용 포크</li>
+<li><strong>gsd-gemini</strong> (uberfuzzy, 아카이브됨): Gemini CLI 전용 포크</li>
+</ul>
+<p>현재는 네이티브 멀티 런타임 지원이 내장되어 있어 별도 포크가 필요하지 않습니다.</p>
+<h2 id="설치-및-업데이트">설치 및 업데이트</h2>
+<h3 id="설치">설치</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>npx get-shit-done-cc@latest
+</span></span></code></pre></div><p>대화형 설치기가 런타임 선택, 글로벌/로컬 설치 여부 등을 안내합니다.</p>
+<h3 id="업데이트-시-로컬-패치-보존">업데이트 시 로컬 패치 보존</h3>
+<p>v1.17부터 설치기는 사용자가 로컬에서 수정한 파일을 <strong>자동 백업</strong> 합니다. 업데이트 시 수정 사항이 덮어씌워져도 <code>gsd-local-patches/</code> 디렉토리에 백업이 보관되며, <code>/gsd:reapply-patches</code> 명령으로 복원할 수 있습니다.</p>
+<pre class="mermaid">flowchart TD
+    UPDATE["npx get-shit-done-cc@latest<br>(업데이트)"]
+    DETECT["로컬 수정 파일<br>감지"]
+    BACKUP["gsd-local-patches/<br>자동 백업"]
+    INSTALL["새 버전 설치<br>(덮어쓰기)"]
+    RESTORE["/gsd:reapply-patches<br>로컬 수정 복원"]
+
+    UPDATE --> DETECT
+    DETECT --> BACKUP
+    BACKUP --> INSTALL
+    INSTALL --> RESTORE
+
+    classDef update fill:#c5dcef,stroke:#47a,color:#333
+    classDef backup fill:#fde8c0,stroke:#d90,color:#333
+    classDef restore fill:#c0ecd3,stroke:#2a9,color:#333
+
+    class UPDATE,INSTALL update
+    class DETECT,BACKUP backup
+    class RESTORE restore</pre><h2 id="보안-고려사항">보안 고려사항</h2>
+<p>GSD는 보안을 워크플로우에 내장하는 접근 방식을 취합니다:</p>
+<ul>
+<li><strong>보안 리뷰 에이전트</strong>: <code>config.json</code>에서 <code>security_review</code>를 활성화하면, 구현 후 전용 보안 리뷰 에이전트가 코드를 점검합니다</li>
+<li><strong>플랜 체커의 보안 차원</strong>: 8차원 검증 중 보안 차원에서 계획 단계부터 보안 요구사항이 반영되었는지 확인합니다</li>
+<li><strong>CONCERNS.md</strong>: 브라운필드 프로젝트에서 기존 보안 취약점을 식별하여 새 코드가 이를 악화시키지 않도록 합니다</li>
+</ul>
+<h2 id="전체-명령어-레퍼런스">전체 명령어 레퍼런스</h2>
+<table>
+  <thead>
+      <tr>
+          <th>명령어</th>
+          <th>설명</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>/gsd:new-project</code></td>
+          <td>새 프로젝트 초기화, <code>.planning/</code> 디렉토리 생성</td>
+      </tr>
+      <tr>
+          <td><code>/gsd:discuss-phase</code></td>
+          <td>요구사항 논의 단계 시작</td>
+      </tr>
+      <tr>
+          <td><code>/gsd:plan-phase</code></td>
+          <td>구현 계획 수립 (리서치 → 계획 → 검증)</td>
+      </tr>
+      <tr>
+          <td><code>/gsd:execute-phase</code></td>
+          <td>웨이브 기반 코드 구현 실행</td>
+      </tr>
+      <tr>
+          <td><code>/gsd:verify-work</code></td>
+          <td>구현 결과 검증</td>
+      </tr>
+      <tr>
+          <td><code>/gsd:complete-milestone</code></td>
+          <td>마일스톤 완료 처리</td>
+      </tr>
+      <tr>
+          <td><code>/gsd:quick</code></td>
+          <td>퀵 모드 (간단한 일회성 작업)</td>
+      </tr>
+      <tr>
+          <td><code>/gsd:quick --full</code></td>
+          <td>퀵 모드 + 전체 분석</td>
+      </tr>
+      <tr>
+          <td><code>/gsd:quick --discuss</code></td>
+          <td>퀵 모드 + 논의 단계</td>
+      </tr>
+      <tr>
+          <td><code>/gsd:map-codebase</code></td>
+          <td>기존 코드베이스 분석 (브라운필드)</td>
+      </tr>
+      <tr>
+          <td><code>/gsd:validate-phase</code></td>
+          <td>소급 Nyquist 검증</td>
+      </tr>
+      <tr>
+          <td><code>/gsd:reapply-patches</code></td>
+          <td>업데이트 후 로컬 수정사항 복원</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="프로젝트-파일-구조">프로젝트 파일 구조</h2>
+<p>GSD가 생성하고 관리하는 파일 구조는 다음과 같습니다:</p>
+<pre tabindex="0"><code>.planning/
+├── PROJECT.md              # 프로젝트 개요
+├── REQUIREMENTS.md         # 요구사항 문서
+├── STATE.md                # 진행 상태 추적
+├── config.json             # 전체 설정
+├── plans/                  # 마일스톤별 XML 계획
+│   ├── milestone-1.xml
+│   └── milestone-2.xml
+├── STACK.md                # (브라운필드) 기술 스택
+├── ARCHITECTURE.md         # (브라운필드) 아키텍처
+├── CONVENTIONS.md          # (브라운필드) 코딩 컨벤션
+└── CONCERNS.md             # (브라운필드) 기존 문제점
+
+gsd-local-patches/          # (업데이트 시) 로컬 수정 백업
+</code></pre><h2 id="트러블슈팅-및-복구">트러블슈팅 및 복구</h2>
+<h3 id="자주-발생하는-문제">자주 발생하는 문제</h3>
+<ol>
+<li>
+<p><strong>컨텍스트 윈도우 초과</strong>: GSD가 자동으로 서브에이전트를 사용하여 회피하지만, 매우 큰 파일을 직접 분석하는 경우 발생할 수 있습니다. 이 경우 파일을 분할하거나 리서처 에이전트에 분석을 위임하세요.</p>
+</li>
+<li>
+<p><strong>계획 검증 실패</strong>: 플랜 체커가 계획을 거부하면, 피드백을 반영하여 계획을 수정합니다. 8차원 중 어떤 차원에서 실패했는지 확인하고 해당 부분만 보완하세요.</p>
+</li>
+<li>
+<p><strong>실행 중 태스크 실패</strong>: 해당 웨이브가 중단되고 오케스트레이터에 보고됩니다. 실패 원인을 분석한 후 <code>/gsd:execute-phase</code>로 재실행할 수 있습니다.</p>
+</li>
+<li>
+<p><strong>깃 충돌</strong>: 브랜칭 전략을 사용하는 경우 머지 충돌이 발생할 수 있습니다. GSD는 충돌 해결을 사용자에게 위임합니다.</p>
+</li>
+</ol>
+<h3 id="statemd를-통한-복구">STATE.md를 통한 복구</h3>
+<p>GSD의 모든 진행 상태는 STATE.md에 기록됩니다. 세션이 중단되거나 에이전트가 종료되어도, 다음 세션에서 STATE.md를 읽어 중단된 지점부터 재개할 수 있습니다. 이것이 파일 기반 컨텍스트 관리의 핵심 이점입니다.</p>
+<h2 id="커뮤니티-및-생태계">커뮤니티 및 생태계</h2>
+<p>GSD는 활발한 커뮤니티를 보유하고 있습니다:</p>
+<ul>
+<li><strong>GitHub</strong>: <a href="https://github.com/gsd-build/get-shit-done">gsd-build/get-shit-done</a></li>
+<li><strong>Discord</strong>: <a href="https://discord.gg/gsd">discord.gg/gsd</a></li>
+<li><strong>X (Twitter)</strong>: <a href="https://x.com/gsd_foundation">@gsd_foundation</a></li>
+<li><strong>제작자</strong>: TÂCHES</li>
+</ul>
+<p>또한 Solana 블록체인 기반의 <strong>$GSD 토큰</strong> 이 존재하여, 커뮤니티 거버넌스 및 생태계 참여 수단으로 활용되고 있습니다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ol>
+<li>
+<p><strong>GSD는 컨텍스트 로트 문제를 해결</strong> 합니다. LLM의 컨텍스트 윈도우 오염으로 인한 품질 저하를 파일 기반 상태 관리와 서브에이전트 패턴으로 근본적으로 해결합니다.</p>
+</li>
+<li>
+<p><strong>&ldquo;코드 전에 계획&quot;이 핵심 원칙</strong> 입니다. XML 형식의 구조화된 계획을 수립하고, 8차원 검증을 거친 뒤에야 코드 작성을 시작합니다.</p>
+</li>
+<li>
+<p><strong>11종의 전문 서브에이전트</strong> 가 각자 신선한 200K 컨텍스트로 작업합니다. 리서처, 플래너, 실행자, 검증자 등 역할이 분리되어 품질과 일관성을 보장합니다.</p>
+</li>
+<li>
+<p><strong>Nyquist 검증</strong> 은 코드 작성 전에 테스트 커버리지 계획을 강제합니다. 소급 검증(<code>/gsd:validate-phase</code>)도 가능합니다.</p>
+</li>
+<li>
+<p><strong>웨이브 실행 모델</strong> 은 의존성 기반 병렬/순차 실행으로 효율성을 극대화합니다. 각 태스크 완료 시 원자적 깃 커밋이 자동 생성됩니다.</p>
+</li>
+<li>
+<p><strong>4가지 런타임(Claude Code, OpenCode, Gemini CLI, Codex)</strong> 을 공식 지원하여 특정 에이전트에 종속되지 않습니다.</p>
+</li>
+<li>
+<p><strong>브라운필드 프로젝트</strong> 에서도 <code>/gsd:map-codebase</code>로 기존 코드를 분석하여 일관된 새 코드를 작성할 수 있습니다.</p>
+</li>
+<li>
+<p><strong>설정 시스템</strong> 으로 모델 프로파일, 워크플로우 토글, 깃 전략을 프로젝트에 맞게 세밀하게 조정할 수 있습니다.</p>
+</li>
+</ol>
+<h2 id="결론">결론</h2>
+<p>GSD는 &ldquo;AI에게 코드를 시키면 알아서 잘 해주겠지&quot;라는 순진한 기대에서 벗어나, <strong>AI 코딩 에이전트를 체계적으로 관리하는 엔지니어링 프레임워크</strong> 를 제시합니다. 컨텍스트 엔지니어링이라는 개념이 아직 낯설게 느껴질 수 있지만, AI 에이전트와 함께 일하는 모든 개발자에게 점점 더 중요해질 역량입니다.</p>
+<p>특히 GSD가 보여주는 <strong>&ldquo;씬 오케스트레이터 + 전문 서브에이전트 + 파일 기반 상태 관리&rdquo;</strong> 패턴은, GSD 자체를 사용하지 않더라도 AI 코딩 워크플로우를 설계할 때 강력한 참고 모델이 됩니다. 프로젝트 규모가 커질수록, 그리고 AI 에이전트에 더 많은 작업을 위임할수록, 이러한 구조화된 접근법의 가치는 기하급수적으로 커집니다.</p>
+<p><code>npx get-shit-done-cc@latest</code> 한 줄로 시작할 수 있으니, AI 코딩의 다음 단계를 경험해 보시기 바랍니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 03월 10일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/development">Development</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/03/2026-03-10-spec-driven-development-for-vibe-coding/" rel="prev">
+        <span>Vibe Coding 시대의 스펙 주도 개발: AI 코딩을 감각이 아니라 명세로 통제하는 방법</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/03/2026-03-10-claude-code-memory-guide/" rel="next">
+        <span>Claude Code Memory 완전 가이드: CLAUDE.md, .claude/rules, Auto Memory를 어떻게 같이 써야 하나</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#gsd란-무엇인가">GSD란 무엇인가</a>
+      <ul>
+        <li><a href="#핵심-설계-원칙">핵심 설계 원칙</a></li>
+      </ul>
+    </li>
+    <li><a href="#코어-워크플로우">코어 워크플로우</a>
+      <ul>
+        <li><a href="#1단계-프로젝트-초기화-gsdnew-project">1단계: 프로젝트 초기화 (<code>/gsd:new-project</code>)</a></li>
+        <li><a href="#2단계-논의-단계-gsddiscuss-phase">2단계: 논의 단계 (<code>/gsd:discuss-phase</code>)</a></li>
+        <li><a href="#3단계-계획-수립-gsdplan-phase">3단계: 계획 수립 (<code>/gsd:plan-phase</code>)</a></li>
+        <li><a href="#4단계-코드-구현-gsdexecute-phase">4단계: 코드 구현 (<code>/gsd:execute-phase</code>)</a></li>
+        <li><a href="#5단계-작업-검증-gsdverify-work">5단계: 작업 검증 (<code>/gsd:verify-work</code>)</a></li>
+        <li><a href="#6단계-마일스톤-완료-gsdcomplete-milestone">6단계: 마일스톤 완료 (<code>/gsd:complete-milestone</code>)</a></li>
+      </ul>
+    </li>
+    <li><a href="#컨텍스트-엔지니어링-아키텍처">컨텍스트 엔지니어링 아키텍처</a>
+      <ul>
+        <li><a href="#컨텍스트-파일-상세">컨텍스트 파일 상세</a></li>
+        <li><a href="#xml-기반-계획-형식">XML 기반 계획 형식</a></li>
+      </ul>
+    </li>
+    <li><a href="#멀티-에이전트-오케스트레이션">멀티 에이전트 오케스트레이션</a>
+      <ul>
+        <li><a href="#에이전트-유형별-역할">에이전트 유형별 역할</a></li>
+        <li><a href="#신선한-컨텍스트의-중요성">신선한 컨텍스트의 중요성</a></li>
+      </ul>
+    </li>
+    <li><a href="#웨이브-실행-모델">웨이브 실행 모델</a>
+      <ul>
+        <li><a href="#웨이브-실행-규칙">웨이브 실행 규칙</a></li>
+        <li><a href="#원자적-깃-커밋-atomic-git-commits">원자적 깃 커밋 (Atomic Git Commits)</a></li>
+      </ul>
+    </li>
+    <li><a href="#nyquist-검증-아키텍처">Nyquist 검증 아키텍처</a>
+      <ul>
+        <li><a href="#nyquist-검증의-동작-방식">Nyquist 검증의 동작 방식</a></li>
+        <li><a href="#플랜-체커의-8차원-검증">플랜 체커의 8차원 검증</a></li>
+        <li><a href="#소급-검증-gsdvalidate-phase">소급 검증 (<code>/gsd:validate-phase</code>)</a></li>
+      </ul>
+    </li>
+    <li><a href="#브라운필드-프로젝트-지원">브라운필드 프로젝트 지원</a>
+      <ul>
+        <li><a href="#브라운필드-컨텍스트-파일-상세">브라운필드 컨텍스트 파일 상세</a></li>
+      </ul>
+    </li>
+    <li><a href="#퀵-모드-quick-mode">퀵 모드 (Quick Mode)</a>
+      <ul>
+        <li><a href="#퀵-모드-플래그">퀵 모드 플래그</a></li>
+      </ul>
+    </li>
+    <li><a href="#설정-시스템-configjson">설정 시스템 (config.json)</a>
+      <ul>
+        <li><a href="#speed-vs-quality-프리셋">Speed vs Quality 프리셋</a></li>
+      </ul>
+    </li>
+    <li><a href="#멀티-런타임-지원">멀티 런타임 지원</a>
+      <ul>
+        <li><a href="#런타임별-설치-방식">런타임별 설치 방식</a></li>
+        <li><a href="#커뮤니티-포트">커뮤니티 포트</a></li>
+      </ul>
+    </li>
+    <li><a href="#설치-및-업데이트">설치 및 업데이트</a>
+      <ul>
+        <li><a href="#설치">설치</a></li>
+        <li><a href="#업데이트-시-로컬-패치-보존">업데이트 시 로컬 패치 보존</a></li>
+      </ul>
+    </li>
+    <li><a href="#보안-고려사항">보안 고려사항</a></li>
+    <li><a href="#전체-명령어-레퍼런스">전체 명령어 레퍼런스</a></li>
+    <li><a href="#프로젝트-파일-구조">프로젝트 파일 구조</a></li>
+    <li><a href="#트러블슈팅-및-복구">트러블슈팅 및 복구</a>
+      <ul>
+        <li><a href="#자주-발생하는-문제">자주 발생하는 문제</a></li>
+        <li><a href="#statemd를-통한-복구">STATE.md를 통한 복구</a></li>
+      </ul>
+    </li>
+    <li><a href="#커뮤니티-및-생태계">커뮤니티 및 생태계</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/ai/" class="badge badge-secondary">Ai</a>
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/context-engineering/" class="badge badge-secondary">Context Engineering</a>
+    <a href="/tags/spec-driven-development/" class="badge badge-secondary">Spec-Driven Development</a>
+    <a href="/tags/agent-orchestration/" class="badge badge-secondary">Agent Orchestration</a>
+    <a href="/tags/opencode/" class="badge badge-secondary">OpenCode</a>
+    <a href="/tags/gemini-cli/" class="badge badge-secondary">Gemini CLI</a>
+    <a href="/tags/codex/" class="badge badge-secondary">Codex</a>
+    <a href="/tags/gsd/" class="badge badge-secondary">GSD</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
