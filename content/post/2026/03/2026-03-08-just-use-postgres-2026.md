@@ -3,15 +3,7 @@ title: "2026년, 그냥 Postgres 쓰세요 — 7개 특화 DB를 대체하는 Po
 date: 2026-03-08T14:00:00+09:00
 categories: [Data]
 draft: false
-tags:
-  - PostgreSQL
-  - pgvector
-  - TimescaleDB
-  - Elasticsearch
-  - pgvectorscale
-  - BM25
-  - DiskANN
-  - database-consolidation
+tags: [postgresql]
 description: "Elasticsearch, Pinecone, Redis, MongoDB, Kafka, InfluxDB를 PostgreSQL 확장으로 대체할 수 있는 이유와 방법을 구체적인 코드와 벤치마크로 설명합니다. AI 에이전트 시대에 데이터베이스 통합이 왜 필수인지 분석합니다."
 ---
 

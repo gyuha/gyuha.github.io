@@ -3,7 +3,7 @@ title: "유용한 Aspect-Oriented Programming(AOP) 모음"
 date: 2024-12-20T13:15:31+09:00
 categories: [Engineering]
 draft: true
-tags: ["Spring", "annotation"]
+tags: [workflow]
 ---
 
 Aspect-Oriented Programming(AOP)은 Spring에서 횡단 관심사를 처리하기 위한 강력한 도구입니다. 

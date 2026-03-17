@@ -3,7 +3,7 @@ title: "Claude Code 완벽 활용 가이드: 31가지 필수 꿀팁"
 date: 2026-01-01T22:50:07+09:00
 categories: [Productivity]
 draft: true
-tags: [claude, claude-code, anthropic, productivity, prompts, automation, tips]
+tags: [claude-code, anthropic, prompt-engineering]
 ---
 
 Anthropic에서 공유한 Claude Code의 생산성 향상 팁을 정리했습니다. Claude Code를 더욱 효율적으로 사용하기 위한 실용적인 가이드입니다.

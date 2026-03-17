@@ -3,12 +3,7 @@ title: "Claude Code 에이전트 팀 비용 50% 줄이는 4가지 비법 정리"
 date: 2026-03-10T21:17:11+09:00
 categories: [Productivity]
 draft: false
-tags:
-  - Claude Code
-  - Agent Teams
-  - Subagents
-  - Hooks
-  - Token Optimization
+tags: [claude-code, agents, hooks]
 description: "짐코딩 영상 내용을 바탕으로 Claude Code Agent Teams의 비용을 줄이면서 품질을 높이는 네 가지 실전 원칙을 정리합니다."
 ---
 

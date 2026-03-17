@@ -3,12 +3,7 @@ title: "Scrapling: 적응형 웹 스크래핑 프레임워크 완전 정복"
 date: 2026-03-12T17:00:00+09:00
 categories: [Automation]
 draft: false
-tags:
-  - Python
-  - Web Scraping
-  - Scrapling
-  - Framework
-  - LLM
+tags: [automation, python]
 description: "단일 요청부터 대규모 크롤링까지 처리하는 적응형 웹 스크래핑 프레임워크 Scrapling을 알아봅니다."
 ---
 

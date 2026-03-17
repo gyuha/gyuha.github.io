@@ -3,7 +3,7 @@ title: "Speculation Rules 사이트 로딩 속도 개선하기"
 date: 2025-01-08T11:13:22+09:00
 categories: [Web]
 draft: true
-tags: [html, javascript]
+tags: [javascript]
 ---
 
 웹 성능은 사용자 경험(UX)을 결정짓는 핵심 요소 중 하나입니다. 사용자가 페이지에서 다른 페이지로 이동할 때 추가적인 로딩 지연 없이 빠르게 전환할 수 있다면, 더 높은 만족도가 보장됩니다.  

@@ -3,14 +3,7 @@ title: "2026년 데이터 엔지니어링 5대 트렌드: 1,101명 실무자 설
 date: 2026-02-24T22:30:00+09:00
 categories: [Data]
 draft: false
-tags:
-  - Data Engineering
-  - Data Modeling
-  - Semantic Layer
-  - Lakehouse
-  - Orchestration
-  - AI Tools
-  - Leadership
+tags: [data-engineering, ai]
 description: "Joe Reis의 2026 State of Data Engineering 설문조사(1,101명 응답)를 기반으로, AI 도구 성숙도 양극화, 데이터 모델링 위기, 오케스트레이션 통합, 레이크하우스 수렴, 리더십 병목까지 5대 핵심 트렌드를 분석합니다."
 ---
 

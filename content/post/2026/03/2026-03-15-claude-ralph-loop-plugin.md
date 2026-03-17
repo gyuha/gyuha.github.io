@@ -3,12 +3,7 @@ title: "Claude가 알아서 완벽하게 일 처리하게 만드는 법 - Ralph 
 date: 2026-03-15T10:00:00+09:00
 categories: [AI]
 draft: false
-tags:
-  - Claude
-  - Ralph Loop
-  - AI 자동화
-  - Stop Hooks
-  - Docker Sandbox
+tags: [claude, workflow, automation]
 description: "Claude가 작업을 완료했다고 보고해도 실제로는 테스트 실패나 린트 에러가 발생하는 경우가 많습니다. Ralph Loop를 사용하면 Claude가 스스로 검증하고 수정하며 완벽하게 작업을 완료할 때까지 반복합니다. Docker 샌드박스, PRD 생성, 태스크 관리까지 지원하는 완전한 자동화 솔루션을 소개합니다."
 ---
 

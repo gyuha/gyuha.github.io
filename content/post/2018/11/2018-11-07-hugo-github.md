@@ -3,7 +3,7 @@ title: "Hugo를 사용한 Github 블로그.."
 date: 2018-11-07T00:20:56+09:00
 categories: [Developer Tools]
 draft: true
-tags: [go,blog,github]
+tags: [git]
 ---
 
 ## hugo 설치 하기

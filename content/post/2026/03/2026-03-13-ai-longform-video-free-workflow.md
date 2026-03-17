@@ -3,14 +3,7 @@ title: "위스크 종료 후 대안: 무료로 AI 롱폼 영상 자동 제작하
 date: 2026-03-13T17:00:00+09:00
 categories: [Automation]
 draft: false
-tags:
-  - AI
-  - Flow
-  - Vrew
-  - Grock
-  - Nanobana
-  - 영상 제작
-  - 자동화
+tags: [automation, workflow, ai]
 description: "위스크가 4월 30일에 종료되지만 걱정할 필요 없습니다. Flow, Grock, Vrew 조합으로 완전 무료로 AI 롱폼 영상을 자동 제작하는 방법을 완벽하게 정리했습니다."
 ---
 

@@ -4,7 +4,6 @@ date: 2026-02-19T11:50:00+09:00
 categories: [Infrastructure]
 draft: false
 description: "Caddy와 Nginx를 HTTPS, 리버스 프록시, 정적 파일 서빙 예제로 비교하고, Caddy를 실제로 설치/실행/운영하는 기본 사용법을 정리합니다."
-tags: [caddy, nginx, reverse-proxy, https, letsencrypt, web-server]
 ---
 
 웹서버를 처음 고를 때 가장 자주 나오는 질문이 있습니다.

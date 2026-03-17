@@ -3,12 +3,7 @@ title: "Claude Code 완전 가이드: 바이브 코딩에서 에이전틱 엔지
 date: 2026-03-05T10:00:00+09:00
 categories: [AI]
 draft: false
-tags:
-  - Claude Code
-  - Vibe Coding
-  - AI Coding
-  - Agentic Engineering
-  - MCP
+tags: [claude-code, mcp, agents]
 description: "Claude Code 2026 에디션 - 바이브 코딩의 기본 개념부터 Agent Teams, Hooks, MCP 서버, 보안 체크리스트까지 28개 섹션에 걸친 완벽 가이드"
 ---
 

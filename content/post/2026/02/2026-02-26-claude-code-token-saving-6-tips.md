@@ -3,10 +3,7 @@ title: "클로드 코드 토큰 녹는 분들, 이 6가지만 바꾸세요"
 date: 2026-02-26T21:00:00+09:00
 categories: [Productivity]
 draft: false
-tags:
-  - Claude Code
-  - Token Optimization
-  - AI Development
+tags: [claude-code, productivity, ai]
 description: "클로드 코드에서 토큰이 너무 빨리 소진되는 문제를 해결하는 6가지 설정과 컨텍스트 관리 방법을 정리합니다."
 ---
 # 클로드 코드 토큰 녹는 분들, 이 6가지만 바꾸세요

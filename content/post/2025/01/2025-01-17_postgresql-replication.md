@@ -3,7 +3,7 @@ title: "PostgreSQL Replication과 Connection Pooling 구현하기"
 date: 2025-01-17T19:41:48+09:00
 categories: [Data]
 draft: true
-tags: [docker, postgresql]
+tags: [postgresql, docker]
 ---
 
 이번 글에서는 Docker Compose를 사용하여 PostgreSQL Replication 환경을 구축하고, PgCat을 통한 Connection Pooling을 구현하는 방법을 알아보겠습니다.

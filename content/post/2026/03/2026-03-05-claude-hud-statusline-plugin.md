@@ -3,11 +3,7 @@ title: "Claude HUD: Claude Code를 위한 실시간 상태 표시줄(Statusline)
 date: 2026-03-05T21:25:00+09:00
 categories: [Developer Tools]
 draft: false
-tags:
-  - claude-code
-  - claude-code-plugin
-  - statusline
-  - claude-hud
+tags: [claude-code, context-engineering, productivity]
 description: "Claude HUD는 Claude Code 환경에서 실행되는 실시간 상태 표시줄 플러그인입니다. 터미널 하단에 컨텍스트 사용량, 활성 도구, 실행 중인 에이전트, 할 일 진행도를 시각화하여 AI 세션의 투명성을 제공합니다."
 ---
 

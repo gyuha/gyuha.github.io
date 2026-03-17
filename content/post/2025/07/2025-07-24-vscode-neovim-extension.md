@@ -3,7 +3,7 @@ title: "VSCode에서 Neovim Extension 설정하기: macOS & Windows 가이드"
 date: 2025-07-24T23:17:58+09:00
 categories: [Developer Tools]
 draft: false
-tags: [vscode, neovim, vim, macos, windows, hop.nvim]
+tags: [vscode, workflow]
 ---
 
 ## Vim에서 Neovim으로 전향한 이유

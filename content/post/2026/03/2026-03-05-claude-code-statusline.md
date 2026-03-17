@@ -2,8 +2,8 @@
 title: "Claude Code Statusline 기능으로 컨텍스트 관리하기"
 date: 2026-03-05
 categories: [Developer Tools]
-tags: [claude-code, productivity, tips]
 draft: false
+tags: [claude-code, context-engineering, productivity]
 description: "Claude Code 초보자 99%가 모르는 statusline 기능으로 대화 컨텍스트 사용량을 실시간으로 확인하는 방법"
 original_url: https://www.threads.com/@devdesign.kr/post/DVcgrtPkhxq
 ---

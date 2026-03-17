@@ -3,7 +3,7 @@ title: "Typescript를 사용한 Express 프로젝트 설정하기(with Eslint)"
 date: 2020-06-10T23:36:41+09:00
 categories: [Web]
 draft: true
-tags: [express,typescript,node]
+tags: [typescript, javascript]
 ---
 
 vscode에서 typescript를 사용한 express 프로젝트를 시작 하면서 설정하는 기본적인 작업을 정리해 봅니다.

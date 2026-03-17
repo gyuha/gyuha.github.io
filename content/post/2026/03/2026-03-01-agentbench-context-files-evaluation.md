@@ -3,12 +3,7 @@ title: "AGENTS.md는 정말 도움이 될까: AGENTbench 논문으로 본 컨텍
 date: 2026-03-01T05:20:00+09:00
 categories: [AI]
 draft: false
-tags:
-  - AGENTS.md
-  - AGENTbench
-  - SWE-bench
-  - Coding Agent
-  - Context Engineering
+tags: [claude-code, agents, testing]
 description: "arXiv 2602.11988v1을 바탕으로, 저장소 컨텍스트 파일(AGENTS.md/CLAUDE.md)이 코딩 에이전트 성능과 비용에 미치는 영향을 실험 설계와 수치 중심으로 정리합니다."
 ---
 

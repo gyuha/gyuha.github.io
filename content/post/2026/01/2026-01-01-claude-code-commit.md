@@ -3,7 +3,7 @@ title: "효율적인 Git 커밋 전략: 작업을 논리적 단위로 나누기"
 date: 2026-01-01T23:32:27+09:00
 categories: [Engineering]
 draft: false
-tags: ["Git", "버전관리", "커밋전략", "개발워크플로우"]
+tags: [claude-code, git, workflow]
 ---
 
 Claude code에서 commit 명령을 간단하게 실행하는 방법을 공유합니다. <!--more-->

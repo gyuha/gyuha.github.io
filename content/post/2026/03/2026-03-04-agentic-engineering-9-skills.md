@@ -2,7 +2,7 @@
 title: "에이전틱 엔지니어링의 9가지 핵심 스킬"
 date: 2026-03-04
 categories: [Engineering]
-tags: ["AI", "Agentic", "Engineering", "LLM", "Productivity"]
+tags: [skills, agents, productivity]
 description: "Karpathy가 제안한 에이전틱 엔지니어링과 실전에서 얻은 9가지 핵심 스킬에 대한 심층 분석"
 ---
 

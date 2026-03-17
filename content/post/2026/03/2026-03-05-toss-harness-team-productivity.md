@@ -3,13 +3,7 @@ title: "Software 3.0 시대, Harness를 통한 조직 생산성 저점 높이기
 date: 2026-03-05
 categories: [Insights]
 draft: false
-tags:
-  - LLM
-  - Claude Code
-  - Context Engineering
-  - Harness
-  - Marketplace
-  - 조직 생산성
+tags: [productivity, workflow]
 description: "토스페이먼츠의 'Harness' 개념을 통해 LLM 팀의 생산성 저점을 높이는 방법을 살펴봅니다. 컨텍스트 엔지니어링의 중요성과 실행 가능한 SSOT, 그리고 세 가지 지식 계층 아키텍처를 소개합니다."
 ---
 

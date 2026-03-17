@@ -3,13 +3,7 @@ title: "2026 웹 개발 전환점: Frameworks Don't Matter Anymore의 핵심 정
 date: 2026-02-28T11:40:00+09:00
 categories: [Web]
 draft: false
-tags:
-  - React
-  - Framework
-  - Isomorphic
-  - Remix
-  - SolidJS
-  - Architecture
+tags: [javascript]
 description: "'Frameworks don't matter anymore...' 영상을 바탕으로 React 중심 개발의 구조적 한계, AI 시대 코드 회귀 문제, isomorphic-first 전환 흐름을 근거 중심으로 정리합니다."
 ---
 

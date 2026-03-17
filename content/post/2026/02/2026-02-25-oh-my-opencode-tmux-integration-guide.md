@@ -3,13 +3,7 @@ title: "oh-my-opencode-slim Tmux 통합 가이드: AI 에이전트가 일하는 
 date: 2026-02-25T22:20:00+09:00
 categories: [AI]
 draft: false
-tags:
-  - Multi Agent
-  - OpenCode
-  - Tmux
-  - oh-my-opencode
-  - CLI
-  - DevOps
+tags: [agents, tmux, workflow]
 description: "oh-my-opencode-slim의 Tmux 통합 기능을 활용해 6개 AI 에이전트가 병렬로 작업하는 과정을 실시간 모니터링하고, 설정부터 트러블슈팅까지 실전 운영 노하우를 정리합니다."
 ---
 

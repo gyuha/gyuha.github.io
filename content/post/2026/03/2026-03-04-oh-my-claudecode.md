@@ -3,12 +3,7 @@ title: "oh-my-claudecode: Claude Code를 위한 멀티 에이전트 오케스트
 date: 2026-03-04T15:00:00+09:00
 categories: [AI]
 draft: false
-tags:
-  - claude-code
-  - multi-agent
-  - orchestration
-  - vibe-coding
-  - automation
+tags: [claude-code, agents, vibe-coding]
 description: "한국인 개발자가 만든 Claude Code용 올인원 플러그인 oh-my-claudecode를 소개한다. 32개 전문 에이전트가 역할별로 나누어 설계, 구현, 검증을 자동화하고 병렬 실행으로 생산성을 극대화하는 방법을 살펴본다."
 ---
 

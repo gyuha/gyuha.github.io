@@ -3,8 +3,8 @@ title: "linux mpv 자막 번역기"
 date: 2026-01-16T22:04:30+09:00
 categories: [Productivity]
 draft: true
+tags: [terminal, productivity]
 description: "mpv 플레이어에서 실시간으로 자막을 번역해주는 도구를 소개합니다. Linux 환경에서 mpv와 함께 사용하여 외국어 영상 시청 시 편리한 번역 기능을 제공합니다."
-tags: ["mpv", "자막 번역", "Linux", "동영상 플레이어"]
 ---
 
 mpv는 강력한 오픈소스 동영상 플레이어로, 다양한 기능을 플러그인 형태로 확장할 수 있습니다. 이번 글에서는 mpv에서 자막을 실시간으로 번역해주는 Lua 스크립트를 소개합니다. 이 스크립트는 `trans` 명령줄 도구를 사용하여 자막을 번역하며, Linux 환경에서 mpv와 함께 사용할 수 있습니다.

@@ -3,8 +3,8 @@ title: "OpenClaw 설치 가이드: Getting Started 기준으로 10분 만에 올
 date: 2026-02-18T14:35:00+09:00
 categories: [AI]
 draft: false
+tags: [agents, workflow]
 description: "OpenClaw 공식 Getting Started 문서를 기준으로 설치/온보딩/대시보드 실행까지 정리하고, 서버 환경에서 `openclaw dashboard --no-open` 출력이 나왔을 때 SSH 터널로 접속하는 방법을 단계별로 설명합니다."
-tags: [openclaw, dashboard, ssh, remote-access, install, agent]
 ---
 
 OpenClaw를 처음 설치할 때는 공식 문서의 최소 경로대로 진행하면 가장 빠르게 동작을 확인할 수 있습니다.

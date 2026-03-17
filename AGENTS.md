@@ -137,6 +137,42 @@ Prefer local patterns over global rewrites.
   - `Product`
   - `Insights`
 - When categorizing a new post, pick the single best-fit canonical category from the list above instead of inventing a new label.
+- Tags are optional. If no canonical tag fits the post well, leave `tags` empty or omit it.
+- When tags are used, keep them to 3 or fewer per post.
+- Allowed tags are limited to this canonical set only:
+  - `ai`
+  - `llm`
+  - `agents`
+  - `claude`
+  - `claude-code`
+  - `mcp`
+  - `skills`
+  - `workflow`
+  - `automation`
+  - `context-engineering`
+  - `prompt-engineering`
+  - `vibe-coding`
+  - `notebooklm`
+  - `anthropic`
+  - `gemini`
+  - `hooks`
+  - `tmux`
+  - `terminal`
+  - `git`
+  - `vscode`
+  - `python`
+  - `typescript`
+  - `javascript`
+  - `docker`
+  - `postgresql`
+  - `rag`
+  - `data-engineering`
+  - `security`
+  - `testing`
+  - `productivity`
+  - `superpowers`
+- Tag values must use English lowercase kebab-case exactly as listed above.
+- Prefer the smallest useful tag set for each post instead of mirroring every noun in the article.
 - For charts/diagrams in posts, use Mermaid by default.
 - For line breaks in post content, use HTML `<br>` instead of `\n`.
 - When bolding Korean text, separate any trailing particle with a space (for example, `**스킬** 은`, `**훅** 을`) to avoid emphasis rendering issues.

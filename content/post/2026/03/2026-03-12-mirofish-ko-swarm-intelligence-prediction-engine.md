@@ -3,13 +3,7 @@ title: "MiroFish-Ko는 어떻게 미래를 리허설하나: 군집 지능 예측
 date: 2026-03-12T08:30:00+09:00
 categories: [AI]
 draft: false
-tags:
-  - MiroFish
-  - Swarm Intelligence
-  - Multi-Agent
-  - GraphRAG
-  - Flask
-  - Vue
+tags: [agents, ai]
 description: "MiroFish-Ko 공개 저장소를 바탕으로, 이 프로젝트가 어떤 문제를 풀려고 하는지, Flask + Vue 기반 구조 위에서 GraphRAG, OASIS, ReportAgent를 어떻게 묶어 예측 시뮬레이션 제품으로 만들고 있는지 정리합니다."
 ---
 

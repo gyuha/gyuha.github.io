@@ -3,13 +3,7 @@ title: "Claude Code 업데이트 심화 정리: Memory, Skills(번들 스킬), R
 date: 2026-03-02T11:45:00+09:00
 categories: [AI]
 draft: false
-tags:
-  - claude-code
-  - memory
-  - skills
-  - remote-control
-  - ralph-loop
-  - workflow
+tags: [claude-code, skills, workflow]
 description: "공식 문서 5개(memory, skills, remote control, ralph-loop plugin, ralph-wiggum README)를 기준으로, Claude Code의 최신 운영 방식과 실전 적용 패턴을 상세 정리합니다."
 ---
 

@@ -3,12 +3,7 @@ title: "개발자라면 다 아는 AI 보안 상식 7가지"
 date: 2026-03-04
 categories: [Infrastructure]
 draft: false
-tags:
-  - ai-security
-  - api-key
-  - prompt-injection
-  - pii-masking
-  - supply-chain
+tags: [security, prompt-engineering, ai]
 description: "AI 시대에 개발자가 반드시 알아야 할 7가지 보안 필수 상식 - API Key Hardcoding, Supply Chain Poisoning, System Prompt Leakage, PII Data Masking, DB Privilege Sandboxing, Third-Party Plugin Vulnerability, Real-time Audit Logging"
 ---
 

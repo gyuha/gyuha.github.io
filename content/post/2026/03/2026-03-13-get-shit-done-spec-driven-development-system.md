@@ -3,12 +3,7 @@ title: "GSD - AI 코드 개발을 위한 컨텍스트 엔지니어링 및 스펙
 date: 2026-03-13T17:00:00+09:00
 categories: [AI]
 draft: false
-tags:
-  - Claude Code
-  - Meta Prompting
-  - Spec-Driven Development
-  - Context Engineering
-  - GSD
+tags: [context-engineering, workflow, testing]
 description: "Claude Code, OpenCode, Gemini CLI, Codex를 위한 가볍고 강력한 메타 프롬프팅 및 컨텍스트 엔지니어링 시스템인 GSD를 소개합니다."
 ---
 

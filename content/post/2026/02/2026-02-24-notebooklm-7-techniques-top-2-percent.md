@@ -3,15 +3,8 @@ title: "NotebookLM 7가지 핵심 기술: 상위 2% 활용법 완전 정리"
 date: 2026-02-24T22:00:00+09:00
 categories: [Productivity]
 draft: false
+tags: [notebooklm, prompt-engineering, productivity]
 description: "Google NotebookLM을 제대로 활용하는 7가지 핵심 기술을 단계별로 정리합니다. 맞춤 설정, 딥 리서치, 소스 검증, 소스 필터링, 멀티모달 전략, AI 오디오 오버뷰, 시각화 자료 제작까지 실전 워크플로우를 다룹니다."
-tags:
-  - notebooklm
-  - google
-  - deep-research
-  - ai-productivity
-  - prompt-engineering
-  - infographic
-  - mermaid
 ---
 
 대부분의 사용자가 NotebookLM에 소스를 넣고 바로 질문하는 패턴에 머물러 있습니다. 이 글은 백프롬 채널 영상을 바탕으로, 소스 투입 전 사전 설정부터 최종 시각화 산출물까지 이어지는 7단계 워크플로우를 실무 관점에서 정리한 노트입니다.

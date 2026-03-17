@@ -3,15 +3,7 @@ title: "2026년 무료 AI 유튜브 제작 파이프라인: Whisk, Grok, Gemini 
 date: 2026-03-12T22:30:00+09:00
 categories: [Automation]
 draft: false
-tags:
-  - AI
-  - YouTube
-  - Whisk
-  - Grok
-  - Gemini
-  - CapCut
-  - 자동화
-  - Mermaid
+tags: [gemini, automation, ai]
 description: "AI 유튜브 블루오션, 무료 이미지 생성, 사진 한 장 영상화, 스토리보드 자동화, 편집과 정책 리스크까지 네 편의 영상을 하나의 2026년형 제작 파이프라인으로 재구성합니다."
 ---
 

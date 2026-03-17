@@ -3,12 +3,7 @@ title: "AI 코딩의 숨은 비용: 당신의 뇌가 변하고 있다"
 date: 2026-03-04T10:00:00+09:00
 categories: [Insights]
 draft: false
-tags:
-  - AI코딩
-  - 인지부채
-  - 생산성
-  - Claude
-  - Cursor
+tags: [ai, vibe-coding, productivity]
 description: "AI 코딩 도구는 생산성을 높여주지만, 대시보드에 나타나지 않는 비용이 있다. 인지 부채, 기술 퇴화, 시니어리티 파이프라인 붕괴 등 AI 의존이 가져오는 숨은 위험을 분석한다."
 ---
 

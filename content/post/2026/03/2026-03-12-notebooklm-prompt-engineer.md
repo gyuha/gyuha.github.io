@@ -3,11 +3,7 @@ title: "NotebookLM으로 프롬프트 엔지니어링 자동화 시스템 구축
 date: 2026-03-12T10:00:00+09:00
 categories: [AI]
 draft: false
-tags:
-  - NotebookLM
-  - Prompt Engineering
-  - AI Tools
-  - Workflow Automation
+tags: [notebooklm, prompt-engineering]
 description: "Google NotebookLM을 활용해 도구 발견, 스크립트 작성, 기술적 실행을 자동화하는 '시니어 프롬프트 엔지니어' 시스템을 구축하는 방법을 알아봅니다."
 ---
 

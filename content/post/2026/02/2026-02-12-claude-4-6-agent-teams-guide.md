@@ -3,7 +3,7 @@ title: "Claude 4.6 Agent Teams 완전 가이드: 활성화 방법, 트리거 기
 date: 2026-02-12T22:45:04+09:00
 categories: [AI]
 draft: false
-tags: [claude, claude-code, anthropic, agent-teams, opus-4-6, collaboration]
+tags: [claude-code, agents, anthropic]
 ---
 
 Claude Opus 4.6 출시와 함께 Agent Teams(다중 에이전트 팀) 기능이 공개되었습니다. 이 기능을 통해 여러 개의 Claude 인스턴스가 실제 개발 팀처럼 병렬로 협업할 수 있게 되었죠. 많은 개발자분이 Agent Teams를 어떻게 활성화하는지, 어떻게 실행하는지, 그리고 기존 Subagent와는 무엇이 다른지 궁금해하고 계십니다.

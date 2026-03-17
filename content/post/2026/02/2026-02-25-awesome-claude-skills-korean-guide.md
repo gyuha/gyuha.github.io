@@ -3,8 +3,8 @@ title: "Awesome Claude Skills 생태계 완전 가이드 — 2026년 스킬·훅
 date: 2026-02-25T17:30:00+09:00
 categories: [AI]
 draft: false
+tags: [claude-code, skills, hooks]
 description: "Claude Code Skills 생태계의 모든 것 — Anthropic 공식 17개 스킬부터 Microsoft 129개, Trail of Bits 보안 22개, 커뮤니티 스킬·훅·오케스트레이터·CLAUDE.md 표준화까지 총망라한 한국어 카탈로그"
-tags: [claude, skills, ecosystem, hooks, orchestrator, mermaid, trail-of-bits, claude-md]
 ---
 
 2026년 2월 현재, Claude Code의 Skills 생태계는 폭발적으로 성장했다. Anthropic 공식 17개 스킬, Microsoft의 129개 Azure SDK 스킬, Trail of Bits의 22개 보안 전문 스킬, OpenAI의 27개 크로스 플랫폼 스킬, 그리고 수백 개의 커뮤니티 스킬이 등장했다. 여기에 9개 이상의 오케스트레이터, 15개 훅 이벤트, 슬래시 커맨드, Status Line 확장까지 — 이제 Claude Code는 단순한 AI 코딩 도구를 넘어 하나의 **개발 플랫폼 생태계**로 진화하고 있다.

@@ -3,15 +3,8 @@ title: "Claude Code 기능 가이드: Memory, Slash Commands, Agents, Skills, Ho
 date: 2026-03-15T09:00:00+09:00
 categories: [AI]
 draft: false
+tags: [claude-code, skills, agents]
 description: "ProductTalk의 Claude Code 기능 가이드를 바탕으로 Markdown files, slash commands, agents, skills, hooks, plugins의 용도를 정리하고, 최신 공식 문서 기준으로 slash commands가 skills와 어떻게 통합되었는지 함께 설명합니다."
-tags:
-  - Claude Code
-  - Memory
-  - Skills
-  - Slash Commands
-  - Agents
-  - Hooks
-  - Plugins
 ---
 
 ProductTalk의 글은 Claude Code를 이루는 building block을 6개로 나눠 설명합니다.<br>Markdown files, slash commands, agents, skills, hooks, plugins를 각각 언제 써야 하는지 사용자 관점에서 매우 잘 정리한 글입니다.<br>특히 "무엇을 어떤 상황에서 꺼내 써야 하는가"라는 실전 감각을 잡는 데 도움이 됩니다.

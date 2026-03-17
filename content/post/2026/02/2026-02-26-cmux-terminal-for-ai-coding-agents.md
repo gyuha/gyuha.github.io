@@ -3,14 +3,7 @@ title: "cmux: AI 코딩 에이전트를 위한 네이티브 macOS 터미널"
 date: 2026-02-26T21:00:00+09:00
 categories: [Developer Tools]
 draft: false
-tags:
-  - cmux
-  - terminal
-  - ghostty
-  - claude-code
-  - macos
-  - swift
-  - ai-agent
+tags: [claude-code, agents, terminal]
 description: "AI 코딩 에이전트를 위해 특별히 설계된 macOS 네이티브 터미널 emulator cmux의 핵심 기능과 아키텍처를 소개합니다."
 ---
 

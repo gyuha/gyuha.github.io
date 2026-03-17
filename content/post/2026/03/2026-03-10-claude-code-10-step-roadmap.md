@@ -3,12 +3,7 @@ title: "Claude Code 왜 나만 느릴까: 10단계 성장 로드맵 정리"
 date: 2026-03-10T21:17:11+09:00
 categories: [Productivity]
 draft: false
-tags:
-  - Claude Code
-  - Workflow
-  - MCP
-  - Context Engineering
-  - Token Optimization
+tags: [claude-code, mcp, context-engineering]
 description: "Maker Evan 영상 내용을 바탕으로 Claude Code를 처음부터 빠르게 익히기 위한 10단계 성장 순서와 컨텍스트·토큰 관리 포인트를 정리합니다."
 ---
 

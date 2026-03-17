@@ -3,12 +3,7 @@ title: "AI 스킬 9가지: 이것만 알면 내년에 도태되지 않습니다"
 date: 2026-03-05T10:00:00+09:00
 categories: [Insights]
 draft: false
-tags:
-  - AI
-  - 생산성
-  - 에이전틱AI
-  - 업무자동화
-  - 스킬
+tags: [skills, automation, productivity]
 description: "AI를 쓴다고 다 빨라지지 않습니다. 같은 AI를 쓰는데 10분에 끝내는 사람과 2시간 삽질하는 사람의 차이는 무엇일까요? AI와 효과적으로 일하는 9가지 필수 스킬을 정리합니다."
 ---
 

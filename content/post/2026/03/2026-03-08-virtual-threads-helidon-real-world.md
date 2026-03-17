@@ -3,15 +3,7 @@ title: "Virtual Threads 실전 적용기: Helidon 4로 빠르고 안정적인 Ja
 date: 2026-03-08T09:00:00+09:00
 categories: [Engineering]
 draft: false
-tags:
-  - Java
-  - Virtual Threads
-  - Helidon
-  - Project Loom
-  - Concurrency
-  - Microservices
-  - JEP 444
-  - Performance
+tags: [workflow]
 description: "Oracle Helidon 팀의 Joe DiPalma가 발표한 'Virtual Threads in the Real World' 영상을 바탕으로, Virtual Threads의 실전 동작 원리, Helidon 4의 설계 철학, 핀닝 문제 해결, 동시성 제어 전략, 그리고 미래 JEP까지 정리합니다."
 ---
 

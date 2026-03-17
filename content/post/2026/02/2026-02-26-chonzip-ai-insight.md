@@ -3,12 +3,7 @@ title: "촌집 AI Insight: 매물 등록 시 분석이 만들어지는 과정"
 date: 2026-02-26T21:00:00+09:00
 categories: [AI]
 draft: false
-tags:
-  - AI
-  - Backend
-  - Claude API
-  - Architecture
-  - Rural Housing
+tags: [claude, ai]
 description: "촌집 플랫폼의 AI 인사이트 파이프라인을 살펴본다. 공공데이터 3종 수집부터 Claude API로 강점·리스크·라이프스타일·요약 4종 인사이트 생성까지, 비동기 워커와 DAG 구조를 활용한 자동화 아키텍처를详解한다."
 ---
 

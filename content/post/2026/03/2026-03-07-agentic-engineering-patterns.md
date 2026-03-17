@@ -3,13 +3,7 @@ title: "에이전트 엔지니어링 패턴 - Simon Willison의 코딩 에이전
 date: 2026-03-07T10:00:00+09:00
 categories: [Engineering]
 draft: false
-tags:
-  - coding-agents
-  - claude-code
-  - agentic-engineering
-  - LLM
-  - TDD
-  - prompt-engineering
+tags: [claude-code, agents, testing]
 description: "Simon Willison의 Agentic Engineering Patterns 가이드를 정리합니다. 코딩 에이전트를 효과적으로 활용하기 위한 원칙, 테스트 전략, 코드 이해 방법, 그리고 실전 프롬프트 패턴을 다룹니다."
 ---
 

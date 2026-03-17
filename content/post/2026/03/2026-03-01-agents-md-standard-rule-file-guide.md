@@ -3,12 +3,7 @@ title: "AGENTS.md 표준 규칙 파일 운영 가이드: 분산된 에이전트 
 date: 2026-03-01T20:30:00+09:00
 categories: [AI]
 draft: false
-tags:
-  - AGENTS.md
-  - Coding Agent
-  - Context Engineering
-  - MCP
-  - Prompt Strategy
+tags: [claude-code, mcp, agents]
 description: "코딩 에이전트별로 흩어진 규칙 파일을 AGENTS.md 표준으로 통합하는 이유와, 500줄 제한/중첩 구조/버전 관리 중심의 실전 운영 패턴을 영상 근거와 함께 정리합니다."
 ---
 

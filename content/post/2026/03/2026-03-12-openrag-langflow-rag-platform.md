@@ -3,14 +3,7 @@ title: "OpenRAG: Langflow 기반 통합 RAG 플랫폼"
 date: 2026-03-12T17:00:00+09:00
 categories: [AI]
 draft: false
-tags:
-  - RAG
-  - Langflow
-  - OpenSearch
-  - Docling
-  - MCP
-  - AI
-  - Vector Database
+tags: [rag, llm, ai]
 description: "OpenRAG는 Langflow, OpenSearch, Docling을 통합한 사전 패키징된 RAG 플랫폼으로, 시각적 워크플로우 빌더와 엔터프라이즈급 시맨틱 검색을 제공합니다."
 ---
 

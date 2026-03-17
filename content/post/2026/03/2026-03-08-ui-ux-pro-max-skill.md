@@ -3,12 +3,7 @@ title: "UI UX Pro Max Skill: AI 기반 디자인 시스템 생성 도구 완벽 
 date: 2026-03-08T17:00:00+09:00
 categories: [Product]
 draft: false
-tags:
-  - AI
-  - UI/UX
-  - Design System
-  - Claude Code
-  - Open Source
+tags: [claude-code, skills, workflow]
 description: "UI UX Pro Max Skill은 AI 어시스턴트를 위한 디자인 인텔리전스 스킬로, 100개의 산업별 추론 규칙, 67개 UI 스타일, 96개 색상 팔레트를 통해 완벽한 디자인 시스템을 자동으로 생성합니다."
 ---
 

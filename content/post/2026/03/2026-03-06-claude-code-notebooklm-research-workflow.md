@@ -3,14 +3,8 @@ title: "Claude Code + NotebookLM: 무료 리서치 스택 구축 가이드"
 date: 2026-03-06T10:00:00+09:00
 categories: [AI]
 draft: false
+tags: [claude-code, notebooklm, workflow]
 description: "Claude Code와 Google NotebookLM을 결합하여 YouTube 영상 자동 수집, RAG 기반 분석, 인포그래픽 생성까지 한 번에 처리하는 무료 리서치 워크플로우를 구축하는 방법을 정리합니다."
-tags:
-  - claude-code
-  - notebooklm
-  - rag
-  - research-workflow
-  - youtube-scraping
-  - mermaid
 ---
 
 Claude Code는 강력한 리서치 에이전트지만, 단독으로 사용하면 웹 검색 결과에 의존하는 수준에 머물기 쉽습니다. Chase AI 채널의 영상에서는 Claude Code와 Google NotebookLM을 결합하여 **YouTube 자동 스크래핑 → RAG 분석 → 시각화 산출물**까지 처리하는 무료 워크플로우를 소개합니다. 이 글은 해당 영상을 바탕으로 전체 파이프라인을 단계별로 정리한 노트입니다.

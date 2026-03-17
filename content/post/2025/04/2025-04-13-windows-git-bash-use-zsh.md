@@ -3,7 +3,7 @@ title: "윈도우 git-bash에서 zsh 사용하기"
 date: 2025-04-13T13:49:04+09:00
 categories: [Developer Tools]
 draft: false
-tags: [windows, git-bash, zsh, terminal]
+tags: [git, terminal]
 ---
 
 윈도우 환경에서 개발을 하다보면 터미널의 기능이 제한적이라는 것을 느끼게 됩니다. 이럴 때 git-bash와 zsh를 함께 사용하면 더 강력한 터미널 환경을 구축할 수 있습니다. 이 글에서는 윈도우 git-bash에서 zsh를 설치하고 설정하는 방법을 알아보겠습니다.

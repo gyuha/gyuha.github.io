@@ -3,14 +3,7 @@ title: "Claude Code Skill Creator 업데이트 정리: 평가, 벤치마크, 트
 date: 2026-03-16T17:07:49+09:00
 categories: [AI]
 draft: false
-tags:
-  - Claude Code
-  - Anthropic
-  - Skills
-  - Skill Creator
-  - Evals
-  - Benchmark
-  - Workflow
+tags: [claude-code, skills, anthropic]
 description: "Nate Herk 영상과 Anthropic 공식 자료를 바탕으로 skill-creator 업데이트의 핵심인 평가, 벤치마크, 트리거 튜닝, 그리고 실전 반복 개선 흐름을 정리합니다."
 ---
 

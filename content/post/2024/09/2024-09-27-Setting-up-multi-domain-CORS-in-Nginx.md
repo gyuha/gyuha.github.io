@@ -3,6 +3,7 @@ title: "Nginx에서 다중 도메인 CORS 설정하기"
 date: 2024-09-27T08:18:16+09:00
 categories: [Infrastructure]
 draft: true
+tags: [security]
 ---
 
 Nginx 서버에서 여러 도메인에 대해 CORS(Cross-Origin Resource Sharing)를 설정하는 방법에 대해 알아보겠습니다.

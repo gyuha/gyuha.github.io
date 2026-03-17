@@ -3,7 +3,7 @@ title: "자바스크립트 배열 메서드 정리"
 date: 2020-03-15T21:39:55+09:00
 categories: [Web]
 draft: true
-tags: [javascript, array]
+tags: [javascript]
 ---
 
 자바스크립트의 배열을 메서드를 정리해 봅니다.

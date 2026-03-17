@@ -3,7 +3,7 @@ title: "Pandas의 DataFrame에서 자주 사용되는 유용한 메서드들 소
 date: 2024-11-26T08:18:54+09:00
 categories: [Data]
 draft: true
-tags: ["pandas", "python"]
+tags: [data-engineering, python]
 ---
 
 Pandas는 데이터 분석 및 조작을 위한 강력한 라이브러리로, 특히 DataFrame 객체는 표 형식의 데이터를 다루는 데 매우 유용합니다. 

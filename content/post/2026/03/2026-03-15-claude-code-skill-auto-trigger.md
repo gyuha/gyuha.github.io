@@ -3,12 +3,7 @@ title: "Claude Code 스킬 자동 발동 가이드"
 date: 2026-03-15T01:41:05+09:00
 categories: [AI]
 draft: true
-tags:
-  - claude-code
-  - skills
-  - hooks
-  - workflow
-  - anthropic
+tags: [claude-code, skills, anthropic]
 description: "Claude Code에서 스킬이 자동으로 발동되도록 설계하는 방법을 다룹니다. 스킬 description 작성법, CLAUDE.md 설정, hooks와의 차이점을 실전 예시와 함께 정리했습니다."
 ---
 

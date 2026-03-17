@@ -3,13 +3,7 @@ title: "Antigravity 기반 멀티 LLM 오케스트레이션: GPT·Claude Code·C
 date: 2026-02-24T20:20:00+09:00
 categories: [Automation]
 draft: false
-tags:
-  - Multi Agent
-  - Antigravity
-  - GPT
-  - Claude Code
-  - Codex
-  - MCP
+tags: [claude-code, mcp, agents]
 description: "YouTube 실전 데모를 바탕으로 Antigravity에서 여러 LLM 에이전트를 역할 분담시키고, 실시간 매크로 대시보드까지 연결하는 오케스트레이션 패턴을 정리합니다."
 ---
 

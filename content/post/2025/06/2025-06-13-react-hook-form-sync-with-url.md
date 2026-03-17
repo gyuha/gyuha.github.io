@@ -3,10 +3,7 @@ title: Next.js에서 react-hook-form과 URL을 우아하게 동기화하는 법 
 date: 2025-06-13T21:00:01+09:00
 categories: [Web]
 draft: true
-tags:
-  - next.js
-  - react-hook-form
-  - typescript
+tags: [typescript, javascript, hooks]
 ---
 
 이번 포스트에서는 Next.js 프로젝트를 진행하면서 유용하게 사용할 수 있는 자작 커스텀 훅, `useFormUrlSync`에 대해 이야기하고자 합니다.

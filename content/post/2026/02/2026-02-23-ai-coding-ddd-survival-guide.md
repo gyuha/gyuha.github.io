@@ -3,12 +3,7 @@ title: "AI 코딩 시대, DDD를 모르면 왜 유지보수가 무너지는가"
 date: 2026-02-23T01:55:00+09:00
 categories: [Engineering]
 draft: false
-tags:
-  - DDD
-  - Domain-Driven Design
-  - AI Coding
-  - Vibe Coding
-  - Claude Code
+tags: [claude-code, vibe-coding, workflow]
 description: "메이커 에반 영상 내용을 바탕으로, AI 코딩 품질을 높이기 위한 DDD의 역할(도메인 경계, 용어 정렬, 컨텍스트 축소, 훅 트리거 연계)을 실무 관점에서 정리합니다."
 ---
 

@@ -3,12 +3,7 @@ title: "Prompt-Level Distillation(PLD): 미세튜닝 없이 추론 성능을 끌
 date: 2026-03-01T05:20:00+09:00
 categories: [AI]
 draft: false
-tags:
-  - Prompt Engineering
-  - Distillation
-  - Chain-of-Thought
-  - Inference Optimization
-  - Gemma
+tags: [prompt-engineering, llm]
 description: "arXiv 2602.21103v1을 바탕으로, Prompt-Level Distillation(PLD)의 4단계 파이프라인과 성능, 그리고 실무 적용 시 체크포인트를 근거 중심으로 정리합니다."
 ---
 

@@ -3,8 +3,8 @@ title: "바이브 코딩 디자인, 실무에서 바로 쓰는 6가지 규칙"
 date: 2026-02-17T00:40:00+09:00
 categories: [Product]
 draft: false
+tags: [javascript, vibe-coding, ai]
 description: "메이커 에반 영상(바이브코딩 결과물, 3초만에 들통나는 이유)을 바탕으로 바이브 코딩 결과물의 디자인 완성도를 높이는 6가지 규칙을 실전 관점에서 정리했습니다."
-tags: [vibe-coding, ai, ui, ux, design-system, shadcn, nextjs]
 ---
 
 바이브 코딩으로 기능은 빠르게 완성했는데, 화면을 여는 순간 "AI가 만든 티"가 나는 경험을 한 번쯤 해보셨을 겁니다.

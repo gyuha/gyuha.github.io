@@ -3,13 +3,7 @@ title: "API, MCP, CLI, Skills는 대체 관계가 아니다: AI 도구를 보는
 date: 2026-03-16T23:18:21+09:00
 categories: [AI]
 draft: false
-tags:
-  - API
-  - MCP
-  - CLI
-  - Skills
-  - AI Agents
-  - Workflow
+tags: [mcp, skills, agents]
 description: "Threads 논쟁을 바탕으로 API, MCP, CLI, Skills가 서로 무엇을 대체하는 개념이 아니라 서로 다른 레이어를 맡는다는 점을 4레이어 관점에서 정리합니다."
 original_url: https://www.threads.com/@unclejobs.ai/post/DV52lYnCRk_?xmt=AQF0LjtAlcgxjxNISmf7MbQcvKwNQr7MVcw4tiLoLjwR1FAg8Yg8v--zQvx6GrlI2C_SIXZp&slof=1
 ---

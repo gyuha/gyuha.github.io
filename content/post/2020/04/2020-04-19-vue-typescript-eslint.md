@@ -3,7 +3,7 @@ title: "Vscode에서 vue 프로젝트 생성시 ESlint와 Prettier 설정해 주
 date: 2020-04-19T03:50:46+09:00
 categories: [Web]
 draft: true
-tags: [vscode, vue, typescript, eslint, tslint]
+tags: [typescript, javascript, vscode]
 ---
 
 ## Vue 프로젝트 생성하기

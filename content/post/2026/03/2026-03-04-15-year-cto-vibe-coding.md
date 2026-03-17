@@ -3,13 +3,7 @@ title: "15년차 CTO가 바이브 코딩하는 방법: 증강형 코딩과 tdd-g
 date: 2026-01-09T10:00:00+09:00
 categories: [Insights]
 draft: false
-tags:
-  - AI코딩
-  - 바이브코딩
-  - 증강형코딩
-  - TDD
-  - Claude Code
-  - 워크플로우
+tags: [claude-code, testing, vibe-coding]
 description: "15년 경력 전 CTO가 바이브 코딩의 불안감을 해소하면서도 AI 시대의 생산성을 포기하지 않기 위해 만든 tdd-go-loop 워크플로우 오케스트레이터. 켄트 백의 증강형 코딩에서 영감을 받아, TDD 기반 체크리스트와 하위 에이전트 시스템으로 코드 통제력과 몰입을 동시에 확보하는 실전 방법론을 다룬다."
 ---
 

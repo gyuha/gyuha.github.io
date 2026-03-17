@@ -3,12 +3,7 @@ title: "Claude Code Hooks 완전 정복: 이벤트/결정 제어/비동기까지
 date: 2026-03-05T22:10:00+09:00
 categories: [AI]
 draft: false
-tags:
-  - Claude Code
-  - Hooks
-  - Automation
-  - Tooling
-  - Governance
+tags: [claude-code, hooks, automation]
 description: "Claude Code Hooks의 이벤트 라이프사이클, 설정 스키마, matcher, 종료 코드와 JSON 결정 제어, prompt/agent/HTTP/async 훅의 제약과 실전 패턴을 공식 문서 근거로 정리합니다."
 ---
 

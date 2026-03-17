@@ -3,12 +3,7 @@ title: "Anthropic Skilljar 공식 강좌 가이드 - Claude AI 마스터하기"
 date: 2026-03-04T17:00:00+09:00
 categories: [AI]
 draft: false
-tags:
-  - Anthropic
-  - Claude
-  - AI Education
-  - LLM
-  - MCP
+tags: [mcp, skills, anthropic]
 description: "Anthropic에서 제공하는 공식 교육 플랫폼 Skilljar의 모든 강좌를 정리합니다. 개발자, 교육자, 학생을 위한 Claude AI 활용 과정부터 MCP, API까지 완벽 가이드"
 ---
 

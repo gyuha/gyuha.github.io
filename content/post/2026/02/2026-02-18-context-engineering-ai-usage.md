@@ -3,8 +3,8 @@ title: "90%가 놓치는 AI 활용법: 프롬프트 엔지니어링에서 컨텍
 date: 2026-02-18T00:18:00+09:00
 categories: [Productivity]
 draft: false
+tags: [agents, context-engineering, prompt-engineering]
 description: "Maker Evan 영상(https://www.youtube.com/watch?v=s6mXMxU7VEw)을 바탕으로, 왜 이제는 질문 문장보다 컨텍스트 설계가 중요한지와 실무 적용 방법을 Mermaid 도표 중심으로 정리했습니다."
-tags: [context-engineering, prompt-engineering, ai-agent, llm, workflow, mermaid]
 ---
 
 프롬프트를 잘 쓰는 시대는 끝났다는 말이 과장처럼 들릴 수 있습니다.

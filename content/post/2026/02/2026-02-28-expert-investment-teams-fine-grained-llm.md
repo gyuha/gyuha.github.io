@@ -3,12 +3,7 @@ title: "Toward Expert Investment Teams: 세밀한 태스크 분해가 LLM 트레
 date: 2026-02-28T11:55:00+09:00
 categories: [Data]
 draft: false
-tags:
-  - LLM
-  - Multi-Agent
-  - Trading System
-  - Prompt Engineering
-  - Backtesting
+tags: [agents, data-engineering, testing]
 description: "arXiv 2602.23330 논문을 바탕으로, 다중 에이전트 트레이딩 시스템에서 fine-grained 태스크 설계가 왜 성능과 해석 가능성을 동시에 개선하는지 구조와 실험 관점에서 정리합니다."
 ---
 

@@ -3,12 +3,7 @@ title: "프롬프트 한 줄로 50분 AI 애니메이션 뽑는 매직 라이트
 date: 2026-03-13T20:00:00+09:00
 categories: [Automation]
 draft: false
-tags:
-  - AI Animation
-  - Magic Light
-  - 영상 제작 자동화
-  - 콘텐츠 크리에이터
-  - 디즈니 스타일 애니메이션
+tags: [automation, ai]
 description: "프롬프트 딱 한 줄로 50분짜리 애니메이션을 만들 수 있는 AI 툴 매직 라이트의 핵심 기능과 활용법을 상세히 소개합니다."
 ---
 

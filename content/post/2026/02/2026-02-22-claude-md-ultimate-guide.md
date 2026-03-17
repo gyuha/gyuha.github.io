@@ -3,8 +3,8 @@ title: "Claude Code CLAUDE.md 완성 가이드: 공식 문서 + 실전 패턴으
 date: 2026-02-22T19:55:00+09:00
 categories: [AI]
 draft: false
+tags: [claude-code, context-engineering, prompt-engineering]
 description: "CLAUDE.md를 제대로 설계하면 코드 품질, 토큰 효율, 작업 속도가 함께 올라갑니다. Anthropic 공식 문서와 고신뢰 커뮤니티 사례를 합쳐, 계층 구조, /init 활용, 점진적 공개, 금지 규칙, 운영 체크리스트를 한 번에 정리합니다."
-tags: [claude-code, claude-md, context-engineering, prompt-ops, workflow, memory, rules, mermaid]
 ---
 
 `CLAUDE.md`는 Claude Code에서 단순한 메모 파일이 아니라, 세션마다 재주입되는 작업 기준 문서입니다. 그래서 이 파일의 밀도가 낮으면 매번 같은 실수가 반복되고, 반대로 핵심만 압축하면 결과 품질이 빠르게 안정됩니다.

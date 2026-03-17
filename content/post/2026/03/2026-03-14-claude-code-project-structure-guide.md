@@ -3,14 +3,8 @@ title: "Claude Code 프로젝트 구조 가이드: CLAUDE.md, hooks, skills, doc
 date: 2026-03-14T15:10:00+09:00
 categories: [AI]
 draft: false
+tags: [claude-code, skills, hooks]
 description: "Claude Code 프로젝트를 운영할 때 `CLAUDE.md`, `.claude/hooks`, `.claude/skills`, `docs`, `tools`, `src/**/CLAUDE.md`를 어떻게 나누면 좋은지, 폴더별 역할과 샘플 예제를 함께 정리합니다."
-tags:
-  - Claude Code
-  - CLAUDE.md
-  - Hooks
-  - Skills
-  - Project Structure
-  - Context Engineering
 ---
 
 Claude Code를 조금만 깊게 써 보면 금방 부딪히는 문제가 있습니다. 규칙은 `CLAUDE.md`에 몰아넣고, 자동화는 훅에 넣고, 반복 작업은 스킬로 빼야 한다는 말은 알겠는데, 실제로 레포를 어떻게 나눠야 할지 애매합니다.<br>특히 프로젝트가 커질수록 "무엇을 항상 읽게 할지", "무엇을 필요할 때만 불러올지", "무엇을 문서로 남길지"가 섞이기 시작합니다.

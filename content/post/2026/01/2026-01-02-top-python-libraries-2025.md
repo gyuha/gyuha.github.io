@@ -2,8 +2,8 @@
 title: "2025년 주목해야 할 Python 라이브러리 Top 10"
 date: 2026-01-02
 categories: [Developer Tools]
+tags: [python]
 description: "Tryolabs가 선정한 2025년 최고의 Python 라이브러리들을 소개합니다. 성능, 개발자 경험, 보안을 모두 고려한 필수 도구들입니다."
-tags: ["Python", "라이브러리", "개발도구", "2025"]
 ---
 
 Python 생태계는 매년 새로운 도구와 라이브러리로 진화하고 있습니다. Tryolabs에서 발표한 2025년 주요 Python 라이브러리들을 살펴보면, 개발자 경험 개선과 성능 최적화에 초점이 맞춰져 있음을 알 수 있습니다. 이번 글에서는 일반 개발에 유용한 Top 10 라이브러리를 소개합니다.

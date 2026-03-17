@@ -3,7 +3,7 @@ title: "Typescript에서 default import 개선.."
 date: 2019-12-19T21:32:11+09:00
 categories: [Web]
 draft: true
-tags: [javascript,typescript]
+tags: [typescript, javascript]
 ---
 
 express를 import하면 아래와 같이 import 했을 겁니다.

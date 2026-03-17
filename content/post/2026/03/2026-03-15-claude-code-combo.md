@@ -3,14 +3,7 @@ title: "🚀 GSD + PM-Skills + UI-UX-Pro-Max: 최강의 바이브코딩 3종 세
 date: 2026-03-15T12:44:58+09:00
 categories: [Productivity]
 draft: false
-tags:
-  - Claude Code
-  - AI Agents
-  - Workflow
-  - Multi-Agent
-  - GSD
-  - oh-my-claudecode
-  - Superpowers
+tags: [claude-code, skills, superpowers]
 ---
 
 > *"프롬프트 하나로 아이디어에서 완성된 프로덕트까지"*  

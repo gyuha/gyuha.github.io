@@ -3,7 +3,6 @@ title: "우분투 18.04에서 kimchi 설치 하기"
 date: 2019-01-04T17:04:32+09:00
 categories: [Infrastructure]
 draft: true
-tags: [kvm,kimchi,ubuntu,setting]
 ---
 
 ## Bridge Network 설치하기

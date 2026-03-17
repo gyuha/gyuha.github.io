@@ -3,13 +3,7 @@ title: "pm-skills-ko 분석: 한국어 PM 스킬 마켓플레이스를 실제로
 date: 2026-03-14T12:00:00+09:00
 categories: [Product]
 draft: false
-tags:
-  - pm-skills
-  - claude
-  - product-management
-  - skills
-  - workflow
-  - mermaid
+tags: [skills, workflow, claude]
 description: "lucas-flatwhite/pm-skills-ko 저장소를 기준으로, 8개 플러그인과 65개 스킬, 36개 워크플로가 어떻게 한국어 번역과 검증 스크립트까지 포함한 PM용 AI 마켓플레이스로 구성되는지 정리합니다."
 ---
 

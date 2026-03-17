@@ -3,12 +3,7 @@ title: "Claude Code Memory 완전 가이드: CLAUDE.md, .claude/rules, Auto Memo
 date: 2026-03-10T18:30:00+09:00
 categories: [AI]
 draft: false
-tags:
-  - claude-code
-  - memory
-  - claude-md
-  - auto-memory
-  - workflow
+tags: [claude-code, context-engineering, workflow]
 description: "Claude Code 공식 Memory 문서를 기준으로 CLAUDE.md, .claude/rules, Auto Memory의 역할 차이와 실제 운영 패턴을 한국어로 정리합니다."
 ---
 

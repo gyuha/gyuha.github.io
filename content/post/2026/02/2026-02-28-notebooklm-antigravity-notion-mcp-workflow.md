@@ -3,13 +3,7 @@ title: "NotebookLM + Antigravity + Notion MCP 실전 자동화 워크플로우"
 date: 2026-02-28T11:30:00+09:00
 categories: [Automation]
 draft: false
-tags:
-  - notebooklm
-  - mcp
-  - antigravity
-  - notion
-  - automation
-  - mermaid
+tags: [mcp, notebooklm, automation]
 description: "NotebookLM을 Antigravity MCP와 연결해 자료 수집, 슬라이드 생성, 서브에이전트 분리, Notion 저장까지 이어지는 실전 흐름과 운영 포인트를 정리합니다."
 ---
 

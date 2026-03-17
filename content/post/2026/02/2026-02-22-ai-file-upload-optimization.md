@@ -3,12 +3,7 @@ title: "파일 업로드 최적화: 두 개의 AI로 비용 절감과 성능 향
 date: 2026-02-22T20:00:00+09:00
 categories: [AI]
 draft: false
-tags:
-  - AI
-  - LLM
-  - File Upload
-  - Cost Optimization
-  - Gemini Flash
+tags: [gemini, llm, ai]
 description: "대용량 파일을 AI에 직접 업로드하면 비용이 증가하고 성능이 저하됩니다. 이 문제를 해결하는 두 개의 AI 시스템 활용 방법을 알아봅니다."
 ---
 

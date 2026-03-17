@@ -3,11 +3,7 @@ title: "Claude Code 2.0 Scheduled Tasks 완벽 가이드"
 date: 2026-03-08T10:00:00+09:00
 categories: [AI]
 draft: false
-tags:
-  - Claude Code
-  - Anthropic
-  - 자동화
-  - Agentic Workflow
+tags: [claude-code, agents, anthropic]
 description: "Anthropic이 Claude Code에 네이티브 Scheduled Tasks 기능을 추가했습니다. 이제 Claude Code가 24/7 AI 직원처럼 작동하며, 정해진 시간에 자동으로 작업을 수행할 수 있습니다. 설정 방법부터 제한사항, 자기 개선 루프까지 모든 것을 정리했습니다."
 ---
 

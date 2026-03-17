@@ -3,7 +3,7 @@ title: "SVG 아이콘의 인덱스 파일을 생성하는 Vite 플러그인"
 date: 2025-02-28T09:15:19+09:00
 categories: [Web]
 draft: true
-tags: [svg, react, typescript, vite]
+tags: [typescript, javascript]
 ---
 
 SVG 아이콘 폴더를 모니터링하고 자동으로 index.ts 파일을 생성하는 Vite 플러그인입니다.

@@ -3,12 +3,7 @@ title: "MCP는 죽었다? AI 작업 공간의 hidden killer와 스킬의 부상"
 date: 2026-03-04T10:00:00+09:00
 categories: [AI]
 draft: false
-tags:
-  - MCP
-  - Claude Code
-  - Skills
-  - Context Budget
-  - AI Coding
+tags: [claude-code, mcp, skills]
 description: "MCP 서버를 잔뜩 연결하면 AI의 작업 공간이 1/3 가까이 사라진다. 왜 개발자들 사이에서 'MCP는 죽었다'는 말이 나오는지, 그리고 스킬이 왜 더 나은 대안인지 분석한다."
 ---
 

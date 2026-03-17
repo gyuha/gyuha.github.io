@@ -3,13 +3,7 @@ title: "테스트는 새로운 해자인가: AI 시대 오픈소스 경쟁력의
 date: 2026-03-02T11:50:00+09:00
 categories: [Insights]
 draft: false
-tags:
-  - Testing
-  - API Contracts
-  - Commercial OSS
-  - Competitive Moat
-  - Cloudflare
-  - SQLite
+tags: [testing, ai]
 description: "'Tests Are The New Moat'를 중심으로, AI 복제 비용 하락이 오픈소스의 경쟁 축을 어떻게 코드에서 테스트와 계약으로 이동시키는지 근거 기반으로 정리합니다."
 ---
 

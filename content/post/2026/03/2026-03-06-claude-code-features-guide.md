@@ -3,14 +3,7 @@ title: "Claude Code 핵심 기능 활용 가이드"
 date: 2026-03-06T10:00:00+09:00
 categories: [AI]
 draft: false
-tags:
-  - claude-code
-  - ai-coding
-  - agent
-  - development-tools
-  - skills
-  - slash-commands
-  - plugins
+tags: [claude-code, skills, agents]
 description: "Claude Code의 핵심 기능을 실무에서 어떻게 활용하는지에 대한 종합 가이드입니다. CLAUDE.md, slash commands, agents, skills, hooks, plugins, MCP, SDK, GitHub Actions까지 한 흐름으로 정리합니다."
 ---
 

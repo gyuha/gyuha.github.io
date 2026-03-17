@@ -4,7 +4,6 @@ date: 2026-02-21T08:05:00+09:00
 categories: [Product]
 draft: false
 description: "kciter의 '애니메이션을 설계하는 방법' 글을 바탕으로, 이징·지수적 접근·스프링·상태 전환을 어떻게 설계 관점으로 연결할지 실무용으로 정리합니다."
-tags: [animation, easing, spring, motion-design, interaction, frontend, math, mermaid]
 ---
 
 애니메이션을 잘 만드는 사람은 "감각이 좋다"고 자주 말하지만, 실제 구현 단계에서는 감각만으로 재현 가능한 결과를 만들기 어렵습니다.

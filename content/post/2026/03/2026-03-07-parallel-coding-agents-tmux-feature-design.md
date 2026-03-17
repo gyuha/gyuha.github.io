@@ -3,12 +3,7 @@ title: "tmux와 Feature Design 파일로 병렬 코딩 에이전트 구축하기
 date: 2026-03-07T17:00:00+09:00
 categories: [AI]
 draft: false
-tags:
-  - claude-code
-  - parallel-agents
-  - tmux
-  - feature-design
-  - workflow
+tags: [claude-code, agents, tmux]
 description: "Manuel Schipper가 개발한 병렬 코딩 에이전트 워크플로우를 소개합니다. tmux와 Feature Design(FD) 파일을 활용해 4-8개의 Claude Code 에이전트를 동시에 실행하고, PM/Planner/Worker 역할 분리로 개발 효율을 극대화하는 방법을 알아봅니다."
 ---
 

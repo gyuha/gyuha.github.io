@@ -3,7 +3,7 @@ title: "Express Typescript Webpack"
 date: 2018-11-13T23:11:37+09:00
 categories: [Web]
 draft: true
-tags: [webpack,typescript,express,node]
+tags: [typescript, javascript]
 ---
 
 express를 타입스크립트롤 시작하는 방법을 설명합니다.

@@ -3,12 +3,7 @@ title: "Google Cloud Generative AI 저장소 완벽 가이드"
 date: 2026-03-11T20:30:00+09:00
 categories: [Infrastructure]
 draft: false
-tags:
-  - Google Cloud
-  - Vertex AI
-  - Gemini
-  - RAG
-  - Generative AI
+tags: [gemini, ai]
 description: "GoogleCloudPlatform/generative-ai 저장소의 핵심 콘텐츠와 주요 기능을 정리합니다. Gemini, Vertex AI Search, RAG/Grounding, Vision AI 등 생성형 AI 개발에 필요한 모든 샘플 코드와 노트북을 한눈에 파악하세요."
 ---
 

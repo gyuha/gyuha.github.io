@@ -3,7 +3,7 @@ title: "안드로이드 APK 리소스 편집하기"
 date: 2020-05-20T22:39:10+09:00
 categories: [Developer Tools]
 draft: true
-tags: [android,apk]
+tags: [productivity]
 ---
 
 APK 파일의 리소스를 편집해야 할 일이 있어서 찾아 보다가, 참 편한 프로그램이 있어서 기록을 남겨 둡니다.

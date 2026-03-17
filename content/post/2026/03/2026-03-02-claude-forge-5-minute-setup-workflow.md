@@ -3,13 +3,7 @@ title: "Claude Forge 5분 세팅 가이드: CLAUDE.md, 에이전트, 훅으로 C
 date: 2026-03-02T21:05:00+09:00
 categories: [AI]
 draft: false
-tags:
-  - Claude Code
-  - Claude Forge
-  - Agents
-  - Hooks
-  - TDD
-  - Security
+tags: [claude-code, agents, hooks]
 description: "영상 내용을 바탕으로 Claude Forge의 핵심 개념(설정 3축), 설치/검증 절차, 워크플로 파이프라인, 보안 자동화 포인트를 타임스탬프 근거와 함께 정리합니다."
 ---
 

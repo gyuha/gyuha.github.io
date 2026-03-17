@@ -3,12 +3,7 @@ title: "Claude Code에서 oh-my-claudecode, pm-skills, superpowers, ui-ux-pro-ma
 date: 2026-03-10T21:30:00+09:00
 categories: [AI]
 draft: false
-tags:
-  - Claude Code
-  - oh-my-claudecode
-  - pm-skills
-  - superpowers
-  - ui-ux-pro-max
+tags: [claude-code, skills, superpowers]
 description: "Claude Code에서 oh-my-claudecode, pm-skills, superpowers, ui-ux-pro-max를 한꺼번에 쓸 때 역할이 어떻게 나뉘는지, 어디서 겹치고 어떤 순서로 묶어 써야 안정적인지 정리한다."
 ---
 

@@ -3,12 +3,7 @@ title: "Superpowers: 스킬(Skills)이라는 추상화와 설득의 과학"
 date: 2026-03-16T15:45:47+09:00
 categories: [AI]
 draft: false
-tags:
-  - Claude Code
-  - Agents
-  - Superpowers
-  - Persuasion Science
-  - TDD
+tags: [claude-code, skills, superpowers]
 description: "Jesse Vincent의 Superpowers 프레임워크를 통해 살펴보는 에이전트 스킬(Skills)의 본질, 세션 부트스트랩, 그리고 설득 원칙을 활용한 에이전트 제어 전략."
 ---
 

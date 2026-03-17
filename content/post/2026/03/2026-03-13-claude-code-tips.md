@@ -3,7 +3,7 @@ title: "Claude Code 45가지 꿀팁 정리"
 date: 2026-03-13
 categories: [Productivity]
 draft: false
-tags: [claude, ai, productivity, tips]
+tags: [claude-code, productivity, ai]
 ---
 
 Claude Code는 Anthropic의 공식 CLI 도구로, 개발자들이 AI를 효율적으로 활용할 수 있게 해줍니다. 이 글에서는 ykdojo가 정리한 45가지 꿀팁을 한글로 요약하고, 한국 개발자에게 가장 유익한 부분을 집중적으로 다뤕니다.
