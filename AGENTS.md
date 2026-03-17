@@ -192,6 +192,8 @@ Required guidance:
 ## Mermaid-First Blog Writing Rule
 When writing or updating blog posts, prioritize Mermaid diagrams aggressively.
 
+Keep basic Mermaid in standard inline `mermaid` code blocks. For detailed or specialized Mermaid work - especially table-like/information-dense diagrams, `classDiagram`, `sequenceDiagram`, ERD, or C4 - delegate to `.agents/skills/mermaid-diagrams/SKILL.md` as the source of truth.
+
 Required guidance:
 1. Add Mermaid charts wherever structure, flow, architecture, timelines, or comparisons appear.
 2. Prefer multiple small diagrams over one oversized chart.
