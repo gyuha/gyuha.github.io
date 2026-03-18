@@ -48,7 +48,7 @@ task --list
 | `task dev` | Hugo 서버 실행 (drafts 포함, fast render 비활성화) |
 | `task clone` | GitHub Pages 저장소를 public 폴더로 클론 |
 | `task new -- [글제목]` | 새 포스트 생성 |
-| `task deploy` | GitHub에 빌드 및 배포 |
+| `task deploy` | 배포할 때 실행하는 명령어 |
 
 ### 새글 쓰기
 
@@ -74,7 +74,9 @@ task run
 hugo server -D
 ```
 
-## 서버 배포하기
+## 배포하기
+
+`배포`라고 하면 `task deploy`를 실행해 배포합니다.
 
 ```bash
 task deploy
