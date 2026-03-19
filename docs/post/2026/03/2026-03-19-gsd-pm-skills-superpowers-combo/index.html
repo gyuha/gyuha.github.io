@@ -99,32 +99,23 @@
 <section class="post-content">
   
   <h2 id="왜-이-조합인가">왜 이 조합인가</h2>
-<p>Claude Code 생태계에는 다양한 스킬과 플러그인이 존재합니다. 그중에서도 <strong>GSD + pm-skills + Superpowers</strong> 조합은 서로 다른 층위를 담당하기 때문에 특히 강력합니다.</p>
+<p>Claude Code 생태계에는 다양한 스킬과 플러그인이 존재합니다. 그중에서도 <strong>GSD + pm-skills + Superpowers</strong> 조합이 강한 이유는, 셋이 같은 일을 두 번 하지 않기 때문입니다.<br><code>pm-skills</code> 가 <strong>무엇을 만들지</strong> 를 정리하고, <code>GSD</code> 가 <strong>어떤 phase 순서로 밀지</strong> 를 고정하고, <code>Superpowers</code> 가 각 phase 안에서 <strong>어떻게 생각하고 계획하고 검증할지</strong> 를 붙입니다.</p>
 <pre class="mermaid">flowchart TD
-    subgraph GSD["GSD - 프로젝트 통제"]
-        direction TB
-        G1[프로젝트 초기화]
-        G2[페이즈 계획]
-        G3[실행 및 검증]
-    end
+    A["pm-skills<br>strategy / discovery / PRD"] --> B["GSD<br>requirements / roadmap / phase"]
+    B --> C["Superpowers<br>brainstorming / writing-plans"]
+    C --> D["GSD<br>execute-phase"]
+    D --> E["Superpowers<br>code-review / verification"]
+    E --> F["배포 가능한 결과"]
 
-    subgraph PM["pm-skills - PM 산출물"]
-        direction TB
-        P1[전략 수립]
-        P2[시장 조사]
-        P3[실행 문서]
-    end
+    classDef pm fill:#c5dcef,stroke:#6b9ac4,color:#333
+    classDef gsd fill:#c0ecd3,stroke:#67a97c,color:#333
+    classDef sp fill:#e0c8ef,stroke:#9b7cc2,color:#333
+    classDef result fill:#fde8c0,stroke:#d9a441,color:#333
 
-    subgraph SP["Superpowers - 실행 보조"]
-        direction TB
-        S1[문서 작성]
-        S2[코드 리뷰]
-        S3[반복 작업]
-    end
-
-    GSD --> PM
-    PM --> SP
-    SP --> GSD</pre><p>각 도구의 핵심 역할:</p>
+    class A pm
+    class B,D gsd
+    class C,E sp
+    class F result</pre><p>각 도구의 핵심 역할:</p>
 <table>
   <thead>
       <tr>
@@ -135,23 +126,23 @@
   </thead>
   <tbody>
       <tr>
-          <td><strong>GSD</strong></td>
-          <td>상위 workflow/control</td>
-          <td>&ldquo;어떤 순서로 밀지&rdquo;</td>
+          <td><strong>pm-skills</strong></td>
+          <td>제품 판단/PM 산출물</td>
+          <td>&ldquo;무엇을 만들고 왜 지금 만들어야 하는지&rdquo;</td>
       </tr>
       <tr>
-          <td><strong>pm-skills</strong></td>
-          <td>PM 산출물/의사결정</td>
-          <td>&ldquo;무엇을 만들지&rdquo;</td>
+          <td><strong>GSD</strong></td>
+          <td>프로젝트 운영/phase control</td>
+          <td>&ldquo;이걸 어떤 순서와 상태로 밀어갈지&rdquo;</td>
       </tr>
       <tr>
           <td><strong>Superpowers</strong></td>
-          <td>실행 보조/skills marketplace</td>
-          <td>&ldquo;개별 작업은 어떤 skill로&rdquo;</td>
+          <td>phase 내부 실행 규율</td>
+          <td>&ldquo;이번 phase 를 어떤 절차와 품질 기준으로 끝낼지&rdquo;</td>
       </tr>
   </tbody>
 </table>
-<p>이렇게 역할을 분리하면 <strong>덜 꼬입니다</strong>. 각 도구가 자신의 영역에 집중하고, 서로를 보완하는 구조입니다.</p>
+<p>핵심은 <code>Superpowers</code> 를 주변 보조 도구로 두지 않는 것입니다.<br>실전에서는 <code>pm-skills</code> 산출물을 <code>GSD</code> 에 태우고, 각 phase 내부를 <code>Superpowers</code> 로 정리해야 셋이 제대로 맞물립니다.</p>
 <h2 id="gsd-프로젝트-진행-방식-통제">GSD: 프로젝트 진행 방식 통제</h2>
 <p><strong>GSD (Get Shit Done)</strong> 는 Claude Code를 위한 메타 프롬프팅, 컨텍스트 엔지니어링, 스펙 기반 개발 시스템입니다. 핵심은 <strong>&ldquo;무엇을 할지&quot;가 아니라 &ldquo;어떻게 진행할지&quot;를 통제</strong>합니다.</p>
 <h3 id="gsd가-해결하는-문제-context-rot">GSD가 해결하는 문제: Context Rot</h3>
@@ -456,128 +447,208 @@
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#57606a"># A/B 테스트 분석</span>
 </span></span><span style="display:flex;"><span>/pm-data-analytics:ab-test-analysis
-</span></span></code></pre></div><h2 id="superpowers-실행-보조와-스킬-조합">Superpowers: 실행 보조와 스킬 조합</h2>
-<p><strong>Superpowers</strong> 는 Claude Code용 플러그인 마켓플레이스이자 스킬 조합 시스템입니다. 개별 작업을 처리하는 <strong>실행 보조</strong> 역할에 집중합니다.</p>
+</span></span></code></pre></div><h2 id="superpowers-phase-안에서-생각-계획-검증을-강제하는-실행-규율">Superpowers: phase 안에서 생각-계획-검증을 강제하는 실행 규율</h2>
+<p><strong>Superpowers</strong> 는 단순한 스킬 마켓플레이스라기보다, Claude Code가 바로 구현으로 뛰어들지 않게 만드는 <strong>methodology-as-code</strong> 에 가깝습니다.<br>핵심은 프로젝트 전체를 관리하는 것이 아니라, <strong>각 작업과 각 phase 안에서 브레인스토밍, 계획, 구현, 리뷰, 검증을 강제</strong> 하는 데 있습니다.</p>
 <h3 id="superpowers의-핵심-가치">Superpowers의 핵심 가치</h3>
 <ol>
-<li><strong>스킬 마켓플레이스</strong>: 다양한 전문 스킬을 검색하고 설치</li>
-<li><strong>조합형 사용</strong>: 여러 스킬을 연결해 복잡한 워크플로우 구축</li>
-<li><strong>반복 작업 자동화</strong>: 문서 작성, 리뷰, 포맷팅 등</li>
+<li><strong>브레인스토밍 강제</strong>: <code>brainstorming</code> 으로 범위와 성공 기준을 먼저 정리</li>
+<li><strong>계획 강제</strong>: <code>writing-plans</code> 로 구현 순서와 검증 방법을 명문화</li>
+<li><strong>구현 규율</strong>: <code>test-driven-development</code>, <code>subagent-driven-development</code> 로 대충 코딩을 줄임</li>
+<li><strong>완료 기준 명확화</strong>: <code>requesting-code-review</code>, <code>verification-before-completion</code> 으로 &ldquo;진짜 끝났는가&quot;를 확인</li>
+<li><strong>문제 해결 절차화</strong>: <code>systematic-debugging</code> 으로 버그 대응을 감으로 하지 않음</li>
 </ol>
-<h3 id="superpowers-활용-패턴">Superpowers 활용 패턴</h3>
+<h3 id="superpowers를-어디에-끼워-넣어야-하나">Superpowers를 어디에 끼워 넣어야 하나</h3>
+<p><code>Superpowers</code> 는 GSD와 경쟁하는 상위 워크플로우가 아니라, <strong>GSD의 각 phase 안을 정리하는 하위 실행 규율</strong> 로 쓰는 것이 가장 자연스럽습니다.</p>
+<table>
+  <thead>
+      <tr>
+          <th>타이밍</th>
+          <th>넣을 Superpowers 스킬</th>
+          <th>목적</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>PRD 초안이 나온 직후</td>
+          <td><code>brainstorming</code></td>
+          <td>요구사항을 MVP 범위로 다시 줄이기</td>
+      </tr>
+      <tr>
+          <td><code>/gsd:plan-phase</code> 직전</td>
+          <td><code>writing-plans</code></td>
+          <td>구현 순서, acceptance criteria, 검증 방법 정리</td>
+      </tr>
+      <tr>
+          <td><code>/gsd:execute-phase</code> 중</td>
+          <td><code>test-driven-development</code>, <code>subagent-driven-development</code></td>
+          <td>구현을 더 잘게 나누고 실패 비용 줄이기</td>
+      </tr>
+      <tr>
+          <td>구현 직후</td>
+          <td><code>requesting-code-review</code>, <code>verification-before-completion</code></td>
+          <td>리뷰와 수동 검증 없이 완료 선언하지 않기</td>
+      </tr>
+      <tr>
+          <td>버그 발생 시</td>
+          <td><code>systematic-debugging</code></td>
+          <td>재현, 가설, 검증 순서로 원인 추적</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="superpowers-내부-워크플로우">Superpowers 내부 워크플로우</h3>
 <pre class="mermaid">flowchart TD
-    A[작업 요청] --> B{작업 유형}
-    B -->|문서 작성| C[writing-skills]
-    B -->|코드 리뷰| D[review-skills]
-    B -->|데이터 처리| E[data-skills]
-    B -->|테스트| F[test-skills]
+    A["작업 요청"] --> B["brainstorming"]
+    B --> C["writing-plans"]
+    C --> D["implementation<br>test-driven-development / subagent-driven-development"]
+    D --> E["requesting-code-review"]
+    E --> F["verification-before-completion"]
+    F --> G["완료 또는 systematic-debugging"]
 
-    C --> G[결과 산출]
-    D --> G
-    E --> G
-    F --> G</pre><h2 id="조합-워크플로우-실전-가이드">조합 워크플로우: 실전 가이드</h2>
+    classDef input fill:#c5dcef,stroke:#6b9ac4,color:#333
+    classDef process fill:#c0ecd3,stroke:#67a97c,color:#333
+    classDef review fill:#fde8c0,stroke:#d9a441,color:#333
+    classDef result fill:#e0c8ef,stroke:#9b7cc2,color:#333
+
+    class A input
+    class B,C,D process
+    class E,F review
+    class G result</pre><h2 id="조합-워크플로우-실전-가이드">조합 워크플로우: 실전 가이드</h2>
 <p>이제 세 도구를 조합하는 실전 워크플로우를 살펴보겠습니다.</p>
 <h3 id="시나리오-새로운-saas-제품-개발">시나리오: 새로운 SaaS 제품 개발</h3>
 <pre class="mermaid">flowchart TD
     subgraph Phase1["1단계: 전략 수립"]
-        A1["/gsd:new-project"] --> A2["/pm-product-strategy:strategy"]
-        A2 --> A3["/pm-market-research:competitor-analysis"]
-        A3 --> A4["/pm-product-strategy:business-model"]
+        A1["/pm-product-strategy:strategy"] --> A2["/pm-market-research:competitor-analysis"]
+        A2 --> A3["/pm-product-strategy:business-model"]
+        A3 --> A4["/gsd:new-project"]
     end
 
     subgraph Phase2["2단계: 요구사항 정의"]
-        B1["/pm-execution:create-prd"] --> B2["/pm-product-discovery:identify-assumptions-new"]
-        B2 --> B3["/pm-product-discovery:brainstorm-experiments-new"]
+        B1["/pm-execution:create-prd"] --> B2["superpowers/brainstorming"]
+        B2 --> B3["/pm-product-discovery:identify-assumptions-new"]
+        B3 --> B4["/pm-product-discovery:brainstorm-experiments-new"]
     end
 
     subgraph Phase3["3단계: 실행"]
-        C1["/gsd:plan-phase 1"] --> C2["/pm-execution:user-stories"]
-        C2 --> C3["/gsd:execute-phase 1"]
-        C3 --> C4["/gsd:verify-work 1"]
+        C1["superpowers/writing-plans"] --> C2["/gsd:plan-phase 1"]
+        C2 --> C3["superpowers/test-driven-development"]
+        C3 --> C4["/gsd:execute-phase 1"]
+        C4 --> C5["superpowers/requesting-code-review"]
+        C5 --> C6["superpowers/verification-before-completion"]
+        C6 --> C7["/gsd:verify-work 1"]
     end
 
     subgraph Phase4["4단계: 출시 준비"]
         D1["/pm-go-to-market:gtm-strategy"] --> D2["/pm-marketing-growth:north-star-metric"]
         D2 --> D3["/pm-execution:release-notes"]
+        D3 --> D4["superpowers/systematic-debugging<br>문제 발생 시"]
     end
 
     Phase1 --> Phase2
     Phase2 --> Phase3
     Phase3 --> Phase4</pre><h3 id="단계별-프롬프트-예제">단계별 프롬프트 예제</h3>
-<h4 id="1단계-프로젝트-초기화-및-전략">1단계: 프로젝트 초기화 및 전략</h4>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># GSD로 프로젝트 구조 생성</span>
-</span></span><span style="display:flex;"><span>/gsd:new-project
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#57606a"># 제품 전략 수립</span>
-</span></span><span style="display:flex;"><span>/pm-product-strategy:strategy
-</span></span><span style="display:flex;"><span><span style="color:#57606a"># 프롬프트 예시: &#34;B2B SaaS 프로젝트 관리 도구의 제품 전략을 수립해줘&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#57606a"># 시장 분석</span>
-</span></span><span style="display:flex;"><span>/pm-market-research:market-sizing
-</span></span><span style="display:flex;"><span><span style="color:#57606a"># 프롬프트 예시: &#34;한국 SME 대상 프로젝트 관리 SaaS 시장 규모를 추정해줘&#34;</span>
-</span></span></code></pre></div><h4 id="2단계-요구사항-및-발견">2단계: 요구사항 및 발견</h4>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># PRD 작성</span>
-</span></span><span style="display:flex;"><span>/pm-execution:create-prd
-</span></span><span style="display:flex;"><span><span style="color:#57606a"># 프롬프트 예시: &#34;MVP 기능: 칸반 보드, 팀 관리, 기본 리포팅&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#57606a"># 가정 식별</span>
-</span></span><span style="display:flex;"><span>/pm-product-discovery:identify-assumptions-new
-</span></span><span style="display:flex;"><span><span style="color:#57606a"># 프롬프트 예시: &#34;SME가 프로젝트 관리 도구에 월 5만원 이상 지불할 것이라는 가정을 검증하고 싶어&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#57606a"># 사용자 인터뷰 스크립트</span>
-</span></span><span style="display:flex;"><span>/pm-product-discovery:interview-script
-</span></span><span style="display:flex;"><span><span style="color:#57606a"># 프롬프트 예시: &#34;10인 규모 스타트업 PM을 대상으로 한 인터뷰 스크립트&#34;</span>
-</span></span></code></pre></div><h4 id="3단계-개발-실행">3단계: 개발 실행</h4>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># GSD로 페이즈 계획</span>
-</span></span><span style="display:flex;"><span>/gsd:plan-phase <span style="color:#0550ae">1</span>
-</span></span><span style="display:flex;"><span><span style="color:#57606a"># 프롬프트 예시: &#34;Phase 1: 인증 시스템과 기본 칸반 보드 구현&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#57606a"># 사용자 스토리 작성</span>
-</span></span><span style="display:flex;"><span>/pm-execution:user-stories
-</span></span><span style="display:flex;"><span><span style="color:#57606a"># 프롬프트 예시: &#34;REQ-001: 사용자는 이메일로 가입할 수 있다&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#57606a"># 실행</span>
-</span></span><span style="display:flex;"><span>/gsd:execute-phase <span style="color:#0550ae">1</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#57606a"># 검증</span>
-</span></span><span style="display:flex;"><span>/gsd:verify-work <span style="color:#0550ae">1</span>
-</span></span></code></pre></div><h4 id="4단계-출시-준비">4단계: 출시 준비</h4>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># GTM 전략</span>
-</span></span><span style="display:flex;"><span>/pm-go-to-market:gtm-strategy
-</span></span><span style="display:flex;"><span><span style="color:#57606a"># 프롬프트 예시: &#34;Product Hunt 런칭과 한국 스타트업 커뮤니티 타겟팅&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#57606a"># North Star Metric 정의</span>
-</span></span><span style="display:flex;"><span>/pm-marketing-growth:north-star-metric
-</span></span><span style="display:flex;"><span><span style="color:#57606a"># 프롬프트 예시: &#34;주간 활성 프로젝트 수를 North Star로 설정&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#57606a"># 릴리스 노트</span>
-</span></span><span style="display:flex;"><span>/pm-execution:release-notes
-</span></span><span style="display:flex;"><span><span style="color:#57606a"># 프롬프트 예시: &#34;v1.0.0 출시: 칸반 보드, 팀 관리, 기본 리포팅&#34;</span>
-</span></span></code></pre></div><h3 id="디버깅-및-문제-해결">디버깅 및 문제 해결</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># 개발 중 버그 발견 시</span>
-</span></span><span style="display:flex;"><span>/gsd:debug <span style="color:#0a3069">&#34;칸반 카드 드래그앤드롭이 모바일에서 작동 안 함&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#57606a"># A/B 테스트 분석</span>
-</span></span><span style="display:flex;"><span>/pm-data-analytics:ab-test-analysis
-</span></span><span style="display:flex;"><span><span style="color:#57606a"># 프롬프트 예시: &#34;온보딩 A/B 테스트 결과: A안 15% 전환율, B안 22% 전환율&#34;</span>
-</span></span></code></pre></div><h2 id="역할-분담-원칙">역할 분담 원칙</h2>
+<p>아래 예시는 <code>새로운 B2B 프로젝트 관리 SaaS</code> 를 만든다고 가정한 복붙용 샘플입니다. 핵심은 <code>pm-skills</code> 로 입력을 만들고, <code>Superpowers</code> 로 그 입력을 실행 가능한 형태로 다듬은 뒤, <code>GSD</code> 로 phase를 밀어가는 순서를 지키는 것입니다.</p>
+<h4 id="1단계-시장과-전략을-먼저-고정">1단계: 시장과 전략을 먼저 고정</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/pm-product-strategy:strategy
+</span></span></code></pre></div>
+  <blockquote>
+    <p>&ldquo;한국과 일본의 20~100인 스타트업을 위한 프로젝트 관리 SaaS 전략을 짜줘. Jira보다 가볍고, Notion보다 운영 친화적이어야 한다. 타깃 ICP, 핵심 pain point 3개, 차별 포인트 3개, 초기 가격 가설, 첫 6개월 리스크를 포함해줘.&rdquo;</p>
+
+  </blockquote>
+
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/pm-market-research:competitor-analysis
+</span></span></code></pre></div>
+  <blockquote>
+    <p>&ldquo;ClickUp, Jira, Linear, Notion을 비교해줘. 기능 나열이 아니라 onboarding 복잡도, 협업 구조, 한국 팀 적합성, 도입 장벽, switching cost 중심으로 분석해줘. 우리가 어디에서 파고들 수 있는지도 적어줘.&rdquo;</p>
+
+  </blockquote>
+
+<h4 id="2단계-prd를-쓰고-superpowers로-scope를-압축">2단계: PRD를 쓰고, Superpowers로 scope를 압축</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/pm-execution:create-prd
+</span></span><span style="display:flex;"><span><span style="color:#0a3069">&#34;MVP 범위는 이메일 로그인, 워크스페이스 생성, 칸반 보드, 댓글, 기본 활동 로그다. 제외 범위는 자동화, 간트 차트, 외부 연동이다. PM이 바로 개발팀에 넘길 수 있는 수준의 PRD 초안을 써줘.&#34;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/superpowers:brainstorming
+</span></span><span style="display:flex;"><span>이 PRD를 기준으로 2주 안에 shipping 가능한 MVP로 다시 줄여줘. Must have / should have / later 로 나누고, 이번 phase 에 절대 넣지 말아야 할 범위와 이유도 써줘. 그리고 구현 전에 꼭 확인해야 할 모호한 요구사항 5개를 뽑아줘.
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/pm-product-discovery:identify-assumptions-new
+</span></span><span style="display:flex;"><span> <span style="color:#0a3069">&#34;다음 가정을 검증하고 싶다: 
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069"> 1) 20인 이하 팀도 칸반 툴에 비용을 지불한다. 
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069"> 2) 댓글과 활동 로그만 있어도 초기 협업 가치를 느낀다. 
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069"> 3) 관리자 1명이 전체 도입을 주도한다. 각 가정을 검증 가능성, 위험도, 실험 우선순위 기준으로 정리해줘.&#34;</span>
+</span></span></code></pre></div><h4 id="3단계-개발-phase-로-바꾸기-전에-plan을-고정">3단계: 개발 phase 로 바꾸기 전에 plan을 고정</h4>
+<p><code>superpowers/writing-plans</code></p>
+
+  <blockquote>
+    <p>&ldquo;지금까지 정리한 전략, PRD, MVP 범위를 바탕으로 Phase 1 구현 계획을 써줘. 목표는 이메일 로그인, 워크스페이스 생성, 칸반 보드 조회다. 파일 단위 작업, acceptance criteria, 어떤 테스트로 검증할지, 어떤 기능은 이번 phase 에 미루는지까지 명확하게 적어줘.&rdquo;</p>
+
+  </blockquote>
+
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/gsd:plan-phase <span style="color:#0550ae">1</span>
+</span></span></code></pre></div>
+  <blockquote>
+    <p>&ldquo;Phase 1 목표는 인증, 워크스페이스 생성, 기본 보드 조회다. 앞서 정리한 scope 축소 결과를 반영해서 requirements 와 tasks 를 phase 계획으로 정리해줘. 다음 phase 로 넘겨야 할 항목은 별도로 분리해줘.&rdquo;</p>
+
+  </blockquote>
+
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/pm-execution:user-stories
+</span></span></code></pre></div>
+  <blockquote>
+    <p>&ldquo;아래 기능을 user story 와 acceptance criteria 로 바꿔줘: 이메일 회원가입, 로그인, 워크스페이스 만들기, 보드 목록 보기. 엔지니어와 QA가 바로 이해할 수 있게 Given/When/Then 스타일로 써줘.&rdquo;</p>
+
+  </blockquote>
+
+<h4 id="4단계-구현-후에도-superpowers를-계속-붙인다">4단계: 구현 후에도 Superpowers를 계속 붙인다</h4>
+<p><code>superpowers/test-driven-development</code></p>
+
+  <blockquote>
+    <p>&ldquo;이번 phase 에서 로그인과 워크스페이스 생성 플로우를 TDD로 진행하고 싶다. 가장 위험한 테스트부터 순서를 제안하고, 어떤 실패를 먼저 재현해야 하는지 정리해줘.&rdquo;</p>
+
+  </blockquote>
+
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/gsd:execute-phase <span style="color:#0550ae">1</span>
+</span></span></code></pre></div><p><code>superpowers/requesting-code-review</code></p>
+
+  <blockquote>
+    <p>&ldquo;방금 끝난 phase diff를 리뷰해줘. 요구사항 누락, 테스트 약한 부분, 과한 구현, 장기 유지보수 리스크를 중심으로 보고, 꼭 고쳐야 할 것과 나중에 미뤄도 되는 것을 나눠줘.&rdquo;</p>
+
+  </blockquote>
+
+<p><code>superpowers/verification-before-completion</code></p>
+
+  <blockquote>
+    <p>&ldquo;완료라고 말하기 전에 실제 검증이 충분한지 체크해줘. 빌드, 테스트, 수동 QA, edge case 확인 중 빠진 것이 있으면 완료 선언을 막아줘.&rdquo;</p>
+
+  </blockquote>
+
+<h3 id="디버깅과-데이터-분석-프롬프트-예제">디버깅과 데이터 분석 프롬프트 예제</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/gsd:debug <span style="color:#0a3069">&#34;모바일 Safari에서 칸반 카드 드래그가 시작되지 않는다. 데스크톱 Chrome에서는 정상이다. 최근 변경은 drag handle 영역 확장과 CSS overflow 수정이다.&#34;</span>
+</span></span></code></pre></div><p><code>superpowers/systematic-debugging</code></p>
+
+  <blockquote>
+    <p>&ldquo;이 버그를 감으로 고치지 말고 재현 조건, 가능한 원인, 확인할 로그/DOM 상태, 반증 방법 순서로 정리해줘. 첫 번째 시도에서 실패하면 어떤 대안 가설로 넘어갈지도 적어줘.&rdquo;</p>
+
+  </blockquote>
+
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/pm-data-analytics:ab-test-analysis
+</span></span></code></pre></div>
+  <blockquote>
+    <p>&ldquo;온보딩 A/B 테스트 결과다. A안은 전환율 15%, B안은 22%이고 표본 수는 각각 1,200명이다. 통계적으로 의미가 있는지, 다음 실험에서 무엇을 바꿔야 하는지, 제품 판단으로 어떻게 연결할지 정리해줘.&rdquo;</p>
+
+  </blockquote>
+
+<h2 id="역할-분담-원칙">역할 분담 원칙</h2>
 <p>이 조합의 핵심은 <strong>명확한 역할 분담</strong>입니다.</p>
-<pre class="mermaid">flowchart LR
-    subgraph Question["질문 유형"]
-        Q1["무엇을 만들지?"]
-        Q2["어떤 순서로?"]
-        Q3["어떤 스킬로?"]
-    end
+<pre class="mermaid">flowchart TD
+    Q1["무엇을 만들지?"] --> T1["pm-skills"]
+    Q2["이걸 어떤 phase 순서로 밀지?"] --> T2["GSD"]
+    Q3["이번 phase를 어떤 절차와 품질 기준으로 끝낼지?"] --> T3["Superpowers"]
 
-    subgraph Tool["담당 도구"]
-        T1[pm-skills]
-        T2[GSD]
-        T3[Superpowers]
-    end
+    classDef question fill:#c5dcef,stroke:#6b9ac4,color:#333
+    classDef tool1 fill:#c0ecd3,stroke:#67a97c,color:#333
+    classDef tool2 fill:#fde8c0,stroke:#d9a441,color:#333
+    classDef tool3 fill:#e0c8ef,stroke:#9b7cc2,color:#333
 
-    Q1 --> T1
-    Q2 --> T2
-    Q3 --> T3</pre><h3 id="결정-가이드">결정 가이드</h3>
+    class Q1,Q2,Q3 question
+    class T1 tool1
+    class T2 tool2
+    class T3 tool3</pre><h3 id="결정-가이드">결정 가이드</h3>
 <table>
   <thead>
       <tr>
@@ -593,14 +664,19 @@
           <td><code>/pm-product-discovery:prioritize-features</code></td>
       </tr>
       <tr>
+          <td>&ldquo;이번 phase scope를 더 줄이고 싶다&rdquo;</td>
+          <td>pm-skills + Superpowers</td>
+          <td><code>/pm-execution:create-prd</code> → <code>superpowers/brainstorming</code></td>
+      </tr>
+      <tr>
           <td>&ldquo;이번 스프린트에 뭘 넣을까?&rdquo;</td>
-          <td>pm-skills + GSD</td>
-          <td><code>/pm-execution:sprint-plan</code> → <code>/gsd:plan-phase</code></td>
+          <td>pm-skills + GSD + Superpowers</td>
+          <td><code>/pm-execution:sprint-plan</code> → <code>superpowers/writing-plans</code> → <code>/gsd:plan-phase</code></td>
       </tr>
       <tr>
           <td>&ldquo;이 버그 어떻게 추적할까?&rdquo;</td>
-          <td>GSD</td>
-          <td><code>/gsd:debug &quot;...&quot;</code></td>
+          <td>GSD + Superpowers</td>
+          <td><code>/gsd:debug &quot;...&quot;</code> + <code>superpowers/systematic-debugging</code></td>
       </tr>
       <tr>
           <td>&ldquo;PRD 초안이 필요해&rdquo;</td>
@@ -610,7 +686,12 @@
       <tr>
           <td>&ldquo;이 코드 리뷰해줘&rdquo;</td>
           <td>Superpowers</td>
-          <td>코드 리뷰 스킬</td>
+          <td><code>superpowers/requesting-code-review</code></td>
+      </tr>
+      <tr>
+          <td>&ldquo;완료 선언 전에 진짜 끝났는지 확인하고 싶다&rdquo;</td>
+          <td>Superpowers</td>
+          <td><code>superpowers/verification-before-completion</code></td>
       </tr>
   </tbody>
 </table>
@@ -626,7 +707,7 @@
 <ol>
 <li><strong>GSD만 먼저</strong>: 기본 워크플로우 익히기</li>
 <li><strong>pm-skills 추가</strong>: PM 산출물 자동화</li>
-<li><strong>Superpowers로 확장</strong>: 실행 보조 강화</li>
+<li><strong>Superpowers를 phase 안에 삽입</strong>: PRD 이후 브레인스토밍, phase 계획 전 계획 정리, 완료 전 검증 습관 붙이기</li>
 </ol>
 <h3 id="3-문서화-습관">3. 문서화 습관</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># 아이디어가 떠오르면 즉시 기록</span>
@@ -643,11 +724,11 @@
 </span></span></code></pre></div><h2 id="마무리">마무리</h2>
 <p>GSD + pm-skills + Superpowers 조합의 핵심은 <strong>층위 분리</strong>입니다:</p>
 <ul>
-<li><strong>GSD</strong>: 프로젝트의 <strong>맥락과 흐름</strong> 관리</li>
-<li><strong>pm-skills</strong>: <strong>PM의사결정과 산출물</strong> 지원</li>
-<li><strong>Superpowers</strong>: <strong>개별 작업의 실행</strong> 보조</li>
+<li><strong>pm-skills</strong>: <strong>무엇을 만들지</strong> 와 <strong>왜 지금 만드는지</strong> 를 정리</li>
+<li><strong>GSD</strong>: 그 산출물을 <strong>requirements, roadmap, phase</strong> 로 연결</li>
+<li><strong>Superpowers</strong>: 각 phase 안에서 <strong>생각-계획-구현-리뷰-검증</strong> 절차를 강제</li>
 </ul>
-<p>이렇게 분리하면 각 도구가 자신의 영역에 집중하고, 서로 간섭하지 않습니다. 결과적으로 더 <strong>덜 꼬이고</strong>, 더 <strong>빠르고</strong>, 더 <strong>체계적인</strong> 프로젝트 진행이 가능해집니다.</p>
+<p>실전에서 가장 흔한 실수는 <code>GSD</code> 만 길게 쓰고 <code>Superpowers</code> 는 코드 리뷰 정도에만 붙이는 것입니다.<br>오히려 효과가 큰 조합은 <code>pm-skills</code> 로 입력을 만들고, <code>Superpowers</code> 로 scope와 plan을 먼저 다듬은 뒤, <code>GSD</code> 로 phase를 실행하고 다시 <code>Superpowers</code> 로 검증하는 루프입니다.<br>이렇게 굴리면 각 도구가 서로를 덮어쓰지 않고, 더 <strong>덜 꼬이고</strong>, 더 <strong>예측 가능하고</strong>, 더 <strong>재현 가능한</strong> workflow가 됩니다.</p>
 <hr>
 <p><strong>참고 자료:</strong></p>
 <ul>
@@ -672,8 +753,9 @@
 <li>
 <p><strong>Superpowers:</strong></p>
 <ul>
-<li>Claude Code 스킬 마켓플레이스</li>
-<li>다양한 커뮤니티 스킬 검색 가능</li>
+<li>GitHub: <a href="https://github.com/obra/superpowers">https://github.com/obra/superpowers</a></li>
+<li>설치: <code>/plugin marketplace add obra/superpowers-marketplace</code></li>
+<li>설치: <code>/plugin install superpowers@superpowers-marketplace</code></li>
 </ul>
 </li>
 </ul>
@@ -767,17 +849,18 @@
         <li><a href="#pm-skills-실전-사용-예시">pm-skills 실전 사용 예시</a></li>
       </ul>
     </li>
-    <li><a href="#superpowers-실행-보조와-스킬-조합">Superpowers: 실행 보조와 스킬 조합</a>
+    <li><a href="#superpowers-phase-안에서-생각-계획-검증을-강제하는-실행-규율">Superpowers: phase 안에서 생각-계획-검증을 강제하는 실행 규율</a>
       <ul>
         <li><a href="#superpowers의-핵심-가치">Superpowers의 핵심 가치</a></li>
-        <li><a href="#superpowers-활용-패턴">Superpowers 활용 패턴</a></li>
+        <li><a href="#superpowers를-어디에-끼워-넣어야-하나">Superpowers를 어디에 끼워 넣어야 하나</a></li>
+        <li><a href="#superpowers-내부-워크플로우">Superpowers 내부 워크플로우</a></li>
       </ul>
     </li>
     <li><a href="#조합-워크플로우-실전-가이드">조합 워크플로우: 실전 가이드</a>
       <ul>
         <li><a href="#시나리오-새로운-saas-제품-개발">시나리오: 새로운 SaaS 제품 개발</a></li>
         <li><a href="#단계별-프롬프트-예제">단계별 프롬프트 예제</a></li>
-        <li><a href="#디버깅-및-문제-해결">디버깅 및 문제 해결</a></li>
+        <li><a href="#디버깅과-데이터-분석-프롬프트-예제">디버깅과 데이터 분석 프롬프트 예제</a></li>
       </ul>
     </li>
     <li><a href="#역할-분담-원칙">역할 분담 원칙</a>
