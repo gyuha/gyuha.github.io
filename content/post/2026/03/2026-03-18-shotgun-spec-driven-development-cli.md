@@ -8,10 +8,10 @@ description: "Shotgun CLI가 코드베이스 인덱싱, 리서치, 스펙/플랜
 ---
 
 Shotgun은 요즘 흔한 "AI가 코드를 대신 써 준다" 류의 도구와 출발점이 조금 다릅니다. 이 프로젝트가 전면에 내세우는 핵심은 코드 생성 자체가 아니라, **AI 코딩 에이전트가 큰 기능에서 왜 자꾸 탈선하는지 먼저 인정하고 그 앞단의 리서치, 명세, 계획을 구조화하는 것** 입니다. README의 한 문장으로 요약하면 Shotgun은 "codebase-aware specs" 를 만들어 Codex, Cursor, Claude Code 같은 에이전트가 엉뚱한 방향으로 새지 않게 돕는 CLI입니다. [GitHub Repository](https://github.com/shotgun-sh/shotgun) [README](https://github.com/shotgun-sh/shotgun/blob/main/README.md)
+<!--more-->
 
 실제로 저장소를 읽어 보면 이 도구는 단순한 프롬프트 래퍼가 아닙니다. 코드베이스를 먼저 인덱싱하고, 리서치와 스펙, 플랜, 태스크, 익스포트 단계를 분리하고, TUI와 CLI 양쪽에서 그 흐름을 운영하도록 설계되어 있습니다. Python 기반 패키지이지만 내부 의존성에는 `textual`, `pydantic-ai`, `tree-sitter` 계열 파서, `typer`, `rich` 같은 구성 요소가 함께 보이기 때문에, 방향성은 명확합니다. **"대화형 개발 경험" 과 "코드베이스 구조 이해" 를 한 툴 안에 결합하려는 시도** 입니다. [pyproject.toml](https://github.com/shotgun-sh/shotgun/blob/main/pyproject.toml) [CLI docs](https://github.com/shotgun-sh/shotgun/blob/main/docs/CLI.md)
 
-<!--more-->
 
 ## Sources
 
