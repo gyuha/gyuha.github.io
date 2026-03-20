@@ -502,18 +502,18 @@
 <p>OpenRAG는 MCP(Model Context Protocol)를 통해 AI 개발 환경과 통합될 수 있습니다.</p>
 <h3 id="cursor-ide-통합">Cursor IDE 통합</h3>
 <p>Cursor IDE에서 OpenRAG MCP 서버를 구성하면, 코드 작성 중 문서 검색 및 AI 응답을 직접 활용할 수 있습니다.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#1f2328">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;mcpServers&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;openrag&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">{</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#0550ae">&#34;command&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;uvx&#34;</span><span style="color:#1f2328">,</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#0550ae">&#34;args&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">[</span><span style="color:#0a3069">&#34;openrag-mcp&#34;</span><span style="color:#1f2328">],</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#0550ae">&#34;env&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#0550ae">&#34;OPENRAG_URL&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;http://localhost:3000&#34;</span><span style="color:#1f2328">,</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#0550ae">&#34;OPENRAG_API_KEY&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;your_api_key_here&#34;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">}</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#000080">&#34;mcpServers&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#000080">&#34;openrag&#34;</span>: {
+</span></span><span style="display:flex;"><span>      <span style="color:#000080">&#34;command&#34;</span>: <span style="color:#d14">&#34;uvx&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#000080">&#34;args&#34;</span>: [<span style="color:#d14">&#34;openrag-mcp&#34;</span>],
+</span></span><span style="display:flex;"><span>      <span style="color:#000080">&#34;env&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#000080">&#34;OPENRAG_URL&#34;</span>: <span style="color:#d14">&#34;http://localhost:3000&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#000080">&#34;OPENRAG_API_KEY&#34;</span>: <span style="color:#d14">&#34;your_api_key_here&#34;</span>
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h3 id="claude-desktop-통합">Claude Desktop 통합</h3>
 <p>Claude Desktop에서도 동일한 MCP 구성을 사용하여 로컬 문서 검색 및 AI 응답을 활용할 수 있습니다.</p>
 <pre class="mermaid">flowchart LR
@@ -547,29 +547,29 @@
     class OS storageStyle</pre><h2 id="sdk-사용">SDK 사용</h2>
 <p>OpenRAG는 Python과 TypeScript/JavaScript SDK를 공식적으로 제공합니다.</p>
 <h3 id="python-sdk">Python SDK</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#24292e">asyncio</span>
-</span></span><span style="display:flex;"><span><span style="color:#cf222e">from</span> <span style="color:#24292e">openrag_sdk</span> <span style="color:#cf222e">import</span> OpenRAGClient
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">import</span> <span style="color:#555">asyncio</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">from</span> <span style="color:#555">openrag_sdk</span> <span style="color:#000;font-weight:bold">import</span> OpenRAGClient
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#cf222e">async</span> <span style="color:#cf222e">def</span> <span style="color:#6639ba">main</span><span style="color:#1f2328">():</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">async</span> <span style="color:#cf222e">with</span> OpenRAGClient<span style="color:#1f2328">()</span> <span style="color:#cf222e">as</span> client<span style="color:#1f2328">:</span>
-</span></span><span style="display:flex;"><span>        response <span style="color:#0550ae">=</span> <span style="color:#cf222e">await</span> client<span style="color:#0550ae">.</span>chat<span style="color:#0550ae">.</span>create<span style="color:#1f2328">(</span>message<span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;RAG이란 무엇인가?&#34;</span><span style="color:#1f2328">)</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#6639ba">print</span><span style="color:#1f2328">(</span>response<span style="color:#0550ae">.</span>response<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">async</span> <span style="color:#000;font-weight:bold">def</span> <span style="color:#900;font-weight:bold">main</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">async</span> <span style="color:#000;font-weight:bold">with</span> OpenRAGClient() <span style="color:#000;font-weight:bold">as</span> client:
+</span></span><span style="display:flex;"><span>        response <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">await</span> client<span style="color:#000;font-weight:bold">.</span>chat<span style="color:#000;font-weight:bold">.</span>create(message<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;RAG이란 무엇인가?&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#0086b3">print</span>(response<span style="color:#000;font-weight:bold">.</span>response)
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#cf222e">if</span> <span style="color:#953800">__name__</span> <span style="color:#0550ae">==</span> <span style="color:#0a3069">&#34;__main__&#34;</span><span style="color:#1f2328">:</span>
-</span></span><span style="display:flex;"><span>    asyncio<span style="color:#0550ae">.</span>run<span style="color:#1f2328">(</span>main<span style="color:#1f2328">())</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">if</span> __name__ <span style="color:#000;font-weight:bold">==</span> <span style="color:#d14">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>    asyncio<span style="color:#000;font-weight:bold">.</span>run(main())
 </span></span></code></pre></div><h3 id="typescript-sdk">TypeScript SDK</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">OpenRAGClient</span> <span style="color:#1f2328">}</span> <span style="color:#cf222e">from</span> <span style="color:#0a3069">&#34;openrag-sdk&#34;</span><span style="color:#1f2328">;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">import</span> { OpenRAGClient } <span style="color:#000;font-weight:bold">from</span> <span style="color:#d14">&#34;openrag-sdk&#34;</span>;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#cf222e">const</span> <span style="color:#1f2328">client</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">new</span> <span style="color:#1f2328">OpenRAGClient</span><span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">const</span> client <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">new</span> OpenRAGClient();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#cf222e">async</span> <span style="color:#cf222e">function</span> <span style="color:#1f2328">main() {</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">response</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">await</span> <span style="color:#1f2328">client</span><span style="color:#1f2328">.</span><span style="color:#1f2328">chat</span><span style="color:#1f2328">.</span><span style="color:#1f2328">create</span><span style="color:#1f2328">({</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">message</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#34;RAG이란 무엇인가?&#34;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">});</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">console</span><span style="color:#1f2328">.</span><span style="color:#1f2328">log</span><span style="color:#1f2328">(</span><span style="color:#1f2328">response</span><span style="color:#1f2328">.</span><span style="color:#1f2328">response</span><span style="color:#1f2328">);</span>
-</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">async</span> <span style="color:#000;font-weight:bold">function</span> main() {
+</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">const</span> response <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">await</span> client.chat.create({
+</span></span><span style="display:flex;"><span>    message<span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#34;RAG이란 무엇인가?&#34;</span>
+</span></span><span style="display:flex;"><span>  });
+</span></span><span style="display:flex;"><span>  console.log(response.response);
+</span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#1f2328">main</span><span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>main();
 </span></span></code></pre></div><h3 id="sdk-아키텍처">SDK 아키텍처</h3>
 <pre class="mermaid">flowchart TD
     subgraph Client["클라이언트 애플리케이션"]
@@ -683,10 +683,10 @@
     class 최종 outputStyle</pre><h2 id="배포-및-확장">배포 및 확장</h2>
 <p>OpenRAG는 <code>uv</code> 패키지 매니저를 사용하여 간편하게 실행할 수 있으며, 컨테이너화를 통해 쉽게 배포할 수 있습니다.</p>
 <h3 id="실행-방법">실행 방법</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># uv를 사용한 실행</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#998;font-style:italic"># uv를 사용한 실행</span>
 </span></span><span style="display:flex;"><span>uvx openrag
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#57606a"># 또는 직접 설치 후 실행</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 또는 직접 설치 후 실행</span>
 </span></span><span style="display:flex;"><span>pip install openrag
 </span></span><span style="display:flex;"><span>openrag serve
 </span></span></code></pre></div><h3 id="아키텍처-확장">아키텍처 확장</h3>
@@ -769,41 +769,41 @@
       TypeScript_SDK</pre><table>
   <thead>
       <tr>
-          <th>기능</th>
-          <th>설명</th>
-          <th>기술</th>
+          <th style="text-align: left">기능</th>
+          <th style="text-align: left">설명</th>
+          <th style="text-align: left">기술</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td>문서 수집</td>
-          <td>PDF, DOCX, PPTX, 이미지 처리</td>
-          <td>Docling</td>
+          <td style="text-align: left">문서 수집</td>
+          <td style="text-align: left">PDF, DOCX, PPTX, 이미지 처리</td>
+          <td style="text-align: left">Docling</td>
       </tr>
       <tr>
-          <td>시맨틱 검색</td>
-          <td>벡터 기반 유사도 검색</td>
-          <td>OpenSearch k-NN</td>
+          <td style="text-align: left">시맨틱 검색</td>
+          <td style="text-align: left">벡터 기반 유사도 검색</td>
+          <td style="text-align: left">OpenSearch k-NN</td>
       </tr>
       <tr>
-          <td>하이브리드 검색</td>
-          <td>벡터 + 키워드 결합</td>
-          <td>BM25 + 리랭킹</td>
+          <td style="text-align: left">하이브리드 검색</td>
+          <td style="text-align: left">벡터 + 키워드 결합</td>
+          <td style="text-align: left">BM25 + 리랭킹</td>
       </tr>
       <tr>
-          <td>시각적 빌더</td>
-          <td>드래그 앤 드롭 워크플로우</td>
-          <td>Langflow</td>
+          <td style="text-align: left">시각적 빌더</td>
+          <td style="text-align: left">드래그 앤 드롭 워크플로우</td>
+          <td style="text-align: left">Langflow</td>
       </tr>
       <tr>
-          <td>AI 통합</td>
-          <td>MCP 프로토콜 지원</td>
-          <td>Cursor, Claude Desktop</td>
+          <td style="text-align: left">AI 통합</td>
+          <td style="text-align: left">MCP 프로토콜 지원</td>
+          <td style="text-align: left">Cursor, Claude Desktop</td>
       </tr>
       <tr>
-          <td>SDK</td>
-          <td>공식 개발 키트</td>
-          <td>Python, TypeScript</td>
+          <td style="text-align: left">SDK</td>
+          <td style="text-align: left">공식 개발 키트</td>
+          <td style="text-align: left">Python, TypeScript</td>
       </tr>
   </tbody>
 </table>

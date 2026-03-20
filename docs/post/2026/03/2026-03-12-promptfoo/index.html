@@ -140,9 +140,9 @@
     class D,F redStyle
     class G outputStyle</pre><h2 id="eval-워크플로우-프롬프트를-테스트-가능한-자산으로-바꾸기"><code>eval</code> 워크플로우: 프롬프트를 테스트 가능한 자산으로 바꾸기</h2>
 <p>Promptfoo의 기본 흐름은 <code>promptfooconfig.yaml</code> 파일을 중심으로 돌아갑니다. <a href="https://www.promptfoo.dev/docs/getting-started/">Getting Started</a> 문서는 <code>init --example getting-started</code> 로 샘플 프로젝트를 만든 뒤, <code>eval</code> 과 <code>view</code> 를 순서대로 실행하는 가장 작은 루프를 보여 줍니다.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>npx promptfoo@latest init --example getting-started
-</span></span><span style="display:flex;"><span><span style="color:#6639ba">cd</span> getting-started
-</span></span><span style="display:flex;"><span>npx promptfoo@latest <span style="color:#6639ba">eval</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>npx promptfoo@latest init --example getting-started
+</span></span><span style="display:flex;"><span><span style="color:#0086b3">cd</span> getting-started
+</span></span><span style="display:flex;"><span>npx promptfoo@latest <span style="color:#0086b3">eval</span>
 </span></span><span style="display:flex;"><span>npx promptfoo@latest view
 </span></span></code></pre></div><p>이 흐름이 좋은 이유는 구조가 단순하기 때문입니다. Promptfoo는 보통 아래 네 가지를 분리해서 다룹니다.</p>
 <ul>
@@ -181,30 +181,30 @@
     class B,C,D,E,F,G,H,I sectionStyle
     class J runStyle
     class K,L,M outStyle</pre><p>가장 단순한 예시는 아래처럼 쓸 수 있습니다.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#57606a"># yaml-language-server: $schema=https://promptfoo.dev/config-schema.json</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#0550ae">description</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>Translation quality smoke test<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#0550ae">prompts</span><span style="color:#1f2328">:</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>- <span style="color:#0a3069">&#34;Convert the following English text to {{language}}: {{input}}&#34;</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#0550ae">providers</span><span style="color:#1f2328">:</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>- openai:gpt-5-mini<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>- anthropic:messages:claude-opus-4-6<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>- google:gemini-3-pro-preview<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#0550ae">tests</span><span style="color:#1f2328">:</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>- <span style="color:#0550ae">vars</span><span style="color:#1f2328">:</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">      </span><span style="color:#0550ae">language</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>French<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">      </span><span style="color:#0550ae">input</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>Hello world<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span><span style="color:#0550ae">assert</span><span style="color:#1f2328">:</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">      </span>- <span style="color:#0550ae">type</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>contains<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">        </span><span style="color:#0550ae">value</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span><span style="color:#0a3069">&#34;Bonjour&#34;</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>- <span style="color:#0550ae">vars</span><span style="color:#1f2328">:</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">      </span><span style="color:#0550ae">language</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>Spanish<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">      </span><span style="color:#0550ae">input</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>Where is the library?<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span><span style="color:#0550ae">assert</span><span style="color:#1f2328">:</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">      </span>- <span style="color:#0550ae">type</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>icontains<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">        </span><span style="color:#0550ae">value</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span><span style="color:#0a3069">&#34;biblioteca&#34;</span><span style="color:#fff">
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#998;font-style:italic"># yaml-language-server: $schema=https://promptfoo.dev/config-schema.json</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#000080">description</span>:<span style="color:#bbb"> </span>Translation quality smoke test<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#000080">prompts</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span>- <span style="color:#d14">&#34;Convert the following English text to {{language}}: {{input}}&#34;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#000080">providers</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span>- openai:gpt-5-mini<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span>- anthropic:messages:claude-opus-4-6<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span>- google:gemini-3-pro-preview<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#000080">tests</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span>- <span style="color:#000080">vars</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">      </span><span style="color:#000080">language</span>:<span style="color:#bbb"> </span>French<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">      </span><span style="color:#000080">input</span>:<span style="color:#bbb"> </span>Hello world<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#000080">assert</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">      </span>- <span style="color:#000080">type</span>:<span style="color:#bbb"> </span>contains<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span><span style="color:#000080">value</span>:<span style="color:#bbb"> </span><span style="color:#d14">&#34;Bonjour&#34;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span>- <span style="color:#000080">vars</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">      </span><span style="color:#000080">language</span>:<span style="color:#bbb"> </span>Spanish<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">      </span><span style="color:#000080">input</span>:<span style="color:#bbb"> </span>Where is the library?<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#000080">assert</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">      </span>- <span style="color:#000080">type</span>:<span style="color:#bbb"> </span>icontains<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span><span style="color:#000080">value</span>:<span style="color:#bbb"> </span><span style="color:#d14">&#34;biblioteca&#34;</span><span style="color:#bbb">
 </span></span></span></code></pre></div><p>이런 선언형 구성이 중요한 이유는, 프롬프트를 코드처럼 다루게 해 주기 때문입니다. 프롬프트 문구를 바꾸거나 모델을 교체할 때, 결과가 좋아졌는지 나빠졌는지 같은 질문을 <strong>재현 가능한 입력 집합</strong> 으로 다시 확인할 수 있습니다.</p>
 <h2 id="어설션과-메트릭-좋아-보인다를-자동-판정으로-바꾸는-층">어설션과 메트릭: &ldquo;좋아 보인다&quot;를 자동 판정으로 바꾸는 층</h2>
 <p>Promptfoo가 단순 로그 수집기가 아닌 이유는 <code>assert</code> 층에 있습니다. 공식 <a href="https://www.promptfoo.dev/docs/configuration/expected-outputs/">Assertions &amp; Metrics</a> 문서를 보면, assertions는 선택 사항이지만, 넣기 시작하면 문자열 포함 여부 같은 결정론적 검증부터 LLM 루브릭 기반 평가, JavaScript/Python 사용자 정의 검증까지 상당히 넓게 다룰 수 있습니다.</p>
@@ -245,33 +245,33 @@
     class D,D1 opsStyle
     class E,E1 semStyle
     class F,F1,G customStyle</pre><p>예를 들어 FAQ 봇을 평가한다면 아래처럼 만들 수 있습니다.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#0550ae">defaultTest</span><span style="color:#1f2328">:</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#0550ae">assert</span><span style="color:#1f2328">:</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span>- <span style="color:#0550ae">type</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>llm-rubric<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">      </span><span style="color:#0550ae">value</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span><span style="color:#0a3069">&#34;답변은 질문과 직접 관련이 있고 장황하지 않아야 한다&#34;</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span>- <span style="color:#0550ae">type</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>latency<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">      </span><span style="color:#0550ae">threshold</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span><span style="color:#0550ae">3000</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span>- <span style="color:#0550ae">type</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>cost<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">      </span><span style="color:#0550ae">threshold</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span><span style="color:#0550ae">0.002</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#0550ae">tests</span><span style="color:#1f2328">:</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>- <span style="color:#0550ae">vars</span><span style="color:#1f2328">:</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">      </span><span style="color:#0550ae">question</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span><span style="color:#0a3069">&#34;환불 정책이 어떻게 되나요?&#34;</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span><span style="color:#0550ae">assert</span><span style="color:#1f2328">:</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">      </span>- <span style="color:#0550ae">type</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>contains<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">        </span><span style="color:#0550ae">value</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span><span style="color:#0a3069">&#34;환불&#34;</span><span style="color:#fff">
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#000080">defaultTest</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#000080">assert</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>- <span style="color:#000080">type</span>:<span style="color:#bbb"> </span>llm-rubric<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">      </span><span style="color:#000080">value</span>:<span style="color:#bbb"> </span><span style="color:#d14">&#34;답변은 질문과 직접 관련이 있고 장황하지 않아야 한다&#34;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>- <span style="color:#000080">type</span>:<span style="color:#bbb"> </span>latency<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">      </span><span style="color:#000080">threshold</span>:<span style="color:#bbb"> </span><span style="color:#099">3000</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>- <span style="color:#000080">type</span>:<span style="color:#bbb"> </span>cost<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">      </span><span style="color:#000080">threshold</span>:<span style="color:#bbb"> </span><span style="color:#099">0.002</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#000080">tests</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span>- <span style="color:#000080">vars</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">      </span><span style="color:#000080">question</span>:<span style="color:#bbb"> </span><span style="color:#d14">&#34;환불 정책이 어떻게 되나요?&#34;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#000080">assert</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">      </span>- <span style="color:#000080">type</span>:<span style="color:#bbb"> </span>contains<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span><span style="color:#000080">value</span>:<span style="color:#bbb"> </span><span style="color:#d14">&#34;환불&#34;</span><span style="color:#bbb">
 </span></span></span></code></pre></div><p>이 방식은 QA 팀, 프롬프트 작성자, 애플리케이션 엔지니어가 서로 다른 관점을 한 파일에 녹여낼 수 있게 합니다. 문자열 조건은 개발자가 적고, 비즈니스 루브릭은 PM이나 도메인 담당자가 정하고, 비용/지연시간은 운영 기준으로 넣는 식입니다.</p>
 <h2 id="프로바이더-추상화-모델-비교를-설정-레벨에서-처리한다">프로바이더 추상화: 모델 비교를 설정 레벨에서 처리한다</h2>
 <p>Promptfoo의 또 다른 강점은 <a href="https://www.promptfoo.dev/docs/providers/">Providers</a> 문서가 보여주듯, 특정 벤더에 갇히지 않는다는 점입니다. OpenAI, Anthropic, Google, Bedrock, Ollama, LocalAI 같은 주요 경로뿐 아니라, 파일 기반 Python/JavaScript provider, HTTP API, MCP, WebSocket, webhook 등까지 설정 레벨에서 다룹니다.</p>
 <p>이 말은 곧 &ldquo;모델 비교&quot;나 &ldquo;벤더 교체&quot;를 애플리케이션 코드 변경이 아니라 <strong>평가 설정 변경</strong> 으로 먼저 검토할 수 있다는 뜻입니다.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#0550ae">providers</span><span style="color:#1f2328">:</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>- openai:gpt-5<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>- anthropic:messages:claude-opus-4-6<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>- google:gemini-2.5-pro<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>- ollama:chat:llama3.3<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>- file://path/to/custom_provider.py<span style="color:#fff">
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#000080">providers</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span>- openai:gpt-5<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span>- anthropic:messages:claude-opus-4-6<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span>- google:gemini-2.5-pro<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span>- ollama:chat:llama3.3<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span>- file://path/to/custom_provider.py<span style="color:#bbb">
 </span></span></span></code></pre></div><p>또한 Promptfoo는 CLI에서 provider를 바로 덮어쓸 수 있어서, 동일한 테스트 세트를 유지한 채 후보 모델만 바꾸는 실험도 쉽습니다.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>promptfoo <span style="color:#6639ba">eval</span> -r google:gemini-3-pro-preview google:gemini-2.5-pro
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>promptfoo <span style="color:#0086b3">eval</span> -r google:gemini-3-pro-preview google:gemini-2.5-pro
 </span></span></code></pre></div><p>이 부분이 중요한 이유는 LLM 제품 개발에서 흔히 생기는 문제 때문입니다. 모델 후보가 늘어나면 비교 기준도 함께 늘어나야 하는데, 기준을 코드 밖으로 빼 두지 않으면 비교가 매번 즉흥적으로 흘러갑니다. Promptfoo는 이 비교 기준을 YAML과 assert 계층으로 고정합니다.</p>
 <h2 id="redteam-워크플로우-품질-테스트와-보안-테스트를-분리한다"><code>redteam</code> 워크플로우: 품질 테스트와 보안 테스트를 분리한다</h2>
 <p>Promptfoo의 <a href="https://www.promptfoo.dev/docs/red-team/">Red Teaming</a> 문서는 이 도구를 단순 eval 프레임워크로만 보면 절반만 본 것이라고 말해 줍니다. 문서가 강조하는 핵심은, LLM 앱의 취약점은 모델 자체뿐 아니라 애플리케이션 계층에서도 발생한다는 점입니다. 운영 관점에서도 redteam은 일반 eval과 완전히 같은 루프라기보다, <strong>적대적 입력 생성 -&gt; 실행 -&gt; 평가 -&gt; 리포트</strong> 라는 보안 점검 흐름에 더 가깝고, <code>promptfoo redteam run</code> 은 이 과정을 단축해서 실행하는 진입점으로 보는 편이 정확합니다.</p>
@@ -309,32 +309,32 @@
 </ul>
 <p>공식 문서에는 MCP 보안 테스트나 에이전트 보안 테스트 예시도 들어가 있습니다. 즉 Promptfoo는 단순히 &ldquo;이 프롬프트가 욕설을 내뱉는가&quot;만 보는 것이 아니라, <strong>도구 사용, 메모리, 권한 범위, 컨텍스트 오염</strong> 같은 문제까지 평가 대상으로 끌어올립니다.</p>
 <p>아래처럼 설정할 수 있습니다.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#0550ae">providers</span><span style="color:#1f2328">:</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>- <span style="color:#0550ae">id</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>anthropic:messages:claude-3-haiku-20240307<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span><span style="color:#0550ae">config</span><span style="color:#1f2328">:</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">      </span><span style="color:#0550ae">mcp</span><span style="color:#1f2328">:</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">        </span><span style="color:#0550ae">enabled</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span><span style="color:#cf222e">true</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">        </span><span style="color:#0550ae">server</span><span style="color:#1f2328">:</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">          </span><span style="color:#0550ae">url</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>https://your-mcp-server.example.com/mcp<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#0550ae">prompts</span><span style="color:#1f2328">:</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>- <span style="color:#1f2328">|</span><span style="color:#0a3069">
-</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">    You are a customer support agent for Acme.
-</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">    {{prompt}}</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#0550ae">redteam</span><span style="color:#1f2328">:</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#0550ae">purpose</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span><span style="color:#1f2328">|</span><span style="color:#0a3069">
-</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">    고객 지원을 수행하되 내부 정보 노출이나 무단 접근을 허용하면 안 된다.</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#0550ae">plugins</span><span style="color:#1f2328">:</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span>- pii<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span>- bfla<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span>- bola<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span>- sql-injection<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span>- mcp<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#0550ae">strategies</span><span style="color:#1f2328">:</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span>- basic<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span>- best-of-n<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span>- jailbreak<span style="color:#fff">
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#000080">providers</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span>- <span style="color:#000080">id</span>:<span style="color:#bbb"> </span>anthropic:messages:claude-3-haiku-20240307<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#000080">config</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">      </span><span style="color:#000080">mcp</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span><span style="color:#000080">enabled</span>:<span style="color:#bbb"> </span><span style="color:#000;font-weight:bold">true</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">        </span><span style="color:#000080">server</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">          </span><span style="color:#000080">url</span>:<span style="color:#bbb"> </span>https://your-mcp-server.example.com/mcp<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#000080">prompts</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span>- |<span style="color:#d14">
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">    You are a customer support agent for Acme.
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">    {{prompt}}</span><span style="color:#bbb">    
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#000080">redteam</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#000080">purpose</span>:<span style="color:#bbb"> </span>|<span style="color:#d14">
+</span></span></span><span style="display:flex;"><span><span style="color:#d14">    고객 지원을 수행하되 내부 정보 노출이나 무단 접근을 허용하면 안 된다.</span><span style="color:#bbb">    
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#000080">plugins</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>- pii<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>- bfla<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>- bola<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>- sql-injection<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>- mcp<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#000080">strategies</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>- basic<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>- best-of-n<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>- jailbreak<span style="color:#bbb">
 </span></span></span></code></pre></div><p>여기서 핵심은 &ldquo;우리 앱은 무엇을 하면 안 되는가&quot;를 설정으로 명시할 수 있다는 점입니다. 이 덕분에 보안 테스트가 추상적인 구호가 아니라, PR과 릴리즈 직전에 실제로 돌릴 수 있는 실행 단위가 됩니다.</p>
 <h2 id="왜-cicd에-잘-붙는가">왜 CI/CD에 잘 붙는가</h2>
 <p>Promptfoo가 실무에서 특히 좋은 부분은 eval과 redteam 모두가 <strong>CLI 기준으로 작동</strong> 한다는 점입니다. 즉 사람이 UI에서 수동으로 눌러야 하는 과정이 아니라, 파이프라인에 그대로 넣기 쉽습니다. 다만 공식 <a href="https://www.promptfoo.dev/docs/integrations/ci-cd/">CI/CD 문서</a> 를 보면 두 흐름의 빈도는 조금 다릅니다. <code>eval</code> 은 PR 게이트로 붙이기 좋고, <code>redteam</code> 은 스케줄 실행이나 보안 체크포인트, 수동 점검처럼 더 무거운 검증으로 운영하는 경우가 많습니다.</p>
@@ -364,27 +364,27 @@
     class E,F,H checkStyle
     class J goodStyle
     class I badStyle</pre><p>가장 작은 형태는 아래처럼 시작할 수 있습니다. 실제 CI에서는 Node.js 실행 환경과 각 provider용 API 키를 GitHub Secrets 또는 환경 변수로 함께 넣어야 합니다.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#0550ae">name</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>promptfoo-checks<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#0550ae">on</span><span style="color:#1f2328">:</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#0550ae">pull_request</span><span style="color:#1f2328">:</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#0550ae">schedule</span><span style="color:#1f2328">:</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span>- <span style="color:#0550ae">cron</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span><span style="color:#0a3069">&#34;0 2 * * *&#34;</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#0550ae">jobs</span><span style="color:#1f2328">:</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#0550ae">eval</span><span style="color:#1f2328">:</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span><span style="color:#0550ae">runs-on</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>ubuntu-latest<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span><span style="color:#0550ae">steps</span><span style="color:#1f2328">:</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">      </span>- <span style="color:#0550ae">uses</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>actions/checkout@v4<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">      </span>- <span style="color:#0550ae">run</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>npm ci<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">      </span>- <span style="color:#0550ae">run</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>npx promptfoo@latest eval -c promptfooconfig.yaml -o results.json<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#0550ae">redteam</span><span style="color:#1f2328">:</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span><span style="color:#0550ae">runs-on</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>ubuntu-latest<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span><span style="color:#0550ae">steps</span><span style="color:#1f2328">:</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">      </span>- <span style="color:#0550ae">uses</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>actions/checkout@v4<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">      </span>- <span style="color:#0550ae">run</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>npm ci<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">      </span>- <span style="color:#0550ae">run</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>npx promptfoo@latest redteam run<span style="color:#fff">
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#000080">name</span>:<span style="color:#bbb"> </span>promptfoo-checks<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#000080">on</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#000080">pull_request</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#000080">schedule</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span>- <span style="color:#000080">cron</span>:<span style="color:#bbb"> </span><span style="color:#d14">&#34;0 2 * * *&#34;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#000080">jobs</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#000080">eval</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#000080">runs-on</span>:<span style="color:#bbb"> </span>ubuntu-latest<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#000080">steps</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">      </span>- <span style="color:#000080">uses</span>:<span style="color:#bbb"> </span>actions/checkout@v4<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">      </span>- <span style="color:#000080">run</span>:<span style="color:#bbb"> </span>npm ci<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">      </span>- <span style="color:#000080">run</span>:<span style="color:#bbb"> </span>npx promptfoo@latest eval -c promptfooconfig.yaml -o results.json<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">  </span><span style="color:#000080">redteam</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#000080">runs-on</span>:<span style="color:#bbb"> </span>ubuntu-latest<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">    </span><span style="color:#000080">steps</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">      </span>- <span style="color:#000080">uses</span>:<span style="color:#bbb"> </span>actions/checkout@v4<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">      </span>- <span style="color:#000080">run</span>:<span style="color:#bbb"> </span>npm ci<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">      </span>- <span style="color:#000080">run</span>:<span style="color:#bbb"> </span>npx promptfoo@latest redteam run<span style="color:#bbb">
 </span></span></span></code></pre></div><p>이렇게 분리하는 것이 좋은 이유는 품질 회귀와 보안 회귀가 서로 다른 실패 원인을 갖기 때문입니다. 프롬프트 문구 개선 실험은 eval에서 잡히고, 새 도구 연결이나 RAG 변경은 redteam에서 문제가 드러날 가능성이 높습니다. 그래서 실무에서는 eval을 더 자주 돌리고, redteam은 릴리즈 전후나 정기 스캔, 보안 이슈 대응 시점에 깊게 돌리는 방식이 자연스럽습니다.</p>
 <h2 id="promptfoo가-잘-맞는-팀과-한계">Promptfoo가 잘 맞는 팀과 한계</h2>
 <p>Promptfoo는 특히 아래 같은 팀에 잘 맞습니다.</p>

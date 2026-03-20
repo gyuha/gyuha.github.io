@@ -114,47 +114,47 @@
 </ol>
 <h2 id="1-리버스-프록시-같은-기능-다른-설정-밀도">1) 리버스 프록시: 같은 기능, 다른 설정 밀도</h2>
 <h3 id="nginx-예제">Nginx 예제</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span><span style="color:#cf222e">server</span> <span style="color:#1f2328">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">listen</span> <span style="color:#0550ae">80</span><span style="color:#1f2328">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">server_name</span> <span style="color:#0a3069">app.example.com</span><span style="color:#1f2328">;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">server</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">listen</span> <span style="color:#099">80</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">server_name</span> <span style="color:#d14">app.example.com</span>;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">location</span> <span style="color:#0a3069">/</span> <span style="color:#1f2328">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">proxy_pass</span> <span style="color:#0a3069">http://127.0.0.1:3000</span><span style="color:#1f2328">;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">proxy_set_header</span> <span style="color:#0a3069">Host</span> <span style="color:#953800">$host</span><span style="color:#1f2328">;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">proxy_set_header</span> <span style="color:#0a3069">X-Real-IP</span> <span style="color:#953800">$remote_addr</span><span style="color:#1f2328">;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">proxy_set_header</span> <span style="color:#0a3069">X-Forwarded-For</span> <span style="color:#953800">$proxy_add_x_forwarded_for</span><span style="color:#1f2328">;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">proxy_set_header</span> <span style="color:#0a3069">X-Forwarded-Proto</span> <span style="color:#953800">$scheme</span><span style="color:#1f2328">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">location</span> <span style="color:#d14">/</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">proxy_pass</span> <span style="color:#d14">http://127.0.0.1:3000</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">proxy_set_header</span> <span style="color:#d14">Host</span> <span style="color:#008080">$host</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">proxy_set_header</span> <span style="color:#d14">X-Real-IP</span> <span style="color:#008080">$remote_addr</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">proxy_set_header</span> <span style="color:#d14">X-Forwarded-For</span> <span style="color:#008080">$proxy_add_x_forwarded_for</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">proxy_set_header</span> <span style="color:#d14">X-Forwarded-Proto</span> <span style="color:#008080">$scheme</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h3 id="caddy-예제">Caddy 예제</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-caddy" data-lang="caddy"><span style="display:flex;"><span>app.example.com <span style="color:#1f2328">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">reverse_proxy</span> 127.0.0.1<span style="color:#1f2328">:</span><span style="color:#0550ae">3000</span>
-</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-caddy" data-lang="caddy"><span style="display:flex;"><span><span style="color:#999">app.example.com</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">reverse_proxy</span> 127.0.0.1:<span style="color:#099">3000</span>
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>둘 다 같은 역할이지만, Caddy는 기본 프록시 헤더 처리와 HTTPS 연계가 자연스럽게 이어져 설정이 짧습니다.</p>
 <h2 id="2-https-운영-난이도-차이가-크게-나는-지점">2) HTTPS: 운영 난이도 차이가 크게 나는 지점</h2>
 <h3 id="nginx-예제-인증서-설정-포함">Nginx 예제 (인증서 설정 포함)</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span><span style="color:#cf222e">server</span> <span style="color:#1f2328">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">listen</span> <span style="color:#0550ae">80</span><span style="color:#1f2328">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">server_name</span> <span style="color:#0a3069">app.example.com</span><span style="color:#1f2328">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">return</span> <span style="color:#0550ae">301</span> <span style="color:#0a3069">https://</span><span style="color:#953800">$host$request_uri</span><span style="color:#1f2328">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">server</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">listen</span> <span style="color:#099">80</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">server_name</span> <span style="color:#d14">app.example.com</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">301</span> <span style="color:#d14">https://</span><span style="color:#008080">$host$request_uri</span>;
+</span></span><span style="display:flex;"><span>}
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#cf222e">server</span> <span style="color:#1f2328">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">listen</span> <span style="color:#0550ae">443</span> <span style="color:#0a3069">ssl</span> <span style="color:#0a3069">http2</span><span style="color:#1f2328">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">server_name</span> <span style="color:#0a3069">app.example.com</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">server</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">listen</span> <span style="color:#099">443</span> <span style="color:#d14">ssl</span> <span style="color:#d14">http2</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">server_name</span> <span style="color:#d14">app.example.com</span>;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">ssl_certificate</span> <span style="color:#0a3069">/etc/letsencrypt/live/app.example.com/fullchain.pem</span><span style="color:#1f2328">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">ssl_certificate_key</span> <span style="color:#0a3069">/etc/letsencrypt/live/app.example.com/privkey.pem</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">ssl_certificate</span> <span style="color:#d14">/etc/letsencrypt/live/app.example.com/fullchain.pem</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">ssl_certificate_key</span> <span style="color:#d14">/etc/letsencrypt/live/app.example.com/privkey.pem</span>;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">location</span> <span style="color:#0a3069">/</span> <span style="color:#1f2328">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">proxy_pass</span> <span style="color:#0a3069">http://127.0.0.1:3000</span><span style="color:#1f2328">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">location</span> <span style="color:#d14">/</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">proxy_pass</span> <span style="color:#d14">http://127.0.0.1:3000</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Nginx는 보통 Certbot 같은 도구와 갱신 스케줄을 별도로 운영합니다.</p>
 <h3 id="caddy-예제-automatic-https">Caddy 예제 (Automatic HTTPS)</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-caddy" data-lang="caddy"><span style="display:flex;"><span>app.example.com <span style="color:#1f2328">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">reverse_proxy</span> 127.0.0.1<span style="color:#1f2328">:</span><span style="color:#0550ae">3000</span>
-</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-caddy" data-lang="caddy"><span style="display:flex;"><span><span style="color:#999">app.example.com</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">reverse_proxy</span> 127.0.0.1:<span style="color:#099">3000</span>
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>공개 DNS가 올바르게 연결된 도메인이라면, Caddy가 인증서 발급/갱신/적용을 자동으로 처리합니다.</p>
 <pre class="mermaid">flowchart TD
     D[도메인 DNS 연결] --> S[Caddy 시작]
@@ -163,21 +163,21 @@
     I --> T[TLS 적용]
     T --> R[자동 갱신]</pre><h2 id="3-정적-파일-서빙-문법-차이">3) 정적 파일 서빙: 문법 차이</h2>
 <h3 id="nginx-예제-1">Nginx 예제</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span><span style="color:#cf222e">server</span> <span style="color:#1f2328">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">listen</span> <span style="color:#0550ae">80</span><span style="color:#1f2328">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">server_name</span> <span style="color:#0a3069">static.example.com</span><span style="color:#1f2328">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">root</span> <span style="color:#0a3069">/var/www/site</span><span style="color:#1f2328">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">index</span> <span style="color:#0a3069">index.html</span><span style="color:#1f2328">;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">server</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">listen</span> <span style="color:#099">80</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">server_name</span> <span style="color:#d14">static.example.com</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">root</span> <span style="color:#d14">/var/www/site</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">index</span> <span style="color:#d14">index.html</span>;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">location</span> <span style="color:#0a3069">/</span> <span style="color:#1f2328">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">try_files</span> <span style="color:#953800">$uri</span> <span style="color:#953800">$uri/</span> <span style="color:#1f2328">=</span><span style="color:#0550ae">404</span><span style="color:#1f2328">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">location</span> <span style="color:#d14">/</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">try_files</span> <span style="color:#008080">$uri</span> <span style="color:#008080">$uri/</span> =<span style="color:#099">404</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h3 id="caddy-예제-1">Caddy 예제</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-caddy" data-lang="caddy"><span style="display:flex;"><span>static.example.com <span style="color:#1f2328">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">root</span> <span style="color:#0550ae">*</span> <span style="color:#0a3069">/var/www/site</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">file_server</span>
-</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-caddy" data-lang="caddy"><span style="display:flex;"><span><span style="color:#999">static.example.com</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">root</span> <span style="color:#3c5d5d;font-weight:bold">*</span> <span style="color:#d14">/var/www/site</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">file_server</span>
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>기본 정적 사이트 운영에서는 Caddy 문법이 더 읽기 쉽고, 작은 팀에서 유지보수 부담이 낮습니다.</p>
 <h2 id="caddy-사용법-처음부터-운영까지">Caddy 사용법: 처음부터 운영까지</h2>
 <p>여기서는 Linux 서버 기준으로 가장 단순한 흐름만 정리합니다.</p>
@@ -188,18 +188,18 @@
 </ul>
 <h3 id="2-caddyfile-작성">2) Caddyfile 작성</h3>
 <p><code>/etc/caddy/Caddyfile</code> 예시:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-caddy" data-lang="caddy"><span style="display:flex;"><span>app.example.com <span style="color:#1f2328">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">reverse_proxy</span> 127.0.0.1<span style="color:#1f2328">:</span><span style="color:#0550ae">3000</span>
-</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-caddy" data-lang="caddy"><span style="display:flex;"><span><span style="color:#999">app.example.com</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">reverse_proxy</span> 127.0.0.1:<span style="color:#099">3000</span>
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h3 id="3-설정-검증">3) 설정 검증</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>caddy fmt --overwrite /etc/caddy/Caddyfile
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>caddy fmt --overwrite /etc/caddy/Caddyfile
 </span></span><span style="display:flex;"><span>caddy validate --config /etc/caddy/Caddyfile
 </span></span></code></pre></div><h3 id="4-서비스-실행재시작">4) 서비스 실행/재시작</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo systemctl <span style="color:#6639ba">enable</span> caddy
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo systemctl <span style="color:#0086b3">enable</span> caddy
 </span></span><span style="display:flex;"><span>sudo systemctl restart caddy
 </span></span><span style="display:flex;"><span>sudo systemctl status caddy
 </span></span></code></pre></div><h3 id="5-로그-확인">5) 로그 확인</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo journalctl -u caddy -f
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo journalctl -u caddy -f
 </span></span></code></pre></div><p>운영 관점에서 중요한 점은 &ldquo;설정이 짧다&quot;보다 &ldquo;HTTPS 갱신 운영이 자동화된다&quot;는 부분입니다.</p>
 <h2 id="언제-caddy를-선택하면-좋은가">언제 Caddy를 선택하면 좋은가?</h2>
 <ul>

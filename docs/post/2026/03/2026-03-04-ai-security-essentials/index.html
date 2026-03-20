@@ -145,43 +145,43 @@
 <table>
   <thead>
       <tr>
-          <th>도구</th>
-          <th>재현율</th>
-          <th>정밀도</th>
-          <th>추천 용도</th>
+          <th style="text-align: left">도구</th>
+          <th style="text-align: left">재현율</th>
+          <th style="text-align: left">정밀도</th>
+          <th style="text-align: left">추천 용도</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td><strong>Gitleaks</strong></td>
-          <td>86-88%</td>
-          <td>46%</td>
-          <td>CI/CD 파이프라인, Git 히스토리 스캔</td>
+          <td style="text-align: left"><strong>Gitleaks</strong></td>
+          <td style="text-align: left">86-88%</td>
+          <td style="text-align: left">46%</td>
+          <td style="text-align: left">CI/CD 파이프라인, Git 히스토리 스캔</td>
       </tr>
       <tr>
-          <td><strong>TruffleHog</strong></td>
-          <td>높음</td>
-          <td>~6%</td>
-          <td>800+ 시크릿 타입, API 검증 포함</td>
+          <td style="text-align: left"><strong>TruffleHog</strong></td>
+          <td style="text-align: left">높음</td>
+          <td style="text-align: left">~6%</td>
+          <td style="text-align: left">800+ 시크릿 타입, API 검증 포함</td>
       </tr>
       <tr>
-          <td><strong>git-secrets</strong></td>
-          <td>중간</td>
-          <td>중간</td>
-          <td>AWS 생태계, 단순 사전 차단</td>
+          <td style="text-align: left"><strong>git-secrets</strong></td>
+          <td style="text-align: left">중간</td>
+          <td style="text-align: left">중간</td>
+          <td style="text-align: left">AWS 생태계, 단순 사전 차단</td>
       </tr>
   </tbody>
 </table>
 <h3 id="모범-사례">모범 사례</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#57606a"># ❌ 절대 하지 말 것</span>
-</span></span><span style="display:flex;"><span>api_key <span style="color:#0550ae">=</span> <span style="color:#0a3069">&#34;sk-ant-api03-xxxxx&#34;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#998;font-style:italic"># ❌ 절대 하지 말 것</span>
+</span></span><span style="display:flex;"><span>api_key <span style="color:#000;font-weight:bold">=</span> <span style="color:#d14">&#34;sk-ant-api03-xxxxx&#34;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#57606a"># ✅ 권장 방식</span>
-</span></span><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#24292e">os</span>
-</span></span><span style="display:flex;"><span>api_key <span style="color:#0550ae">=</span> os<span style="color:#0550ae">.</span>getenv<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;ANTHROPIC_API_KEY&#34;</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># ✅ 권장 방식</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">import</span> <span style="color:#555">os</span>
+</span></span><span style="display:flex;"><span>api_key <span style="color:#000;font-weight:bold">=</span> os<span style="color:#000;font-weight:bold">.</span>getenv(<span style="color:#d14">&#34;ANTHROPIC_API_KEY&#34;</span>)
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#57606a"># ✅ 엔터프라이즈 권장</span>
-</span></span><span style="display:flex;"><span><span style="color:#57606a"># AWS Secrets Manager 또는 HashiCorp Vault 사용</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># ✅ 엔터프라이즈 권장</span>
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># AWS Secrets Manager 또는 HashiCorp Vault 사용</span>
 </span></span></code></pre></div><p><strong>핵심 원칙:</strong></p>
 <ul>
 <li>키는 <strong>절대 소스 코드에 하드코딩하지 않는다</strong></li>
@@ -202,31 +202,31 @@
 <table>
   <thead>
       <tr>
-          <th>공격 방식</th>
-          <th>비율</th>
-          <th>설명</th>
+          <th style="text-align: left">공격 방식</th>
+          <th style="text-align: left">비율</th>
+          <th style="text-align: left">설명</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td>악성 코드 임베디드 실행</td>
-          <td>51.58%</td>
-          <td>패키지 내 악성 코드 직접 실행</td>
+          <td style="text-align: left">악성 코드 임베디드 실행</td>
+          <td style="text-align: left">51.58%</td>
+          <td style="text-align: left">패키지 내 악성 코드 직접 실행</td>
       </tr>
       <tr>
-          <td>시스템 명령 실행</td>
-          <td>31.13%</td>
-          <td>셸 명령으로 시스템 침투</td>
+          <td style="text-align: left">시스템 명령 실행</td>
+          <td style="text-align: left">31.13%</td>
+          <td style="text-align: left">셸 명령으로 시스템 침투</td>
       </tr>
       <tr>
-          <td>악성 파일 다운로드</td>
-          <td>9.82%</td>
-          <td>추가 악성코드 다운로드</td>
+          <td style="text-align: left">악성 파일 다운로드</td>
+          <td style="text-align: left">9.82%</td>
+          <td style="text-align: left">추가 악성코드 다운로드</td>
       </tr>
       <tr>
-          <td>기타</td>
-          <td>7.47%</td>
-          <td>백도어 설치 등</td>
+          <td style="text-align: left">기타</td>
+          <td style="text-align: left">7.47%</td>
+          <td style="text-align: left">백도어 설치 등</td>
       </tr>
   </tbody>
 </table>
@@ -289,41 +289,41 @@
 <table>
   <thead>
       <tr>
-          <th>계층</th>
-          <th>기법</th>
-          <th>효과</th>
+          <th style="text-align: left">계층</th>
+          <th style="text-align: left">기법</th>
+          <th style="text-align: left">효과</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td><strong>입력</strong></td>
-          <td>Parameterized Prompts</td>
-          <td>높음</td>
+          <td style="text-align: left"><strong>입력</strong></td>
+          <td style="text-align: left">Parameterized Prompts</td>
+          <td style="text-align: left">높음</td>
       </tr>
       <tr>
-          <td><strong>입력</strong></td>
-          <td>시맨틱 분석 방화벽</td>
-          <td>중간-높음</td>
+          <td style="text-align: left"><strong>입력</strong></td>
+          <td style="text-align: left">시맨틱 분석 방화벽</td>
+          <td style="text-align: left">중간-높음</td>
       </tr>
       <tr>
-          <td><strong>시스템</strong></td>
-          <td>Context Isolation</td>
-          <td>권장</td>
+          <td style="text-align: left"><strong>시스템</strong></td>
+          <td style="text-align: left">Context Isolation</td>
+          <td style="text-align: left">권장</td>
       </tr>
       <tr>
-          <td><strong>시스템</strong></td>
-          <td>Canary Words</td>
-          <td>탐지용</td>
+          <td style="text-align: left"><strong>시스템</strong></td>
+          <td style="text-align: left">Canary Words</td>
+          <td style="text-align: left">탐지용</td>
       </tr>
       <tr>
-          <td><strong>출력</strong></td>
-          <td>Secondary LLM Filter</td>
-          <td>중간</td>
+          <td style="text-align: left"><strong>출력</strong></td>
+          <td style="text-align: left">Secondary LLM Filter</td>
+          <td style="text-align: left">중간</td>
       </tr>
       <tr>
-          <td><strong>런타임</strong></td>
-          <td>행동 모니터링</td>
-          <td>지속적</td>
+          <td style="text-align: left"><strong>런타임</strong></td>
+          <td style="text-align: left">행동 모니터링</td>
+          <td style="text-align: left">지속적</td>
       </tr>
   </tbody>
 </table>
@@ -334,30 +334,30 @@
 <table>
   <thead>
       <tr>
-          <th>기법</th>
-          <th>장점</th>
-          <th>단점</th>
-          <th>적용</th>
+          <th style="text-align: left">기법</th>
+          <th style="text-align: left">장점</th>
+          <th style="text-align: left">단점</th>
+          <th style="text-align: left">적용</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td><strong>정규식</strong></td>
-          <td>빠름 (~0.1ms/1KB)</td>
-          <td>문맥 이해 부족</td>
-          <td>이메일, 전화번호</td>
+          <td style="text-align: left"><strong>정규식</strong></td>
+          <td style="text-align: left">빠름 (~0.1ms/1KB)</td>
+          <td style="text-align: left">문맥 이해 부족</td>
+          <td style="text-align: left">이메일, 전화번호</td>
       </tr>
       <tr>
-          <td><strong>NER</strong></td>
-          <td>문맥 이해 (F1: 0.90)</td>
-          <td>느림 (~50ms/1KB)</td>
-          <td>이름, 주소, 조직</td>
+          <td style="text-align: left"><strong>NER</strong></td>
+          <td style="text-align: left">문맥 이해 (F1: 0.90)</td>
+          <td style="text-align: left">느림 (~50ms/1KB)</td>
+          <td style="text-align: left">이름, 주소, 조직</td>
       </tr>
       <tr>
-          <td><strong>토큰화</strong></td>
-          <td>가역적, 형식 보존</td>
-          <td>저장소 필요</td>
-          <td>결제, 의료 데이터</td>
+          <td style="text-align: left"><strong>토큰화</strong></td>
+          <td style="text-align: left">가역적, 형식 보존</td>
+          <td style="text-align: left">저장소 필요</td>
+          <td style="text-align: left">결제, 의료 데이터</td>
       </tr>
   </tbody>
 </table>
@@ -371,12 +371,12 @@
 
     style E fill:#51cf66</pre><h3 id="주요-솔루션">주요 솔루션</h3>
 <p><strong>Microsoft Presidio (오픈소스):</strong></p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#cf222e">from</span> <span style="color:#24292e">presidio_analyzer</span> <span style="color:#cf222e">import</span> AnalyzerEngine
-</span></span><span style="display:flex;"><span><span style="color:#cf222e">from</span> <span style="color:#24292e">presidio_anonymizer</span> <span style="color:#cf222e">import</span> AnonymizerEngine
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">from</span> <span style="color:#555">presidio_analyzer</span> <span style="color:#000;font-weight:bold">import</span> AnalyzerEngine
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">from</span> <span style="color:#555">presidio_anonymizer</span> <span style="color:#000;font-weight:bold">import</span> AnonymizerEngine
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>analyzer <span style="color:#0550ae">=</span> AnalyzerEngine<span style="color:#1f2328">()</span>
-</span></span><span style="display:flex;"><span>results <span style="color:#0550ae">=</span> analyzer<span style="color:#0550ae">.</span>analyze<span style="color:#1f2328">(</span>text<span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;My email is john@example.com&#34;</span><span style="color:#1f2328">,</span> language<span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;en&#34;</span><span style="color:#1f2328">)</span>
-</span></span><span style="display:flex;"><span><span style="color:#57606a"># 결과: [type: EMAIL_ADDRESS, start: 12, end: 28, score: 1.0]</span>
+</span></span><span style="display:flex;"><span>analyzer <span style="color:#000;font-weight:bold">=</span> AnalyzerEngine()
+</span></span><span style="display:flex;"><span>results <span style="color:#000;font-weight:bold">=</span> analyzer<span style="color:#000;font-weight:bold">.</span>analyze(text<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;My email is john@example.com&#34;</span>, language<span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;en&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 결과: [type: EMAIL_ADDRESS, start: 12, end: 28, score: 1.0]</span>
 </span></span></code></pre></div><ul>
 <li>지원 PII 타입: <strong>30+</strong></li>
 <li>다국어 지원 (영어, 스페인어, 중국어 등)</li>
@@ -419,41 +419,41 @@
 <table>
   <thead>
       <tr>
-          <th>기술</th>
-          <th>격리 수준</th>
-          <th>콜드 스타트</th>
-          <th>GPU 지원</th>
-          <th>추천</th>
+          <th style="text-align: left">기술</th>
+          <th style="text-align: left">격리 수준</th>
+          <th style="text-align: left">콜드 스타트</th>
+          <th style="text-align: left">GPU 지원</th>
+          <th style="text-align: left">추천</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td><strong>Firecracker (E2B)</strong></td>
-          <td>하드웨어 (KVM)</td>
-          <td>~150ms</td>
-          <td>아니오</td>
-          <td>✅</td>
+          <td style="text-align: left"><strong>Firecracker (E2B)</strong></td>
+          <td style="text-align: left">하드웨어 (KVM)</td>
+          <td style="text-align: left">~150ms</td>
+          <td style="text-align: left">아니오</td>
+          <td style="text-align: left">✅</td>
       </tr>
       <tr>
-          <td><strong>gVisor (Modal)</strong></td>
-          <td>사용자 공간 커널</td>
-          <td>1초 미만</td>
-          <td>예 (T4-H200)</td>
-          <td>✅</td>
+          <td style="text-align: left"><strong>gVisor (Modal)</strong></td>
+          <td style="text-align: left">사용자 공간 커널</td>
+          <td style="text-align: left">1초 미만</td>
+          <td style="text-align: left">예 (T4-H200)</td>
+          <td style="text-align: left">✅</td>
       </tr>
       <tr>
-          <td><strong>Kata Containers</strong></td>
-          <td>VM 기반</td>
-          <td>1초 미만</td>
-          <td>예</td>
-          <td>✅</td>
+          <td style="text-align: left"><strong>Kata Containers</strong></td>
+          <td style="text-align: left">VM 기반</td>
+          <td style="text-align: left">1초 미만</td>
+          <td style="text-align: left">예</td>
+          <td style="text-align: left">✅</td>
       </tr>
       <tr>
-          <td>Docker만 사용</td>
-          <td>공유 커널</td>
-          <td>빠름</td>
-          <td>예</td>
-          <td>❌</td>
+          <td style="text-align: left">Docker만 사용</td>
+          <td style="text-align: left">공유 커널</td>
+          <td style="text-align: left">빠름</td>
+          <td style="text-align: left">예</td>
+          <td style="text-align: left">❌</td>
       </tr>
   </tbody>
 </table>
@@ -462,26 +462,26 @@
 <table>
   <thead>
       <tr>
-          <th>사고</th>
-          <th>심각도</th>
-          <th>교훈</th>
+          <th style="text-align: left">사고</th>
+          <th style="text-align: left">심각도</th>
+          <th style="text-align: left">교훈</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td><strong>CVE-2025-68664 (LangGrinch)</strong></td>
-          <td>CRITICAL (9.3)</td>
-          <td>LLM 응답 필드를 절대 신뢰하지 말 것</td>
+          <td style="text-align: left"><strong>CVE-2025-68664 (LangGrinch)</strong></td>
+          <td style="text-align: left">CRITICAL (9.3)</td>
+          <td style="text-align: left">LLM 응답 필드를 절대 신뢰하지 말 것</td>
       </tr>
       <tr>
-          <td><strong>ToxicSQL 백도어</strong></td>
-          <td>CRITICAL</td>
-          <td>학습 데이터 보안 중요 (5% 오염 = 높은 성공률)</td>
+          <td style="text-align: left"><strong>ToxicSQL 백도어</strong></td>
+          <td style="text-align: left">CRITICAL</td>
+          <td style="text-align: left">학습 데이터 보안 중요 (5% 오염 = 높은 성공률)</td>
       </tr>
       <tr>
-          <td><strong>SQLBot SQL Injection</strong></td>
-          <td>HIGH</td>
-          <td>LLM 생성 SQL은 실행 전 항상 검증</td>
+          <td style="text-align: left"><strong>SQLBot SQL Injection</strong></td>
+          <td style="text-align: left">HIGH</td>
+          <td style="text-align: left">LLM 생성 SQL은 실행 전 항상 검증</td>
       </tr>
   </tbody>
 </table>
@@ -491,24 +491,24 @@
 <table>
   <thead>
       <tr>
-          <th>CVE-ID</th>
-          <th>CVSS</th>
-          <th>컴포넌트</th>
-          <th>영향</th>
+          <th style="text-align: left">CVE-ID</th>
+          <th style="text-align: left">CVSS</th>
+          <th style="text-align: left">컴포넌트</th>
+          <th style="text-align: left">영향</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td><strong>CVE-2025-68664 (LangGrinch)</strong></td>
-          <td>9.3</td>
-          <td>LangChain Core</td>
-          <td>847M+ 다운로드 영향, 역직렬화를 통한 RCE</td>
+          <td style="text-align: left"><strong>CVE-2025-68664 (LangGrinch)</strong></td>
+          <td style="text-align: left">9.3</td>
+          <td style="text-align: left">LangChain Core</td>
+          <td style="text-align: left">847M+ 다운로드 영향, 역직렬화를 통한 RCE</td>
       </tr>
       <tr>
-          <td><strong>CVE-2025-53773</strong></td>
-          <td>9.0+</td>
-          <td>GitHub Copilot</td>
-          <td>프롬프트 인젝션을 통한 전체 시스템 침해</td>
+          <td style="text-align: left"><strong>CVE-2025-53773</strong></td>
+          <td style="text-align: left">9.0+</td>
+          <td style="text-align: left">GitHub Copilot</td>
+          <td style="text-align: left">프롬프트 인젝션을 통한 전체 시스템 침해</td>
       </tr>
   </tbody>
 </table>
@@ -530,41 +530,41 @@
 <table>
   <thead>
       <tr>
-          <th>계층</th>
-          <th>기능</th>
-          <th>효과</th>
+          <th style="text-align: left">계층</th>
+          <th style="text-align: left">기능</th>
+          <th style="text-align: left">효과</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td>입력 가드레일</td>
-          <td>외부 콘텐츠 검증/새니타이즈</td>
-          <td>30-40% 감소</td>
+          <td style="text-align: left">입력 가드레일</td>
+          <td style="text-align: left">외부 콘텐츠 검증/새니타이즈</td>
+          <td style="text-align: left">30-40% 감소</td>
       </tr>
       <tr>
-          <td>아키텍처 경계</td>
-          <td>Context 격리, 최소 권한</td>
-          <td>20-30% 감소</td>
+          <td style="text-align: left">아키텍처 경계</td>
+          <td style="text-align: left">Context 격리, 최소 권한</td>
+          <td style="text-align: left">20-30% 감소</td>
       </tr>
       <tr>
-          <td>서명된 프롬프트</td>
-          <td>암호화 무결성</td>
-          <td>10-15% 감소</td>
+          <td style="text-align: left">서명된 프롬프트</td>
+          <td style="text-align: left">암호화 무결성</td>
+          <td style="text-align: left">10-15% 감소</td>
       </tr>
       <tr>
-          <td>출력 필터링</td>
-          <td>데이터 유출 차단</td>
-          <td>15-20% 감소</td>
+          <td style="text-align: left">출력 필터링</td>
+          <td style="text-align: left">데이터 유출 차단</td>
+          <td style="text-align: left">15-20% 감소</td>
       </tr>
       <tr>
-          <td>Human-in-Loop</td>
-          <td>고위험 작업 확인</td>
-          <td>5-10% 감소</td>
+          <td style="text-align: left">Human-in-Loop</td>
+          <td style="text-align: left">고위험 작업 확인</td>
+          <td style="text-align: left">5-10% 감소</td>
       </tr>
       <tr>
-          <td>모니터링</td>
-          <td>이상 탐지</td>
-          <td>지속적 보호</td>
+          <td style="text-align: left">모니터링</td>
+          <td style="text-align: left">이상 탐지</td>
+          <td style="text-align: left">지속적 보호</td>
       </tr>
   </tbody>
 </table>
@@ -582,38 +582,38 @@
 <table>
   <thead>
       <tr>
-          <th>요소</th>
-          <th>설명</th>
+          <th style="text-align: left">요소</th>
+          <th style="text-align: left">설명</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td><strong>타임스탬프</strong></td>
-          <td>각 요청/작업의 정확한 시간</td>
+          <td style="text-align: left"><strong>타임스탬프</strong></td>
+          <td style="text-align: left">각 요청/작업의 정확한 시간</td>
       </tr>
       <tr>
-          <td><strong>사용자 신원</strong></td>
-          <td>접근 컨텍스트 포함</td>
+          <td style="text-align: left"><strong>사용자 신원</strong></td>
+          <td style="text-align: left">접근 컨텍스트 포함</td>
       </tr>
       <tr>
-          <td><strong>원시 사용자 입력</strong></td>
-          <td>프롬프트 및 질의 내용</td>
+          <td style="text-align: left"><strong>원시 사용자 입력</strong></td>
+          <td style="text-align: left">프롬프트 및 질의 내용</td>
       </tr>
       <tr>
-          <td><strong>컨텍스트 데이터</strong></td>
-          <td>채팅 기록, RAG 검색 정보</td>
+          <td style="text-align: left"><strong>컨텍스트 데이터</strong></td>
+          <td style="text-align: left">채팅 기록, RAG 검색 정보</td>
       </tr>
       <tr>
-          <td><strong>모델 식별자</strong></td>
-          <td>호출된 모델 ID</td>
+          <td style="text-align: left"><strong>모델 식별자</strong></td>
+          <td style="text-align: left">호출된 모델 ID</td>
       </tr>
       <tr>
-          <td><strong>완전한 모델 출력</strong></td>
-          <td>결과 및 응답</td>
+          <td style="text-align: left"><strong>완전한 모델 출력</strong></td>
+          <td style="text-align: left">결과 및 응답</td>
       </tr>
       <tr>
-          <td><strong>의사결정 결과</strong></td>
-          <td>승인 워크플로우 포함</td>
+          <td style="text-align: left"><strong>의사결정 결과</strong></td>
+          <td style="text-align: left">승인 워크플로우 포함</td>
       </tr>
   </tbody>
 </table>
@@ -647,31 +647,31 @@
 <table>
   <thead>
       <tr>
-          <th>도구</th>
-          <th>SIEM 연동</th>
-          <th>특징</th>
+          <th style="text-align: left">도구</th>
+          <th style="text-align: left">SIEM 연동</th>
+          <th style="text-align: left">특징</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td><strong>LogAI (오픈소스)</strong></td>
-          <td>ELK/Splunk</td>
-          <td>다중 LLM 백엔드 지원</td>
+          <td style="text-align: left"><strong>LogAI (오픈소스)</strong></td>
+          <td style="text-align: left">ELK/Splunk</td>
+          <td style="text-align: left">다중 LLM 백엔드 지원</td>
       </tr>
       <tr>
-          <td><strong>Azure APIM</strong></td>
-          <td>Azure Monitor</td>
-          <td>네이티브 LLM 로깅</td>
+          <td style="text-align: left"><strong>Azure APIM</strong></td>
+          <td style="text-align: left">Azure Monitor</td>
+          <td style="text-align: left">네이티브 LLM 로깅</td>
       </tr>
       <tr>
-          <td><strong>Langfuse</strong></td>
-          <td>AWS 서비스</td>
-          <td>Bedrock 연동</td>
+          <td style="text-align: left"><strong>Langfuse</strong></td>
+          <td style="text-align: left">AWS 서비스</td>
+          <td style="text-align: left">Bedrock 연동</td>
       </tr>
       <tr>
-          <td><strong>PurpleLlama</strong></td>
-          <td>-</td>
-          <td>LLM 보안 특화</td>
+          <td style="text-align: left"><strong>PurpleLlama</strong></td>
+          <td style="text-align: left">-</td>
+          <td style="text-align: left">LLM 보안 특화</td>
       </tr>
   </tbody>
 </table>
@@ -703,46 +703,46 @@
     style G2 fill:#51cf66</pre><table>
   <thead>
       <tr>
-          <th>원칙</th>
-          <th>핵심 액션</th>
-          <th>우선순위</th>
+          <th style="text-align: left">원칙</th>
+          <th style="text-align: left">핵심 액션</th>
+          <th style="text-align: left">우선순위</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td><strong>API Key Hardcoding</strong></td>
-          <td>환경 변수 + Gitleaks Pre-commit</td>
-          <td>🔴 필수</td>
+          <td style="text-align: left"><strong>API Key Hardcoding</strong></td>
+          <td style="text-align: left">환경 변수 + Gitleaks Pre-commit</td>
+          <td style="text-align: left">🔴 필수</td>
       </tr>
       <tr>
-          <td><strong>Supply Chain Poisoning</strong></td>
-          <td>safetensors + SLSA Level 3+</td>
-          <td>🔴 필수</td>
+          <td style="text-align: left"><strong>Supply Chain Poisoning</strong></td>
+          <td style="text-align: left">safetensors + SLSA Level 3+</td>
+          <td style="text-align: left">🔴 필수</td>
       </tr>
       <tr>
-          <td><strong>System Prompt Leakage</strong></td>
-          <td>민감 정보 제외 + Context 격리</td>
-          <td>🔴 필수</td>
+          <td style="text-align: left"><strong>System Prompt Leakage</strong></td>
+          <td style="text-align: left">민감 정보 제외 + Context 격리</td>
+          <td style="text-align: left">🔴 필수</td>
       </tr>
       <tr>
-          <td><strong>PII Data Masking</strong></td>
-          <td>Presidio + GDPR 준수</td>
-          <td>🟡 권장</td>
+          <td style="text-align: left"><strong>PII Data Masking</strong></td>
+          <td style="text-align: left">Presidio + GDPR 준수</td>
+          <td style="text-align: left">🟡 권장</td>
       </tr>
       <tr>
-          <td><strong>DB Privilege Sandboxing</strong></td>
-          <td>최소 권한 + Firecracker</td>
-          <td>🟡 권장</td>
+          <td style="text-align: left"><strong>DB Privilege Sandboxing</strong></td>
+          <td style="text-align: left">최소 권한 + Firecracker</td>
+          <td style="text-align: left">🟡 권장</td>
       </tr>
       <tr>
-          <td><strong>Third-Party Plugin</strong></td>
-          <td>다층 방어 + Human-in-Loop</td>
-          <td>🟡 권장</td>
+          <td style="text-align: left"><strong>Third-Party Plugin</strong></td>
+          <td style="text-align: left">다층 방어 + Human-in-Loop</td>
+          <td style="text-align: left">🟡 권장</td>
       </tr>
       <tr>
-          <td><strong>Real-time Audit Logging</strong></td>
-          <td>전체 로깅 + 이상 탐지</td>
-          <td>🟡 권장</td>
+          <td style="text-align: left"><strong>Real-time Audit Logging</strong></td>
+          <td style="text-align: left">전체 로깅 + 이상 탐지</td>
+          <td style="text-align: left">🟡 권장</td>
       </tr>
   </tbody>
 </table>

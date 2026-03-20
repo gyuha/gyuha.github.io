@@ -160,50 +160,50 @@
     style B fill:#c0ecd3
     style C fill:#fde8c0</pre><h3 id="1-프로젝트-claudemd-만들기">1) 프로젝트 CLAUDE.md 만들기</h3>
 <p>Anthropic는 프로젝트 루트의 <code>CLAUDE.md</code> 또는 <code>.claude/CLAUDE.md</code>에 프로젝트 규칙을 두라고 권장합니다. <code>/init</code>으로 초안을 만들 수도 있습니다.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-md" data-lang="md"><span style="display:flex;"><span># Project Overview
-</span></span><span style="display:flex;"><span>이 프로젝트는 개인 투자자를 위한 배당주 분석 웹앱이다.
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-md" data-lang="md"><span style="display:flex;"><span><span style="color:#999"># Project Overview
+</span></span></span><span style="display:flex;"><span><span style="color:#999"></span>이 프로젝트는 개인 투자자를 위한 배당주 분석 웹앱이다.
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span># Workflow
-</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 제품 범위 정의가 필요한 요청은 pm-skills를 우선 사용한다.
-</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 화면 구조, 정보 우선순위, CTA, empty/loading/error state 설계는 ui-ux-pro-max-skill을 우선 사용한다.
-</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Next.js, Supabase, Tailwind, Prisma 등 라이브러리 구현 판단은 Context7을 우선 사용한다.
-</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 구현은 작은 task 단위로 진행한다.
-</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 각 구현 후 lint, typecheck, test를 확인한다.
-</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 반복 수정은 Ralph Loop 스타일로 한 번에 하나의 task만 처리한다.
+</span></span><span style="display:flex;"><span><span style="color:#999"># Workflow
+</span></span></span><span style="display:flex;"><span><span style="color:#999"></span><span style="color:#000;font-weight:bold">-</span> 제품 범위 정의가 필요한 요청은 pm-skills를 우선 사용한다.
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">-</span> 화면 구조, 정보 우선순위, CTA, empty/loading/error state 설계는 ui-ux-pro-max-skill을 우선 사용한다.
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">-</span> Next.js, Supabase, Tailwind, Prisma 등 라이브러리 구현 판단은 Context7을 우선 사용한다.
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">-</span> 구현은 작은 task 단위로 진행한다.
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">-</span> 각 구현 후 lint, typecheck, test를 확인한다.
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">-</span> 반복 수정은 Ralph Loop 스타일로 한 번에 하나의 task만 처리한다.
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span># Coding Rules
-</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> TypeScript strict 유지
-</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 과도한 추상화 금지
-</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 기능 추가보다 현재 task 완료 우선
-</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 변경 후 영향 파일 요약 제공
+</span></span><span style="display:flex;"><span><span style="color:#999"># Coding Rules
+</span></span></span><span style="display:flex;"><span><span style="color:#999"></span><span style="color:#000;font-weight:bold">-</span> TypeScript strict 유지
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">-</span> 과도한 추상화 금지
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">-</span> 기능 추가보다 현재 task 완료 우선
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">-</span> 변경 후 영향 파일 요약 제공
 </span></span></code></pre></div><h3 id="2-skill-description-정리">2) skill description 정리</h3>
 <p><code>description</code>은 Claude가 skill을 언제 쓸지 판단하는 핵심 필드입니다.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#57606a"># pm-skills 예시</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#24292e">---</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#0550ae">name</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>pm-skills<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#0550ae">description</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>Define product goals, target users, MVP scope, priorities, success metrics, and feature tradeoffs when a request is about product planning, PRD, roadmap, requirements, or deciding what to build first<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#24292e">---</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#57606a"># ui-ux-pro-max-skill 예시</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#24292e">---</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#0550ae">name</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>ui-ux-pro-max-skill<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#0550ae">description</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>Design information architecture, screen hierarchy, CTA placement, form UX, loading, empty, and error states when the request is about UI structure, usability, UX review, or making a feature easier to use<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#24292e">---</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#57606a"># context7 예시</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#24292e">---</span><span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#0550ae">name</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>context7<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#0550ae">description</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>Check current official documentation and recommended implementation patterns when working with frameworks, libraries, SDKs, auth, routing, deployment, APIs, or version-sensitive technical details<span style="color:#fff">
-</span></span></span><span style="display:flex;"><span><span style="color:#24292e">---</span><span style="color:#fff">
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#998;font-style:italic"># pm-skills 예시</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#555">---</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#000080">name</span>:<span style="color:#bbb"> </span>pm-skills<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#000080">description</span>:<span style="color:#bbb"> </span>Define product goals, target users, MVP scope, priorities, success metrics, and feature tradeoffs when a request is about product planning, PRD, roadmap, requirements, or deciding what to build first<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#555">---</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#998;font-style:italic"># ui-ux-pro-max-skill 예시</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#555">---</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#000080">name</span>:<span style="color:#bbb"> </span>ui-ux-pro-max-skill<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#000080">description</span>:<span style="color:#bbb"> </span>Design information architecture, screen hierarchy, CTA placement, form UX, loading, empty, and error states when the request is about UI structure, usability, UX review, or making a feature easier to use<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#555">---</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#998;font-style:italic"># context7 예시</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#555">---</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#000080">name</span>:<span style="color:#bbb"> </span>context7<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#000080">description</span>:<span style="color:#bbb"> </span>Check current official documentation and recommended implementation patterns when working with frameworks, libraries, SDKs, auth, routing, deployment, APIs, or version-sensitive technical details<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span><span style="color:#bbb"></span><span style="color:#555">---</span><span style="color:#bbb">
 </span></span></span></code></pre></div><h3 id="3-반복-자동화는-hooks로-분리">3) 반복 자동화는 hooks로 분리</h3>
 <p>lint/test/formatting처럼 &ldquo;항상 해야 하는 것&quot;은 hooks가 더 확실합니다. hooks는 LLM이 알아서 하길 기대하는 게 아니라 <strong>결정론적으로 항상 실행</strong>되게 합니다.</p>
 <hr>
 <h2 id="시작-프롬프트-작성법">시작 프롬프트 작성법</h2>
 <h3 id="나쁜-예">나쁜 예</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>배당주 앱 하나 만들어줘
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>배당주 앱 하나 만들어줘
 </span></span></code></pre></div><p>너무 넓어서 어떤 skill을 써야 하는지 명확하지 않습니다.</p>
 <h3 id="좋은-예">좋은 예</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>개인 투자자를 위한 배당주 분석 웹앱을 만들고 싶다.
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>개인 투자자를 위한 배당주 분석 웹앱을 만들고 싶다.
 </span></span><span style="display:flex;"><span>먼저 제품 기획 관점에서 핵심 사용자, 핵심 문제, MVP 범위, 성공 기준을 정리해 줘.
 </span></span><span style="display:flex;"><span>아직 코드는 작성하지 말고 PRD 초안 형태로 정리해 줘.
 </span></span></code></pre></div><p>이 문장은 <strong>제품 기획, 핵심 사용자, MVP, 성공 기준, PRD</strong> 같은 키워드를 포함하므로 <strong>pm-skills의 description과 강하게 맞물립니다.</strong></p>
@@ -226,7 +226,7 @@
     style F fill:#ffc8c4
     style G fill:#c5dcef
     style H fill:#fde8c0</pre><h3 id="단계-1-제품-기획-시작">단계 1: 제품 기획 시작</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>개인 투자자를 위한 배당주 분석 웹앱을 만들고 싶다.
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>개인 투자자를 위한 배당주 분석 웹앱을 만들고 싶다.
 </span></span><span style="display:flex;"><span>제품 기획 관점에서 다음만 정리해 줘.
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>- 핵심 사용자
@@ -240,7 +240,7 @@
 </span></span><span style="display:flex;"><span>아직 코드는 작성하지 마.
 </span></span></code></pre></div><p><strong>발동 키워드</strong>: 제품 기획, 핵심 사용자, MVP, 성공 기준, PRD</p>
 <h3 id="단계-2-기획-결과를-실행-계획으로">단계 2: 기획 결과를 실행 계획으로</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>방금 만든 PRD를 실제 개발 가능한 실행 계획으로 바꿔 줘.
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>방금 만든 PRD를 실제 개발 가능한 실행 계획으로 바꿔 줘.
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>다음을 포함해 줘.
 </span></span><span style="display:flex;"><span>- spec 초안
@@ -252,7 +252,7 @@
 </span></span><span style="display:flex;"><span>범위는 MVP로 제한하고, 실행 가능한 수준으로 구체적으로 작성해 줘.
 </span></span></code></pre></div><p><strong>발동 키워드</strong>: 실행 계획, spec, definition of done, task 목록, MVP</p>
 <h3 id="단계-3-화면-구조-설계">단계 3: 화면 구조 설계</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>이제 구현 전에 UX 관점으로 화면 구조를 먼저 설계해 줘.
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>이제 구현 전에 UX 관점으로 화면 구조를 먼저 설계해 줘.
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>다음을 정리해 줘.
 </span></span><span style="display:flex;"><span>- 전체 정보 구조
@@ -266,7 +266,7 @@
 </span></span><span style="display:flex;"><span>예쁜 시안보다 사용자가 덜 헷갈리는 구조에 집중해 줘.
 </span></span></code></pre></div><p><strong>발동 키워드</strong>: UX 관점, 화면 구조, 정보 구조, CTA, loading/empty/error state</p>
 <h3 id="단계-4-기술-구현-사실-확인">단계 4: 기술 구현 사실 확인</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>이 프로젝트는 Next.js App Router, TypeScript, Tailwind, Supabase를 사용할 예정이다.
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>이 프로젝트는 Next.js App Router, TypeScript, Tailwind, Supabase를 사용할 예정이다.
 </span></span><span style="display:flex;"><span>이제 최신 공식 문서 기준으로 다음 구현 방식을 확인해 줘.
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>- Next.js App Router에서 서버 컴포넌트와 클라이언트 컴포넌트 구분
@@ -278,7 +278,7 @@
 </span></span><span style="display:flex;"><span>오래된 방식은 제외하고 현재 권장 패턴만 정리해 줘.
 </span></span></code></pre></div><p><strong>발동 키워드</strong>: 최신 공식 문서 기준, 권장 패턴, 오래된 방식 제외</p>
 <h3 id="단계-5-첫-코드-생성">단계 5: 첫 코드 생성</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>지금부터는 구현 단계다.
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>지금부터는 구현 단계다.
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>아래 spec과 ui-plan을 기준으로,
 </span></span><span style="display:flex;"><span>이번에는 프로젝트 전체를 다 만들지 말고 첫 task만 수행해 줘.
@@ -294,7 +294,7 @@
 </span></span><span style="display:flex;"><span>- 필요한 파일만 수정할 것
 </span></span><span style="display:flex;"><span>- 작업 후 변경 파일 목록과 요약 제공
 </span></span></code></pre></div><h3 id="단계-6-반복-수정-루프">단계 6: 반복 수정 루프</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>이제부터는 반복 수행 모드로 작업해 줘.
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>이제부터는 반복 수행 모드로 작업해 줘.
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>목표:
 </span></span><span style="display:flex;"><span>현재 task를 완료하고 lint, typecheck, test를 통과시키는 것
@@ -366,8 +366,8 @@
 <li>자동 선택이 자꾸 다른 skill로 새는 경우</li>
 <li>프로젝트에 skill이 너무 많아 겹칠 때</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>/pm-skills 개인 투자자를 위한 배당주 앱의 MVP를 정의해 줘
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>/context7 Next.js App Router + Supabase Auth 최신 권장 구현 방식을 정리해 줘
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>/pm-skills 개인 투자자를 위한 배당주 앱의 MVP를 정의해 줘
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>/context7 Next.js App Router + Supabase Auth 최신 권장 구현 방식을 정리해 줘
 </span></span></code></pre></div><hr>
 <h2 id="hooks-vs-skills-비교">Hooks vs Skills 비교</h2>
 <pre class="mermaid">flowchart TD
@@ -432,31 +432,31 @@
     style D fill:#c5dcef</pre><table>
   <thead>
       <tr>
-          <th>메모리 타입</th>
-          <th>위치</th>
-          <th>목적</th>
+          <th style="text-align: left">메모리 타입</th>
+          <th style="text-align: left">위치</th>
+          <th style="text-align: left">목적</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td><strong>Enterprise policy</strong></td>
-          <td><code>/etc/claude-code/CLAUDE.md</code></td>
-          <td>조직 전체 규칙</td>
+          <td style="text-align: left"><strong>Enterprise policy</strong></td>
+          <td style="text-align: left"><code>/etc/claude-code/CLAUDE.md</code></td>
+          <td style="text-align: left">조직 전체 규칙</td>
       </tr>
       <tr>
-          <td><strong>Project memory</strong></td>
-          <td><code>./CLAUDE.md</code></td>
-          <td>팀 공유 프로젝트 규칙</td>
+          <td style="text-align: left"><strong>Project memory</strong></td>
+          <td style="text-align: left"><code>./CLAUDE.md</code></td>
+          <td style="text-align: left">팀 공유 프로젝트 규칙</td>
       </tr>
       <tr>
-          <td><strong>User memory</strong></td>
-          <td><code>~/.claude/CLAUDE.md</code></td>
-          <td>모든 프로젝트에 적용되는 개인 설정</td>
+          <td style="text-align: left"><strong>User memory</strong></td>
+          <td style="text-align: left"><code>~/.claude/CLAUDE.md</code></td>
+          <td style="text-align: left">모든 프로젝트에 적용되는 개인 설정</td>
       </tr>
       <tr>
-          <td><strong>Project local</strong></td>
-          <td><code>./CLAUDE.local.md</code></td>
-          <td>현재 프로젝트만의 개인 설정 (deprecated)</td>
+          <td style="text-align: left"><strong>Project local</strong></td>
+          <td style="text-align: left"><code>./CLAUDE.local.md</code></td>
+          <td style="text-align: left">현재 프로젝트만의 개인 설정 (deprecated)</td>
       </tr>
   </tbody>
 </table>
@@ -470,7 +470,7 @@
 <li><strong>자동이 애매하면 바로 <code>/skill-name</code>으로 강제한다</strong></li>
 </ol>
 <h3 id="추천-실전-운영-방식">추천 실전 운영 방식</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span># 시작
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-text" data-lang="text"><span style="display:flex;"><span># 시작
 </span></span><span style="display:flex;"><span>개인 투자자를 위한 배당주 분석 웹앱을 만들고 싶다.
 </span></span><span style="display:flex;"><span>먼저 제품 기획 관점에서 핵심 사용자, 문제, MVP, 성공 기준을 PRD 초안으로 정리해 줘.
 </span></span><span style="display:flex;"><span>
