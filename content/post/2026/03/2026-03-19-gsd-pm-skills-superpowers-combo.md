@@ -431,22 +431,22 @@ flowchart TD
 
 ```bash
 /pm-execution:create-prd
-"MVP 범위는 이메일 로그인, 워크스페이스 생성, 칸반 보드, 댓글, 기본 활동 로그다. 제외 범위는 자동화, 간트 차트, 외부 연동이다. PM이 바로 개발팀에 넘길 수 있는 수준의 PRD 초안을 써줘."
 ```
+> "MVP 범위는 이메일 로그인, 워크스페이스 생성, 칸반 보드, 댓글, 기본 활동 로그다. 제외 범위는 자동화, 간트 차트, 외부 연동이다. PM이 바로 개발팀에 넘길 수 있는 수준의 PRD 초안을 써줘."
 
 
 ```bash
 /superpowers:brainstorming
-이 PRD를 기준으로 2주 안에 shipping 가능한 MVP로 다시 줄여줘. Must have / should have / later 로 나누고, 이번 phase 에 절대 넣지 말아야 할 범위와 이유도 써줘. 그리고 구현 전에 꼭 확인해야 할 모호한 요구사항 5개를 뽑아줘.
 ```
+> 이 PRD를 기준으로 2주 안에 shipping 가능한 MVP로 다시 줄여줘. Must have / should have / later 로 나누고, 이번 phase 에 절대 넣지 말아야 할 범위와 이유도 써줘. 그리고 구현 전에 꼭 확인해야 할 모호한 요구사항 5개를 뽑아줘.
 
 ```bash
 /pm-product-discovery:identify-assumptions-new
- "다음 가정을 검증하고 싶다: 
- 1) 20인 이하 팀도 칸반 툴에 비용을 지불한다. 
- 2) 댓글과 활동 로그만 있어도 초기 협업 가치를 느낀다. 
- 3) 관리자 1명이 전체 도입을 주도한다. 각 가정을 검증 가능성, 위험도, 실험 우선순위 기준으로 정리해줘."
 ```
+> 다음 가정을 검증하고 싶다: 
+> 1) 20인 이하 팀도 칸반 툴에 비용을 지불한다. 
+> 2) 댓글과 활동 로그만 있어도 초기 협업 가치를 느낀다. 
+> 3) 관리자 1명이 전체 도입을 주도한다. 각 가정을 검증 가능성, 위험도, 실험 우선순위 기준으로 정리해줘."
 
 
 #### 3단계: 개발 phase 로 바꾸기 전에 plan을 고정
@@ -469,7 +469,9 @@ flowchart TD
 
 #### 4단계: 구현 후에도 Superpowers를 계속 붙인다
 
-`superpowers/test-driven-development`
+```bash   
+superpowers/test-driven-development
+```
 
 > "이번 phase 에서 로그인과 워크스페이스 생성 플로우를 TDD로 진행하고 싶다. 가장 위험한 테스트부터 순서를 제안하고, 어떤 실패를 먼저 재현해야 하는지 정리해줘."
 
@@ -477,21 +479,28 @@ flowchart TD
 /gsd:execute-phase 1
 ```
 
-`superpowers/requesting-code-review`
+```bash
+superpowers/requesting-code-review
+```
 
 > "방금 끝난 phase diff를 리뷰해줘. 요구사항 누락, 테스트 약한 부분, 과한 구현, 장기 유지보수 리스크를 중심으로 보고, 꼭 고쳐야 할 것과 나중에 미뤄도 되는 것을 나눠줘."
 
-`superpowers/verification-before-completion`
+```bash
+superpowers/verification-before-completion
+```
 
 > "완료라고 말하기 전에 실제 검증이 충분한지 체크해줘. 빌드, 테스트, 수동 QA, edge case 확인 중 빠진 것이 있으면 완료 선언을 막아줘."
 
 ### 디버깅과 데이터 분석 프롬프트 예제
 
 ```bash
-/gsd:debug "모바일 Safari에서 칸반 카드 드래그가 시작되지 않는다. 데스크톱 Chrome에서는 정상이다. 최근 변경은 drag handle 영역 확장과 CSS overflow 수정이다."
+/gsd:debug 
 ```
+> "모바일 Safari에서 칸반 카드 드래그가 시작되지 않는다. 데스크톱 Chrome에서는 정상이다. 최근 변경은 drag handle 영역 확장과 CSS overflow 수정이다."
 
-`superpowers/systematic-debugging`
+```bash
+superpowers/systematic-debugging
+```
 
 > "이 버그를 감으로 고치지 말고 재현 조건, 가능한 원인, 확인할 로그/DOM 상태, 반증 방법 순서로 정리해줘. 첫 번째 시도에서 실패하면 어떤 대안 가설로 넘어갈지도 적어줘."
 

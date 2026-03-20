@@ -114,23 +114,23 @@
 <p>즉, 프로젝트마다 Session 하나씩 두고, 빌드/서버/로그를 Pane으로 분리하면 작업 흐름이 안정됩니다.</p>
 <h2 id="2-가장-먼저-익혀야-할-기본-명령">2. 가장 먼저 익혀야 할 기본 명령</h2>
 <h3 id="21-세션-생성접속목록">2.1 세션 생성/접속/목록</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 새 세션 생성</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># 새 세션 생성</span>
 </span></span><span style="display:flex;"><span>tmux new -s myproj
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 세션 목록</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 세션 목록</span>
 </span></span><span style="display:flex;"><span>tmux ls
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 세션 다시 붙기</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 세션 다시 붙기</span>
 </span></span><span style="display:flex;"><span>tmux attach -t myproj
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 접속 중이던 클라이언트 강제 분리 후 붙기</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 접속 중이던 클라이언트 강제 분리 후 붙기</span>
 </span></span><span style="display:flex;"><span>tmux attach -d -t myproj
 </span></span></code></pre></div><p>아래 한 줄은 실무에서 정말 많이 씁니다.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#998;font-style:italic"># 있으면 붙고, 없으면 생성</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># 있으면 붙고, 없으면 생성</span>
 </span></span><span style="display:flex;"><span>tmux new -As myproj
 </span></span></code></pre></div><h3 id="22-분리detach">2.2 분리(detach)</h3>
 <p>tmux 내부에서:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Ctrl+b, d
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Ctrl+b, d
 </span></span></code></pre></div><p>서버 작업 중 SSH가 끊겨도 세션은 살아있어서 다시 <code>attach</code>하면 이어서 작업할 수 있습니다.</p>
 <h2 id="3-기본-단축키-치트시트">3. 기본 단축키 치트시트</h2>
 <p>tmux 기본 prefix는 <code>Ctrl+b</code>입니다.</p>
@@ -138,61 +138,61 @@
 <table>
   <thead>
       <tr>
-          <th style="text-align: left">키</th>
-          <th style="text-align: left">기능</th>
-          <th style="text-align: left">설명</th>
+          <th>키</th>
+          <th>기능</th>
+          <th>설명</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td style="text-align: left"><code>Ctrl+b c</code></td>
-          <td style="text-align: left">새 윈도우</td>
-          <td style="text-align: left">현재 세션에 새 window 생성</td>
+          <td><code>Ctrl+b c</code></td>
+          <td>새 윈도우</td>
+          <td>현재 세션에 새 window 생성</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>Ctrl+b n</code> / <code>Ctrl+b p</code></td>
-          <td style="text-align: left">윈도우 이동</td>
-          <td style="text-align: left">다음/이전 window로 전환</td>
+          <td><code>Ctrl+b n</code> / <code>Ctrl+b p</code></td>
+          <td>윈도우 이동</td>
+          <td>다음/이전 window로 전환</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>Ctrl+b %</code></td>
-          <td style="text-align: left">좌우 분할</td>
-          <td style="text-align: left">pane을 수평으로 분할</td>
+          <td><code>Ctrl+b %</code></td>
+          <td>좌우 분할</td>
+          <td>pane을 수평으로 분할</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>Ctrl+b &quot;</code></td>
-          <td style="text-align: left">상하 분할</td>
-          <td style="text-align: left">pane을 수직으로 분할</td>
+          <td><code>Ctrl+b &quot;</code></td>
+          <td>상하 분할</td>
+          <td>pane을 수직으로 분할</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>Ctrl+b</code> + 방향키</td>
-          <td style="text-align: left">패널 이동</td>
-          <td style="text-align: left">인접 pane으로 포커스 이동</td>
+          <td><code>Ctrl+b</code> + 방향키</td>
+          <td>패널 이동</td>
+          <td>인접 pane으로 포커스 이동</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>Ctrl+b x</code></td>
-          <td style="text-align: left">패널 종료</td>
-          <td style="text-align: left">현재 pane 닫기</td>
+          <td><code>Ctrl+b x</code></td>
+          <td>패널 종료</td>
+          <td>현재 pane 닫기</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>Ctrl+b z</code></td>
-          <td style="text-align: left">패널 줌</td>
-          <td style="text-align: left">현재 pane 확대/복원</td>
+          <td><code>Ctrl+b z</code></td>
+          <td>패널 줌</td>
+          <td>현재 pane 확대/복원</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>Ctrl+b [</code></td>
-          <td style="text-align: left">복사 모드</td>
-          <td style="text-align: left">copy mode 진입</td>
+          <td><code>Ctrl+b [</code></td>
+          <td>복사 모드</td>
+          <td>copy mode 진입</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>Ctrl+b ]</code></td>
-          <td style="text-align: left">붙여넣기</td>
-          <td style="text-align: left">최근 버퍼 붙여넣기</td>
+          <td><code>Ctrl+b ]</code></td>
+          <td>붙여넣기</td>
+          <td>최근 버퍼 붙여넣기</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>Ctrl+b ?</code></td>
-          <td style="text-align: left">도움말</td>
-          <td style="text-align: left">전체 키바인딩 목록 표시</td>
+          <td><code>Ctrl+b ?</code></td>
+          <td>도움말</td>
+          <td>전체 키바인딩 목록 표시</td>
       </tr>
   </tbody>
 </table>
@@ -200,56 +200,56 @@
 <table>
   <thead>
       <tr>
-          <th style="text-align: left">키</th>
-          <th style="text-align: left">기능</th>
-          <th style="text-align: left">설명</th>
+          <th>키</th>
+          <th>기능</th>
+          <th>설명</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td style="text-align: left"><code>Ctrl+b c</code></td>
-          <td style="text-align: left">새 윈도우</td>
-          <td style="text-align: left">window 생성</td>
+          <td><code>Ctrl+b c</code></td>
+          <td>새 윈도우</td>
+          <td>window 생성</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>Ctrl+b 0~9</code></td>
-          <td style="text-align: left">번호 이동</td>
-          <td style="text-align: left">해당 번호 window로 즉시 전환</td>
+          <td><code>Ctrl+b 0~9</code></td>
+          <td>번호 이동</td>
+          <td>해당 번호 window로 즉시 전환</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>Ctrl+b '</code></td>
-          <td style="text-align: left">번호 입력 이동</td>
-          <td style="text-align: left">window 번호를 입력해 전환</td>
+          <td><code>Ctrl+b '</code></td>
+          <td>번호 입력 이동</td>
+          <td>window 번호를 입력해 전환</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>Ctrl+b n</code> / <code>Ctrl+b p</code></td>
-          <td style="text-align: left">다음/이전</td>
-          <td style="text-align: left">window 순서 이동</td>
+          <td><code>Ctrl+b n</code> / <code>Ctrl+b p</code></td>
+          <td>다음/이전</td>
+          <td>window 순서 이동</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>Ctrl+b l</code></td>
-          <td style="text-align: left">마지막 윈도우</td>
-          <td style="text-align: left">직전에 보던 window로 복귀</td>
+          <td><code>Ctrl+b l</code></td>
+          <td>마지막 윈도우</td>
+          <td>직전에 보던 window로 복귀</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>Ctrl+b ,</code></td>
-          <td style="text-align: left">이름 변경</td>
-          <td style="text-align: left">현재 window 이름 변경</td>
+          <td><code>Ctrl+b ,</code></td>
+          <td>이름 변경</td>
+          <td>현재 window 이름 변경</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>Ctrl+b &amp;</code></td>
-          <td style="text-align: left">윈도우 종료</td>
-          <td style="text-align: left">현재 window 닫기(확인 프롬프트)</td>
+          <td><code>Ctrl+b &amp;</code></td>
+          <td>윈도우 종료</td>
+          <td>현재 window 닫기(확인 프롬프트)</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>Ctrl+b w</code></td>
-          <td style="text-align: left">트리 선택</td>
-          <td style="text-align: left">session/window/pane 트리에서 선택</td>
+          <td><code>Ctrl+b w</code></td>
+          <td>트리 선택</td>
+          <td>session/window/pane 트리에서 선택</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>Ctrl+b .</code></td>
-          <td style="text-align: left">인덱스 이동</td>
-          <td style="text-align: left">현재 window 번호 재배치</td>
+          <td><code>Ctrl+b .</code></td>
+          <td>인덱스 이동</td>
+          <td>현재 window 번호 재배치</td>
       </tr>
   </tbody>
 </table>
@@ -257,41 +257,41 @@
 <table>
   <thead>
       <tr>
-          <th style="text-align: left">키</th>
-          <th style="text-align: left">기능</th>
-          <th style="text-align: left">설명</th>
+          <th>키</th>
+          <th>기능</th>
+          <th>설명</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td style="text-align: left"><code>Ctrl+b s</code></td>
-          <td style="text-align: left">세션 목록</td>
-          <td style="text-align: left">session 트리 열기</td>
+          <td><code>Ctrl+b s</code></td>
+          <td>세션 목록</td>
+          <td>session 트리 열기</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>Ctrl+b $</code></td>
-          <td style="text-align: left">세션 이름 변경</td>
-          <td style="text-align: left">현재 session 이름 변경</td>
+          <td><code>Ctrl+b $</code></td>
+          <td>세션 이름 변경</td>
+          <td>현재 session 이름 변경</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>Ctrl+b d</code></td>
-          <td style="text-align: left">detach</td>
-          <td style="text-align: left">session은 유지하고 빠져나오기</td>
+          <td><code>Ctrl+b d</code></td>
+          <td>detach</td>
+          <td>session은 유지하고 빠져나오기</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>Ctrl+b D</code></td>
-          <td style="text-align: left">클라이언트 관리</td>
-          <td style="text-align: left">붙어있는 client 목록/분리</td>
+          <td><code>Ctrl+b D</code></td>
+          <td>클라이언트 관리</td>
+          <td>붙어있는 client 목록/분리</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>Ctrl+b (</code></td>
-          <td style="text-align: left">이전 세션</td>
-          <td style="text-align: left">이전 session으로 전환</td>
+          <td><code>Ctrl+b (</code></td>
+          <td>이전 세션</td>
+          <td>이전 session으로 전환</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>Ctrl+b )</code></td>
-          <td style="text-align: left">다음 세션</td>
-          <td style="text-align: left">다음 session으로 전환</td>
+          <td><code>Ctrl+b )</code></td>
+          <td>다음 세션</td>
+          <td>다음 session으로 전환</td>
       </tr>
   </tbody>
 </table>
@@ -299,51 +299,51 @@
 <table>
   <thead>
       <tr>
-          <th style="text-align: left">키</th>
-          <th style="text-align: left">기능</th>
-          <th style="text-align: left">설명</th>
+          <th>키</th>
+          <th>기능</th>
+          <th>설명</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td style="text-align: left"><code>Ctrl+b %</code> / <code>Ctrl+b &quot;</code></td>
-          <td style="text-align: left">분할</td>
-          <td style="text-align: left">좌우/상하 분할</td>
+          <td><code>Ctrl+b %</code> / <code>Ctrl+b &quot;</code></td>
+          <td>분할</td>
+          <td>좌우/상하 분할</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>Ctrl+b o</code></td>
-          <td style="text-align: left">다음 패널</td>
-          <td style="text-align: left">pane 순환 이동</td>
+          <td><code>Ctrl+b o</code></td>
+          <td>다음 패널</td>
+          <td>pane 순환 이동</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>Ctrl+b q</code></td>
-          <td style="text-align: left">패널 번호 표시</td>
-          <td style="text-align: left">번호 보고 숫자로 즉시 이동</td>
+          <td><code>Ctrl+b q</code></td>
+          <td>패널 번호 표시</td>
+          <td>번호 보고 숫자로 즉시 이동</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>Ctrl+b ;</code></td>
-          <td style="text-align: left">마지막 패널</td>
-          <td style="text-align: left">직전에 활성화한 pane으로 복귀</td>
+          <td><code>Ctrl+b ;</code></td>
+          <td>마지막 패널</td>
+          <td>직전에 활성화한 pane으로 복귀</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>Ctrl+b {</code> / <code>Ctrl+b }</code></td>
-          <td style="text-align: left">패널 위치 교환</td>
-          <td style="text-align: left">이전/다음 pane과 스왑</td>
+          <td><code>Ctrl+b {</code> / <code>Ctrl+b }</code></td>
+          <td>패널 위치 교환</td>
+          <td>이전/다음 pane과 스왑</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>Ctrl+b z</code></td>
-          <td style="text-align: left">확대/복원</td>
-          <td style="text-align: left">현재 pane zoom 토글</td>
+          <td><code>Ctrl+b z</code></td>
+          <td>확대/복원</td>
+          <td>현재 pane zoom 토글</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>Ctrl+b Space</code></td>
-          <td style="text-align: left">레이아웃 순환</td>
-          <td style="text-align: left">pane layout 변경</td>
+          <td><code>Ctrl+b Space</code></td>
+          <td>레이아웃 순환</td>
+          <td>pane layout 변경</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>Ctrl+b !</code></td>
-          <td style="text-align: left">패널 분리</td>
-          <td style="text-align: left">현재 pane을 새 window로 분리</td>
+          <td><code>Ctrl+b !</code></td>
+          <td>패널 분리</td>
+          <td>현재 pane을 새 window로 분리</td>
       </tr>
   </tbody>
 </table>
@@ -351,69 +351,69 @@
 <table>
   <thead>
       <tr>
-          <th style="text-align: left">명령</th>
-          <th style="text-align: left">기능</th>
-          <th style="text-align: left">설명</th>
+          <th>명령</th>
+          <th>기능</th>
+          <th>설명</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td style="text-align: left"><code>tmux ls</code></td>
-          <td style="text-align: left">세션 목록</td>
-          <td style="text-align: left">현재 살아있는 session 확인</td>
+          <td><code>tmux ls</code></td>
+          <td>세션 목록</td>
+          <td>현재 살아있는 session 확인</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>tmux new -s myproj</code></td>
-          <td style="text-align: left">세션 생성</td>
-          <td style="text-align: left">이름 지정해 새 session 생성</td>
+          <td><code>tmux new -s myproj</code></td>
+          <td>세션 생성</td>
+          <td>이름 지정해 새 session 생성</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>tmux new -As myproj</code></td>
-          <td style="text-align: left">attach-or-create</td>
-          <td style="text-align: left">있으면 붙고 없으면 생성</td>
+          <td><code>tmux new -As myproj</code></td>
+          <td>attach-or-create</td>
+          <td>있으면 붙고 없으면 생성</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>tmux attach -t myproj</code></td>
-          <td style="text-align: left">세션 접속</td>
-          <td style="text-align: left">특정 session에 붙기</td>
+          <td><code>tmux attach -t myproj</code></td>
+          <td>세션 접속</td>
+          <td>특정 session에 붙기</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>tmux attach -d -t myproj</code></td>
-          <td style="text-align: left">강제 접속</td>
-          <td style="text-align: left">다른 client를 분리하고 붙기</td>
+          <td><code>tmux attach -d -t myproj</code></td>
+          <td>강제 접속</td>
+          <td>다른 client를 분리하고 붙기</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>tmux kill-session -t myproj</code></td>
-          <td style="text-align: left">세션 종료</td>
-          <td style="text-align: left">특정 session 종료</td>
+          <td><code>tmux kill-session -t myproj</code></td>
+          <td>세션 종료</td>
+          <td>특정 session 종료</td>
       </tr>
       <tr>
-          <td style="text-align: left"><code>tmux kill-server</code></td>
-          <td style="text-align: left">전체 종료</td>
-          <td style="text-align: left">tmux server 및 모든 session 종료</td>
+          <td><code>tmux kill-server</code></td>
+          <td>전체 종료</td>
+          <td>tmux server 및 모든 session 종료</td>
       </tr>
   </tbody>
 </table>
 <h2 id="4-실무에서-바로-체감되는-꿀팁">4. 실무에서 바로 체감되는 꿀팁</h2>
 <h3 id="41-여러-서버에-같은-명령-동시에-실행">4.1 여러 서버에 같은 명령 동시에 실행</h3>
 <p>패널 동기화:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#998;font-style:italic"># tmux 명령 프롬프트(Ctrl+b :)에서 실행</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># tmux 명령 프롬프트(Ctrl+b :)에서 실행</span>
 </span></span><span style="display:flex;"><span>setw synchronize-panes on
 </span></span></code></pre></div><p>끄기:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>setw synchronize-panes off
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>setw synchronize-panes off
 </span></span></code></pre></div><p>배포, 로그 확인, 동일 명령 반복 작업에서 매우 유용합니다.</p>
 <h3 id="42-패널-번호-보면서-즉시-이동">4.2 패널 번호 보면서 즉시 이동</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Ctrl+b q
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Ctrl+b q
 </span></span></code></pre></div><p>패널 번호가 잠깐 뜨고 숫자 키로 바로 이동할 수 있습니다.</p>
 <h3 id="43-자주-쓰는-윈도우-레이아웃-회전">4.3 자주 쓰는 윈도우 레이아웃 회전</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Ctrl+b Space
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Ctrl+b Space
 </span></span></code></pre></div><p>분할 레이아웃을 순환하면서 보기 편한 형태로 빠르게 전환할 수 있습니다.</p>
 <h3 id="44-복잡한-패널에서-일시적으로-집중">4.4 복잡한 패널에서 일시적으로 집중</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Ctrl+b z
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Ctrl+b z
 </span></span></code></pre></div><p>현재 패널을 전체 화면처럼 써서 디버깅/로그 추적에 좋습니다.</p>
 <h3 id="45-tmux-설정-즉시-반영">4.5 tmux 설정 즉시 반영</h3>
 <p><code>.tmux.conf</code> 수정 후 재실행 없이 반영:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>tmux source-file ~/.tmux.conf
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>tmux source-file ~/.tmux.conf
 </span></span></code></pre></div><h2 id="5-추천-tmuxconf-시작-템플릿">5. 추천 <code>.tmux.conf</code> 시작 템플릿</h2>
 <p>아래는 입문자에게 무난한 시작점입니다.</p>
 <pre tabindex="0"><code class="language-tmux" data-lang="tmux"># prefix를 Ctrl+a로 변경 (선택)
@@ -437,7 +437,7 @@ bind r source-file ~/.tmux.conf \; display-message &#34;tmux.conf reloaded&#34;
 <h2 id="6-플러그인-이것만-알아도-생산성-급상승">6. 플러그인: 이것만 알아도 생산성 급상승</h2>
 <h3 id="61-tpm-tmux-plugin-manager">6.1 TPM (Tmux Plugin Manager)</h3>
 <p>설치:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 </span></span></code></pre></div><p><code>.tmux.conf</code> 하단:</p>
 <pre tabindex="0"><code class="language-tmux" data-lang="tmux">set -g @plugin &#39;tmux-plugins/tpm&#39;
 set -g @plugin &#39;tmux-plugins/tmux-sensible&#39;
@@ -467,8 +467,8 @@ set -g @continuum-restore &#39;on&#39;
 <h2 id="7-복사클립보드에서-자주-막히는-포인트">7. 복사/클립보드에서 자주 막히는 포인트</h2>
 <p>tmux 복사 모드와 시스템 클립보드 연동은 터미널 종류/버전에 따라 다르게 동작합니다.</p>
 <p>기본적으로 확인할 것:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>tmux show -s set-clipboard
-</span></span><span style="display:flex;"><span>tmux info | grep Ms
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>tmux show -s set-clipboard
+</span></span><span style="display:flex;"><span>tmux info <span style="color:#1f2328">|</span> grep Ms
 </span></span></code></pre></div><p>일반적인 권장값:</p>
 <pre tabindex="0"><code class="language-tmux" data-lang="tmux">set -s set-clipboard external
 </code></pre><p>왜 <code>external</code>을 권장하나?</p>
@@ -479,7 +479,7 @@ set -g @continuum-restore &#39;on&#39;
 <p>Linux에서 외부 도구를 쓰는 경우(예: <code>xsel</code>, <code>xclip</code>)는 <code>DISPLAY</code>나 툴 동작 이슈가 있을 수 있습니다. 환경에 따라 <code>pbcopy</code>(macOS) 등 OS별 방식으로 맞추는 것이 안전합니다.</p>
 <h2 id="8-실전-운영-패턴-권장">8. 실전 운영 패턴 (권장)</h2>
 <p>프로젝트마다 세션 하나를 고정해서 쓰면 좋습니다.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>tmux new -As backend
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>tmux new -As backend
 </span></span><span style="display:flex;"><span>tmux new -As frontend
 </span></span><span style="display:flex;"><span>tmux new -As ops
 </span></span></code></pre></div><p>각 세션에서 권장 패널 구성 예시:</p>

@@ -137,11 +137,11 @@
 </code></pre></li>
 <li>
 <p><strong>&ldquo;절대 하지 마세요&quot;만 말하지 마세요</strong>: <code>--foo-bar</code> 플래그를 사용하지 말라는 부정적 제약만 피하세요. 에이전트는 해당 플래그를 반드시 사용해야 한다고 생각할 때 멈춥니다. 항상 <strong>대안을 제시</strong>하세요:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span><span style="color:#999"># 나쁜 예
-</span></span></span><span style="display:flex;"><span><span style="color:#999"></span>--foo-bar 플래그를 절대 사용하지 마세요
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span># 나쁜 예
+</span></span><span style="display:flex;"><span>--foo-bar 플래그를 절대 사용하지 마세요
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#999"># 좋은 예
-</span></span></span><span style="display:flex;"><span><span style="color:#999"></span>--foo-bar 대신 --baz-qux를 사용하세요
+</span></span><span style="display:flex;"><span># 좋은 예
+</span></span><span style="display:flex;"><span>--foo-bar 대신 --baz-qux를 사용하세요
 </span></span></code></pre></div></li>
 <li>
 <p><strong>CLAUDE.md를 강제 함수로 사용하세요</strong>: CLI 명령어가 복잡하고 장황하다면 문서화를 위해 여러 단락을 작성하지 마세요. 그것은 인간 문제를 패치하는 것입니다. 대신 명확하고 직관적인 API를 가진 간단한 bash 래퍼를 작성하고 <strong>그것을</strong> 문서화하세요.</p>
@@ -537,7 +537,7 @@
 <p>GHA 로그는 전체 에이전트 로그이므로 회사 수준에서 이러한 로그를 정기적으로 검토하는 운영 프로세스가 있습니다. 일반적인 실수, bash 오류 또는 정렬되지 않은 엔지니어링 관행을 찾습니다. 이것은 데이터 기반 플라이휠을 만듭니다:</p>
 <p><strong>버그 → 개선된 CLAUDE.md / CLI → 더 나은 에이전트</strong></p>
 <p>심지어 다음과 같이 쿼리할 수 있습니다:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ query-claude-gha-logs --since 5d | claude -p <span style="color:#d14">&#34;see what the other claudes were getting stuck on and fix it, then put up a PR&#34;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ query-claude-gha-logs --since 5d <span style="color:#1f2328">|</span> claude -p <span style="color:#0a3069">&#34;see what the other claudes were getting stuck on and fix it, then put up a PR&#34;</span>
 </span></span></code></pre></div><p><strong>핵심 교훈</strong>: GHA는 Claude Code를 운영화하는 궁극적인 방법입니다. 개인 도구에서 엔지니어링 시스템의 핵심적이고 감사 가능하며 자체 개선되는 부분으로 전환합니다.</p>
 <h2 id="설정-파일-커스터마이징">설정 파일 커스터마이징</h2>
 <p>마지막으로, 취미와 전문 작업 모두에 필수적인 몇 가지 특정 <code>settings.json</code> 구성이 있습니다.</p>
@@ -588,48 +588,48 @@
 <table>
   <thead>
       <tr>
-          <th style="text-align: left">building block</th>
-          <th style="text-align: left">언제 쓰면 좋은가</th>
-          <th style="text-align: left">핵심 장점</th>
-          <th style="text-align: left">주의할 점</th>
+          <th>building block</th>
+          <th>언제 쓰면 좋은가</th>
+          <th>핵심 장점</th>
+          <th>주의할 점</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td style="text-align: left">Markdown files</td>
-          <td style="text-align: left">프로젝트 맥락과 규칙을 오래 유지하고 싶을 때</td>
-          <td style="text-align: left">매번 설명하는 비용 감소</td>
-          <td style="text-align: left">CLAUDE.md 과적재 금지</td>
+          <td>Markdown files</td>
+          <td>프로젝트 맥락과 규칙을 오래 유지하고 싶을 때</td>
+          <td>매번 설명하는 비용 감소</td>
+          <td>CLAUDE.md 과적재 금지</td>
       </tr>
       <tr>
-          <td style="text-align: left">Slash commands</td>
-          <td style="text-align: left">내가 직접 반복 workflow를 실행하고 싶을 때</td>
-          <td style="text-align: left">예측 가능성, 명시적 통제</td>
-          <td style="text-align: left">이제는 Skill 모델과 함께 봐야 함</td>
+          <td>Slash commands</td>
+          <td>내가 직접 반복 workflow를 실행하고 싶을 때</td>
+          <td>예측 가능성, 명시적 통제</td>
+          <td>이제는 Skill 모델과 함께 봐야 함</td>
       </tr>
       <tr>
-          <td style="text-align: left">Agents</td>
-          <td style="text-align: left">탐색량이 많거나 병렬화가 필요할 때</td>
-          <td style="text-align: left">context 보호, 속도 향상</td>
-          <td style="text-align: left">토큰/사용량 증가</td>
+          <td>Agents</td>
+          <td>탐색량이 많거나 병렬화가 필요할 때</td>
+          <td>context 보호, 속도 향상</td>
+          <td>토큰/사용량 증가</td>
       </tr>
       <tr>
-          <td style="text-align: left">Skills</td>
-          <td style="text-align: left">prompt + context + code를 패키지로 공유하고 싶을 때</td>
-          <td style="text-align: left">휴대성, 자동 호출 가능성, 스크립트 번들</td>
-          <td style="text-align: left">자동 발동 품질은 아직 운영이 필요</td>
+          <td>Skills</td>
+          <td>prompt + context + code를 패키지로 공유하고 싶을 때</td>
+          <td>휴대성, 자동 호출 가능성, 스크립트 번들</td>
+          <td>자동 발동 품질은 아직 운영이 필요</td>
       </tr>
       <tr>
-          <td style="text-align: left">Hooks</td>
-          <td style="text-align: left">반드시 같은 시점에 동일하게 실행돼야 할 일이 있을 때</td>
-          <td style="text-align: left">deterministic automation</td>
-          <td style="text-align: left">잘못 걸면 전역 부작용</td>
+          <td>Hooks</td>
+          <td>반드시 같은 시점에 동일하게 실행돼야 할 일이 있을 때</td>
+          <td>deterministic automation</td>
+          <td>잘못 걸면 전역 부작용</td>
       </tr>
       <tr>
-          <td style="text-align: left">Plugins</td>
-          <td style="text-align: left">workflow 묶음을 다른 사람과 공유할 때</td>
-          <td style="text-align: left">설치/배포 단위</td>
-          <td style="text-align: left">포함 코드 리뷰 필요</td>
+          <td>Plugins</td>
+          <td>workflow 묶음을 다른 사람과 공유할 때</td>
+          <td>설치/배포 단위</td>
+          <td>포함 코드 리뷰 필요</td>
       </tr>
   </tbody>
 </table>

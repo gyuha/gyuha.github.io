@@ -133,58 +133,58 @@
     class B,C,D,E,F parse;
     class G output;</pre><h2 id="cc-함수-전체-코드"><code>cc()</code> 함수 전체 코드</h2>
 <p>먼저 원본 함수는 아래와 같습니다.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#000;font-weight:bold">function</span> cc<span style="color:#000;font-weight:bold">()</span> <span style="color:#000;font-weight:bold">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#0086b3">local</span> <span style="color:#008080">env_vars</span><span style="color:#000;font-weight:bold">=(</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#d14">&#34;ENABLE_BACKGROUND_TASKS=true&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#d14">&#34;FORCE_AUTO_BACKGROUND_TASKS=true&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#d14">&#34;CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=true&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#d14">&#34;CLAUDE_CODE_ENABLE_UNIFIED_READ_TOOL=true&#34;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">)</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#cf222e">function</span> cc<span style="color:#0550ae">()</span> <span style="color:#0550ae">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6639ba">local</span> <span style="color:#953800">env_vars</span><span style="color:#0550ae">=(</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0a3069">&#34;ENABLE_BACKGROUND_TASKS=true&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0a3069">&#34;FORCE_AUTO_BACKGROUND_TASKS=true&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0a3069">&#34;CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=true&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0a3069">&#34;CLAUDE_CODE_ENABLE_UNIFIED_READ_TOOL=true&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">)</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#0086b3">local</span> <span style="color:#008080">claude_args</span><span style="color:#000;font-weight:bold">=()</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#0086b3">local</span> <span style="color:#008080">opt</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;</span><span style="color:#d14">${</span><span style="color:#008080">1</span><span style="color:#000;font-weight:bold">:-</span><span style="color:#d14">}</span><span style="color:#d14">&#34;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#0086b3">local</span> <span style="color:#008080">service_type</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;c&#34;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#0086b3">local</span> <span style="color:#008080">worktree_name</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#0086b3">local</span> <span style="color:#008080">use_worktree</span><span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">false</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6639ba">local</span> <span style="color:#953800">claude_args</span><span style="color:#0550ae">=()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6639ba">local</span> <span style="color:#953800">opt</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;</span><span style="color:#0a3069">${</span><span style="color:#953800">1</span><span style="color:#cf222e">:-</span><span style="color:#0a3069">}</span><span style="color:#0a3069">&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6639ba">local</span> <span style="color:#953800">service_type</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;c&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6639ba">local</span> <span style="color:#953800">worktree_name</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6639ba">local</span> <span style="color:#953800">use_worktree</span><span style="color:#0550ae">=</span><span style="color:#6639ba">false</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">if</span> <span style="color:#000;font-weight:bold">[[</span> <span style="color:#d14">&#34;</span><span style="color:#008080">$opt</span><span style="color:#d14">&#34;</span> <span style="color:#000;font-weight:bold">==</span> -* <span style="color:#000;font-weight:bold">]]</span>; <span style="color:#000;font-weight:bold">then</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">[[</span> <span style="color:#d14">&#34;</span><span style="color:#008080">$opt</span><span style="color:#d14">&#34;</span> <span style="color:#000;font-weight:bold">==</span> *g* <span style="color:#000;font-weight:bold">]]</span> <span style="color:#000;font-weight:bold">&amp;&amp;</span> <span style="color:#008080">service_type</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;g&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">[[</span> <span style="color:#d14">&#34;</span><span style="color:#008080">$opt</span><span style="color:#d14">&#34;</span> <span style="color:#000;font-weight:bold">==</span> *r* <span style="color:#000;font-weight:bold">]]</span> <span style="color:#000;font-weight:bold">&amp;&amp;</span> <span style="color:#008080">claude_args</span><span style="color:#000;font-weight:bold">+=(</span><span style="color:#d14">&#34;--resume&#34;</span><span style="color:#000;font-weight:bold">)</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">[[</span> <span style="color:#d14">&#34;</span><span style="color:#008080">$opt</span><span style="color:#d14">&#34;</span> <span style="color:#000;font-weight:bold">==</span> *w* <span style="color:#000;font-weight:bold">]]</span> <span style="color:#000;font-weight:bold">&amp;&amp;</span> <span style="color:#008080">use_worktree</span><span style="color:#000;font-weight:bold">=</span><span style="color:#0086b3">true</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">[[</span> <span style="color:#d14">&#34;</span><span style="color:#008080">$opt</span><span style="color:#d14">&#34;</span> <span style="color:#000;font-weight:bold">==</span> *y* <span style="color:#000;font-weight:bold">]]</span> <span style="color:#000;font-weight:bold">&amp;&amp;</span> <span style="color:#008080">claude_args</span><span style="color:#000;font-weight:bold">+=(</span><span style="color:#d14">&#34;--chrome&#34;</span> <span style="color:#d14">&#34;--teammate-mode&#34;</span> <span style="color:#d14">&#34;auto&#34;</span> <span style="color:#d14">&#34;--dangerously-skip-permissions&#34;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">if</span> <span style="color:#0550ae">[[</span> <span style="color:#0a3069">&#34;</span><span style="color:#953800">$opt</span><span style="color:#0a3069">&#34;</span> <span style="color:#0550ae">==</span> -* <span style="color:#0550ae">]]</span><span style="color:#1f2328">;</span> <span style="color:#cf222e">then</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">[[</span> <span style="color:#0a3069">&#34;</span><span style="color:#953800">$opt</span><span style="color:#0a3069">&#34;</span> <span style="color:#0550ae">==</span> *g* <span style="color:#0550ae">]]</span> <span style="color:#0550ae">&amp;&amp;</span> <span style="color:#953800">service_type</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;g&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">[[</span> <span style="color:#0a3069">&#34;</span><span style="color:#953800">$opt</span><span style="color:#0a3069">&#34;</span> <span style="color:#0550ae">==</span> *r* <span style="color:#0550ae">]]</span> <span style="color:#0550ae">&amp;&amp;</span> <span style="color:#953800">claude_args</span><span style="color:#0550ae">+=(</span><span style="color:#0a3069">&#34;--resume&#34;</span><span style="color:#0550ae">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">[[</span> <span style="color:#0a3069">&#34;</span><span style="color:#953800">$opt</span><span style="color:#0a3069">&#34;</span> <span style="color:#0550ae">==</span> *w* <span style="color:#0550ae">]]</span> <span style="color:#0550ae">&amp;&amp;</span> <span style="color:#953800">use_worktree</span><span style="color:#0550ae">=</span><span style="color:#6639ba">true</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">[[</span> <span style="color:#0a3069">&#34;</span><span style="color:#953800">$opt</span><span style="color:#0a3069">&#34;</span> <span style="color:#0550ae">==</span> *y* <span style="color:#0550ae">]]</span> <span style="color:#0550ae">&amp;&amp;</span> <span style="color:#953800">claude_args</span><span style="color:#0550ae">+=(</span><span style="color:#0a3069">&#34;--chrome&#34;</span> <span style="color:#0a3069">&#34;--teammate-mode&#34;</span> <span style="color:#0a3069">&#34;auto&#34;</span> <span style="color:#0a3069">&#34;--dangerously-skip-permissions&#34;</span><span style="color:#0550ae">)</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">if</span> <span style="color:#000;font-weight:bold">[[</span> <span style="color:#d14">&#34;</span><span style="color:#008080">$use_worktree</span><span style="color:#d14">&#34;</span> <span style="color:#000;font-weight:bold">==</span> <span style="color:#0086b3">true</span> <span style="color:#000;font-weight:bold">]]</span>; <span style="color:#000;font-weight:bold">then</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#008080">worktree_name</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;</span><span style="color:#d14">${</span><span style="color:#008080">2</span><span style="color:#000;font-weight:bold">:-</span><span style="color:#d14">}</span><span style="color:#d14">&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">fi</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">fi</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> <span style="color:#0550ae">[[</span> <span style="color:#0a3069">&#34;</span><span style="color:#953800">$use_worktree</span><span style="color:#0a3069">&#34;</span> <span style="color:#0550ae">==</span> <span style="color:#6639ba">true</span> <span style="color:#0550ae">]]</span><span style="color:#1f2328">;</span> <span style="color:#cf222e">then</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#953800">worktree_name</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;</span><span style="color:#0a3069">${</span><span style="color:#953800">2</span><span style="color:#cf222e">:-</span><span style="color:#0a3069">}</span><span style="color:#0a3069">&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">fi</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">fi</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">if</span> <span style="color:#000;font-weight:bold">[[</span> -n <span style="color:#d14">&#34;</span><span style="color:#008080">$worktree_name</span><span style="color:#d14">&#34;</span> <span style="color:#000;font-weight:bold">]]</span>; <span style="color:#000;font-weight:bold">then</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#008080">claude_args</span><span style="color:#000;font-weight:bold">+=(</span><span style="color:#d14">&#34;--worktree&#34;</span> <span style="color:#d14">&#34;</span><span style="color:#008080">$worktree_name</span><span style="color:#d14">&#34;</span><span style="color:#000;font-weight:bold">)</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">elif</span> <span style="color:#000;font-weight:bold">[[</span> <span style="color:#d14">&#34;</span><span style="color:#008080">$use_worktree</span><span style="color:#d14">&#34;</span> <span style="color:#000;font-weight:bold">==</span> <span style="color:#0086b3">true</span> <span style="color:#000;font-weight:bold">]]</span>; <span style="color:#000;font-weight:bold">then</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#008080">claude_args</span><span style="color:#000;font-weight:bold">+=(</span><span style="color:#d14">&#34;--worktree&#34;</span><span style="color:#000;font-weight:bold">)</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">fi</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">if</span> <span style="color:#0550ae">[[</span> -n <span style="color:#0a3069">&#34;</span><span style="color:#953800">$worktree_name</span><span style="color:#0a3069">&#34;</span> <span style="color:#0550ae">]]</span><span style="color:#1f2328">;</span> <span style="color:#cf222e">then</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#953800">claude_args</span><span style="color:#0550ae">+=(</span><span style="color:#0a3069">&#34;--worktree&#34;</span> <span style="color:#0a3069">&#34;</span><span style="color:#953800">$worktree_name</span><span style="color:#0a3069">&#34;</span><span style="color:#0550ae">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">elif</span> <span style="color:#0550ae">[[</span> <span style="color:#0a3069">&#34;</span><span style="color:#953800">$use_worktree</span><span style="color:#0a3069">&#34;</span> <span style="color:#0550ae">==</span> <span style="color:#6639ba">true</span> <span style="color:#0550ae">]]</span><span style="color:#1f2328">;</span> <span style="color:#cf222e">then</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#953800">claude_args</span><span style="color:#0550ae">+=(</span><span style="color:#0a3069">&#34;--worktree&#34;</span><span style="color:#0550ae">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">fi</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">case</span> <span style="color:#d14">&#34;</span><span style="color:#008080">$service_type</span><span style="color:#d14">&#34;</span> in
-</span></span><span style="display:flex;"><span>    <span style="color:#d14">&#34;g&#34;</span><span style="color:#000;font-weight:bold">)</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#0086b3">export</span> <span style="color:#008080">ANTHROPIC_AUTH_TOKEN</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;</span><span style="color:#008080">$GLM_API_KEY</span><span style="color:#d14">&#34;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#0086b3">export</span> <span style="color:#008080">ANTHROPIC_BASE_URL</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;https://api.z.ai/api/anthropic&#34;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#0086b3">export</span> <span style="color:#008080">API_TIMEOUT_MS</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;3000000&#34;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#0086b3">export</span> <span style="color:#008080">ANTHROPIC_DEFAULT_HAIKU_MODEL</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;glm-4.5-air&#34;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#0086b3">export</span> <span style="color:#008080">ANTHROPIC_DEFAULT_SONNET_MODEL</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;glm-4.7&#34;</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#0086b3">export</span> <span style="color:#008080">ANTHROPIC_DEFAULT_OPUS_MODEL</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;glm-5&#34;</span>
-</span></span><span style="display:flex;"><span>      ;;
-</span></span><span style="display:flex;"><span>    <span style="color:#d14">&#34;c&#34;</span><span style="color:#000;font-weight:bold">)</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#0086b3">unset</span> ANTHROPIC_AUTH_TOKEN
-</span></span><span style="display:flex;"><span>      <span style="color:#0086b3">unset</span> ANTHROPIC_BASE_URL
-</span></span><span style="display:flex;"><span>      <span style="color:#0086b3">unset</span> API_TIMEOUT_MS
-</span></span><span style="display:flex;"><span>      <span style="color:#0086b3">unset</span> ANTHROPIC_DEFAULT_HAIKU_MODEL
-</span></span><span style="display:flex;"><span>      <span style="color:#0086b3">unset</span> ANTHROPIC_DEFAULT_SONNET_MODEL
-</span></span><span style="display:flex;"><span>      <span style="color:#0086b3">unset</span> ANTHROPIC_DEFAULT_OPUS_MODEL
-</span></span><span style="display:flex;"><span>      ;;
-</span></span><span style="display:flex;"><span>  <span style="color:#000;font-weight:bold">esac</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">case</span> <span style="color:#0a3069">&#34;</span><span style="color:#953800">$service_type</span><span style="color:#0a3069">&#34;</span> in
+</span></span><span style="display:flex;"><span>    <span style="color:#0a3069">&#34;g&#34;</span><span style="color:#0550ae">)</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#6639ba">export</span> <span style="color:#953800">ANTHROPIC_AUTH_TOKEN</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;</span><span style="color:#953800">$GLM_API_KEY</span><span style="color:#0a3069">&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#6639ba">export</span> <span style="color:#953800">ANTHROPIC_BASE_URL</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;https://api.z.ai/api/anthropic&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#6639ba">export</span> <span style="color:#953800">API_TIMEOUT_MS</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;3000000&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#6639ba">export</span> <span style="color:#953800">ANTHROPIC_DEFAULT_HAIKU_MODEL</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;glm-4.5-air&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#6639ba">export</span> <span style="color:#953800">ANTHROPIC_DEFAULT_SONNET_MODEL</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;glm-4.7&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#6639ba">export</span> <span style="color:#953800">ANTHROPIC_DEFAULT_OPUS_MODEL</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;glm-5&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">;;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0a3069">&#34;c&#34;</span><span style="color:#0550ae">)</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#6639ba">unset</span> ANTHROPIC_AUTH_TOKEN
+</span></span><span style="display:flex;"><span>      <span style="color:#6639ba">unset</span> ANTHROPIC_BASE_URL
+</span></span><span style="display:flex;"><span>      <span style="color:#6639ba">unset</span> API_TIMEOUT_MS
+</span></span><span style="display:flex;"><span>      <span style="color:#6639ba">unset</span> ANTHROPIC_DEFAULT_HAIKU_MODEL
+</span></span><span style="display:flex;"><span>      <span style="color:#6639ba">unset</span> ANTHROPIC_DEFAULT_SONNET_MODEL
+</span></span><span style="display:flex;"><span>      <span style="color:#6639ba">unset</span> ANTHROPIC_DEFAULT_OPUS_MODEL
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">;;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">esac</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  env <span style="color:#d14">&#34;</span><span style="color:#d14">${</span><span style="color:#008080">env_vars</span>[@]<span style="color:#d14">}</span><span style="color:#d14">&#34;</span> claude <span style="color:#d14">&#34;</span><span style="color:#d14">${</span><span style="color:#008080">claude_args</span>[@]<span style="color:#d14">}</span><span style="color:#d14">&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>  env <span style="color:#0a3069">&#34;</span><span style="color:#0a3069">${</span><span style="color:#953800">env_vars</span><span style="color:#1f2328">[@]</span><span style="color:#0a3069">}</span><span style="color:#0a3069">&#34;</span> claude <span style="color:#0a3069">&#34;</span><span style="color:#0a3069">${</span><span style="color:#953800">claude_args</span><span style="color:#1f2328">[@]</span><span style="color:#0a3069">}</span><span style="color:#0a3069">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#0550ae">}</span>
 </span></span></code></pre></div><p>겉으로 보면 짧은 함수지만, 실제로는 세 가지 책임을 동시에 처리합니다.</p>
 <ol>
 <li>짧은 옵션 문자열을 해석한다.</li>
@@ -221,9 +221,9 @@
     class F,G,H,I result;</pre><p>이 패턴의 핵심은 <strong>플래그를 나열하는 CLI</strong>를 <strong>의도 중심 단축어</strong>로 다시 감싼다는 데 있습니다. CLI는 원래 세밀할수록 좋지만, 사용자는 매번 세밀하게 입력하기보다 자주 쓰는 조합을 빠르게 부르는 편이 생산성에 더 유리합니다.</p>
 <h2 id="2--w는-지금-이-세션을-격리할지를-즉시-결정하게-해-준다">2) <code>-w</code>는 &ldquo;지금 이 세션을 격리할지&quot;를 즉시 결정하게 해 준다</h2>
 <p>개인적으로 이 함수에서 가장 실용적인 부분은 worktree 처리입니다.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cc -w my-feature
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cc -w my-feature
 </span></span><span style="display:flex;"><span>cc -gw fix-bug
-</span></span><span style="display:flex;"><span>cc -grw <span style="color:#000;font-weight:bold">continue</span>-work
+</span></span><span style="display:flex;"><span>cc -grw <span style="color:#cf222e">continue</span>-work
 </span></span></code></pre></div><p>여기서 좋은 점은 두 가지입니다. 그리고 공식 문서 기준으로도 <code>--worktree</code>는 이름을 생략하면 자동 이름을 만들 수 있기 때문에, 이 함수의 분기 구조는 실제 CLI 동작과 잘 맞습니다.</p>
 <p>첫째, worktree 이름이 있으면 <code>--worktree &lt;name&gt;</code>으로 넘기고, 이름이 없으면 <code>--worktree</code>만 넘깁니다. 즉, &ldquo;명시적 이름이 있는 격리 세션&quot;과 &ldquo;자동 이름 기반 격리 세션&quot;을 둘 다 수용합니다.</p>
 <p>둘째, 사용자가 직접 긴 <code>claude --worktree ...</code> 명령을 치는 대신, 처음부터 <code>cc -w ...</code>라는 더 짧은 습관으로 worktree 사용을 기본 선택지에 올려둡니다. 이런 래퍼의 진짜 가치는 기능 추가보다 <strong>좋은 기본 행동을 더 싸게 만드는 것</strong>에 있습니다.</p>
@@ -239,12 +239,12 @@
     C->>CLI: "claude --worktree fix-bug"
     Note over C,CLI: GLM 관련 환경 변수는 env/export로 주입</pre><h2 id="3--g는-단순-별칭이-아니라-실행-환경-전환이다">3) <code>-g</code>는 단순 별칭이 아니라 실행 환경 전환이다</h2>
 <p>이 함수에서 <code>g</code>는 단순히 다른 모델 이름을 넘기는 정도가 아닙니다. 실제로는 Claude 기본 연결 대신, GLM 호환 엔드포인트로 향하도록 관련 환경 변수를 한 번에 바꿉니다.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#0086b3">export</span> <span style="color:#008080">ANTHROPIC_AUTH_TOKEN</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;</span><span style="color:#008080">$GLM_API_KEY</span><span style="color:#d14">&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#0086b3">export</span> <span style="color:#008080">ANTHROPIC_BASE_URL</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;https://api.z.ai/api/anthropic&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#0086b3">export</span> <span style="color:#008080">API_TIMEOUT_MS</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;3000000&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#0086b3">export</span> <span style="color:#008080">ANTHROPIC_DEFAULT_HAIKU_MODEL</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;glm-4.5-air&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#0086b3">export</span> <span style="color:#008080">ANTHROPIC_DEFAULT_SONNET_MODEL</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;glm-4.7&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#0086b3">export</span> <span style="color:#008080">ANTHROPIC_DEFAULT_OPUS_MODEL</span><span style="color:#000;font-weight:bold">=</span><span style="color:#d14">&#34;glm-5&#34;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#6639ba">export</span> <span style="color:#953800">ANTHROPIC_AUTH_TOKEN</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;</span><span style="color:#953800">$GLM_API_KEY</span><span style="color:#0a3069">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">export</span> <span style="color:#953800">ANTHROPIC_BASE_URL</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;https://api.z.ai/api/anthropic&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">export</span> <span style="color:#953800">API_TIMEOUT_MS</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;3000000&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">export</span> <span style="color:#953800">ANTHROPIC_DEFAULT_HAIKU_MODEL</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;glm-4.5-air&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">export</span> <span style="color:#953800">ANTHROPIC_DEFAULT_SONNET_MODEL</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;glm-4.7&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">export</span> <span style="color:#953800">ANTHROPIC_DEFAULT_OPUS_MODEL</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;glm-5&#34;</span>
 </span></span></code></pre></div><p>여기서 하나 짚고 가야 할 점이 있습니다. 위 코드는 GLM 값을 <code>env ... claude</code>에 인라인으로만 넣는 것이 아니라, 현재 셸에 <code>export</code>합니다. 즉, <code>cc -g</code>를 한 번 실행하면 그 환경 변수는 해당 <code>claude</code> 프로세스에서만 쓰이고 끝나는 것이 아니라, 같은 셸 세션에 그대로 남습니다. 이후 <code>cc</code>를 다시 Claude 기본 모드로 실행할 때 <code>unset</code>이 호출되기 전까지는 셸 상태가 GLM 쪽으로 기울어져 있는 셈입니다.</p>
 <p>반대로 Claude 기본 모드에서는 이 값들을 <code>unset</code>해서 이전 세션의 환경이 남지 않게 처리합니다. 이 부분이 중요합니다. 래퍼를 쓰지 않고 셸에서 환경 변수를 수동으로 바꿔가며 실행하면, &ldquo;어제 켜둔 값&quot;이 오늘 세션에 섞이는 문제가 자주 생깁니다.</p>
 <p>즉, <code>cc()</code>는 단순 런처가 아니라 <strong>실행 전 상태 정리기</strong> 역할도 합니다.</p>
@@ -265,7 +265,7 @@
     class C,D action;
     class E,F done;</pre><h2 id="4--y는-빠른-실험-모드를-한-번에-묶는다">4) <code>-y</code>는 &ldquo;빠른 실험 모드&quot;를 한 번에 묶는다</h2>
 <p><code>y</code> 플래그는 다음 세 가지를 한 번에 추가합니다.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>--chrome
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>--chrome
 </span></span><span style="display:flex;"><span>--teammate-mode auto
 </span></span><span style="display:flex;"><span>--dangerously-skip-permissions
 </span></span></code></pre></div><p>공식 문서 관점에서 보면 이 세 개는 성격이 조금 다릅니다.</p>
@@ -279,31 +279,31 @@
 <p>이 구조는 실수 방지에도 도움이 됩니다. 긴 명령에서 위험한 플래그 하나를 빼먹거나 반대로 무심코 복붙하는 것보다, <code>-y</code>를 쓸지 말지를 먼저 결정하는 편이 인지적으로 더 안전합니다.</p>
 <h2 id="5-실행-시-항상-붙는-공통-환경-변수도-눈여겨볼-만하다">5) 실행 시 항상 붙는 공통 환경 변수도 눈여겨볼 만하다</h2>
 <p>함수 상단의 <code>env_vars</code> 배열은 실행할 때마다 공통으로 주입됩니다.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#d14">&#34;ENABLE_BACKGROUND_TASKS=true&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#d14">&#34;FORCE_AUTO_BACKGROUND_TASKS=true&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#d14">&#34;CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=true&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#d14">&#34;CLAUDE_CODE_ENABLE_UNIFIED_READ_TOOL=true&#34;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#0a3069">&#34;ENABLE_BACKGROUND_TASKS=true&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#0a3069">&#34;FORCE_AUTO_BACKGROUND_TASKS=true&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#0a3069">&#34;CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=true&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#0a3069">&#34;CLAUDE_CODE_ENABLE_UNIFIED_READ_TOOL=true&#34;</span>
 </span></span></code></pre></div><p>이 값들은 사용자의 로컬 운영 철학을 반영한 기본 프로필이라고 볼 수 있습니다. 즉, 이 함수는 단순한 alias보다 더 강합니다. alias는 짧은 이름만 주지만, 이 패턴은 <strong>기본 동작 정책까지 함께 캡슐화</strong>합니다.</p>
 <p>특히 팀이나 개인이 Claude Code를 반복적으로 같은 방식으로 운영한다면, 이런 공통 환경 변수를 런처에 고정해 두는 편이 세션별 편차를 줄이는 데 좋습니다.</p>
 <h2 id="실전에서-어떻게-쓰면-좋은가">실전에서 어떻게 쓰면 좋은가</h2>
 <p>아래 정도만 외워도 대부분 커버됩니다.</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cc
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cc
 </span></span></code></pre></div><ul>
 <li>기본 Claude 세션 시작</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cc -r
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cc -r
 </span></span></code></pre></div><ul>
 <li>직전 흐름을 이어서 시작</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cc -w feature-auth
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cc -w feature-auth
 </span></span></code></pre></div><ul>
 <li>worktree를 분리해서 새 작업 시작</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cc -gw experiment-ui
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cc -gw experiment-ui
 </span></span></code></pre></div><ul>
 <li>GLM 모드로 worktree 세션 시작</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cc -gryw fast-prototype
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cc -gryw fast-prototype
 </span></span></code></pre></div><ul>
 <li>GLM + resume + 빠른 자동화 + worktree까지 한 번에 시작</li>
 </ul>
@@ -398,9 +398,9 @@
     <li><a href="#왜-이런-래퍼가-필요한가">왜 이런 래퍼가 필요한가</a></li>
     <li><a href="#cc-함수-전체-코드"><code>cc()</code> 함수 전체 코드</a></li>
     <li><a href="#1-옵션-문자열-하나로-여러-실행-패턴을-압축한다">1) 옵션 문자열 하나로 여러 실행 패턴을 압축한다</a></li>
-    <li><a href="#2--w는-지금-이-세션을-격리할지를-즉시-결정하게-해-준다">2) <code>-w</code>는 &ldquo;지금 이 세션을 격리할지&quot;를 즉시 결정하게 해 준다</a></li>
+    <li><a href="#2--w는-지금-이-세션을-격리할지를-즉시-결정하게-해-준다">2) <code>-w</code>는 “지금 이 세션을 격리할지&#34;를 즉시 결정하게 해 준다</a></li>
     <li><a href="#3--g는-단순-별칭이-아니라-실행-환경-전환이다">3) <code>-g</code>는 단순 별칭이 아니라 실행 환경 전환이다</a></li>
-    <li><a href="#4--y는-빠른-실험-모드를-한-번에-묶는다">4) <code>-y</code>는 &ldquo;빠른 실험 모드&quot;를 한 번에 묶는다</a></li>
+    <li><a href="#4--y는-빠른-실험-모드를-한-번에-묶는다">4) <code>-y</code>는 “빠른 실험 모드&#34;를 한 번에 묶는다</a></li>
     <li><a href="#5-실행-시-항상-붙는-공통-환경-변수도-눈여겨볼-만하다">5) 실행 시 항상 붙는 공통 환경 변수도 눈여겨볼 만하다</a></li>
     <li><a href="#실전에서-어떻게-쓰면-좋은가">실전에서 어떻게 쓰면 좋은가</a></li>
     <li><a href="#이-패턴에서-배울-수-있는-설계-포인트">이 패턴에서 배울 수 있는 설계 포인트</a></li>
