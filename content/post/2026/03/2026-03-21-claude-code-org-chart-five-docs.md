@@ -1,0 +1,159 @@
+---
+title: "Claude Code에서 기능보다 먼저 그려야 할 것: 조직도 5문서 운영법"
+date: 2026-03-21T10:48:36+09:00
+draft: false
+categories:
+  - AI
+tags:
+  - claude-code
+  - workflow
+  - context-engineering
+description: "justopen.ai의 Threads 포스트를 바탕으로, Claude Code에서 기능 탐색보다 먼저 역할 구조와 문서 체계를 설계해야 하는 이유를 정리합니다."
+---
+
+justopen.ai의 짧은 Threads 포스트는 Claude Code를 잘 쓰는 순서를 아주 날카롭게 뒤집습니다. 많은 사람이 먼저 "무슨 기능이 있지?"를 묻지만, 이 포스트의 요지는 그 질문 자체가 이미 늦었다는 데 있습니다. 먼저 해야 하는 일은 기능 탐색이 아니라 **누가 어떤 판단을 맡고, 그 판단이 어떤 문서로 남아야 하는지** 를 정하는 것입니다.
+<!--more-->
+
+이 관점이 실무적으로 중요한 이유는, AI에게 일을 잘 시키는 문제를 프롬프트 문장력의 문제로 보지 않게 만들기 때문입니다. Threads 원문은 이를 "조직도"라는 표현으로 설명합니다. 전략, 수치, 고객, 설계의 책임이 분리되면 Claude Code에게 줄 작업도 분리되고, 검증 기준도 분리됩니다. 다만 여기서 한 가지는 분명히 구분해야 합니다. `CLAUDE.md` 는 Anthropic이 공식적으로 지원하는 프로젝트 메모리 파일이지만, 전략문서·수치문서·고객문서·설계문서라는 나머지 네 문서는 공식 스펙이 아니라 **이 포스트가 제안하는 운영 프레임** 입니다.
+
+
+## Sources
+
+- 원문: https://www.threads.com/@justopen.ai/post/DWHEfzFkbnb
+- Anthropic Claude Code Docs, "How Claude remembers your project": https://code.claude.com/docs/en/memory
+- AGENTS.md: https://agents.md/
+
+## 1) 왜 기능보다 구조가 먼저인가: 프롬프트보다 R&R이 먼저 고정돼야 한다
+
+원문 포스트의 핵심 문장은 단순합니다. "기능을 외우지 말고 조직도를 그리라." 이 말은 기능이 중요하지 않다는 뜻이 아니라, **기능은 실행 단계의 옵션이고 구조는 판단 단계의 기반** 이라는 뜻에 가깝습니다. 전략과 수치와 고객과 설계가 한 덩어리로 섞여 있으면, Claude Code는 한 번의 요청 안에서 목표 설정, 가설 생성, 수치 해석, 요구사항 정의, 구현 설계를 동시에 떠안게 됩니다. 그러면 답변은 길어질 수 있어도 책임 경계가 흐려지고, 어느 판단이 틀렸는지 추적하기 어려워집니다.
+
+Threads에 포함된 이미지 설명도 같은 방향을 가리킵니다. 잘 쓰는 사람은 먼저 "대표/총괄", "전략팀", "데이터팀", "고객팀", "설계팀"으로 역할을 쪼갠 뒤, 각 역할에 "왜 하는가", "숫자로 검증", "누구를 위해", "어떻게 만들까" 같은 질문을 연결합니다. 즉 Claude Code 활용을 기능 목록 소비로 보지 않고, **의사결정 파이프라인 설계** 로 보는 셈입니다.
+
+이 해석은 Anthropic 공식 문서의 `CLAUDE.md` 설명과도 맞닿아 있습니다. 공식 문서는 프로젝트용 `CLAUDE.md` 에 아키텍처, 코딩 기준, 공통 워크플로우, 빌드와 테스트 명령을 담으라고 설명합니다. 다시 말해 Claude Code는 애초에 "한 번 잘 써 둔 프로젝트 문맥"을 바탕으로 동작하도록 설계돼 있습니다. 즉석 프롬프트는 필요하지만, 매번 모든 배경을 채팅창에 다시 쓰는 사용 패턴이 기본 모델은 아니라는 뜻입니다. [Anthropic memory docs](https://code.claude.com/docs/en/memory)
+
+```mermaid
+flowchart TD
+    A["프로젝트 목표"] --> B["역할 분해"]
+    B --> C["전략팀"]
+    B --> D["데이터팀"]
+    B --> E["고객팀"]
+    B --> F["설계팀"]
+    C --> G["왜 하는가<br>성공 기준"]
+    D --> H["확정 수치<br>추정값 구분"]
+    E --> I["누구의 문제인가<br>어떤 니즈인가"]
+    F --> J["어떻게 만들 것인가<br>범위와 흐름"]
+    G --> K["Claude Code가 수행할 작업 정의"]
+    H --> K
+    I --> K
+    J --> K
+
+    classDef startTone fill:#c5dcef,stroke:#6b9ac4,color:#333
+    classDef roleTone fill:#c0ecd3,stroke:#67a97c,color:#333
+    classDef detailTone fill:#fde8c0,stroke:#d9a441,color:#333
+    classDef resultTone fill:#e0c8ef,stroke:#9b7cc2,color:#333
+
+    class A startTone
+    class B,K resultTone
+    class C,D,E,F roleTone
+    class G,H,I,J detailTone
+```
+
+실무적으로 보면 이 구조는 프롬프트 품질을 올리는 가장 값싼 방법이기도 합니다. 프롬프트를 더 화려하게 쓰는 대신, Claude가 참조할 판단 레이어를 분리해 두면 같은 요청도 훨씬 짧고 검증 가능하게 바뀝니다. "랜딩 페이지 만들어줘"보다 "고객문서 기준 페르소나 A를 위한 온보딩 화면을 설계문서 범위 안에서 초안 작성해줘"가 훨씬 덜 모호한 이유가 바로 여기에 있습니다.
+
+## 2) 조직도를 문서 5개로 번역하면 무엇이 달라지나
+
+Threads 원문은 이 조직도를 다섯 문서로 번역하라고 제안합니다. `CLAUDE.md`, 전략문서, 수치문서, 고객문서, 설계문서가 그 목록입니다. 여기서 중요한 점은 다섯 문서의 이름보다 **각 문서가 담당하는 질문이 다르다** 는 사실입니다. 이 다섯 문서는 단순한 저장소가 아니라, 서로 다른 판단 종류를 섞지 않기 위한 인터페이스입니다.
+
+Anthropic 공식 문서는 `CLAUDE.md` 가 세션 시작 시 읽히는 지속 메모리이며, 큰 파일이 되면 `@path/to/import` 문법이나 `.claude/rules/` 로 쪼개라고 설명합니다. 그래서 실무적으로는 다섯 문서를 전부 `CLAUDE.md` 한 파일 안에 밀어 넣기보다, `CLAUDE.md` 를 총괄 지시서로 두고 나머지 문서를 import하는 방식이 더 자연스럽습니다. 즉 원문이 말하는 "문서 5개"는 Claude Code의 공식 파일 체계를 대체하는 것이 아니라, **공식 메모리 시스템 위에 얹는 운영 구조** 로 보는 편이 정확합니다. [Anthropic memory docs](https://code.claude.com/docs/en/memory)
+
+```mermaid
+flowchart TD
+    A["총괄 판단"] --> B["CLAUDE.md"]
+    C["전략 판단"] --> D["전략문서.md"]
+    E["수치 판단"] --> F["수치문서.md"]
+    G["고객 판단"] --> H["고객문서.md"]
+    I["설계 판단"] --> J["설계문서.md"]
+    B --> K["세션 시작 기본 지침"]
+    D --> L["방향<br>성공 기준<br>의사결정 원칙"]
+    F --> M["확정 수치<br>추정값<br>근거 출처"]
+    H --> N["고객 문제<br>페르소나<br>핵심 니즈"]
+    J --> O["화면 흐름<br>기능 범위<br>비용과 제약"]
+
+    classDef judgmentTone fill:#c5dcef,stroke:#6b9ac4,color:#333
+    classDef docTone fill:#c0ecd3,stroke:#67a97c,color:#333
+    classDef outputTone fill:#fde8c0,stroke:#d9a441,color:#333
+
+    class A,C,E,G,I judgmentTone
+    class B,D,F,H,J docTone
+    class K,L,M,N,O outputTone
+```
+
+각 문서를 더 구체적으로 풀면 역할은 다음처럼 정리할 수 있습니다.
+
+| 문서 | 핵심 질문 | 담아야 할 내용 |
+|------|-----------|----------------|
+| `CLAUDE.md` | 이 프로젝트에서 Claude는 어떤 원칙으로 움직여야 하는가 | 목표, 금지사항, 공통 명령, 파일 우선순위, import 진입점 |
+| `전략문서.md` | 왜 지금 이 일을 하는가 | 목표, 성공 기준, 우선순위, 의사결정 기준, 리스크 |
+| `수치문서.md` | 무엇이 사실이고 무엇이 추정인가 | 확정 수치, 추정값, 계산식, 출처, 마지막 검증 시점 |
+| `고객문서.md` | 누구의 어떤 문제를 푸는가 | 고객 유형, 문제 정의, 페르소나, JTBD, 제외 대상 |
+| `설계문서.md` | 어떻게 만들 것인가 | 사용자 흐름, 기능 범위, 화면 구조, 기술 제약, 구현 순서 |
+
+여기서 특히 **수치문서** 가 분리돼야 하는 이유는 큽니다. AI 워크플로우에서 흔한 실패 중 하나가 확정 사실과 추정 가정을 같은 목소리로 말하는 것입니다. 원문이 수치문서를 별도로 제안하는 이유는, Claude Code가 계획을 짜거나 초안을 작성할 때도 "이 숫자가 사실인지, 추정인지, 누가 검증했는지"를 구분할 수 있게 만들기 위해서입니다. 이 분리가 없으면 문서가 길어질수록 잘못된 수치가 설계와 우선순위 판단으로 퍼집니다.
+
+또 하나 주의할 점은, 이 다섯 문서가 고정 템플릿일 필요는 없다는 것입니다. 공식 문서가 보장하는 것은 `CLAUDE.md`, import, `.claude/rules/` 같은 메커니즘이지 전략문서라는 파일명이 아닙니다. 따라서 팀 상황에 따라 `customer.md`, `metrics.md`, `design.md` 같이 영어 파일명으로 두거나, 제품 전략과 고객 문제를 하나로 합친 문서로 운영해도 됩니다. 중요한 것은 이름보다 **판단 종류를 분리해 Claude가 읽을 경로를 명확히 하는 것** 입니다.
+
+## 3) `CLAUDE.md` 와 `AGENTS.md`, 그리고 규칙 파일을 어떻게 나누면 좋은가
+
+이 Threads 포스트를 오늘의 도구 생태계에 그대로 옮기면, 자연스럽게 `CLAUDE.md` 와 `AGENTS.md` 의 역할 분담 문제로 이어집니다. Anthropic 공식 문서는 `CLAUDE.md` 를 Claude Code의 지속 메모리 파일로 설명합니다. 반면 [agents.md](https://agents.md/)는 `AGENTS.md` 를 "README for agents" 라고 부르며, 여러 코딩 에이전트가 공통으로 읽을 수 있는 예측 가능한 위치라고 설명합니다. 즉 둘은 경쟁 관계라기보다 **적용 범위가 다른 문맥 레이어** 로 보는 편이 맞습니다.
+
+`CLAUDE.md` 는 Claude Code가 세션 시작에 바로 읽는 프로젝트 메모리이므로, Claude 전용으로 꼭 지켜야 할 원칙과 import 진입점을 두기에 적합합니다. 반대로 `AGENTS.md` 는 빌드, 테스트, 코드 스타일, 하위 디렉터리 규칙처럼 도구를 바꿔도 유지하고 싶은 공통 운영 지침을 담기에 좋습니다. Anthropic 문서가 `.claude/rules/` 를 통해 주제별·경로별 규칙 파일을 모듈화하라고 권하는 것도 같은 맥락입니다. 즉 총괄 원칙은 `CLAUDE.md`, 에이전트 공용 운영 규칙은 `AGENTS.md`, 세부 기술 규칙은 `.claude/rules/`, 제품 판단은 전략/수치/고객/설계 문서로 두는 식의 분해가 가장 유지보수성이 높습니다. [Anthropic memory docs](https://code.claude.com/docs/en/memory) [AGENTS.md](https://agents.md/)
+
+```mermaid
+flowchart TD
+    A["사용자 요청"] --> B["CLAUDE.md<br>Claude 전용 기본 메모리"]
+    A --> C["AGENTS.md<br>에이전트 공용 운영 규칙"]
+    B --> D["전략 / 수치 / 고객 / 설계 문서 import"]
+    B --> E["프로젝트 불변 원칙"]
+    C --> F["빌드 / 테스트 / 코드 스타일"]
+    E --> G[".claude/rules/<br>주제별 / 경로별 세부 규칙"]
+    D --> H["작업 컨텍스트"]
+    F --> H
+    G --> H
+    H --> I["Claude Code 실행 계획과 작업"]
+
+    classDef requestTone fill:#c5dcef,stroke:#6b9ac4,color:#333
+    classDef memoryTone fill:#c0ecd3,stroke:#67a97c,color:#333
+    classDef ruleTone fill:#fde8c0,stroke:#d9a441,color:#333
+    classDef resultTone fill:#e0c8ef,stroke:#9b7cc2,color:#333
+
+    class A requestTone
+    class B,C,D,E memoryTone
+    class F,G,H ruleTone
+    class I resultTone
+```
+
+실전에서 이 분해가 강한 이유는 문서를 읽는 주체가 다르기 때문입니다. `AGENTS.md` 는 Codex, Cursor, Copilot 같은 다른 에이전트로 옮겨가도 의미가 남는 규칙 파일이고, `CLAUDE.md` 는 Claude Code의 로딩 메커니즘에 맞춘 최적화된 진입 파일입니다. 둘 중 하나만 고집할 필요는 없습니다. 오히려 공통 규칙을 `AGENTS.md` 에 두고, `CLAUDE.md` 에서 이 프로젝트에서 Claude가 특히 더 알아야 할 판단 원칙과 import 경로를 정리하면 도구 의존성과 재사용성 사이의 균형이 좋아집니다.
+
+이렇게 보면 Threads 원문의 메시지는 더 선명해집니다. "프롬프트를 잘 쓰는 게 아니라 구조를 잘 짜는 것"이라는 말은, 단지 말을 예쁘게 하라는 조언이 아니라 **문맥 계층을 설계하라** 는 뜻입니다. Claude Code의 성능은 모델 선택만으로 결정되지 않고, 어떤 판단을 어떤 문서에 두고 어떤 파일을 언제 읽게 할지에 크게 좌우됩니다.
+
+## 실전 적용 포인트
+
+- 새 프로젝트를 시작할 때는 기능 목록보다 먼저 "전략, 수치, 고객, 설계" 네 가지 판단 레이어를 분리하고, 각 레이어의 책임자를 문서 기준으로 정의하는 편이 낫습니다.
+- `CLAUDE.md` 에는 모든 세부사항을 다 적지 말고, 프로젝트 목표·금지사항·공통 명령·import 진입점처럼 매 세션에 필요한 상위 규칙만 남기는 편이 좋습니다.
+- 수치 문서에는 확정값과 추정값을 반드시 분리하고, 각 값의 출처와 마지막 검증 시점을 같이 적어야 Claude Code가 근거 없는 숫자를 사실처럼 확대하지 않습니다.
+- 고객 문서와 설계 문서를 분리하면 "누구의 문제인가"와 "무엇을 만들 것인가"가 섞이지 않아 요구사항 드리프트를 줄일 수 있습니다.
+- 여러 에이전트를 병행할 가능성이 있다면 `AGENTS.md` 에 공용 운영 규칙을 두고, Claude Code에 특화된 추가 문맥만 `CLAUDE.md` 와 `.claude/rules/` 로 얹는 방식이 가장 유연합니다.
+
+## 핵심 요약
+
+- justopen.ai의 Threads 포스트가 말하는 핵심은 Claude Code를 기능 목록이 아니라 **역할 구조와 문서 구조** 로 다뤄야 한다는 점입니다.
+- `CLAUDE.md` 는 Anthropic이 공식 지원하는 프로젝트 메모리 파일이지만, 전략문서·수치문서·고객문서·설계문서는 공식 스펙이 아니라 실무적 운영 프레임으로 이해해야 정확합니다.
+- Anthropic 공식 문서에 따르면 `CLAUDE.md` 는 import와 `.claude/rules/` 로 분해할 수 있으므로, 다섯 문서 모델은 충분히 Claude Code 메커니즘 위에 자연스럽게 구현할 수 있습니다.
+- `AGENTS.md` 는 여러 코딩 에이전트가 공유할 수 있는 공용 운영 규칙 레이어이고, `CLAUDE.md` 는 Claude Code 전용 지속 메모리 레이어라는 차이가 있습니다.
+- 결국 프롬프트 품질은 문장력보다 문맥 설계의 결과이며, 구조가 먼저 고정될수록 Claude Code의 출력도 짧고 검증 가능해집니다.
+
+## 결론
+
+이 Threads 포스트를 한 문장으로 요약하면, Claude Code를 잘 쓰는 시작점은 "무슨 기능이 있나"가 아니라 "무슨 판단을 어떤 문서에 맡길 것인가"입니다. 기능은 나중에 익혀도 되지만, 역할과 문서 체계가 없으면 모든 요청이 거대한 단일 프롬프트로 뭉개집니다.
+
+그래서 Claude Code를 도입할 때 가장 먼저 할 일은 프롬프트 템플릿을 수집하는 것이 아니라, 프로젝트의 조직도를 문서 구조로 번역하는 것입니다. `CLAUDE.md` 를 총괄 메모리로 두고, 전략·수치·고객·설계를 분리하고, 필요하면 `AGENTS.md` 와 `.claude/rules/` 까지 나눠 두면 그때부터 프롬프트는 주술이 아니라 **잘 구조화된 운영 시스템의 마지막 입력** 이 됩니다.
