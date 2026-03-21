@@ -166,27 +166,20 @@
 <p>글 후반부의 실질적인 결론은 OpenAI가 공개한 <code>frontend-skill</code> 에 있습니다. 이 스킬의 목적은 모델이 더 많은 컴포넌트를 만들게 하는 것이 아니라, art direction, hierarchy, restraint, imagery, motion 같은 기준을 모델 내부의 기본 습관으로 밀어 넣는 데 있습니다. 쉽게 말해 &ldquo;멋져 보여라&quot;가 아니라 &ldquo;왜 이 화면이 지금 이런 구조여야 하는지&quot;를 먼저 강제하는 규칙집입니다.</p>
 <p>마케팅 랜딩 페이지와 운영용 제품 UI를 같은 규칙으로 만들면 결과가 금방 어긋납니다. 그래서 이 스킬은 두 경우를 분리합니다. 랜딩 페이지에서는 첫 화면을 한 장의 강한 구성으로 보고, 브랜드 존재감과 큰 시각 앵커, 넓게 쓰는 히어로 영역, 짧은 카피를 요구합니다. 반대로 대시보드나 관리 도구에서는 영웅적인 카피를 줄이고, 지표, 상태, 필터, 표 같은 실제 작업면을 먼저 보여 주라고 합니다.</p>
 <pre class="mermaid">flowchart TD
-    task["프런트엔드 작업"] --> choice{"화면 성격은 무엇인가"}
-    choice -->|"브랜딩 / 프로모션"| marketing["랜딩 페이지 규칙"]
-    choice -->|"운영 / 관리 / 분석"| product["제품 UI 규칙"]
+    m0["랜딩 페이지"] --> m1["첫 화면은 하나의 강한 구성"]
+    m1 --> m2["브랜드를 hero 레벨로 노출"]
+    m2 --> m3["full-bleed 시각 앵커 사용"]
+    m3 --> m4["카드 남용 금지"]
 
-    marketing --> m1["첫 화면은 하나의 강한 구성"]
-    marketing --> m2["브랜드를 hero 레벨로 노출"]
-    marketing --> m3["full-bleed 시각 앵커 사용"]
-    marketing --> m4["카드 남용 금지"]
-
-    product --> p1["작업면을 먼저 노출"]
-    product --> p2["상태, 필터, 표, 지표 중심"]
-    product --> p3["마케팅 문구보다 유틸리티 카피"]
-    product --> p4["카드 대신 레이아웃 우선"]
-
-    classDef baseNode fill:#c5dcef,color:#333,stroke:#7da6c2,stroke-width:1px;
     classDef marketingNode fill:#fde8c0,color:#333,stroke:#d4b16a,stroke-width:1px;
-    classDef productNode fill:#c0ecd3,color:#333,stroke:#77b88d,stroke-width:1px;
+    class m0,m1,m2,m3,m4 marketingNode;</pre><pre class="mermaid">flowchart TD
+    p0["제품 UI"] --> p1["작업면을 먼저 노출"]
+    p1 --> p2["상태 / 필터 / 표 / 지표 중심"]
+    p2 --> p3["마케팅 문구보다 유틸리티 카피"]
+    p3 --> p4["카드 대신 레이아웃 우선"]
 
-    class task,choice baseNode;
-    class marketing,m1,m2,m3,m4 marketingNode;
-    class product,p1,p2,p3,p4 productNode;</pre><p>여기서 특히 실무적인 규칙은 카드를 기본값으로 두지 말라는 부분입니다. 이건 카드 자체가 나쁘다는 뜻이 아니라, border, shadow, radius를 걷어내도 상호작용과 이해가 유지되는 요소라면 굳이 카드일 필요가 없다는 뜻입니다. 많은 AI 산출물이 섹션마다 카드 하나씩 놓는 방식으로 급속히 평범해지는 이유를 정확히 찌르는 규칙입니다.</p>
+    classDef productNode fill:#c0ecd3,color:#333,stroke:#77b88d,stroke-width:1px;
+    class p0,p1,p2,p3,p4 productNode;</pre><p>여기서 특히 실무적인 규칙은 카드를 기본값으로 두지 말라는 부분입니다. 이건 카드 자체가 나쁘다는 뜻이 아니라, border, shadow, radius를 걷어내도 상호작용과 이해가 유지되는 요소라면 굳이 카드일 필요가 없다는 뜻입니다. 많은 AI 산출물이 섹션마다 카드 하나씩 놓는 방식으로 급속히 평범해지는 이유를 정확히 찌르는 규칙입니다.</p>
 <p>이미지와 모션에 대한 기준도 의외로 절제되어 있습니다. 이미지는 장식이 아니라 서사를 밀어 주는 역할을 해야 하고, 텍스트와 경쟁하지 않아야 합니다. 모션도 화면 전체를 흔드는 효과보다, 진입 애니메이션 하나, 스크롤 기반 깊이 변화 하나, hover나 reveal 하나처럼 존재감과 위계를 살리는 2~3개의 움직임이면 충분하다고 봅니다. 즉 이 스킬은 화려함의 증폭기가 아니라, 과잉을 깎아 내는 편집기 쪽에 가깝습니다.</p>
 <p>다만 이것은 보편적인 UI 교과서라기보다 OpenAI가 GPT-5.4를 더 안정적으로 다루기 위해 정리한 single-source guidance라는 점도 같이 봐야 합니다. 그럼에도 모델이 흔한 카드 그리드, 약한 브랜딩, 바쁜 히어로, 목적이 겹치는 섹션으로 미끄러지는 패턴을 줄이는 데는 꽤 유용한 기준입니다.</p>
 <h2 id="실전-적용-포인트">실전 적용 포인트</h2>

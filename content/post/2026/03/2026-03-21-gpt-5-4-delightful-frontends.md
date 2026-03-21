@@ -112,27 +112,24 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    task["프런트엔드 작업"] --> choice{"화면 성격은 무엇인가"}
-    choice -->|"브랜딩 / 프로모션"| marketing["랜딩 페이지 규칙"]
-    choice -->|"운영 / 관리 / 분석"| product["제품 UI 규칙"]
+    m0["랜딩 페이지"] --> m1["첫 화면은 하나의 강한 구성"]
+    m1 --> m2["브랜드를 hero 레벨로 노출"]
+    m2 --> m3["full-bleed 시각 앵커 사용"]
+    m3 --> m4["카드 남용 금지"]
 
-    marketing --> m1["첫 화면은 하나의 강한 구성"]
-    marketing --> m2["브랜드를 hero 레벨로 노출"]
-    marketing --> m3["full-bleed 시각 앵커 사용"]
-    marketing --> m4["카드 남용 금지"]
-
-    product --> p1["작업면을 먼저 노출"]
-    product --> p2["상태, 필터, 표, 지표 중심"]
-    product --> p3["마케팅 문구보다 유틸리티 카피"]
-    product --> p4["카드 대신 레이아웃 우선"]
-
-    classDef baseNode fill:#c5dcef,color:#333,stroke:#7da6c2,stroke-width:1px;
     classDef marketingNode fill:#fde8c0,color:#333,stroke:#d4b16a,stroke-width:1px;
-    classDef productNode fill:#c0ecd3,color:#333,stroke:#77b88d,stroke-width:1px;
+    class m0,m1,m2,m3,m4 marketingNode;
+```
 
-    class task,choice baseNode;
-    class marketing,m1,m2,m3,m4 marketingNode;
-    class product,p1,p2,p3,p4 productNode;
+```mermaid
+flowchart TD
+    p0["제품 UI"] --> p1["작업면을 먼저 노출"]
+    p1 --> p2["상태 / 필터 / 표 / 지표 중심"]
+    p2 --> p3["마케팅 문구보다 유틸리티 카피"]
+    p3 --> p4["카드 대신 레이아웃 우선"]
+
+    classDef productNode fill:#c0ecd3,color:#333,stroke:#77b88d,stroke-width:1px;
+    class p0,p1,p2,p3,p4 productNode;
 ```
 
 여기서 특히 실무적인 규칙은 카드를 기본값으로 두지 말라는 부분입니다. 이건 카드 자체가 나쁘다는 뜻이 아니라, border, shadow, radius를 걷어내도 상호작용과 이해가 유지되는 요소라면 굳이 카드일 필요가 없다는 뜻입니다. 많은 AI 산출물이 섹션마다 카드 하나씩 놓는 방식으로 급속히 평범해지는 이유를 정확히 찌르는 규칙입니다.
