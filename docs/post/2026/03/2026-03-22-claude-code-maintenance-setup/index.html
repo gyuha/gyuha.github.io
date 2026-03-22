@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '기존 프로젝트 유지보수용 Claude Code 환경 구축법: 안전하게 읽고, 좁게 수정하고, 바로 검증하는 흐름'" />
+  <title>기존 프로젝트 유지보수용 Claude Code 환경 구축법: 안전하게 읽고, 좁게 수정하고, 바로 검증하는 흐름  | 신규하 블로그</title>
+  <meta property="og:title" content="기존 프로젝트 유지보수용 Claude Code 환경 구축법: 안전하게 읽고, 좁게 수정하고, 바로 검증하는 흐름" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-03-22"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/03/2026-03-22-claude-code-maintenance-setup/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+  <meta property="og:tags" content="agents" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/03/2026-03-22-claude-code-maintenance-setup/">
+          <h1>
+            기존 프로젝트 유지보수용 Claude Code 환경 구축법: 안전하게 읽고, 좁게 수정하고, 바로 검증하는 흐름
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/03/2026-03-22-claude-code-maintenance-setup/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>기존 프로젝트 유지보수에서 Claude Code를 쓸 때 가장 중요한 건 &ldquo;얼마나 똑똑한 프롬프트를 쓰느냐&quot;가 아닙니다. 더 중요한 건 <strong>Claude Code가 실수하기 어려운 작업 흐름</strong> 을 먼저 고정하는 것입니다.<br>기존 서비스는 새 기능을 밀어 넣는 속도보다, 현재 동작을 안전하게 읽고, 필요한 부분만 좁게 바꾸고, 바로 검증하는 리듬이 훨씬 중요합니다.</p>
+<p>Claude Code는 <code>CLAUDE.md</code> 기반 프로젝트 메모리, 커스텀 서브에이전트, 스킬, 훅, 프로젝트 설정을 모두 지원합니다. 그래서 유지보수용 환경을 만들 때도 &ldquo;AI가 알아서 잘하겠지&quot;에 기대기보다, <strong>분석 → 최소 수정 → 검증 → 리뷰</strong> 순서를 문서와 자동화로 고정하는 편이 훨씬 안정적입니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://code.claude.com/docs/en/memory">https://code.claude.com/docs/en/memory</a></li>
+<li><a href="https://code.claude.com/docs/en/sub-agents">https://code.claude.com/docs/en/sub-agents</a></li>
+<li><a href="https://code.claude.com/docs/en/skills">https://code.claude.com/docs/en/skills</a></li>
+<li><a href="https://code.claude.com/docs/en/hooks">https://code.claude.com/docs/en/hooks</a></li>
+<li><a href="https://code.claude.com/docs/en/settings">https://code.claude.com/docs/en/settings</a></li>
+<li><a href="https://code.claude.com/docs/en/common-workflows">https://code.claude.com/docs/en/common-workflows</a></li>
+</ul>
+<h2 id="1-유지보수용-환경은-왜-따로-설계해야-할까">1) 유지보수용 환경은 왜 따로 설계해야 할까</h2>
+<p>신규 개발용 워크플로우는 보통 &ldquo;빠르게 만들고 넓게 바꾸는 것&quot;에 더 관대합니다. 반대로 유지보수는 다릅니다. 이미 운영 중인 코드베이스에서는 한 파일만 잘못 건드려도 UI, API, 상태관리, 배포 흐름이 같이 흔들릴 수 있습니다.</p>
+<p>그래서 유지보수용 Claude Code 환경은 처음부터 아래 흐름을 강제하는 편이 좋습니다.</p>
+<pre class="mermaid">flowchart TD
+  A["이슈 또는 요청"] --> B["읽기 전용 분석"]
+  B --> C["호출 흐름 추적"]
+  C --> D["영향 범위 점검"]
+  D --> E["최소 수정"]
+  E --> F["lint / test / build"]
+  F --> G{"리스크 남음?"}
+  G -->|예| H["리뷰 또는 추가 분석"]
+  G -->|아니오| I["변경 요약과 PR 정리"]
+
+  classDef entryTone fill:#c5dcef,stroke:#6b9ac4,color:#333
+  classDef workTone fill:#c0ecd3,stroke:#5b9b73,color:#333
+  classDef checkTone fill:#fde8c0,stroke:#d9a441,color:#333
+  classDef resultTone fill:#e0c8ef,stroke:#9b6fb3,color:#333
+
+  class A entryTone
+  class B,C,D,E workTone
+  class F,G,H checkTone
+  class I resultTone</pre><p>공식 메모리 문서도 <code>CLAUDE.md</code> 를 행동 지침으로 쓰고, 공통 워크플로우 문서도 새로운 코드베이스 이해, 버그 수정, 테스트 같은 단계를 따로 다룹니다. 즉 유지보수용 세팅은 Claude Code의 기능을 더 많이 켜는 문제가 아니라, <strong>순서를 더 엄격하게 만드는 문제</strong> 에 가깝습니다.</p>
+<h2 id="2-시작점은-루트-claudemd-다">2) 시작점은 루트 <code>CLAUDE.md</code> 다</h2>
+<p>유지보수 세팅의 첫 파일은 루트 <code>CLAUDE.md</code> 입니다. 공식 문서 기준으로 <code>CLAUDE.md</code> 는 세션 시작 시 읽히는 프로젝트 메모리 파일이고, 프로젝트 규칙과 공통 워크플로우를 담는 용도입니다. 다만 여기서 중요한 구분이 하나 있습니다.</p>
+<ul>
+<li><code>CLAUDE.md</code>: Claude의 행동을 유도하는 프로젝트 지침</li>
+<li><code>settings.json</code>: 권한, 도구, 경로 같은 것을 실제로 강제하는 설정</li>
+</ul>
+<p>즉 <code>CLAUDE.md</code> 만으로는 &ldquo;절대 금지&quot;가 보장되지 않습니다. 유지보수에서는 이 점을 분명히 이해해야 합니다. <code>CLAUDE.md</code> 에는 방향과 절차를 담고, 진짜 강제는 훅과 설정으로 받쳐야 합니다.</p>
+<p>유지보수용 <code>CLAUDE.md</code> 는 길게 쓰기보다, Claude가 매번 떠올려야 할 판단 기준만 짧고 선명하게 적는 편이 좋습니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-md" data-lang="md"><span style="display:flex;"><span># CLAUDE.md
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>## 프로젝트 목적
+</span></span><span style="display:flex;"><span>이 프로젝트는 운영 중인 기존 서비스 유지보수가 목적이다.
+</span></span><span style="display:flex;"><span>새 아키텍처 도입보다 기존 패턴 준수를 우선한다.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>## 작업 원칙
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 먼저 원인 분석 후 수정
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 관련 파일만 최소 범위로 수정
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 기존 코딩 스타일 유지
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 리팩터링은 요청이 있을 때만 수행
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 불필요한 파일 이동/이름변경 금지
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> DB 스키마 변경, API 계약 변경, 의존성 업그레이드는 사전 승인 필요
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>## 항상 먼저 할 일
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">1.</span> 관련 에러/증상 정리
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">2.</span> 호출 흐름 추적
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">3.</span> 영향 범위 요약
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">4.</span> 수정 계획 제시
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">5.</span> 수정 후 테스트/린트 실행
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>## 자주 쓰는 명령
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 설치: pnpm install
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 개발 서버: pnpm dev
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 린트: pnpm lint
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 테스트: pnpm test
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 특정 테스트: pnpm test -- &lt;pattern&gt;
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 빌드: pnpm build
+</span></span></code></pre></div><p>공식 문서는 <code>CLAUDE.md</code> 를 200줄 이하로 유지하고, 길어지면 <code>@path/to/import</code> 또는 <code>.claude/rules/</code> 로 분리하라고 권장합니다. 유지보수용 환경도 마찬가지입니다. 공통 규칙만 루트에 두고, 하위 영역 규칙은 파일 경로 기준으로 분리하는 편이 장기적으로 더 안정적입니다.</p>
+<h2 id="3-서브에이전트는-분석-수정-리뷰로-나누는-편이-낫다">3) 서브에이전트는 &ldquo;분석, 수정, 리뷰&quot;로 나누는 편이 낫다</h2>
+<p>유지보수에서 가장 흔한 실패는 하나의 에이전트가 원인 분석, 수정, 리뷰를 한 번에 처리하면서 스스로의 판단을 검증하지 못하는 것입니다. 공식 서브에이전트 문서도 서브에이전트를 &ldquo;특정 작업에 집중하는 전문 보조 에이전트&quot;로 설명합니다.</p>
+<p>이럴 때 가장 실용적인 기본 조합은 아래 세 가지입니다.</p>
+<table>
+  <thead>
+      <tr>
+          <th>역할</th>
+          <th>책임</th>
+          <th>Claude에게 시킬 질문</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>bug-triage</code></td>
+          <td>재현 경로와 원인 후보 정리</td>
+          <td>이 버그의 재현 경로와 원인 후보 3개만 찾아</td>
+      </tr>
+      <tr>
+          <td><code>safe-fixer</code></td>
+          <td>기존 패턴 유지 + 최소 수정</td>
+          <td>기존 구조 유지하면서 가장 작은 수정으로 고쳐</td>
+      </tr>
+      <tr>
+          <td><code>reviewer</code></td>
+          <td>회귀 위험과 테스트 누락 점검</td>
+          <td>이 수정이 다른 화면/API에 미칠 영향 점검해</td>
+      </tr>
+  </tbody>
+</table>
+<pre class="mermaid">flowchart TD
+  A["유지보수 이슈"] --> B["bug-triage<br>재현 경로 / 원인 후보"]
+  B --> C["safe-fixer<br>최소 수정안 작성"]
+  C --> D["reviewer<br>회귀 위험 / 테스트 누락 점검"]
+  D --> E["최종 적용 여부 판단"]
+
+  classDef inputTone fill:#c5dcef,stroke:#6b9ac4,color:#333
+  classDef roleTone fill:#c0ecd3,stroke:#5b9b73,color:#333
+  classDef reviewTone fill:#fde8c0,stroke:#d9a441,color:#333
+  classDef finalTone fill:#e0c8ef,stroke:#9b6fb3,color:#333
+
+  class A inputTone
+  class B,C roleTone
+  class D reviewTone
+  class E finalTone</pre><p>서브에이전트를 이렇게 나누면 좋은 이유는 단순합니다. 분석 단계에서는 수정 욕심을 줄이고, 수정 단계에서는 범위 확장을 막고, 리뷰 단계에서는 &ldquo;정말 이것만 바뀌었는가&quot;를 따로 볼 수 있기 때문입니다.</p>
+<p>프로젝트에 체크인해 둘 서브에이전트는 <code>.claude/agents/</code> 아래 두면 됩니다. 공식 문서도 프로젝트 전용 서브에이전트는 버전 관리에 포함해 팀이 함께 개선하는 방식을 권장합니다.</p>
+<h2 id="4-반복-작업은-claudecommands-보다-스킬-기준으로-고정하는-편이-유리하다">4) 반복 작업은 <code>.claude/commands</code> 보다 스킬 기준으로 고정하는 편이 유리하다</h2>
+<p>예전에는 slash command 파일을 따로 두는 패턴이 많이 쓰였지만, 현재 공식 문서 기준으로는 커스텀 명령과 스킬이 사실상 같은 체계로 수렴되어 있습니다. <code>.claude/commands/deploy.md</code> 도 동작하지만, <code>.claude/skills/deploy/SKILL.md</code> 와 같은 효과를 만들 수 있고 스킬 쪽이 보조 파일과 세부 제어가 더 좋습니다.</p>
+<p>유지보수에서 자주 반복되는 작업은 아래 세 개만 먼저 고정해도 체감이 큽니다.</p>
+<h3 id="analyze-bug"><code>/analyze-bug</code></h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-md" data-lang="md"><span style="display:flex;"><span>현재 이슈를 유지보수 관점에서 분석해 줘.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>반드시 아래 순서로:
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">1.</span> 증상 요약
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">2.</span> 재현 경로 추정
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">3.</span> 관련 파일 후보
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">4.</span> 원인 가설 3개
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">5.</span> 가장 작은 수정안 제안
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">6.</span> 필요한 테스트 목록
+</span></span></code></pre></div><h3 id="safe-fix"><code>/safe-fix</code></h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-md" data-lang="md"><span style="display:flex;"><span>수정 시 아래 규칙을 지켜라.
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 최소 수정만 수행
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 기존 구조와 네이밍 유지
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 관련 없는 리팩터링 금지
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 수정 후 lint/test 명령 제안
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 변경 파일별 이유를 1줄씩 설명
+</span></span></code></pre></div><h3 id="review-maintenance"><code>/review-maintenance</code></h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-md" data-lang="md"><span style="display:flex;"><span>이번 변경을 유지보수 리뷰 관점으로 검토해 줘.
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 회귀 위험
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 누락된 테스트
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 성능/보안 영향
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 운영 장애 가능성
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 되돌리기 쉬운지 평가
+</span></span></code></pre></div><p>핵심은 프롬프트를 길게 쓰는 것이 아니라, <strong>항상 같은 질문 순서를 강제하는 것</strong> 입니다. 유지보수에서는 일관성이 곧 품질입니다.</p>
+<h2 id="5-훅은-수정-후-자동-검증을-기계적으로-강제하는-층이다">5) 훅은 &ldquo;수정 후 자동 검증&quot;을 기계적으로 강제하는 층이다</h2>
+<p>공식 훅 문서에 따르면 Claude Code의 훅은 shell command, HTTP endpoint, LLM prompt 형태로 특정 라이프사이클 시점에 자동 실행할 수 있습니다. 유지보수에서 이 기능이 중요한 이유는, 사람이 매번 빠뜨리는 검증을 기계적으로 반복하게 만들 수 있기 때문입니다.</p>
+<pre class="mermaid">flowchart TD
+  A["Claude가 파일 수정"] --> B["위험 경로 변경 여부 확인"]
+  B --> C{"package / lock / db 변경?"}
+  C -->|예| D["경고 출력<br>사전 승인 요구"]
+  C -->|아니오| E["lint 실행"]
+  E --> F{"테스트 대상 파일 변경?"}
+  F -->|예| G["관련 테스트 실행"]
+  F -->|아니오| H["build 또는 요약 검증"]
+  D --> I["사용자 확인 후 진행"]
+  G --> J["결과 기록"]
+  H --> J
+  I --> J
+
+  classDef startTone fill:#c5dcef,stroke:#6b9ac4,color:#333
+  classDef processTone fill:#c0ecd3,stroke:#5b9b73,color:#333
+  classDef decisionTone fill:#fde8c0,stroke:#d9a441,color:#333
+  classDef warnTone fill:#ffc8c4,stroke:#d97873,color:#333
+  classDef endTone fill:#e0c8ef,stroke:#9b6fb3,color:#333
+
+  class A startTone
+  class B,E,G,H processTone
+  class C,F decisionTone
+  class D,I warnTone
+  class J endTone</pre><p>유지보수에서 특히 유용한 훅은 아래 정도입니다.</p>
+<table>
+  <thead>
+      <tr>
+          <th>감지 대상</th>
+          <th>자동 동작</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>package.json</code>, lockfile</td>
+          <td>의존성 변경 경고</td>
+      </tr>
+      <tr>
+          <td><code>db/</code>, <code>migrations/</code></td>
+          <td>스키마 변경 경고</td>
+      </tr>
+      <tr>
+          <td><code>src/</code> 수정</td>
+          <td><code>lint</code> 실행</td>
+      </tr>
+      <tr>
+          <td><code>api/</code> 수정</td>
+          <td>관련 테스트 실행</td>
+      </tr>
+      <tr>
+          <td>커밋 직전</td>
+          <td>체크리스트 출력</td>
+      </tr>
+  </tbody>
+</table>
+<p>예를 들면 아래처럼 아주 단순한 훅 스크립트만 있어도 사고를 꽤 줄일 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a">#!/usr/bin/env bash
+</span></span></span><span style="display:flex;"><span><span style="color:#6639ba">set</span> -euo pipefail
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#953800">changed_files</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;</span><span style="color:#0a3069">${</span><span style="color:#953800">1</span><span style="color:#cf222e">:-</span><span style="color:#0a3069">}</span><span style="color:#0a3069">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">if</span> <span style="color:#6639ba">echo</span> <span style="color:#0a3069">&#34;</span><span style="color:#953800">$changed_files</span><span style="color:#0a3069">&#34;</span> <span style="color:#1f2328">|</span> rg -q <span style="color:#0a3069">&#39;(^|/)(package.json|pnpm-lock.yaml)$&#39;</span><span style="color:#1f2328">;</span> <span style="color:#cf222e">then</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6639ba">echo</span> <span style="color:#0a3069">&#34;[warn] dependency change detected: approval required&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">if</span> <span style="color:#6639ba">echo</span> <span style="color:#0a3069">&#34;</span><span style="color:#953800">$changed_files</span><span style="color:#0a3069">&#34;</span> <span style="color:#1f2328">|</span> rg -q <span style="color:#0a3069">&#39;(^|/)(db|migrations)/&#39;</span><span style="color:#1f2328">;</span> <span style="color:#cf222e">then</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6639ba">echo</span> <span style="color:#0a3069">&#34;[warn] schema-related files changed: review impact before applying&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">fi</span>
+</span></span></code></pre></div><p>여기서 포인트는 &ldquo;Claude가 똑똑해서 스스로 조심하게 만드는 것&quot;이 아니라, <strong>실수해도 바로 걸리는 울타리</strong> 를 만드는 것입니다.</p>
+<h2 id="6-설정은-전역보다-프로젝트-단위가-더-중요하다">6) 설정은 전역보다 프로젝트 단위가 더 중요하다</h2>
+<p>공식 설정 문서 기준으로 Claude Code는 사용자 설정, 프로젝트 설정, 로컬 프로젝트 설정, 관리 설정을 계층적으로 가집니다. 유지보수 프로젝트에서는 이 중 <code>.claude/settings.json</code> 과 <code>.claude/settings.local.json</code> 의 역할 분리를 명확히 하는 편이 좋습니다.</p>
+<ul>
+<li><code>~/.claude/settings.json</code>: 모든 프로젝트에 공통인 개인 기본값</li>
+<li><code>.claude/settings.json</code>: 팀이 공유해야 하는 프로젝트 공통 규칙</li>
+<li><code>.claude/settings.local.json</code>: 개인 실험용 설정, 로컬 예외, 체크인 금지 값</li>
+</ul>
+<p>프로젝트 설정에 넣으면 좋은 항목은 대체로 아래와 같습니다.</p>
+<ul>
+<li>허용할 패키지 매니저</li>
+<li>자주 쓰는 테스트와 빌드 명령</li>
+<li>위험 경로 목록</li>
+<li>승인 없이 하면 안 되는 작업</li>
+<li>로컬에서만 허용할 예외 규칙</li>
+</ul>
+<p>유지보수에서는 특히 &ldquo;프로젝트 규칙을 팀이 공유하게 만드는 것&quot;이 중요합니다. 그래야 누가 Claude Code를 써도 비슷한 결과가 나옵니다.</p>
+<h2 id="7-문서-4종을-같이-두면-레거시-추론이-쉬워진다">7) 문서 4종을 같이 두면 레거시 추론이 쉬워진다</h2>
+<p>코드만 던져 주면 Claude Code는 자꾸 &ldquo;이상적인 구조&quot;를 상상하려고 듭니다. 레거시 유지보수에서 더 필요한 건 현재 시스템의 현실입니다. 그래서 아래 네 문서를 같이 두는 편이 효율이 좋습니다.</p>
+<table>
+  <thead>
+      <tr>
+          <th>문서</th>
+          <th>왜 필요한가</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>docs/architecture.md</code></td>
+          <td>핵심 모듈과 데이터 흐름 설명</td>
+      </tr>
+      <tr>
+          <td><code>docs/runbook.md</code></td>
+          <td>실행, 테스트, 운영 명령 정리</td>
+      </tr>
+      <tr>
+          <td><code>docs/troubleshooting.md</code></td>
+          <td>자주 나는 장애와 확인 순서 정리</td>
+      </tr>
+      <tr>
+          <td><code>docs/known-issues.md</code></td>
+          <td>아직 안 고친 문제와 위험 구간 기록</td>
+      </tr>
+  </tbody>
+</table>
+<pre class="mermaid">flowchart TD
+  A["Claude Code"] --> B["architecture.md<br>시스템 큰 그림"]
+  A --> C["runbook.md<br>실행 / 테스트 방법"]
+  A --> D["troubleshooting.md<br>장애 대응 순서"]
+  A --> E["known-issues.md<br>건드리면 위험한 부분"]
+  B --> F["레거시 맥락 이해"]
+  C --> F
+  D --> F
+  E --> F
+  F --> G["더 좁고 현실적인 수정안"]
+
+  classDef centerTone fill:#c5dcef,stroke:#6b9ac4,color:#333
+  classDef docTone fill:#c0ecd3,stroke:#5b9b73,color:#333
+  classDef resultTone fill:#e0c8ef,stroke:#9b6fb3,color:#333
+
+  class A centerTone
+  class B,C,D,E docTone
+  class F,G resultTone</pre><p>공식 메모리 문서도 상세한 학습 내용은 주제별 파일로 나누고, 항상 필요한 내용은 인덱스나 진입 문서로 유지하는 방식을 설명합니다. 유지보수용 문서 4종은 바로 그 역할을 합니다.</p>
+<p>아래처럼 각 문서의 역할과 예시를 함께 만들어 두면, Claude Code가 레거시 시스템을 &ldquo;추측&quot;하지 않고 &ldquo;참조&quot;하게 만들 수 있습니다.</p>
+<h3 id="docsarchitecturemd"><code>docs/architecture.md</code></h3>
+<p>이 문서는 시스템의 큰 그림을 설명하는 문서입니다. 유지보수에서 특히 중요한 이유는, 버그 하나를 볼 때도 Claude Code가 &ldquo;이 함수가 어디서 호출되고, 어느 계층에서 멈춰야 하는지&quot;를 먼저 이해하게 만들 수 있기 때문입니다.<br>여기에는 이상적인 미래 구조보다, <strong>지금 실제로 돌아가는 모듈 경계와 데이터 흐름</strong> 을 적는 편이 좋습니다.</p>
+<p>예를 들면 이런 식입니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-md" data-lang="md"><span style="display:flex;"><span># Architecture
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>## 시스템 개요
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Web: Next.js
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> API: Fastify
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> DB: PostgreSQL
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Queue: Redis + BullMQ
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>## 요청 흐름
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">1.</span> 사용자가 <span style="color:#0a3069">`/dashboard`</span> 진입
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">2.</span> <span style="color:#0a3069">`apps/web`</span> 에서 세션 확인
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">3.</span> <span style="color:#0a3069">`apps/api`</span> 의 <span style="color:#0a3069">`/me`</span> 호출
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">4.</span> <span style="color:#0a3069">`services/user-service.ts`</span> 에서 사용자 상태 조회
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">5.</span> inactive 상태면 빈 위젯 목록 반환
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>## 모듈 경계
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> <span style="color:#0a3069">`apps/web`</span>: 화면 렌더링과 사용자 상호작용
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> <span style="color:#0a3069">`apps/api`</span>: 요청 검증과 응답 조합
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> <span style="color:#0a3069">`packages/domain`</span>: 순수 비즈니스 규칙
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> <span style="color:#0a3069">`packages/db`</span>: SQL과 repository 계층
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>## 유지보수 시 주의점
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 대시보드 위젯 기본값은 <span style="color:#0a3069">`packages/domain/dashboard.ts`</span> 에서 결정된다.
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 권한 체크는 프론트가 아니라 API에서 최종 확정한다.
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 캐시 무효화 없이 사용자 상태만 바꾸면 화면과 API 결과가 잠깐 어긋날 수 있다.
+</span></span></code></pre></div><p>핵심은 모든 디렉터리를 설명하는 것이 아니라, <strong>문제가 자주 나는 경계와 절대 넘으면 안 되는 책임선</strong> 을 적는 것입니다.</p>
+<h3 id="docsrunbookmd"><code>docs/runbook.md</code></h3>
+<p>이 문서는 &ldquo;이 프로젝트를 실제로 어떻게 실행하고 확인하는가&quot;를 정리하는 운영 메모입니다. 유지보수에서 Claude Code가 흔히 헷갈리는 부분이 바로 실행 순서, 필요한 환경변수, 어떤 테스트를 먼저 돌려야 하는가 같은 현실적인 절차입니다.<br><code>README.md</code> 가 온보딩 문서라면, <code>runbook.md</code> 는 장애 대응과 수정 검증을 위한 실전 문서에 가깝습니다.</p>
+<p>예시는 아래 정도면 충분합니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-md" data-lang="md"><span style="display:flex;"><span># Runbook
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>## 로컬 실행
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">1.</span> <span style="color:#0a3069">`pnpm install`</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">2.</span> <span style="color:#0a3069">`docker compose up -d postgres redis`</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">3.</span> <span style="color:#0a3069">`pnpm db:migrate`</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">4.</span> <span style="color:#0a3069">`pnpm dev`</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>## 자주 쓰는 검증 명령
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 전체 린트: <span style="color:#0a3069">`pnpm lint`</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 전체 테스트: <span style="color:#0a3069">`pnpm test`</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> API 테스트: <span style="color:#0a3069">`pnpm test -- api`</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 대시보드 E2E: <span style="color:#0a3069">`pnpm test:e2e -- dashboard`</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 프로덕션 빌드: <span style="color:#0a3069">`pnpm build`</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>## 유지보수 기본 순서
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">1.</span> 증상 재현
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">2.</span> 서버 로그 확인
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">3.</span> 관련 테스트 실행
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">4.</span> 최소 수정 적용
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">5.</span> 린트 / 테스트 / 빌드 확인
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>## 운영 확인 포인트
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 로그인 이슈는 <span style="color:#0a3069">`AUTH_SECRET`</span>, <span style="color:#0a3069">`REDIS_URL`</span> 이 빠지면 재현 방식이 달라진다.
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 메일 발송은 로컬에서 mock provider를 사용한다.
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 배치 작업 확인은 <span style="color:#0a3069">`bull-board`</span> 대신 <span style="color:#0a3069">`pnpm queue:inspect`</span> 로 본다.
+</span></span></code></pre></div><p>유지보수에서 이 문서의 가치는 &ldquo;정답 명령 목록&quot;을 만드는 데 있습니다. Claude Code가 빌드 명령을 추측하지 않게 해야 합니다.</p>
+<h3 id="docstroubleshootingmd"><code>docs/troubleshooting.md</code></h3>
+<p>이 문서는 자주 발생하는 장애 패턴과 확인 순서를 정리하는 문서입니다. Claude Code는 코드를 잘 읽어도, 운영 중에 반복되는 &ldquo;증상-원인-확인 명령&rdquo; 패턴은 별도 문서가 없으면 매번 새로 추론하려고 합니다.<br>그래서 이 문서는 버그 데이터베이스라기보다, <strong>반복 장애에 대한 진단 플레이북</strong> 으로 쓰는 편이 좋습니다.</p>
+<p>예시는 이렇게 만들 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-md" data-lang="md"><span style="display:flex;"><span># Troubleshooting
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>## 증상: 로그인 후 대시보드가 빈 화면으로 보임
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>### 가장 흔한 원인
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> <span style="color:#0a3069">`/me`</span> 응답은 성공하지만 위젯 목록이 빈 배열로 내려옴
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 사용자 상태 캐시가 오래돼 inactive로 판단됨
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 프론트에서 권한 에러를 빈 상태로 삼켜 버림
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>### 확인 순서
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">1.</span> 브라우저 네트워크 탭에서 <span style="color:#0a3069">`/api/me`</span> 응답 확인
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">2.</span> API 로그에서 사용자 상태 조회 결과 확인
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">3.</span> Redis 캐시 키 <span style="color:#0a3069">`user:{id}:status`</span> 확인
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">4.</span> <span style="color:#0a3069">`dashboard.ts`</span> 의 fallback 로직 확인
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>### 확인 명령
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> <span style="color:#0a3069">`pnpm test -- dashboard`</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> <span style="color:#0a3069">`pnpm tsx scripts/debug-user.ts --id &lt;user-id&gt;`</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> <span style="color:#0a3069">`redis-cli GET user:&lt;id&gt;:status`</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>### 우회 방법
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 운영에서 긴급 복구가 필요하면 캐시를 삭제한 뒤 재로그인 유도
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>### 수정 시 주의점
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 프론트 fallback만 고치면 API와 UI 상태가 다시 어긋날 수 있다.
+</span></span></code></pre></div><p>이 문서가 있으면 Claude Code에게 &ldquo;이 증상이 이미 알려진 패턴인지 먼저 확인해라&quot;라고 시키기 쉬워집니다.</p>
+<h3 id="docsknown-issuesmd"><code>docs/known-issues.md</code></h3>
+<p>이 문서는 아직 해결하지 못한 문제, 위험하지만 건드리지 못한 부분, 임시 우회책을 기록하는 곳입니다. 유지보수에서 이 문서가 중요한 이유는, Claude Code가 &ldquo;왜 이 이상한 코드가 남아 있는지&quot;를 모르면 쉽게 불필요한 정리를 시도하기 때문입니다.<br>즉 이 문서는 기술 부채 목록이라기보다, <strong>현재 건드리면 위험한 현실 제약 목록</strong> 입니다.</p>
+<p>예시는 아래처럼 짧고 솔직하면 됩니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-md" data-lang="md"><span style="display:flex;"><span># Known Issues
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>## 1. 대시보드 권한 로직이 프론트와 API에 중복돼 있음
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 상태: 미해결
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 영향 범위: dashboard, admin-summary
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 이유: 레거시 고객사 호환성 때문에 API 단일화 작업 보류
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 임시 원칙: 권한 판단 수정 시 프론트와 API를 같이 확인할 것
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>## 2. 사용자 상태 캐시 TTL이 너무 김
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 상태: 부분 우회 중
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 영향 범위: 로그인 직후 화면, 관리자 변경 직후 반영
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 이유: 트래픽 급증 시 DB 부하를 줄이기 위해 임시 확대
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 임시 원칙: 상태 불일치 버그를 볼 때 캐시를 먼저 의심할 것
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>## 3. 배치 실패 알림이 간헐적으로 누락됨
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 상태: 재현 조건 불명확
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 영향 범위: 야간 정산
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 이유: 외부 메일 provider 타임아웃과 내부 retry 조건이 섞여 있음
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 임시 원칙: 알림 문제를 고칠 때는 배치 성공/실패 로직과 분리해서 볼 것
+</span></span></code></pre></div><p>이 문서의 핵심은 완성도가 아니라 정직함입니다. 잘 모르는 것은 모른다고 써 두는 편이, Claude Code가 근거 없는 가설로 구조를 바꾸는 것보다 훨씬 낫습니다.</p>
+<h2 id="8-추천-폴더-구조">8) 추천 폴더 구조</h2>
+<p>정리하면 유지보수용 Claude Code 스타터 구조는 아래 정도가 가장 실용적입니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>project/
+</span></span><span style="display:flex;"><span>├─ CLAUDE.md
+</span></span><span style="display:flex;"><span>├─ .claude/
+</span></span><span style="display:flex;"><span>│  ├─ settings.json
+</span></span><span style="display:flex;"><span>│  ├─ skills/
+</span></span><span style="display:flex;"><span>│  │  ├─ analyze-bug/
+</span></span><span style="display:flex;"><span>│  │  │  └─ SKILL.md
+</span></span><span style="display:flex;"><span>│  │  ├─ safe-fix/
+</span></span><span style="display:flex;"><span>│  │  │  └─ SKILL.md
+</span></span><span style="display:flex;"><span>│  │  └─ review-maintenance/
+</span></span><span style="display:flex;"><span>│  │     └─ SKILL.md
+</span></span><span style="display:flex;"><span>│  ├─ agents/
+</span></span><span style="display:flex;"><span>│  │  ├─ bug-triage.md
+</span></span><span style="display:flex;"><span>│  │  ├─ safe-fixer.md
+</span></span><span style="display:flex;"><span>│  │  └─ reviewer.md
+</span></span><span style="display:flex;"><span>│  └─ hooks/
+</span></span><span style="display:flex;"><span>│     ├─ post-edit-lint.sh
+</span></span><span style="display:flex;"><span>│     ├─ changed-api-test.sh
+</span></span><span style="display:flex;"><span>│     └─ warn-dangerous-files.sh
+</span></span><span style="display:flex;"><span>├─ docs/
+</span></span><span style="display:flex;"><span>│  ├─ architecture.md
+</span></span><span style="display:flex;"><span>│  ├─ runbook.md
+</span></span><span style="display:flex;"><span>│  ├─ troubleshooting.md
+</span></span><span style="display:flex;"><span>│  └─ known-issues.md
+</span></span><span style="display:flex;"><span>└─ src/
+</span></span></code></pre></div><p>지금 시점의 공식 문서 흐름에 맞춰 조금 더 정리하면, <code>.claude/commands/</code> 로 시작해도 되지만 장기적으로는 <code>.claude/skills/</code> 구조로 옮겨 가는 편이 좋습니다. 다만 중요한 건 폴더 이름보다 <strong>유지보수용 작업 순서를 재사용 가능한 형태로 고정해 두는 것</strong> 입니다.</p>
+<h2 id="9-실제-운영-순서는-읽기-전용-분석--최소-수정--검증으로-고정한다">9) 실제 운영 순서는 &ldquo;읽기 전용 분석 → 최소 수정 → 검증&quot;으로 고정한다</h2>
+<p>공식 common workflows 문서가 유용한 이유도 바로 여기에 있습니다. Claude Code는 코드베이스 이해, 버그 수정, 테스트, PR 작성 같은 흐름을 단계적으로 쓰는 편이 훨씬 안정적입니다.</p>
+<p>유지보수용 프롬프트는 아래처럼 짧고 단호할수록 좋습니다.</p>
+<h3 id="분석만-시킬-때">분석만 시킬 때</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>이 프로젝트는 운영 중인 기존 서비스다.
+</span></span><span style="display:flex;"><span>먼저 관련 코드 흐름만 파악하고 수정은 하지 말아라.
+</span></span><span style="display:flex;"><span>다음 형식으로 답해라:
+</span></span><span style="display:flex;"><span>1. 원인 후보
+</span></span><span style="display:flex;"><span>2. 수정이 필요한 최소 파일
+</span></span><span style="display:flex;"><span>3. 예상 부작용
+</span></span><span style="display:flex;"><span>4. 검증 방법
+</span></span></code></pre></div><h3 id="최소-수정만-시킬-때">최소 수정만 시킬 때</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>위 분석을 바탕으로 최소 수정만 적용해라.
+</span></span><span style="display:flex;"><span>리팩터링 금지.
+</span></span><span style="display:flex;"><span>변경 파일마다 수정 이유를 1줄씩 붙여라.
+</span></span><span style="display:flex;"><span>수정 후 실행할 테스트 명령도 제시해라.
+</span></span></code></pre></div><h3 id="영향-범위를-먼저-보게-할-때">영향 범위를 먼저 보게 할 때</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>이 이슈를 고치기 전에
+</span></span><span style="display:flex;"><span>- 어떤 모듈이 영향을 받을 수 있는지
+</span></span><span style="display:flex;"><span>- API 계약이 바뀌는지
+</span></span><span style="display:flex;"><span>- UI/상태관리/DB에 파급이 있는지
+</span></span><span style="display:flex;"><span>먼저 점검해라.
+</span></span></code></pre></div><h3 id="pr-설명까지-마무리할-때">PR 설명까지 마무리할 때</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>현재 변경사항 기준으로 PR 설명을 작성해라.
+</span></span><span style="display:flex;"><span>포함 항목:
+</span></span><span style="display:flex;"><span>- 문제 원인
+</span></span><span style="display:flex;"><span>- 수정 방법
+</span></span><span style="display:flex;"><span>- 영향 범위
+</span></span><span style="display:flex;"><span>- 테스트 결과
+</span></span><span style="display:flex;"><span>- 롤백 방법
+</span></span></code></pre></div><p>이 순서를 습관으로 만들면, Claude Code는 유지보수에서 특히 강해집니다. 분석 없이 바로 수정하고, 검증 없이 바로 정리하는 흐름만 피하면 됩니다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>유지보수용 Claude Code 환경의 핵심은 새 기능 개발 속도가 아니라 안전한 수정 흐름 고정이다.</li>
+<li>루트 <code>CLAUDE.md</code> 에는 공통 원칙만 두고, 길어지면 import나 규칙 파일로 분리하는 편이 낫다.</li>
+<li>서브에이전트는 <code>bug-triage</code>, <code>safe-fixer</code>, <code>reviewer</code>처럼 역할을 분리할수록 안정적이다.</li>
+<li>반복 작업은 스킬 또는 명령으로 고정하고, 유지보수에서는 질문 순서를 표준화하는 것이 중요하다.</li>
+<li>훅과 설정은 검증을 자동화하고 위험 작업을 경고하는 기계적 안전장치다.</li>
+<li><code>architecture</code>, <code>runbook</code>, <code>troubleshooting</code>, <code>known-issues</code> 문서를 같이 두면 레거시 코드 추론 품질이 올라간다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>기존 프로젝트 유지보수에서 Claude Code를 잘 쓰는 방법은 생각보다 단순합니다. 더 좋은 프롬프트를 찾기 전에, Claude가 따라야 할 규칙과 검증 흐름을 먼저 고정하면 됩니다.</p>
+<p>한 줄로 줄이면 이렇습니다. <strong>Claude를 더 똑똑하게 만드는 것보다, Claude가 실수하기 어렵게 환경을 설계하는 것이 먼저</strong> 입니다.<br>루트 <code>CLAUDE.md</code>, 유지보수용 서브에이전트, 반복 작업 스킬, 자동 검증 훅, 문서 4종만 갖춰도 기존 프로젝트 유지보수 품질은 눈에 띄게 안정됩니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 03월 22일 13시 09분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/03/2026-03-22-monorepo-claude-md-skill/" rel="prev">
+        <span>모노레포에서 CLAUDE.md 나누기: 서브프로젝트별 규칙과 init-subproject-claude 스킬 설계</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-유지보수용-환경은-왜-따로-설계해야-할까">1) 유지보수용 환경은 왜 따로 설계해야 할까</a></li>
+    <li><a href="#2-시작점은-루트-claudemd-다">2) 시작점은 루트 <code>CLAUDE.md</code> 다</a></li>
+    <li><a href="#3-서브에이전트는-분석-수정-리뷰로-나누는-편이-낫다">3) 서브에이전트는 &ldquo;분석, 수정, 리뷰&quot;로 나누는 편이 낫다</a></li>
+    <li><a href="#4-반복-작업은-claudecommands-보다-스킬-기준으로-고정하는-편이-유리하다">4) 반복 작업은 <code>.claude/commands</code> 보다 스킬 기준으로 고정하는 편이 유리하다</a>
+      <ul>
+        <li><a href="#analyze-bug"><code>/analyze-bug</code></a></li>
+        <li><a href="#safe-fix"><code>/safe-fix</code></a></li>
+        <li><a href="#review-maintenance"><code>/review-maintenance</code></a></li>
+      </ul>
+    </li>
+    <li><a href="#5-훅은-수정-후-자동-검증을-기계적으로-강제하는-층이다">5) 훅은 &ldquo;수정 후 자동 검증&quot;을 기계적으로 강제하는 층이다</a></li>
+    <li><a href="#6-설정은-전역보다-프로젝트-단위가-더-중요하다">6) 설정은 전역보다 프로젝트 단위가 더 중요하다</a></li>
+    <li><a href="#7-문서-4종을-같이-두면-레거시-추론이-쉬워진다">7) 문서 4종을 같이 두면 레거시 추론이 쉬워진다</a>
+      <ul>
+        <li><a href="#docsarchitecturemd"><code>docs/architecture.md</code></a></li>
+        <li><a href="#docsrunbookmd"><code>docs/runbook.md</code></a></li>
+        <li><a href="#docstroubleshootingmd"><code>docs/troubleshooting.md</code></a></li>
+        <li><a href="#docsknown-issuesmd"><code>docs/known-issues.md</code></a></li>
+      </ul>
+    </li>
+    <li><a href="#8-추천-폴더-구조">8) 추천 폴더 구조</a></li>
+    <li><a href="#9-실제-운영-순서는-읽기-전용-분석--최소-수정--검증으로-고정한다">9) 실제 운영 순서는 &ldquo;읽기 전용 분석 → 최소 수정 → 검증&quot;으로 고정한다</a>
+      <ul>
+        <li><a href="#분석만-시킬-때">분석만 시킬 때</a></li>
+        <li><a href="#최소-수정만-시킬-때">최소 수정만 시킬 때</a></li>
+        <li><a href="#영향-범위를-먼저-보게-할-때">영향 범위를 먼저 보게 할 때</a></li>
+        <li><a href="#pr-설명까지-마무리할-때">PR 설명까지 마무리할 때</a></li>
+      </ul>
+    </li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude Code</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
