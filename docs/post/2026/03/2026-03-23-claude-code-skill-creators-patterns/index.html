@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude Code 스킬, 만든 사람들은 이렇게 쓴다: Anthropic 내부 운영 패턴 7가지'" />
+  <title>Claude Code 스킬, 만든 사람들은 이렇게 쓴다: Anthropic 내부 운영 패턴 7가지  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude Code 스킬, 만든 사람들은 이렇게 쓴다: Anthropic 내부 운영 패턴 7가지" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-03-23"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/03/2026-03-23-claude-code-skill-creators-patterns/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="skills" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/03/2026-03-23-claude-code-skill-creators-patterns/">
+          <h1>
+            Claude Code 스킬, 만든 사람들은 이렇게 쓴다: Anthropic 내부 운영 패턴 7가지
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/03/2026-03-23-claude-code-skill-creators-patterns/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>이 영상이 흥미로운 이유는 &ldquo;Claude Code 스킬을 어떻게 만들까&quot;를 추상적으로 말하지 않기 때문입니다. 발표자는 Anthropic 팀이 내부에서 수백 개 스킬을 운영하면서 무엇이 실제로 먹히는지 압축해서 보여 줍니다. 그래서 초점은 예쁜 <code>SKILL.md</code> 문서를 쓰는 법이 아니라, <strong>스킬이 왜 자꾸 흐트러지고 어떤 구조로 바꿔야 안정적으로 작동하는지</strong> 에 있습니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=0">t=0</a>).</p>
+<p>영상 전체를 한 문장으로 줄이면 이렇습니다. 스킬은 정적인 프롬프트 파일이 아니라, 실패 기록과 보조 자료와 실행 제약을 함께 묶은 <strong>작업 패키지</strong> 여야 한다는 것입니다. 이 관점으로 보면 폴더 구조, <code>description</code>, <code>gotchas</code>, <code>hooks</code>, 팀 배포 방식이 모두 하나의 운영 문제로 연결됩니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=22">t=22</a>, <a href="https://youtu.be/sLaMtz7j8cE?t=262">t=262</a>, <a href="https://youtu.be/sLaMtz7j8cE?t=313">t=313</a>).</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=sLaMtz7j8cE">https://www.youtube.com/watch?v=sLaMtz7j8cE</a></li>
+</ul>
+<h2 id="1-출발점-왜-스킬이-처음만-잘-되고-나중엔-말을-안-듣는가">1) 출발점: 왜 스킬이 &ldquo;처음만 잘 되고 나중엔 말을 안 듣는가&rdquo;</h2>
+<p>영상의 문제 제기는 꽤 현실적입니다. 많은 사람이 스킬을 Markdown 파일 하나로 만들고 &ldquo;이렇게 해라&quot;를 길게 적어 둡니다. 그런데 시간이 지나면 Claude가 엇나가고, 같은 지시를 둬도 일관성이 떨어집니다. 발표자는 이 실패를 모델 지능의 문제가 아니라 <strong>스킬 구조 자체가 너무 얇기 때문</strong> 이라고 해석합니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=0">t=0</a>).</p>
+<p>즉, 단일 문서형 스킬은 레시피만 있고 재료와 도구와 예외 처리가 없는 상태에 가깝습니다. 반대로 잘 작동하는 스킬은 필요한 문서, 예시, 스크립트, 템플릿, 안전장치를 같이 갖고 있어서 Claude가 매번 처음부터 추론으로 메우지 않아도 됩니다. 영상이 말하는 &ldquo;스킬은 파일이 아니라 폴더&quot;라는 문장은 바로 이 차이를 뜻합니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=22">t=22</a>).</p>
+<pre class="mermaid">flowchart TD
+    A["문서 하나짜리 스킬"] --> B["긴 지시문"]
+    B --> C["추론으로 빈칸 메우기"]
+    C --> D["일관성 흔들림"]
+
+    E["폴더형 스킬"] --> F["SKILL.md"]
+    E --> G["references"]
+    E --> H["scripts"]
+    E --> I["templates or assets"]
+    F --> J["필요한 정보만 선택 로드"]
+    G --> J
+    H --> J
+    I --> J
+    J --> K["재현성 향상"]
+
+    classDef warn fill:#ffc8c4,stroke:#333,stroke-width:1px,color:#333
+    classDef base fill:#c5dcef,stroke:#333,stroke-width:1px,color:#333
+    classDef good fill:#c0ecd3,stroke:#333,stroke-width:1px,color:#333
+
+    class A,B,C,D warn
+    class E,F,G,H,I,J base
+    class K good</pre><h2 id="2-첫-번째-원칙-스킬은-문서가-아니라-폴더다">2) 첫 번째 원칙: 스킬은 문서가 아니라 폴더다</h2>
+<p>영상이 가장 먼저 고정하는 개념은 스킬의 단위입니다. 강력한 스킬은 <code>SKILL.md</code> 옆에 reference 문서, 코드 스니펫, 검증 스크립트, 템플릿 같은 보조 파일이 붙어 있어야 하고, Claude는 폴더를 탐색하면서 필요할 때 필요한 파일을 읽는다고 설명합니다. 그래서 스킬 설계는 문장력 경쟁이 아니라 <strong>파일 시스템 설계</strong> 에 가깝습니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=22">t=22</a>, <a href="https://youtu.be/sLaMtz7j8cE?t=42">t=42</a>).</p>
+<p>이 구조가 중요한 이유는 컨텍스트를 한 번에 밀어 넣지 않아도 되기 때문입니다. 예를 들어 API 호출 코드를 짜는 순간에는 API reference만 읽고, 출력 형식을 맞출 때는 템플릿만 읽으면 됩니다. 결국 폴더 구조가 곧 점진적 공개의 기반이 되고, 스킬은 &ldquo;설명서&quot;에서 &ldquo;탐색 가능한 작업 환경&quot;으로 바뀝니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=52">t=52</a>, <a href="https://youtu.be/sLaMtz7j8cE?t=222">t=222</a>).</p>
+<pre class="mermaid">flowchart TD
+    A["사용자 요청"] --> B["Claude가 스킬 선택"]
+    B --> C["SKILL.md에서 개요 확인"]
+    C --> D{"지금 필요한 정보는?"}
+    D --> E["reference 문서 읽기"]
+    D --> F["script 실행"]
+    D --> G["template 불러오기"]
+    E --> H["작업 수행"]
+    F --> H
+    G --> H
+
+    classDef input fill:#c5dcef,stroke:#333,stroke-width:1px,color:#333
+    classDef decision fill:#fde8c0,stroke:#333,stroke-width:1px,color:#333
+    classDef action fill:#c0ecd3,stroke:#333,stroke-width:1px,color:#333
+
+    class A,B,C input
+    class D decision
+    class E,F,G,H action</pre><h2 id="3-두-번째-원칙-좋은-스킬은-하나의-유형에-선명하게-속한다">3) 두 번째 원칙: 좋은 스킬은 하나의 유형에 선명하게 속한다</h2>
+<p>Anthropic 팀이 내부 스킬을 카탈로그화했더니 아홉 가지 패턴으로 정리됐다는 대목도 중요합니다. 영상에서 제시한 분류는 라이브러리 레퍼런스, 제품 검증, 데이터 조회, 비즈니스 자동화, 코드 스캐폴딩, 코드 리뷰, CI/CD, 런북, 인프라 운영입니다. 발표자는 여기서 <strong>좋은 스킬은 하나의 유형에 깔끔하게 들어맞고, 나쁜 스킬은 여러 유형이 섞여 있다</strong> 고 강조합니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=71">t=71</a>, <a href="https://youtu.be/sLaMtz7j8cE?t=82">t=82</a>).</p>
+<p>이 말은 스킬을 크게 만들지 말라는 뜻이 아닙니다. 역할을 섞지 말라는 뜻에 가깝습니다. 예를 들어 &ldquo;배포도 하고 로그도 보고 PR도 정리하고 인프라도 만지는 스킬&quot;은 겉보기엔 편해 보여도, 실제로는 언제 켜야 하는지 불명확하고 예외 처리도 뒤엉키기 쉽습니다. 반대로 &ldquo;프로덕션 배포 직전 상태 확인&quot;처럼 목적이 선명한 스킬은 <code>description</code>도 정확해지고, <code>gotchas</code>도 빠르게 쌓입니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=90">t=90</a>, <a href="https://youtu.be/sLaMtz7j8cE?t=262">t=262</a>).</p>
+<pre class="mermaid">flowchart TD
+    A["스킬 아이디어"] --> B{"한 가지 문제에 집중하는가?"}
+    B -->|"Yes"| C["명확한 유형"]
+    C --> D["트리거 명확"]
+    D --> E["운영 쉬움"]
+
+    B -->|"No"| F["복합 목적 스킬"]
+    F --> G["트리거 모호"]
+    G --> H["예외 처리 증가"]
+    H --> I["품질 하락"]
+
+    classDef decision fill:#fde8c0,stroke:#333,stroke-width:1px,color:#333
+    classDef good fill:#c0ecd3,stroke:#333,stroke-width:1px,color:#333
+    classDef bad fill:#ffc8c4,stroke:#333,stroke-width:1px,color:#333
+
+    class A,B decision
+    class C,D,E good
+    class F,G,H,I bad</pre><h2 id="4-세-번째-원칙-스킬에는-일반론이-아니라-조직-고유-지식과-실패-기록을-넣어라">4) 세 번째 원칙: 스킬에는 일반론이 아니라 조직 고유 지식과 실패 기록을 넣어라</h2>
+<p>영상에서 가장 실전적인 조언은 &ldquo;뻔한 말 하지 마라&quot;입니다. Claude는 이미 일반적인 코딩 지식, 예를 들어 API 호출을 어떻게 쓰는지 같은 보편 지식을 어느 정도 알고 있습니다. 스킬에 적어야 할 것은 그 일반론이 아니라, <strong>당신 팀만 아는 규칙과 Claude가 반복해서 틀리는 지점</strong> 입니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=137">t=137</a>).</p>
+<p>발표자가 든 예시는 아주 직관적입니다. 어떤 함수 호출 전에 tenant id를 먼저 세팅해야 한다든지, 프런트엔드 디자인을 만들 때 인터 폰트와 보라색 그라데이션 같은 전형적인 &ldquo;Claude스러운&rdquo; 기본 선택을 피해야 한다든지 하는 것들입니다. 이런 정보는 모델이 사전지식만으로 알 수 없고, 바로 그래서 스킬의 값어치가 생깁니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=149">t=149</a>).</p>
+<p>여기서 이어지는 핵심이 <code>gotchas</code> 섹션입니다. 영상은 스킬에서 가장 가치가 높은 콘텐츠가 <code>gotchas</code>라고 못 박습니다. 이유는 단순합니다. 완벽한 지시문을 한 번에 쓰는 것보다, 실제 실패를 관찰하고 &ldquo;이 함수는 반드시 A 다음 B 순서로 호출&rdquo; 같은 규칙을 한 줄씩 추가하는 편이 훨씬 강한 개선 루프를 만들기 때문입니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=173">t=173</a>, <a href="https://youtu.be/sLaMtz7j8cE?t=195">t=195</a>).</p>
+<p>결국 스킬은 초안보다 운영 중 학습 속도가 더 중요합니다. 영상도 대부분의 스킬이 몇 줄짜리 시작점과 하나의 가차에서 출발해 점점 좋아졌다고 말합니다. 즉 잘 만든 스킬은 처음부터 완성된 문서가 아니라, <strong>실패 로그를 구조화해 계속 고쳐 가는 살아 있는 지식 베이스</strong> 입니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=210">t=210</a>, <a href="https://youtu.be/sLaMtz7j8cE?t=392">t=392</a>).</p>
+<pre class="mermaid">flowchart TD
+    A["초기 스킬 초안"] --> B["실행"]
+    B --> C{"Claude가 실수했는가?"}
+    C -->|"No"| D["현재 규칙 유지"]
+    C -->|"Yes"| E["실패 패턴 기록"]
+    E --> F["gotchas 한 줄 추가"]
+    F --> G["다음 실행에서 재검증"]
+    G --> C
+
+    classDef base fill:#c5dcef,stroke:#333,stroke-width:1px,color:#333
+    classDef decision fill:#fde8c0,stroke:#333,stroke-width:1px,color:#333
+    classDef improve fill:#c0ecd3,stroke:#333,stroke-width:1px,color:#333
+
+    class A,B,D base
+    class C decision
+    class E,F,G improve</pre><h2 id="5-네-번째-원칙-점진적-공개와-description-설계가-실제-발동률을-좌우한다">5) 네 번째 원칙: 점진적 공개와 description 설계가 실제 발동률을 좌우한다</h2>
+<p>영상 후반부의 핵심은 스킬 품질이 본문 길이로 결정되지 않는다는 점입니다. <code>SKILL.md</code> 안에 모든 걸 집어넣으면 컨텍스트만 불어나고, 실제로 필요한 순간에 읽어야 할 정보가 묻힙니다. 그래서 메인 파일에는 개요와 파일 목록만 두고, 세부 문서와 템플릿은 별도 파일로 분리하는 <strong>점진적 공개</strong> 가 필요하다고 설명합니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=222">t=222</a>).</p>
+<p>이와 연결되는 반전이 <code>description</code>입니다. 많은 사용자가 여기에 &ldquo;배포 관련 스킬&rdquo; 같은 요약문을 넣지만, 영상은 그게 함정이라고 말합니다. <code>description</code>은 사람이 읽는 소개가 아니라 Claude가 세션 시작 시 훑어보는 <strong>트리거 조건</strong> 이기 때문입니다. 그래서 좋은 description은 &ldquo;이 스킬은 무엇이다&quot;보다 &ldquo;사용자가 서비스를 프로덕션에 배포하려 하거나 PR 머지 후 배포 상태를 확인하려 할 때 사용&quot;처럼 <strong>언제 써야 하는가</strong> 를 분명히 적어야 합니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=262">t=262</a>, <a href="https://youtu.be/sLaMtz7j8cE?t=279">t=279</a>).</p>
+<p>이 원칙을 실무로 옮기면 스킬 본문을 다듬기 전에 먼저 세 가지를 점검해야 합니다. 첫째, description만 읽고도 자동 발동 시점이 떠오르는가. 둘째, 상세 정보가 파일 분리되어 있어 필요한 순간에만 로드되는가. 셋째, broad한 명사 대신 행동과 맥락을 설명하는가. 자동 발동이 약한 스킬은 본문보다 <strong>메타데이터와 파일 분리 설계</strong> 에 문제가 있을 가능성이 높습니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=240">t=240</a>, <a href="https://youtu.be/sLaMtz7j8cE?t=300">t=300</a>).</p>
+<pre class="mermaid">flowchart TD
+    A["사용자 요청"] --> B["Claude가 description 스캔"]
+    B --> C{"언제 써야 하는지 명확한가?"}
+    C -->|"Yes"| D["스킬 발동"]
+    D --> E["필요한 파일만 추가 로드"]
+    E --> F["낮은 컨텍스트 비용으로 실행"]
+
+    C -->|"No"| G["스킬 미발동 또는 과소발동"]
+    G --> H["사용자가 수동 호출"]
+
+    classDef base fill:#c5dcef,stroke:#333,stroke-width:1px,color:#333
+    classDef decision fill:#fde8c0,stroke:#333,stroke-width:1px,color:#333
+    classDef good fill:#c0ecd3,stroke:#333,stroke-width:1px,color:#333
+    classDef bad fill:#ffc8c4,stroke:#333,stroke-width:1px,color:#333
+
+    class A,B base
+    class C decision
+    class D,E,F good
+    class G,H bad</pre><h2 id="6-다섯-번째-원칙-스크립트와-on-demand-hooks로-상황별-모드를-만든다">6) 다섯 번째 원칙: 스크립트와 On-Demand Hooks로 &ldquo;상황별 모드&quot;를 만든다</h2>
+<p>발표자는 스킬 안에 스크립트를 넣으라고 권합니다. 이유는 간단합니다. Claude가 매번 보일러플레이트 함수를 새로 짜는 대신, 미리 준비된 helper를 조합하는 쪽이 더 빠르고 더 안정적이기 때문입니다. 데이터 분석 스킬이라면 이벤트 조회 함수나 비교 함수를 script 폴더에 넣어 두는 식입니다. 이렇게 하면 스킬은 지시문에서 끝나지 않고 <strong>실행 가능한 도구 상자</strong> 가 됩니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=300">t=300</a>).</p>
+<p>그 위에 붙는 강력한 기능이 On-Demand Hooks입니다. 영상 설명대로라면 이것은 스킬을 호출할 때만 켜지는 검문소입니다. 예를 들어 프로덕션 서버용 &ldquo;careful&rdquo; 스킬을 켜면 bash 명령마다 위험한 동작을 검사하고, 작업이 끝나면 훅이 자동으로 꺼집니다. 평상시엔 자유 모드, 위험 작업 시엔 안전 모드, 디버깅 시엔 특정 폴더만 수정하는 동결 모드처럼 <strong>에이전트에 일시적인 작업 모드</strong> 를 부여할 수 있다는 뜻입니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=313">t=313</a>, <a href="https://youtu.be/sLaMtz7j8cE?t=330">t=330</a>, <a href="https://youtu.be/sLaMtz7j8cE?t=348">t=348</a>).</p>
+<p>이 포인트가 중요한 이유는 가드레일을 항상 켜 두는 방식이 아니라, 리스크가 높은 순간에만 정밀하게 올릴 수 있기 때문입니다. 즉 훅은 모든 세션을 무겁게 만드는 전역 제약이 아니라, 특정 작업을 시작할 때만 붙는 <strong>문맥형 안전장치</strong> 로 이해하는 편이 맞습니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=360">t=360</a>).</p>
+<pre class="mermaid">flowchart TD
+    A["일반 세션"] --> B{"위험 작업인가?"}
+    B -->|"No"| C["기본 모드 유지"]
+    B -->|"Yes"| D["On-Demand Hook 스킬 호출"]
+    D --> E["명령 실행 전 검사"]
+    E --> F{"위험 패턴 감지?"}
+    F -->|"Yes"| G["차단 또는 수정 요청"]
+    F -->|"No"| H["작업 진행"]
+    H --> I["작업 종료"]
+    I --> J["Hook 자동 해제"]
+
+    classDef base fill:#c5dcef,stroke:#333,stroke-width:1px,color:#333
+    classDef decision fill:#fde8c0,stroke:#333,stroke-width:1px,color:#333
+    classDef safe fill:#c0ecd3,stroke:#333,stroke-width:1px,color:#333
+    classDef warn fill:#ffc8c4,stroke:#333,stroke-width:1px,color:#333
+
+    class A,C,D,E,H,I,J base
+    class B,F decision
+    class G warn
+    class H,J safe</pre><h2 id="7-여섯-번째-원칙-팀-배포는-많이-만들기보다-선별-설치가-중요하다">7) 여섯 번째 원칙: 팀 배포는 &ldquo;많이 만들기&quot;보다 &ldquo;선별 설치&quot;가 중요하다</h2>
+<p>영상 마지막 파트는 배포와 확산입니다. 작은 팀이라면 저장소의 Claude skills 폴더에 넣어서 같이 쓰면 되지만, 팀이 커질수록 스킬 수 자체가 컨텍스트 비용이 된다고 설명합니다. 그래서 Anthropic 내부에서는 누구나 샌드박스에 스킬을 올리고, Slack에서 공유하고, 실제 사용량과 반응이 쌓이면 공식 마켓에 올리는 식의 흐름을 쓴다고 소개합니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=367">t=367</a>).</p>
+<p>여기서 중요한 메시지는 중앙 통제보다 시장형 필터링입니다. 모두에게 모든 스킬을 강제로 넣는 대신, 필요한 사람만 설치하게 하고 실제 사용으로 검증된 스킬만 살아남게 하는 구조입니다. 결국 스킬 생태계의 병목은 제작이 아니라 선별과 배포이고, 그래서 좋은 팀 운영은 &ldquo;스킬을 많이 보유하는 팀&quot;이 아니라 <strong>설치 비용과 컨텍스트 비용을 관리하는 팀</strong> 에 더 가깝습니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=376">t=376</a>, <a href="https://youtu.be/sLaMtz7j8cE?t=392">t=392</a>).</p>
+<pre class="mermaid">flowchart TD
+    A["개인 또는 실험용 스킬"] --> B["샌드박스 공유"]
+    B --> C["팀이 실제로 사용"]
+    C --> D{"반복 사용과 검증이 쌓였는가?"}
+    D -->|"No"| E["실험 단계 유지"]
+    D -->|"Yes"| F["공식 배포 후보"]
+    F --> G["선별 설치 또는 마켓 등록"]
+    G --> H["필요한 사람만 사용"]
+
+    classDef base fill:#c5dcef,stroke:#333,stroke-width:1px,color:#333
+    classDef decision fill:#fde8c0,stroke:#333,stroke-width:1px,color:#333
+    classDef good fill:#c0ecd3,stroke:#333,stroke-width:1px,color:#333
+
+    class A,B,C,E,F base
+    class D decision
+    class G,H good</pre><h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<p>이 영상을 보고 바로 가져갈 수 있는 체크리스트는 생각보다 단순합니다.</p>
+<ol>
+<li>새 스킬을 만들 때는 Markdown 한 장부터 쓰지 말고, 먼저 <code>references</code>, <code>scripts</code>, <code>templates</code>까지 포함한 폴더 구조를 상상합니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=22">t=22</a>).</li>
+<li>스킬 하나에 역할을 너무 많이 섞지 말고, 한 가지 문제를 한 가지 유형으로 다루도록 좁힙니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=71">t=71</a>).</li>
+<li>본문에는 일반 지식 대신 조직 고유 규칙과 반복 실패 패턴을 넣고, <code>gotchas</code>를 운영 중 계속 갱신합니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=137">t=137</a>, <a href="https://youtu.be/sLaMtz7j8cE?t=173">t=173</a>).</li>
+<li><code>description</code>은 요약문이 아니라 발동 조건으로 다시 씁니다. &ldquo;무엇&quot;보다 &ldquo;언제&quot;가 먼저 보여야 합니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=262">t=262</a>).</li>
+<li>위험 작업에는 On-Demand Hooks를 붙여 상황별 모드를 만들고, 평상시에는 불필요한 제약을 빼 둡니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=313">t=313</a>).</li>
+<li>팀 배포는 전체 강제보다 선별 설치를 우선합니다. 스킬 수가 늘수록 컨텍스트도 같이 늘어난다는 점을 잊지 말아야 합니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=367">t=367</a>).</li>
+</ol>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>이 영상의 출발점은 &ldquo;왜 스킬이 자꾸 말을 안 듣는가&quot;이고, 답은 스킬을 문서 하나로 취급한 데 있다는 것입니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=0">t=0</a>).</li>
+<li>잘 작동하는 스킬의 단위는 Markdown 파일이 아니라 <code>SKILL.md</code> 와 reference, script, template을 함께 둔 폴더입니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=22">t=22</a>).</li>
+<li>좋은 스킬은 하나의 유형에 선명하게 속하고, 범용 설명보다 조직 고유 규칙과 <code>gotchas</code>를 담습니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=71">t=71</a>, <a href="https://youtu.be/sLaMtz7j8cE?t=173">t=173</a>).</li>
+<li><code>description</code>은 사람이 읽는 소개가 아니라 Claude가 발동 시점을 판단하는 트리거 조건입니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=262">t=262</a>).</li>
+<li>On-Demand Hooks는 위험한 순간에만 에이전트 모드를 바꾸는 문맥형 가드레일로 이해하면 됩니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=313">t=313</a>).</li>
+<li>결국 스킬 운영의 핵심은 &ldquo;완벽한 초안&quot;이 아니라 &ldquo;실패를 관찰하고 한 줄씩 개선하는 루프&quot;입니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=210">t=210</a>, <a href="https://youtu.be/sLaMtz7j8cE?t=392">t=392</a>).</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>Anthropic 팀이 실제로 스킬을 어떻게 썼는지에서 읽히는 교훈은 분명합니다. 스킬은 프롬프트를 저장하는 기능이 아니라, 팀의 규칙과 보조 자산과 안전장치를 묶어 Claude가 다시 사용할 수 있게 만드는 운영 단위입니다. 그래서 스킬 품질은 문장 미세수정보다 <strong>폴더 구조, 가차스 축적, 트리거 설계, 상황별 훅</strong> 에서 갈립니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=22">t=22</a>, <a href="https://youtu.be/sLaMtz7j8cE?t=173">t=173</a>, <a href="https://youtu.be/sLaMtz7j8cE?t=262">t=262</a>, <a href="https://youtu.be/sLaMtz7j8cE?t=313">t=313</a>).</p>
+<p>그래서 지금 해야 할 일도 거창하지 않습니다. 새 스킬을 하나 더 길게 쓰는 대신, 이미 쓰는 스킬 하나를 골라 <code>gotchas</code>를 추가하고, description을 &ldquo;언제 써야 하는가&rdquo; 기준으로 다시 쓰고, 위험 작업용 Hook를 분리해 보는 편이 더 효과적입니다. 이 영상은 스킬을 잘 쓰는 팀과 못 쓰는 팀의 차이가 <strong>모델 성능이 아니라 운영 구조</strong> 에 있다는 점을 아주 선명하게 보여 줍니다 (<a href="https://youtu.be/sLaMtz7j8cE?t=392">t=392</a>).</p>
+<!--
+Evidence notes
+- claim: the video frames the problem as skills that initially seem to work but stop following instructions consistently | transcript/time marker: "처음에 좀 되는 거 같더니 점점 말을 안 듣는 거예요" / 00:00-00:12 | video url: https://youtu.be/sLaMtz7j8cE?t=0 | confidence: high
+- claim: effective skills are folders containing a main skill file, references, scripts, and templates rather than a single markdown file | transcript/time marker: "스킬은 파일이 아니라 폴더예요" plus folder contents / 00:22-00:58 | video url: https://youtu.be/sLaMtz7j8cE?t=22 | confidence: high
+- claim: Anthropic categorized internal skills into nine patterns and good skills fit a single type cleanly | transcript/time marker: "아홉 가지 패턴" and "좋은 스킬은 딱 하나의 유형" / 01:11-01:35 | video url: https://youtu.be/sLaMtz7j8cE?t=71 | confidence: high
+- claim: the nine patterns listed are library reference, product validation, data lookup, business automation, code scaffolding, code review, CI/CD, runbooks, and infra operations | transcript/time marker: enumerated list / 01:20-02:10 | video url: https://youtu.be/sLaMtz7j8cE?t=80 | confidence: medium-high
+- claim: skill content should avoid obvious general knowledge and instead encode organization-specific rules and model-specific pitfalls | transcript/time marker: "뻔한 말 하지 마라" and tenant id / design examples / 02:17-02:50 | video url: https://youtu.be/sLaMtz7j8cE?t=137 | confidence: high
+- claim: the highest-value skill content is the gotchas section that records repeated failure modes | transcript/time marker: "가장 높은 가치를 가진 콘텐츠는 가차스 섹션" / 02:53-03:25 | video url: https://youtu.be/sLaMtz7j8cE?t=173 | confidence: high
+- claim: most skills start small and improve by appending new gotchas after failures | transcript/time marker: "몇 줄과 하나의 가차로 시작" / 03:30-03:42 and 06:32-06:47 | video url: https://youtu.be/sLaMtz7j8cE?t=210 | confidence: high
+- claim: progressive disclosure means keeping overview and file list in the main skill file and moving details to separate files | transcript/time marker: "메인 파일에는 개요랑 파일 목록만" / 03:42-04:17 | video url: https://youtu.be/sLaMtz7j8cE?t=222 | confidence: high
+- claim: the description field is a model trigger condition rather than a human-readable summary | transcript/time marker: "디스크립션은 사람이 읽는 요약이 아니에요. 클로드가 읽는 트리거 조건" / 04:22-05:06 | video url: https://youtu.be/sLaMtz7j8cE?t=262 | confidence: high
+- claim: helper scripts reduce boilerplate and let Claude focus on composition | transcript/time marker: "스크립트를 넣으세요" and helper functions example / 05:00-05:13 | video url: https://youtu.be/sLaMtz7j8cE?t=300 | confidence: high
+- claim: on-demand hooks create temporary safety or freeze modes that only apply while the skill is active | transcript/time marker: "온 디맨드 훅스" and careful/freeze examples / 05:13-06:00 | video url: https://youtu.be/sLaMtz7j8cE?t=313 | confidence: high
+- claim: small teams can share skills directly in a repo-level folder, while larger teams need selective installation to avoid context bloat | transcript/time marker: repo folder sharing and marketplace model / 06:07-06:32 | video url: https://youtu.be/sLaMtz7j8cE?t=367 | confidence: high
+-->
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 03월 23일 22시 28분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/03/2026-03-23-impeccable-design-language-ai-harnesses/" rel="prev">
+        <span>Impeccable 분석: AI 하네스에 디자인 언어를 주입하는 1개 스킬과 20개 명령</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-출발점-왜-스킬이-처음만-잘-되고-나중엔-말을-안-듣는가">1) 출발점: 왜 스킬이 &ldquo;처음만 잘 되고 나중엔 말을 안 듣는가&rdquo;</a></li>
+    <li><a href="#2-첫-번째-원칙-스킬은-문서가-아니라-폴더다">2) 첫 번째 원칙: 스킬은 문서가 아니라 폴더다</a></li>
+    <li><a href="#3-두-번째-원칙-좋은-스킬은-하나의-유형에-선명하게-속한다">3) 두 번째 원칙: 좋은 스킬은 하나의 유형에 선명하게 속한다</a></li>
+    <li><a href="#4-세-번째-원칙-스킬에는-일반론이-아니라-조직-고유-지식과-실패-기록을-넣어라">4) 세 번째 원칙: 스킬에는 일반론이 아니라 조직 고유 지식과 실패 기록을 넣어라</a></li>
+    <li><a href="#5-네-번째-원칙-점진적-공개와-description-설계가-실제-발동률을-좌우한다">5) 네 번째 원칙: 점진적 공개와 description 설계가 실제 발동률을 좌우한다</a></li>
+    <li><a href="#6-다섯-번째-원칙-스크립트와-on-demand-hooks로-상황별-모드를-만든다">6) 다섯 번째 원칙: 스크립트와 On-Demand Hooks로 &ldquo;상황별 모드&quot;를 만든다</a></li>
+    <li><a href="#7-여섯-번째-원칙-팀-배포는-많이-만들기보다-선별-설치가-중요하다">7) 여섯 번째 원칙: 팀 배포는 &ldquo;많이 만들기&quot;보다 &ldquo;선별 설치&quot;가 중요하다</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude Code</a>
+    <a href="/tags/skills/" class="badge badge-secondary">Skills</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
