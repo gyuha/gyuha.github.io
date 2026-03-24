@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude Code 개발 워크플로우 8종 비교: 무엇이 다르고 언제 써야 할까'" />
+  <title>Claude Code 개발 워크플로우 8종 비교: 무엇이 다르고 언제 써야 할까  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude Code 개발 워크플로우 8종 비교: 무엇이 다르고 언제 써야 할까" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-03-24"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/03/2026-03-24-claude-code-development-workflows-comparison/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+  <meta property="og:tags" content="agents" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/03/2026-03-24-claude-code-development-workflows-comparison/">
+          <h1>
+            Claude Code 개발 워크플로우 8종 비교: 무엇이 다르고 언제 써야 할까
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/03/2026-03-24-claude-code-development-workflows-comparison/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Claude Code 생태계를 조금만 깊게 따라가 보면 금방 헷갈립니다. <code>Superpowers</code>, <code>GSD</code>, <code>Spec Kit</code>, <code>OpenSpec</code>, <code>gstack</code>, <code>BMAD</code>, <code>Everything Claude Code</code>, <code>HumanLayer/RPI</code> 가 전부 비슷해 보이는데, 막상 안을 들여다보면 같은 문제를 푸는 방식이 전혀 다릅니다.<br>2026년 3월 24일 기준으로 <code>shanraisshan/claude-code-best-practice</code> 의 <code>Development Workflows</code> 표가 흥미로운 이유도 여기에 있습니다. 이 표는 여러 시스템을 단순 인기 순위가 아니라, <strong>모두 <code>Research → Plan → Execute → Review → Ship</code> 라는 공통 골격 위에 서 있지만 각자 다른 철학을 얹은 워크플로우</strong> 로 읽게 만듭니다. <a href="https://github.com/shanraisshan/claude-code-best-practice?tab=readme-ov-file#%EF%B8%8F-development-workflows">Development Workflows</a></p>
+<p>그래서 이 글에서는 스타 수나 명령 개수보다 <strong>작동 방식과 잘 맞는 상황</strong> 에 집중합니다. 같은 &ldquo;AI 코딩 워크플로우&rdquo; 라고 묶여 있어도, 어떤 것은 테스트 규율을 강하게 밀고, 어떤 것은 명세 문서 체인을 중시하고, 어떤 것은 가상 엔지니어링 팀처럼 병렬 스프린트를 운영하고, 어떤 것은 아예 AI 개발 환경 전체를 하니스 시스템으로 보려 합니다. 결국 중요한 질문은 &ldquo;무엇이 더 유명한가?&rdquo; 가 아니라 <strong>&ldquo;내 팀이 지금 어느 실패 패턴을 줄이고 싶은가?&rdquo;</strong> 입니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://github.com/shanraisshan/claude-code-best-practice?tab=readme-ov-file#%EF%B8%8F-development-workflows">https://github.com/shanraisshan/claude-code-best-practice?tab=readme-ov-file#%EF%B8%8F-development-workflows</a></li>
+<li><a href="https://github.com/obra/superpowers">https://github.com/obra/superpowers</a></li>
+<li><a href="https://github.com/affaan-m/everything-claude-code">https://github.com/affaan-m/everything-claude-code</a></li>
+<li><a href="https://github.com/github/spec-kit">https://github.com/github/spec-kit</a></li>
+<li><a href="https://github.com/bmad-code-org/BMAD-METHOD">https://github.com/bmad-code-org/BMAD-METHOD</a></li>
+<li><a href="https://github.com/garrytan/gstack">https://github.com/garrytan/gstack</a></li>
+<li><a href="https://github.com/gsd-build/get-shit-done">https://github.com/gsd-build/get-shit-done</a></li>
+<li><a href="https://github.com/Fission-AI/OpenSpec">https://github.com/Fission-AI/OpenSpec</a></li>
+<li><a href="https://github.com/Fission-AI/OpenSpec/blob/main/docs/concepts.md">https://github.com/Fission-AI/OpenSpec/blob/main/docs/concepts.md</a></li>
+<li><a href="https://block.github.io/goose/docs/tutorials/rpi/">https://block.github.io/goose/docs/tutorials/rpi/</a></li>
+</ul>
+<h2 id="1-먼저-큰-그림부터-8개가-완전히-다른-것이-아니라-같은-뼈대-위에서-갈라진다">1) 먼저 큰 그림부터: 8개가 완전히 다른 것이 아니라, 같은 뼈대 위에서 갈라진다</h2>
+<p>비교표가 먼저 던지는 메시지는 생각보다 단순합니다. 주요 워크플로우는 결국 <code>Research → Plan → Execute → Review → Ship</code> 으로 수렴합니다. 즉 차이는 골격이 아니라, <strong>각 단계에서 무엇을 더 엄격하게 만들고 무엇을 자동화하며 무엇을 인간 승인 대상으로 남기느냐</strong> 에 있습니다. <a href="https://github.com/shanraisshan/claude-code-best-practice?tab=readme-ov-file#%EF%B8%8F-development-workflows">Development Workflows</a></p>
+<pre class="mermaid">flowchart TD
+    A["Research"] --> B["Plan"]
+    B --> C["Execute"]
+    C --> D["Review"]
+    D --> E["Ship"]
+
+    classDef stage fill:#c5dcef,stroke:#333,stroke-width:1px,color:#333
+
+    class A,B,C,D,E stage</pre><p>예를 들어 <strong>Superpowers</strong> 는 이 공통 골격 안에서 <code>Plan</code> 과 <code>Review</code> 를 아주 강하게 만들고, 구현 단계에서는 TDD를 강제하는 쪽으로 무게를 둡니다. 반대로 <strong>GSD</strong> 는 같은 흐름을 유지하되 컨텍스트 부패를 줄이고 phase 실행을 가볍게 돌리는 쪽에 더 관심이 많습니다. <strong>Spec Kit</strong> 과 <strong>OpenSpec</strong> 은 산출물과 명세 체인을 정교하게 만드는 데 힘을 쓰고, <strong>gstack</strong> 은 이 뼈대를 실제 팀 스프린트처럼 운영합니다. <a href="https://github.com/obra/superpowers">Superpowers</a> <a href="https://github.com/gsd-build/get-shit-done">GET SHIT DONE</a> <a href="https://github.com/github/spec-kit">Spec Kit</a> <a href="https://github.com/Fission-AI/OpenSpec">OpenSpec</a> <a href="https://github.com/garrytan/gstack">gstack</a></p>
+<p>핵심은 이겁니다. <strong>워크플로우를 고르는 일은 도구를 고르는 일이 아니라, 실패를 줄이는 방식을 고르는 일</strong> 입니다.<br>AI가 성급하게 구현부터 들어가서 망하느냐, 문서 없이 바뀐 요구사항을 놓치느냐, 큰 코드베이스에서 맥락을 잃느냐, 병렬 작업이 무질서해지느냐에 따라 선택지가 달라집니다.</p>
+<h2 id="2-8개를-4가지-계열로-묶어-보면-더-이해가-쉽다">2) 8개를 4가지 계열로 묶어 보면 더 이해가 쉽다</h2>
+<p>한 번에 여덟 개를 보는 것보다 계열로 보면 성격이 빨리 잡힙니다.</p>
+<pre class="mermaid">flowchart TD
+    A["Claude Code 워크플로우"] --> B["품질 규율형"]
+    A --> C["명세 중심형"]
+    A --> D["실행 가속형"]
+    A --> E["하니스·운영체제형"]
+
+    B --> B1["Superpowers"]
+    B --> B2["HumanLayer / RPI"]
+
+    C --> C1["Spec Kit"]
+    C --> C2["OpenSpec"]
+    C --> C3["BMAD-METHOD"]
+
+    D --> D1["Get Shit Done"]
+    D --> D2["gstack"]
+
+    E --> E1["Everything Claude Code"]
+
+    classDef root fill:#fde8c0,stroke:#333,stroke-width:1px,color:#333
+    classDef group fill:#c5dcef,stroke:#333,stroke-width:1px,color:#333
+    classDef item fill:#c0ecd3,stroke:#333,stroke-width:1px,color:#333
+
+    class A root
+    class B,C,D,E group
+    class B1,B2,C1,C2,C3,D1,D2,E1 item</pre><ul>
+<li><strong>품질 규율형</strong>: 코드 품질, 예측 가능성, 검증 순서를 강하게 잡습니다. 느릴 수 있지만 실패 비용이 큰 팀에 잘 맞습니다.</li>
+<li><strong>명세 중심형</strong>: 산출물과 요구사항 정렬에 집중합니다. 여러 명이 협업하거나 기존 시스템을 바꿀 때 강합니다.</li>
+<li><strong>실행 가속형</strong>: 과도한 문서 체계보다 실전 생산성을 우선합니다. 개인 개발자나 소규모 팀에게 매력적입니다.</li>
+<li><strong>하니스·운영체제형</strong>: 단일 워크플로우가 아니라, 에이전트·훅·규칙·메모리·보안까지 묶은 운영 환경으로 봐야 합니다.</li>
+</ul>
+<p>이제 각 워크플로우를 그 관점에서 보면 차이가 훨씬 선명해집니다.</p>
+<h2 id="3-superpowers-ai가-멋대로-구현부터-들어가는-것-을-가장-강하게-막는다">3) Superpowers: &ldquo;AI가 멋대로 구현부터 들어가는 것&rdquo; 을 가장 강하게 막는다</h2>
+<p><strong>Superpowers</strong> 의 핵심은 &ldquo;잘 코딩하는 프롬프트&rdquo; 가 아니라 <strong>좋은 엔지니어링 순서를 강제하는 방법론</strong> 입니다. 비교표는 이 워크플로우를 <code>TDD-first</code>, <code>Iron Laws</code>, <code>whole-plan review</code> 로 요약하고, 공식 저장소는 실제로 구현 단계에서 진짜 <code>red/green TDD</code> 를 강조합니다. <a href="https://github.com/shanraisshan/claude-code-best-practice?tab=readme-ov-file#%EF%B8%8F-development-workflows">Development Workflows</a> <a href="https://github.com/obra/superpowers">Superpowers</a></p>
+<p>장점은 명확합니다. 요구사항 정리 없이 바로 코드를 쓰는 패턴, 테스트 없이 일단 붙이는 패턴, 완료 판정이 흐린 패턴을 잘 막습니다. 특히 리팩터링, 결제, 인증, 데이터 마이그레이션처럼 한 번 잘못 건드리면 비용이 큰 영역에서 강합니다.<br>단점도 분명합니다. 작은 프로토타입이나 &ldquo;일단 아이디어 확인&rdquo; 용도로는 답답할 수 있고, 테스트 문화가 약한 팀은 처음부터 마찰이 큽니다.</p>
+<ul>
+<li>잘 맞는 경우: 실서비스, 회귀 비용이 큰 기능, 테스트 없는 구현을 줄이고 싶은 팀</li>
+<li>조심할 점: 속도보다 규율을 우선하기 때문에 실험적 MVP에는 과할 수 있음</li>
+</ul>
+<h2 id="4-everything-claude-code-워크플로우라기보다-ai-개발-운영체제에-가깝다">4) Everything Claude Code: 워크플로우라기보다 AI 개발 운영체제에 가깝다</h2>
+<p><strong>Everything Claude Code</strong> 는 다른 항목과 결이 조금 다릅니다. 비교표는 <code>instinct scoring</code>, <code>AgentShield</code>, <code>multi-lang rules</code> 를 특징으로 잡고 있고, 공식 README도 이 저장소를 단순 config pack이 아니라 <strong>agent harness performance system</strong> 으로 설명합니다. 즉 하나의 규칙이 아니라, 스킬·훅·메모리·보안·평가·병렬화까지 묶어 AI 에이전트 운영 환경 전체를 구성하는 쪽입니다. <a href="https://github.com/shanraisshan/claude-code-best-practice?tab=readme-ov-file#%EF%B8%8F-development-workflows">Development Workflows</a> <a href="https://github.com/affaan-m/everything-claude-code">Everything Claude Code</a></p>
+<p>이런 구조의 장점은 확장성입니다. 언어가 여러 개이고, 프로젝트도 여러 개이며, 팀이 반복적으로 같은 실패를 겪고 있다면, 단일 워크플로우보다 <strong>에이전트 하니스 자체를 표준화</strong> 하는 편이 더 이득일 수 있습니다. 반대로 개인 프로젝트나 소규모 저장소에서는 너무 크고 무거워서, 설치보다 운영 자체가 목적처럼 느껴질 수 있습니다.</p>
+<ul>
+<li>잘 맞는 경우: 다언어 팀, 장기 운영, 보안·평가·메모리까지 표준화하고 싶은 경우</li>
+<li>조심할 점: &ldquo;무엇을 써야 하는지&rdquo; 를 배우는 비용이 높고 소형 프로젝트엔 과할 수 있음</li>
+</ul>
+<h2 id="5-spec-kit-가장-정석적인-spec-driven-개발-흐름">5) Spec Kit: 가장 정석적인 spec-driven 개발 흐름</h2>
+<p><strong>Spec Kit</strong> 은 이 비교군에서 가장 교과서적인 spec-driven 도구에 가깝습니다. <code>constitution</code> 으로 프로젝트 원칙을 먼저 세우고, 그다음 <code>spec</code>, <code>plan</code>, <code>tasks</code>, <code>implement</code> 로 이어지는 순서를 분명하게 잡습니다. 공식 README도 <code>constitution.md</code>, <code>spec.md</code>, <code>plan.md</code>, <code>tasks.md</code> 산출물 체인을 아주 선명하게 보여 줍니다. <a href="https://github.com/github/spec-kit">Spec Kit</a></p>
+<p>이 방식의 장점은 문서 기반 의사결정이 깔끔하다는 점입니다. 제품 요구사항과 기술 계획, 작업 순서가 섞이지 않고, 나중에 팀원이 합류해도 어디서 무엇을 읽어야 할지 명확합니다. 특히 여러 명이 같이 만드는 제품, 아키텍처 결정이 중요한 프로젝트, 요구사항이 자주 흔들리는 팀에서 유리합니다.<br>반대로 해커톤이나 짧은 스파이크에는 분명 느립니다. 문서를 싫어하는 팀은 형식만 남기 쉽고, 스펙을 실제 운영 자산으로 다룰 문화가 없으면 금방 유명무실해집니다.</p>
+<ul>
+<li>잘 맞는 경우: PRD/spec 중심 팀, 협업 제품 개발, 장기 아키텍처 일관성이 중요한 경우</li>
+<li>조심할 점: 급한 실험에는 느리고 문서 문화가 약하면 유지가 어려움</li>
+</ul>
+<h2 id="6-bmad-method-역할-기반-sdlc-전체를-ai와-함께-구조화한다">6) BMAD-METHOD: 역할 기반 SDLC 전체를 AI와 함께 구조화한다</h2>
+<p><strong>BMAD-METHOD</strong> 는 단순 plan 도구보다 <strong>전주기 개발 방법론</strong> 쪽에 더 가깝습니다. 공식 README는 analysis, planning, architecture, implementation 전반에 걸친 structured workflow, specialized agents, complete lifecycle 을 강조합니다. 비교표가 <code>full SDLC</code>, <code>agent personas</code>, <code>22+ platforms</code> 라고 요약하는 이유도 여기에 있습니다. <a href="https://github.com/shanraisshan/claude-code-best-practice?tab=readme-ov-file#%EF%B8%8F-development-workflows">Development Workflows</a> <a href="https://github.com/bmad-code-org/BMAD-METHOD">BMAD-METHOD</a></p>
+<p>이 구조의 장점은 PM, Architect, Developer 같은 역할 분리가 선명하다는 점입니다. 그래서 개발자만이 아니라 기획자나 제품 담당자도 흐름에 참여하기 쉽습니다. 프로젝트를 하나의 구현 작업이 아니라, <strong>아이디어부터 배포까지의 공동 작업 프로세스</strong> 로 다루고 싶을 때 잘 맞습니다.<br>다만 작은 기능 하나 고치는 데도 페르소나와 단계가 너무 무거워질 수 있습니다. 실행 속도보다 프로세스 충실도가 먼저 나올 때가 있어, 실전 압박이 큰 팀은 답답하게 느낄 수 있습니다.</p>
+<ul>
+<li>잘 맞는 경우: PM/기획/설계 문서가 중요한 제품 팀, 역할 기반 협업을 명확히 하고 싶은 경우</li>
+<li>조심할 점: 작은 변경에는 절차가 과하고, 실행보다 프로세스가 앞설 수 있음</li>
+</ul>
+<h2 id="7-gstack-가상-엔지니어링-팀-이라는-운영-모델이-핵심이다">7) gstack: &ldquo;가상 엔지니어링 팀&rdquo; 이라는 운영 모델이 핵심이다</h2>
+<p><strong>gstack</strong> 은 다른 항목처럼 명세 프레임워크라기보다 <strong>운영 모델</strong> 이 독특합니다. 공식 README는 CEO, Eng Manager, Designer, QA, Release Manager 같은 역할을 가진 전문가 집합으로 Claude Code를 설명하고, parallel sprints 파트에서는 여러 세션을 각기 다른 workspace에서 동시에 굴리는 구조를 전면에 내세웁니다. <a href="https://github.com/garrytan/gstack">gstack</a></p>
+<p>즉 gstack의 핵심은 &ldquo;좋은 문서를 남긴다&rdquo; 보다 <strong>실제 팀처럼 역할과 스프린트를 분리해서 병렬 실행한다</strong> 는 데 있습니다. 이런 철학은 스타트업 스타일과 잘 맞습니다. 빨리 가설을 확인하고, 계획 리뷰와 디자인 리뷰, QA, ship 을 구분해 계속 돌리는 방식에 강합니다.<br>반대로 단일 개발자에게는 오히려 복잡할 수 있고, 자동 수정이나 자동 ship 류의 흐름을 무비판적으로 쓰면 통제가 약한 팀에서는 위험할 수 있습니다.</p>
+<pre class="mermaid">flowchart TD
+    A["아이디어"] --> B["CEO Review"]
+    B --> C["Eng Review"]
+    C --> D["Design Review"]
+    D --> E["Build"]
+    E --> F["Review"]
+    F --> G["QA"]
+    G --> H["Ship"]
+
+    classDef review fill:#c5dcef,stroke:#333,stroke-width:1px,color:#333
+    classDef build fill:#fde8c0,stroke:#333,stroke-width:1px,color:#333
+    classDef ship fill:#c0ecd3,stroke:#333,stroke-width:1px,color:#333
+
+    class A,B,C,D,F,G review
+    class E build
+    class H ship</pre><ul>
+<li>잘 맞는 경우: 창업자형 개발, 빠른 기능 실험, 역할 분리된 병렬 스프린트를 돌리고 싶은 팀</li>
+<li>조심할 점: 단순 작업에는 과하고, write-capable 흐름은 가드레일 없이 쓰면 위험함</li>
+</ul>
+<h2 id="8-get-shit-done-복잡한-프레임워크보다-실전에서-잘-굴러가는-흐름-에-가깝다">8) Get Shit Done: 복잡한 프레임워크보다 &ldquo;실전에서 잘 굴러가는 흐름&rdquo; 에 가깝다</h2>
+<p><strong>Get Shit Done</strong> 은 이름처럼 철학이 분명합니다. 공식 README는 이 저장소를 <strong>가볍지만 강한 meta-prompting, context engineering, spec-driven development system</strong> 으로 소개하고, context rot 를 줄이는 데 집중한다고 설명합니다. 또 phase 실행을 dependency 기반 wave 로 묶고, 계획을 Claude 친화적인 XML 구조로 다루는 점이 특징입니다. <a href="https://github.com/gsd-build/get-shit-done">GET SHIT DONE</a></p>
+<p>이 접근의 장점은 균형감입니다. 문서가 아예 없는 것도 아니고, 그렇다고 Spec Kit 수준의 무거운 산출물 체인을 강제하지도 않습니다. 그래서 개인 개발자나 소규모 팀이 <strong>복잡한 설정 없이 생산성을 바로 끌어올리기</strong> 좋습니다. 반면 내부 추상화가 많아서 왜 잘 되는지 체감하기 어려울 수 있고, XML plan이나 wave execution 같은 방식은 취향을 탑니다.</p>
+<ul>
+<li>잘 맞는 경우: 개인 실전 생산성, 소규모 팀, 문서 과부하 없이 체계는 유지하고 싶은 경우</li>
+<li>조심할 점: 원리를 파악하기 어려울 수 있고, 엄격한 명세 체계가 필요한 조직엔 가벼울 수 있음</li>
+</ul>
+<h2 id="9-openspec-brownfield-변경-관리에-가장-또렷한-색깔이-있다">9) OpenSpec: brownfield 변경 관리에 가장 또렷한 색깔이 있다</h2>
+<p><strong>OpenSpec</strong> 은 기존 시스템 변경을 중심에 놓는다는 점에서 <strong>Spec Kit</strong> 과 닮으면서도 꽤 다릅니다. 공식 README는 lightweight spec layer 와 change folder 구조를 강조하고, concepts 문서는 아예 <code>brownfield-first</code>, <code>delta-based approach</code>, <code>fluid not rigid</code> 를 핵심 철학으로 못 박습니다. 즉 전체 시스템 명세를 매번 다시 쓰는 대신, <strong>바뀌는 부분을 change artifact 와 delta spec으로 관리</strong> 하려는 접근입니다. <a href="https://github.com/Fission-AI/OpenSpec">OpenSpec</a> <a href="https://github.com/Fission-AI/OpenSpec/blob/main/docs/concepts.md">OpenSpec Concepts</a></p>
+<p>이건 brownfield 환경에서 특히 강합니다. 이미 돌아가는 서비스에 새 기능을 추가하거나, 행동을 조금씩 바꾸거나, 영향도를 추적해야 할 때 효과가 큽니다. 반대로 완전히 새 프로젝트를 시작할 때는 Spec Kit 쪽이 더 직관적으로 느껴질 수 있습니다. OpenSpec의 진짜 강점은 greenfield의 이상적인 설계보다 <strong>기존 시스템의 변화 추적성</strong> 에 있습니다.</p>
+<pre class="mermaid">flowchart TD
+    A["현재 spec"] --> B["change proposal"]
+    B --> C["delta spec"]
+    C --> D["design / tasks"]
+    D --> E["implementation"]
+    E --> F["merge back to spec"]
+
+    classDef source fill:#c5dcef,stroke:#333,stroke-width:1px,color:#333
+    classDef change fill:#fde8c0,stroke:#333,stroke-width:1px,color:#333
+    classDef result fill:#c0ecd3,stroke:#333,stroke-width:1px,color:#333
+
+    class A source
+    class B,C,D,E change
+    class F result</pre><ul>
+<li>잘 맞는 경우: 기존 서비스 기능 추가, 리팩터링, 영향도 추적이 중요한 팀</li>
+<li>조심할 점: artifact와 delta 개념을 이해해야 하므로 초반 러닝커브가 있음</li>
+</ul>
+<h2 id="10-humanlayer--rpi-큰-코드베이스에서-실패-확률을-줄이는-안전-지향-패턴">10) HumanLayer / RPI: 큰 코드베이스에서 실패 확률을 줄이는 안전 지향 패턴</h2>
+<p><strong>HumanLayer / RPI</strong> 는 엄밀히 말하면 거대한 프레임워크라기보다 <strong>Research, Plan, Implement</strong> 를 앞세운 작업 철학에 더 가깝습니다. Block의 Goose 문서도 이 패턴을 &ldquo;속도보다 clarity, predictability, correctness 를 택하는 방식&rdquo; 으로 설명합니다. 핵심은 간단합니다. 작은 변경이 아니면 바로 구현하지 말고, 먼저 조사하고 계획을 만든 뒤 구현으로 들어가라는 것입니다. <a href="https://block.github.io/goose/docs/tutorials/rpi/">RPI Tutorial</a></p>
+<p>이 철학은 특히 대형 코드베이스에서 강합니다. 레거시, 모노레포, 수십만 줄 코드, 불확실한 의존성, 위험한 변경 지점이 많은 상황에서는 &ldquo;빨리 한 번에&rdquo; 보다 &ldquo;확실히 틀리지 않게&rdquo; 가 더 중요합니다. 반대로 작은 기능 추가나 실험적 프로토타입에서는 이 과정이 느리게 느껴질 수 있습니다. 결국 <strong>HumanLayer / RPI</strong> 의 가치는 속도가 아니라, AI가 큰 코드베이스에서 멋대로 수정하다 망할 확률을 줄이는 데 있습니다.</p>
+<ul>
+<li>잘 맞는 경우: 대형 모노레포, 레거시, AI가 자주 탈선하는 환경</li>
+<li>조심할 점: 소규모 작업에는 절차가 무겁고, 프로토타입 단계에는 과할 수 있음</li>
+</ul>
+<h2 id="11-결국-무엇을-고르면-되나-선택-기준은-세-가지면-충분하다">11) 결국 무엇을 고르면 되나: 선택 기준은 세 가지면 충분하다</h2>
+<p>여덟 개를 다 외울 필요는 없습니다. 실제 선택에서는 보통 세 가지 질문이면 충분합니다.</p>
+<pre class="mermaid">flowchart TD
+    A["선택 기준"] --> B["품질과 테스트 게이트<br>→ Superpowers"]
+    A --> C["명세와 변경 추적<br>→ Spec Kit / OpenSpec / BMAD-METHOD"]
+    A --> D["실전 속도와 병렬 실행<br>→ Get Shit Done / gstack"]
+    A --> E["AI 개발 환경 표준화<br>→ Everything Claude Code"]
+    A --> F["대형 코드베이스 안정성<br>→ HumanLayer / RPI"]
+
+    classDef ask fill:#fde8c0,stroke:#333,stroke-width:1px,color:#333
+    classDef pick fill:#c0ecd3,stroke:#333,stroke-width:1px,color:#333
+
+    class A ask
+    class B,C,D,E,F pick</pre><p>정리하면 다음 표 정도로 압축할 수 있습니다.</p>
+<table>
+  <thead>
+      <tr>
+          <th>상황</th>
+          <th>가장 먼저 볼 선택지</th>
+          <th>이유</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>품질과 회귀 방지가 최우선</td>
+          <td><strong>Superpowers</strong></td>
+          <td>계획, 테스트, 리뷰 게이트가 가장 강함</td>
+      </tr>
+      <tr>
+          <td>AI 개발 환경 자체를 표준화하고 싶음</td>
+          <td><strong>Everything Claude Code</strong></td>
+          <td>스킬, 훅, 메모리, 보안, 평가까지 묶음</td>
+      </tr>
+      <tr>
+          <td>정석적인 spec-driven 개발을 원함</td>
+          <td><strong>Spec Kit</strong></td>
+          <td>constitution → spec → plan → tasks 체인이 선명함</td>
+      </tr>
+      <tr>
+          <td>제품 개발 전 과정을 역할별로 구조화하고 싶음</td>
+          <td><strong>BMAD-METHOD</strong></td>
+          <td>SDLC 전체와 agent personas 중심</td>
+      </tr>
+      <tr>
+          <td>병렬 스프린트를 가상 팀처럼 운영하고 싶음</td>
+          <td><strong>gstack</strong></td>
+          <td>CEO, Eng, Design, QA, Ship 흐름이 명확함</td>
+      </tr>
+      <tr>
+          <td>개인 생산성을 빠르게 끌어올리고 싶음</td>
+          <td><strong>Get Shit Done</strong></td>
+          <td>context rot 대응과 실행 중심 균형이 좋음</td>
+      </tr>
+      <tr>
+          <td>기존 프로젝트 변경 관리가 핵심</td>
+          <td><strong>OpenSpec</strong></td>
+          <td>brownfield-first, delta spec, change artifact 중심</td>
+      </tr>
+      <tr>
+          <td>대형 코드베이스에서 안전하게 가고 싶음</td>
+          <td><strong>HumanLayer / RPI</strong></td>
+          <td>조사와 계획을 먼저 해서 실패 확률을 낮춤</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="12-제-추천-하나만-고르기보다-먼저-자신의-실패-패턴을-고르는-편이-낫다">12) 제 추천: 하나만 고르기보다, 먼저 자신의 실패 패턴을 고르는 편이 낫다</h2>
+<p>개인적으로 이 비교군에서 가장 캐릭터가 뚜렷한 것은 세 가지입니다.</p>
+<ul>
+<li><strong>개인 실전 생산성</strong> 이 중요하면: <strong>Get Shit Done</strong></li>
+<li><strong>품질과 테스트 규율</strong> 이 중요하면: <strong>Superpowers</strong></li>
+<li><strong>스펙 중심의 장기 운영</strong> 이 중요하면: <strong>Spec Kit</strong></li>
+</ul>
+<p>그리고 나머지는 특정 조건에서 더 빛납니다. <strong>OpenSpec</strong> 은 brownfield 변경 관리가 핵심일 때, <strong>gstack</strong> 은 창업자형 병렬 운영이 필요할 때, <strong>Everything Claude Code</strong> 는 AI 개발 환경 자체를 운영체제처럼 깔고 싶을 때, <strong>HumanLayer / RPI</strong> 는 대형 코드베이스에서 안전성을 올리고 싶을 때, <strong>BMAD-METHOD</strong> 는 역할 기반 협업을 전주기로 굴리고 싶을 때 특히 설득력이 있습니다.</p>
+<p>결국 좋은 선택은 &ldquo;가장 강력한 것&rdquo; 을 고르는 게 아닙니다.<br>지금 내 팀이 반복해서 망하는 지점이 어디인지 먼저 보고, 그 실패 패턴을 가장 정면으로 줄여 주는 워크플로우를 고르는 것이 맞습니다. 그 기준으로 보면, 이 여덟 개는 서로 경쟁한다기보다 <strong>서로 다른 종류의 리스크를 처리하는 운영 철학</strong> 에 가깝습니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 03월 24일 21시 59분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/03/2026-03-24-gstack-why-it-spread-fast/" rel="prev">
+        <span>왜 gstack는 이렇게 빨리 퍼졌나: Claude Code를 팀처럼 움직이게 만드는 설계</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-먼저-큰-그림부터-8개가-완전히-다른-것이-아니라-같은-뼈대-위에서-갈라진다">1) 먼저 큰 그림부터: 8개가 완전히 다른 것이 아니라, 같은 뼈대 위에서 갈라진다</a></li>
+    <li><a href="#2-8개를-4가지-계열로-묶어-보면-더-이해가-쉽다">2) 8개를 4가지 계열로 묶어 보면 더 이해가 쉽다</a></li>
+    <li><a href="#3-superpowers-ai가-멋대로-구현부터-들어가는-것-을-가장-강하게-막는다">3) Superpowers: &ldquo;AI가 멋대로 구현부터 들어가는 것&rdquo; 을 가장 강하게 막는다</a></li>
+    <li><a href="#4-everything-claude-code-워크플로우라기보다-ai-개발-운영체제에-가깝다">4) Everything Claude Code: 워크플로우라기보다 AI 개발 운영체제에 가깝다</a></li>
+    <li><a href="#5-spec-kit-가장-정석적인-spec-driven-개발-흐름">5) Spec Kit: 가장 정석적인 spec-driven 개발 흐름</a></li>
+    <li><a href="#6-bmad-method-역할-기반-sdlc-전체를-ai와-함께-구조화한다">6) BMAD-METHOD: 역할 기반 SDLC 전체를 AI와 함께 구조화한다</a></li>
+    <li><a href="#7-gstack-가상-엔지니어링-팀-이라는-운영-모델이-핵심이다">7) gstack: &ldquo;가상 엔지니어링 팀&rdquo; 이라는 운영 모델이 핵심이다</a></li>
+    <li><a href="#8-get-shit-done-복잡한-프레임워크보다-실전에서-잘-굴러가는-흐름-에-가깝다">8) Get Shit Done: 복잡한 프레임워크보다 &ldquo;실전에서 잘 굴러가는 흐름&rdquo; 에 가깝다</a></li>
+    <li><a href="#9-openspec-brownfield-변경-관리에-가장-또렷한-색깔이-있다">9) OpenSpec: brownfield 변경 관리에 가장 또렷한 색깔이 있다</a></li>
+    <li><a href="#10-humanlayer--rpi-큰-코드베이스에서-실패-확률을-줄이는-안전-지향-패턴">10) HumanLayer / RPI: 큰 코드베이스에서 실패 확률을 줄이는 안전 지향 패턴</a></li>
+    <li><a href="#11-결국-무엇을-고르면-되나-선택-기준은-세-가지면-충분하다">11) 결국 무엇을 고르면 되나: 선택 기준은 세 가지면 충분하다</a></li>
+    <li><a href="#12-제-추천-하나만-고르기보다-먼저-자신의-실패-패턴을-고르는-편이-낫다">12) 제 추천: 하나만 고르기보다, 먼저 자신의 실패 패턴을 고르는 편이 낫다</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude Code</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
