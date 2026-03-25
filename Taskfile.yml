@@ -36,6 +36,8 @@ tasks:
     desc: Build and deploy to GitHub
     cmds:
       - 'echo -e "\033[0;32mDeploying updates to GitHub...\033[0m"'
+      - 'git checkout -- docs'
+      - 'git clean -fd docs'
       - 'git pull origin master --no-rebase'
       - "{{.HUGO}} -D"
       - 'git add . && git diff --staged --quiet || git commit -m "build: rebuild site $(date +%Y-%m-%d\ %H:%M:%S)"'
