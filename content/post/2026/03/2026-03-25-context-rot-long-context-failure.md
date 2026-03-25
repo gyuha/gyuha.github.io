@@ -1,0 +1,181 @@
+---
+title: "컨텍스트 로트(context rot): 긴 문맥이 길수록 AI가 흐려지는 이유"
+date: 2026-03-25T16:15:00+09:00
+draft: false
+categories:
+  - AI
+tags:
+  - llm
+  - agents
+  - context-engineering
+description: "Stanford의 Lost in the Middle, Chroma의 Context Rot 연구, Anthropic의 컨텍스트 엔지니어링 가이드를 바탕으로 긴 문맥이 왜 오히려 성능을 떨어뜨리는지와 실무 대응법을 정리합니다."
+---
+
+LLM의 컨텍스트 윈도우는 계속 커지고 있습니다. 그런데 실무에서는 이상한 장면이 자주 나옵니다. 자료를 더 많이 넣었는데 답이 더 좋아지기는커녕, 엉뚱한 파일을 집거나 이미 결정한 사항을 다시 뒤집는 경우입니다.<br>
+이 현상을 최근 실무권에서는 **컨텍스트 로트(context rot)** 라는 말로 자주 부릅니다. 중요한 점은 이 표현이 엄밀한 학술 용어라기보다, 긴 문맥이 쌓일수록 모델의 주의력과 일관성이 서서히 망가지는 현상을 묶어 부르는 실무 용어라는 점입니다.
+
+<!--more-->
+
+## Sources
+
+- [Nelson F. Liu et al., "Lost in the Middle: How Language Models Use Long Contexts"](https://arxiv.org/abs/2307.03172)
+- [Chroma Research, "Context Rot: How Increasing Input Tokens Impacts LLM Performance"](https://www.trychroma.com/research/context-rot)
+- [Anthropic, "Effective Context Engineering for AI Agents"](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
+- [The New Stack, "How context rot drags down AI and LLM results for enterprises"](https://www.thenewstack.io/context-rot-enterprise-ai-llms/)
+
+## 컨텍스트 로트는 신조어지만, 현상 자체는 새롭지 않다
+
+먼저 용어부터 정리할 필요가 있습니다. **컨텍스트 로트** 는 Stanford 논문 제목처럼 정식으로 굳어진 학술 명칭은 아닙니다. Chroma가 2025년에 이 표현을 전면에 내세워 18개 프런티어 모델을 비교했고, 그 전부터 실무권에서는 긴 입력이 쌓일수록 품질이 떨어지는 문제를 비공식적으로 이렇게 부르고 있었습니다.<br>
+반면 학술적으로 더 탄탄한 출발점은 Stanford의 **Lost in the Middle** 입니다. 이 연구는 "문맥이 길어지면 모델이 모든 정보를 고르게 활용하지 못한다"는 사실을 매우 선명하게 보여줬습니다.
+
+```mermaid
+flowchart TD
+    term["컨텍스트 로트<br>실무 용어"] --> obs["긴 문맥에서 품질 저하"]
+    paper["Lost in the Middle<br>학술적 관찰"] --> obs
+    obs --> effect["중간 정보 누락<br>우선순위 혼동<br>지시 일관성 저하"]
+
+    classDef info fill:#c5dcef,color:#333,stroke:#7da6c2,stroke-width:1px;
+    classDef warn fill:#ffc8c4,color:#333,stroke:#cf8b86,stroke-width:1px;
+    classDef result fill:#fde8c0,color:#333,stroke:#d4b16a,stroke-width:1px;
+
+    class term,paper info;
+    class obs warn;
+    class effect result;
+```
+
+즉, 이 글에서 말하는 컨텍스트 로트는 "새로 발견된 버그"가 아니라, 긴 문맥 처리에서 반복적으로 관찰되는 실패 패턴을 실무적으로 묶어 부르는 표현으로 이해하는 것이 가장 안전합니다.
+
+## 왜 문맥을 더 넣었는데 성능은 오히려 떨어질까
+
+직관은 보통 이렇습니다. "정보가 많을수록 더 잘하겠지." 하지만 긴 문맥 모델은 하드디스크처럼 전체 내용을 똑같은 품질로 꺼내 쓰지 않습니다. Stanford 연구가 보여준 핵심은 성능이 **U자형** 으로 나타난다는 점입니다. 관련 정보가 문맥의 앞이나 뒤에 있을 때는 비교적 잘 찾지만, 가운데에 묻히면 성능이 크게 떨어집니다.
+
+```mermaid
+flowchart TD
+    long["긴 컨텍스트 입력"] --> pos{"관련 정보 위치"}
+    pos -->|"앞부분"| high1["비교적 잘 사용"]
+    pos -->|"중간"| low["가장 잘 놓침"]
+    pos -->|"뒷부분"| high2["비교적 잘 사용"]
+
+    classDef source fill:#c5dcef,color:#333,stroke:#7da6c2,stroke-width:1px;
+    classDef danger fill:#ffc8c4,color:#333,stroke:#cf8b86,stroke-width:1px;
+    classDef ok fill:#c0ecd3,color:#333,stroke:#77b88d,stroke-width:1px;
+
+    class long,pos source;
+    class low danger;
+    class high1,high2 ok;
+```
+
+Chroma의 연구는 이 현상이 특정 모델만의 문제가 아니라는 점을 더 실무적으로 보여줍니다. 18개 프런티어 모델을 비교했을 때, 입력 토큰이 늘어날수록 **모든 모델에서** 성능 저하가 관찰됐습니다. 특히 질문과 정답 단서의 의미적 거리가 멀수록, 그리고 중간에 방해 정보가 많을수록 성능 하락이 더 빨라졌습니다.
+
+이 말은 곧 "컨텍스트 윈도우가 200K니까 200K까지 안전하다"가 아니라는 뜻입니다. **넣을 수 있는 양** 과 **정확하게 활용할 수 있는 양** 은 다른 문제입니다.
+
+## 에이전트형 워크플로우에서는 왜 더 심하게 보일까
+
+단순 Q&A에서는 한 번 틀리고 끝날 수도 있습니다. 하지만 에이전트형 작업에서는 한 번 생긴 왜곡이 다음 단계의 입력으로 다시 들어갑니다. 그러면 작은 오해가 점점 더 큰 문맥 오염으로 자랍니다.<br>
+Anthropic이 컨텍스트 엔지니어링 글에서 강조한 것도 바로 이 지점입니다. 컨텍스트는 공짜 저장 공간이 아니라 **attention budget**, 즉 제한된 주의력 예산으로 봐야 합니다. 불필요한 토큰은 "있어도 무해한 배경"이 아니라, 실제로 중요한 정보가 모델의 주의를 덜 받게 만드는 경쟁자입니다.
+
+```mermaid
+flowchart TD
+    goal["작업 목표"] --> step1["계획 수립"]
+    step1 --> step2["도구 호출과 중간 결과"]
+    step2 --> step3["요약과 추가 지시 누적"]
+    step3 --> step4["다음 단계 입력으로 재주입"]
+    step4 --> drift["가정 누적과 주의력 분산"]
+    drift --> fail["엉뚱한 수정<br>중복 작업<br>정책 위반"]
+
+    classDef base fill:#c5dcef,color:#333,stroke:#7da6c2,stroke-width:1px;
+    classDef process fill:#c0ecd3,color:#333,stroke:#77b88d,stroke-width:1px;
+    classDef risk fill:#ffc8c4,color:#333,stroke:#cf8b86,stroke-width:1px;
+
+    class goal base;
+    class step1,step2,step3,step4 process;
+    class drift,fail risk;
+```
+
+그래서 컨텍스트 로트는 모델의 "지능 부족"이라기보다, 긴 세션 운영에서 자주 생기는 **문맥 관리 실패** 에 더 가깝습니다. 다음과 같은 증상이 반복되면 거의 이 범주로 봐도 됩니다.
+
+- 이미 합의한 요구사항을 뒤늦게 무시한다.
+- 직전에 읽은 파일보다 초반 지시나 오래된 요약에 더 끌린다.
+- 서로 다른 단계에서 나온 중간 결론이 충돌하는데도 그대로 진행한다.
+- 긴 로그와 참고 자료를 계속 쌓다가 정작 현재 작업의 핵심 제약을 놓친다.
+
+## 컨텍스트 로트는 보통 세 가지 경로로 나타난다
+
+실무에서 보면 이 문제는 하나의 원인으로만 생기지 않습니다. 대체로 아래 세 경로가 겹치면서 품질을 무너뜨립니다.
+
+```mermaid
+flowchart TD
+    root["컨텍스트 로트"] --> stale["낡은 정보 잔존"]
+    root --> overload["과도한 정보 적재"]
+    root --> conflict["충돌하는 지시 공존"]
+
+    stale --> staleEx["이전 결론이 현재 사실을 덮음"]
+    overload --> overloadEx["중요 신호가 잡음에 묻힘"]
+    conflict --> conflictEx["우선순위 판단이 흔들림"]
+
+    classDef rootStyle fill:#e0c8ef,color:#333,stroke:#aa8bbb,stroke-width:1px;
+    classDef main fill:#c5dcef,color:#333,stroke:#7da6c2,stroke-width:1px;
+    classDef sub fill:#fde8c0,color:#333,stroke:#d4b16a,stroke-width:1px;
+
+    class root rootStyle;
+    class stale,overload,conflict main;
+    class staleEx,overloadEx,conflictEx sub;
+```
+
+첫째는 **낡은 정보 잔존** 입니다. 초반에 세운 가설이나 이미 무효가 된 요약이 계속 남아 이후 판단을 오염시킵니다.<br>
+둘째는 **과도한 적재** 입니다. 관련 없는 로그, 반복 설명, 긴 참고 문서를 그대로 밀어 넣으면 중요한 신호가 상대적으로 약해집니다.<br>
+셋째는 **지시 충돌** 입니다. 시스템 규칙, 작업 메모, 최신 수정 지시가 서로 어긋나는데도 우선순위가 정리되지 않으면 모델은 일관된 경로를 유지하기 어렵습니다.
+
+## 대응책은 프롬프트 미사여구가 아니라 컨텍스트 엔지니어링이다
+
+이 문제를 해결하는 방향은 의외로 단순합니다. 질문을 더 예쁘게 쓰는 것이 아니라, **무엇을 남기고 무엇을 버릴지 설계** 해야 합니다. Anthropic이 제안한 방식도 결국 이 원칙으로 수렴합니다.
+
+```mermaid
+flowchart TD
+    input["긴 원본 문맥"] --> pick["현재 단계에 필요한 정보만 선별"]
+    pick --> compact["요약 대신 구조화된 메모로 압축"]
+    compact --> split["큰 작업은 단계와 에이전트로 분리"]
+    split --> reset["오래된 세션은 신선한 컨텍스트로 재시작"]
+    reset --> result["짧고 선명한 작업 문맥"]
+
+    classDef data fill:#c5dcef,color:#333,stroke:#7da6c2,stroke-width:1px;
+    classDef action fill:#c0ecd3,color:#333,stroke:#77b88d,stroke-width:1px;
+    classDef out fill:#fde8c0,color:#333,stroke:#d4b16a,stroke-width:1px;
+
+    class input data;
+    class pick,compact,split,reset action;
+    class result out;
+```
+
+실무적으로는 아래 네 가지가 가장 효과적입니다.
+
+1. **선별**: 모든 자료를 넣지 말고 현재 단계에 필요한 정보만 남깁니다.
+2. **압축**: 장문의 자유서술 요약보다 체크리스트, 상태값, 결정사항처럼 구조화된 메모를 씁니다.
+3. **분리**: 조사, 설계, 구현, 검증을 한 창에 몰아넣지 말고 단계별 컨텍스트로 나눕니다.
+4. **재시작**: 세션이 길어져 같은 실수를 반복하면, 깨끗한 요약본만 들고 새 세션으로 넘어갑니다.
+
+핵심은 "기억을 더 많이 주자"가 아니라 "다음 행동에 필요한 기억만 남기자"입니다. 긴 문맥 시대일수록 프롬프트 엔지니어링보다 컨텍스트 엔지니어링이 중요한 이유가 여기에 있습니다.
+
+## 팀 차원에서는 어떤 운영 습관이 필요할까
+
+컨텍스트 로트를 줄이려면 개인 프롬프트 습관만으로는 한계가 있습니다. 반복되는 작업이라면 팀 단위로 문맥을 다루는 규칙을 만들어야 합니다.
+
+- 항상 유지할 규칙과 이번 작업에만 필요한 정보를 분리합니다.
+- 긴 대화 로그를 그대로 넘기지 말고, 결정사항과 열린 이슈만 남깁니다.
+- 중간 산출물에는 "현재 사실", "가정", "미확인"을 구분해서 적습니다.
+- 검증 단계는 별도 에이전트나 새 컨텍스트에서 수행해, 이전 가정의 관성을 줄입니다.
+
+이 운영 습관은 단순히 토큰 비용을 아끼는 수준을 넘습니다. **잘못된 확신이 누적되는 속도** 자체를 늦춘다는 점에서 더 중요합니다.
+
+## 핵심 요약
+
+- 컨텍스트 로트는 엄밀한 학술 용어라기보다, 긴 문맥에서 품질이 떨어지는 현상을 설명하는 실무 용어에 가깝습니다.
+- Stanford의 **Lost in the Middle** 은 긴 문맥에서 정보 활용이 고르게 일어나지 않는다는 점을 보여줬습니다.
+- Chroma의 18개 모델 비교는 이 문제가 특정 벤더가 아니라 거의 모든 최신 모델에 공통적임을 보여줍니다.
+- 에이전트형 워크플로우에서는 중간 결과와 요약이 다시 입력으로 들어가기 때문에 작은 왜곡이 더 빨리 커집니다.
+- 해결책의 중심은 프롬프트 미세조정보다 선별, 압축, 분리, 재시작 같은 컨텍스트 엔지니어링입니다.
+
+## 결론
+
+긴 컨텍스트는 분명 강력합니다. 하지만 "많이 넣을 수 있다"는 사실이 곧 "많이 넣는 것이 유리하다"는 뜻은 아닙니다.<br>
+앞으로의 실무 경쟁력은 더 긴 문맥을 가진 모델을 찾는 데만 있지 않습니다. 어떤 문맥을 **지워야 하는지** 를 아는 팀이 더 안정적으로 좋은 결과를 냅니다. 컨텍스트 로트는 결국 모델의 한계를 보여주는 말이면서 동시에, 우리가 문맥을 설계하는 방식이 아직 거칠다는 신호이기도 합니다.
