@@ -201,11 +201,11 @@ flowchart TD
     D --> E
 
     classDef base fill:#e0c8ef,stroke:#ab47bc,color:#333
-    classDef style fill:#c5dcef,stroke:#42a5f5,color:#333
+    classDef artStyle fill:#c5dcef,stroke:#42a5f5,color:#333
     classDef result fill:#c0ecd3,stroke:#66bb6a,color:#333
 
     class A base
-    class B,C,D style
+    class B,C,D artStyle
     class E result
 ```
 
