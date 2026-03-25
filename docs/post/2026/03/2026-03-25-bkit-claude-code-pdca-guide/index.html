@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'bkit은 Claude Code에 PDCA와 CTO 팀 운영을 붙이는 플러그인이다'" />
+  <title>bkit은 Claude Code에 PDCA와 CTO 팀 운영을 붙이는 플러그인이다  | 신규하 블로그</title>
+  <meta property="og:title" content="bkit은 Claude Code에 PDCA와 CTO 팀 운영을 붙이는 플러그인이다" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-03-25"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/03/2026-03-25-bkit-claude-code-pdca-guide/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="agents" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/03/2026-03-25-bkit-claude-code-pdca-guide/">
+          <h1>
+            bkit은 Claude Code에 PDCA와 CTO 팀 운영을 붙이는 플러그인이다
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/03/2026-03-25-bkit-claude-code-pdca-guide/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Claude Code를 쓰다 보면 금방 느끼는 문제가 있습니다. 코드는 빨리 나오는데, 계획과 설계와 검증이 한 흐름으로 묶이지 않으면 결과가 들쭉날쭉해진다는 점입니다.<br>
+<strong>bkit</strong> 은 바로 그 지점을 겨냥한 플러그인입니다. 저장소의 현재 설명대로 보면, 이 도구는 Claude Code 위에 <strong>PDCA 방법론</strong>, <strong>CTO-Led Agent Teams</strong>, <strong>자동 문서화</strong>, <strong>Context Engineering</strong> 을 얹어 AI 코딩을 조금 더 &ldquo;운영 가능한 개발 프로세스&quot;에 가깝게 바꾸려는 시도입니다.</p>
+<p>현재 공개 저장소 기준으로 <strong>bkit</strong> 은 <code>v2.0.6</code>, <code>Apache-2.0</code> 라이선스, <code>37 Skills</code>, <code>32 Agents</code>, <code>18 Hook Events</code>, <code>57 scripts</code>, <code>88 lib modules</code>, <code>~620+ functions</code>를 내세우고 있습니다. 숫자만 많아 보이는 도구처럼 보일 수도 있지만, 핵심은 숫자보다 구조입니다. 이 글에서는 그 구조가 실제로 무엇을 바꾸는지 중심으로 보겠습니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://github.com/popup-studio-ai/bkit-claude-code">popup-studio-ai/bkit-claude-code</a></li>
+<li><a href="https://github.com/popup-studio-ai/bkit-claude-code/blob/main/bkit-system/philosophy/pdca-methodology.md">bkit-system/philosophy/pdca-methodology.md</a></li>
+<li><a href="https://github.com/popup-studio-ai/bkit-claude-code/blob/main/bkit-system/philosophy/context-engineering.md">bkit-system/philosophy/context-engineering.md</a></li>
+<li><a href="https://github.com/popup-studio-ai/bkit-claude-code/blob/main/bkit-system/philosophy/core-mission.md">bkit-system/philosophy/core-mission.md</a></li>
+</ul>
+<h2 id="1-bkit은-프롬프트-팩이-아니라-개발-공정-레이어다">1. bkit은 프롬프트 팩이 아니라 개발 공정 레이어다</h2>
+<p>README의 한 줄 설명은 꽤 직설적입니다. <strong>bkit</strong> 은 &ldquo;<code>PDCA methodology + CTO-Led Agent Teams + AI coding assistant mastery for AI-native development</code>&ldquo;를 내세우고, 스스로를 &ldquo;Claude Code plugin&quot;이라고 소개합니다. 여기서 중요한 부분은 단순히 스킬 몇 개를 추가하는 도구가 아니라, <strong>AI가 코드를 만드는 과정을 단계화하고 추적 가능한 상태로 바꾸려는 플러그인</strong> 이라는 점입니다.</p>
+<p>보통 Claude Code를 바로 쓰면 사용자는 기능을 말하고, 모델은 코드를 만들고, 사람이 뒤늦게 구조와 누락을 확인합니다. 반면 <strong>bkit</strong> 은 계획 문서, 설계 문서, 구현, 분석, 반복 수정, 보고까지를 같은 흐름으로 연결합니다. 즉 &ldquo;좋은 프롬프트를 쓴다&quot;보다 &ldquo;좋은 개발 절차를 시스템에 강제한다&quot;에 더 가깝습니다.</p>
+<p>이 관점은 <code>core-mission.md</code>에서도 반복됩니다. 그 문서는 bkit의 목표를 &ldquo;명령어나 PDCA를 몰라도 document-driven development와 continuous improvement를 자연스럽게 채택하게 하는 것&quot;이라고 설명합니다. 다시 말해 사용자가 공정 전체를 외우지 않아도, 도구가 좋은 개발 습관을 기본값으로 밀어 넣는 구조입니다.</p>
+<pre class="mermaid">flowchart TD
+    req["기능 요청"] --> raw["바로 구현"]
+    raw --> drift["설계 누락"]
+    drift --> review["뒤늦은 점검"]
+
+    req --> bkit["bkit 적용"]
+    bkit --> docs["계획과 설계 문서화"]
+    docs --> build["구현"]
+    build --> check["분석과 반복 수정"]
+    check --> report["보고와 기록"]
+
+    classDef warn fill:#ffc8c4,color:#333,stroke:#cf8b86,stroke-width:1px;
+    classDef info fill:#c5dcef,color:#333,stroke:#7da6c2,stroke-width:1px;
+    classDef good fill:#c0ecd3,color:#333,stroke:#77b88d,stroke-width:1px;
+
+    class raw,drift warn;
+    class req,bkit,docs info;
+    class build,check,report good;</pre><p>그래서 <strong>bkit</strong> 을 이해하는 가장 좋은 방법은 &ldquo;Claude Code용 기능 모음&quot;이 아니라 <strong>Claude Code에 공정 관리 계층을 올리는 플러그인</strong> 으로 보는 것입니다. 저장소의 파일 구조가 <code>agents/</code>, <code>skills/</code>, <code>hooks/</code>, <code>scripts/</code>, <code>templates/</code>, <code>lib/</code>, <code>servers/</code>로 나뉘어 있는 것도 이 관점을 뒷받침합니다.</p>
+<h2 id="2-pdca는-체크리스트가-아니라-상태-머신으로-구현된다">2. PDCA는 체크리스트가 아니라 상태 머신으로 구현된다</h2>
+<p>이 프로젝트의 가장 큰 차별점은 <strong>PDCA</strong> 를 단순한 슬로건이 아니라 <strong>상태 머신</strong> 으로 구현했다는 점입니다. <code>pdca-methodology.md</code>에 따르면 현재 흐름은 <code>PM -&gt; Plan -&gt; Design -&gt; Do -&gt; Check -&gt; Act -&gt; Report</code> 순서이며, 문서에는 <code>20 transitions</code>, <code>9 guards</code>, <code>7-stage quality gates</code>가 명시되어 있습니다.</p>
+<p>이 설계가 중요한 이유는 AI 코딩에서 가장 흔한 실패가 &ldquo;계획 없이 구현으로 점프&quot;하거나, 반대로 &ldquo;구현했지만 설계와 얼마나 맞는지 모른 채 종료&quot;하는 패턴이기 때문입니다. <strong>bkit</strong> 은 <code>/pdca plan</code>, <code>/pdca design</code>, <code>/pdca do</code>, <code>/pdca analyze</code>, <code>/pdca iterate</code>, <code>/pdca report</code> 같은 명령으로 각 단계를 분리하고, <code>Check</code> 단계에서 설계와 구현의 일치도를 따지게 만듭니다.</p>
+<p>특히 눈에 띄는 부분은 <code>Check -&gt; Act</code> 반복입니다. 문서상으로는 설계-구현 일치율이 <code>90%</code> 이상이면 보고 단계로 넘어가고, 그렇지 않으면 <code>Act</code>로 넘어가 수정 루프를 최대 <code>5회</code>까지 반복합니다. 이 구조는 &ldquo;한 번에 정답을 만들 것&quot;을 기대하기보다, <strong>AI의 초안 생성 능력과 반복 수정 능력을 공정으로 묶어 관리</strong> 하겠다는 방향에 가깝습니다.</p>
+<pre class="mermaid">flowchart TD
+    pm["PM"] --> plan["Plan"]
+    plan --> design["Design"]
+    design --> doing["Do"]
+    doing --> analyze["Check"]
+    analyze --> gate{"매치율 90% 이상?"}
+    gate -->|"예"| report["Report"]
+    gate -->|"아니오"| act["Act"]
+    act --> analyze
+
+    classDef info fill:#c5dcef,color:#333,stroke:#7da6c2,stroke-width:1px;
+    classDef good fill:#c0ecd3,color:#333,stroke:#77b88d,stroke-width:1px;
+    classDef warn fill:#fde8c0,color:#333,stroke:#d4b16a,stroke-width:1px;
+
+    class pm,plan,design,doing,analyze info;
+    class report good;
+    class gate,act warn;</pre><p>여기서 <strong>bkit</strong> 의 철학도 드러납니다. <code>core-mission.md</code>는 세 가지 원칙으로 <code>Automation First</code>, <code>No Guessing</code>, <code>Docs = Code</code>를 제시합니다.<br>
+이 세 문장을 풀면 다음과 같습니다.</p>
+<ul>
+<li><strong>Automation First</strong>: 사용자가 모든 절차를 기억하지 않아도 시스템이 PDCA 흐름을 앞으로 민다.</li>
+<li><strong>No Guessing</strong>: 확신이 없으면 문서를 보고, 그래도 불명확하면 사용자에게 묻는다.</li>
+<li><strong>Docs = Code</strong>: 설계 문서와 구현 결과를 따로 놀게 두지 않는다.</li>
+</ul>
+<p>즉 <strong>PDCA</strong> 는 bkit에서 생산성 구호가 아니라, AI가 만든 결과물을 사람이 검토 가능한 산출물과 품질 게이트에 연결하는 장치입니다.</p>
+<h2 id="3-프로젝트-레벨-감지와-cto-팀-운영이-작업-방식을-바꾼다">3. 프로젝트 레벨 감지와 CTO 팀 운영이 작업 방식을 바꾼다</h2>
+<p>README는 이 플러그인이 프로젝트를 세 단계로 나눈다고 설명합니다. <code>Starter</code>는 정적 사이트, <code>Dynamic</code>은 풀스택 애플리케이션, <code>Enterprise</code>는 마이크로서비스 아키텍처입니다. 이 분류의 의미는 단순한 난이도 배지가 아니라, <strong>어떤 워크플로우와 어떤 팀 구성이 필요한지 미리 결정하는 기준</strong> 이라는 데 있습니다.</p>
+<p>예를 들어 간단한 정적 사이트라면 문서와 팀 구성이 과하게 무거울 수 있습니다. 반대로 여러 서비스와 인프라가 엮인 프로젝트는 프런트엔드, 백엔드, QA, 보안 같은 역할을 한 세션이 모두 떠안기 어렵습니다. <strong>bkit</strong> 은 이런 차이를 전제로 프로젝트 수준에 따라 다른 진입 명령과 다른 팀 구성을 제안합니다.</p>
+<p>README의 빠른 시작 예시는 <code>/starter</code>, <code>/dynamic</code>, <code>/enterprise</code> 명령을 보여주고, CTO-Led Agent Teams 섹션에서는 <code>Dynamic</code>에서 <code>3</code>명의 팀원, <code>Enterprise</code>에서 <code>5</code>명의 팀원을 병렬로 붙일 수 있다고 설명합니다. 그리고 이 팀은 <code>cto-lead</code>가 조율하며, 역할별로 프런트엔드, 제품, QA, 보안 등으로 나뉩니다.</p>
+<pre class="mermaid">flowchart TD
+    detect["프로젝트 감지"] --> starter["Starter<br>정적 웹"]
+    detect --> dynamic["Dynamic<br>풀스택"]
+    detect --> enterprise["Enterprise<br>마이크로서비스"]
+
+    starter --> solo["가벼운 PDCA 흐름"]
+    dynamic --> team3["CTO 팀 3명"]
+    enterprise --> team5["CTO 팀 5명"]
+
+    classDef info fill:#c5dcef,color:#333,stroke:#7da6c2,stroke-width:1px;
+    classDef good fill:#c0ecd3,color:#333,stroke:#77b88d,stroke-width:1px;
+    classDef accent fill:#e0c8ef,color:#333,stroke:#aa8bbb,stroke-width:1px;
+
+    class detect,starter,dynamic,enterprise info;
+    class solo good;
+    class team3,team5 accent;</pre><pre class="mermaid">flowchart TD
+    cto["CTO Lead"] --> pm["Product"]
+    cto --> fe["Frontend"]
+    cto --> qa["QA"]
+    cto --> sec["Security"]
+    cto --> be["Backend or Infra"]
+    pm --> merge["결과 통합"]
+    fe --> merge
+    qa --> merge
+    sec --> merge
+    be --> merge
+
+    classDef lead fill:#fde8c0,color:#333,stroke:#d4b16a,stroke-width:1px;
+    classDef team fill:#c5dcef,color:#333,stroke:#7da6c2,stroke-width:1px;
+    classDef result fill:#c0ecd3,color:#333,stroke:#77b88d,stroke-width:1px;
+
+    class cto lead;
+    class pm,fe,qa,sec,be team;
+    class merge result;</pre><p>이 구조의 장점은 분명합니다. &ldquo;Claude 하나가 다 한다&quot;보다, <strong>프로젝트 규모에 따라 필요한 역할을 분리해서 병렬화</strong> 하려는 시도이기 때문입니다. 다만 이것이 언제나 더 낫다는 뜻은 아닙니다. 작은 프로젝트에 너무 무거운 팀 구성을 얹으면 오히려 속도가 느려질 수 있습니다. 그래서 <strong>bkit</strong> 의 프로젝트 레벨 감지가 실제로 맞아떨어지는지가 도구의 핵심 품질 중 하나가 됩니다.</p>
+<h2 id="4-context-engineering은-프롬프트보다-시스템-설계에-가깝다">4. Context Engineering은 프롬프트보다 시스템 설계에 가깝다</h2>
+<p>README와 <code>context-engineering.md</code>가 반복해서 강조하는 문장은 같습니다. <strong>bkit</strong> 은 <code>Context Engineering</code>의 실용적 구현이라는 주장입니다. 여기서 말하는 컨텍스트 엔지니어링은 &ldquo;프롬프트 문장을 잘 쓰는 기술&quot;이 아니라, <strong>프롬프트와 도구와 상태를 함께 설계해서 모델이 필요한 맥락을 제때 받게 만드는 시스템 설계</strong> 입니다.</p>
+<p>문서 기준으로 현재 구조는 <code>37 skills</code>, <code>32 agents</code>, <code>18 hook events</code>, <code>2 MCP servers</code>, <code>88 lib modules</code>, <code>~620+ functions</code>입니다. 이 숫자는 단순한 자랑 포인트라기보다, 컨텍스트를 여러 레이어에서 주입하고 통제하려는 의도를 보여줍니다. 예를 들어 훅 시스템은 세션 시작, 프롬프트 제출, 도구 사용 전후, 실패 시점 같은 이벤트에 맞춰 다른 문맥을 넣을 수 있게 설계되어 있습니다.</p>
+<p>또 README와 관련 문서는 6개 레이어의 훅 시스템을 설명합니다. 핵심은 <code>hooks.json</code>, 스킬/에이전트 규칙, 다국어 트리거, 스크립트, 팀 오케스트레이션처럼 서로 다른 층에서 규칙이 주입된다는 점입니다. 즉 AI가 잘 동작하길 바라는 대신, <strong>언제 어떤 규칙을 넣고 어떤 상태를 기억시키며 어떤 도구를 금지할지까지 계층화</strong> 하는 방식입니다.</p>
+<pre class="mermaid">flowchart TD
+    global["Global hooks"] --> skill["Skill rules"]
+    skill --> agent["Agent rules"]
+    agent --> trigger["8개 언어 트리거"]
+    trigger --> script["Hook scripts"]
+    script --> state["상태와 메모리"]
+    state --> result["더 안정된 실행"]
+
+    classDef info fill:#c5dcef,color:#333,stroke:#7da6c2,stroke-width:1px;
+    classDef action fill:#e0c8ef,color:#333,stroke:#aa8bbb,stroke-width:1px;
+    classDef good fill:#c0ecd3,color:#333,stroke:#77b88d,stroke-width:1px;
+
+    class global,skill,agent,trigger info;
+    class script,state action;
+    class result good;</pre><p>이 설계는 Claude Code를 더 똑똑하게 만든다기보다, <strong>Claude Code가 실수할 수 있는 지점을 주변 시스템으로 감싼다</strong> 는 발상에 가깝습니다. 그래서 <code>No Guessing</code> 같은 철학이 단지 좋은 문장이 아니라, 훅, 품질 게이트, 상태 머신, 분석 루프 같은 구조로 내려옵니다.</p>
+<p>또 한 가지 흥미로운 부분은 <code>2 MCP servers</code>입니다. 문서 기준으로 PDCA 상태 조회와 분석 관련 도구가 별도 서버 계층으로 분리되어 있습니다. 이는 플러그인이 Claude 내부 설정을 넘어서 <strong>외부 도구 계층과도 연결될 수 있는 운영 플랫폼</strong> 으로 가고 있음을 보여줍니다.</p>
+<h2 id="5-실전-적용-포인트">5. 실전 적용 포인트</h2>
+<p>실제로 써 보려는 사람이라면 세 가지만 먼저 보는 편이 좋습니다.<br>
+첫째, 이 도구는 최신 Claude Code 기능과 연결되는 부분이 많아서 README 기준 요구사항인 <code>Claude Code v2.1.78+</code>와 <code>Node.js v18+</code>를 먼저 맞추는 것이 안전합니다.<br>
+둘째, 설치 자체는 단순합니다. README 예시는 <code>/plugin marketplace add popup-studio-ai/bkit-claude-code</code> 다음 <code>/plugin install bkit</code> 순서입니다.<br>
+셋째, 처음부터 모든 기능을 다 쓰기보다 자신의 프로젝트 크기에 맞는 진입점 하나만 잡는 편이 낫습니다.</p>
+<pre class="mermaid">flowchart TD
+    ready["환경 확인"] --> install["플러그인 설치"]
+    install --> level["Starter/Dynamic/Enterprise 선택"]
+    level --> plan["PDCA 시작"]
+    plan --> team["필요 시 CTO 팀 사용"]
+    team --> refine["Check와 Iterate 반복"]
+
+    classDef info fill:#c5dcef,color:#333,stroke:#7da6c2,stroke-width:1px;
+    classDef good fill:#c0ecd3,color:#333,stroke:#77b88d,stroke-width:1px;
+    classDef warn fill:#fde8c0,color:#333,stroke:#d4b16a,stroke-width:1px;
+
+    class ready,install,level info;
+    class plan,refine good;
+    class team warn;</pre><p>현실적인 접근은 이렇습니다.</p>
+<ol>
+<li>정적 웹이나 개인 프로젝트면 <code>Starter</code> 흐름으로 충분한지 먼저 봅니다.</li>
+<li>풀스택 앱이라면 <code>/pdca plan</code>과 <code>/pdca design</code>이 실제로 문서 품질을 올려주는지 확인합니다.</li>
+<li>병렬 작업이 자주 필요한 팀이라면 CTO-Led Agent Teams의 이점이 있는지 비교합니다.</li>
+<li>이미 자신만의 <code>.claude/</code> 구조가 있다면, bkit의 철학 전체를 받아들이기보다 필요한 컴포넌트만 커스터마이징하는 편이 안전합니다.</li>
+</ol>
+<p>즉 <strong>bkit</strong> 의 가치는 &ldquo;설치하면 갑자기 코드를 잘 짜 준다&quot;가 아니라, <strong>AI 코딩 세션을 계획-설계-검증-반복의 운영 흐름으로 묶어 줄 필요가 있을 때 빛난다</strong> 는 데 있습니다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li><strong>bkit</strong> 은 Claude Code 위에 PDCA 공정, 자동 문서화, 팀 오케스트레이션을 올리는 플러그인이다.</li>
+<li>이 도구의 중심은 프롬프트 최적화보다 상태 머신, 품질 게이트, 반복 수정 루프에 있다.</li>
+<li><code>Starter</code>, <code>Dynamic</code>, <code>Enterprise</code> 구분은 프로젝트 규모에 따라 다른 공정과 팀 구성을 적용하려는 장치다.</li>
+<li><code>37 skills</code>, <code>32 agents</code>, <code>18 hook events</code>, <code>2 MCP servers</code>라는 구조는 컨텍스트 엔지니어링을 시스템 차원에서 구현하려는 방향을 보여준다.</li>
+<li>현재 저장소 기준으로 bkit은 AI 코딩의 속도보다 <strong>재현 가능한 개발 절차</strong> 를 더 중요하게 보는 도구에 가깝다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>Claude Code를 쓰면서 가장 불안한 순간은 &ldquo;이 결과가 우연히 잘 나온 건지, 다시 해도 같은 품질이 나올지&quot;를 알 수 없을 때입니다. <strong>bkit</strong> 은 바로 그 불안을 줄이기 위해 PDCA, 문서, 팀 역할, 훅, 분석 루프를 한 세트로 엮습니다.<br>
+그래서 이 플러그인은 빠른 데모 한 번보다, 반복 가능한 개발 방식이 필요한 사람에게 더 잘 맞습니다. 현재 저장소와 문서만 봐도 방향성은 꽤 분명합니다. AI에게 더 많은 자유를 주는 도구라기보다, <strong>AI가 일하는 방식 자체를 공정으로 설계하려는 도구</strong> 입니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 03월 25일 15시 10분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/03/2026-03-25-agent-experience-coding-agent-productivity/" rel="prev">
+        <span>Agent Experience란 무엇인가: 코딩 에이전트 생산성을 높이는 코드베이스 설계 원칙</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/03/2026-03-25-bkit-vs-gsd-comparison/" rel="next">
+        <span>bkit vs GSD 비교: AI 코딩에서 무엇을 통제하고 싶은가에 따라 답이 달라진다</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-bkit은-프롬프트-팩이-아니라-개발-공정-레이어다">1. bkit은 프롬프트 팩이 아니라 개발 공정 레이어다</a></li>
+    <li><a href="#2-pdca는-체크리스트가-아니라-상태-머신으로-구현된다">2. PDCA는 체크리스트가 아니라 상태 머신으로 구현된다</a></li>
+    <li><a href="#3-프로젝트-레벨-감지와-cto-팀-운영이-작업-방식을-바꾼다">3. 프로젝트 레벨 감지와 CTO 팀 운영이 작업 방식을 바꾼다</a></li>
+    <li><a href="#4-context-engineering은-프롬프트보다-시스템-설계에-가깝다">4. Context Engineering은 프롬프트보다 시스템 설계에 가깝다</a></li>
+    <li><a href="#5-실전-적용-포인트">5. 실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude Code</a>
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
