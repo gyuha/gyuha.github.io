@@ -1,6 +1,6 @@
 ---
 title: "Anthropic의 장기 실행 에이전트 하네스 설계: GAN에서 영감 받은 멀티 에이전트 아키텍처"
-date: 2026-03-26T09:00:00+09:00
+date: 2026-03-26T00:00:00+09:00
 draft: false
 categories:
   - AI

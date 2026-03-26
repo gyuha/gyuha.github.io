@@ -1,6 +1,6 @@
 ---
 title: "오픈클로로 회사 워크플로우 100% 바꾼 AI 네이티브 팀 — GPTers 지피터스 사례"
-date: 2026-03-26T12:00:00+09:00
+date: 2026-03-26T00:00:00+09:00
 draft: false
 categories:
   - AI
