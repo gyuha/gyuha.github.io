@@ -1,0 +1,358 @@
+---
+title: "Codex 서브에이전트 136개 모음집, Google Stitch 바이브 디자인, Anthropic Claude Code 스킬 운용법"
+date: 2026-03-27
+draft: false
+categories:
+  - AI
+tags:
+  - agents
+  - claude-code
+  - skills
+description: "이번 주 주목할 AI 프로덕트 3가지: Codex 서브에이전트 136개를 모은 awesome-codex-subagents, 와이어프레임 없이 자연어로 디자인하는 Google Stitch, 그리고 Anthropic 내부에서 쌓은 Claude Code 스킬 9가지 유형과 운용 노하우를 정리합니다."
+---
+
+AI 도구를 그냥 쓰는 것과 AI에게 구조를 주는 것은 다른 이야기입니다. 이번 주 프로덕트 메이커들이 주목한 세 가지는 모두 같은 방향을 가리킵니다 — 범용 AI 하나에 모든 것을 맡기는 방식 대신, 역할을 나누고 컨텍스트를 구조화하는 방법입니다.<br>
+Codex 서브에이전트 136개 모음집, Google Stitch의 바이브 디자인, 그리고 Anthropic 개발자가 공개한 Claude Code 스킬 운용법을 정리합니다.
+
+<!--more-->
+
+## Sources
+
+- https://yozm.wishket.com/magazine/detail/3666/
+
+---
+
+## 1. awesome-codex-subagents — Codex 서브에이전트 136개 모음집
+
+[VoltAgent](https://github.com/VoltAgent/awesome-codex-subagents)가 GitHub에 공개한 Codex용 서브에이전트 모음입니다. 백엔드·프론트엔드 개발, 언어별 전문가, 인프라, 보안, 데이터·AI, 비즈니스·프로덕트 등 **10개 카테고리에 걸쳐 136개 서브에이전트**가 담겨 있습니다. MIT 라이선스, Codex 공식 문서에 맞는 `.toml` 포맷으로 작성되어 있습니다.
+
+Codex에 서브에이전트 기능이 3월 16일 정식 출시된 직후 주목받았습니다. Simon Willison은 서브에이전트 패턴이 코딩 에이전트의 표준이 되고 있다고 언급했고, 직접 구성하는 방법에 대한 관심이 빠르게 높아졌습니다.
+
+### 어떤 문제를 해결하나
+
+Codex 하나에 모든 것을 맡기면 컨텍스트가 섞입니다. 코드 리뷰와 문서화와 버그 디버깅을 동시에 시키면 각 작업의 집중도가 떨어집니다. 사람도 마찬가지입니다 — 한 사람에게 기획·개발·QA를 동시에 맡기면 결과물이 흐릿해집니다. 서브에이전트는 이 문제를 분업으로 해결합니다.
+
+```mermaid
+flowchart TD
+    User["개발자 요청"]
+
+    subgraph "단일 에이전트 방식"
+        A["Codex 하나"]
+        A1["코드 리뷰 + 문서화 +<br>버그 디버깅 + 보안 검토<br>컨텍스트 혼재"]
+        A --> A1
+    end
+
+    subgraph "서브에이전트 분업 방식"
+        B1["reviewer<br>코드 정확성·보안"]
+        B2["docs_researcher<br>프레임워크 API 검증"]
+        B3["backend-developer<br>로직 구현"]
+        B4["결과 통합 후 요약"]
+        B1 --> B4
+        B2 --> B4
+        B3 --> B4
+    end
+
+    User --> A
+    User --> B1
+    User --> B2
+    User --> B3
+
+    classDef single fill:#ffc8c4,color:#333
+    classDef multi fill:#c0ecd3,color:#333
+    classDef result fill:#c5dcef,color:#333
+    class A,A1 single
+    class B1,B2,B3 multi
+    class B4 result
+```
+
+### 설치 방법
+
+```bash
+# 전체 프로젝트에서 쓰려면 (전역 설치)
+mkdir -p ~/.codex/agents
+cp categories/04-quality-security/reviewer.toml ~/.codex/agents/
+
+# 특정 프로젝트에서만 쓰려면 (로컬 설치)
+mkdir -p .codex/agents
+cp categories/01-core-development/backend-developer.toml .codex/agents/
+```
+
+설치 후 Codex에서 **명시적으로 호출**해야 합니다. 자동으로 작동하지 않으며 직접 지정해야 합니다.
+
+```
+이 브랜치를 병렬로 검토해줘.
+reviewer가 정확성과 보안을 확인하고,
+docs_researcher가 이 패치가 의존하는 프레임워크 API를 검증하게 해줘.
+둘 다 끝나면 결과를 요약해줘.
+```
+
+### 모델 배정 전략
+
+각 서브에이전트는 역할에 따라 모델이 지정됩니다.
+
+```mermaid
+flowchart TD
+    subgraph "깊은 추론이 필요한 에이전트"
+        H1["보안 감사"]
+        H2["아키텍처 리뷰"]
+        HM["gpt-5.4"]
+        H1 --> HM
+        H2 --> HM
+    end
+
+    subgraph "빠른 처리가 필요한 에이전트"
+        L1["문서 조회"]
+        L2["빠른 탐색"]
+        LM["gpt-5.3-codex-spark<br>또는 gpt-5.4-mini"]
+        L1 --> LM
+        L2 --> LM
+    end
+
+    classDef heavy fill:#e0c8ef,color:#333
+    classDef light fill:#c5dcef,color:#333
+    class HM heavy
+    class LM light
+```
+
+모델 배정은 `.toml` 파일에서 직접 변경할 수 있습니다.
+
+Claude Code 사용자라면 같은 VoltAgent가 운영하는 [awesome-claude-code-subagents](https://github.com/VoltAgent/awesome-claude-code-subagents)가 따로 있습니다.
+
+---
+
+## 2. Google Stitch — 바이브 디자인과 DESIGN.md
+
+[Google Stitch](https://blog.google/innovation-and-ai/models-and-research/google-labs/stitch-ai-ui-design/)는 Google Labs가 운영하는 AI 기반 UI 디자인 도구입니다. 3월 18일 대규모 업데이트를 통해 단순한 UI 생성기에서 **AI 네이티브 소프트웨어 디자인 캔버스**로 전면 재구성됐습니다. 핵심 개념은 **바이브 디자인(vibe design)** — 와이어프레임 없이 비즈니스 목표나 사용자 경험을 자연어로 설명하면 디자인이 생성됩니다. **월 350회까지 무료**입니다.
+
+### 기존 디자인 프로세스와의 차이
+
+```mermaid
+flowchart TD
+    subgraph "기존 디자인 프로세스"
+        A1["와이어프레임 작성"]
+        A2["컴포넌트 배치"]
+        A3["색상·폰트 선택"]
+        A4["완성본"]
+        A1 --> A2 --> A3 --> A4
+    end
+
+    subgraph "Google Stitch (바이브 디자인)"
+        B1["목표·감정·레퍼런스<br>자연어로 설명"]
+        B2["에이전트가 여러 방향<br>동시 생성"]
+        B3["마음에 드는 것 선택 후 다듬기"]
+        B4["인터랙티브 프로토타입<br>즉시 변환"]
+        B1 --> B2 --> B3 --> B4
+    end
+
+    classDef old fill:#fde8c0,color:#333
+    classDef new fill:#c0ecd3,color:#333
+    class A1,A2,A3,A4 old
+    class B1,B2,B3,B4 new
+```
+
+### 주요 기능
+
+**무한 캔버스**: 이미지, 텍스트, 코드 등 형태에 관계없이 컨텍스트를 올려놓을 수 있습니다. 디자인 에이전트가 이 전체 컨텍스트를 바탕으로 프로젝트 흐름을 추론합니다.
+
+**Agent Manager**: 여러 방향을 동시에 탐색하고 싶을 때 병렬로 아이디어를 진행하고 각각을 추적합니다.
+
+**인터랙티브 프로토타입 즉시 변환**: 화면들을 연결하고 Play 버튼을 누르면 앱 플로우를 바로 체험할 수 있고, 클릭에 기반해 다음 화면을 자동으로 생성합니다.
+
+**음성 입력**: "메뉴 옵션 3가지 보여줘", "이 화면을 다른 컬러 팔레트로 보여줘" 같은 요청을 실시간으로 처리합니다.
+
+### DESIGN.md — 더 주목해야 할 포인트
+
+이번 업데이트에서 흥미로운 부분은 **DESIGN.md**입니다. 디자인 규칙을 에이전트 친화적인 마크다운으로 내보내고 가져오는 이 포맷은, CLAUDE.md가 코딩 에이전트에 컨텍스트를 구조화하는 것과 같은 방향입니다.
+
+```mermaid
+flowchart LR
+    CM["CLAUDE.md<br>코딩 에이전트에게<br>코딩 컨텍스트 제공"]
+    DM["DESIGN.md<br>디자인 에이전트에게<br>디자인 컨텍스트 제공"]
+
+    CM -- "같은 패턴" --> DM
+
+    classDef md fill:#c5dcef,color:#333
+    class CM,DM md
+```
+
+디자인 레이어에서도 컨텍스트를 구조화하는 흐름이 시작됐습니다. MCP 서버와 SDK도 공개되어 있어 Stitch 기능을 다른 도구나 개발 워크플로에 연결할 수 있습니다.
+
+**현재 제한**: 18세 이상, Gemini 지원 국가, 영어로만 이용 가능합니다. Figma 내보내기를 지원하므로 "아이디어 탐색(Stitch) → 정교한 완성(Figma)"으로 연결하는 워크플로가 자연스럽습니다.
+
+---
+
+## 3. Anthropic Claude Code 스킬 운용법
+
+[Thariq](https://x.com/trq212/status/2033949937936085378)는 Claude Code를 만든 Anthropic 팀의 개발자입니다. Anthropic 내부에서 수백 개의 스킬을 운용하며 쌓은 노하우를 X에 공개했고, 조회수 552만, 좋아요 1.4만을 기록했습니다. 새로운 기능 소개가 아니라 — **스킬을 어떻게 분류하고, 잘 만들고, 팀에 배포하는지**에 대한 실전 판단 기준입니다.
+
+### 9가지 스킬 유형
+
+어떤 스킬이 빠져 있는지 점검하는 기준으로 사용할 수 있습니다.
+
+```mermaid
+flowchart TD
+    S["Claude Code 스킬"]
+
+    S --> T1["1. 라이브러리·API 레퍼런스<br>내부 라이브러리 / Claude가 실수하는<br>외부 라이브러리 올바른 사용법"]
+    S --> T2["2. 제품 검증<br>Playwright, tmux 등 외부 도구 연결<br>실제 동작 확인"]
+    S --> T3["3. 데이터 패칭·분석<br>모니터링 스택 연결<br>자격증명, 대시보드 ID 포함"]
+    S --> T4["4. 비즈니스 프로세스 자동화<br>반복 워크플로를 명령 하나로<br>이전 실행 결과를 로그로 저장"]
+    S --> T5["5. 코드 스캐폴딩·템플릿<br>프레임워크 보일러플레이트 생성<br>자연어 요구사항이 있을 때 유용"]
+    S --> T6["6. 코드 품질·리뷰<br>조직 코드 품질 기준 적용<br>Hook / GitHub Action으로 자동 실행"]
+    S --> T7["7. CI/CD·배포<br>코드 패치·배포 자동화<br>다른 스킬 참조로 데이터 수집 연결"]
+    S --> T8["8. 런북<br>Slack 스레드·알림·에러 시그니처 입력<br>멀티툴 조사 후 구조화된 보고서 생성"]
+    S --> T9["9. 인프라 운영<br>루틴 유지보수·운영 절차<br>파괴적 작업에 가드레일 필수"]
+
+    classDef main fill:#c5dcef,color:#333
+    classDef type fill:#fde8c0,color:#333
+    class S main
+    class T1,T2,T3,T4,T5,T6,T7,T8,T9 type
+```
+
+특히 **제품 검증 스킬**에 대해 Thariq는 "검증 스킬 하나를 잘 만드는 데 엔지니어 일주일을 쓸 가치가 있다"고 했습니다. AI가 코드를 빠르게 만들수록 그것이 실제로 잘 동작하는지 확인하는 과정이 병목이 되기 때문입니다.
+
+### 스킬을 잘 만드는 5가지 팁
+
+**1. 당연한 내용은 쓰지 않는다**
+
+Claude는 이미 코드베이스를 많이 알고 있습니다. 스킬에는 Claude가 기본적으로 생각하지 않는 방향으로 밀어내는 정보만 담아야 합니다. Anthropic 내부의 `frontend-design` 스킬은 Inter 폰트나 보라색 그라디언트처럼 AI가 자주 쓰는 기본 패턴을 **피하도록** 만들어졌습니다.
+
+**2. Gotchas 섹션을 만든다**
+
+스킬에서 신호 대비 밀도가 가장 높은 부분입니다. Claude가 실제로 실수한 지점을 모아서 계속 업데이트하는 방식으로 운영합니다.
+
+**3. 스킬은 파일 하나가 아닌 폴더다**
+
+마크다운 파일 하나로 끝내지 말고, 다음처럼 구성합니다:
+
+```
+my-skill/
+├── SKILL.md          # 스킬 진입점
+├── references/
+│   └── api.md        # 상세 함수 시그니처
+├── assets/
+│   └── template.md   # 결과물 템플릿
+└── scripts/
+    └── validate.sh   # 검증 스크립트
+```
+
+Claude가 필요할 때 읽을 파일을 미리 알려주면 컨텍스트를 효율적으로 사용합니다.
+
+**4. description 필드는 모델을 위해 쓴다**
+
+Claude Code는 세션 시작 시 모든 스킬 목록을 보고 이 요청에 맞는 스킬이 있는지 판단합니다. description은 사람이 이해하는 설명이 아니라, **모델이 언제 이 스킬을 써야 할지 판단할 수 있는 설명**으로 작성해야 합니다.
+
+**5. Claude를 너무 좁게 가두지 않는다**
+
+스킬은 재사용되기 때문에 지나치게 구체적으로 지시하면 상황에 맞게 적응하지 못합니다. 필요한 정보를 주되 판단의 여지를 남겨야 합니다.
+
+```mermaid
+flowchart TD
+    subgraph "나쁜 스킬 패턴"
+        B1["당연한 내용 가득"]
+        B2["파일 하나에 모든 것"]
+        B3["description = 사람을 위한 설명"]
+        B4["지나치게 구체적인 지시"]
+    end
+
+    subgraph "좋은 스킬 패턴"
+        G1["Claude가 기본적으로 생각 안 하는<br>정보만 담기"]
+        G2["폴더 구조 + references/ + assets/"]
+        G3["description = 모델이 언제 써야 할지<br>판단 가능한 설명"]
+        G4["필요한 정보 + 판단 여지 남기기<br>+ Gotchas 섹션"]
+    end
+
+    classDef bad fill:#ffc8c4,color:#333
+    classDef good fill:#c0ecd3,color:#333
+    class B1,B2,B3,B4 bad
+    class G1,G2,G3,G4 good
+```
+
+### 팀에 스킬 배포하기
+
+```mermaid
+flowchart TD
+    Q["팀 규모?"]
+
+    Q --> S["소규모"]
+    Q --> L["규모가 커지면"]
+
+    S --> S1["레포지토리<br>.claude/skills/ 에 체크인"]
+
+    L --> L1["내부 플러그인 마켓플레이스 구축"]
+    L1 --> L2["Anthropic 방식"]
+    L2 --> L3["GitHub 샌드박스 폴더에 올리기"]
+    L3 --> L4["Slack으로 팀에 공유"]
+    L4 --> L5["충분히 쓰이면<br>마켓플레이스 PR 올리기"]
+
+    classDef step fill:#c5dcef,color:#333
+    classDef result fill:#c0ecd3,color:#333
+    class Q,S,L step
+    class S1,L1,L2,L3,L4,L5 result
+```
+
+Anthropic 내부에서는 중앙 관리 방식을 쓰지 않습니다. 유용한 스킬을 만든 사람이 GitHub 샌드박스 폴더에 올리고 Slack으로 공유하면, 충분히 쓰이면 마켓플레이스 PR을 올리는 방식으로 스킬이 자연스럽게 퍼집니다.
+
+---
+
+## 세 가지의 공통 인사이트
+
+세 소재가 각각 다른 레이어를 건드리지만, 공통점이 있습니다.
+
+```mermaid
+flowchart TD
+    subgraph "디자인 레이어"
+        D["Google Stitch"]
+        D1["DESIGN.md로<br>디자인 컨텍스트 구조화"]
+        D --> D1
+    end
+
+    subgraph "실행 레이어 — 에이전트 구조"
+        E["awesome-codex-subagents"]
+        E1["작업별 독립 컨텍스트 분리<br>역할별 모델 배정"]
+        E --> E1
+    end
+
+    subgraph "실행 레이어 — 조직 노하우"
+        C["Claude Code 스킬"]
+        C1["조직 노하우를 에이전트가<br>쓸 수 있는 형태로 압축"]
+        C --> C1
+    end
+
+    KEY["공통 방향<br>범용 AI 하나에 모든 것을 맡기는 방식 ✗<br>역할 분리 + 컨텍스트 구조화 ✓"]
+
+    D1 --> KEY
+    E1 --> KEY
+    C1 --> KEY
+
+    classDef tool fill:#c5dcef,color:#333
+    classDef insight fill:#fde8c0,color:#333
+    classDef key fill:#c0ecd3,color:#333
+    class D,E,C tool
+    class D1,E1,C1 insight
+    class KEY key
+```
+
+AI를 잘 쓰는 것과 AI에게 구조를 주는 것은 다른 이야기입니다. 셋 모두 같은 방향을 가리킵니다 — 구조 없이 사용하는 사람과 구조를 설계하는 사람 사이의 격차가 빠르게 벌어지고 있습니다.
+
+---
+
+## 핵심 요약
+
+| 항목 | 내용 |
+|------|------|
+| **awesome-codex-subagents** | VoltAgent GitHub, 10개 카테고리 136개, MIT 라이선스, `.toml` 포맷 |
+| **서브에이전트 설치** | `~/.codex/agents/` (전역) 또는 `.codex/agents/` (프로젝트) |
+| **모델 배정** | 깊은 추론 → gpt-5.4 / 빠른 탐색 → gpt-5.3-codex-spark |
+| **Google Stitch** | 바이브 디자인, 월 350회 무료, DESIGN.md, MCP 서버/SDK 공개 |
+| **Stitch 포지셔닝** | 아이디어 탐색 도구 (Figma 대체 아닌 보완, Figma 내보내기 지원) |
+| **Claude Code 스킬 유형** | 9가지: 라이브러리/API, 제품검증, 데이터, 비즈니스, 스캐폴딩, 코드품질, CI/CD, 런북, 인프라 |
+| **스킬 작성 원칙** | 당연한 내용 제외, Gotchas 섹션, 폴더 구조, description은 모델용 |
+| **팀 배포** | 소규모: `.claude/skills/` / 대규모: 내부 마켓플레이스 |
+
+---
+
+## 결론
+
+세 도구가 공통으로 가리키는 방향은 하나입니다 — **AI에게 구조를 주는 것**이 그냥 쓰는 것보다 훨씬 효과적이라는 것입니다.<br>
+당장 적용해볼 수 있는 것은 간단합니다. 지금 Claude Code나 Codex를 쓰고 있다면 가장 자주 반복하는 작업 하나를 골라 스킬로 만들어보세요. 처음부터 완벽하게 만들려 하지 말고, 몇 줄과 Gotchas 하나로 시작하면 됩니다. 대부분의 좋은 스킬은 그렇게 시작했습니다.
