@@ -1,6 +1,6 @@
 ---
 title: "Claude Code Auto Dream — 메모리 충돌을 자동으로 정리하는 숨겨진 기능"
-date: 2026-03-27
+date: 2026-03-27T00:00:00+09:00
 draft: false
 categories:
   - AI
