@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'GSD: AI 코딩 에이전트의 컨텍스트 붕괴를 해결하는 워크플로우 시스템'" />
+  <title>GSD: AI 코딩 에이전트의 컨텍스트 붕괴를 해결하는 워크플로우 시스템  | 신규하 블로그</title>
+  <meta property="og:title" content="GSD: AI 코딩 에이전트의 컨텍스트 붕괴를 해결하는 워크플로우 시스템" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-03-26"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/03/2026-03-26-gsd-context-engineering-coding-agents/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="agents" />
+  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/03/2026-03-26-gsd-context-engineering-coding-agents/">
+          <h1>
+            GSD: AI 코딩 에이전트의 컨텍스트 붕괴를 해결하는 워크플로우 시스템
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/03/2026-03-26-gsd-context-engineering-coding-agents/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>AI 코딩 에이전트로 대규모 프로젝트를 진행하다 보면 누구나 겪는 문제가 있습니다. 처음 몇 턴은 모델이 완벽하게 동작하지만, 컨텍스트가 쌓이면서 답변이 짧아지고, 이전 결정을 잊어버리고, 엉뚱한 코드를 변경하기 시작합니다. <strong>GSD</strong> (Get Shit Done)는 바로 이 <strong>컨텍스트 붕괴</strong> (Context Rot) 문제를 정면으로 해결하려는 오픈소스 워크플로우 시스템입니다. 이미 GitHub에서 수만 개의 스타를 받으며 빠르게 확산되고 있습니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=YfJwFZ9L5JI">GSD + Claude Code, Antigravity: This Simple PLUGIN makes your Claude Code &amp; Antigravity 2X BETTER! - AICodeKing</a></li>
+</ul>
+<h2 id="gsd란-무엇인가">GSD란 무엇인가</h2>
+<p>GSD는 새로운 AI IDE도, 새로운 모델도 아닙니다. Claude Code, Codex, Gemini CLI, OpenCode, Copilot, Cursor, Antigravity 같은 기존 AI 코딩 도구 <strong>위에 설치하는 워크플로우 레이어</strong> 입니다. 가장 핵심적인 정의는 <strong>코딩 에이전트를 위한 컨텍스트 엔지니어링 레이어</strong> 라는 것입니다 (<a href="https://youtu.be/YfJwFZ9L5JI?t=30">0:30</a>).</p>
+<p>기존 방식에서는 하나의 거대한 프롬프트를 에이전트에 던지고 최선을 바랐습니다. GSD는 이를 <strong>반복 가능한 프로세스</strong> 로 바꿉니다. 코드베이스 분석 → 프로젝트 생성 → 단계 논의 → 계획 수립 → 실행 → 검증 → 배포의 순서로 작업을 진행합니다 (<a href="https://youtu.be/YfJwFZ9L5JI?t=75">1:15</a>).</p>
+<pre class="mermaid">graph TD
+    A["코드베이스 분석<br>/gsd map-codebase"] --> B["프로젝트 생성<br>/gsd new-project"]
+    B --> C["단계 논의<br>/gsd discuss-phase"]
+    C --> D["계획 수립<br>/gsd plan-phase"]
+    D --> E["실행<br>/gsd execute-phase"]
+    E --> F["검증<br>/gsd verify-work"]
+    F --> G{통과?}
+    G -->|Yes| H["배포"]
+    G -->|No| I["디버그 에이전트 생성"]
+    I --> D
+
+    classDef discover fill:#c5dcef,stroke:#5b9bd5,color:#333
+    classDef plan fill:#c0ecd3,stroke:#5cb85c,color:#333
+    classDef exec fill:#fde8c0,stroke:#f0ad4e,color:#333
+    classDef verify fill:#e0c8ef,stroke:#9b59b6,color:#333
+    classDef ship fill:#ffc8c4,stroke:#d9534f,color:#333
+    classDef decision fill:#fff3cd,stroke:#f0ad4e,color:#333
+
+    class A discover
+    class B,C plan
+    class D plan
+    class E exec
+    class F verify
+    class G decision
+    class H ship
+    class I exec</pre><p>GSD는 스스로를 <strong>&ldquo;엔터프라이즈 시어터&quot;의 반대편</strong> 에 위치시킵니다. 50명 규모의 소프트웨어 회사에서나 쓸 법한 무거운 프로세스가 아니라, 솔로 개발자를 위한 가벼운 구조를 지향합니다 (<a href="https://youtu.be/YfJwFZ9L5JI?t=120">2:00</a>).</p>
+<h2 id="컨텍스트-붕괴-context-rot-문제">컨텍스트 붕괴 (Context Rot) 문제</h2>
+<p>GSD가 해결하려는 핵심 문제를 이해하면 이 도구의 가치가 명확해집니다. <strong>컨텍스트 붕괴</strong> 란 AI 코딩 에이전트를 사용할 때 세션이 길어지면서 발생하는 성능 저하 현상입니다 (<a href="https://youtu.be/YfJwFZ9L5JI?t=40">0:40</a>).</p>
+<p>구체적인 증상은 다음과 같습니다:</p>
+<ol>
+<li>깨끗한 프롬프트로 시작하면 모델이 처음 몇 턴은 뛰어난 결과를 보여줌</li>
+<li>컨텍스트가 점점 비대해지면서 답변이 짧아짐</li>
+<li>이전에 내린 결정을 잊어버림</li>
+<li>관련 없는 코드를 무작위로 변경하기 시작</li>
+<li>결국 에이전트를 도와주기보다 <strong>에이전트를 감시하는 데 더 많은 시간</strong> 을 쓰게 됨</li>
+</ol>
+<pre class="mermaid">graph TD
+    A["세션 시작<br>깨끗한 컨텍스트"] --> B["초반 몇 턴<br>뛰어난 결과"]
+    B --> C["컨텍스트 비대화<br>답변 품질 저하"]
+    C --> D["이전 결정 망각"]
+    D --> E["무작위 코드 변경"]
+    E --> F["개발자가 에이전트를<br>감시하는 상태"]
+
+    classDef good fill:#c0ecd3,stroke:#5cb85c,color:#333
+    classDef warn fill:#fde8c0,stroke:#f0ad4e,color:#333
+    classDef bad fill:#ffc8c4,stroke:#d9534f,color:#333
+
+    class A,B good
+    class C,D warn
+    class E,F bad</pre><p>GSD의 해결 전략은 <strong>하나의 거대한 세션 대신, 체크포인트가 있는 작고 집중된 작업 단위</strong> 로 분리하는 것입니다. 이렇게 하면 각 단계에서 에이전트가 신선한 컨텍스트 윈도우 안에서 작업할 수 있습니다.</p>
+<h2 id="설치-방법">설치 방법</h2>
+<p>설치는 간단합니다. 터미널에서 한 줄의 명령어로 시작합니다 (<a href="https://youtu.be/YfJwFZ9L5JI?t=135">2:15</a>):</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>npx get-shit-done-cc@latest
+</span></span></code></pre></div><p>설치 과정에서 두 가지를 물어봅니다:</p>
+<ul>
+<li><strong>런타임 선택</strong>: Claude Code, OpenCode, Gemini CLI, Codex, Copilot, Cursor, Antigravity 중 선택 (또는 전체 설치)</li>
+<li><strong>설치 범위</strong>: 글로벌 설치 또는 현재 프로젝트 한정 설치</li>
+</ul>
+<p>Mac, Windows, Linux 모든 플랫폼을 지원합니다. 설치 후 검증 방법은 런타임에 따라 다릅니다:</p>
+<table>
+  <thead>
+      <tr>
+          <th>런타임</th>
+          <th>검증 명령어</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Claude Code / Gemini CLI</td>
+          <td><code>/gsd help</code></td>
+      </tr>
+      <tr>
+          <td>Codex</td>
+          <td><code>$args-help</code></td>
+      </tr>
+  </tbody>
+</table>
+<p>Codex의 경우 커스텀 프롬프트 대신 <strong>스킬 폴더</strong> 를 설치하는 방식을 사용합니다. Codex가 이미 동작하는 방식에 자연스럽게 맞추는 설계입니다 (<a href="https://youtu.be/YfJwFZ9L5JI?t=170">2:50</a>).</p>
+<h2 id="핵심-워크플로우-명령어">핵심 워크플로우 명령어</h2>
+<h3 id="1-gsd-map-codebase--코드베이스-분석">1. /gsd map-codebase — 코드베이스 분석</h3>
+<p>기존 프로젝트가 있다면 여기서 시작하는 것이 좋습니다. 이 명령어는 <strong>병렬 에이전트를 생성</strong> 하여 프로젝트의 아키텍처, 코딩 컨벤션, 기술 스택, 문제점을 분석합니다 (<a href="https://youtu.be/YfJwFZ9L5JI?t=180">3:00</a>).</p>
+<p>이것이 중요한 이유는 에이전트 기반 코딩의 가장 큰 문제 중 하나가 <strong>모델이 코드베이스를 제대로 이해하기 전에 코드를 수정하기 시작</strong> 하는 것이기 때문입니다. GSD는 이 이해를 <strong>선행 작업</strong> 으로 처리합니다.</p>
+<pre class="mermaid">graph TD
+    A["/gsd map-codebase 실행"] --> B["병렬 에이전트 생성"]
+    B --> C["아키텍처 분석"]
+    B --> D["코딩 컨벤션 분석"]
+    B --> E["기술 스택 분석"]
+    B --> F["문제점 분석"]
+    C --> G["통합된 코드베이스 이해"]
+    D --> G
+    E --> G
+    F --> G
+    G --> H["이후 작업에서<br>컨텍스트로 활용"]
+
+    classDef cmd fill:#c5dcef,stroke:#5b9bd5,color:#333
+    classDef agent fill:#fde8c0,stroke:#f0ad4e,color:#333
+    classDef result fill:#c0ecd3,stroke:#5cb85c,color:#333
+
+    class A cmd
+    class B,C,D,E,F agent
+    class G,H result</pre><h3 id="2-gsd-new-project--프로젝트-생성">2. /gsd new-project — 프로젝트 생성</h3>
+<p>계획 흐름을 시작하는 명령어입니다. 질문을 하고, 리서치를 수행하고, 요구사항을 추출하고, 로드맵을 생성합니다 (<a href="https://youtu.be/YfJwFZ9L5JI?t=240">4:00</a>).</p>
+<p>생성되는 파일들:</p>
+<ul>
+<li><code>project.mmd</code> — 프로젝트 정의</li>
+<li><code>requirements.mmd</code> — 요구사항 문서</li>
+<li><code>roadmap.mmd</code> — 개발 로드맵</li>
+<li><code>state.mmd</code> — 현재 상태 추적</li>
+<li><code>planning-research/</code> — 리서치 결과 폴더</li>
+</ul>
+<p>이렇게 <strong>영속적인 프로젝트 메모리</strong> 를 먼저 구축한 후에 에이전트가 구현 결정을 내리도록 합니다. 단순히 채팅하는 것이 아니라 체계적으로 프로젝트를 설계하는 것입니다.</p>
+<h3 id="3-gsd-discuss-phase--단계-논의">3. /gsd discuss-phase — 단계 논의</h3>
+<p>GSD에서 가장 과소평가된 기능이라고 할 수 있습니다. 이 명령어는 <strong>계획 전에 모든 회색 지대를 표면으로 끌어올립니다</strong> (<a href="https://youtu.be/YfJwFZ9L5JI?t=270">4:30</a>).</p>
+<p>작업 유형에 따라 다른 질문을 합니다:</p>
+<ul>
+<li><strong>UI 작업</strong>: 레이아웃, 밀도, 인터랙션, 빈 상태 처리</li>
+<li><strong>API/CLI 작업</strong>: 응답 형식, 플래그, 에러 핸들링, 로깅 수준</li>
+</ul>
+<p>핵심 통찰은 이것입니다: <strong>모델이 코딩을 못하는 것이 아니라, 당신이 원하는 것을 추측하는 데 실패하는 것</strong> 입니다 (<a href="https://youtu.be/YfJwFZ9L5JI?t=310">5:10</a>). 모델이 암묵적으로 제품 결정을 내리는 대신, GSD가 그 결정들을 명시적으로 드러냅니다.</p>
+<pre class="mermaid">graph TD
+    subgraph "discuss-phase 없이"
+        A1["모호한 요구사항"] --> B1["모델이 암묵적 결정"]
+        B1 --> C1["예상과 다른 결과물"]
+        C1 --> D1["재작업 필요"]
+    end
+
+    subgraph "discuss-phase 사용"
+        A2["모호한 요구사항"] --> B2["GSD가 구체적 질문"]
+        B2 --> C2["명시적 결정 도출"]
+        C2 --> D2["기대에 부합하는 결과물"]
+    end
+
+    classDef bad fill:#ffc8c4,stroke:#d9534f,color:#333
+    classDef good fill:#c0ecd3,stroke:#5cb85c,color:#333
+    classDef neutral fill:#c5dcef,stroke:#5b9bd5,color:#333
+
+    class A1,A2 neutral
+    class B1,C1,D1 bad
+    class B2,C2,D2 good</pre><h3 id="4-gsd-plan-phase--계획-수립">4. /gsd plan-phase — 계획 수립</h3>
+<p>이 단계에서 GSD는 해당 단계를 리서치하고, <strong>작고 원자적인 태스크 계획</strong> 을 생성한 뒤, 요구사항 대비 검증합니다 (<a href="https://youtu.be/YfJwFZ9L5JI?t=315">5:15</a>).</p>
+<p>여기서 핵심 트릭이 있습니다: 계획은 <strong>신선한 컨텍스트 윈도우 안에서 실행할 수 있을 만큼 작게</strong> 만들어집니다. 에이전트에게 전체 제품 대화를 기억하면서 동시에 12번째 태스크를 구현하라고 요청하는 것이 아닙니다. 에이전트가 <strong>한 번에 하나의 경계된 작업 단위</strong> 에만 집중할 수 있도록 작업을 청크로 나눕니다 (<a href="https://youtu.be/YfJwFZ9L5JI?t=325">5:25</a>).</p>
+<h3 id="5-gsd-execute-phase--실행">5. /gsd execute-phase — 실행</h3>
+<p>실행 단계는 <strong>병렬 에이전트</strong> 를 좋아하는 사람에게 특히 매력적입니다. GSD는 계획들을 <strong>의존성에 따라 웨이브(wave)로 그룹화</strong> 합니다 (<a href="https://youtu.be/YfJwFZ9L5JI?t=340">5:40</a>):</p>
+<ul>
+<li><strong>독립적인 계획</strong> 은 병렬로 실행</li>
+<li><strong>의존적인 계획</strong> 은 이전 웨이브가 완료될 때까지 대기</li>
+</ul>
+<pre class="mermaid">graph TD
+    subgraph "Wave 1 — 병렬 실행"
+        T1["Task A<br>인증 모듈"]
+        T2["Task B<br>결제 API"]
+        T3["Task C<br>이메일 서비스"]
+    end
+
+    subgraph "Wave 2 — Wave 1 완료 후"
+        T4["Task D<br>결제 연동 UI"]
+        T5["Task E<br>알림 시스템"]
+    end
+
+    subgraph "Wave 3 — Wave 2 완료 후"
+        T6["Task F<br>대시보드 통합"]
+    end
+
+    T1 --> T4
+    T2 --> T4
+    T3 --> T5
+    T4 --> T6
+    T5 --> T6
+
+    classDef wave1 fill:#c5dcef,stroke:#5b9bd5,color:#333
+    classDef wave2 fill:#fde8c0,stroke:#f0ad4e,color:#333
+    classDef wave3 fill:#c0ecd3,stroke:#5cb85c,color:#333
+
+    class T1,T2,T3 wave1
+    class T4,T5 wave2
+    class T6 wave3</pre><p>또한 GSD는 <strong>수직 슬라이스(vertical slice)가 수평 레이어(horizontal layer)보다 병렬화에 유리하다</strong> 는 점을 강조합니다. 작업을 엔드투엔드 슬라이스로 나누면 충돌이 줄어들고, 각 에이전트가 의미 있는 결과에 더 집중할 수 있습니다 (<a href="https://youtu.be/YfJwFZ9L5JI?t=350">5:50</a>).</p>
+<p>또 하나 중요한 설계는 <strong>각 태스크마다 원자적 git 커밋</strong> 을 생성한다는 것입니다. 실행이 끝났을 때 미스터리한 변경사항의 더미가 아니라, 깨끗한 히스토리와 롤백 포인트를 얻게 됩니다 (<a href="https://youtu.be/YfJwFZ9L5JI?t=370">6:10</a>).</p>
+<h3 id="6-gsd-verify-work--검증">6. /gsd verify-work — 검증</h3>
+<p>대부분의 AI 코딩 워크플로우는 코드가 컴파일되거나 테스트가 통과하면 멈춥니다. 하지만 이것만으로는 충분하지 않습니다. 기능이 테스트를 통과하면서도 사용자에게는 잘못될 수 있습니다 (<a href="https://youtu.be/YfJwFZ9L5JI?t=385">6:25</a>).</p>
+<p>GSD의 verify-work는 <strong>테스트 가능한 산출물을 추출</strong> 하고 하나씩 확인합니다:</p>
+<ul>
+<li>사용자가 로그인할 수 있는가?</li>
+<li>온보딩 흐름이 작동하는가?</li>
+<li>대시보드가 올바른 상태를 렌더링하는가?</li>
+</ul>
+<p>실패하면 <strong>디버그 에이전트를 생성</strong> 하고 수정 계획을 만들어 재실행합니다. 코드 생성에서 끝나는 것이 아니라 <strong>실제로 작동하는 소프트웨어</strong> 에 도달하려고 시도합니다.</p>
+<h3 id="7-gsd-next--다음-단계-안내">7. /gsd next — 다음 단계 안내</h3>
+<p>어떤 명령어를 다음에 실행해야 할지 모를 때, <code>/gsd next</code>가 워크플로우에서 다음 논리적 단계를 알려줍니다 (<a href="https://youtu.be/YfJwFZ9L5JI?t=420">7:00</a>). 작은 기능이지만 작업 모멘텀을 유지하는 데 효과적입니다.</p>
+<h2 id="실전-예시-saas-앱에-결제--관리자-대시보드-추가">실전 예시: SaaS 앱에 결제 + 관리자 대시보드 추가</h2>
+<p>기존 SaaS 앱에 결제 기능과 관리자 대시보드를 추가하는 시나리오를 살펴봅니다 (<a href="https://youtu.be/YfJwFZ9L5JI?t=435">7:15</a>).</p>
+<pre class="mermaid">graph TD
+    subgraph "기존 방식 — 하나의 거대한 프롬프트"
+        A1["결제 + 대시보드<br>전부 한 번에 요청"] --> B1["초반 빠른 시작"]
+        B1 --> C1["Stripe 추가하지만<br>엣지 케이스 무시"]
+        C1 --> D1["대시보드에서<br>결제 상태 누락"]
+        D1 --> E1["결국 수동 디버깅"]
+    end
+
+    classDef bad fill:#ffc8c4,stroke:#d9534f,color:#333
+    class A1,B1,C1,D1,E1 bad</pre><pre class="mermaid">graph TD
+    subgraph "GSD 방식 — 구조화된 워크플로우"
+        A2["Phase 1: 결제 시스템"] --> B2["discuss-phase<br>결제 엣지 케이스 논의"]
+        B2 --> C2["plan-phase<br>원자적 태스크 생성"]
+        C2 --> D2["execute-phase<br>병렬 실행"]
+        D2 --> E2["verify-work<br>결제 기능 검증"]
+        E2 --> F2["Phase 2: 대시보드"]
+    end
+
+    classDef good fill:#c0ecd3,stroke:#5cb85c,color:#333
+    class A2,B2,C2,D2,E2,F2 good</pre><p>단계별로 분리하면 각 단계에서 에이전트가 신선한 컨텍스트로 작업하고, 검증 후 다음 단계로 넘어갑니다. 하나의 거대한 프롬프트가 모든 것을 올바르게 처리하기를 바라는 것보다 훨씬 안정적입니다.</p>
+<h2 id="gsd가-적합한-사람">GSD가 적합한 사람</h2>
+<p>GSD는 AI가 진지한 코딩 작업을 할 수 있다고 믿지만, <strong>혼란에 지친 사람들</strong> 을 위한 도구입니다 (<a href="https://youtu.be/YfJwFZ9L5JI?t=480">8:00</a>):</p>
+<ul>
+<li><strong>솔로 개발자</strong> 와 <strong>인디 해커</strong></li>
+<li>50명 규모의 회사를 흉내 내지 않으면서 더 많은 <strong>구조</strong> 를 원하는 파워 유저</li>
+<li>중대형 기능이나 멀티 페이즈 프로젝트를 진행하는 개발자</li>
+</ul>
+<h2 id="알아야-할-한계점">알아야 할 한계점</h2>
+<p>영상에서는 장점만이 아닌 솔직한 한계도 다루고 있습니다 (<a href="https://youtu.be/YfJwFZ9L5JI?t=500">8:20</a>):</p>
+<p><strong>1. 마법이 아니다</strong><br>
+GSD 레포에는 &ldquo;원하는 것이 명확하다면 이것이 대신 만들어준다&quot;라는 문구가 있습니다. 여기서 핵심은 <strong>&ldquo;명확하다면&rdquo;</strong> 입니다. 모호한 제품 사고는 아무리 좋은 워크플로우를 씌워도 모호한 결과를 낳습니다.</p>
+<p><strong>2. 작은 작업에는 과도하다</strong><br>
+함수 이름 변경, 작은 버그 수정, 컴포넌트 하나 수정 같은 작업에는 discuss → plan → execute → verify 전체 사이클이 필요 없습니다. GSD는 <strong>컨텍스트 관리가 핵심 문제가 될 만큼 큰 작업</strong> 에서 빛납니다 (<a href="https://youtu.be/YfJwFZ9L5JI?t=615">10:15</a>).</p>
+<p><strong>3. &ndash;dangerously-skip-permissions 권장에 대한 주의</strong><br>
+GSD 레포에서는 마찰 없는 워크플로우를 위해 이 플래그를 권장합니다. 신뢰할 수 있는 머신과 이해하고 있는 프로젝트에서는 괜찮을 수 있지만, <strong>초보자가 모든 곳에서 무분별하게 활성화하는 것은 위험</strong> 합니다 (<a href="https://youtu.be/YfJwFZ9L5JI?t=575">9:35</a>).</p>
+<p><strong>4. 터미널 중심</strong><br>
+GUI나 시각적 대시보드를 원한다면 GSD는 적합하지 않습니다. 학습 곡선이 존재합니다.</p>
+<p><strong>5. 직설적인 톤</strong><br>
+프로젝트 이름부터가 직설적입니다. 격식을 중시하는 엔터프라이즈 환경에서는 이름만으로도 도입이 어려울 수 있습니다.</p>
+<h2 id="비용-고려사항">비용 고려사항</h2>
+<p>GSD 자체는 <strong>오픈소스 MIT 라이선스</strong> 입니다. 하지만 이것이 모델 비용을 없애주지는 않습니다 (<a href="https://youtu.be/YfJwFZ9L5JI?t=570">9:30</a>). 비싼 모델을 사용하면서 병렬 에이전트를 여러 개 생성하면 토큰 비용이 빠르게 증가할 수 있습니다.</p>
+<p>다만 Codex, Copilot, Cursor, Antigravity처럼 <strong>구독 기반 도구</strong> 와 함께 사용하면 추가 비용 없이 GSD의 구조적 이점을 누릴 수 있어 가치가 더 높아집니다.</p>
+<h2 id="더-큰-흐름-하네스-디자인의-중요성">더 큰 흐름: 하네스 디자인의 중요성</h2>
+<p>GSD는 현재 AI 코딩 생태계에서 일어나는 <strong>더 큰 전환</strong> 을 보여줍니다 (<a href="https://youtu.be/YfJwFZ9L5JI?t=590">9:50</a>). 모델 자체는 계속 좋아지고 있지만, <strong>더 좋은 모델만으로는 충분하지 않습니다.</strong> 진정한 차이는 다음에서 옵니다:</p>
+<pre class="mermaid">graph TD
+    A["하네스 디자인"] --> E["안정적인 AI 코딩"]
+    B["컨텍스트 엔지니어링"] --> E
+    C["검증 루프"] --> E
+    D["작업 분해"] --> E
+
+    F["더 좋은 모델만"] --> G["여전히 불안정한 결과"]
+
+    classDef good fill:#c0ecd3,stroke:#5cb85c,color:#333
+    classDef partial fill:#fde8c0,stroke:#f0ad4e,color:#333
+
+    class A,B,C,D,E good
+    class F,G partial</pre><p>GSD의 핵심 메시지: <strong>혼란스러운 에이전트와 안정적인 에이전트의 차이는 모델이 아니라, 모델을 감싸는 워크플로우</strong> 입니다 (<a href="https://youtu.be/YfJwFZ9L5JI?t=630">10:30</a>).</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li><strong>GSD</strong> 는 AI 코딩 에이전트(Claude Code, Codex, Gemini CLI 등) 위에 설치하는 <strong>오픈소스 워크플로우 레이어</strong></li>
+<li><strong>컨텍스트 붕괴</strong> 문제를 발견-계획-실행-검증 분리로 해결</li>
+<li><strong>map-codebase</strong> 로 코드베이스를 선행 분석하여 에이전트에게 맥락 제공</li>
+<li><strong>discuss-phase</strong> 로 모호한 요구사항을 명시적으로 정리</li>
+<li><strong>plan-phase</strong> 로 원자적 태스크 계획 생성, 신선한 컨텍스트 윈도우에서 실행 가능한 크기</li>
+<li><strong>execute-phase</strong> 로 의존성 기반 웨이브 병렬 실행 + 태스크별 원자적 git 커밋</li>
+<li><strong>verify-work</strong> 로 테스트 통과를 넘어 실제 사용자 시나리오까지 검증</li>
+<li>솔로 개발자, 인디 해커, 중대형 프로젝트에 적합하며, 작은 작업에는 과도할 수 있음</li>
+<li>설치: <code>npx get-shit-done-cc@latest</code></li>
+<li>저장소: <code>github.com/gsd-build/get-shit-done</code></li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>GSD는 AI 코딩 에이전트를 위한 가장 실용적인 오픈소스 워크플로우 레이어 중 하나입니다. 독선적이지만 유용한 방향으로 독선적이며, 대규모 에이전트 프로젝트에서 <strong>컨텍스트 관리가 진짜 병목</strong> 이라는 점을 정확히 이해하고 있습니다. 모든 작업에 필요한 것은 아니지만, 컨텍스트가 문제가 되는 규모의 프로젝트를 AI 에이전트로 진행한다면 확실히 시도해볼 가치가 있습니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 03월 26일 10시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/03/2026-03-26-harness-design-long-running-apps/" rel="prev">
+        <span>Anthropic의 장기 실행 에이전트 하네스 설계: GAN에서 영감 받은 멀티 에이전트 아키텍처</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/03/2026-03-26-gpters-ai-native-claude-code-workflow/" rel="next">
+        <span>오픈클로로 회사 워크플로우 100% 바꾼 AI 네이티브 팀 — GPTers 지피터스 사례</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#gsd란-무엇인가">GSD란 무엇인가</a></li>
+    <li><a href="#컨텍스트-붕괴-context-rot-문제">컨텍스트 붕괴 (Context Rot) 문제</a></li>
+    <li><a href="#설치-방법">설치 방법</a></li>
+    <li><a href="#핵심-워크플로우-명령어">핵심 워크플로우 명령어</a>
+      <ul>
+        <li><a href="#1-gsd-map-codebase--코드베이스-분석">1. /gsd map-codebase — 코드베이스 분석</a></li>
+        <li><a href="#2-gsd-new-project--프로젝트-생성">2. /gsd new-project — 프로젝트 생성</a></li>
+        <li><a href="#3-gsd-discuss-phase--단계-논의">3. /gsd discuss-phase — 단계 논의</a></li>
+        <li><a href="#4-gsd-plan-phase--계획-수립">4. /gsd plan-phase — 계획 수립</a></li>
+        <li><a href="#5-gsd-execute-phase--실행">5. /gsd execute-phase — 실행</a></li>
+        <li><a href="#6-gsd-verify-work--검증">6. /gsd verify-work — 검증</a></li>
+        <li><a href="#7-gsd-next--다음-단계-안내">7. /gsd next — 다음 단계 안내</a></li>
+      </ul>
+    </li>
+    <li><a href="#실전-예시-saas-앱에-결제--관리자-대시보드-추가">실전 예시: SaaS 앱에 결제 + 관리자 대시보드 추가</a></li>
+    <li><a href="#gsd가-적합한-사람">GSD가 적합한 사람</a></li>
+    <li><a href="#알아야-할-한계점">알아야 할 한계점</a></li>
+    <li><a href="#비용-고려사항">비용 고려사항</a></li>
+    <li><a href="#더-큰-흐름-하네스-디자인의-중요성">더 큰 흐름: 하네스 디자인의 중요성</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
