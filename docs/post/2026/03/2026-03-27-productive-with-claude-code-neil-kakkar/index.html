@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude Code로 생산성을 높이는 법 — 구현자에서 에이전트 팀 매니저로'" />
+  <title>Claude Code로 생산성을 높이는 법 — 구현자에서 에이전트 팀 매니저로  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude Code로 생산성을 높이는 법 — 구현자에서 에이전트 팀 매니저로" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-03-27"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/03/2026-03-27-productive-with-claude-code-neil-kakkar/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+  <meta property="og:tags" content="productivity" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/03/2026-03-27-productive-with-claude-code-neil-kakkar/">
+          <h1>
+            Claude Code로 생산성을 높이는 법 — 구현자에서 에이전트 팀 매니저로
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/03/2026-03-27-productive-with-claude-code-neil-kakkar/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Claude Code를 쓴다는 것은 AI 도구를 쓰는 것이 아닙니다. Neil Kakkar는 Tano에 합류한 후 6주 만에 커밋 수를 극적으로 늘렸는데, 그 비결은 모델을 잘 쓰는 것이 아니었습니다. <strong>에이전트가 일하기 좋은 인프라를 구축한 것</strong>이었습니다.<br>
+구현자에서 에이전트 팀 매니저로 역할을 바꾸고, 마찰을 하나씩 제거하는 4단계 여정을 정리합니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://neilkakkar.com/productive-with-claude-code.html">https://neilkakkar.com/productive-with-claude-code.html</a></li>
+</ul>
+<hr>
+<h2 id="시작점-나는-구현자가-아니라-매니저다">시작점: 나는 구현자가 아니라 매니저다</h2>
+<p>Neil은 Tano에 합류했을 때 모든 PR을 손으로 만들고 있었습니다. 변경 사항 스테이징, 커밋 메시지 작성, PR 설명 작성, 푸시, GitHub PR 생성. 당연한 과정이라 생각했습니다.</p>
+
+  <blockquote>
+    <p>&ldquo;그게 첫 번째 진짜 전환점이었습니다. 나는 더 이상 구현자가 아닙니다. 나는 구현을 하는 에이전트 팀의 매니저입니다. 그리고 좋은 매니저는 팀의 반복 작업을 자동화합니다.&rdquo;</p>
+
+  </blockquote>
+
+<p>이 인식의 전환이 이후 모든 변화의 출발점이 됩니다.</p>
+<pre class="mermaid">flowchart TD
+    A["구현자 모드<br>내가 코드를 직접 작성"]
+    B["매니저 모드<br>에이전트가 구현, 내가 방향 설정"]
+
+    A --> C1["PR 수동 작성"]
+    A --> C2["UI 직접 확인"]
+    A --> C3["하나씩 순차 작업"]
+
+    B --> D1["에이전트가 PR 자동 생성"]
+    B --> D2["에이전트가 UI 자가 검증"]
+    B --> D3["5개 워크트리 병렬 실행"]
+
+    classDef old fill:#ffc8c4,color:#333
+    classDef new fill:#c0ecd3,color:#333
+    class A,C1,C2,C3 old
+    class B,D1,D2,D3 new</pre><hr>
+<h2 id="1단계-git-pr-스킬--pr-자동화로-정신적-부하-제거">1단계: /git-pr 스킬 — PR 자동화로 정신적 부하 제거</h2>
+<p>첫 번째로 만든 Claude Code 스킬은 <code>/git-pr</code>입니다. 기존에 수동으로 하던 전체 PR 프로세스를 자동화합니다.</p>
+<pre class="mermaid">flowchart LR
+    subgraph "이전 (수동)"
+        A1["코딩 중단"]
+        A2["변경사항 스테이징"]
+        A3["커밋 메시지 작성"]
+        A4["PR 설명 작성"]
+        A5["푸시"]
+        A6["GitHub PR 생성"]
+        A7["코딩 재개"]
+        A1 --> A2 --> A3 --> A4 --> A5 --> A6 --> A7
+    end
+
+    subgraph "이후 (/git-pr)"
+        B1["/git-pr 입력"]
+        B2["에이전트가 전체 처리<br>diff 읽고 상세 설명 생성"]
+        B3["코딩 재개"]
+        B1 --> B2 --> B3
+    end
+
+    classDef old fill:#fde8c0,color:#333
+    classDef new fill:#c0ecd3,color:#333
+    class A1,A2,A3,A4,A5,A6,A7 old
+    class B1,B2,B3 new</pre><p>시간 절약도 있지만 진짜 효과는 다른 데 있었습니다.</p>
+
+  <blockquote>
+    <p>&ldquo;절약된 시간보다 제거된 정신적 부하가 진짜 해방이었습니다. PR을 만들 때마다 작은 컨텍스트 전환이 있었습니다: 코드에 대해 생각하다가, 코드를 어떻게 설명할지 생각하는 모드로 전환. 이제 <code>/git-pr</code>을 입력하고 다음 일로 넘어갑니다.&rdquo;</p>
+
+  </blockquote>
+
+<p>에이전트가 전체 diff를 읽고 요약하기 때문에, PR 설명 품질은 수동으로 작성하던 것보다 오히려 더 좋아졌습니다.</p>
+<hr>
+<h2 id="2단계-swc-빌드--1분-대기를-1초-미만으로">2단계: SWC 빌드 — 1분 대기를 1초 미만으로</h2>
+<p>PR 자동화 후 다음 마찰이 눈에 들어왔습니다. 변경 사항을 리뷰하는 루프가 느렸습니다.</p>
+
+  <blockquote>
+    <p>로컬 미리보기 → 현재 작업 중단 → 개발 서버 종료 → 새 브랜치에서 재시작 → 동작 확인 → 코드 리뷰</p>
+
+  </blockquote>
+
+<p>서버 빌드 시간이 약 1분이었는데, 이 1분이 집중을 깨뜨리기에 충분했습니다.</p>
+<pre class="mermaid">flowchart TD
+    subgraph "기존 빌더 (~1분)"
+        W1["파일 저장"]
+        W2["서버 재시작 대기<br>약 60초"]
+        W3["집중 이탈<br>다른 생각으로 넘어감"]
+        W4["미리보기 확인"]
+        W1 --> W2 --> W3 --> W4
+    end
+
+    subgraph "SWC 전환 (<1초)"
+        S1["파일 저장"]
+        S2["서버 즉시 재시작<br>1초 미만"]
+        S3["흐름 유지<br>집중 깨지지 않음"]
+        S4["미리보기 확인"]
+        S1 --> S2 --> S3 --> S4
+    end
+
+    classDef slow fill:#ffc8c4,color:#333
+    classDef fast fill:#c0ecd3,color:#333
+    class W1,W2,W3,W4 slow
+    class S1,S2,S3,S4 fast</pre>
+  <blockquote>
+    <p>&ldquo;1초 미만 재시작은 흐름에서 절대 벗어나지 않게 해줍니다. 파일을 저장하면 서버가 이미 올라와 있고, 미리보기를 확인합니다. 주의가 흩어지는 틈이 없습니다. 어색한 침묵이 있는 대화와 자연스럽게 흘러가는 대화의 차이입니다.&rdquo;</p>
+
+  </blockquote>
+
+<hr>
+<h2 id="3단계-에이전트-ui-자가-검증--내가-병목이-되지-않도록">3단계: 에이전트 UI 자가 검증 — 내가 병목이 되지 않도록</h2>
+<p>빠른 빌드 후 또 다른 문제가 보였습니다. 모든 UI 변경을 Neil이 직접 확인해야 했습니다. 에이전트가 코드를 만들어도 사람이 검증할 때까지 멈춰야 했습니다.</p>
+<p>Chrome 확장 프로그램이 계속 충돌하면서 <strong>Claude Code의 preview 기능</strong>으로 전환했고, 여기서 핵심 원칙을 정립했습니다.</p>
+
+  <blockquote>
+    <p>&ldquo;변경이 &lsquo;완료&rsquo;되려면 에이전트가 UI를 직접 검증해야 한다.&rdquo;</p>
+
+  </blockquote>
+
+<pre class="mermaid">flowchart TD
+    subgraph "이전: 사람이 검증"
+        P1["에이전트가 코드 작성"]
+        P2["에이전트 멈춤 (대기)"]
+        P3["사람이 UI 확인"]
+        P4["승인 후 다음 작업"]
+        P1 --> P2 --> P3 --> P4
+    end
+
+    subgraph "이후: 에이전트가 자가 검증"
+        Q1["에이전트가 코드 작성"]
+        Q2["에이전트가 preview로 UI 확인"]
+        Q3["에이전트가 스스로 실수 수정"]
+        Q4["사람은 최종 리뷰만"]
+        Q1 --> Q2 --> Q3 --> Q4
+    end
+
+    classDef human fill:#fde8c0,color:#333
+    classDef agent fill:#c0ecd3,color:#333
+    class P1,P2,P3,P4 human
+    class Q1,Q2,Q3,Q4 agent</pre><p>에이전트가 자체 실수를 잡을 수 있게 되면서, 사람의 개입 없이 에이전트가 더 오래 자율적으로 실행될 수 있었습니다. 이것이 다음 단계를 가능하게 했습니다.</p>
+<hr>
+<h2 id="4단계-워크트리-병렬-시스템--포트-충돌-없이-5개-동시-실행">4단계: 워크트리 병렬 시스템 — 포트 충돌 없이 5개 동시 실행</h2>
+<p>빠른 빌드와 자동 검증이 갖춰지자 새로운 마찰이 보였습니다. 동시에 여러 작업을 하기가 어려웠습니다.</p>
+<p>문제의 핵심은 <strong>포트 충돌</strong>이었습니다.</p>
+
+  <blockquote>
+    <p>&ldquo;앱에는 프론트엔드와 백엔드가 있어서 각각 고유한 포트가 필요합니다. 모든 워크트리가 같은 환경 변수를 공유해서 모두 같은 포트에 바인드하려 했습니다. 두 가지를 동시에 실행하는 것은 싸움이었습니다.&rdquo;</p>
+
+  </blockquote>
+
+<p>기존 방법은 고통스러웠습니다: stash → checkout → rebuild → test → switch back → pop stash. 또는 수동으로 워크트리를 만들고 포트를 직접 관리.</p>
+<p><strong>해결책</strong>: 워크트리가 생성될 때마다 각 서버에 고유한 포트 범위를 자동으로 할당하는 시스템을 구축했습니다.</p>
+<pre class="mermaid">flowchart TD
+    subgraph "이전: 포트 충돌"
+        A["워크트리 1<br>포트 3000, 8000"]
+        B["워크트리 2<br>포트 3000, 8000 (충돌!)"]
+        C["충돌 → 수동 해결"]
+        A --> C
+        B --> C
+    end
+
+    subgraph "이후: 자동 포트 범위 할당"
+        D["워크트리 1<br>포트 3000-3009"]
+        E["워크트리 2<br>포트 3010-3019"]
+        F["워크트리 3<br>포트 3020-3029"]
+        G["워크트리 4<br>포트 3030-3039"]
+        H["워크트리 5<br>포트 3040-3049"]
+        I["충돌 없음 — 동시 실행"]
+        D --> I
+        E --> I
+        F --> I
+        G --> I
+        H --> I
+    end
+
+    classDef conflict fill:#ffc8c4,color:#333
+    classDef ok fill:#c0ecd3,color:#333
+    class A,B,C conflict
+    class D,E,F,G,H,I ok</pre><p>결과:</p>
+
+  <blockquote>
+    <p>&ldquo;병렬 브랜치 두 개에 압도되던 것에서 워크트리 다섯 개를 동시에 실행하게 됐습니다. 내 생성 루프가 바뀌었습니다: 여러 에이전트를 별도의 워크트리에서 동시에 시작, 각각 다른 기능을 개발. UI를 스스로 검증한 후에만 멈춥니다.&rdquo;</p>
+
+  </blockquote>
+
+<p>Neil의 역할은 계획에 깊이 관여하는 것. 그다음은 코드 리뷰까지 손을 놓습니다.</p>
+<hr>
+<h2 id="핵심-통찰-제약-이론과-인프라">핵심 통찰: 제약 이론과 인프라</h2>
+<p>4단계가 우연히 발생한 것이 아닙니다. 각 마찰을 제거하면 다음 마찰이 보이는 **제약 이론(Theory of Constraints)**처럼 작동했습니다.</p>
+<pre class="mermaid">flowchart LR
+    F1["마찰 1<br>PR 수동 작업<br>정신적 부하"]
+    S1["/git-pr 스킬"]
+    F2["마찰 2<br>빌드 대기 1분<br>집중 이탈"]
+    S2["SWC 전환<br><1초"]
+    F3["마찰 3<br>사람이 UI 검증<br>병목"]
+    S3["에이전트<br>자가 검증"]
+    F4["마찰 4<br>포트 충돌<br>병렬 불가"]
+    S4["워크트리<br>포트 자동 할당"]
+    R["5개 워크트리<br>병렬 실행"]
+
+    F1 --> S1 --> F2 --> S2 --> F3 --> S3 --> F4 --> S4 --> R
+
+    classDef friction fill:#ffc8c4,color:#333
+    classDef solution fill:#c0ecd3,color:#333
+    classDef result fill:#c5dcef,color:#333
+    class F1,F2,F3,F4 friction
+    class S1,S2,S3,S4 solution
+    class R result</pre>
+  <blockquote>
+    <p>&ldquo;하나를 고치면 시스템이 바로 다음 것을 보여줍니다. 고전적인 제약 이론입니다.&rdquo;</p>
+
+  </blockquote>
+
+<p>그리고 가장 중요한 통찰:</p>
+
+  <blockquote>
+    <p>&ldquo;Tano에서 내가 한 가장 레버리지 높은 작업은 기능을 작성한 것이 아닙니다. 커밋의 흐름을 홍수로 바꾼 인프라를 구축한 것입니다.&rdquo;</p>
+
+  </blockquote>
+
+<p>작업 루프의 최종 형태는 이렇습니다:</p>
+<pre class="mermaid">flowchart TD
+    A["작업 시작<br>계획 수립에 깊이 관여"]
+    B["여러 에이전트 동시 시작<br>(별도 워크트리)"]
+    C["에이전트: 코드 작성"]
+    D["에이전트: UI 자가 검증<br>실수 스스로 수정"]
+    E["사람: 코드 리뷰만"]
+    F["피드백 또는 머지"]
+    G["다음 작업 시작"]
+
+    A --> B --> C --> D --> E --> F --> G
+    G --> B
+
+    classDef human fill:#c5dcef,color:#333
+    classDef agent fill:#c0ecd3,color:#333
+    classDef loop fill:#fde8c0,color:#333
+    class A,E,F human
+    class B,C,D agent
+    class G loop</pre>
+  <blockquote>
+    <p>&ldquo;루프가 충분히 빠르면 엔지니어링이 엔터테인먼트가 됩니다.&rdquo;</p>
+
+  </blockquote>
+
+<hr>
+<h2 id="핵심-요약">핵심 요약</h2>
+<table>
+  <thead>
+      <tr>
+          <th>단계</th>
+          <th>제거한 마찰</th>
+          <th>방법</th>
+          <th>효과</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1</td>
+          <td>PR 작성 부담 (포맷팅)</td>
+          <td><code>/git-pr</code> 스킬</td>
+          <td>컨텍스트 전환 제거, PR 품질 향상</td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>빌드 대기 (~1분)</td>
+          <td>SWC 전환</td>
+          <td>재시작 1초 미만, 흐름 유지</td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>UI 검증 병목</td>
+          <td>에이전트 preview 자가 검증</td>
+          <td>사람 개입 없이 장시간 자율 실행</td>
+      </tr>
+      <tr>
+          <td>4</td>
+          <td>포트 충돌 (병렬 불가)</td>
+          <td>워크트리별 자동 포트 할당</td>
+          <td>워크트리 2개 → 5개 동시 실행</td>
+      </tr>
+      <tr>
+          <td><strong>핵심</strong></td>
+          <td>—</td>
+          <td>구현자 → 에이전트 팀 매니저</td>
+          <td>가장 높은 레버리지는 인프라 구축</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="결론">결론</h2>
+<p>Claude Code를 잘 쓰는 것은 프롬프트를 잘 쓰는 것이 아닙니다. <strong>에이전트가 잘 일할 수 있는 환경을 만드는 것</strong>입니다.<br>
+Neil의 경험이 보여주는 것은 하나입니다 — 마찰을 하나 제거하면 다음 마찰이 보입니다. 그 루프를 반복하다 보면, 어느 순간 혼자 일하던 것이 팀이 일하는 것으로 바뀝니다.<br>
+지금 Claude Code를 쓰고 있다면 물어볼 질문은 하나입니다: &ldquo;에이전트가 내 시스템에서 가장 많이 멈추는 지점은 어디인가?&rdquo;</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 03월 27일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/03/2026-03-27-awesome-codex-subagents-google-stitch-claude-code-skills/" rel="prev">
+        <span>Codex 서브에이전트 136개 모음집, Google Stitch 바이브 디자인, Anthropic Claude Code 스킬 운용법</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/03/2026-03-27-claude-code-auto-dream-memory-management/" rel="next">
+        <span>Claude Code Auto Dream — 메모리 충돌을 자동으로 정리하는 숨겨진 기능</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#시작점-나는-구현자가-아니라-매니저다">시작점: 나는 구현자가 아니라 매니저다</a></li>
+    <li><a href="#1단계-git-pr-스킬--pr-자동화로-정신적-부하-제거">1단계: /git-pr 스킬 — PR 자동화로 정신적 부하 제거</a></li>
+    <li><a href="#2단계-swc-빌드--1분-대기를-1초-미만으로">2단계: SWC 빌드 — 1분 대기를 1초 미만으로</a></li>
+    <li><a href="#3단계-에이전트-ui-자가-검증--내가-병목이-되지-않도록">3단계: 에이전트 UI 자가 검증 — 내가 병목이 되지 않도록</a></li>
+    <li><a href="#4단계-워크트리-병렬-시스템--포트-충돌-없이-5개-동시-실행">4단계: 워크트리 병렬 시스템 — 포트 충돌 없이 5개 동시 실행</a></li>
+    <li><a href="#핵심-통찰-제약-이론과-인프라">핵심 통찰: 제약 이론과 인프라</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude Code</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+    <a href="/tags/productivity/" class="badge badge-secondary">Productivity</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

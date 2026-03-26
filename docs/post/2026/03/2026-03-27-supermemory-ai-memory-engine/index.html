@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Supermemory — AI 메모리 3대 벤치마크 1위, MCP로 Claude에 연결하는 오픈소스 메모리 엔진'" />
+  <title>Supermemory — AI 메모리 3대 벤치마크 1위, MCP로 Claude에 연결하는 오픈소스 메모리 엔진  | 신규하 블로그</title>
+  <meta property="og:title" content="Supermemory — AI 메모리 3대 벤치마크 1위, MCP로 Claude에 연결하는 오픈소스 메모리 엔진" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-03-27"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/03/2026-03-27-supermemory-ai-memory-engine/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="mcp" />
+  
+  <meta property="og:tags" content="claude" />
+  
+  <meta property="og:tags" content="agents" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/03/2026-03-27-supermemory-ai-memory-engine/">
+          <h1>
+            Supermemory — AI 메모리 3대 벤치마크 1위, MCP로 Claude에 연결하는 오픈소스 메모리 엔진
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/03/2026-03-27-supermemory-ai-memory-engine/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>AI와 대화를 나누고 다음 세션을 시작하면, 이전 맥락은 모두 사라집니다. Supermemory는 이 문제를 해결하기 위해 만들어진 <strong>오픈소스 메모리 및 컨텍스트 엔진</strong>입니다. LongMemEval, LoCoMo, ConvoMem — 현재 존재하는 AI 메모리 3대 벤치마크에서 모두 1위를 기록했습니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://github.com/supermemoryai/supermemory">https://github.com/supermemoryai/supermemory</a></li>
+</ul>
+<hr>
+<h2 id="supermemory란">Supermemory란</h2>
+<p>Supermemory는 AI를 위한 메모리 및 컨텍스트 레이어입니다. 대화에서 사실을 추출하고, 유저 프로필을 자동으로 구성하며, 지식 업데이트와 모순을 처리하고, 만료된 정보를 자동으로 잊습니다. 그리고 올바른 컨텍스트를 올바른 시점에 전달합니다.</p>
+<pre class="mermaid">flowchart TD
+    A["AI 에이전트 / 앱"]
+    B["Supermemory"]
+    C1["Memory Engine<br>사실 추출·업데이트·모순 해결·자동 망각"]
+    C2["User Profiles<br>정적 사실 + 동적 컨텍스트 (~50ms)"]
+    C3["Hybrid Search<br>RAG + Memory 단일 쿼리"]
+    C4["Connectors<br>Google Drive·Gmail·Notion·GitHub"]
+    C5["File Processing<br>PDF·이미지·영상·코드"]
+
+    A --> B
+    B --> C1
+    B --> C2
+    B --> C3
+    B --> C4
+    B --> C5
+
+    classDef app fill:#fde8c0,color:#333
+    classDef core fill:#c5dcef,color:#333
+    classDef feat fill:#c0ecd3,color:#333
+    class A app
+    class B core
+    class C1,C2,C3,C4,C5 feat</pre><p>GitHub Stars 19.6k, Forks 1.8k의 오픈소스 프로젝트이며, MIT 라이선스입니다.</p>
+<hr>
+<h2 id="벤치마크-3개-부문-모두-1위">벤치마크: 3개 부문 모두 1위</h2>
+<p>Supermemory는 AI 메모리 분야의 세 가지 주요 벤치마크에서 모두 1위를 차지했습니다.</p>
+<pre class="mermaid">flowchart TD
+    subgraph "LongMemEval"
+        L1["측정: 세션 간 장기 메모리<br>지식 업데이트 처리"]
+        L2["결과: 81.6% — 1위"]
+    end
+
+    subgraph "LoCoMo"
+        M1["측정: 확장 대화에서 사실 회상<br>단일·다중 홉·시간·적대적 질문"]
+        M2["결과: 1위"]
+    end
+
+    subgraph "ConvoMem"
+        C1["측정: 개인화·선호도 학습"]
+        C2["결과: 1위"]
+    end
+
+    classDef bench fill:#c5dcef,color:#333
+    classDef result fill:#c0ecd3,color:#333
+    class L1,M1,C1 bench
+    class L2,M2,C2 result</pre><p>비교 대상에는 Mem0, Zep 등 기존 메모리 솔루션이 포함됩니다. 자체 개발한 오픈소스 벤치마킹 프레임워크 <strong>MemoryBench</strong>를 통해 직접 비교할 수도 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>bun run src/index.ts run -p supermemory -b longmemeval -j gpt-4o -r my-run
+</span></span></code></pre></div><hr>
+<h2 id="mcp로-claude에-메모리-연결하기">MCP로 Claude에 메모리 연결하기</h2>
+<h3 id="한-줄-설치">한 줄 설치</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>npx -y install-mcp@latest https://mcp.supermemory.ai/mcp --client claude --oauth<span style="color:#0550ae">=</span>yes
+</span></span></code></pre></div><p><code>claude</code> 자리에 <code>cursor</code>, <code>windsurf</code>, <code>vscode</code> 등을 넣으면 해당 클라이언트에 설치됩니다.</p>
+<h3 id="지원-클라이언트">지원 클라이언트</h3>
+<p>Claude Desktop · Cursor · Windsurf · VS Code · <strong>Claude Code</strong> · OpenCode · OpenClaw</p>
+<h3 id="ai가-사용할-수-있는-툴">AI가 사용할 수 있는 툴</h3>
+<table>
+  <thead>
+      <tr>
+          <th>MCP 툴</th>
+          <th>동작</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>memory</code></td>
+          <td>정보 저장 또는 삭제. AI가 기억할 가치가 있다고 판단하면 자동 호출</td>
+      </tr>
+      <tr>
+          <td><code>recall</code></td>
+          <td>쿼리로 메모리 검색. 관련 메모리 + 유저 프로필 요약 반환</td>
+      </tr>
+      <tr>
+          <td><code>context</code></td>
+          <td>전체 프로필(선호도, 최근 활동)을 대화 시작 시 주입. Claude Code에서는 <code>/context</code> 입력</td>
+      </tr>
+  </tbody>
+</table>
+<pre class="mermaid">flowchart TD
+    A["사용자 대화"]
+    B["Supermemory MCP"]
+    C1["memory 툴<br>중요한 내용 자동 저장"]
+    C2["recall 툴<br>관련 메모리 검색"]
+    C3["context 툴<br>프로필 전체 주입"]
+    D["다음 세션"]
+    E["AI가 사용자를 이미 알고 있음"]
+
+    A --> B
+    B --> C1
+    B --> C2
+    B --> C3
+    D --> C3
+    C3 --> E
+
+    classDef user fill:#fde8c0,color:#333
+    classDef mcp fill:#c5dcef,color:#333
+    classDef tool fill:#c0ecd3,color:#333
+    classDef result fill:#e0c8ef,color:#333
+    class A user
+    class B mcp
+    class C1,C2,C3 tool
+    class D,E result</pre><h3 id="작동-방식">작동 방식</h3>
+<ol>
+<li>AI와 평소처럼 대화합니다. 선호도, 프로젝트, 문제를 공유합니다.</li>
+<li>Supermemory가 중요한 내용을 추출해 저장합니다. 사실·선호도·프로젝트 컨텍스트를 저장하고 노이즈는 제외합니다.</li>
+<li>다음 세션에서 AI가 이미 사용자를 알고 있습니다. 진행 중인 작업, 선호 방식, 이전 논의를 기억합니다.</li>
+</ol>
+<p>메모리는 <strong>프로젝트(container tag)</strong> 단위로 범위가 지정됩니다. 업무와 개인 컨텍스트를 분리하거나, 클라이언트·레포지토리별로 구분할 수 있습니다.</p>
+<hr>
+<h2 id="claude-code-플러그인">Claude Code 플러그인</h2>
+<p>Supermemory는 Claude Code 전용 플러그인을 제공합니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># Claude Code 플러그인 (오픈소스)</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># https://github.com/supermemoryai/claude-supermemory</span>
+</span></span></code></pre></div><p>설치 후 Claude Code 세션 간 메모리가 자동으로 영구 저장됩니다.</p>
+<hr>
+<h2 id="개발자를-위한-api">개발자를 위한 API</h2>
+<p>AI 에이전트나 앱을 만들 때 Supermemory API 하나로 메모리, RAG, 유저 프로필, 커넥터, 파일 처리를 모두 연결할 수 있습니다. 벡터 DB 설정, 임베딩 파이프라인, 청킹 전략이 필요 없습니다.</p>
+<h3 id="설치">설치</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>npm install supermemory
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 또는</span>
+</span></span><span style="display:flex;"><span>pip install supermemory
+</span></span></code></pre></div><h3 id="typescript-퀵스타트">TypeScript 퀵스타트</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#1f2328">Supermemory</span> <span style="color:#cf222e">from</span> <span style="color:#0a3069">&#34;supermemory&#34;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">const</span> <span style="color:#1f2328">client</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">new</span> <span style="color:#1f2328">Supermemory</span><span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// 대화 저장
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">await</span> <span style="color:#1f2328">client</span><span style="color:#1f2328">.</span><span style="color:#1f2328">add</span><span style="color:#1f2328">({</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">content</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#34;User loves TypeScript and prefers functional patterns&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">containerTag</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#34;user_123&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">});</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// 유저 프로필 + 관련 메모리를 한 번에
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">const</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">profile</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">searchResults</span> <span style="color:#1f2328">}</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">await</span> <span style="color:#1f2328">client</span><span style="color:#1f2328">.</span><span style="color:#1f2328">profile</span><span style="color:#1f2328">({</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">containerTag</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#34;user_123&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">q</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#34;What programming style does the user prefer?&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">});</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// profile.static → [&#34;Loves TypeScript&#34;, &#34;Prefers functional patterns&#34;]
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// profile.dynamic → [&#34;Working on API integration&#34;]
+</span></span></span></code></pre></div><h3 id="api-메서드">API 메서드</h3>
+<table>
+  <thead>
+      <tr>
+          <th>메서드</th>
+          <th>용도</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>client.add()</code></td>
+          <td>텍스트·대화·URL·HTML 저장</td>
+      </tr>
+      <tr>
+          <td><code>client.profile()</code></td>
+          <td>유저 프로필 + 선택적 검색</td>
+      </tr>
+      <tr>
+          <td><code>client.search.memories()</code></td>
+          <td>메모리·문서 하이브리드 검색</td>
+      </tr>
+      <tr>
+          <td><code>client.search.documents()</code></td>
+          <td>메타데이터 필터 포함 문서 검색</td>
+      </tr>
+      <tr>
+          <td><code>client.documents.uploadFile()</code></td>
+          <td>PDF·이미지·영상·코드 업로드</td>
+      </tr>
+      <tr>
+          <td><code>client.settings.update()</code></td>
+          <td>메모리 추출·청킹 설정</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="검색-모드">검색 모드</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#57606a">// Hybrid (기본값) — RAG + Memory 동시 쿼리
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">const</span> <span style="color:#1f2328">results</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">await</span> <span style="color:#1f2328">client</span><span style="color:#1f2328">.</span><span style="color:#1f2328">search</span><span style="color:#1f2328">.</span><span style="color:#1f2328">memories</span><span style="color:#1f2328">({</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">q</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#34;how do I deploy?&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">containerTag</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#34;user_123&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">searchMode</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#34;hybrid&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">});</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// → 배포 문서(RAG) + 사용자 배포 선호도(Memory) 함께 반환
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// Memory만 검색
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">const</span> <span style="color:#1f2328">results</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">await</span> <span style="color:#1f2328">client</span><span style="color:#1f2328">.</span><span style="color:#1f2328">search</span><span style="color:#1f2328">.</span><span style="color:#1f2328">memories</span><span style="color:#1f2328">({</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">searchMode</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#34;memories&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">});</span>
+</span></span></code></pre></div><h3 id="프레임워크-통합">프레임워크 통합</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#57606a">// Vercel AI SDK
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">withSupermemory</span> <span style="color:#1f2328">}</span> <span style="color:#cf222e">from</span> <span style="color:#0a3069">&#34;@supermemory/tools/ai-sdk&#34;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">const</span> <span style="color:#1f2328">model</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">withSupermemory</span><span style="color:#1f2328">(</span><span style="color:#1f2328">openai</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;gpt-4o&#34;</span><span style="color:#1f2328">),</span> <span style="color:#0a3069">&#34;user_123&#34;</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// Mastra
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">withSupermemory</span> <span style="color:#1f2328">}</span> <span style="color:#cf222e">from</span> <span style="color:#0a3069">&#34;@supermemory/tools/mastra&#34;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">const</span> <span style="color:#1f2328">agent</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">new</span> <span style="color:#1f2328">Agent</span><span style="color:#1f2328">(</span><span style="color:#1f2328">withSupermemory</span><span style="color:#1f2328">(</span><span style="color:#1f2328">config</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#34;user-123&#34;</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">mode</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#34;full&#34;</span> <span style="color:#1f2328">}));</span>
+</span></span></code></pre></div><p>지원 프레임워크: <strong>Vercel AI SDK</strong> · <strong>LangChain</strong> · <strong>LangGraph</strong> · <strong>OpenAI Agents SDK</strong> · <strong>Mastra</strong> · <strong>Agno</strong> · <strong>Claude Memory Tool</strong> · <strong>n8n</strong></p>
+<hr>
+<h2 id="memory-vs-rag-핵심-차이">Memory vs RAG: 핵심 차이</h2>
+<pre class="mermaid">flowchart TD
+    subgraph "RAG (일반 검색)"
+        R1["문서 청크 검색"]
+        R2["Stateless — 모든 사용자 동일 결과"]
+        R3["지식 베이스 조회"]
+    end
+
+    subgraph "Memory (Supermemory)"]
+        M1["사용자 사실 추출·추적"]
+        M2["Stateful — 사용자마다 개인화"]
+        M3["\"NYC에 살아\" → \"SF로 이사했어\" 업데이트"]
+        M4["임시 정보 자동 망각<br>(\"내일 시험\"은 지나면 삭제)"]
+    end
+
+    subgraph "Hybrid (Supermemory 기본값)"
+        H1["RAG + Memory 동시 실행"]
+        H2["지식 베이스 + 개인화 컨텍스트 함께 반환"]
+    end
+
+    classDef rag fill:#fde8c0,color:#333
+    classDef mem fill:#c5dcef,color:#333
+    classDef hybrid fill:#c0ecd3,color:#333
+    class R1,R2,R3 rag
+    class M1,M2,M3,M4 mem
+    class H1,H2 hybrid</pre><p><strong>자동 망각</strong>: &ldquo;내일 시험이 있어&quot;처럼 날짜가 지나면 의미 없어지는 임시 사실은 만료 후 자동 삭제됩니다. 모순도 자동으로 해결됩니다.</p>
+<hr>
+<h2 id="커넥터">커넥터</h2>
+<p>외부 데이터를 지식 베이스에 자동 동기화합니다.</p>
+<ul>
+<li><strong>Google Drive</strong> · <strong>Gmail</strong> · <strong>Notion</strong> · <strong>OneDrive</strong> · <strong>GitHub</strong> · <strong>Web Crawler</strong></li>
+</ul>
+<p>실시간 웹훅으로 업데이트됩니다. 문서는 자동으로 처리·청킹·검색 가능 상태로 변환됩니다.</p>
+<hr>
+<h2 id="파일-처리">파일 처리</h2>
+<table>
+  <thead>
+      <tr>
+          <th>파일 유형</th>
+          <th>처리 방식</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>PDF</td>
+          <td>텍스트 추출 + 청킹</td>
+      </tr>
+      <tr>
+          <td>이미지</td>
+          <td>OCR</td>
+      </tr>
+      <tr>
+          <td>영상</td>
+          <td>트랜스크립션</td>
+      </tr>
+      <tr>
+          <td>코드</td>
+          <td>AST 인식 청킹</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="핵심-요약">핵심 요약</h2>
+<table>
+  <thead>
+      <tr>
+          <th>항목</th>
+          <th>내용</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>프로젝트</strong></td>
+          <td>supermemoryai/supermemory (19.6k ★, MIT)</td>
+      </tr>
+      <tr>
+          <td><strong>정의</strong></td>
+          <td>AI를 위한 메모리 및 컨텍스트 엔진</td>
+      </tr>
+      <tr>
+          <td><strong>벤치마크</strong></td>
+          <td>LongMemEval(81.6% #1) · LoCoMo(#1) · ConvoMem(#1)</td>
+      </tr>
+      <tr>
+          <td><strong>MCP 설치</strong></td>
+          <td><code>npx -y install-mcp@latest https://mcp.supermemory.ai/mcp --client claude</code></td>
+      </tr>
+      <tr>
+          <td><strong>지원 클라이언트</strong></td>
+          <td>Claude, Cursor, Windsurf, VS Code, Claude Code 등</td>
+      </tr>
+      <tr>
+          <td><strong>API</strong></td>
+          <td>npm/pip 설치, TypeScript·Python SDK</td>
+      </tr>
+      <tr>
+          <td><strong>검색</strong></td>
+          <td>RAG + Memory 하이브리드 기본 지원</td>
+      </tr>
+      <tr>
+          <td><strong>커넥터</strong></td>
+          <td>Google Drive·Gmail·Notion·OneDrive·GitHub</td>
+      </tr>
+      <tr>
+          <td><strong>자동 망각</strong></td>
+          <td>임시 사실 만료, 모순 자동 해결</td>
+      </tr>
+      <tr>
+          <td><strong>앱</strong></td>
+          <td>app.supermemory.ai (노코드 사용 가능)</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="결론">결론</h2>
+<p>대부분의 AI 메모리 솔루션은 단순 RAG입니다. Supermemory는 그 위에 사용자별 사실 추출, 시간적 업데이트, 자동 망각, 유저 프로필 자동 구성까지 더합니다.<br>
+Claude Code를 자주 쓴다면 MCP 한 줄 설치로 세션 간 컨텍스트 유실 문제를 해결할 수 있습니다. 에이전트를 만드는 개발자라면 벡터 DB 없이 메모리+RAG+유저 프로필을 API 하나로 연결할 수 있는 가장 빠른 경로입니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 03월 27일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/03/2026-03-27-wmux-windows-ai-agent-terminal/" rel="prev">
+        <span>wmux — Windows에서 Claude Code·Codex·Gemini CLI를 동시에 돌리는 AI 에이전트 터미널</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/03/2026-03-27-awesome-codex-subagents-google-stitch-claude-code-skills/" rel="next">
+        <span>Codex 서브에이전트 136개 모음집, Google Stitch 바이브 디자인, Anthropic Claude Code 스킬 운용법</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#supermemory란">Supermemory란</a></li>
+    <li><a href="#벤치마크-3개-부문-모두-1위">벤치마크: 3개 부문 모두 1위</a></li>
+    <li><a href="#mcp로-claude에-메모리-연결하기">MCP로 Claude에 메모리 연결하기</a>
+      <ul>
+        <li><a href="#한-줄-설치">한 줄 설치</a></li>
+        <li><a href="#지원-클라이언트">지원 클라이언트</a></li>
+        <li><a href="#ai가-사용할-수-있는-툴">AI가 사용할 수 있는 툴</a></li>
+        <li><a href="#작동-방식">작동 방식</a></li>
+      </ul>
+    </li>
+    <li><a href="#claude-code-플러그인">Claude Code 플러그인</a></li>
+    <li><a href="#개발자를-위한-api">개발자를 위한 API</a>
+      <ul>
+        <li><a href="#설치">설치</a></li>
+        <li><a href="#typescript-퀵스타트">TypeScript 퀵스타트</a></li>
+        <li><a href="#api-메서드">API 메서드</a></li>
+        <li><a href="#검색-모드">검색 모드</a></li>
+        <li><a href="#프레임워크-통합">프레임워크 통합</a></li>
+      </ul>
+    </li>
+    <li><a href="#memory-vs-rag-핵심-차이">Memory vs RAG: 핵심 차이</a></li>
+    <li><a href="#커넥터">커넥터</a></li>
+    <li><a href="#파일-처리">파일 처리</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/mcp/" class="badge badge-secondary">Mcp</a>
+    <a href="/tags/claude/" class="badge badge-secondary">Claude</a>
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
