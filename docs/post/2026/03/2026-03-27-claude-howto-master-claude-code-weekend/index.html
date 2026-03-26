@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'claude-howto — 주말 하나로 Claude Code를 완전히 익히는 10모듈 가이드'" />
+  <title>claude-howto — 주말 하나로 Claude Code를 완전히 익히는 10모듈 가이드  | 신규하 블로그</title>
+  <meta property="og:title" content="claude-howto — 주말 하나로 Claude Code를 완전히 익히는 10모듈 가이드" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-03-27"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/03/2026-03-27-claude-howto-master-claude-code-weekend/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="skills" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/03/2026-03-27-claude-howto-master-claude-code-weekend/">
+          <h1>
+            claude-howto — 주말 하나로 Claude Code를 완전히 익히는 10모듈 가이드
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/03/2026-03-27-claude-howto-master-claude-code-weekend/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Claude Code를 설치했는데 몇 가지 프롬프트만 써보고 있다면, 실제 기능의 90%를 아직 쓰지 않고 있는 겁니다. <strong>claude-howto</strong>는 슬래시 커맨드에서 시작해 서브에이전트, 훅, MCP, 플러그인까지 체계적으로 익힐 수 있는 오픈소스 학습 가이드입니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://github.com/luongnv89/claude-howto">https://github.com/luongnv89/claude-howto</a></li>
+</ul>
+<hr>
+<h2 id="왜-이-가이드가-필요한가">왜 이 가이드가 필요한가</h2>
+<p>공식 문서는 기능을 설명하지만, <strong>어떻게 조합하는지는 알려주지 않습니다.</strong></p>
+<pre class="mermaid">flowchart TD
+    P1["공식 문서 문제"]
+    A1["기능 설명은 있지만<br>조합 방법이 없음"]
+    A2["학습 순서가 불명확<br>(MCP → 훅? 스킬 → 서브에이전트?)"]
+    A3["예제가 너무 기초적<br>Hello World 수준"]
+    A4["90%의 기능을<br>모른 채 사용 중"]
+
+    P1 --> A1
+    P1 --> A2
+    P1 --> A3
+    A1 --> A4
+    A2 --> A4
+    A3 --> A4
+
+    classDef problem fill:#ffc8c4,color:#333
+    classDef result fill:#fde8c0,color:#333
+    class P1,A1,A2,A3 problem
+    class A4 result</pre><p>claude-howto는 이 문제를 <strong>10개 모듈의 단계별 학습 경로</strong>와 <strong>즉시 복사해 쓸 수 있는 프로덕션 템플릿</strong>으로 해결합니다.</p>
+<ul>
+<li>GitHub Stars 1,100+, Forks 78</li>
+<li>v2.2.0 (2026년 3월), Claude Code 2.1+ 호환</li>
+<li>MIT 라이선스, 완전 무료</li>
+</ul>
+<hr>
+<h2 id="10개-학습-모듈">10개 학습 모듈</h2>
+<p>전체 경로는 11~13시간이지만, 15분이면 첫 번째 슬래시 커맨드를 프로젝트에 적용할 수 있습니다.</p>
+<pre class="mermaid">flowchart TD
+    B["Beginner<br>~2.5시간"]
+    I["Intermediate<br>~3.5시간"]
+    A["Advanced<br>~5시간"]
+
+    M1["1. 슬래시 커맨드<br>30분"]
+    M2["2. 메모리<br>45분"]
+    M3["3. 체크포인트<br>45분"]
+    M4["4. CLI 기초<br>30분"]
+    M5["5. 스킬<br>1시간"]
+    M6["6. 훅<br>1시간"]
+    M7["7. MCP<br>1시간"]
+    M8["8. 서브에이전트<br>1.5시간"]
+    M9["9. 고급 기능<br>2~3시간"]
+    M10["10. 플러그인<br>2시간"]
+
+    B --> M1 --> M2 --> M3 --> M4
+    I --> M5 --> M6 --> M7 --> M8
+    A --> M9 --> M10
+
+    classDef beg fill:#c0ecd3,color:#333
+    classDef int fill:#c5dcef,color:#333
+    classDef adv fill:#e0c8ef,color:#333
+    class B,M1,M2,M3,M4 beg
+    class I,M5,M6,M7,M8 int
+    class A,M9,M10 adv</pre><h3 id="1-슬래시-커맨드-01-slash-commands">1. 슬래시 커맨드 (01-slash-commands/)</h3>
+<p>Markdown 파일로 만드는 사용자 호출 단축키입니다. <code>/optimize</code>, <code>/pr</code>, <code>/generate-api-docs</code> 같은 커맨드를 <code>.claude/commands/</code>에 넣으면 즉시 사용 가능합니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cp 01-slash-commands/*.md /path/to/project/.claude/commands/
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 이후 Claude Code에서 /optimize 입력</span>
+</span></span></code></pre></div><h3 id="2-메모리-02-memory">2. 메모리 (02-memory/)</h3>
+<p>세션을 넘어 유지되는 컨텍스트입니다. 세 가지 범위로 관리합니다.</p>
+<pre class="mermaid">flowchart TD
+    M["메모리 범위"]
+    P["프로젝트 메모리<br>project-CLAUDE.md<br>팀 전체 코딩 표준"]
+    D["디렉토리 메모리<br>directory-api-CLAUDE.md<br>특정 모듈 규칙"]
+    U["개인 메모리<br>personal-CLAUDE.md<br>~/.claude/CLAUDE.md"]
+
+    M --> P
+    M --> D
+    M --> U
+
+    classDef main fill:#fde8c0,color:#333
+    classDef scope fill:#c5dcef,color:#333
+    class M main
+    class P,D,U scope</pre><h3 id="3-체크포인트--rewind-08-checkpoints">3. 체크포인트 / Rewind (08-checkpoints/)</h3>
+<p>대화 상태를 스냅샷으로 저장하고 이전 시점으로 되돌립니다. 모든 사용자 프롬프트마다 자동 생성됩니다.</p>
+<pre tabindex="0"><code>/rewind → 5가지 선택:
+1. 코드 + 대화 모두 복구
+2. 대화만 복구
+3. 코드만 복구
+4. 여기서부터 요약
+5. 취소
+</code></pre><p>서로 다른 구현 방식을 A/B 테스트하거나 안전한 실험에 유용합니다.</p>
+<h3 id="4-스킬-03-skills">4. 스킬 (03-skills/)</h3>
+<p>자동 호출되는 재사용 가능 능력 묶음입니다. <code>code-review/</code>, <code>brand-voice/</code>, <code>doc-generator/</code> 예제가 포함됩니다.</p>
+<h3 id="5-훅-06-hooks">5. 훅 (06-hooks/)</h3>
+<p>Claude Code 이벤트에 반응하는 셸 스크립트입니다. <strong>4가지 타입, 25개 이벤트</strong>를 지원합니다.</p>
+<pre class="mermaid">flowchart TD
+    H["훅 타입 4가지"]
+    T1["Tool Hooks<br>PreToolUse · PostToolUse<br>PostToolUseFailure · PermissionRequest"]
+    T2["Session Hooks<br>SessionStart · SessionEnd<br>Stop · SubagentStart · SubagentStop"]
+    T3["Task Hooks<br>UserPromptSubmit · TaskCompleted<br>TaskCreated · TeammateIdle"]
+    T4["Lifecycle Hooks<br>ConfigChange · FileChanged<br>PreCompact · PostCompact 외 7개"]
+
+    H --> T1
+    H --> T2
+    H --> T3
+    H --> T4
+
+    classDef main fill:#fde8c0,color:#333
+    classDef hook fill:#c5dcef,color:#333
+    class H main
+    class T1,T2,T3,T4 hook</pre><p>예제 훅: <code>format-code.sh</code>(쓰기 전 자동 포맷), <code>security-scan.sh</code>(쓰기 후 보안 스캔), <code>pre-commit.sh</code>(커밋 전 테스트), <code>notify-team.sh</code>(팀 알림)</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;hooks&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;PreToolUse&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">[{</span><span style="color:#0550ae">&#34;matcher&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;Write&#34;</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">&#34;hooks&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">[</span><span style="color:#0a3069">&#34;~/.claude/hooks/format-code.sh&#34;</span><span style="color:#1f2328">]}],</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;PostToolUse&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">[{</span><span style="color:#0550ae">&#34;matcher&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;Write&#34;</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">&#34;hooks&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">[</span><span style="color:#0a3069">&#34;~/.claude/hooks/security-scan.sh&#34;</span><span style="color:#1f2328">]}]</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><h3 id="6-mcp-05-mcp">6. MCP (05-mcp/)</h3>
+<p>외부 도구·API에 접근하는 Model Context Protocol입니다. GitHub, 데이터베이스, 파일시스템, 복수 MCP 서버 설정 예제가 포함됩니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#6639ba">export</span> <span style="color:#953800">GITHUB_TOKEN</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;your_token&#34;</span>
+</span></span><span style="display:flex;"><span>claude mcp add github -- npx -y @modelcontextprotocol/server-github
+</span></span></code></pre></div><h3 id="7-서브에이전트-04-subagents">7. 서브에이전트 (04-subagents/)</h3>
+<p>격리된 컨텍스트에서 동작하는 전문 AI 어시스턴트입니다. <code>.claude/agents/</code>에 넣으면 메인 에이전트가 자동으로 위임합니다.</p>
+<p>포함 예제: <code>code-reviewer.md</code>, <code>test-engineer.md</code>, <code>documentation-writer.md</code>, <code>secure-reviewer.md</code>(읽기 전용), <code>implementation-agent.md</code></p>
+<h3 id="8-고급-기능-09-advanced-features">8. 고급 기능 (09-advanced-features/)</h3>
+<ul>
+<li><strong>Planning Mode</strong> — 코딩 전 상세 구현 계획 생성</li>
+<li><strong>Extended Thinking</strong> — 복잡한 문제 심층 추론 (<code>Alt+T</code> / <code>Option+T</code>)</li>
+<li><strong>Background Tasks</strong> — 블로킹 없이 장시간 작업 실행</li>
+<li><strong>Permission Modes</strong> — <code>default</code>, <code>acceptEdits</code>, <code>plan</code>, <code>dontAsk</code>, <code>bypassPermissions</code></li>
+<li><strong>Headless Mode</strong> — CI/CD에서 실행: <code>claude -p &quot;Run tests and generate report&quot;</code></li>
+<li><strong>Session Management</strong> — <code>/resume</code>, <code>/rename</code>, <code>/fork</code>, <code>claude -c</code>, <code>claude -r</code></li>
+</ul>
+<h3 id="9-플러그인-07-plugins">9. 플러그인 (07-plugins/)</h3>
+<p>커맨드·에이전트·MCP·훅을 하나로 묶은 번들입니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/plugin install pr-review
+</span></span><span style="display:flex;"><span>/plugin install devops-automation
+</span></span><span style="display:flex;"><span>/plugin install documentation
+</span></span></code></pre></div><hr>
+<h2 id="기능-비교-한눈에">기능 비교 한눈에</h2>
+<table>
+  <thead>
+      <tr>
+          <th>기능</th>
+          <th>호출 방식</th>
+          <th>지속성</th>
+          <th>주 용도</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>슬래시 커맨드</strong></td>
+          <td>수동 (<code>/cmd</code>)</td>
+          <td>세션 내</td>
+          <td>빠른 단축키</td>
+      </tr>
+      <tr>
+          <td><strong>메모리</strong></td>
+          <td>자동 로드</td>
+          <td>세션 간</td>
+          <td>장기 학습</td>
+      </tr>
+      <tr>
+          <td><strong>스킬</strong></td>
+          <td>자동 호출</td>
+          <td>파일시스템</td>
+          <td>자동화 워크플로우</td>
+      </tr>
+      <tr>
+          <td><strong>서브에이전트</strong></td>
+          <td>자동 위임</td>
+          <td>격리된 컨텍스트</td>
+          <td>작업 분산</td>
+      </tr>
+      <tr>
+          <td><strong>MCP</strong></td>
+          <td>자동 쿼리</td>
+          <td>실시간</td>
+          <td>라이브 데이터</td>
+      </tr>
+      <tr>
+          <td><strong>훅</strong></td>
+          <td>이벤트 트리거</td>
+          <td>설정 기반</td>
+          <td>자동화·검증</td>
+      </tr>
+      <tr>
+          <td><strong>플러그인</strong></td>
+          <td>한 커맨드</td>
+          <td>전 기능</td>
+          <td>완성된 솔루션</td>
+      </tr>
+      <tr>
+          <td><strong>체크포인트</strong></td>
+          <td>수동·자동</td>
+          <td>세션 기반</td>
+          <td>안전한 실험</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="실전-워크플로우-예시">실전 워크플로우 예시</h2>
+<h3 id="자동-코드-리뷰">자동 코드 리뷰</h3>
+<pre class="mermaid">flowchart TD
+    U["사용자: /review-pr"]
+    S1["프로젝트 메모리 로드<br>(코딩 표준)"]
+    S2["GitHub MCP로 PR 가져오기"]
+    S3["code-reviewer 서브에이전트"]
+    S4["test-engineer 서브에이전트"]
+    S5["결과 종합"]
+    S6["포괄적 리뷰 제공"]
+
+    U --> S1 --> S2 --> S3
+    S2 --> S4
+    S3 --> S5
+    S4 --> S5
+    S5 --> S6
+
+    classDef user fill:#fde8c0,color:#333
+    classDef step fill:#c5dcef,color:#333
+    classDef result fill:#c0ecd3,color:#333
+    class U user
+    class S1,S2,S3,S4,S5 step
+    class S6 result</pre><p>사용 기능: <strong>슬래시 커맨드 + 서브에이전트 + 메모리 + MCP</strong></p>
+<h3 id="devops-배포">DevOps 배포</h3>
+<pre class="mermaid">flowchart TD
+    U["사용자: /deploy production"]
+    H1["pre-deploy 훅<br>(환경 검증)"]
+    A["deployment-specialist 서브에이전트"]
+    M["Kubernetes MCP 실행"]
+    Mon["진행 상황 모니터링"]
+    H2["post-deploy 훅<br>(헬스 체크)"]
+    R["상태 보고"]
+
+    U --> H1 --> A --> M --> Mon --> H2 --> R
+
+    classDef user fill:#fde8c0,color:#333
+    classDef hook fill:#ffc8c4,color:#333
+    classDef step fill:#c5dcef,color:#333
+    classDef result fill:#c0ecd3,color:#333
+    class U user
+    class H1,H2 hook
+    class A,M,Mon step
+    class R result</pre><p>사용 기능: <strong>플러그인 + MCP + 훅</strong></p>
+<hr>
+<h2 id="15분-빠른-시작">15분 빠른 시작</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># 1. 클론</span>
+</span></span><span style="display:flex;"><span>git clone https://github.com/luongnv89/claude-howto.git
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">cd</span> claude-howto
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 2. 첫 번째 슬래시 커맨드 복사</span>
+</span></span><span style="display:flex;"><span>mkdir -p /path/to/your-project/.claude/commands
+</span></span><span style="display:flex;"><span>cp 01-slash-commands/optimize.md /path/to/your-project/.claude/commands/
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># → Claude Code에서 /optimize 입력</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 3. 프로젝트 메모리 설정</span>
+</span></span><span style="display:flex;"><span>cp 02-memory/project-CLAUDE.md /path/to/your-project/CLAUDE.md
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 4. 스킬 설치</span>
+</span></span><span style="display:flex;"><span>cp -r 03-skills/code-review ~/.claude/skills/
+</span></span></code></pre></div><p><strong>1시간 필수 설정:</strong></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cp 01-slash-commands/*.md .claude/commands/       <span style="color:#57606a"># 슬래시 커맨드 (15분)</span>
+</span></span><span style="display:flex;"><span>cp 02-memory/project-CLAUDE.md ./CLAUDE.md        <span style="color:#57606a"># 프로젝트 메모리 (15분)</span>
+</span></span><span style="display:flex;"><span>cp -r 03-skills/code-review ~/.claude/skills/     <span style="color:#57606a"># 스킬 설치 (15분)</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 주말 목표: 훅·서브에이전트·MCP·플러그인 추가</span>
+</span></span></code></pre></div><hr>
+<h2 id="self-assessment-자가-진단">/self-assessment 자가 진단</h2>
+<p>Claude Code에서 직접 실행할 수 있는 자가 진단 기능을 내장하고 있습니다.</p>
+<pre tabindex="0"><code>/self-assessment        # 레벨 진단 → 개인화된 학습 로드맵 생성
+/lesson-quiz hooks      # 훅 모듈 이해도 퀴즈
+/lesson-quiz memory     # 메모리 모듈 이해도 퀴즈
+</code></pre><hr>
+<h2 id="오프라인-epub-생성">오프라인 EPUB 생성</h2>
+<p>전체 가이드를 EPUB 전자책으로 만들 수 있습니다. Mermaid 다이어그램도 렌더링된 상태로 포함됩니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>uv run scripts/build_epub.py
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># → claude-howto-guide.epub 생성</span>
+</span></span></code></pre></div><hr>
+<h2 id="핵심-요약">핵심 요약</h2>
+<table>
+  <thead>
+      <tr>
+          <th>항목</th>
+          <th>내용</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>프로젝트</strong></td>
+          <td>luongnv89/claude-howto (1,100+ ★)</td>
+      </tr>
+      <tr>
+          <td><strong>버전</strong></td>
+          <td>v2.2.0 (2026년 3월), Claude Code 2.1+</td>
+      </tr>
+      <tr>
+          <td><strong>모듈 수</strong></td>
+          <td>10개 모듈</td>
+      </tr>
+      <tr>
+          <td><strong>전체 학습 시간</strong></td>
+          <td>11~13시간</td>
+      </tr>
+      <tr>
+          <td><strong>빠른 시작</strong></td>
+          <td>15분 (첫 슬래시 커맨드 적용)</td>
+      </tr>
+      <tr>
+          <td><strong>자가 진단</strong></td>
+          <td><code>/self-assessment</code>, <code>/lesson-quiz [topic]</code></td>
+      </tr>
+      <tr>
+          <td><strong>오프라인</strong></td>
+          <td>EPUB 생성 지원 (<code>uv run scripts/build_epub.py</code>)</td>
+      </tr>
+      <tr>
+          <td><strong>라이선스</strong></td>
+          <td>MIT, 완전 무료</td>
+      </tr>
+      <tr>
+          <td><strong>호환 모델</strong></td>
+          <td>Claude Sonnet 4.6 · Opus 4.6 · Haiku 4.5</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="결론">결론</h2>
+<p>Claude Code의 공식 문서는 기능을 나열하지만, 실제로 생산성을 높이려면 기능들을 어떻게 엮는지를 알아야 합니다. claude-howto는 그 조합 방법을 10개 모듈과 복사 즉시 쓸 수 있는 템플릿으로 정리한 가이드입니다.<br>
+<code>/self-assessment</code>로 현재 수준을 확인하고, 부족한 모듈부터 순서대로 채워나가는 방식으로 접근하면 주말 하나로 Claude Code 파워 유저가 될 수 있습니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 03월 27일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/03/2026-03-27-awesome-codex-subagents-google-stitch-claude-code-skills/" rel="prev">
+        <span>Codex 서브에이전트 136개 모음집, Google Stitch 바이브 디자인, Anthropic Claude Code 스킬 운용법</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/03/2026-03-27-productive-with-claude-code-neil-kakkar/" rel="next">
+        <span>Claude Code로 생산성을 높이는 법 — 구현자에서 에이전트 팀 매니저로</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#왜-이-가이드가-필요한가">왜 이 가이드가 필요한가</a></li>
+    <li><a href="#10개-학습-모듈">10개 학습 모듈</a>
+      <ul>
+        <li><a href="#1-슬래시-커맨드-01-slash-commands">1. 슬래시 커맨드 (01-slash-commands/)</a></li>
+        <li><a href="#2-메모리-02-memory">2. 메모리 (02-memory/)</a></li>
+        <li><a href="#3-체크포인트--rewind-08-checkpoints">3. 체크포인트 / Rewind (08-checkpoints/)</a></li>
+        <li><a href="#4-스킬-03-skills">4. 스킬 (03-skills/)</a></li>
+        <li><a href="#5-훅-06-hooks">5. 훅 (06-hooks/)</a></li>
+        <li><a href="#6-mcp-05-mcp">6. MCP (05-mcp/)</a></li>
+        <li><a href="#7-서브에이전트-04-subagents">7. 서브에이전트 (04-subagents/)</a></li>
+        <li><a href="#8-고급-기능-09-advanced-features">8. 고급 기능 (09-advanced-features/)</a></li>
+        <li><a href="#9-플러그인-07-plugins">9. 플러그인 (07-plugins/)</a></li>
+      </ul>
+    </li>
+    <li><a href="#기능-비교-한눈에">기능 비교 한눈에</a></li>
+    <li><a href="#실전-워크플로우-예시">실전 워크플로우 예시</a>
+      <ul>
+        <li><a href="#자동-코드-리뷰">자동 코드 리뷰</a></li>
+        <li><a href="#devops-배포">DevOps 배포</a></li>
+      </ul>
+    </li>
+    <li><a href="#15분-빠른-시작">15분 빠른 시작</a></li>
+    <li><a href="#self-assessment-자가-진단">/self-assessment 자가 진단</a></li>
+    <li><a href="#오프라인-epub-생성">오프라인 EPUB 생성</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/skills/" class="badge badge-secondary">Skills</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
