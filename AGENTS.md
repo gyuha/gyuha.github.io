@@ -121,7 +121,7 @@ Prefer local patterns over global rewrites.
   - `title`
   - `date`
   - `draft`
-- For new posts, set `date` to the actual writing/publishing time (current local time), not a future timestamp, to avoid posts being hidden from list pages.
+- For new posts, set `date` to the actual writing/publishing date in `YYYY-MM-DD` format only (current local date, no time), not a future date, to avoid posts being hidden from list pages.
 - Preferred post metadata for new content: `categories` (plural), `tags`, optional `description`.
 - Always use `categories` as a YAML array, even when there is only one category.
 - Assign exactly one category per post. Do not stack multiple categories on a single post.
