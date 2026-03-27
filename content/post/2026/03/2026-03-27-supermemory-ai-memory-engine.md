@@ -248,7 +248,7 @@ flowchart TD
         R3["지식 베이스 조회"]
     end
 
-    subgraph "Memory (Supermemory)"]
+    subgraph "Memory (Supermemory)"
         M1["사용자 사실 추출·추적"]
         M2["Stateful — 사용자마다 개인화"]
         M3["\"NYC에 살아\" → \"SF로 이사했어\" 업데이트"]
