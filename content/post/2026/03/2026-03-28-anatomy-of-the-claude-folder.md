@@ -1,5 +1,5 @@
 ---
-title: "Claude Code의 `.claude/` 폴더 해부: 원문 흐름 그대로 정리해 보기"
+title: "Claude Code의 `.claude/` 폴더 해부"
 date: 2026-03-28T00:00:00+09:00
 draft: false
 categories:
