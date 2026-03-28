@@ -98,7 +98,7 @@
   
   <p>Claude Code를 쓰는 사람은 대부분 <code>.claude/</code> 폴더가 있다는 사실은 압니다. 프로젝트 루트에 생기는 것도 봤고, 뭔가 중요한 설정이 들어 있을 것 같다는 감도 있습니다. 그런데 막상 열어 보지 않은 경우가 많습니다.<br>Daily Dose of Data Science의 <a href="https://blog.dailydoseofds.com/p/anatomy-of-the-claude-folder">&ldquo;Anatomy of the .claude/ Folder&rdquo;</a> 는 바로 이 지점을 파고듭니다. <code>.claude/</code> 는 그냥 숨김 폴더가 아니라, <strong>Claude Code가 프로젝트 안에서 어떻게 행동할지를 결정하는 제어 센터</strong> 라는 것이 글의 출발점입니다.</p>
 <p>원문이 좋은 이유는 &ldquo;기능 소개&quot;에 그치지 않고, 실제로 어떤 파일을 어디에 두고 왜 그렇게 나누는지가 한 흐름으로 이어진다는 점입니다. 이 글에서는 그 전개를 최대한 살려서, <code>.claude/</code> 폴더를 처음부터 끝까지 한 번에 훑을 수 있게 정리하겠습니다.</p>
-<p><img src="/img/2026/03/0328-claude-01.png" alt="/img/2026/03/0328-claude-01.png"></p>
+<p><img src="/img/2026/03/0328-claude-01.webp" alt="/img/2026/03/0328-claude-01.webp"></p>
 <h2 id="sources">Sources</h2>
 <ul>
 <li><a href="https://blog.dailydoseofds.com/p/anatomy-of-the-claude-folder">https://blog.dailydoseofds.com/p/anatomy-of-the-claude-folder</a></li>
@@ -131,7 +131,7 @@
 
     class A rootTone
     class B,B1,B2,B3 projectTone
-    class C,C1,C2,C3 userTone</pre><p><img src="/img/2026/03/0328-claude-02.png" alt="/img/2026/03/0328-claude-02.png"></p>
+    class C,C1,C2,C3 userTone</pre><p><img src="/img/2026/03/0328-claude-02.webp" alt="/img/2026/03/0328-claude-02.webp"></p>
 <p>이 구분 하나만 알아도 <code>.claude/</code> 설계가 훨씬 쉬워집니다. 팀 전체가 따라야 하는 규칙인지, 아니면 내 개인적 선호인지 먼저 나누면 되기 때문입니다.</p>
 <h2 id="2-claudemd-가장-중요한-파일">2) <code>CLAUDE.md</code>: 가장 중요한 파일</h2>
 <p>원문은 <code>CLAUDE.md</code> 를 시스템 전체에서 가장 중요한 파일로 둡니다. 이유도 단순합니다. Claude Code 세션이 시작될 때 Claude가 가장 먼저 읽는 것이 바로 이 파일이기 때문입니다. 글은 이 파일을 사실상 <strong>Claude의 instruction manual</strong> 로 설명합니다.</p>
@@ -189,7 +189,7 @@
 </span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 테스트는 mock이 아닌 실제 로컬 DB 사용. 먼저 <span style="color:#0a3069">`npm run db:test:reset`</span> 실행
 </span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> TypeScript strict 모드 사용: unused import 허용 안 함
 </span></span></code></pre></div><h2 id="4-claudelocalmd-개인-오버라이드용">4) <code>CLAUDE.local.md</code>: 개인 오버라이드용</h2>
-<p><img src="/img/2026/03/0328-claude-03.png" alt="/img/2026/03/0328-claude-03.png"></p>
+<p><img src="/img/2026/03/0328-claude-03.webp" alt="/img/2026/03/0328-claude-03.webp"></p>
 <p>다음으로 원문은 <code>CLAUDE.local.md</code> 를 설명합니다. 이 파일은 팀 규칙이 아니라 <strong>나만의 취향</strong> 을 넣는 자리입니다.</p>
 <p>예를 들면:</p>
 <ul>
@@ -251,7 +251,7 @@
 </ul>
 <p>이런 식으로 파일 이름이 곧 명령 이름이 됩니다.</p>
 <p>원문이 보여 주는 핵심 포인트는 <code>!</code> 백틱 문법입니다. 이 문법을 쓰면 쉘 명령 결과를 실제 프롬프트 안에 주입할 수 있습니다. 예를 들어 현재 브랜치 diff를 넣어 두고 코드 리뷰를 시키는 식입니다. 이 덕분에 command는 단순 저장 텍스트가 아니라 <strong>실시간 컨텍스트를 끌어오는 자동화된 프롬프트</strong> 가 됩니다.</p>
-<p><img src="/img/2026/03/0328-claude-04.png" alt="/img/2026/03/0328-claude-04.png"></p>
+<p><img src="/img/2026/03/0328-claude-04.webp" alt="/img/2026/03/0328-claude-04.webp"></p>
 <p>원문이 제시하는 첫 번째 예시는 리뷰용 커맨드입니다.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-md" data-lang="md"><span style="display:flex;"><span>---
 </span></span><span style="display:flex;"><span>description: Review the current branch diff for issues before merging
@@ -344,7 +344,7 @@
 <li>agent마다 도구 접근 범위를 다르게 줄 수 있다</li>
 </ol>
 <p>즉 보안 감사를 맡는 에이전트가 굳이 write 권한을 가질 필요는 없습니다. Read, Grep, Glob만 줘도 됩니다. 원문은 이 제한이 일부러 중요하다고 설명합니다. 작은 모델은 읽기 전용 탐색에 쓰고, 더 강한 모델은 진짜 복잡한 검토나 구현에 쓰는 식의 모델 전략도 함께 제안합니다.</p>
-<p><img src="/img/2026/03/0328-claude-05.png" alt="/img/2026/03/0328-claude-05.png"></p>
+<p><img src="/img/2026/03/0328-claude-05.webp" alt="/img/2026/03/0328-claude-05.webp"></p>
 <p>원문은 agents도 트리와 예시 파일을 바로 붙여서 설명합니다.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>.claude/agents/
 </span></span><span style="display:flex;"><span>├── code-reviewer.md
@@ -595,7 +595,7 @@
   </div>
   <div class="widget-content">
      
-    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude Code</a>
     <a href="/tags/skills/" class="badge badge-secondary">Skills</a>
     <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
   </div>
