@@ -98,6 +98,7 @@
   
   <p>Claude Code를 쓰는 사람은 대부분 <code>.claude/</code> 폴더가 있다는 사실은 압니다. 프로젝트 루트에 생기는 것도 봤고, 뭔가 중요한 설정이 들어 있을 것 같다는 감도 있습니다. 그런데 막상 열어 보지 않은 경우가 많습니다.<br>Daily Dose of Data Science의 <a href="https://blog.dailydoseofds.com/p/anatomy-of-the-claude-folder">&ldquo;Anatomy of the .claude/ Folder&rdquo;</a> 는 바로 이 지점을 파고듭니다. <code>.claude/</code> 는 그냥 숨김 폴더가 아니라, <strong>Claude Code가 프로젝트 안에서 어떻게 행동할지를 결정하는 제어 센터</strong> 라는 것이 글의 출발점입니다.</p>
 <p>원문이 좋은 이유는 &ldquo;기능 소개&quot;에 그치지 않고, 실제로 어떤 파일을 어디에 두고 왜 그렇게 나누는지가 한 흐름으로 이어진다는 점입니다. 이 글에서는 그 전개를 최대한 살려서, <code>.claude/</code> 폴더를 처음부터 끝까지 한 번에 훑을 수 있게 정리하겠습니다.</p>
+<p><img src="/img/2026/03/0328-claude-01.png" alt="/img/2026/03/0328-claude-01.png"></p>
 <h2 id="sources">Sources</h2>
 <ul>
 <li><a href="https://blog.dailydoseofds.com/p/anatomy-of-the-claude-folder">https://blog.dailydoseofds.com/p/anatomy-of-the-claude-folder</a></li>
@@ -130,7 +131,8 @@
 
     class A rootTone
     class B,B1,B2,B3 projectTone
-    class C,C1,C2,C3 userTone</pre><p>이 구분 하나만 알아도 <code>.claude/</code> 설계가 훨씬 쉬워집니다. 팀 전체가 따라야 하는 규칙인지, 아니면 내 개인적 선호인지 먼저 나누면 되기 때문입니다.</p>
+    class C,C1,C2,C3 userTone</pre><p><img src="/img/2026/03/0328-claude-02.png" alt="/img/2026/03/0328-claude-02.png"></p>
+<p>이 구분 하나만 알아도 <code>.claude/</code> 설계가 훨씬 쉬워집니다. 팀 전체가 따라야 하는 규칙인지, 아니면 내 개인적 선호인지 먼저 나누면 되기 때문입니다.</p>
 <h2 id="2-claudemd-가장-중요한-파일">2) <code>CLAUDE.md</code>: 가장 중요한 파일</h2>
 <p>원문은 <code>CLAUDE.md</code> 를 시스템 전체에서 가장 중요한 파일로 둡니다. 이유도 단순합니다. Claude Code 세션이 시작될 때 Claude가 가장 먼저 읽는 것이 바로 이 파일이기 때문입니다. 글은 이 파일을 사실상 <strong>Claude의 instruction manual</strong> 로 설명합니다.</p>
 <p>요점은 분명합니다. <code>CLAUDE.md</code> 에 적는 내용이 곧 Claude가 프로젝트에서 따라야 할 기준이 됩니다.</p>
@@ -163,7 +165,31 @@
 <li>길고 추상적인 이론 설명</li>
 </ul>
 <p>원문은 특히 <code>CLAUDE.md</code> 를 200줄 이하로 유지하라고 권합니다. 길어질수록 컨텍스트를 많이 먹고, 오히려 instruction adherence가 떨어진다는 문제의식입니다. 즉 좋은 <code>CLAUDE.md</code> 는 &ldquo;많이 적는 문서&quot;가 아니라 <strong>Claude가 바로 실행에 쓸 수 있는 정보만 남긴 짧고 밀도 높은 파일</strong> 입니다.</p>
-<h2 id="4-claudelocalmd-개인-오버라이드용">4) <code>CLAUDE.local.md</code>: 개인 오버라이드용</h2>
+<p>원문은 여기서 바로 &ldquo;짧지만 바로 일하게 만드는&rdquo; 예시를 보여 줍니다. 아래 블록이 그 핵심입니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-md" data-lang="md"><span style="display:flex;"><span># Project: Acme API
+</span></span><span style="display:flex;"><span>## 명령어
+</span></span><span style="display:flex;"><span>npm run dev          # 개발 서버 시작
+</span></span><span style="display:flex;"><span>npm run test         # 테스트 실행 (Jest)
+</span></span><span style="display:flex;"><span>npm run lint         # ESLint + Prettier 검사
+</span></span><span style="display:flex;"><span>npm run build        # 프로덕션 빌드
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>## 아키텍처
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Express REST API, Node 20 사용
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> PostgreSQL은 Prisma ORM으로 연결
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 모든 핸들러는 src/handlers/ 아래에 위치
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 공용 타입은 src/types/ 에 위치
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>## 규칙
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 모든 핸들러의 요청 검증에는 zod 사용
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 반환 형태는 항상 { data, error }
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 클라이언트에 스택 트레이스를 노출하지 않기
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> console.log 대신 logger 모듈 사용
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>## 주의할 점
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 테스트는 mock이 아닌 실제 로컬 DB 사용. 먼저 <span style="color:#0a3069">`npm run db:test:reset`</span> 실행
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> TypeScript strict 모드 사용: unused import 허용 안 함
+</span></span></code></pre></div><h2 id="4-claudelocalmd-개인-오버라이드용">4) <code>CLAUDE.local.md</code>: 개인 오버라이드용</h2>
+<p><img src="/img/2026/03/0328-claude-03.png" alt="/img/2026/03/0328-claude-03.png"></p>
 <p>다음으로 원문은 <code>CLAUDE.local.md</code> 를 설명합니다. 이 파일은 팀 규칙이 아니라 <strong>나만의 취향</strong> 을 넣는 자리입니다.</p>
 <p>예를 들면:</p>
 <ul>
@@ -183,8 +209,25 @@
 <li><code>security.md</code></li>
 </ul>
 <p>처럼 나누면, 한 파일이 너무 거대해지는 문제를 피할 수 있습니다. 원문은 이 구조의 장점으로 유지보수 책임이 분명해진다는 점도 강조합니다. API 규칙은 API 담당자가, 테스트 규칙은 테스트 표준을 맡은 사람이 관리할 수 있기 때문입니다.</p>
-<p>원문이 특히 강조하는 것은 <strong>path-scoped rules</strong> 입니다. <code>paths</code> frontmatter를 달아 두면, Claude는 그 경로와 관련된 파일을 다룰 때만 해당 규칙을 불러옵니다.</p>
-<pre class="mermaid">flowchart TD
+<p>원문은 먼저 폴더를 아주 단순한 트리로 보여 줍니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>.claude/rules/
+</span></span><span style="display:flex;"><span>├── code-style.md
+</span></span><span style="display:flex;"><span>├── testing.md
+</span></span><span style="display:flex;"><span>├── api-conventions.md
+</span></span><span style="display:flex;"><span>└── security.md
+</span></span></code></pre></div><p>원문이 특히 강조하는 것은 <strong>path-scoped rules</strong> 입니다. <code>paths</code> frontmatter를 달아 두면, Claude는 그 경로와 관련된 파일을 다룰 때만 해당 규칙을 불러옵니다.</p>
+<p>이 설명도 아래처럼 실제 frontmatter 예시와 함께 제시됩니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-md" data-lang="md"><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>paths:
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">-</span> &#34;src/api/**/*.ts&#34;
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">-</span> &#34;src/handlers/**/*.ts&#34;
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span># API 설계 규칙
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 모든 핸들러는 { data, error } 형태로 반환
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 요청 본문 검증에는 zod 사용
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 내부 에러 상세 정보는 클라이언트에 노출하지 않기
+</span></span></code></pre></div><pre class="mermaid">flowchart TD
     A[".claude/rules/"] --> B["항상 적용 규칙"]
     A --> C["경로별 규칙"]
 
@@ -208,8 +251,39 @@
 </ul>
 <p>이런 식으로 파일 이름이 곧 명령 이름이 됩니다.</p>
 <p>원문이 보여 주는 핵심 포인트는 <code>!</code> 백틱 문법입니다. 이 문법을 쓰면 쉘 명령 결과를 실제 프롬프트 안에 주입할 수 있습니다. 예를 들어 현재 브랜치 diff를 넣어 두고 코드 리뷰를 시키는 식입니다. 이 덕분에 command는 단순 저장 텍스트가 아니라 <strong>실시간 컨텍스트를 끌어오는 자동화된 프롬프트</strong> 가 됩니다.</p>
-<p>또 <code>$ARGUMENTS</code> 를 이용해 <code>/project:fix-issue 234</code> 처럼 인자를 넘길 수 있다는 점도 원문이 자세히 설명합니다. 이 구조는 issue 조사, PR 요약, 보안 스캔 같은 반복 작업에 특히 잘 맞습니다.</p>
-<h2 id="7-skills-폴더-필요할-때-스스로-발동하는-워크플로우">7) <code>skills/</code> 폴더: 필요할 때 스스로 발동하는 워크플로우</h2>
+<p><img src="/img/2026/03/0328-claude-04.png" alt="/img/2026/03/0328-claude-04.png"></p>
+<p>원문이 제시하는 첫 번째 예시는 리뷰용 커맨드입니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-md" data-lang="md"><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>description: Review the current branch diff for issues before merging
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>## 검토할 변경 사항
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>!<span style="color:#0a3069">`git diff --name-only main...HEAD`</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>## 상세 diff
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>!<span style="color:#0a3069">`git diff main...HEAD`</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>위 변경 사항을 아래 기준으로 검토하세요:
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">1.</span> 코드 품질 문제
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">2.</span> 보안 취약점
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">3.</span> 누락된 테스트 커버리지
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">4.</span> 성능 우려 사항
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>파일별로 구체적이고 실행 가능한 피드백을 제공하세요.
+</span></span></code></pre></div><p>또 <code>$ARGUMENTS</code> 를 이용해 <code>/project:fix-issue 234</code> 처럼 인자를 넘길 수 있다는 점도 원문이 자세히 설명합니다. 이 구조는 issue 조사, PR 요약, 보안 스캔 같은 반복 작업에 특히 잘 맞습니다.</p>
+<p>그 다음에는 이슈 번호를 받는 커맨드 예시가 이어집니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-md" data-lang="md"><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>description: Investigate and fix a GitHub issue
+</span></span><span style="display:flex;"><span>argument-hint: [issue-number]
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>이 저장소의 이슈 #$ARGUMENTS 를 확인하세요.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>!<span style="color:#0a3069">`gh issue view $ARGUMENTS`</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>버그를 이해하고, 근본 원인을 추적해 수정한 뒤,
+</span></span><span style="display:flex;"><span>이 문제를 잡아낼 수 있었을 테스트도 작성하세요.
+</span></span></code></pre></div><h2 id="7-skills-폴더-필요할-때-스스로-발동하는-워크플로우">7) <code>skills/</code> 폴더: 필요할 때 스스로 발동하는 워크플로우</h2>
 <p>원문은 commands와 skills를 명확히 구분합니다. commands는 <strong>사용자가 직접 부르는 것</strong>, skills는 <strong>Claude가 설명을 읽고 상황에 맞게 스스로 꺼내 쓰는 것</strong> 이라는 차이입니다.</p>
 <p>skill은 보통 아래처럼 구성됩니다.</p>
 <ul>
@@ -218,7 +292,31 @@
 <li>필요하면 추가 문서, 예제, 템플릿</li>
 </ul>
 <p>원문이 말하는 핵심은 skill이 단순 한 파일 프롬프트가 아니라 <strong>패키지 형태의 재사용 워크플로우</strong> 라는 점입니다. <code>SKILL.md</code> 의 description을 보고 Claude가 &ldquo;이 상황은 security review skill이 맞다&quot;고 판단하면 자동으로 그 흐름을 탑니다.</p>
-<pre class="mermaid">flowchart TD
+<p>원문은 먼저 skill 디렉터리 구조를 짧은 트리로 보여 줍니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>.claude/skills/
+</span></span><span style="display:flex;"><span>├── security-review/
+</span></span><span style="display:flex;"><span>│   ├── SKILL.md
+</span></span><span style="display:flex;"><span>│   └── DETAILED_GUIDE.md
+</span></span><span style="display:flex;"><span>└── deploy/
+</span></span><span style="display:flex;"><span>    ├── SKILL.md
+</span></span><span style="display:flex;"><span>    └── templates/
+</span></span><span style="display:flex;"><span>        └── release-notes.md
+</span></span></code></pre></div><p>그리고 실제 <code>SKILL.md</code> 앞부분 예시도 함께 제시합니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-md" data-lang="md"><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>name: security-review
+</span></span><span style="display:flex;"><span>description: Comprehensive security audit. Use when reviewing code for
+</span></span><span style="display:flex;"><span>  vulnerabilities, before deployments, or when the user mentions security.
+</span></span><span style="display:flex;"><span>allowed-tools: Read, Grep, Glob
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>코드베이스에서 보안 취약점을 분석하세요:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">1.</span> SQL injection 및 XSS 위험
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">2.</span> 노출된 인증 정보 또는 비밀값
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">3.</span> 안전하지 않은 설정
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">4.</span> 인증 및 권한 부여의 빈틈
+</span></span><span style="display:flex;"><span>심각도와 구체적인 대응 방안을 함께 보고하세요.
+</span></span><span style="display:flex;"><span>보안 기준은 <span style="color:#6639ba">@DETAILED_GUIDE</span>.md 를 참고하세요.
+</span></span></code></pre></div><pre class="mermaid">flowchart TD
     A["사용자 요청"] --> B{"skill 설명과 맞는가?"}
     B -->|예| C["Claude가 skill 로드"]
     B -->|아니오| D["기본 흐름 유지"]
@@ -246,7 +344,25 @@
 <li>agent마다 도구 접근 범위를 다르게 줄 수 있다</li>
 </ol>
 <p>즉 보안 감사를 맡는 에이전트가 굳이 write 권한을 가질 필요는 없습니다. Read, Grep, Glob만 줘도 됩니다. 원문은 이 제한이 일부러 중요하다고 설명합니다. 작은 모델은 읽기 전용 탐색에 쓰고, 더 강한 모델은 진짜 복잡한 검토나 구현에 쓰는 식의 모델 전략도 함께 제안합니다.</p>
-<h2 id="9-settingsjson-claude가-무엇을-할-수-있는지-정하는-파일">9) <code>settings.json</code>: Claude가 무엇을 할 수 있는지 정하는 파일</h2>
+<p><img src="/img/2026/03/0328-claude-05.png" alt="/img/2026/03/0328-claude-05.png"></p>
+<p>원문은 agents도 트리와 예시 파일을 바로 붙여서 설명합니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>.claude/agents/
+</span></span><span style="display:flex;"><span>├── code-reviewer.md
+</span></span><span style="display:flex;"><span>└── security-auditor.md
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-md" data-lang="md"><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>name: code-reviewer
+</span></span><span style="display:flex;"><span>description: Expert code reviewer. Use PROACTIVELY when reviewing PRs,
+</span></span><span style="display:flex;"><span>  checking for bugs, or validating implementations before merging.
+</span></span><span style="display:flex;"><span>model: sonnet
+</span></span><span style="display:flex;"><span>tools: Read, Grep, Glob
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>당신은 정확성과 유지보수성을 중시하는 시니어 코드 리뷰어입니다.
+</span></span><span style="display:flex;"><span>코드를 리뷰할 때는:
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 스타일 문제만이 아니라 실제 버그를 지적하기
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 모호한 개선안이 아니라 구체적인 수정안을 제시하기
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 엣지 케이스와 에러 처리 누락을 확인하기
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> 성능 문제는 실제로 규모에서 의미가 있을 때만 언급하기
+</span></span></code></pre></div><h2 id="9-settingsjson-claude가-무엇을-할-수-있는지-정하는-파일">9) <code>settings.json</code>: Claude가 무엇을 할 수 있는지 정하는 파일</h2>
 <p>원문에서 가장 실무 감각이 강한 부분이 바로 <code>.claude/settings.json</code> 입니다. 이 파일은 Claude가:</p>
 <ul>
 <li>어떤 명령을 바로 실행할 수 있는지</li>
@@ -261,7 +377,27 @@
 <li><code>deny</code>: 절대 금지할 작업</li>
 </ul>
 <p>원문은 좋은 <code>allow</code> 예시로 <code>npm run *</code>, <code>make *</code>, 읽기 중심 git 명령, 기본 파일 조작 도구를 들고, 좋은 <code>deny</code> 예시로 <code>rm -rf</code>, <code>curl</code>, <code>.env</code>, <code>secrets/</code> 등을 제시합니다.</p>
-<pre class="mermaid">flowchart TD
+<p>여기서는 설명만이 아니라 <code>settings.json</code> 전체 예시를 통째로 보여 줍니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;$schema&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;https://json.schemastore.org/claude-code-settings.json&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;permissions&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;allow&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">[</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0a3069">&#34;Bash(npm run *)&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0a3069">&#34;Bash(git status)&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0a3069">&#34;Bash(git diff *)&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0a3069">&#34;Read&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0a3069">&#34;Write&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0a3069">&#34;Edit&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">],</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;deny&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">[</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0a3069">&#34;Bash(rm -rf *)&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0a3069">&#34;Bash(curl *)&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0a3069">&#34;Read(./.env)&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0a3069">&#34;Read(./.env.*)&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">]</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><pre class="mermaid">flowchart TD
     A["settings.json"] --> B["allow"]
     A --> C["deny"]
     A --> D["둘 다 아니면 ask"]
@@ -306,7 +442,42 @@
 <li><code>~/.claude/</code> 는 이 모든 것의 개인 전역판 + 기억 저장소</li>
 </ul>
 <p>이렇게 보면 <code>.claude/</code> 는 설정 모음이 아니라, <strong>Claude에게 프로젝트를 이해시키고 통제하는 운영 프로토콜</strong> 에 가깝습니다.</p>
-<h2 id="12-원문이-제안하는-시작-방법">12) 원문이 제안하는 시작 방법</h2>
+<p>원문 마지막의 전체 트리를 그대로 보면 각 조각이 어디에 들어가는지 한 번에 보입니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>your-project/
+</span></span><span style="display:flex;"><span>├── CLAUDE.md                  # 팀 지침 (커밋됨)
+</span></span><span style="display:flex;"><span>├── CLAUDE.local.md            # 개인 오버라이드 (gitignored)
+</span></span><span style="display:flex;"><span>│
+</span></span><span style="display:flex;"><span>└── .claude/
+</span></span><span style="display:flex;"><span>    ├── settings.json          # 권한 + 설정 (커밋됨)
+</span></span><span style="display:flex;"><span>    ├── settings.local.json    # 개인 권한 오버라이드 (gitignored)
+</span></span><span style="display:flex;"><span>    │
+</span></span><span style="display:flex;"><span>    ├── commands/              # 커스텀 슬래시 명령
+</span></span><span style="display:flex;"><span>    │   ├── review.md          # -&gt; /project:review
+</span></span><span style="display:flex;"><span>    │   ├── fix-issue.md       # -&gt; /project:fix-issue
+</span></span><span style="display:flex;"><span>    │   └── deploy.md          # -&gt; /project:deploy
+</span></span><span style="display:flex;"><span>    │
+</span></span><span style="display:flex;"><span>    ├── rules/                 # 모듈형 지침 파일
+</span></span><span style="display:flex;"><span>    │   ├── code-style.md
+</span></span><span style="display:flex;"><span>    │   ├── testing.md
+</span></span><span style="display:flex;"><span>    │   └── api-conventions.md
+</span></span><span style="display:flex;"><span>    │
+</span></span><span style="display:flex;"><span>    ├── skills/                # 자동 호출 워크플로우
+</span></span><span style="display:flex;"><span>    │   ├── security-review/
+</span></span><span style="display:flex;"><span>    │   │   └── SKILL.md
+</span></span><span style="display:flex;"><span>    │   └── deploy/
+</span></span><span style="display:flex;"><span>    │       └── SKILL.md
+</span></span><span style="display:flex;"><span>    │
+</span></span><span style="display:flex;"><span>    └── agents/                # 전문 서브에이전트 페르소나
+</span></span><span style="display:flex;"><span>        ├── code-reviewer.md
+</span></span><span style="display:flex;"><span>        └── security-auditor.md
+</span></span><span style="display:flex;"><span>~/.claude/
+</span></span><span style="display:flex;"><span>├── CLAUDE.md                  # 내 전역 지침
+</span></span><span style="display:flex;"><span>├── settings.json              # 내 전역 설정
+</span></span><span style="display:flex;"><span>├── commands/                  # 내 개인 명령 (모든 프로젝트)
+</span></span><span style="display:flex;"><span>├── skills/                    # 내 개인 스킬 (모든 프로젝트)
+</span></span><span style="display:flex;"><span>├── agents/                    # 내 개인 에이전트 (모든 프로젝트)
+</span></span><span style="display:flex;"><span>└── projects/                  # 세션 기록 + auto-memory
+</span></span></code></pre></div><h2 id="12-원문이-제안하는-시작-방법">12) 원문이 제안하는 시작 방법</h2>
 <p>원문은 시작 순서도 아주 실용적으로 제시합니다.</p>
 <ol>
 <li><code>/init</code> 으로 시작용 <code>CLAUDE.md</code> 를 만든다.</li>
@@ -424,7 +595,7 @@
   </div>
   <div class="widget-content">
      
-    <a href="/tags/claude-code/" class="badge badge-secondary">Claude Code</a>
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
     <a href="/tags/skills/" class="badge badge-secondary">Skills</a>
     <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
   </div>
