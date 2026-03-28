@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'dev-browser: AI 에이전트에게 브라우저를 주는 가장 빠른 방법'" />
+  <title>dev-browser: AI 에이전트에게 브라우저를 주는 가장 빠른 방법  | 신규하 블로그</title>
+  <meta property="og:title" content="dev-browser: AI 에이전트에게 브라우저를 주는 가장 빠른 방법" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-03-29"> 
+  <meta property="og:url" content="http://localhost:1313/post/2026/03/2026-03-29-dev-browser-claude-code/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="http://localhost:1313/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="agents" />
+  
+  <meta property="og:tags" content="automation" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="http://localhost:1313/post/2026/03/2026-03-29-dev-browser-claude-code/">
+          <h1>
+            dev-browser: AI 에이전트에게 브라우저를 주는 가장 빠른 방법
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="http://localhost:1313/post/2026/03/2026-03-29-dev-browser-claude-code/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>AI 에이전트가 브라우저를 다뤄야 할 때, 선택지는 여러 가지입니다. Playwright MCP, Claude Chrome Extension, Playwright Skill — 그리고 <strong>dev-browser</strong>.</p>
+<p>벤치마크에서 dev-browser는 가장 빠르고, 가장 저렴하고, 가장 적은 턴으로 작업을 완료했습니다. 어떻게 이게 가능한지, 그리고 어떻게 쓰는지 살펴보겠습니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://github.com/SawyerHood/dev-browser">SawyerHood/dev-browser — GitHub</a></li>
+</ul>
+<hr>
+<h2 id="dev-browser란-무엇인가">dev-browser란 무엇인가</h2>
+<p><strong>dev-browser</strong>는 AI 에이전트와 개발자가 샌드박스 JavaScript 스크립트로 브라우저를 제어할 수 있게 해주는 브라우저 자동화 도구입니다. <a href="https://dobrowser.io">Do Browser</a>에서 만들었고, MIT 라이선스로 공개되어 있습니다.</p>
+<pre class="mermaid">flowchart TD
+    A["Claude Code 에이전트"] -->|"dev-browser 스크립트 실행"| B["dev-browser CLI"]
+    B --> C{"연결 방식"}
+    C -->|"--headless"| D["새 Chromium 인스턴스<br>(헤드리스)"]
+    C -->|"--connect"| E["실행 중인 Chrome<br>(remote debugging)"]
+    D --> F["QuickJS WASM 샌드박스"]
+    E --> F
+    F --> G["Playwright Page API"]
+    G --> H["웹 페이지 조작<br>(goto, click, fill, screenshot…)"]
+
+    classDef agentStyle fill:#c5dcef,stroke:#5a9fd4,color:#333
+    classDef cliStyle fill:#fde8c0,stroke:#e0a040,color:#333
+    classDef sandboxStyle fill:#ffc8c4,stroke:#e05050,color:#333
+    classDef browserStyle fill:#c0ecd3,stroke:#5ab08a,color:#333
+
+    class A agentStyle
+    class B,C cliStyle
+    class F sandboxStyle
+    class D,E,G,H browserStyle</pre><p>핵심 특징 네 가지:</p>
+<ul>
+<li><strong>샌드박스 실행</strong> — 스크립트가 QuickJS WASM 샌드박스에서 실행됩니다. 호스트 파일시스템이나 네트워크에 직접 접근할 수 없습니다.</li>
+<li><strong>영속적 페이지</strong> — 페이지를 한 번 열어두면, 여러 스크립트에서 계속 이어서 사용할 수 있습니다.</li>
+<li><strong>자동 연결</strong> — 실행 중인 Chrome에 붙거나, 새 Chromium을 바로 실행합니다.</li>
+<li><strong>Playwright 전체 API</strong> — <code>goto</code>, <code>click</code>, <code>fill</code>, <code>locator</code>, <code>evaluate</code>, <code>screenshot</code> 등 Playwright가 제공하는 모든 것을 사용할 수 있습니다.</li>
+</ul>
+<hr>
+<h2 id="설치">설치</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>npm install -g dev-browser
+</span></span><span style="display:flex;"><span>dev-browser install    <span style="color:#57606a"># Playwright + Chromium 설치</span>
+</span></span></code></pre></div><p>Windows PowerShell에서도 동일합니다. Windows 환경에서는 <code>postinstall</code> 단계에서 <code>dev-browser-windows-x64.exe</code> 바이너리를 자동으로 다운로드합니다.</p>
+<hr>
+<h2 id="빠른-시작">빠른 시작</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># 헤드리스 브라우저로 실행</span>
+</span></span><span style="display:flex;"><span>dev-browser --headless <span style="color:#0a3069">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">const page = await browser.getPage(&#34;main&#34;);
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">await page.goto(&#34;https://example.com&#34;);
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">console.log(await page.title());
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">EOF</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 실행 중인 Chrome에 연결 (chrome://inspect/#remote-debugging 활성화 필요)</span>
+</span></span><span style="display:flex;"><span>dev-browser --connect <span style="color:#0a3069">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">const tabs = await browser.listPages();
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">console.log(JSON.stringify(tabs, null, 2));
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">EOF</span>
+</span></span></code></pre></div><p>Windows에서 Chrome에 연결하려면:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>chrome<span style="color:#1f2328">.</span>exe <span style="color:#1f2328">-</span>-remote-debugging-port<span style="color:#1f2328">=</span><span style="color:#0550ae">9222</span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">dev-browser</span> <span style="color:#1f2328">-</span>-connect
+</span></span></code></pre></div><hr>
+<h2 id="script-api-quickjs-런타임">Script API: QuickJS 런타임</h2>
+<p>스크립트는 Node.js가 아닌 <strong>QuickJS WASM 런타임</strong> 위에서 실행됩니다. 사용 가능한 전역 객체는 다음과 같습니다:</p>
+<pre class="mermaid">classDiagram
+    class browser {
+        +getPage(nameOrId) Page
+        +newPage() Page
+        +listPages() Array
+        +closePage(name) void
+    }
+    class FileIO {
+        +saveScreenshot(buf, name) path
+        +writeFile(name, data) path
+        +readFile(name) content
+    }
+    class Page {
+        +goto(url)
+        +click(selector)
+        +fill(selector, value)
+        +locator(selector)
+        +evaluate(fn)
+        +screenshot()
+        +snapshotForAI(opts)
+    }
+    class FileSystem {
+        <<restricted>>
+        ~/.dev-browser/tmp/
+    }
+
+    browser --> Page : 반환
+    FileIO --> FileSystem : 접근 제한
+    Page --> FileSystem : 스크린샷 저장</pre><div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#57606a">// 브라우저 제어
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">browser</span><span style="color:#1f2328">.</span><span style="color:#1f2328">getPage</span><span style="color:#1f2328">(</span><span style="color:#1f2328">nameOrId</span><span style="color:#1f2328">)</span>    <span style="color:#57606a">// 이름으로 페이지 가져오기/생성, 또는 targetId로 탭에 연결
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">browser</span><span style="color:#1f2328">.</span><span style="color:#1f2328">newPage</span><span style="color:#1f2328">()</span>            <span style="color:#57606a">// 익명 페이지 생성 (스크립트 종료 후 자동 정리)
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">browser</span><span style="color:#1f2328">.</span><span style="color:#1f2328">listPages</span><span style="color:#1f2328">()</span>          <span style="color:#57606a">// 탭 목록 반환: [{id, url, title, name}]
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">browser</span><span style="color:#1f2328">.</span><span style="color:#1f2328">closePage</span><span style="color:#1f2328">(</span><span style="color:#1f2328">name</span><span style="color:#1f2328">)</span>      <span style="color:#57606a">// 이름으로 페이지 닫기
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// 파일 I/O (경로는 ~/.dev-browser/tmp/ 로 제한)
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">await</span> <span style="color:#1f2328">saveScreenshot</span><span style="color:#1f2328">(</span><span style="color:#1f2328">buf</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">name</span><span style="color:#1f2328">)</span>   <span style="color:#57606a">// 스크린샷 버퍼 저장, 경로 반환
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">await</span> <span style="color:#1f2328">writeFile</span><span style="color:#1f2328">(</span><span style="color:#1f2328">name</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">data</span><span style="color:#1f2328">)</span>       <span style="color:#57606a">// 파일 쓰기, 경로 반환
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">await</span> <span style="color:#1f2328">readFile</span><span style="color:#1f2328">(</span><span style="color:#1f2328">name</span><span style="color:#1f2328">)</span>              <span style="color:#57606a">// 파일 읽기, 내용 반환
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// 출력
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">console</span><span style="color:#1f2328">.</span><span style="color:#1f2328">log</span><span style="color:#0550ae">/</span><span style="color:#1f2328">warn</span><span style="color:#0550ae">/</span><span style="color:#1f2328">error</span><span style="color:#0550ae">/</span><span style="color:#1f2328">info</span>       <span style="color:#57606a">// CLI stdout/stderr로 라우팅
+</span></span></span></code></pre></div><p>특히 주목할 메서드가 하나 있습니다: <code>page.snapshotForAI({ track?, depth?, timeout? })</code>. 이 메서드는 <code>{ full, incremental? }</code> 형태로 AI 친화적인 페이지 스냅샷을 반환합니다. AI가 페이지 상태를 이해하는 데 최적화된 형식입니다.</p>
+<hr>
+<h2 id="quickjs-샌드박스의-의미">QuickJS 샌드박스의 의미</h2>
+<p>일반적인 Node.js 기반 자동화 도구와 달리, dev-browser의 스크립트는 완전히 격리된 환경에서 실행됩니다.</p>
+<pre class="mermaid">flowchart TD
+    subgraph host["호스트 시스템"]
+        FS["파일시스템"]
+        NET["네트워크 스택"]
+        ENV["환경 변수"]
+    end
+
+    subgraph sandbox["QuickJS WASM 샌드박스"]
+        SCRIPT["에이전트 스크립트"]
+        API["browser / FileIO API"]
+    end
+
+    subgraph allowed["허용된 접근"]
+        TMP["~/.dev-browser/tmp/<br>(파일 I/O 제한)"]
+        BROWSER["Playwright 브라우저 인스턴스<br>(브라우저 제어)"]
+    end
+
+    SCRIPT --> API
+    API --> TMP
+    API --> BROWSER
+    SCRIPT -. "접근 불가" .-> FS
+    SCRIPT -. "접근 불가" .-> NET
+    SCRIPT -. "접근 불가" .-> ENV
+
+    classDef hostStyle fill:#ffc8c4,stroke:#e05050,color:#333
+    classDef sandboxStyle fill:#c5dcef,stroke:#5a9fd4,color:#333
+    classDef allowedStyle fill:#c0ecd3,stroke:#5ab08a,color:#333
+
+    class FS,NET,ENV hostStyle
+    class SCRIPT,API sandboxStyle
+    class TMP,BROWSER allowedStyle</pre><p>이 설계 덕분에:</p>
+<ul>
+<li>에이전트 스크립트가 호스트 파일시스템이나 네트워크에 직접 접근할 수 없습니다.</li>
+<li>Claude Code에서 <code>dev-browser</code> 명령어를 사전 허가해도 안전합니다.</li>
+</ul>
+<hr>
+<h2 id="claude-code와의-통합">Claude Code와의 통합</h2>
+<h3 id="ai-에이전트에서-사용하기">AI 에이전트에서 사용하기</h3>
+<p>설치 후 에이전트에게 <code>dev-browser --help</code>를 실행하라고 지시하면 됩니다. help 출력에 LLM 사용 가이드, 예제, API 레퍼런스가 모두 포함되어 있습니다. 별도 플러그인이나 스킬 설치가 필요 없습니다.</p>
+<h3 id="권한-설정-매번-승인-없애기">권한 설정: 매번 승인 없애기</h3>
+<p>Claude Code는 기본적으로 Bash 명령어 실행마다 승인을 요청합니다. <code>dev-browser</code>를 사전 허가하려면:</p>
+<p><strong>프로젝트별</strong> (<code>.claude/settings.json</code>):</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;permissions&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;allow&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">[</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0a3069">&#34;Bash(dev-browser *)&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">]</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><p><strong>사용자 전역</strong> (<code>~/.claude/settings.json</code>):</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;permissions&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;allow&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">[</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0a3069">&#34;Bash(dev-browser *)&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0a3069">&#34;Bash(npx dev-browser *)&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">]</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><p><code>Bash(dev-browser *)</code> 패턴은 <code>dev-browser</code>로 시작하는 모든 명령어와 매칭됩니다. 앞서 설명한 샌드박스 설계 덕분에 이 허가는 안전합니다.</p>
+<h3 id="플러그인으로-설치-claude-code">플러그인으로 설치 (Claude Code)</h3>
+<pre tabindex="0"><code>/plugin marketplace add sawyerhood/dev-browser
+/plugin install dev-browser@sawyerhood/dev-browser
+</code></pre><p>설치 후 Claude Code를 재시작합니다.</p>
+<h3 id="amp--codex에-스킬로-설치">Amp / Codex에 스킬로 설치</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#953800">SKILLS_DIR</span><span style="color:#0550ae">=</span>~/.claude/skills  <span style="color:#57606a"># Codex: ~/.codex/skills</span>
+</span></span><span style="display:flex;"><span>mkdir -p <span style="color:#953800">$SKILLS_DIR</span>
+</span></span><span style="display:flex;"><span>git clone https://github.com/sawyerhood/dev-browser /tmp/dev-browser-skill
+</span></span><span style="display:flex;"><span>cp -r /tmp/dev-browser-skill/skills/dev-browser <span style="color:#953800">$SKILLS_DIR</span>/dev-browser
+</span></span><span style="display:flex;"><span>rm -rf /tmp/dev-browser-skill
+</span></span></code></pre></div><hr>
+<h2 id="벤치마크-다른-방법과의-비교">벤치마크: 다른 방법과의 비교</h2>
+<p>같은 브라우저 자동화 작업을 4가지 방법으로 수행한 결과입니다:</p>
+<pre class="mermaid">flowchart TD
+    subgraph devbrowser["dev-browser"]
+        DB_T["시간: 3m 53s"]
+        DB_C["비용: $0.88"]
+        DB_TU["턴: 29"]
+        DB_S["성공률: 100%"]
+    end
+
+    subgraph playmcp["Playwright MCP"]
+        PM_T["시간: 4m 31s"]
+        PM_C["비용: $1.45"]
+        PM_TU["턴: 51"]
+        PM_S["성공률: 100%"]
+    end
+
+    subgraph playskill["Playwright Skill"]
+        PS_T["시간: 8m 07s"]
+        PS_C["비용: $1.45"]
+        PS_TU["턴: 38"]
+        PS_S["성공률: 67%"]
+    end
+
+    subgraph extension["Claude Chrome Extension"]
+        CE_T["시간: 12m 54s"]
+        CE_C["비용: $2.81"]
+        CE_TU["턴: 80"]
+        CE_S["성공률: 100%"]
+    end
+
+    classDef bestStyle fill:#c0ecd3,stroke:#5ab08a,color:#333
+    classDef goodStyle fill:#fde8c0,stroke:#e0a040,color:#333
+    classDef poorStyle fill:#ffc8c4,stroke:#e05050,color:#333
+
+    class DB_T,DB_C,DB_TU,DB_S bestStyle
+    class PM_T,PM_C,PM_TU,PM_S goodStyle
+    class CE_T,CE_C,CE_TU,CE_S poorStyle
+    class PS_T,PS_C,PS_TU,PS_S poorStyle</pre><p>수치로 보면:</p>
+<table>
+  <thead>
+      <tr>
+          <th>방법</th>
+          <th>시간</th>
+          <th>비용</th>
+          <th>턴 수</th>
+          <th>성공률</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>dev-browser</strong></td>
+          <td><strong>3분 53초</strong></td>
+          <td><strong>$0.88</strong></td>
+          <td><strong>29</strong></td>
+          <td><strong>100%</strong></td>
+      </tr>
+      <tr>
+          <td>Playwright MCP</td>
+          <td>4분 31초</td>
+          <td>$1.45</td>
+          <td>51</td>
+          <td>100%</td>
+      </tr>
+      <tr>
+          <td>Playwright Skill</td>
+          <td>8분 07초</td>
+          <td>$1.45</td>
+          <td>38</td>
+          <td>67%</td>
+      </tr>
+      <tr>
+          <td>Claude Chrome Extension</td>
+          <td>12분 54초</td>
+          <td>$2.81</td>
+          <td>80</td>
+          <td>100%</td>
+      </tr>
+  </tbody>
+</table>
+<p>dev-browser가 가장 빠른 이유는 퍼시스턴트 페이지 설계와 관련 있습니다. 매 스크립트마다 브라우저를 새로 열고 닫는 게 아니라, 한번 연 페이지를 계속 재사용합니다. 에이전트가 작업을 작은 스크립트로 쪼개도 페이지 상태가 유지됩니다. 그 결과 전체 턴 수가 줄고, LLM 호출 비용도 줄어듭니다.</p>
+<hr>
+<h2 id="프로젝트-현황">프로젝트 현황</h2>
+<pre class="mermaid">flowchart TD
+    A["GitHub 공개"] --> B["v0.2.4<br>(2026-03-26 최신)"]
+    B --> C["Stars 4.9k / Forks 307"]
+    C --> D["기여자 5명"]
+
+    classDef milestoneStyle fill:#c5dcef,stroke:#5a9fd4,color:#333
+    classDef statStyle fill:#c0ecd3,stroke:#5ab08a,color:#333
+
+    class A,B milestoneStyle
+    class C,D statStyle</pre><ul>
+<li>최신 버전: <strong>v0.2.4</strong> (2026년 3월 26일)</li>
+<li>GitHub 스타: <strong>4.9k</strong>, 포크: <strong>307</strong></li>
+<li>언어: TypeScript 93.7%, Rust 4.3%, JavaScript 1.9%</li>
+<li>릴리즈: 5개</li>
+<li>라이선스: MIT</li>
+</ul>
+<hr>
+<h2 id="핵심-요약">핵심 요약</h2>
+<table>
+  <thead>
+      <tr>
+          <th>항목</th>
+          <th>내용</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>설치</td>
+          <td><code>npm install -g dev-browser &amp;&amp; dev-browser install</code></td>
+      </tr>
+      <tr>
+          <td>실행 모드</td>
+          <td><code>--headless</code> (새 Chromium) / <code>--connect</code> (기존 Chrome)</td>
+      </tr>
+      <tr>
+          <td>스크립트 런타임</td>
+          <td>QuickJS WASM (Node.js 아님)</td>
+      </tr>
+      <tr>
+          <td>파일 I/O</td>
+          <td><code>~/.dev-browser/tmp/</code> 로 제한</td>
+      </tr>
+      <tr>
+          <td>Playwright API</td>
+          <td>전체 사용 가능 (<code>page.snapshotForAI</code> 포함)</td>
+      </tr>
+      <tr>
+          <td>Claude Code 통합</td>
+          <td><code>settings.json</code>에 <code>Bash(dev-browser *)</code> 추가로 권한 사전 허가</td>
+      </tr>
+      <tr>
+          <td>성능 (벤치마크)</td>
+          <td>4가지 방법 중 가장 빠름, 가장 저렴, 성공률 100%</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="결론">결론</h2>
+<p>dev-browser의 핵심 설계 결정은 두 가지입니다: <strong>QuickJS WASM 샌드박스</strong>와 <strong>퍼시스턴트 페이지</strong>. 전자는 보안을 확보하고, 후자는 성능을 높입니다. AI 에이전트가 브라우저를 다루는 도구로서, 벤치마크 기준 현재 가장 효율적인 선택입니다.</p>
+<p>설치는 <code>npm install -g dev-browser</code>로 충분합니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 03월 29일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="http://localhost:1313//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="http://localhost:1313/post/2026/03/2026-03-29-harness-engineering-practice-management/" rel="prev">
+        <span>하네스 엔지니어링 실전 가이드: AI를 조직처럼 관리하는 법</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#dev-browser란-무엇인가">dev-browser란 무엇인가</a></li>
+    <li><a href="#설치">설치</a></li>
+    <li><a href="#빠른-시작">빠른 시작</a></li>
+    <li><a href="#script-api-quickjs-런타임">Script API: QuickJS 런타임</a></li>
+    <li><a href="#quickjs-샌드박스의-의미">QuickJS 샌드박스의 의미</a></li>
+    <li><a href="#claude-code와의-통합">Claude Code와의 통합</a>
+      <ul>
+        <li><a href="#ai-에이전트에서-사용하기">AI 에이전트에서 사용하기</a></li>
+        <li><a href="#권한-설정-매번-승인-없애기">권한 설정: 매번 승인 없애기</a></li>
+        <li><a href="#플러그인으로-설치-claude-code">플러그인으로 설치 (Claude Code)</a></li>
+        <li><a href="#amp--codex에-스킬로-설치">Amp / Codex에 스킬로 설치</a></li>
+      </ul>
+    </li>
+    <li><a href="#벤치마크-다른-방법과의-비교">벤치마크: 다른 방법과의 비교</a></li>
+    <li><a href="#프로젝트-현황">프로젝트 현황</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+    <a href="/tags/automation/" class="badge badge-secondary">Automation</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

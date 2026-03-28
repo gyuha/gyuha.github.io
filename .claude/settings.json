@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=$(jq -r '.tool_input.file_path // \"\"'); case \"$f\" in */content/post/*.md) cd /Users/gyuha/workspace/gyuha.github.io && task deploy ;; esac 2>/dev/null || true",
+            "timeout": 120,
+            "statusMessage": "블로그 포스트 감지 — deploying..."
+          }
+        ]
+      }
+    ]
+  }
+}
