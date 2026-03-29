@@ -1,6 +1,6 @@
 ---
 title: "몰라서 못 쓰는 Claude Code 개꿀 슬래시 명령어 14개"
-date: 2026-03-30T09:00:00+09:00
+date: 2026-03-30T01:00:00+09:00
 draft: false
 categories:
   - Developer Tools

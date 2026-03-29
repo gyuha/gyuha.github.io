@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '하네스 엔지니어링 따라하기: AI에게 일 잘 시키는 환경 설계법'" />
+  <title>하네스 엔지니어링 따라하기: AI에게 일 잘 시키는 환경 설계법  | 신규하 블로그</title>
+  <meta property="og:title" content="하네스 엔지니어링 따라하기: AI에게 일 잘 시키는 환경 설계법" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-03-30"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/03/2026-03-30-harness-engineering-practice-management/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+  <meta property="og:tags" content="automation" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/03/2026-03-30-harness-engineering-practice-management/">
+          <h1>
+            하네스 엔지니어링 따라하기: AI에게 일 잘 시키는 환경 설계법
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/03/2026-03-30-harness-engineering-practice-management/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>&ldquo;AI가 유능하니까 일 잘하겠지&quot;라고 믿고 그냥 던지면 결과물이 제멋대로 튄다. 하네스 엔지니어링은 그 반대 방향이다. AI에게 어떻게 일해야 하는지 <strong>환경 자체를 설계</strong>해 구조적으로 일관된 품질의 결과물을 뽑아내는 방식이다. Ask Dori 채널의 Dori 님이 사주팔자 분석 앱 실전 예제와 함께 이 개념을 경영학까지 연결해 풀어낸 영상을 정리한다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://youtu.be/kSlYNeEkdAM?si=W-kus47sz95ij57J">https://youtu.be/kSlYNeEkdAM?si=W-kus47sz95ij57J</a></li>
+</ul>
+<h2 id="프롬프트-엔지니어링-vs-하네스-엔지니어링">프롬프트 엔지니어링 vs 하네스 엔지니어링</h2>
+<p>두 접근법의 차이를 이렇게 요약할 수 있다.</p>
+<pre class="mermaid">flowchart TD
+    subgraph PE["프롬프트 엔지니어링"]
+        P1["매번 맥락을 새로 설명"]
+        P2["AI = 도구처럼 사용"]
+        P3["일관성 확보 어려움"]
+        P1 --> P2 --> P3
+    end
+
+    subgraph HE["하네스 엔지니어링"]
+        H1["규칙·작업구조·검증·흐름 미리 설계"]
+        H2["AI = 조직된 팀원처럼 운용"]
+        H3["구조적으로 일관된 품질 결과물"]
+        H1 --> H2 --> H3
+    end
+
+    classDef peNode fill:#ffc8c4,color:#333
+    classDef heNode fill:#c0ecd3,color:#333
+
+    class P1,P2,P3 peNode
+    class H1,H2,H3 heNode</pre><p>비유로 생각해 보면 이렇다. 나는 몹시 바쁜 팀장이고 AI에게 일을 위임하고 싶다. 매번 &ldquo;이번엔 이렇게 해줘, 저번엔 저렇게 해줘&quot;라고 설명하는 대신 &ldquo;우리 팀은 이렇게 일해, 이런 결과물을 내기 위한 Do &amp; Don&rsquo;t는 이것이야&quot;를 한 번 정의해 두는 것이다. 그러면 AI는 지시가 없어도 팀의 맥락 안에서 일관되게 움직인다. <a href="https://youtu.be/kSlYNeEkdAM?t=0">(참고: 0:00~2:00)</a></p>
+<p>하네스 엔지니어링의 공식 정의:</p>
+
+  <blockquote>
+    <p><strong>LLM에게 업무를 위임하기 위하여 규칙과 작업 구조, 검증 방법, 실행 흐름까지 미리 묶어서 제어하는 것</strong></p>
+
+  </blockquote>
+
+<h2 id="4가지-구성-요소">4가지 구성 요소</h2>
+<p>하네스는 네 개의 축으로 구성된다. <a href="https://youtu.be/kSlYNeEkdAM?t=180">(참고: 약 3:00)</a></p>
+<pre class="mermaid">flowchart TD
+    H["하네스 엔지니어링"]
+
+    H --> C["헌법 (Constitution)<br>우리 팀은 이렇게 일한다<br>LLM이 따라야 할 규칙 문서"]
+    H --> T["작업 구조 (Task Structure)<br>무엇을 어떻게 만들지 정의<br>작업 지시서"]
+    H --> V["검증 (Verification)<br>결과가 맞는지 체크할 기준<br>품질 판단 기준 사전 정의"]
+    H --> L["실행 루프 (Execution Loop)<br>수정→검증→반복<br>고객이 만족할 때까지 반복"]
+
+    classDef rootNode fill:#fde8c0,color:#333
+    classDef constNode fill:#c5dcef,color:#333
+    classDef taskNode fill:#c0ecd3,color:#333
+    classDef verifyNode fill:#e0c8ef,color:#333
+    classDef loopNode fill:#ffc8c4,color:#333
+
+    class H rootNode
+    class C constNode
+    class T taskNode
+    class V verifyNode
+    class L loopNode</pre><h3 id="헌법-constitution">헌법 (Constitution)</h3>
+<p>&ldquo;우리 회사는 이렇게 일한다&quot;는 규칙을 담은 문서다. LLM이 따라야 할 Do &amp; Don&rsquo;t, 우선순위, 코딩 스타일, 보안 원칙 등이 들어간다. <strong>헌법이 흔들리면 모든 문서가 흔들린다.</strong> 그래서 AI에게 통째로 맡기지 말고 반드시 나와 AI가 함께 협의해서 작성해야 한다.</p>
+<h3 id="작업-구조-task-structure">작업 구조 (Task Structure)</h3>
+<p>무엇을 어떻게 만들지 정의하는 작업 지시서다. 기능 명세, 설계 문서, 실행 플랜 등이 여기에 속한다. 새 팀원에게 첫날 주는 온보딩 문서와 같다.</p>
+<h3 id="검증-verification">검증 (Verification)</h3>
+<p>결과물이 괜찮은지 판단할 기준을 미리 정해 두는 것이다. &ldquo;뭘 보고 판단할 건데?&ldquo;를 사전에 합의해야 AI가 스스로 자가 검증을 할 수 있다. 점수 기반 평가, 시니어 개발자 관점 리뷰, 보안 담당자 관점 리뷰 등을 문서화한다.</p>
+<h3 id="실행-루프-execution-loop">실행 루프 (Execution Loop)</h3>
+<p>수정하고 검증하고 반복하는 워크플로우다. <strong>내가 만족할 수 있는 결과물이 나올 때까지</strong>, 정해 놓은 품질 기준을 통과할 때까지 반복한다. 이 루프가 없으면 한 번 생성으로 끝나는 일회성 작업이 된다.</p>
+<h2 id="레포지토리-하네스-vs-애플리케이션-하네스">레포지토리 하네스 vs 애플리케이션 하네스</h2>
+<p>하나의 저장소 안에 두 층위의 하네스가 공존한다. <a href="https://youtu.be/kSlYNeEkdAM?t=480">(참고: 약 8:00)</a></p>
+<pre class="mermaid">flowchart TD
+    REPO["레포지토리 하네스<br>회사 취업 규칙<br>저장소 전체에 적용되는 공통 원칙"]
+    APP["애플리케이션 하네스<br>팀 프로젝트 매뉴얼<br>프로젝트·앱별 규칙"]
+
+    REPO --> |"상위 원칙 상속"| APP
+
+    REPO --> RD["docs/<br>공통 원칙·코어 밸류"]
+    REPO --> RR["roles/<br>코더·디자이너·PM<br>보안·테스터 역할 계약"]
+    REPO --> RW["workflows/<br>핸드오프·파이프라인<br>롤백·체크포인트"]
+
+    APP --> AD["docs/<br>앱 전용 규약"]
+    APP --> AS["specs/<br>기능 명세"]
+    APP --> AP["plans/<br>로드맵·진행 사항"]
+    APP --> AR["references/<br>참고 자료"]
+
+    classDef repoNode fill:#c5dcef,color:#333
+    classDef appNode fill:#c0ecd3,color:#333
+    classDef fileNode fill:#fde8c0,color:#333
+
+    class REPO repoNode
+    class APP appNode
+    class RD,RR,RW,AD,AS,AP,AR fileNode</pre><p><strong>레포지토리 하네스</strong>는 저장소 전체에 공통으로 적용되는 환경이다. 어떤 앱을 만들든 지켜야 할 팀 규칙, 문서 구조, 코드 린터 기준 등이 여기에 들어간다.</p>
+<p><strong>애플리케이션 하네스</strong>는 특정 프로젝트에만 적용되는 규칙이다. &ldquo;이 앱은 어떤 기능을 줘야 하고, AI가 이 앱을 위해 어떻게 판단을 해야 하는지&quot;가 정의된다.</p>
+<p>초보자라면 레포지토리/애플리케이션을 구분하기보다 <strong>만들고 싶은 앱을 먼저 상상하고 앱 단계부터 시작</strong>하는 것이 더 자연스럽다.</p>
+<p>실제로 OpenAI 팀은 빈 레포지토리에서 시작해 세 명의 엔지니어가 5개월 동안 100만 줄의 코드를 만들었는데, <strong>사람이 직접 쓴 코드는 단 한 줄도 없었다.</strong> <a href="https://youtu.be/kSlYNeEkdAM?t=420">(참고: 약 7:00)</a></p>
+<h2 id="실전-따라하기-사주팔자-분석-앱-만들기">실전 따라하기: 사주팔자 분석 앱 만들기</h2>
+<p>영상에서 직접 시연한 6단계 워크플로우다. <a href="https://youtu.be/kSlYNeEkdAM?t=720">(참고: 약 12:00~30:00)</a></p>
+<pre class="mermaid">flowchart TD
+    S1["1단계<br>OpenAI 하네스 아티클에서<br>폴더 구조 복사"]
+    S2["2단계<br>Claude와 아이디에이션<br>뭘 만들 건지, 어떻게 할 건지 논의"]
+    S3["3단계<br>문서 다운로드 후<br>Claude Code에서 레포지토리 하네스 구현"]
+    S4["4단계<br>헌법 문서를 AI와 협의해서 작성<br>(통째로 맡기지 않기)"]
+    S5["5단계<br>문서 품질 검증<br>다양한 관점에서 점수 기반 평가"]
+    S6["6단계<br>Git 백업 + 실행 루프<br>결과 확인 → 피드백 → 반복"]
+
+    S1 --> S2 --> S3 --> S4 --> S5 --> S6
+
+    classDef stepNode fill:#c5dcef,color:#333
+    class S1,S2,S3,S4,S5,S6 stepNode</pre><h3 id="1단계-구조-복사">1단계: 구조 복사</h3>
+<p>Google에서 OpenAI Harness Engineering 아티클을 검색해 폴더 구조 코드 블록을 복사한다. 이 구조가 대화의 출발점이 된다.</p>
+<h3 id="2단계-claude와-아이디에이션">2단계: Claude와 아이디에이션</h3>
+<p>복사한 구조를 Claude에 붙여넣고 이렇게 시작한다:</p>
+<pre tabindex="0"><code>안녕, Claude야. 나는 [사주 분석 앱]을 만들고 싶어.
+직접 만드는 게 아니라 하네스 엔지니어링을 통해 만들고 싶어.
+이 구조를 기반으로 어떤 내용을 넣어가면 좋을지 같이 의논해 볼까?
+</code></pre><p>Claude가 선택지를 제공하며 방향을 잡아준다. &ldquo;웹으로 할 건지, 모바일로 할 건지&rdquo;, &ldquo;어떤 입력을 받을 건지&rdquo; 등을 하나씩 합의해 나간다. <strong>아이디에이션 단계는 Claude가 특히 편하다.</strong> 선택지를 제공하고 구조가 잡혀 있어 헤매도 다음 단계로 이어갈 수 있기 때문이다.</p>
+<h3 id="3단계-문서-다운로드-및-레포지토리-하네스-구현">3단계: 문서 다운로드 및 레포지토리 하네스 구현</h3>
+<p>Claude와 대화해서 만든 마크다운 문서들을 아티팩트로 한 번에 다운로드한다. 특정 폴더에 넣고 Claude Code를 열어 이렇게 요청한다:</p>
+<pre tabindex="0"><code>안녕. 나는 이 폴더에서 레포지토리 레벨 하네스 엔지니어링을 구현하고 싶어.
+이 폴더 안에 있는 파일들은 내가 애플리케이션을 생각하면서 만든 작업물이야.
+이 작업물을 모두 읽은 후 레포지토리 하네스 엔지니어링을 같이 해봤으면 해.
+</code></pre><p>영상에서는 Codex를 병행해 코드 중심 작업에 활용했다. &ldquo;아이디에이션·문서 협의 → Claude Code, 코드 구현 → Codex&rdquo; 조합이 편리했다고 한다.</p>
+<h3 id="4단계-헌법-문서-협의-작성">4단계: 헌법 문서 협의 작성</h3>
+<p>헌법은 AI에게 통째로 맡기면 안 된다. 헌법이 흔들리면 그 위에 쌓인 모든 문서가 흔들린다. 예:</p>
+<pre tabindex="0"><code>나는 유튜브 교육용으로 앱을 만들려고 해.
+간결하고 쉬워야 되고 안전해야 돼.
+이 원칙을 바탕으로 헌법을 같이 만들어 보자.
+</code></pre><h3 id="5단계-문서-품질-검증">5단계: 문서 품질 검증</h3>
+<p>문서를 다 만든 뒤 AI에게 평가를 맡긴다. <a href="https://youtu.be/kSlYNeEkdAM?t=1560">(참고: 약 26:00)</a></p>
+<pre tabindex="0"><code>네가 시니어 개발자라면 이 문서를 어떻게 평가할 것 같아?
+500줄 이하의 한 문서에서 용어 일관성을 점검해줘.
+</code></pre><p>여러 관점에서 반복 검증한다:</p>
+<ul>
+<li>소프트웨어 엔지니어 관점</li>
+<li>보안 담당자 관점</li>
+<li>초보 개발자 관점</li>
+</ul>
+<p><strong>점수 기반 평가</strong>도 효과적이다. &ldquo;이 문서에 100점 만점으로 점수를 매겨봐&quot;라고 하면 일반 리뷰보다 훨씬 정교하게 평가한다. 또한 모호한 표현을 명확한 기준으로 바꿔야 한다. 예: &ldquo;한두 번 수정 후에도&quot;라는 표현 → &ldquo;다섯 번까지 시도하고 같은 문제가 남으면 기록해라&quot;처럼.</p>
+<h3 id="6단계-git-백업--실행-루프">6단계: Git 백업 + 실행 루프</h3>
+<p>Git으로 파일을 백업한다. 여러 번의 작업을 한 번에 복구할 수 있고, AI가 자율적으로 일할수록 버전 관리가 더 필요해진다.</p>
+<p>실행 루프는 Gradio(Python 기반 웹 UI 라이브러리)로 결과를 웹에서 확인하며 돌린다. 사주 앱의 경우 생년월일시를 입력하면 연주·월주·일주와 목의 기운·화 기운 해석이 출력됐다. LLM API 없이 규칙 기반으로도 기초적인 수준은 구현 가능하고, LLM API를 연결하면 자연어 해석까지 확장된다. <a href="https://youtu.be/kSlYNeEkdAM?t=1800">(참고: 약 30:00)</a></p>
+<h2 id="폴더-구조-예시-github-공개-예제">폴더 구조 예시 (GitHub 공개 예제)</h2>
+<p>영상에서 GitHub에 공개한 <code>saju-harness-practice</code> 폴더 구조다. <a href="https://youtu.be/kSlYNeEkdAM?t=1200">(참고: 약 20:00)</a></p>
+<pre tabindex="0"><code>(root)/
+├── AGENTS.md              ← 읽기 순서: harness-core → workflow → 앱 트래커
+├── CLAUDE.md
+├── README.md
+├── harness/               ← 레포지토리 공통 하네스
+│   ├── docs/
+│   │   ├── index.md
+│   │   ├── core-values.md
+│   │   └── governance.md  ← 모든 앱 공통 적용 규칙
+│   ├── roles/
+│   │   ├── coder.md
+│   │   ├── designer.md
+│   │   ├── pm.md
+│   │   ├── security-reviewer.md
+│   │   └── tester.md
+│   ├── workflows/
+│   │   ├── handoff.md
+│   │   ├── pipeline.md
+│   │   ├── rollback.md
+│   │   └── checkpoint.md
+│   ├── templates/
+│   │   ├── task-brief.md
+│   │   └── ongoing.md
+│   └── schemas/
+│       └── manifest.md
+└── apps/
+    └── saju/              ← 애플리케이션 하네스
+        ├── harness/
+        │   ├── docs/      ← 사주 앱 전용 규약
+        │   ├── specs/     ← 기능 명세
+        │   ├── references/
+        │   └── plans/     ← 로드맵·진행 사항
+        ├── src/           ← 실제 코드
+        │   ├── app.py
+        │   ├── constants.py
+        │   └── saju.py
+        └── tests/
+</code></pre><p><code>AGENTS.md</code>에는 읽기 순서가 명시되어 있다: harness-core 먼저 읽기 → workflow 읽기 → 현재 작업 앱 트래커 읽기. AI는 이 순서대로 맥락을 쌓고 작업에 들어간다.</p>
+<h2 id="암묵지를-명시지로-모호함-제거의-기술">암묵지를 명시지로: 모호함 제거의 기술</h2>
+<p>하네스 엔지니어링의 핵심 과제 중 하나는 <strong>암묵지(tacit knowledge)를 명시지(explicit knowledge)로 바꾸는 것</strong>이다. <a href="https://youtu.be/kSlYNeEkdAM?t=1680">(참고: 약 28:00)</a></p>
+<pre class="mermaid">flowchart TD
+    TK["암묵지<br>내 머릿속에 있지만<br>AI에게 전달되지 않은 지식<br>당연히 이렇게 하는 거 아니었어?"]
+    EK["명시지<br>문서에 적혀 있는 지식<br>AI가 참조 가능한 형태"]
+
+    TK --> |"발견 → 문서화"| EK
+    EK --> |"반복 적용"| R["AI가 의도대로 동작"]
+
+    classDef tkNode fill:#ffc8c4,color:#333
+    classDef ekNode fill:#c0ecd3,color:#333
+    classDef resNode fill:#fde8c0,color:#333
+
+    class TK tkNode
+    class EK ekNode
+    class R resNode</pre><p>예를 들어 &ldquo;교육용이니까 코드가 짧고 읽기 쉬워야지&quot;라고 생각했는데 AI에게 말하지 않으면 AI는 그냥 잘 돌아가는 코드를 쓴다. 10줄로 끝낼 수 있는 걸 300줄로 만들 수도 있다. 말하지 않았기 때문이다.</p>
+<p>명확한 기준으로 바꾸면 이렇게 된다: <strong>&ldquo;500줄 이하로 짜라. 교육용이므로 변수명은 한국어 주석을 붙이고 들여쓰기는 4칸으로 한다.&rdquo;</strong></p>
+<p>AI와 계속 일하면서 이런 암묵지를 발견하고, 문서화하고, 반복 적용하는 과정이 <strong>하네스 고도화</strong>다.</p>
+<h2 id="경영학으로서의-하네스-엔지니어링">경영학으로서의 하네스 엔지니어링</h2>
+<p>영상의 마지막 파트는 하네스 엔지니어링의 본질이 경영학에 있다고 주장한다. <a href="https://youtu.be/kSlYNeEkdAM?t=1980">(참고: 약 33:00)</a></p>
+<h3 id="상사의-세-가지-유형">상사의 세 가지 유형</h3>
+<pre class="mermaid">flowchart TD
+    subgraph BM["방임형 상사"]
+        B1["AI는 유능하니까 믿어"]
+        B2["맥락 없이 던짐"]
+        B3["결과물이 제멋대로"]
+        B1 --> B2 --> B3
+    end
+
+    subgraph DM["지시형 상사"]
+        D1["처음부터 모든 걸 설명"]
+        D2["AI가 더 나은 방법 찾을 공간 없음"]
+        D3["상사 경험의 한계 = 팀 결과의 한계"]
+        D1 --> D2 --> D3
+    end
+
+    subgraph EM["위임형 상사 (목표)"]
+        E1["결과물에 대한 명확한 상(像) 보유"]
+        E2["큰 목표를 정한 후 자율성·방법론 보장"]
+        E3["중간중간 모니터링 + 평가 반복"]
+        E1 --> E2 --> E3
+    end
+
+    classDef badNode fill:#ffc8c4,color:#333
+    classDef midNode fill:#fde8c0,color:#333
+    classDef goodNode fill:#c0ecd3,color:#333
+
+    class B1,B2,B3 badNode
+    class D1,D2,D3 midNode
+    class E1,E2,E3 goodNode</pre><h3 id="피터-드러커의-mbo와의-유사성">피터 드러커의 MBO와의 유사성</h3>
+<p>피터 드러커의 <strong>MBO(Management by Objectives)</strong> 는 목표를 일방적으로 내려보내는 게 아니라 상사와 부하직원이 함께 목표를 설정하고 그 달성 여부로 성과를 평가하는 방식이다. 5단계 프로세스가 하네스 엔지니어링과 거의 일치한다.</p>
+<pre class="mermaid">flowchart TD
+    subgraph MBO["MBO 5단계"]
+        M1["1. 목표 설정"]
+        M2["2. 팀/개인 단위 쪼개기<br>(목표 캐스케이딩)"]
+        M3["3. 개인 목표 합의"]
+        M4["4. 실행 및 모니터링"]
+        M5["5. 성과 평가"]
+        M1 --> M2 --> M3 --> M4 --> M5
+    end
+
+    subgraph HE["하네스 엔지니어링 대응"]
+        H1["헌법: 코어 가치·목표 정의"]
+        H2["작업 구조: 기능 쪼개기"]
+        H3["AI와 협의해 작업 구조 합의"]
+        H4["실행 루프 + 중간 모니터링"]
+        H5["검증 기준으로 결과 평가"]
+        H1 --> H2 --> H3 --> H4 --> H5
+    end
+
+    M1 -.-> H1
+    M2 -.-> H2
+    M3 -.-> H3
+    M4 -.-> H4
+    M5 -.-> H5
+
+    classDef mboNode fill:#c5dcef,color:#333
+    classDef heNode fill:#c0ecd3,color:#333
+
+    class M1,M2,M3,M4,M5 mboNode
+    class H1,H2,H3,H4,H5 heNode</pre>
+  <blockquote>
+    <p>&ldquo;하네스 엔지니어링은 분명 테크지만 본질은 경영학이다.&rdquo;</p>
+
+  </blockquote>
+
+<h2 id="ai가-만드는-1인-조직">AI가 만드는 1인 조직</h2>
+<p>컨텍스트 윈도우는 AI 등장 초기 A4 용지 1.5장에서 현재 소설책 6-7권 분량으로 커졌다. 이 변화가 2-3년 만에 이루어졌다. <a href="https://youtu.be/kSlYNeEkdAM?t=2160">(참고: 약 36:00)</a></p>
+<pre class="mermaid">flowchart TD
+    CW["컨텍스트 윈도우 진화"]
+    CW --> C1["초기: A4 1.5장"]
+    CW --> C2["현재: 소설책 6-7권"]
+    C2 --> |"인지적 병목 제거"| I["1인이 팀 아웃풋 가능"]
+
+    I --> O1["하네스 = 나라는 조직의 멘탈 모델"]
+    I --> O2["매 작업이 저장소에 축적"]
+    O2 --> A["51번째 작업 출발점<br>= 50번째보다 훨씬 월등"]
+
+    classDef cwNode fill:#c5dcef,color:#333
+    classDef impactNode fill:#fde8c0,color:#333
+    classDef resultNode fill:#c0ecd3,color:#333
+
+    class CW,C1,C2 cwNode
+    class I,O1,O2 impactNode
+    class A resultNode</pre><p>잭 샤피로(Jack Shapiro)의 &ldquo;10x Lawyer&rdquo; 개념을 인용하며 이렇게 말한다:</p>
+<p>기존 조직에서는 암묵지가 사람 머릿속에 분산되어 있어 사람이 나가면 지식이 사라졌다. 반면 하네스를 가진 나의 경우엔:</p>
+<ul>
+<li>매 작업이 저장소에 축적된다</li>
+<li>헌법과 작업 구조가 지속적으로 진화한다</li>
+<li>검증 기준이 더 정교해진다</li>
+<li>실행 루프가 더 빠르게 돌아간다</li>
+</ul>
+<p>그래서 <strong>51번째 작업의 출발점은 50번째보다 훨씬 월등하다.</strong> 이것이 하네스의 복리 효과다. <a href="https://youtu.be/kSlYNeEkdAM?t=2220">(참고: 약 37:00)</a></p>
+<p>영상에서 사주 앱에 부여한 역할들 — PM, 코더, 디자이너, 보안 리뷰어, 테스터 — 은 각각의 역할을 AI에게 부여해서 <strong>하나의 조직을 구성한 것</strong>이다. 하네스는 그 조직의 멘탈 모델이다.</p>
+
+  <blockquote>
+    <p><strong>코어 가치 → 합의 → 위임 → 축적</strong>의 순환을 통해 저장소는 점점 나의 경험이 구조화된 형태로 보존되는 공간이 되고, 나의 판단력이 곧 해자(moat)가 된다.</p>
+
+  </blockquote>
+
+<h2 id="핵심-요약">핵심 요약</h2>
+<pre class="mermaid">flowchart TD
+    HE["하네스 엔지니어링"]
+
+    HE --> K1["환경 설계<br>AI에게 일하는 법을 알려주는<br>구조적 설계 작업"]
+    HE --> K2["4 구성요소<br>헌법 · 작업 구조<br>검증 · 실행 루프"]
+    HE --> K3["협의 중심<br>AI와 함께 합의하며<br>문서를 만들어 간다"]
+    HE --> K4["암묵지 → 명시지<br>모호함을 없앨수록<br>AI가 더 잘 일한다"]
+    HE --> K5["경영학의 본질<br>위임형 상사 + MBO<br>1인 조직화"]
+
+    classDef rootNode fill:#fde8c0,color:#333
+    classDef leafNode fill:#c5dcef,color:#333
+
+    class HE rootNode
+    class K1,K2,K3,K4,K5 leafNode</pre><ul>
+<li><strong>하네스 엔지니어링</strong> = AI가 잘 일할 수 있도록 환경을 설계하는 것. 헌법·작업 구조·검증·실행 루프 4가지 구성 요소.</li>
+<li><strong>레포지토리 하네스</strong>(회사 취업 규칙)와 <strong>애플리케이션 하네스</strong>(팀 프로젝트 매뉴얼)로 2층 구성. 초보자는 앱 단계부터 시작해도 된다.</li>
+<li><strong>실전 6단계</strong>: 구조 복사 → Claude 아이디에이션 → 레포지토리 하네스 구현 → 헌법 협의 작성 → 문서 검증 → Git 백업 + 실행 루프.</li>
+<li><strong>암묵지를 명시지로</strong>: AI와 일하면서 발견한 가정들을 문서화하는 과정이 하네스 고도화다.</li>
+<li><strong>경영학 본질</strong>: 피터 드러커 MBO와 구조가 동일. 방임형도 지시형도 아닌 위임형 상사가 되는 것.</li>
+<li><strong>축적의 복리</strong>: 51번째 작업 출발점은 50번째보다 훨씬 월등. 저장소가 내 판단력의 해자가 된다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>하네스 엔지니어링은 &ldquo;AI를 잘 쓰는 기술&quot;이기 이전에 &ldquo;AI에게 잘 위임하는 기술&quot;이다. 문서 하나 제대로 쓰는 것에서 시작하고, AI와 협의하면서 모호함을 줄여나가면 된다. 전부 혼자 끙끙 짤 필요도 없다. AI와 같이 만드는 편이 더 정교하고 구체적이다. 사주팔자 앱처럼 가벼운 프로젝트 하나를 골라 6단계를 한 번 끝까지 돌려보면, 하네스가 어떤 방식으로 작동하는지 몸으로 익힐 수 있다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 03월 30일 01시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/03/2026-03-29-harness-claude-code-agent-team-skill-architect/" rel="prev">
+        <span>Harness: Claude Code 에이전트 팀 &amp; 스킬 아키텍트 플러그인 완전 가이드</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/03/2026-03-30-claude-code-14-slash-commands/" rel="next">
+        <span>몰라서 못 쓰는 Claude Code 개꿀 슬래시 명령어 14개</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#프롬프트-엔지니어링-vs-하네스-엔지니어링">프롬프트 엔지니어링 vs 하네스 엔지니어링</a></li>
+    <li><a href="#4가지-구성-요소">4가지 구성 요소</a>
+      <ul>
+        <li><a href="#헌법-constitution">헌법 (Constitution)</a></li>
+        <li><a href="#작업-구조-task-structure">작업 구조 (Task Structure)</a></li>
+        <li><a href="#검증-verification">검증 (Verification)</a></li>
+        <li><a href="#실행-루프-execution-loop">실행 루프 (Execution Loop)</a></li>
+      </ul>
+    </li>
+    <li><a href="#레포지토리-하네스-vs-애플리케이션-하네스">레포지토리 하네스 vs 애플리케이션 하네스</a></li>
+    <li><a href="#실전-따라하기-사주팔자-분석-앱-만들기">실전 따라하기: 사주팔자 분석 앱 만들기</a>
+      <ul>
+        <li><a href="#1단계-구조-복사">1단계: 구조 복사</a></li>
+        <li><a href="#2단계-claude와-아이디에이션">2단계: Claude와 아이디에이션</a></li>
+        <li><a href="#3단계-문서-다운로드-및-레포지토리-하네스-구현">3단계: 문서 다운로드 및 레포지토리 하네스 구현</a></li>
+        <li><a href="#4단계-헌법-문서-협의-작성">4단계: 헌법 문서 협의 작성</a></li>
+        <li><a href="#5단계-문서-품질-검증">5단계: 문서 품질 검증</a></li>
+        <li><a href="#6단계-git-백업--실행-루프">6단계: Git 백업 + 실행 루프</a></li>
+      </ul>
+    </li>
+    <li><a href="#폴더-구조-예시-github-공개-예제">폴더 구조 예시 (GitHub 공개 예제)</a></li>
+    <li><a href="#암묵지를-명시지로-모호함-제거의-기술">암묵지를 명시지로: 모호함 제거의 기술</a></li>
+    <li><a href="#경영학으로서의-하네스-엔지니어링">경영학으로서의 하네스 엔지니어링</a>
+      <ul>
+        <li><a href="#상사의-세-가지-유형">상사의 세 가지 유형</a></li>
+        <li><a href="#피터-드러커의-mbo와의-유사성">피터 드러커의 MBO와의 유사성</a></li>
+      </ul>
+    </li>
+    <li><a href="#ai가-만드는-1인-조직">AI가 만드는 1인 조직</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+    <a href="/tags/automation/" class="badge badge-secondary">Automation</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
