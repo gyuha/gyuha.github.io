@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '초보자도 이해하는 하네스 엔지니어링: 에이전트를 말처럼 다루는 법'" />
+  <title>초보자도 이해하는 하네스 엔지니어링: 에이전트를 말처럼 다루는 법  | 신규하 블로그</title>
+  <meta property="og:title" content="초보자도 이해하는 하네스 엔지니어링: 에이전트를 말처럼 다루는 법" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-03-30"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/03/2026-03-30-harness-engineering-beginner-guide/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="agents" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+  <meta property="og:tags" content="ai" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/03/2026-03-30-harness-engineering-beginner-guide/">
+          <h1>
+            초보자도 이해하는 하네스 엔지니어링: 에이전트를 말처럼 다루는 법
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/03/2026-03-30-harness-engineering-beginner-guide/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>&ldquo;하네스 엔지니어링&quot;이라는 말이 에이전트 커뮤니티에서 자주 들린다. 어렵게 들리지만, 본질은 단순하다. <strong>에이전트가 제멋대로 달리지 않도록 환경을 설계하는 것</strong>이다. 편집자P 채널의 영상을 바탕으로, 이 개념이 왜 생겼고 어떻게 쓰이는지 초보자 눈높이에서 풀어본다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://youtube.com/watch?v=2n8eg8eLWhQ&amp;si=h-ZphVVuFLEF1XFD">https://youtube.com/watch?v=2n8eg8eLWhQ&amp;si=h-ZphVVuFLEF1XFD</a></li>
+</ul>
+<hr>
+<h2 id="하네스harness란-무엇인가">하네스(Harness)란 무엇인가?</h2>
+<p>하네스(Harness)는 말에게 채우는 끈과 구속 장치를 말한다. 왜 달까?</p>
+<p>말을 처음 타는 초보자라면, 말이 고개를 갑자기 옆으로 젖히거나 마차에서 멀어지려 할 때 속수무책이다. 하지만 하네스가 있으면 끈 끝만 잡아도 말이 앞을 보고 달린다. 마차에서 멀어지지 않도록 거리도 제어된다. 즉, <strong>말과 교감하는 고수가 없어도 말을 일정하게 제어</strong>할 수 있게 된다.</p>
+<p>반대로 고수에게 하네스는 거추장스럽다. 타기 전에 일일이 채워야 하니 불편하다. 그래서 하네스는 <strong>초보자 또는 일반화된 환경을 위한 장치</strong>라는 게 핵심이다. 말이 바뀌어도, 타는 사람이 바뀌어도, 하네스 형태만 맞으면 말이 어느 정도 잘 달리도록 만들어준다.</p>
+
+  <blockquote>
+    <p>에이전트 맥락에서 &ldquo;하네스&quot;는 Claude, Cursor, Codex 등 어떤 AI 에이전트가 오더라도 일관되게 잘 동작하게 해주는 환경 구성이다.</p>
+
+  </blockquote>
+
+<p>[출처: https://youtu.be/2n8eg8eLWhQ?t=30]</p>
+<pre class="mermaid">flowchart TD
+    A["초보 기수"] --> B["말(에이전트)"]
+    B --> C{하네스 없음}
+    B --> D{하네스 있음}
+    C --> E["제멋대로 달림<br>제어 불가"]
+    D --> F["앞만 보고 달림<br>마차에서 이탈 안 함"]
+
+    classDef badStyle fill:#ffc8c4,stroke:#e07070,color:#333
+    classDef goodStyle fill:#c0ecd3,stroke:#60b080,color:#333
+    classDef neutral fill:#c5dcef,stroke:#5080a0,color:#333
+
+    class E badStyle
+    class F goodStyle
+    class A,B,C,D neutral</pre><hr>
+<h2 id="에이전트-제어의-진화-컨텍스트-엔지니어링--mcp--스킬--하네스">에이전트 제어의 진화: 컨텍스트 엔지니어링 → MCP → 스킬 → 하네스</h2>
+<p>하네스 엔지니어링이 갑자기 나온 개념이 아니다. 에이전트를 제어하려는 시도들이 단계적으로 진화해왔다.</p>
+<h3 id="1단계-컨텍스트-엔지니어링-시대">1단계: 컨텍스트 엔지니어링 시대</h3>
+<p>초기 Claude(클로드)를 잘 쓰는 사람들은 컨텍스트를 정교하게 구성해서 넣었다. 예를 들어 웹사이트를 만들 때:</p>
+<ul>
+<li>원하는 디자인 이미지를 먼저 넣는다</li>
+<li>에이전트가 디자인을 파악하게 한다</li>
+<li>관련 기술 리서치 결과를 추가로 넣는다</li>
+<li>그 다음에 작업을 시킨다</li>
+</ul>
+<p>이렇게 <strong>컨텍스트를 사람이 직접 잘 구성해서 넣어야</strong> 에이전트가 잘 동작했다. 이걸 &ldquo;컨텍스트 엔지니어링&quot;이라고 불렀다.</p>
+<p>문제는? 일반 사용자는 이걸 몰랐다. 전문가들이 &ldquo;컨텍스트를 잘 넣어야지&quot;라고 말해도, 입문자들에게는 그게 어떻게 잘 넣는 건지 알 방법이 없었다. [출처: https://youtu.be/2n8eg8eLWhQ?t=205]</p>
+<h3 id="2단계-mcp의-등장">2단계: MCP의 등장</h3>
+<p>&ldquo;컨텍스트를 사람이 다 알아서 넣으라&quot;가 어렵다는 걸 인정하면서, 다음 해법이 나왔다. <strong>MCP(Model Context Protocol)</strong> 다.</p>
+<p>MCP의 핵심 아이디어: 애플리케이션을 조작할 때 필요한 행동(action)들을 <strong>미리 정의</strong>해두고, 에이전트가 그 안에서 골라 쓰게 한다.</p>
+<p>예를 들어 Supabase MCP 박스 안에는 이런 항목들이 정의되어 있다:</p>
+<ul>
+<li>프로젝트 읽어오기</li>
+<li>데이터베이스 쓰기</li>
+<li>&hellip;</li>
+</ul>
+<p>에이전트는 Supabase를 다룰 때 이 MCP를 보고 &ldquo;여기에 있는 기능만 골라서 사용&quot;한다. 즉, <strong>행동의 범위를 제약</strong>해주는 효과다. [출처: https://youtu.be/2n8eg8eLWhQ?t=280]</p>
+<pre class="mermaid">flowchart TD
+    subgraph MCP박스["Supabase MCP 박스"]
+        direction TD
+        M1["프로젝트 읽어오기"]
+        M2["데이터베이스 쓰기"]
+        M3["테이블 조회"]
+        M4["..."]
+    end
+
+    Agent["에이전트(Claude)"] -->|"Supabase 작업 요청"| MCP박스
+    MCP박스 -->|"정의된 행동만 선택"| DB["Supabase DB"]
+
+    classDef boxStyle fill:#fde8c0,stroke:#c08020,color:#333
+    classDef agentStyle fill:#c5dcef,stroke:#5080a0,color:#333
+    classDef dbStyle fill:#c0ecd3,stroke:#60b080,color:#333
+
+    class M1,M2,M3,M4 boxStyle
+    class Agent agentStyle
+    class DB dbStyle</pre><h3 id="3단계-스킬의-등장">3단계: 스킬의 등장</h3>
+<p>스킬(Skill)은 MCP와 목적은 다르지만 근본은 비슷하다. <strong>에이전트가 특정 작업을 처리하는 방법을 기술한 매뉴얼</strong>이다.</p>
+<p>예를 들어 &ldquo;Supabase 다루기 스킬&rdquo; 안에는 이런 내용이 들어있다:</p>
+<ul>
+<li>Supabase 다룰 때는 먼저 프로젝트를 만든다</li>
+<li>프로젝트 ID를 받아온다</li>
+<li>연결이 완료되면 작업을 시작한다</li>
+</ul>
+<p>에이전트는 이 매뉴얼을 읽고 &ldquo;아, Supabase는 이렇게 하면 되는구나&quot;를 파악한다. 컨텍스트를 사람이 매번 넣어주지 않아도, 스킬이 그 역할을 대신한다. [출처: https://youtu.be/2n8eg8eLWhQ?t=410]</p>
+<pre class="mermaid">flowchart TD
+    subgraph SkillBox["Supabase 스킬(매뉴얼)"]
+        direction TD
+        S1["1. 프로젝트 생성"]
+        S2["2. 프로젝트 ID 확인"]
+        S3["3. 연결 완료 후 작업 시작"]
+        S1 --> S2 --> S3
+    end
+
+    Agent["에이전트"] -->|"스킬 참조"| SkillBox
+    SkillBox -->|"절차 실행"| Result["일관된 결과"]
+
+    classDef stepStyle fill:#e0c8ef,stroke:#8050a0,color:#333
+    classDef agentStyle fill:#c5dcef,stroke:#5080a0,color:#333
+    classDef resultStyle fill:#c0ecd3,stroke:#60b080,color:#333
+
+    class S1,S2,S3 stepStyle
+    class Agent agentStyle
+    class Result resultStyle</pre><hr>
+<h2 id="스킬-과부하-문제">스킬 과부하 문제</h2>
+<p>스킬이 많아지면서 새로운 문제가 생겼다. 스킬이 처음 몇 개일 때는 괜찮았다. 하지만 주변에 수백 개의 스킬이 쌓이기 시작했다:</p>
+<ul>
+<li>한글 문서 작성 스킬</li>
+<li>Git 스킬</li>
+<li>Supabase 스킬</li>
+<li>프론트엔드 디자인 가이드 스킬</li>
+<li>HTML/CSS/JS 스킬</li>
+<li>&hellip;</li>
+</ul>
+<p>에이전트는 이 모든 스킬을 동시에 보게 된다. <strong>지금 개발 작업을 하는데 한글 문서 스킬, 마케팅 스킬이 섞여있으면</strong> 에이전트는 혼란스러워진다. 어떤 걸 써야 할지 모르는 것이다.</p>
+<p>마치 달리는 말에게 날개도 달고, 가면도 씌우고, 박차도 달고, 온갖 장치를 한꺼번에 붙여놓은 것과 같다. 말이 무거워져 느려지고 이상하게 움직인다. 성능이 떨어지는 것처럼 보이지만, 사실은 <strong>환경 설정이 잘못된 것</strong>이다. [출처: https://youtu.be/2n8eg8eLWhQ?t=460]</p>
+<pre class="mermaid">flowchart TD
+    Agent["에이전트"] --- S1["한글 스킬"]
+    Agent --- S2["Git 스킬"]
+    Agent --- S3["Supabase 스킬"]
+    Agent --- S4["디자인 스킬"]
+    Agent --- S5["HTML/CSS 스킬"]
+    Agent --- S6["마케팅 스킬"]
+    Agent --- S7["...스킬 N개"]
+
+    Agent --> Problem["혼란 발생<br>무엇을 써야 할지 모름<br>성능 저하처럼 보임"]
+
+    classDef skillStyle fill:#fde8c0,stroke:#c08020,color:#333
+    classDef agentStyle fill:#ffc8c4,stroke:#e07070,color:#333
+    classDef problemStyle fill:#ffc8c4,stroke:#e07070,color:#333
+
+    class S1,S2,S3,S4,S5,S6,S7 skillStyle
+    class Agent agentStyle
+    class Problem problemStyle</pre><hr>
+<h2 id="하네스-엔지니어링이란">하네스 엔지니어링이란?</h2>
+<p>사실 많은 사람들이 이미 자연스럽게 하고 있었다:</p>
+
+  <blockquote>
+    <p>&ldquo;오늘은 문서 작업만 할 거니까 스킬 딱 두 개만 놓고 해야지.&quot;<br>
+&ldquo;내일은 개발할 거니까 Supabase 스킬, 프론트엔드 디자인 가이드 스킬만 장착해야지.&rdquo;</p>
+
+  </blockquote>
+
+<p>이렇게 <strong>목적에 맞게 필요한 스킬/MCP/설정만 골라 에이전트가 그 안에서만 작업하게 해주는 것</strong>이 바로 하네스 엔지니어링이다. [출처: https://youtu.be/2n8eg8eLWhQ?t=540]</p>
+<h3 id="워크데스크작업-책상-비유">워크데스크(작업 책상) 비유</h3>
+<p>가장 직관적인 설명이다. 요리를 할 때를 생각해보자:</p>
+<ul>
+<li>오늘 요리할 거라면 → 프라이팬, 냄비, 도마만 올려놓는다</li>
+<li>글쓰기를 할 거라면 → 노트, 펜, 참고 자료만 올려놓는다</li>
+<li>코딩을 할 거라면 → IDE, 문서, 관련 레퍼런스만 올려놓는다</li>
+</ul>
+<p>이렇게 책상을 꾸미면, 에이전트가 와서 &ldquo;아, 요리하면 되는구나. 프라이팬이랑 냄비가 있네. 여기서 요리해야지&quot;라고 바로 파악한다. [출처: https://youtu.be/2n8eg8eLWhQ?t=540]</p>
+<pre class="mermaid">flowchart TD
+    subgraph 요리작업["요리 워크데스크"]
+        direction TD
+        T1["프라이팬"]
+        T2["냄비"]
+        T3["도마"]
+    end
+
+    subgraph 개발작업["개발 워크데스크"]
+        direction TD
+        T4["Supabase 스킬"]
+        T5["프론트엔드 스킬"]
+        T6["HTML/CSS 스킬"]
+    end
+
+    subgraph 문서작업["문서 워크데스크"]
+        direction TD
+        T7["한글 스킬"]
+        T8["템플릿 스킬"]
+    end
+
+    Agent["에이전트"] -->|"오늘 목적에 맞는 환경"| 요리작업
+    Agent -->|"개발할 때"| 개발작업
+    Agent -->|"문서 작업할 때"| 문서작업
+
+    classDef envStyle fill:#c5dcef,stroke:#5080a0,color:#333
+    classDef toolStyle fill:#fde8c0,stroke:#c08020,color:#333
+    classDef agentStyle fill:#c0ecd3,stroke:#60b080,color:#333
+
+    class T1,T2,T3,T4,T5,T6,T7,T8 toolStyle
+    class Agent agentStyle</pre><h3 id="구체적인-하네스-엔지니어링-예시">구체적인 하네스 엔지니어링 예시</h3>
+<p>한 프로젝트를 예로 들면:</p>
+<ul>
+<li><strong>스킬</strong>: 이번 프로젝트에서는 스킬 A, B, C만 사용</li>
+<li><strong>MCP</strong>: Supabase MCP는 데이터베이스 작업할 때만 사용</li>
+<li><strong>서브 에이전트</strong>: 백엔드 작업은 백엔드 서브 에이전트만 담당, 2분 내 처리</li>
+<li><strong>프론트엔드</strong>: 프론트 서브 에이전트가 전담</li>
+<li><strong>디자인</strong>: <code>design-guide.md</code> 문서만 참고하고, 다른 소스는 절대 참고 금지</li>
+</ul>
+<p>이렇게 <strong>범위를 명확히 정의한 환경</strong>이 하네스다. [출처: https://youtu.be/2n8eg8eLWhQ?t=660]</p>
+<pre class="mermaid">flowchart TD
+    Harness["하네스(프로젝트 환경)"]
+
+    Harness --> Skills["스킬: A, B, C만 활성화"]
+    Harness --> MCPs["MCP: DB 작업 시에만 Supabase MCP"]
+    Harness --> Agents["서브 에이전트 분리<br>백엔드 / 프론트엔드"]
+    Harness --> Docs["참고 문서: design-guide.md만"]
+
+    Skills --> Agent["에이전트"]
+    MCPs --> Agent
+    Agents --> Agent
+    Docs --> Agent
+
+    Agent --> Output["일관된<br>결과물"]
+
+    classDef harnessStyle fill:#c5dcef,stroke:#5080a0,color:#333
+    classDef componentStyle fill:#fde8c0,stroke:#c08020,color:#333
+    classDef agentStyle fill:#e0c8ef,stroke:#8050a0,color:#333
+    classDef outputStyle fill:#c0ecd3,stroke:#60b080,color:#333
+
+    class Harness harnessStyle
+    class Skills,MCPs,Agents,Docs componentStyle
+    class Agent agentStyle
+    class Output outputStyle</pre><hr>
+<h2 id="에이전트-독립성-하네스의-핵심-가치">에이전트 독립성: 하네스의 핵심 가치</h2>
+<p>하네스의 강력한 점은 <strong>어떤 에이전트를 데려와도 비슷하게 동작한다</strong>는 것이다.</p>
+<p>같은 하네스 환경에서:</p>
+<ul>
+<li>Claude Code를 쓰면 → 그 환경에서 요리한다</li>
+<li>Cursor를 쓰면 → 같은 환경에서 요리한다</li>
+<li>Codex를 쓰면 → 역시 같은 환경에서 요리한다</li>
+</ul>
+<p>에이전트마다 개성이 달라도, 하네스가 범위를 잡아주기 때문에 <strong>일관된 품질</strong>의 결과가 나온다. 이 덕분에 앞으로는 잘 만든 하네스 환경을 공유하거나 판매하는 생태계도 생길 수 있다. [출처: https://youtu.be/2n8eg8eLWhQ?t=700]</p>
+<pre class="mermaid">flowchart TD
+    Harness["하네스 환경<br>(동일한 설정)"]
+
+    Claude["Claude Code"] --> Harness
+    Cursor["Cursor"] --> Harness
+    Codex["Codex"] --> Harness
+
+    Harness --> Result["일관된<br>결과물"]
+
+    classDef agentStyle fill:#c5dcef,stroke:#5080a0,color:#333
+    classDef harnessStyle fill:#fde8c0,stroke:#c08020,color:#333
+    classDef resultStyle fill:#c0ecd3,stroke:#60b080,color:#333
+
+    class Claude,Cursor,Codex agentStyle
+    class Harness harnessStyle
+    class Result resultStyle</pre><hr>
+<h2 id="왜-지금-하네스-엔지니어링이-중요한가">왜 지금 하네스 엔지니어링이 중요한가</h2>
+<p>에이전트의 능력이 좋아진다는 건 두 가지를 동시에 의미한다:</p>
+<ol>
+<li><strong>할 줄 아는 것이 많아진다</strong> — 더 다양한 작업 수행 가능</li>
+<li><strong>알고 있는 정보가 너무 많아진다</strong> — 무엇을 해야 할지 알려주는 과정이 더 중요해진다</li>
+</ol>
+<p>비유하면: 인간도 능력이 많아질수록 환경 구성이 중요해진다. 막 입사한 신입사원이라면 &ldquo;이것저것 해봐&quot;로도 됐겠지만, 경험 많은 전문가에게는 &ldquo;어떤 프로젝트에서 어떤 역할을 맡아야 하는지&quot;가 훨씬 중요한 것처럼. [출처: https://youtu.be/2n8eg8eLWhQ?t=770]</p>
+<p>현재 에이전트의 상태:</p>
+
+  <blockquote>
+    <p>&ldquo;나 빨리 달릴 수는 있는데 잘 몰라요. 설정해 주세요. 설정 안 해주면 저 그냥 막 달립니다.&rdquo;</p>
+
+  </blockquote>
+
+<p>그래서 지금은 사람이 하네스를 설정해줘야 한다. 하지만 이건 과도기다.</p>
+<hr>
+<h2 id="하네스-엔지니어링의-미래">하네스 엔지니어링의 미래</h2>
+<p>편집자P는 에이전트가 앞으로 스스로 하네스를 구성하는 방향으로 발전할 것이라고 예상한다. [출처: https://youtu.be/2n8eg8eLWhQ?t=840]</p>
+<p>미래의 시나리오:</p>
+<ol>
+<li>사용자가 &ldquo;웹사이트 만들어줘&quot;라고 요청</li>
+<li>에이전트가 먼저 묻는다: &ldquo;어떤 스킬 쓸까요? AGENTS.md는 이렇게 작성할까요? 이 스킬들이 좋아 보이는데 어떤 거 쓸까요?&rdquo;</li>
+<li>사용자 승인 후 작업 시작</li>
+</ol>
+<p>즉, <strong>에이전트 스스로 자신의 하네스를 설계하고 확인받는</strong> 흐름이다.</p>
+<pre class="mermaid">flowchart TD
+    subgraph 현재["현재 (사람이 하네스 설정)"]
+        direction TD
+        U1["사용자"] -->|"하네스 직접 설계"| H1["하네스 환경"]
+        H1 --> A1["에이전트 작업"]
+    end
+
+    subgraph 미래["미래 (에이전트가 하네스 제안)"]
+        direction TD
+        U2["사용자"] -->|"작업 요청"| A2["에이전트"]
+        A2 -->|"어떤 스킬/MCP 쓸까요?"| U2
+        U2 -->|"승인"| H2["하네스 자동 구성"]
+        H2 --> Result["작업 시작"]
+    end
+
+    classDef userStyle fill:#fde8c0,stroke:#c08020,color:#333
+    classDef harnessStyle fill:#c5dcef,stroke:#5080a0,color:#333
+    classDef agentStyle fill:#e0c8ef,stroke:#8050a0,color:#333
+    classDef resultStyle fill:#c0ecd3,stroke:#60b080,color:#333
+
+    class U1,U2 userStyle
+    class H1,H2 harnessStyle
+    class A1,A2 agentStyle
+    class Result resultStyle</pre><hr>
+<h2 id="핵심-요약">핵심 요약</h2>
+<table>
+  <thead>
+      <tr>
+          <th>단계</th>
+          <th>개념</th>
+          <th>핵심 아이디어</th>
+          <th>한계</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1단계</td>
+          <td>컨텍스트 엔지니어링</td>
+          <td>사람이 직접 컨텍스트 잘 구성</td>
+          <td>일반 사용자는 방법을 모름</td>
+      </tr>
+      <tr>
+          <td>2단계</td>
+          <td>MCP</td>
+          <td>앱 행동을 미리 정의, 에이전트가 선택</td>
+          <td>스킬 수 증가 시 혼란</td>
+      </tr>
+      <tr>
+          <td>3단계</td>
+          <td>스킬</td>
+          <td>작업별 매뉴얼 제공</td>
+          <td>너무 많아지면 성능 저하</td>
+      </tr>
+      <tr>
+          <td>4단계</td>
+          <td><strong>하네스 엔지니어링</strong></td>
+          <td>목적별 환경 선택 구성</td>
+          <td>현재는 사람이 직접 설계</td>
+      </tr>
+  </tbody>
+</table>
+<p>하네스 엔지니어링의 3가지 핵심:</p>
+<ol>
+<li><strong>선택</strong>: 지금 작업에 필요한 스킬/MCP만 골라낸다</li>
+<li><strong>제한</strong>: 에이전트가 그 범위 안에서만 동작하게 한다</li>
+<li><strong>일관성</strong>: 어떤 에이전트를 써도 비슷한 결과가 나온다</li>
+</ol>
+<hr>
+<h2 id="결론">결론</h2>
+<p>하네스 엔지니어링은 거창한 개념이 아니다. <strong>에이전트에게 오늘 할 일에 맞는 작업 책상을 차려주는 것</strong>이다. 요리할 때는 요리 도구만, 코딩할 때는 개발 도구만. 이미 많은 사람들이 직관적으로 해오던 일에 이름이 붙은 것이다.</p>
+<p>에이전트가 빠르고 똑똑해질수록, 방향을 잡아주는 환경 설계가 더 중요해진다. 지금 스킬을 모으고 AGENTS.md를 어떻게 쓸지 고민하는 분들이라면, 이미 하네스 엔지니어링의 시작점에 서 있는 것이다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 03월 30일 10시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/03/2026-03-30-jpmorgan-python-training/" rel="prev">
+        <span>JPMorgan이 공개한 파이썬 트레이닝: 금융권 비개발자를 위한 10개 Jupyter 노트북 분석</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#하네스harness란-무엇인가">하네스(Harness)란 무엇인가?</a></li>
+    <li><a href="#에이전트-제어의-진화-컨텍스트-엔지니어링--mcp--스킬--하네스">에이전트 제어의 진화: 컨텍스트 엔지니어링 → MCP → 스킬 → 하네스</a>
+      <ul>
+        <li><a href="#1단계-컨텍스트-엔지니어링-시대">1단계: 컨텍스트 엔지니어링 시대</a></li>
+        <li><a href="#2단계-mcp의-등장">2단계: MCP의 등장</a></li>
+        <li><a href="#3단계-스킬의-등장">3단계: 스킬의 등장</a></li>
+      </ul>
+    </li>
+    <li><a href="#스킬-과부하-문제">스킬 과부하 문제</a></li>
+    <li><a href="#하네스-엔지니어링이란">하네스 엔지니어링이란?</a>
+      <ul>
+        <li><a href="#워크데스크작업-책상-비유">워크데스크(작업 책상) 비유</a></li>
+        <li><a href="#구체적인-하네스-엔지니어링-예시">구체적인 하네스 엔지니어링 예시</a></li>
+      </ul>
+    </li>
+    <li><a href="#에이전트-독립성-하네스의-핵심-가치">에이전트 독립성: 하네스의 핵심 가치</a></li>
+    <li><a href="#왜-지금-하네스-엔지니어링이-중요한가">왜 지금 하네스 엔지니어링이 중요한가</a></li>
+    <li><a href="#하네스-엔지니어링의-미래">하네스 엔지니어링의 미래</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+    <a href="/tags/ai/" class="badge badge-secondary">Ai</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
