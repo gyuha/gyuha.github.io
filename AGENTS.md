@@ -210,7 +210,8 @@ Required guidance:
 13. In Mermaid labels, do not use `\n` for line breaks; use HTML `<br>` instead.
 14. Never use Mermaid reserved words or Mermaid styling command names as `classDef` names. Forbidden names include `style`, `class`, `click`, `linkStyle`, `end`, `default`, `start`, `stop`, and other Mermaid keywords. Use descriptive alternatives such as `artStyle`, `nodeTone`, `terminal`, `done`, `finish`, or `result` instead.
 15. If a diagram uses `classDef`, sanity-check that every class name is a plain descriptive identifier, not a Mermaid command. Example: use `artStyle` instead of `style`.
-16. Prefer top-to-bottom (`TD`) flow direction over left-to-right (`LR`) for Mermaid flowcharts and graphs. The blog content area is narrow, so wide `LR` diagrams often overflow or require horizontal scrolling. Use `LR` only when the diagram has very few nodes (3 or fewer columns) and clearly fits within the content width.
+16. To apply a `classDef` class to nodes, always use `class node1,node2 className` syntax. The classDef name is **not** a command — writing `artStyle className node1` is invalid Mermaid and will silently break rendering. Correct form: `class node1,node2 artStyle`. Wrong form: `artStyle node1,node2 artStyle` or `artStyle className node1`.
+17. Prefer top-to-bottom (`TD`) flow direction over left-to-right (`LR`) for Mermaid flowcharts and graphs. The blog content area is narrow, so wide `LR` diagrams often overflow or require horizontal scrolling. Use `LR` only when the diagram has very few nodes (3 or fewer columns) and clearly fits within the content width.
 - Practical expectation: for technical posts, include Mermaid frequently; if a section can be clearer with a chart, add one.
 
 ## URL-Only Auto-Post Delegation Rule

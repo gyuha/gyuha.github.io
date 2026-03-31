@@ -120,10 +120,10 @@
     classDef outputNode fill:#fde8c0,color:#333
     classDef phaseNode fill:#e0c8ef,color:#333
 
-    artStyle inputNode A
-    artStyle processNode B
-    artStyle phaseNode C,D,E,F,G,H
-    artStyle outputNode I</pre><h2 id="6-phase-워크플로우">6 Phase 워크플로우</h2>
+    class A inputNode
+    class B processNode
+    class C,D,E,F,G,H phaseNode
+    class I outputNode</pre><h2 id="6-phase-워크플로우">6 Phase 워크플로우</h2>
 <p>Harness가 실행하는 작업 순서는 다음과 같이 6단계로 구성된다.</p>
 <pre class="mermaid">flowchart TD
     P1["Phase 1<br>도메인 분석<br>목적·과제·제약 파악"] --> P2["Phase 2<br>팀 아키텍처 설계<br>에이전트 팀 vs 서브 에이전트"]
@@ -136,8 +136,8 @@
     classDef phaseNode fill:#c5dcef,color:#333
     classDef outputNode fill:#c0ecd3,color:#333
 
-    artStyle phaseNode P1,P2,P5,P6
-    artStyle outputNode P3,P4</pre><h2 id="6가지-아키텍처-패턴">6가지 아키텍처 패턴</h2>
+    class P1,P2,P5,P6 phaseNode
+    class P3,P4 outputNode</pre><h2 id="6가지-아키텍처-패턴">6가지 아키텍처 패턴</h2>
 <p>Harness는 작업 특성에 따라 아래 6가지 아키텍처 패턴 중 하나를 선택해 에이전트 팀을 설계한다.</p>
 <pre class="mermaid">flowchart TD
     ROOT[Harness 아키텍처 패턴] --> A[파이프라인]
@@ -158,9 +158,9 @@
     classDef patternNode fill:#fde8c0,color:#333
     classDef descNode fill:#c0ecd3,color:#333
 
-    artStyle rootNode ROOT
-    artStyle patternNode A,B,C,D,E,F
-    artStyle descNode A1,B1,C1,D1,E1,F1</pre><h3 id="패턴-선택-기준">패턴 선택 기준</h3>
+    class ROOT rootNode
+    class A,B,C,D,E,F patternNode
+    class A1,B1,C1,D1,E1,F1 descNode</pre><h3 id="패턴-선택-기준">패턴 선택 기준</h3>
 <table>
   <thead>
       <tr>
@@ -213,8 +213,8 @@
     classDef modeNode fill:#c5dcef,color:#333
     classDef descNode fill:#e0c8ef,color:#333
 
-    artStyle modeNode TM,SA
-    artStyle descNode TM1,SA1</pre><h2 id="핵심-기능-4가지">핵심 기능 4가지</h2>
+    class TM,SA modeNode
+    class TM1,SA1 descNode</pre><h2 id="핵심-기능-4가지">핵심 기능 4가지</h2>
 <ol>
 <li><strong>에이전트 팀 설계</strong> — 6가지 아키텍처 패턴을 도메인 분석 결과에 맞게 자동 선택</li>
 <li><strong>스킬 생성</strong> — Progressive Disclosure 패턴으로 컨텍스트를 효율 관리. 항상 필요한 핵심 정보만 로드하고 상세 내용은 필요 시 주입</li>
@@ -241,9 +241,9 @@
     classDef dirNode fill:#fde8c0,color:#333
     classDef fileNode fill:#c0ecd3,color:#333
 
-    artStyle rootNode ROOT
-    artStyle dirNode PLUGIN,SKILLS,REF
-    artStyle fileNode PM,SK,R1,R2,R3,R4,R5,R6</pre><h2 id="산출물-자동-생성되는-파일">산출물: 자동 생성되는 파일</h2>
+    class ROOT rootNode
+    class PLUGIN,SKILLS,REF dirNode
+    class PM,SK,R1,R2,R3,R4,R5,R6 fileNode</pre><h2 id="산출물-자동-생성되는-파일">산출물: 자동 생성되는 파일</h2>
 <p>Harness가 실행되면 프로젝트 내에 아래 구조의 파일이 자동으로 생성된다.</p>
 <pre tabindex="0"><code>프로젝트/
 ├── .claude/
@@ -284,8 +284,8 @@
     classDef rootNode fill:#c5dcef,color:#333
     classDef domainNode fill:#fde8c0,color:#333
 
-    artStyle rootNode H
-    artStyle domainNode D1,D2,D3,D4,D5,D6,D7,D8</pre><h2 id="ab-테스트-연구-실제로-얼마나-효과적인가">A/B 테스트 연구: 실제로 얼마나 효과적인가</h2>
+    class H rootNode
+    class D1,D2,D3,D4,D5,D6,D7,D8 domainNode</pre><h2 id="ab-테스트-연구-실제로-얼마나-효과적인가">A/B 테스트 연구: 실제로 얼마나 효과적인가</h2>
 <p>이 프로젝트에서 가장 주목할 부분은 실증 연구다. <strong>15개 소프트웨어 엔지니어링 과제</strong>에 대해 Harness 적용 여부에 따른 출력 품질을 통제 실험으로 측정했다.</p>
 <pre class="mermaid">flowchart TD
     EXP["15개 SE 과제<br>통제 실험"] --> WO["Harness 미적용"]
@@ -305,10 +305,10 @@
     classDef resultNode fill:#fde8c0,color:#333
     classDef metricNode fill:#c5dcef,color:#333
 
-    artStyle baseNode WO,WO1
-    artStyle improvedNode WITH,WITH1
-    artStyle resultNode DIFF
-    artStyle metricNode V1,V2</pre><h3 id="과제-난이도별-개선-효과">과제 난이도별 개선 효과</h3>
+    class WO,WO1 baseNode
+    class WITH,WITH1 improvedNode
+    class DIFF resultNode
+    class V1,V2 metricNode</pre><h3 id="과제-난이도별-개선-효과">과제 난이도별 개선 효과</h3>
 <p>핵심 발견은 <strong>난이도가 높을수록 Harness의 효과가 더 크다</strong>는 점이다.</p>
 <pre class="mermaid">flowchart TD
     subgraph Basic ["Basic 과제"]
@@ -327,8 +327,8 @@
     classDef baseNode fill:#ffc8c4,color:#333
     classDef improvedNode fill:#c0ecd3,color:#333
 
-    artStyle baseNode B1,A1,E1
-    artStyle improvedNode B2,A2,E2</pre><p>이 패턴은 구조화된 사전 설정이 단순 작업보다 복잡한 작업에서 더 큰 역할을 한다는 것을 시사한다. 전문 에이전트 팀 아키텍처가 복잡한 문제를 분해·조율하는 방식 자체가 LLM의 한계를 구조적으로 보완하기 때문이다.</p>
+    class B1,A1,E1 baseNode
+    class B2,A2,E2 improvedNode</pre><p>이 패턴은 구조화된 사전 설정이 단순 작업보다 복잡한 작업에서 더 큰 역할을 한다는 것을 시사한다. 전문 에이전트 팀 아키텍처가 복잡한 문제를 분해·조율하는 방식 자체가 LLM의 한계를 구조적으로 보완하기 때문이다.</p>
 
   <blockquote>
     <p>논문 전문: <em>Hwang, M. (2026). Harness: Structured Pre-Configuration for Enhancing LLM Code Agent Output Quality.</em></p>
@@ -355,8 +355,8 @@
     classDef rootNode fill:#c5dcef,color:#333
     classDef domainNode fill:#e0c8ef,color:#333
 
-    artStyle rootNode H100
-    artStyle domainNode D1,D2,D3,D4,D5,D6</pre><h2 id="핵심-요약">핵심 요약</h2>
+    class H100 rootNode
+    class D1,D2,D3,D4,D5,D6 domainNode</pre><h2 id="핵심-요약">핵심 요약</h2>
 <table>
   <thead>
       <tr>
@@ -505,7 +505,7 @@
   </div>
   <div class="widget-content">
      
-    <a href="/tags/claude-code/" class="badge badge-secondary">Claude Code</a>
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
     <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
     <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
   </div>

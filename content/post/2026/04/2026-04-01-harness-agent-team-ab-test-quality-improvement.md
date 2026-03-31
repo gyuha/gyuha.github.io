@@ -42,10 +42,10 @@ flowchart TD
     classDef outputNode fill:#fde8c0,color:#333
     classDef phaseNode fill:#e0c8ef,color:#333
 
-    artStyle inputNode A
-    artStyle processNode B
-    artStyle phaseNode C,D,E,F,G,H
-    artStyle outputNode I
+    class A inputNode
+    class B processNode
+    class C,D,E,F,G,H phaseNode
+    class I outputNode
 ```
 
 ## 6 Phase 워크플로우
@@ -64,8 +64,8 @@ flowchart TD
     classDef phaseNode fill:#c5dcef,color:#333
     classDef outputNode fill:#c0ecd3,color:#333
 
-    artStyle phaseNode P1,P2,P5,P6
-    artStyle outputNode P3,P4
+    class P1,P2,P5,P6 phaseNode
+    class P3,P4 outputNode
 ```
 
 ## 6가지 아키텍처 패턴
@@ -92,9 +92,9 @@ flowchart TD
     classDef patternNode fill:#fde8c0,color:#333
     classDef descNode fill:#c0ecd3,color:#333
 
-    artStyle rootNode ROOT
-    artStyle patternNode A,B,C,D,E,F
-    artStyle descNode A1,B1,C1,D1,E1,F1
+    class ROOT rootNode
+    class A,B,C,D,E,F patternNode
+    class A1,B1,C1,D1,E1,F1 descNode
 ```
 
 ### 패턴 선택 기준
@@ -121,8 +121,8 @@ flowchart LR
     classDef modeNode fill:#c5dcef,color:#333
     classDef descNode fill:#e0c8ef,color:#333
 
-    artStyle modeNode TM,SA
-    artStyle descNode TM1,SA1
+    class TM,SA modeNode
+    class TM1,SA1 descNode
 ```
 
 ## 핵심 기능 4가지
@@ -154,9 +154,9 @@ flowchart TD
     classDef dirNode fill:#fde8c0,color:#333
     classDef fileNode fill:#c0ecd3,color:#333
 
-    artStyle rootNode ROOT
-    artStyle dirNode PLUGIN,SKILLS,REF
-    artStyle fileNode PM,SK,R1,R2,R3,R4,R5,R6
+    class ROOT rootNode
+    class PLUGIN,SKILLS,REF dirNode
+    class PM,SK,R1,R2,R3,R4,R5,R6 fileNode
 ```
 
 ## 산출물: 자동 생성되는 파일
@@ -222,8 +222,8 @@ flowchart TD
     classDef rootNode fill:#c5dcef,color:#333
     classDef domainNode fill:#fde8c0,color:#333
 
-    artStyle rootNode H
-    artStyle domainNode D1,D2,D3,D4,D5,D6,D7,D8
+    class H rootNode
+    class D1,D2,D3,D4,D5,D6,D7,D8 domainNode
 ```
 
 ## A/B 테스트 연구: 실제로 얼마나 효과적인가
@@ -249,10 +249,10 @@ flowchart TD
     classDef resultNode fill:#fde8c0,color:#333
     classDef metricNode fill:#c5dcef,color:#333
 
-    artStyle baseNode WO,WO1
-    artStyle improvedNode WITH,WITH1
-    artStyle resultNode DIFF
-    artStyle metricNode V1,V2
+    class WO,WO1 baseNode
+    class WITH,WITH1 improvedNode
+    class DIFF resultNode
+    class V1,V2 metricNode
 ```
 
 ### 과제 난이도별 개선 효과
@@ -277,8 +277,8 @@ flowchart TD
     classDef baseNode fill:#ffc8c4,color:#333
     classDef improvedNode fill:#c0ecd3,color:#333
 
-    artStyle baseNode B1,A1,E1
-    artStyle improvedNode B2,A2,E2
+    class B1,A1,E1 baseNode
+    class B2,A2,E2 improvedNode
 ```
 
 이 패턴은 구조화된 사전 설정이 단순 작업보다 복잡한 작업에서 더 큰 역할을 한다는 것을 시사한다. 전문 에이전트 팀 아키텍처가 복잡한 문제를 분해·조율하는 방식 자체가 LLM의 한계를 구조적으로 보완하기 때문이다.
@@ -308,8 +308,8 @@ flowchart TD
     classDef rootNode fill:#c5dcef,color:#333
     classDef domainNode fill:#e0c8ef,color:#333
 
-    artStyle rootNode H100
-    artStyle domainNode D1,D2,D3,D4,D5,D6
+    class H100 rootNode
+    class D1,D2,D3,D4,D5,D6 domainNode
 ```
 
 ## 핵심 요약
