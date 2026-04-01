@@ -389,8 +389,11 @@ flowchart TD
     Good --> G3[Hook으로 자동화]
     Good --> G4[세션 연속성 유지]
     Good --> G5[권한 glob 패턴 설정]
-    Good --> G6[/compact 수동 세이브]
+    Good --> G6["/compact 수동 세이브"]
+```
 
+```mermaid
+flowchart TD
     Bad[Claude Code 초보] --> B1[프롬프트 잘 쓰기]
     Bad --> B2[단일 에이전트]
     Bad --> B3[권한 팝업 매번 클릭]
