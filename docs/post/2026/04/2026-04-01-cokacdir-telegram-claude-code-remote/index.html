@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'cokacdir: Rust로 만든 AI 코딩 에이전트 원격 제어 — Telegram에서 Claude Code를 다룬다'" />
+  <title>cokacdir: Rust로 만든 AI 코딩 에이전트 원격 제어 — Telegram에서 Claude Code를 다룬다  | 신규하 블로그</title>
+  <meta property="og:title" content="cokacdir: Rust로 만든 AI 코딩 에이전트 원격 제어 — Telegram에서 Claude Code를 다룬다" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-04-01"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/04/2026-04-01-cokacdir-telegram-claude-code-remote/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="automation" />
+  
+  <meta property="og:tags" content="terminal" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/04/2026-04-01-cokacdir-telegram-claude-code-remote/">
+          <h1>
+            cokacdir: Rust로 만든 AI 코딩 에이전트 원격 제어 — Telegram에서 Claude Code를 다룬다
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/04/2026-04-01-cokacdir-telegram-claude-code-remote/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>GitHub 스타 192개의 작은 프로젝트지만, 개념은 단순하고 강력합니다. Claude Code를 이미 쓰고 있다면, 그 세션을 Telegram에서 그대로 이어받을 수 있습니다. cokacdir는 AI 에이전트가 아닙니다 — 이미 사용 중인 코딩 에이전트에 위임하고, 그 결과를 Telegram으로 스트리밍해주는 원격 제어 브릿지입니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://github.com/kstost/cokacdir">https://github.com/kstost/cokacdir</a></li>
+</ul>
+<hr>
+<h2 id="cokacdir란-무엇인가">cokacdir란 무엇인가</h2>
+<pre class="mermaid">flowchart TD
+    User[👤 사용자<br/>Telegram] -->|메시지 전송| Bot[Telegram 봇<br/>cokacdir]
+    Bot -->|위임| Agents[코딩 에이전트]
+    Agents --> A1[Claude Code]
+    Agents --> A2[Codex CLI]
+    Agents --> A3[Gemini CLI]
+    Agents --> A4[OpenCode]
+    A1 & A2 & A3 & A4 -->|실행 결과 스트리밍| Bot
+    Bot -->|실시간 스트리밍| User
+
+    Note1[⚠️ LLM 없음<br/>AI 에이전트 아님]
+    Note2[✅ 추가 비용 없음<br/>기존 구독 사용]
+
+    classDef userStyle fill:#c5dcef,stroke:#4a90d9,color:#333
+    classDef botStyle fill:#fde8c0,stroke:#e6a817,color:#333
+    classDef agentStyle fill:#c0ecd3,stroke:#3aaa6c,color:#333
+    classDef noteStyle fill:#e0c8ef,stroke:#7b5ea7,color:#333
+    class User userStyle
+    class Bot botStyle
+    class A1,A2,A3,A4 agentStyle
+    class Note1,Note2 noteStyle</pre><p><strong>핵심 정의:</strong></p>
+
+  <blockquote>
+    <p>&ldquo;cokacdir is <strong>not</strong> an AI agent — it does not include an LLM or reasoning engine. Instead, it delegates tasks to the coding agent you are already using (Claude Code, Codex CLI, Gemini CLI, OpenCode) and lets you control it from Telegram.&rdquo;</p>
+
+  </blockquote>
+
+<p>이미 사용 중인 에이전트의 구독(또는 무료 티어) 안에서 실행되므로 <strong>추가 API 비용이 없습니다.</strong> 폰에서 Telegram 메시지를 보내면, 로컬 컴퓨터의 Claude Code가 코드를 실행하고 파일을 편집하고 셸 명령을 수행한 뒤 결과를 실시간으로 스트리밍해줍니다.</p>
+<hr>
+<h2 id="빠른-시작-3단계">빠른 시작: 3단계</h2>
+<pre class="mermaid">flowchart TD
+    A["curl -fsSL https://cokacdir.cokac.com/manage.sh | bash && cokacctl"] --> B[cokacdir 관리 TUI 열림]
+    B --> C["i 키 → 설치 시작"]
+    C --> D[Telegram 봇 토큰 입력<br/>@BotFather에서 생성]
+    D --> E["s 키 → 서버 시작"]
+    E --> F[Telegram 열고 봇에게 메시지]
+    F --> G[✅ Claude Code 원격 제어 시작]
+
+    classDef cmdStyle fill:#fde8c0,stroke:#e6a817,color:#333
+    classDef actionStyle fill:#c5dcef,stroke:#4a90d9,color:#333
+    classDef doneStyle fill:#c0ecd3,stroke:#3aaa6c,color:#333
+    class A cmdStyle
+    class B,C,D,E,F actionStyle
+    class G doneStyle</pre><p><strong>macOS / Linux:</strong></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -fsSL https://cokacdir.cokac.com/manage.sh <span style="color:#1f2328">|</span> bash <span style="color:#0550ae">&amp;&amp;</span> cokacctl
+</span></span></code></pre></div><p><strong>Windows (PowerShell 관리자):</strong></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span><span style="color:#6639ba">irm </span>https<span style="color:#f6f8fa;background-color:#82071e">:</span><span style="color:#1f2328">//</span>cokacdir<span style="color:#1f2328">.</span>cokac<span style="color:#1f2328">.</span>com<span style="color:#1f2328">/</span>manage<span style="color:#1f2328">.</span>ps1 <span style="color:#1f2328">|</span> iex<span style="color:#1f2328">;</span> cokacctl
+</span></span></code></pre></div><hr>
+<h2 id="두-개의-얼굴-tui-파일-관리자--telegram-봇">두 개의 얼굴: TUI 파일 관리자 + Telegram 봇</h2>
+<p>cokacdir는 두 가지 역할을 합니다. 로컬에서는 풀기능 TUI 파일 관리자로, 원격에서는 Telegram 봇 인터페이스로 동작합니다.</p>
+<h3 id="tui-파일-관리자-기능">TUI 파일 관리자 기능</h3>
+<pre class="mermaid">flowchart TD
+    TUI[cokacdir TUI] --> AI[AI 명령<br/>. 키 → 자연어 입력<br/>Claude/Codex/Gemini/OpenCode 위임]
+    TUI --> Files[파일 관리]
+    TUI --> Code[코드 도구]
+    TUI --> Remote[원격 접근]
+    TUI --> Security[보안 도구]
+
+    Files --> F1[멀티 패널 파일 탐색]
+    Files --> F2[재귀 파일 검색]
+    Files --> F3[중복 파일 감지<br/>해시 기반 비교]
+    Files --> F4[사이드바이사이드 Diff<br/>폴더/파일]
+
+    Code --> C1[내장 에디터<br/>20개+ 언어 신택스 하이라이팅]
+    Code --> C2[Git 통합<br/>status, commit, log, branch, diff]
+    Code --> C3[프로세스 매니저<br/>정렬 가능한 컬럼]
+
+    Remote --> R1[SSH/SFTP 원격 탐색<br/>저장된 프로필]
+    Remote --> R2[이미지 뷰어<br/>Kitty, iTerm2, Sixel]
+
+    Security --> S1["AES-256 파일 암호화<br/>청크 분할 설정 가능"]
+
+    classDef tuiStyle fill:#c5dcef,stroke:#4a90d9,color:#333
+    classDef catStyle fill:#fde8c0,stroke:#e6a817,color:#333
+    classDef featStyle fill:#c0ecd3,stroke:#3aaa6c,color:#333
+    class TUI tuiStyle
+    class AI,Files,Code,Remote,Security catStyle
+    class F1,F2,F3,F4,C1,C2,C3,R1,R2,S1 featStyle</pre><p><strong>성능:</strong> Rust로 작성, LTO + strip 최적화. 단일 바이너리 15~20MB (플랫폼별 상이).</p>
+<hr>
+<h3 id="telegram-봇-기능">Telegram 봇 기능</h3>
+<pre class="mermaid">flowchart TD
+    TelegramBot[Telegram 봇] --> Stream[실시간 스트리밍<br/>Claude Code 출력 그대로]
+    TelegramBot --> Session[세션 관리]
+    TelegramBot --> Schedule[스케줄 태스크]
+    TelegramBot --> Multi[멀티 에이전트]
+    TelegramBot --> Files2[파일 전송]
+
+    Session --> S1[세션 지속성<br/>재연결 후에도 컨텍스트 유지]
+    Session --> S2[크로스 프로바이더<br/>세션 해석]
+    Session --> S3[멀티 프로바이더<br/>Claude, Codex, Gemini, OpenCode]
+
+    Schedule --> Sc1[cron 표현식]
+    Schedule --> Sc2[절대 시간 지정]
+
+    Multi --> M1[그룹 채팅 지원<br/>여러 봇이 컨텍스트 공유]
+    Multi --> M2[봇 간 메시지<br/>멀티 에이전트 워크플로우]
+
+    Files2 --> Fi1[파일 업로드/다운로드]
+    Files2 --> Fi2[도구 관리]
+    Files2 --> Fi3[디버그 로깅]
+
+    classDef botStyle fill:#fde8c0,stroke:#e6a817,color:#333
+    classDef catStyle fill:#c5dcef,stroke:#4a90d9,color:#333
+    classDef featStyle fill:#c0ecd3,stroke:#3aaa6c,color:#333
+    class TelegramBot botStyle
+    class Stream,Session,Schedule,Multi,Files2 catStyle
+    class S1,S2,S3,Sc1,Sc2,M1,M2,Fi1,Fi2,Fi3 featStyle</pre><p><strong>Telegram 명령어 전체 목록:</strong></p>
+<pre tabindex="0"><code>/start       세션 시작
+/stop        세션 중지
+/clear       컨텍스트 초기화
+/help        도움말
+/session     세션 정보
+/pwd         현재 디렉토리
+/model       AI 모델 변경
+/down        파일 다운로드
+/instruction 지시사항 설정
+/instruction_clear  지시사항 초기화
+/allowed     허용된 작업 목록
+/allowedtools       허용된 도구 목록
+/availabletools     사용 가능한 도구 목록
+/context     현재 컨텍스트 보기
+/query       직접 쿼리
+/public      공개 모드
+/direct      직접 모드
+/setpollingtime     폴링 간격 설정
+/debug       디버그 모드
+/silent      무음 모드
+</code></pre><hr>
+<h2 id="멀티-에이전트-워크플로우">멀티 에이전트 워크플로우</h2>
+<p>봇 간 메시지 기능으로 여러 에이전트가 협력하는 워크플로우를 구성할 수 있습니다.</p>
+<pre class="mermaid">sequenceDiagram
+    participant U as 사용자 (Telegram)
+    participant B1 as Bot 1 (Claude Code)
+    participant B2 as Bot 2 (Gemini CLI)
+    participant B3 as Bot 3 (Codex CLI)
+
+    U->>B1: "프론트엔드 컴포넌트 구현해줘"
+    B1->>B1: Claude Code로 구현
+    B1->>B2: "이 코드 테스트 작성해줘"
+    B2->>B2: Gemini CLI로 테스트 생성
+    B2->>B3: "성능 최적화 검토해줘"
+    B3->>B3: Codex CLI로 최적화 분석
+    B3-->>B1: 최적화 제안
+    B1-->>U: 최종 결과 스트리밍</pre><p>그룹 채팅 지원으로 여러 봇이 동일한 컨텍스트를 공유하며 협력할 수도 있습니다.</p>
+<hr>
+<h2 id="지원-플랫폼">지원 플랫폼</h2>
+<table>
+  <thead>
+      <tr>
+          <th>플랫폼</th>
+          <th>아키텍처</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>macOS</td>
+          <td>Apple Silicon (M1/M2/M3) &amp; Intel</td>
+      </tr>
+      <tr>
+          <td>Linux</td>
+          <td>x86_64 &amp; ARM64</td>
+      </tr>
+      <tr>
+          <td>Windows</td>
+          <td>x86_64 &amp; ARM64</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="핵심-요약">핵심 요약</h2>
+<pre class="mermaid">flowchart TD
+    Why[왜 cokacdir인가?] --> W1[📱 이동 중에도<br/>Claude Code 제어]
+    Why --> W2[💰 추가 비용 없음<br/>기존 구독 사용]
+    Why --> W3[⚡ Rust 성능<br/>15~20MB 단일 바이너리]
+    Why --> W4[🤖 멀티 에이전트<br/>봇 간 협업]
+    Why --> W5[🔧 완전한 TUI<br/>파일 관리자까지]
+
+    classDef whyStyle fill:#c5dcef,stroke:#4a90d9,color:#333
+    classDef featStyle fill:#c0ecd3,stroke:#3aaa6c,color:#333
+    class Why whyStyle
+    class W1,W2,W3,W4,W5 featStyle</pre><table>
+  <thead>
+      <tr>
+          <th>항목</th>
+          <th>내용</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>저장소</strong></td>
+          <td>github.com/kstost/cokacdir</td>
+      </tr>
+      <tr>
+          <td><strong>언어</strong></td>
+          <td>Rust</td>
+      </tr>
+      <tr>
+          <td><strong>바이너리 크기</strong></td>
+          <td>15~20MB</td>
+      </tr>
+      <tr>
+          <td><strong>라이선스</strong></td>
+          <td>MIT</td>
+      </tr>
+      <tr>
+          <td><strong>GitHub 스타</strong></td>
+          <td>⭐ 192</td>
+      </tr>
+      <tr>
+          <td><strong>지원 에이전트</strong></td>
+          <td>Claude Code, Codex CLI, Gemini CLI, OpenCode</td>
+      </tr>
+      <tr>
+          <td><strong>추가 비용</strong></td>
+          <td>없음 (기존 구독 사용)</td>
+      </tr>
+      <tr>
+          <td><strong>Telegram 명령어</strong></td>
+          <td>20개+</td>
+      </tr>
+      <tr>
+          <td><strong>플랫폼</strong></td>
+          <td>macOS, Linux, Windows (Apple Silicon 포함)</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="결론">결론</h2>
+<p>cokacdir는 &ldquo;Telegram으로 Claude Code를 원격 제어한다&quot;는 아이디어를 Rust로 구현한 도구입니다. 별도의 AI 모델이나 API 비용이 없고, 이미 사용 중인 Claude Code 세션에 Telegram이라는 인터페이스를 추가하는 방식입니다.</p>
+<p>TUI 파일 관리자로서의 기능(Git, SSH/SFTP, AES-256 암호화, 내장 에디터)도 충분히 풍부하지만, 핵심 가치는 하나입니다 — 폰에서 Telegram 메시지 하나로 로컬 컴퓨터의 코딩 에이전트에게 일을 시키는 것.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 04월 01일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/04/2026-04-01-harness-agent-team-ab-test-quality-improvement/" rel="prev">
+        <span>Harness로 Claude Code 에이전트 팀을 설계하면 품질이 60% 오른다</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#cokacdir란-무엇인가">cokacdir란 무엇인가</a></li>
+    <li><a href="#빠른-시작-3단계">빠른 시작: 3단계</a></li>
+    <li><a href="#두-개의-얼굴-tui-파일-관리자--telegram-봇">두 개의 얼굴: TUI 파일 관리자 + Telegram 봇</a>
+      <ul>
+        <li><a href="#tui-파일-관리자-기능">TUI 파일 관리자 기능</a></li>
+        <li><a href="#telegram-봇-기능">Telegram 봇 기능</a></li>
+      </ul>
+    </li>
+    <li><a href="#멀티-에이전트-워크플로우">멀티 에이전트 워크플로우</a></li>
+    <li><a href="#지원-플랫폼">지원 플랫폼</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/automation/" class="badge badge-secondary">Automation</a>
+    <a href="/tags/terminal/" class="badge badge-secondary">Terminal</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
