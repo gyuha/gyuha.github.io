@@ -172,6 +172,17 @@ graph TD
         C1 --> D1["재작업 필요"]
     end
 
+    classDef bad fill:#ffc8c4,stroke:#d9534f,color:#333
+    classDef good fill:#c0ecd3,stroke:#5cb85c,color:#333
+    classDef neutral fill:#c5dcef,stroke:#5b9bd5,color:#333
+
+    class A1,A2 neutral
+    class B1,C1,D1 bad
+    class B2,C2,D2 good
+```
+```mermaid
+graph TD
+
     subgraph "discuss-phase 사용"
         A2["모호한 요구사항"] --> B2["GSD가 구체적 질문"]
         B2 --> C2["명시적 결정 도출"]
