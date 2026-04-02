@@ -146,13 +146,13 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    A[긴 Claude 세션 종료] --> B[/wrap up 실행]
-    B --> C[세션 핵심 내용 추출]
-    C --> D[NotebookLM Brain에 저장]
-    D --> E[세션별 summary 문서 축적]
-    E --> F[향후 전략 질문 발생]
-    F --> G[프로젝트 지침이 Brain 조회 유도]
-    G --> H[semantic search 결과만 Claude에 반환]
+    A["긴 Claude 세션 종료"] --> B["wrap-up 실행"]
+    B --> C["세션 핵심 내용 추출"]
+    C --> D["NotebookLM Brain에 저장"]
+    D --> E["세션별 summary 문서 축적"]
+    E --> F["향후 전략 질문 발생"]
+    F --> G["프로젝트 지침이 Brain 조회 유도"]
+    G --> H["semantic search 결과만 Claude에 반환"]
 
     classDef inputTone fill:#c5dcef,color:#333
     classDef processTone fill:#fde8c0,color:#333

@@ -187,13 +187,13 @@
 <p>이 방식의 본질은 대화 로그 자체를 다시 컨텍스트 창에 밀어 넣는 것이 아니라, 세션의 중요한 결정을 추려 문서화하고, 그 문서를 NotebookLM의 검색 가능한 기억 레이어에 넣는 것입니다. 그래서 다음 번에 Claude에게 전략 질문을 할 때, 일일이 예전 세션을 복사해 넣지 않고도 semantic search를 통해 관련 내용만 가져오게 할 수 있습니다. 발표자가 여기서 Harry Potter와 수백만 권의 책을 한 번에 읽는 비유를 쓰는 이유도 같습니다. 전체를 전부 들고 있지 말고, 필요한 부분만 정밀 검색해 오라는 것입니다 (근거: <a href="https://youtu.be/6t32nPxeJb8?t=913">t=913</a>).</p>
 <p>더 실무적인 포인트는 이걸 프로젝트 지침과 연결하는 방법입니다. 발표자는 프로젝트 instructions에 &ldquo;전략 질문에 답할 때는 항상 Jack brain.md를 참고하라&rdquo; 는 식의 규칙을 넣습니다. 이 한 줄이 들어가면 Claude는 전략성 질문마다 NotebookLM 쪽 장기 기억을 먼저 조회하는 습관을 갖게 됩니다. 결국 메모리 시스템은 저장만 잘한다고 완성되지 않고, <strong>언제 그 기억을 조회할지에 대한 호출 규칙</strong> 이 함께 있어야 실제 성능으로 이어진다는 뜻입니다 (근거: <a href="https://youtu.be/6t32nPxeJb8?t=913">t=913</a>).</p>
 <pre class="mermaid">flowchart TD
-    A[긴 Claude 세션 종료] --> B[/wrap up 실행]
-    B --> C[세션 핵심 내용 추출]
-    C --> D[NotebookLM Brain에 저장]
-    D --> E[세션별 summary 문서 축적]
-    E --> F[향후 전략 질문 발생]
-    F --> G[프로젝트 지침이 Brain 조회 유도]
-    G --> H[semantic search 결과만 Claude에 반환]
+    A["긴 Claude 세션 종료"] --> B["wrap-up 실행"]
+    B --> C["세션 핵심 내용 추출"]
+    C --> D["NotebookLM Brain에 저장"]
+    D --> E["세션별 summary 문서 축적"]
+    E --> F["향후 전략 질문 발생"]
+    F --> G["프로젝트 지침이 Brain 조회 유도"]
+    G --> H["semantic search 결과만 Claude에 반환"]
 
     classDef inputTone fill:#c5dcef,color:#333
     classDef processTone fill:#fde8c0,color:#333
@@ -301,7 +301,7 @@
   </div>
   <div class="widget-content">
      
-    <a href="/tags/claude-code/" class="badge badge-secondary">Claude Code</a>
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
     <a href="/tags/notebooklm/" class="badge badge-secondary">Notebooklm</a>
     <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
   </div>
