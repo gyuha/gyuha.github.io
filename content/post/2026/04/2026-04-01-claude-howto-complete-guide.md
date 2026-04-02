@@ -264,12 +264,12 @@ flowchart TD
     CP1 --> B[구현 A 시도]
     B --> CP2[체크포인트 2]
     CP2 --> C{결과가 좋지 않음}
-    C -->|/rewind| CP1
+    C -->|"/rewind"| CP1
     CP1 --> D[구현 B 시도]
     D --> CP3[체크포인트 3]
     CP3 --> E[성공!]
 
-    Rewind[/rewind 옵션] --> R1[코드 + 대화 복원]
+    Rewind["/rewind 옵션"] --> R1[코드 + 대화 복원]
     Rewind --> R2[대화만 복원]
     Rewind --> R3[코드만 복원]
     Rewind --> R4[여기서부터 요약]
