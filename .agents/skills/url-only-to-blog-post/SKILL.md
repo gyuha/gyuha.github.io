@@ -33,7 +33,11 @@ Do not use this skill when the user asks for non-post tasks (for example, code c
      - `agent-browser open <url>` -> `agent-browser wait --load networkidle` -> `agent-browser snapshot -i` -> `agent-browser get text body`.
    - If `agent-browser` also fails (extension not connected, browser not started, or extraction error), fall back to `playwright-cli`:
      - `playwright-cli open <url>` -> wait for page load -> `playwright-cli eval "document.body.innerText"` -> `playwright-cli close`.
-   - Record extraction method per URL as `scrapling-get`, `scrapling-fetch`, `scrapling-stealthy`, `browser`, or `playwright` in evidence notes.
+   - If `playwright-cli` also fails or returns empty/insufficient content, fall back to **Jina Reader**:
+     - Fetch `https://r.jina.ai/<url>` (replace `<url>` with the full original URL) via the WebFetch tool.
+     - Jina Reader returns clean Markdown-formatted content extracted from the page.
+     - Example: `https://r.jina.ai/https://example.com/article` -> returns Markdown body.
+   - Record extraction method per URL as `scrapling-get`, `scrapling-fetch`, `scrapling-stealthy`, `browser`, `playwright`, or `jina-reader` in evidence notes.
    - Always output to a temp file with `.md` extension, read content, then clean up the temp file.
 5. Build structured notes per claim: `claim`, `evidence quote`, `url`, `confidence`.
 6. Research and cross-check key claims across sources.
@@ -137,8 +141,10 @@ Body requirements:
 - Primary fetch method is `scrapling-official` with escalation: `get` → `fetch` → `stealthy-fetch`.
 - Detect `FETCH_BLOCKED` when scrapling output is empty, clearly incomplete, access-gated, or repeatedly failing.
 - After scrapling escalation exhausts, switch to `agent-browser` for browser automation extraction.
-- If page is CAPTCHA/paywall-gated even with `stealthy-fetch --solve-cloudflare`, keep only legally visible metadata/teaser and mark the source as partial.
-- If all methods fail, log the failure reason and continue with remaining sources (non-blocking workflow).
+- If `agent-browser` fails, switch to `playwright-cli`.
+- If `playwright-cli` fails or returns insufficient content, switch to **Jina Reader**: fetch `https://r.jina.ai/<original-url>` via WebFetch tool to get clean Markdown content.
+- If page is CAPTCHA/paywall-gated even after the full escalation chain, keep only legally visible metadata/teaser and mark the source as partial.
+- If all methods (including Jina Reader) fail, log the failure reason and continue with remaining sources (non-blocking workflow).
 - Always clean up temp files created by scrapling CLI after reading content.
 
 ## Validation Checklist
