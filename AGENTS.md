@@ -248,6 +248,9 @@ Delegation contract:
 5. Enforce timestamped evidence links for transcript-backed claims (`https://youtu.be/<id>?t=<seconds>`; `&t=` or `?t=` accepted).
 6. Enforce accuracy gates from the skill: no invented details, explicit uncertainty handling, and `task build` before handoff.
 
+## Quick Commands
+- `배포` — 사용자가 "배포" 또는 "/배포"라고 입력하면 `task deploy`를 즉시 실행하고 결과를 보고한다.
+
 ## Error Handling and Safety
 - Avoid silent failures.
 - Keep changes minimal and scoped.
