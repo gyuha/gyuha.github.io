@@ -216,6 +216,9 @@ Required guidance:
 ## URL-Only Auto-Post Delegation Rule
 When the user prompt contains only URL lines (single or multiple, optional whitespace, no additional task text), delegate to skill workflows instead of handling inline.
 
+Pre-work step (mandatory):
+- Before any other work, run `git pull --rebase` in the repository root to sync with remote. If pull fails due to conflicts, inform the user and resolve before proceeding.
+
 Delegation routing contract:
 1. Parse all URLs from the prompt in order.
 2. Classify URL set type:

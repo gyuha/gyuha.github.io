@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude Code &#43; LightRAG: 대규모 문서 코퍼스를 AI로 정복하는 법'" />
+  <title>Claude Code &#43; LightRAG: 대규모 문서 코퍼스를 AI로 정복하는 법  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude Code &#43; LightRAG: 대규모 문서 코퍼스를 AI로 정복하는 법" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-04-04"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/04/2026-04-04-claude-code-lightrag/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="rag" />
+  
+  <meta property="og:tags" content="ai" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/04/2026-04-04-claude-code-lightrag/">
+          <h1>
+            Claude Code &#43; LightRAG: 대규모 문서 코퍼스를 AI로 정복하는 법
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/04/2026-04-04-claude-code-lightrag/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>RAG(Retrieval-Augmented Generation)가 죽었다는 주장이 있다. Opus 4.6처럼 대규모 컨텍스트를 처리하는 LLM이 등장했으니 굳이 RAG를 쓸 필요가 없다는 논리다. 하지만 그 벽은 생각보다 빨리, 그리고 갑자기 찾아온다. 500개, 1,000개의 문서를 AI로 분석해야 하는 순간이 오면 컨텍스트 창 크기로는 답이 없다.</p>
+<p>Chase AI의 영상 &ldquo;Claude Code + LightRAG = UNSTOPPABLE&quot;은 이 문제를 Graph RAG 방식으로 해결하는 오픈소스 LightRAG를 Claude Code와 연동하는 전 과정을 다룬다. 나이브 RAG의 한계부터 Graph RAG의 원리, 설치 방법, Claude Code 스킬 연동, 도입 시점 판단까지 실무에 바로 쓸 수 있는 내용을 정리한다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=QHlB-RJfx8w">https://www.youtube.com/watch?v=QHlB-RJfx8w</a></li>
+</ul>
+<hr>
+<h2 id="rag는-죽지-않았다">RAG는 죽지 않았다</h2>
+<p>LLM의 컨텍스트 창이 커진 건 사실이다. 하지만 컨텍스트 창은 비용과 속도 측면에서 선형으로 커지지 않는다. 5개, 10개 문서는 컨텍스트에 넣어도 괜찮다. 그런데 500개, 1,000개 문서를 처리해야 한다면?</p>
+
+  <blockquote>
+    <p>&ldquo;if you think that means you will never need rag, you are going to hit a wall that you can&rsquo;t just prompt your way out of&rdquo;
+— <a href="https://youtu.be/QHlB-RJfx8w?t=5">영상 0:05</a></p>
+
+  </blockquote>
+
+<p>Claude Code가 파일을 검색하는 방식(Agent GP)은 이미 훌륭하다. 하지만 그건 수십~수백 페이지 수준을 전제로 설계된 것이다. 2,000페이지, 4,000페이지, 5,000페이지가 되는 순간 한계가 온다. 그 지점에서 RAG 시스템은 <strong>더 빠르고 더 저렴하게</strong> 동작한다.</p>
+<pre class="mermaid">flowchart TD
+    A["소규모 문서<br/>5~50개"] --> B["Claude Code<br/>Agent GP로 충분"]
+    C["대규모 문서<br/>500~수천 페이지"] --> D["RAG 시스템 필요<br/>LightRAG 도입"]
+    B --> E["비용: 적음<br/>속도: 빠름"]
+    D --> F["비용: 1,250x 절감<br/>속도: 대폭 향상"]
+
+    classDef smallDoc fill:#c5dcef,color:#333
+    classDef largeDoc fill:#fde8c0,color:#333
+    classDef result fill:#c0ecd3,color:#333
+
+    class A,B,E smallDoc
+    class C,D largeDoc
+    class F result</pre><hr>
+<h2 id="나이브-rag의-작동-원리와-한계">나이브 RAG의 작동 원리와 한계</h2>
+<p>2024년 말~2025년 초에 유행했던 &ldquo;Pinecone에 넣고 Supabase로 검색&rdquo; 방식이 바로 나이브 RAG다. 기초를 이해해야 왜 그것이 부족한지, 그리고 Graph RAG가 왜 등장했는지 알 수 있다.</p>
+<h3 id="나이브-rag-파이프라인">나이브 RAG 파이프라인</h3>
+<pre class="mermaid">flowchart TD
+    A["원본 문서"] --> B["청킹(Chunking)<br/>chunk1 / chunk2 / chunk3"]
+    B --> C["임베딩 모델<br/>텍스트 → 벡터"]
+    C --> D["벡터 DB 저장<br/>수천 차원의 숫자 배열"]
+
+    E["사용자 질문"] --> F["질문도 벡터로 변환"]
+    F --> G["코사인 유사도 계산<br/>가장 가까운 벡터 탐색"]
+    D --> G
+    G --> H["관련 청크 검색<br/>LLM에게 전달"]
+    H --> I["답변 생성"]
+
+    classDef inputNode fill:#c5dcef,color:#333
+    classDef processNode fill:#fde8c0,color:#333
+    classDef outputNode fill:#c0ecd3,color:#333
+
+    class A,E inputNode
+    class B,C,F,G processNode
+    class D,H,I outputNode</pre><p>임베딩 모델은 문서를 청크 단위로 잘라 각각을 고차원 벡터(수천 개의 숫자 배열)로 변환한다. 예를 들어 &ldquo;banana&quot;는 <code>[0.52, 5.12, 9.31, ...]</code>처럼 표현된다. 군함에 대한 문서라면 boats/ships 관련 벡터들과 가까운 위치에 배치된다.</p>
+<p>사용자가 질문하면 그 질문 역시 벡터로 변환되고, 코사인 유사도를 통해 가장 가까운 벡터(청크)들을 찾아 LLM에게 전달한다. 이것이 나이브 RAG의 전부다. <a href="https://youtu.be/QHlB-RJfx8w?t=120">(영상 ~2:00)</a></p>
+<p><strong>한계:</strong> 나이브 RAG는 사실상 &ldquo;고급 Ctrl+F&quot;에 불과하다. 개별 청크와의 유사도만 비교하기 때문에, 여러 문서에 걸쳐 있는 개념 간의 관계나 상위 수준의 추론을 처리하지 못한다.</p>
+<hr>
+<h2 id="graph-rag-지식-그래프로-관계를-연결하다">Graph RAG: 지식 그래프로 관계를 연결하다</h2>
+<p>Graph RAG는 나이브 RAG의 플랫 벡터 DB 위에 <strong>지식 그래프(Knowledge Graph)</strong> 를 추가한다. <a href="https://youtu.be/QHlB-RJfx8w?t=300">(영상 ~5:00)</a></p>
+<h3 id="엔티티와-관계의-추출">엔티티와 관계의 추출</h3>
+<p>문서를 처리할 때 단순 청킹에 그치지 않고, 텍스트에서 <strong>엔티티(Entity)</strong> 와 <strong>관계(Relationship/Edge)</strong> 를 추출한다.</p>
+<p>예시: &ldquo;Anthropic created Claude Code&quot;라는 문장이 있다면</p>
+<ul>
+<li>엔티티 1: <code>Anthropic</code></li>
+<li>엔티티 2: <code>Claude Code</code></li>
+<li>관계(Edge): <code>created</code></li>
+</ul>
+<p>이 관계는 그래프의 엣지로 저장되며, 엣지에는 관계를 설명하는 풍부한 텍스트가 함께 저장된다.</p>
+<pre class="mermaid">flowchart TD
+    A["원본 문서<br/>Anthropic created Claude Code"] --> B["청킹 + 벡터화<br/>플랫 벡터 DB"]
+    A --> C["엔티티/관계 추출<br/>Graph RAG 추가 단계"]
+
+    C --> D["엔티티: Anthropic"]
+    C --> E["엔티티: Claude Code"]
+    D -- "created (관계)" --> E
+
+    B --> F["벡터 유사도 검색"]
+    E --> G["그래프 탐색<br/>관계 순회(Traverse)"]
+    F --> H["통합 검색 결과"]
+    G --> H
+    H --> I["LLM 답변 생성"]
+
+    classDef docNode fill:#c5dcef,color:#333
+    classDef graphNode fill:#e0c8ef,color:#333
+    classDef resultNode fill:#c0ecd3,color:#333
+    classDef processNode fill:#fde8c0,color:#333
+
+    class A docNode
+    class D,E,G graphNode
+    class H,I resultNode
+    class B,C,F processNode</pre><h3 id="나이브-rag-vs-graph-rag-비교">나이브 RAG vs Graph RAG 비교</h3>
+<p><strong>나이브 RAG</strong></p>
+<pre class="mermaid">flowchart TD
+    Q["질문: Anthropic과 OpenAI의<br/>관계는?"] --> V["벡터 유사도 검색"]
+    V --> R1["청크 A: Anthropic 설명"]
+    V --> R2["청크 B: OpenAI 설명"]
+    R1 --> ANS["개별 청크 기반 답변<br/>관계 파악 어려움"]
+    R2 --> ANS
+
+    classDef inputNode fill:#ffc8c4,color:#333
+    classDef resultNode fill:#fde8c0,color:#333
+    class Q inputNode
+    class ANS resultNode</pre><p><strong>Graph RAG</strong></p>
+<pre class="mermaid">flowchart TD
+    Q["질문: Anthropic과 OpenAI의<br/>관계는?"] --> V["벡터 유사도 검색"]
+    V --> E1["엔티티: Anthropic"]
+    E1 --> TRAV["그래프 관계 순회<br/>연결된 엔티티 탐색"]
+    TRAV --> E2["엔티티: OpenAI"]
+    TRAV --> E3["엔티티: Claude"]
+    TRAV --> E4["엔티티: GPT"]
+    E2 --> ANS["관계 기반 심층 답변<br/>문서 간 연결 파악 가능"]
+    E3 --> ANS
+    E4 --> ANS
+
+    classDef inputNode fill:#c5dcef,color:#333
+    classDef graphNode fill:#e0c8ef,color:#333
+    classDef resultNode fill:#c0ecd3,color:#333
+
+    class Q inputNode
+    class E1,E2,E3,E4,TRAV graphNode
+    class ANS resultNode</pre><p>Graph RAG의 핵심 가치는 <strong>분산된 정보 간의 관계를 연결</strong>하는 것이다. &ldquo;이 문서와 저 문서의 내용이 어떻게 연관되는가&quot;를 묻는 질문에 답할 수 있게 된다.</p>
+<hr>
+<h2 id="lightrag-오픈소스-graph-rag의-최강자">LightRAG: 오픈소스 Graph RAG의 최강자</h2>
+<p>LightRAG는 Graph RAG를 구현한 오픈소스 프로젝트로, Microsoft Graph RAG와 같은 고비용 시스템과 경쟁하면서도 <strong>비용은 아주 작은 비율</strong>에 불과하다. <a href="https://youtu.be/QHlB-RJfx8w?t=60">(영상 ~1:00)</a></p>
+<p><strong>핵심 특징:</strong></p>
+<ul>
+<li>플랫 벡터 DB + 지식 그래프를 <strong>동시에 병렬로</strong> 구축</li>
+<li>질문 시 벡터 검색 + 그래프 탐색을 함께 활용</li>
+<li>OpenAI 임베딩 모델 또는 완전 로컬(Ollama) 모두 지원</li>
+<li>Docker 기반으로 간편 배포</li>
+<li>Web UI 제공 (업로드, 그래프 시각화, 검색, API 문서)</li>
+<li>REST API를 통해 외부 시스템(Claude Code)과 연동 가능</li>
+</ul>
+<hr>
+<h2 id="claude-code--lightrag-설치-방법">Claude Code + LightRAG 설치 방법</h2>
+<p>설치는 놀랍도록 간단하다. Claude Code에게 다음 프롬프트 한 방이면 된다. <a href="https://youtu.be/QHlB-RJfx8w?t=480">(영상 ~8:00)</a></p>
+<p><strong>사전 준비:</strong></p>
+<ul>
+<li>Docker Desktop (설치 후 실행 상태 유지)</li>
+<li>OpenAI API 키 (임베딩 모델용)</li>
+</ul>
+<p><strong>Claude Code 프롬프트:</strong></p>
+<pre tabindex="0"><code>clone the Lightrag repo. Write the .env file configured for OpenAI 
+with GPT-4o mini and text-embedding-3-large. Use all default local 
+storage and start it with Docker Compose.
+[LightRAG GitHub URL]
+</code></pre><p>Claude Code가 이 프롬프트를 받아 저장소 클론, <code>.env</code> 파일 생성, Docker Compose 실행까지 모두 처리한다.</p>
+<p><strong>설치 흐름:</strong></p>
+<pre class="mermaid">flowchart TD
+    A["Claude Code에<br/>프롬프트 입력"] --> B["LightRAG 저장소 클론"]
+    B --> C[".env 파일 생성<br/>OpenAI 키 + 모델 설정"]
+    C --> D["Docker Compose 실행"]
+    D --> E["Docker Desktop에<br/>lightrag 컨테이너 생성"]
+    E --> F["Web UI 접근<br/>localhost:9621"]
+
+    classDef stepNode fill:#c5dcef,color:#333
+    classDef resultNode fill:#c0ecd3,color:#333
+
+    class A,B,C,D,E stepNode
+    class F resultNode</pre><p>설치 완료 후 <code>localhost:9621</code>에 접속하면 LightRAG Web UI를 볼 수 있다.</p>
+<hr>
+<h2 id="web-ui-활용법">Web UI 활용법</h2>
+<p>Web UI는 4개의 주요 탭으로 구성된다. <a href="https://youtu.be/QHlB-RJfx8w?t=600">(영상 ~10:00)</a></p>
+<pre class="mermaid">flowchart TD
+    UI["LightRAG Web UI<br/>localhost:9621"]
+    UI --> UP["Upload 탭<br/>텍스트/PDF 문서 업로드<br/>지식 그래프 구축 시작"]
+    UI --> KG["Knowledge Graph 탭<br/>엔티티/관계 시각화<br/>그래프 탐색 가능"]
+    UI --> RET["Retrieval 탭<br/>질문 입력 → 답변<br/>참조 문서 소스 확인"]
+    UI --> API["API 탭<br/>REST 엔드포인트 목록<br/>Claude Code 연동 기반"]
+
+    classDef uiNode fill:#e0c8ef,color:#333
+    classDef tabNode fill:#c5dcef,color:#333
+
+    class UI uiNode
+    class UP,KG,RET,API tabNode</pre><p><strong>문서 업로드 시 주의사항:</strong></p>
+<ul>
+<li>텍스트 기반 파일만 지원 (TXT, PDF 등)</li>
+<li>업로드 시 임베딩 + 지식 그래프 구축이 동시에 진행되므로 시간이 걸림</li>
+<li>Knowledge Graph 탭이 로드되지 않으면 좌측 상단 리셋 버튼 클릭</li>
+</ul>
+<p><strong>Retrieval 탭 활용 예시:</strong></p>
+<ul>
+<li>&ldquo;2026년 RAG 운영 비용의 전체 그림은?&rdquo; 같은 복잡한 질문에도 깊이 있는 답변 제공</li>
+<li>답변 하단에 참조 문서(source references) 자동 표시</li>
+<li>Knowledge Graph의 특정 엔티티(예: OpenAI)를 클릭하면 엔티티 타입, 관련 파일, 청킹 ID, 연결 관계 확인 가능</li>
+</ul>
+<hr>
+<h2 id="claude-code-스킬로-lightrag-제어하기">Claude Code 스킬로 LightRAG 제어하기</h2>
+<p>Web UI를 직접 사용하는 것도 가능하지만, LightRAG의 REST API를 Claude Code 스킬로 래핑하면 훨씬 효율적이다. <a href="https://youtu.be/QHlB-RJfx8w?t=720">(영상 ~12:00)</a></p>
+<p><strong>핵심 4가지 스킬:</strong></p>
+<pre class="mermaid">flowchart TD
+    CC["Claude Code"]
+    CC --> Q["query 스킬<br/>질문 → LightRAG 검색<br/>→ 요약 답변 반환"]
+    CC --> UPL["upload 스킬<br/>문서 → LightRAG에 인덱싱<br/>→ 지식 그래프 업데이트"]
+    CC --> EX["explore 스킬<br/>현재 인덱싱된 문서 목록<br/>→ 중복 업로드 방지"]
+    CC --> ST["status 스킬<br/>LightRAG 서버 상태 확인<br/>Docker 컨테이너 헬스체크"]
+
+    Q --> LR["LightRAG<br/>Docker Container<br/>localhost:9621"]
+    UPL --> LR
+    EX --> LR
+    ST --> LR
+
+    classDef ccNode fill:#c5dcef,color:#333
+    classDef skillNode fill:#fde8c0,color:#333
+    classDef lrNode fill:#c0ecd3,color:#333
+
+    class CC ccNode
+    class Q,UPL,EX,ST skillNode
+    class LR lrNode</pre><p><strong>query 스킬 사용 예시:</strong></p>
+<p>Claude Code 안에서 다음처럼 호출하면 된다:</p>
+<pre tabindex="0"><code>lightrag query 스킬을 사용해서 &#34;RAG 시스템의 2026년 비용 구조&#34;에 대해 물어봐
+</code></pre><p>Claude Code는 LightRAG API에 요청을 보내고, 받은 JSON 응답을 요약해서 돌려준다. 원시(raw) 응답이 필요하면 그것도 받을 수 있다. <a href="https://youtu.be/QHlB-RJfx8w?t=810">(영상 ~13:30)</a></p>
+<p><strong>스킬의 장점:</strong></p>
+<ul>
+<li>Web UI를 열지 않아도 Claude Code 워크플로우 안에서 RAG 검색 가능</li>
+<li>LightRAG 응답이 길고 복잡할 때 Claude Code가 자동으로 요약</li>
+<li>파이프라인 자동화 가능 (문서 업로드 → 인덱싱 확인 → 질문 응답 일괄 처리)</li>
+</ul>
+<hr>
+<h2 id="lightrag-도입-시점-언제-써야-할까">LightRAG 도입 시점: 언제 써야 할까?</h2>
+<p>명확한 숫자 기준이 있다. <a href="https://youtu.be/QHlB-RJfx8w?t=840">(영상 ~14:00)</a></p>
+
+  <blockquote>
+    <p>&ldquo;somewhere between like 500 and 2,000 pages worth of documents&hellip; Beyond that, it probably makes sense for sure to start integrating light rag&rdquo;</p>
+
+  </blockquote>
+
+<pre class="mermaid">flowchart TD
+    A["문서 규모 평가"]
+    A --> S["~500페이지 미만"]
+    A --> M["500~2,000페이지"]
+    A --> L["2,000페이지 이상<br/>(~100만 토큰 이상)"]
+
+    S --> SR["Claude Code<br/>Agent GP로 충분"]
+    M --> MR["실험해볼 만한 구간<br/>LightRAG 도입 고려"]
+    L --> LR["LightRAG 강력 권장<br/>비용·속도 모두 우위"]
+
+    classDef smallNode fill:#c0ecd3,color:#333
+    classDef midNode fill:#fde8c0,color:#333
+    classDef largeNode fill:#ffc8c4,color:#333
+
+    class S,SR smallNode
+    class M,MR midNode
+    class L,LR largeNode</pre><p><strong>비용 비교 (2025년 7월 연구 기준):</strong></p>
+<p>RAG vs 표준 LLM 컨텍스트 방식의 비용 차이는 연구 당시 <strong>최대 1,250배</strong>였다. 단, 이 연구는 Gemini 2.0 기준이고 에이전트 하니스 없이 단순 텍스트 비교였으므로, 현재 모델과의 격차는 좁혀졌을 가능성이 있다. <a href="https://youtu.be/QHlB-RJfx8w?t=990">(영상 ~16:30)</a></p>
+<pre class="mermaid">flowchart TD
+    COMP["비용 비교<br/>(대규모 문서 처리 시)"]
+    COMP --> RAG["LightRAG 방식<br/>임베딩 비용만 발생<br/>검색은 로컬 처리"]
+    COMP --> LLM["표준 LLM 방식<br/>전체 문서를 컨텍스트에 포함<br/>토큰당 과금"]
+    RAG --> R1["상대 비용: 1x"]
+    LLM --> L1["상대 비용: ~수백~1,250x"]
+
+    classDef ragNode fill:#c0ecd3,color:#333
+    classDef llmNode fill:#ffc8c4,color:#333
+
+    class RAG,R1 ragNode
+    class LLM,L1 llmNode</pre><p><strong>실용적 조언:</strong> 정확한 수치보다 직접 실험해보는 것이 낫다. 임베딩 과정이 가장 오래 걸리지만 치명적이지 않다. LightRAG는 빠르게 구축할 수 있으므로 부담 없이 시도해볼 수 있다.</p>
+<hr>
+<h2 id="스케일링-옵션-로컬-vs-클라우드">스케일링 옵션: 로컬 vs 클라우드</h2>
+<p>LightRAG는 완전히 유연한 배포 옵션을 제공한다. <a href="https://youtu.be/QHlB-RJfx8w?t=780">(영상 ~13:00)</a></p>
+<pre class="mermaid">flowchart TD
+    LR["LightRAG 배포 옵션"]
+
+    LR --> LOCAL["완전 로컬"]
+    LOCAL --> OL["Ollama 로컬 모델<br/>임베딩 + Q&A 모두 로컬"]
+    LOCAL --> LD["Docker Desktop<br/>로컬 스토리지"]
+
+    LR --> HYBRID["하이브리드 (권장)"]
+    HYBRID --> OAI["OpenAI 임베딩<br/>text-embedding-3-large"]
+    HYBRID --> DOCD["Docker 로컬 컨테이너"]
+
+    LR --> CLOUD["클라우드 스케일"]
+    CLOUD --> PG["PostgreSQL 서버"]
+    CLOUD --> NEON["Neon (서버리스 Postgres)"]
+
+    classDef localNode fill:#c5dcef,color:#333
+    classDef hybridNode fill:#c0ecd3,color:#333
+    classDef cloudNode fill:#e0c8ef,color:#333
+
+    class LOCAL,OL,LD localNode
+    class HYBRID,OAI,DOCD hybridNode
+    class CLOUD,PG,NEON cloudNode</pre><p><strong>선택 기준:</strong></p>
+<ul>
+<li>개인 프로젝트/보안 민감 데이터 → 완전 로컬 (Ollama)</li>
+<li>일반 개발/프로토타이핑 → 하이브리드 (OpenAI 임베딩 + 로컬 Docker)</li>
+<li>기업/팀 공유/대규모 → 클라우드 (PostgreSQL/Neon)</li>
+</ul>
+<hr>
+<h2 id="핵심-요약">핵심 요약</h2>
+<table>
+  <thead>
+      <tr>
+          <th>항목</th>
+          <th>내용</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>RAG 필요 시점</strong></td>
+          <td>500~2,000페이지 이상의 문서 코퍼스</td>
+      </tr>
+      <tr>
+          <td><strong>나이브 RAG 한계</strong></td>
+          <td>개별 청크 유사도 비교만 가능, 문서 간 관계 파악 불가</td>
+      </tr>
+      <tr>
+          <td><strong>Graph RAG 강점</strong></td>
+          <td>엔티티+관계 지식 그래프로 깊은 질문 처리 가능</td>
+      </tr>
+      <tr>
+          <td><strong>LightRAG 특징</strong></td>
+          <td>벡터 DB + 지식 그래프 동시 구축, Microsoft Graph RAG 대비 저비용</td>
+      </tr>
+      <tr>
+          <td><strong>설치 방법</strong></td>
+          <td>Claude Code + 프롬프트 한 줄 → Docker 자동 구성</td>
+      </tr>
+      <tr>
+          <td><strong>연동 방식</strong></td>
+          <td>REST API → Claude Code 스킬 4종 (query / upload / explore / status)</td>
+      </tr>
+      <tr>
+          <td><strong>비용 효율</strong></td>
+          <td>대규모 문서에서 표준 LLM 대비 수백~1,250배 저렴 (연구 기준)</td>
+      </tr>
+      <tr>
+          <td><strong>스케일링</strong></td>
+          <td>완전 로컬(Ollama) ~ 클라우드(PostgreSQL/Neon) 유연 선택 가능</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="결론">결론</h2>
+<p>컨텍스트 창이 아무리 커져도 수천 페이지의 문서를 다루는 엔터프라이즈 환경이나 대형 개인 프로젝트에서는 RAG가 여전히 필수다. LightRAG는 Graph RAG의 복잡한 이점을 오픈소스로, 그리고 놀랍도록 저렴하게 제공한다.</p>
+<p>Claude Code와의 연동은 도커 한 줄, 스킬 4개면 충분하다. 문서 500페이지가 넘기 시작한다면, 지금 바로 LightRAG 실험을 시작해볼 만하다. 영상 제작자가 말했듯, &ldquo;잃을 게 별로 없다.&rdquo;</p>
+<p>다음 영상에서는 같은 제작자가 LightRAG 위에 멀티모달 지원을 추가하는 <strong>RAG Anything</strong> 통합을 다룰 예정이다. 테이블, 차트, 이미지 같은 비텍스트 데이터까지 RAG에 포함시키는 방법이 궁금하다면 주목할 만하다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 04월 04일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/04/2026-04-02-claude-code-three-frameworks-gsd-gstack-superpowers/" rel="prev">
+        <span>Claude Code 정확도를 높이는 세 가지 프레임워크: GSD, GStack, Superpowers를 어떻게 함께 볼까</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/04/2026-04-04-kis-ai-extensions-openapi-agent-trading-pipeline/" rel="next">
+        <span>kis-ai-extensions로 KIS OpenAPI를 AI 에이전트에 붙이기: 전략 설계부터 백테스트, 주문 실행까지</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#rag는-죽지-않았다">RAG는 죽지 않았다</a></li>
+    <li><a href="#나이브-rag의-작동-원리와-한계">나이브 RAG의 작동 원리와 한계</a>
+      <ul>
+        <li><a href="#나이브-rag-파이프라인">나이브 RAG 파이프라인</a></li>
+      </ul>
+    </li>
+    <li><a href="#graph-rag-지식-그래프로-관계를-연결하다">Graph RAG: 지식 그래프로 관계를 연결하다</a>
+      <ul>
+        <li><a href="#엔티티와-관계의-추출">엔티티와 관계의 추출</a></li>
+        <li><a href="#나이브-rag-vs-graph-rag-비교">나이브 RAG vs Graph RAG 비교</a></li>
+      </ul>
+    </li>
+    <li><a href="#lightrag-오픈소스-graph-rag의-최강자">LightRAG: 오픈소스 Graph RAG의 최강자</a></li>
+    <li><a href="#claude-code--lightrag-설치-방법">Claude Code + LightRAG 설치 방법</a></li>
+    <li><a href="#web-ui-활용법">Web UI 활용법</a></li>
+    <li><a href="#claude-code-스킬로-lightrag-제어하기">Claude Code 스킬로 LightRAG 제어하기</a></li>
+    <li><a href="#lightrag-도입-시점-언제-써야-할까">LightRAG 도입 시점: 언제 써야 할까?</a></li>
+    <li><a href="#스케일링-옵션-로컬-vs-클라우드">스케일링 옵션: 로컬 vs 클라우드</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/rag/" class="badge badge-secondary">Rag</a>
+    <a href="/tags/ai/" class="badge badge-secondary">Ai</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
