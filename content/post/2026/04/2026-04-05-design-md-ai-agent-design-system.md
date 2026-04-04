@@ -1,6 +1,6 @@
 ---
 title: "DESIGN.md: AI 에이전트를 위한 디자인 시스템 명세 파일"
-date: 2026-04-05T14:00:00+09:00
+date: 2026-04-05T01:00:00+09:00
 draft: false
 categories:
   - AI
