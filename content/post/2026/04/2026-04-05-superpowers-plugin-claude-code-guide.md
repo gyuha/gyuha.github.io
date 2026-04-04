@@ -149,7 +149,7 @@ flowchart TD
 Superpowers v5.02 기준으로 14개 스킬이 포함된다. 각 스킬은 마크다운 파일 형태의 지침으로 구성되며, **Claude가 적절한 컨텍스트를 감지하면 자동으로 트리거된다**. 수동으로 호출할 필요가 없다. ([영상 ~4:14](https://youtu.be/yEzzBxhkUw4?t=254))
 
 ```mermaid
-flowchart TD
+flowchart LR
     SP["Superpowers v5.02\n14개 스킬"]
     SP --> CORE["핵심 워크플로우"]
     SP --> DEV["개발"]

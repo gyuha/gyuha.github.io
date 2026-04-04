@@ -34,7 +34,7 @@ Claude Code 관련 저장소가 빠르게 늘어나면서, 이제는 "무엇이 
 이 12개를 한 번에 외우기보다는, 아래처럼 네 개 레이어로 나눠 보면 훨씬 이해가 쉽습니다.
 
 ```mermaid
-flowchart TD
+flowchart LR
     Start["Claude Code 활용 목표"] --> M["문맥 유지"]
     Start --> U["UI / 자동화 / 인터페이스"]
     Start --> W["워크플로우 강화"]
