@@ -2,7 +2,7 @@
 title: "2026년에 주목할 Claude Code GitHub 저장소 12선"
 date: 2026-04-05T00:00:00+09:00
 categories: [Developer Tools]
-draft: true
+draft: false
 tags: [claude-code, agents, skills]
 description: "링크 오류와 중복 추천을 정리하고, 2026년 기준 Claude Code 생태계에서 실제로 참고할 만한 GitHub 저장소 12개를 역할별로 재구성했다."
 ---
