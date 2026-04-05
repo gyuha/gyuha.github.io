@@ -222,7 +222,7 @@ flowchart TD
 ### 카테고리별 컬렉션
 
 ```mermaid
-flowchart TD
+flowchart LR
     COL["awesome-design-md\n55+ 컬렉션"]
     COL --> AI["AI & ML (12)\nClaude, ElevenLabs,\nMistral, Ollama, xAI..."]
     COL --> DEV["개발자 도구 (13)\nCursor, Linear, Vercel,\nSuperhuman, Warp..."]

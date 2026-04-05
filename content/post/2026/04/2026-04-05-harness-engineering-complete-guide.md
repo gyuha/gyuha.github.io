@@ -184,6 +184,14 @@ flowchart TD
         P3["프롬프트 또 수정..."]
         P1 --> P2 --> P3 --> P1
     end
+    classDef bad fill:#ffc8c4,color:#333
+    classDef good fill:#c0ecd3,color:#333
+
+    class P1,P2,P3 bad
+    class H1,H2,H3 good
+```
+```mermaid
+flowchart TD
 
     subgraph approach2["✅ 하네스 접근"]
         H1["실수 발생"]
@@ -224,7 +232,7 @@ flowchart TD
 [OpenAI 공식 블로그에 기재된 내용이다.](https://youtu.be/DrekqeDlO1w?t=450) 엔지니어 세 명이 5개월 동안 코드를 한 줄도 작성하지 않았다. 대신 그들이 한 것은 네 가지다.
 
 ```mermaid
-flowchart TD
+flowchart LR
     A["OpenAI 하네스 구축"]
 
     B["① agent.md 작성<br>업무 지침서<br>(해야 할 것 + 절대 하면 안 되는 것)"]
@@ -254,7 +262,7 @@ flowchart TD
 ## 하네스의 세 가지 기둥
 
 ```mermaid
-flowchart TD
+flowchart LR
     H["하네스 엔지니어링"]
 
     P1["1기둥<br>컨텍스트 파일<br>CLAUDE.md / AGENTS.md"]
