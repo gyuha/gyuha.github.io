@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Karpathy의 LLM Wiki: RAG 대신 누적되는 영속적 위키라는 발상'" />
+  <title>Karpathy의 LLM Wiki: RAG 대신 누적되는 영속적 위키라는 발상  | 신규하 블로그</title>
+  <meta property="og:title" content="Karpathy의 LLM Wiki: RAG 대신 누적되는 영속적 위키라는 발상" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-04-06"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/04/2026-04-06-karpathy-llm-wiki/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="llm" />
+  
+  <meta property="og:tags" content="rag" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/04/2026-04-06-karpathy-llm-wiki/">
+          <h1>
+            Karpathy의 LLM Wiki: RAG 대신 누적되는 영속적 위키라는 발상
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/04/2026-04-06-karpathy-llm-wiki/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Andrej Karpathy가 공개한 <code>LLM Wiki</code> 문서는 구현체가 아니라 패턴 문서에 가깝습니다. 핵심 주장은 단순합니다. 대부분의 RAG는 질문할 때마다 원문에서 관련 조각을 다시 찾고 다시 합성하지만, <strong>LLM이 직접 유지하는 영속적 위키를 하나 두면 지식이 누적되고 복리처럼 쌓일 수 있다</strong> 는 것입니다. <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">Karpathy gist</a> GeekNews도 이 포인트를 잘 요약하면서, 개인 지식 저장소·연구·독서·팀 위키 등으로 확장 가능한 패턴으로 소개했습니다. <a href="https://news.hada.io/topic?id=28208">GeekNews</a></p>
+<p>이 아이디어가 흥미로운 이유는 &ldquo;RAG를 더 정교하게 만든다&quot;가 아니라, <strong>검색 이전에 지식을 한 번 구조화해 두자</strong> 는 방향 전환을 제안하기 때문입니다. 말하자면 원문 문서와 질문 사이에 <code>wiki</code> 라는 중간층을 두고, LLM은 매 질문마다 처음부터 찾는 존재가 아니라 그 위키를 계속 편집·갱신하는 관리자 역할을 맡습니다. 이 글에서는 gist 원문을 중심으로 구조를 정리하고, GeekNews에서 드러난 실전 해석과 우려도 함께 묶어 보겠습니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f</a></li>
+<li><a href="https://news.hada.io/topic?id=28208">https://news.hada.io/topic?id=28208</a></li>
+</ul>
+<h2 id="1-핵심-차이-rag는-매번-다시-찾고-llm-wiki는-한-번-쌓고-계속-유지한다">1) 핵심 차이: RAG는 매번 다시 찾고, LLM Wiki는 한 번 쌓고 계속 유지한다</h2>
+<p>Karpathy가 가장 먼저 대비시키는 것은 기존 RAG 흐름입니다. 보통은 문서를 업로드해 두고, 질문이 들어올 때마다 관련 청크를 검색해 답변을 생성합니다. 이 방식도 유용하지만, 미묘한 질문을 할 때마다 LLM은 관련 조각을 다시 찾고, 다시 조립하고, 다시 합성해야 합니다. 즉 매 질문이 사실상 &ldquo;새로운 재발견&quot;입니다. NotebookLM, ChatGPT 파일 업로드, 일반적인 RAG 시스템 다수가 이 구조에 가깝다고 gist는 설명합니다. <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">Karpathy gist</a></p>
+<p>반대로 <code>LLM Wiki</code> 의 아이디어는 질의 시점에만 검색하는 대신, <strong>원문과 질문 사이에 지속적으로 갱신되는 wiki 층을 둔다</strong> 는 것입니다. 새 소스가 들어오면 LLM은 단순히 인덱싱만 하지 않고, 기존 위키의 엔티티 페이지를 갱신하고, 토픽 요약을 고치고, 새 데이터가 기존 주장과 충돌하는지 표시하고, 전체 합성을 더 강하게 만듭니다. 지식은 질문마다 다시 파는 것이 아니라 한 번 축적되고 계속 최신화됩니다. <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">Karpathy gist</a></p>
+<pre class="mermaid">flowchart TD
+    A["기존 RAG"] --> B["질문 발생"]
+    B --> C["원문에서 관련 청크 검색"]
+    C --> D["그때그때 합성"]
+    D --> E["대화가 끝나면 대부분 사라짐"]
+
+    F["LLM Wiki"] --> G["새 소스 추가"]
+    G --> H["위키 페이지 갱신"]
+    H --> I["교차참조/모순/합성 유지"]
+    I --> J["질문 시 축적된 위키를 기반으로 답변"]
+
+    classDef ragTone fill:#ffc8c4,stroke:#333,stroke-width:1px,color:#333
+    classDef wikiTone fill:#c0ecd3,stroke:#333,stroke-width:1px,color:#333
+
+    class A,B,C,D,E ragTone
+    class F,G,H,I,J wikiTone</pre><p>Karpathy는 이 차이를 <strong>persistent, compounding artifact</strong> 라는 표현으로 설명합니다. 이미 교차 참조가 있고, 이미 모순이 표시되어 있고, 이미 합성이 반영된 결과물이 위키로 남아 있다는 뜻입니다. 그래서 사용자가 좋은 질문을 할수록, 그리고 좋은 소스를 더할수록 지식베이스가 복리처럼 좋아지는 구조가 됩니다. GeekNews 요약 역시 이 부분을 &ldquo;영속적 위키&quot;와 &ldquo;점진적 축적&quot;으로 받아 적고 있습니다. <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">Karpathy gist</a> <a href="https://news.hada.io/topic?id=28208">GeekNews</a></p>
+<h2 id="2-아키텍처는-의외로-단순하다-raw-sources-wiki-schema">2) 아키텍처는 의외로 단순하다: Raw sources, Wiki, Schema</h2>
+<p>gist가 제안하는 구조는 세 층뿐입니다.</p>
+<ol>
+<li><code>Raw sources</code></li>
+<li><code>The wiki</code></li>
+<li><code>The schema</code></li>
+</ol>
+<p><code>Raw sources</code> 는 기사, 논문, 이미지, 데이터 파일 같은 원문 소스 모음입니다. 이 레이어는 <strong>immutable</strong>, 즉 수정하지 않는 진실의 원천입니다. LLM은 여기서 읽기만 하고 원문 자체는 건드리지 않습니다. <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">Karpathy gist</a></p>
+<p><code>The wiki</code> 는 LLM이 실제로 관리하는 markdown 디렉터리입니다. 요약 페이지, 엔티티 페이지, 개념 페이지, 비교 페이지, 개요, 종합 문서가 여기에 쌓입니다. 사용자는 읽고 탐색하고, LLM은 이 레이어를 쓰고 고칩니다. GeekNews 요약이 말한 &ldquo;Obsidian을 열어두고 LLM이 실시간으로 마크다운을 편집한다&quot;는 흐름이 바로 이 레이어의 사용 방식입니다. <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">Karpathy gist</a> <a href="https://news.hada.io/topic?id=28208">GeekNews</a></p>
+<p><code>The schema</code> 는 위키 구조와 컨벤션, ingest/query/lint 방법을 정의하는 설정 문서입니다. Karpathy는 Claude Code라면 <code>CLAUDE.md</code>, Codex라면 <code>AGENTS.md</code> 같은 문서를 예로 듭니다. 즉 중요한 것은 &ldquo;LLM이 똑똑하다&quot;가 아니라, <strong>LLM을 일관된 위키 관리자처럼 행동하게 만드는 운영 규칙</strong> 입니다. <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">Karpathy gist</a></p>
+<pre class="mermaid">flowchart TD
+    A["Raw sources<br>기사, 논문, 이미지, 데이터"] --> B["LLM"]
+    C["Schema<br>CLAUDE.md / AGENTS.md"] --> B
+    B --> D["Wiki<br>요약, 엔티티, 개념, 비교, 종합"]
+    D --> E["사용자 탐색 / 질문 / 검토"]
+
+    classDef sourceTone fill:#c5dcef,stroke:#333,stroke-width:1px,color:#333
+    classDef schemaTone fill:#fde8c0,stroke:#333,stroke-width:1px,color:#333
+    classDef wikiTone fill:#c0ecd3,stroke:#333,stroke-width:1px,color:#333
+
+    class A sourceTone
+    class C,B schemaTone
+    class D,E wikiTone</pre><p>이 구조가 좋은 이유는 책임 분리가 명확하기 때문입니다. 원문은 그대로 두고, LLM이 만드는 것은 중간 결과물이며, 그 LLM의 행동 방식은 schema로 통제합니다. 즉 원문, 가공물, 운영 규칙이 섞이지 않습니다. 이 점이 나중에 유지보수성과 신뢰성을 좌우합니다.</p>
+<h2 id="3-운영은-세-가지-루프다-ingest-query-lint">3) 운영은 세 가지 루프다: Ingest, Query, Lint</h2>
+<p>Karpathy는 <code>LLM Wiki</code> 의 운영을 세 개의 루프로 설명합니다.</p>
+<h3 id="3-1-ingest">3-1) Ingest</h3>
+<p>새 소스를 raw collection에 넣고 LLM에게 처리하라고 지시합니다. 그 결과 LLM은 소스를 읽고, 핵심 내용을 요약하고, 인덱스를 갱신하고, 관련 엔티티/개념 페이지를 업데이트하고, 로그에 항목을 남깁니다. gist는 <strong>단일 소스가 10~15개 위키 페이지를 건드릴 수 있다</strong> 고까지 말합니다. GeekNews도 이 대목을 인용해 &ldquo;단일 소스 처리 시 10~15개 페이지 업데이트 가능&quot;이라고 정리합니다. <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">Karpathy gist</a> <a href="https://news.hada.io/topic?id=28208">GeekNews</a></p>
+<h3 id="3-2-query">3-2) Query</h3>
+<p>질문이 들어오면 LLM은 위키에서 관련 페이지를 찾고, 읽고, 인용과 함께 답을 합성합니다. 중요한 포인트는 여기서 나온 좋은 답변도 <strong>다시 위키의 새 페이지로 저장할 수 있다</strong> 는 점입니다. 비교표든 분석 문서든 새로운 연결 통찰이든, 채팅창에서 사라지지 않고 지식베이스로 편입됩니다. <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">Karpathy gist</a></p>
+<h3 id="3-3-lint">3-3) Lint</h3>
+<p>주기적으로 위키를 점검합니다. 페이지 간 모순, 최신 소스에 의해 오래된 주장, inbound link 없는 고아 페이지, 별도 페이지가 필요한 중요 개념, 누락된 교차 참조, 웹 검색으로 보완할 수 있는 데이터 공백 등을 찾게 합니다. gist는 이 lint 단계가 위키 건강도를 유지하는 핵심이라고 봅니다. <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">Karpathy gist</a></p>
+<pre class="mermaid">flowchart TD
+    A["새 소스 추가"] --> B["Ingest"]
+    B --> C["위키 갱신"]
+    C --> D["질문 / 탐색"]
+    D --> E["Query 결과 생성"]
+    E --> F["좋은 결과는 다시 위키에 편입"]
+    F --> G["Lint / 건강 점검"]
+    G --> C
+
+    classDef ingestTone fill:#c5dcef,stroke:#333,stroke-width:1px,color:#333
+    classDef queryTone fill:#fde8c0,stroke:#333,stroke-width:1px,color:#333
+    classDef lintTone fill:#c0ecd3,stroke:#333,stroke-width:1px,color:#333
+
+    class A,B,C ingestTone
+    class D,E,F queryTone
+    class G lintTone</pre><p>이 세 루프를 보면 <code>LLM Wiki</code> 는 단순 문서 저장소가 아닙니다. ingest는 입력 루프, query는 활용 루프, lint는 정비 루프입니다. 결국 이 셋이 함께 돌아야 지식베이스가 &ldquo;살아 있는 시스템&quot;이 됩니다.</p>
+<h2 id="4-indexmd와-logmd가-사실상-경량-검색-엔진-역할을-한다">4) index.md와 log.md가 사실상 경량 검색 엔진 역할을 한다</h2>
+<p>gist는 특별히 <code>index.md</code> 와 <code>log.md</code> 를 중요 파일로 따로 설명합니다.</p>
+<p><code>index.md</code> 는 콘텐츠 중심 파일입니다. 위키의 모든 페이지를 링크와 한 줄 요약, 때로는 날짜나 source count 같은 메타데이터와 함께 나열하는 카탈로그입니다. Karpathy는 LLM이 질문에 답할 때 먼저 index를 읽고, 그다음 관련 페이지로 들어가는 방식이 <strong>중간 규모(~100 sources, hundreds of pages)</strong> 에서는 surprisingly well 작동한다고 말합니다. 즉 이 정도 규모라면 굳이 embedding 기반 RAG 인프라 없이도 탐색이 가능하다는 뜻입니다. <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">Karpathy gist</a></p>
+<p><code>log.md</code> 는 시간순 기록입니다. ingest, query, lint가 언제 무슨 주제로 일어났는지 append-only 형식으로 남깁니다. gist는 접두사를 일정하게 맞추면 <code>grep</code> 같은 유닉스 도구로 최근 항목을 쉽게 추적할 수 있다고 설명합니다. 즉 log는 인간을 위한 audit trail이면서, LLM에게도 &ldquo;최근 무슨 일이 있었는지&quot;를 알려 주는 메모리 장치입니다. <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">Karpathy gist</a></p>
+<pre class="mermaid">flowchart TD
+    A["index.md"] --> B["무슨 페이지가 있는지 찾기"]
+    B --> C["관련 페이지로 drill-down"]
+    D["log.md"] --> E["최근 ingest/query/lint 흐름 파악"]
+    E --> F["무엇이 새롭고 무엇이 낡았는지 판단"]
+
+    classDef indexTone fill:#c5dcef,stroke:#333,stroke-width:1px,color:#333
+    classDef logTone fill:#e0c8ef,stroke:#333,stroke-width:1px,color:#333
+
+    class A,B,C indexTone
+    class D,E,F logTone</pre><p>이 지점이 중요합니다. 많은 사람이 RAG를 떠올리면 바로 벡터 인덱스부터 생각하지만, <code>LLM Wiki</code> 는 우선 <strong>사람과 LLM 모두가 읽을 수 있는 목차 구조</strong> 로 버텨 보자는 아이디어입니다. 규모가 더 커지면 qmd 같은 로컬 검색 엔진을 붙일 수 있다고 gist는 말합니다. 즉 검색 엔진은 처음부터 전제가 아니라, 위키가 성장한 다음에 붙는 선택적 보강재입니다. <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">Karpathy gist</a></p>
+<h2 id="5-왜-이게-매력적인가-유지보수-비용을-llm에게-넘긴다">5) 왜 이게 매력적인가: 유지보수 비용을 LLM에게 넘긴다</h2>
+<p>gist의 &ldquo;Why this works&rdquo; 섹션은 사실상 이 문서의 철학적 핵심입니다. 지식 베이스 유지의 어려움은 읽기나 생각 자체가 아니라, <strong>북키핑(bookkeeping)</strong> 이라는 것입니다. 교차 참조를 갱신하고, 요약을 최신화하고, 새 데이터가 기존 주장과 충돌하는지 표시하고, 여러 페이지의 일관성을 맞추는 일이 너무 귀찮아서 인간은 결국 위키를 버린다는 진단입니다. <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">Karpathy gist</a></p>
+<p>Karpathy는 여기서 인간과 LLM의 역할을 아주 명확히 가릅니다.</p>
+<ul>
+<li>인간: 소스를 큐레이션하고, 질문을 던지고, 해석의 방향을 잡는다</li>
+<li>LLM: 요약, 교차 참조, 분류, 갱신, 정리, 일관성 유지 같은 반복 노동을 맡는다</li>
+</ul>
+<p>즉 <code>LLM Wiki</code> 는 &ldquo;AI가 인간 대신 생각한다&quot;는 발상보다는, <strong>지식 관리에서 인간이 싫어하는 유지보수 비용을 LLM이 흡수한다</strong> 는 발상에 가깝습니다. GeekNews 요약도 이 부분을 &ldquo;북키핑 비용을 거의 0에 가깝게 낮춘다&quot;는 말로 받아 적었습니다. <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">Karpathy gist</a> <a href="https://news.hada.io/topic?id=28208">GeekNews</a></p>
+<h2 id="6-geeknews-반응을-보면-이-아이디어의-현실적-쟁점도-보인다">6) GeekNews 반응을 보면 이 아이디어의 현실적 쟁점도 보인다</h2>
+<p>GeekNews의 장점은 gist 요약만이 아니라 커뮤니티 반응이 같이 보인다는 점입니다. 읽어 보면 크게 세 갈래의 해석이 나옵니다.</p>
+<p>첫째, <strong>실제로 바로 구현해 보는 흐름</strong> 입니다. 댓글에는 Obsidian 볼트를 GitHub 백업과 연결해 보거나, 다른 LLM용 파서를 붙여 봤다는 사례가 나옵니다. 즉 이 아이디어를 단순 이론보다 실제 PKM/에이전트 시스템으로 곧바로 옮기려는 반응이 강합니다. <a href="https://news.hada.io/topic?id=28208">GeekNews</a></p>
+<p>둘째, <strong>검색과 구조화 문제</strong> 입니다. BM25가 한국어 검색에 약하니 한글 검색용 가드레일을 따로 넣었다는 언급도 있습니다. 이는 gist가 말한 &ldquo;index로도 중간 규모는 충분&quot;하다는 주장에 더해, 실제 언어권과 도메인에 맞는 retrieval 보강이 필요할 수 있음을 보여 줍니다. 이 부분은 단일 댓글 기반이므로 확정적 사실이라기보다 커뮤니티 실전 포인트로 보는 편이 맞습니다. <a href="https://news.hada.io/topic?id=28208">GeekNews</a></p>
+<p>셋째, <strong>컨텍스트 부패와 모델 붕괴 우려</strong> 입니다. Hacker News 의견을 옮긴 부분에서는 LLM이 LLM이 쓴 문서를 계속 다시 다루면 품질이 누적 저하될 수 있다는 걱정, 혹은 <code>claude.md</code> 하나도 제대로 유지 못하는데 위키 전체를 안정적으로 유지할 수 있겠느냐는 회의가 나옵니다. 이것 역시 검증된 결론이라기보다 커뮤니티의 합리적 우려로 읽는 편이 좋습니다. 다만 중요한 건, <code>LLM Wiki</code> 가 &ldquo;무조건 더 낫다&quot;는 답이 아니라 <strong>축적과 유지보수라는 이득을 위해 어떤 위험을 감수할지 선택하는 패턴</strong> 이라는 점입니다. <a href="https://news.hada.io/topic?id=28208">GeekNews</a></p>
+<h2 id="7-실전-적용-포인트">7) 실전 적용 포인트</h2>
+<p>이 아이디어를 실제로 적용할 때는 처음부터 거창하게 가기보다 아래 순서가 안전합니다.</p>
+<ol>
+<li>원문 소스 저장소와 위키 디렉터리를 분리한다.</li>
+<li><code>CLAUDE.md</code> 혹은 <code>AGENTS.md</code> 에 위키의 구조, 파일 명명 규칙, ingest/query/lint 절차를 적는다.</li>
+<li><code>index.md</code> 와 <code>log.md</code> 를 가장 먼저 만든다.</li>
+<li>처음에는 소스를 하나씩 ingest 하며 사람이 결과를 검토한다.</li>
+<li>모순 표시, 링크 누락, stale claim 탐지를 lint 루프로 정기화한다.</li>
+<li>규모가 커질 때만 qmd 같은 검색 엔진을 붙인다.</li>
+</ol>
+<p>중요한 점은 <code>LLM Wiki</code> 가 구현체가 아니라 패턴이라는 것입니다. gist도 마지막에 이 문서는 일부러 추상적으로 썼고, 디렉터리 구조나 페이지 포맷은 각자의 도메인과 취향에 맞게 LLM과 함께 구체화하라고 말합니다. 즉 정답 폴더 구조가 있는 것이 아니라, <strong>영속적 위키라는 중간층을 두고 지식을 누적시킨다</strong> 는 원칙이 핵심입니다. <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">Karpathy gist</a></p>
+<p>실무적으로는 이런 팀에 특히 잘 맞습니다.</p>
+<ul>
+<li>장기 리서치를 하는 개인/팀</li>
+<li>프로젝트 문서가 흩어져 있고 유지가 안 되는 조직</li>
+<li>단발성 Q&amp;A보다 축적형 지식이 더 중요한 환경</li>
+<li>Obsidian 같은 markdown 기반 도구를 이미 쓰는 사용자</li>
+</ul>
+<p>반대로 아래 경우에는 조심해야 합니다.</p>
+<ul>
+<li>원문보다 wiki가 더 권위 있어지는 순간</li>
+<li>LLM이 쓴 요약을 검증 없이 계속 다시 재료로 쓰는 순간</li>
+<li>구조 설계 없이 무작정 페이지부터 늘리는 순간</li>
+</ul>
+<p>즉 이 패턴의 진짜 성패는 모델 성능만이 아니라 <strong>schema와 검토 루프를 얼마나 잘 설계하느냐</strong> 에 달려 있습니다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li><code>LLM Wiki</code> 의 핵심은 매 질의마다 raw 문서를 다시 찾는 대신, LLM이 유지하는 영속적 위키를 중간층으로 두는 것이다. <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">Karpathy gist</a></li>
+<li>구조는 <code>Raw sources</code>, <code>Wiki</code>, <code>Schema</code> 의 세 계층으로 단순하다. <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">Karpathy gist</a></li>
+<li>운영은 <code>Ingest</code>, <code>Query</code>, <code>Lint</code> 세 루프로 돌아가며, 좋은 답변도 다시 위키로 편입시켜 지식을 누적한다. <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">Karpathy gist</a></li>
+<li><code>index.md</code> 와 <code>log.md</code> 는 경량 검색과 시간순 메모리 역할을 맡는다. <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">Karpathy gist</a></li>
+<li>이 패턴의 매력은 지식 유지의 북키핑 비용을 LLM에게 넘기는 데 있다. <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">Karpathy gist</a> <a href="https://news.hada.io/topic?id=28208">GeekNews</a></li>
+<li>다만 커뮤니티에서는 검색 품질, 위키 유지 가능성, LLM이 쓴 요약의 누적 품질 저하 가능성 같은 우려도 함께 제기된다. 이는 현재로서는 실전적 검토 포인트다. <a href="https://news.hada.io/topic?id=28208">GeekNews</a></li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>Karpathy의 <code>LLM Wiki</code> 는 &ldquo;RAG를 버리자&quot;는 선언이 아니라, <strong>지식 축적의 중심을 retrieval에서 maintenance로 옮겨 보자</strong> 는 제안에 가깝습니다. 매번 원문에서 다시 캐내는 대신, 한 번 구조화된 위키를 계속 키우고 다듬는 쪽으로 무게를 옮기자는 것입니다.</p>
+<p>그래서 이 아이디어를 볼 때 핵심 질문은 &ldquo;벡터 검색이 더 좋으냐&quot;가 아닙니다. 오히려 <strong>&ldquo;내 지식 작업에서 진짜 병목은 검색인가, 아니면 유지보수인가?&rdquo;</strong> 입니다. 그 답이 후자라면, <code>LLM Wiki</code> 는 꽤 진지하게 실험해 볼 가치가 있는 패턴입니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 04월 06일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/04/2026-04-05-harness-engineering-complete-guide/" rel="prev">
+        <span>하네스 엔지니어링 완전 정복: AI 에이전트를 길들이는 구조 설계</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/04/2026-04-06-claude-tradingview-mcp/" rel="next">
+        <span>Claude를 TradingView에 연결하면 무엇이 달라질까: TradingView MCP 구조 정리</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-핵심-차이-rag는-매번-다시-찾고-llm-wiki는-한-번-쌓고-계속-유지한다">1) 핵심 차이: RAG는 매번 다시 찾고, LLM Wiki는 한 번 쌓고 계속 유지한다</a></li>
+    <li><a href="#2-아키텍처는-의외로-단순하다-raw-sources-wiki-schema">2) 아키텍처는 의외로 단순하다: Raw sources, Wiki, Schema</a></li>
+    <li><a href="#3-운영은-세-가지-루프다-ingest-query-lint">3) 운영은 세 가지 루프다: Ingest, Query, Lint</a>
+      <ul>
+        <li><a href="#3-1-ingest">3-1) Ingest</a></li>
+        <li><a href="#3-2-query">3-2) Query</a></li>
+        <li><a href="#3-3-lint">3-3) Lint</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-indexmd와-logmd가-사실상-경량-검색-엔진-역할을-한다">4) index.md와 log.md가 사실상 경량 검색 엔진 역할을 한다</a></li>
+    <li><a href="#5-왜-이게-매력적인가-유지보수-비용을-llm에게-넘긴다">5) 왜 이게 매력적인가: 유지보수 비용을 LLM에게 넘긴다</a></li>
+    <li><a href="#6-geeknews-반응을-보면-이-아이디어의-현실적-쟁점도-보인다">6) GeekNews 반응을 보면 이 아이디어의 현실적 쟁점도 보인다</a></li>
+    <li><a href="#7-실전-적용-포인트">7) 실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/llm/" class="badge badge-secondary">Llm</a>
+    <a href="/tags/rag/" class="badge badge-secondary">Rag</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
