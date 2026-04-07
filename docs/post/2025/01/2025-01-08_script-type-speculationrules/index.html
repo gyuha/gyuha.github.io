@@ -475,6 +475,7 @@ JSON의 prefetch, prerender, eagerness 설정에 따라 해당 URL들을 우선�
 
 <script src="/js/active.js"></script>
 
+
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
 <script>
   hljs.initHighlightingOnLoad();
@@ -499,6 +500,9 @@ JSON의 prefetch, prerender, eagerness 설정에 따라 해당 URL들을 우선�
   document.addEventListener('DOMContentLoaded', function () {
     const toc = document.querySelector('#TableOfContents');
     const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
     const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
 
     

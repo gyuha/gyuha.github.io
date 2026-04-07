@@ -30,6 +30,9 @@
 
 <!-- Active js -->
 <script src="/js/active.js"></script>
+{{ if eq .Section "search" }}
+<script src="/js/internal-search.js"></script>
+{{ end }}
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
 <script>
@@ -55,6 +58,9 @@
   document.addEventListener('DOMContentLoaded', function () {
     const toc = document.querySelector('#TableOfContents');
     const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
     const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
 
     // 기존 목차 항목에 toc-item 클래스 추가  

@@ -80,17 +80,28 @@
 <div class="container">
       <div class="row justify-content-center">
         <div class="col-12 col-lg-8">
+<section class="post">
+  <div class="post-title">
+    <h2>사이트 검색</h2>
+  </div>
+  <div class="post-content">
+    <form action='/search/' method="get" class="mb-4">
+      <div class="form-group">
+        <label for="internal-search-input">검색어</label>
+        <input id="internal-search-input" type="search" name="q" class="form-control" placeholder='검색어' />
+      </div>
+      <button type="submit" class="btn btn-primary">검색</button>
+    </form>
 
-  
-
-
+    <div id="search-meta" class="post-summary">검색어를 입력해 주세요.</div>
+    <div id="search-results" class="mt-4"></div>
+  </div>
+</section>
 
         </div>
 
         <div id="sidebar" class="col-12 col-md-8 col-lg-4">
           <div class="post-sidebar-area">
-
-
 <div class="sidebar-widget-area">
   <div class="title">
     <i class="far fa-folder-open"></i>
@@ -162,8 +173,6 @@
   </div>
 </div>
 
-
-
 <div class="sidebar-widget-area">
   <div class="title">
     <i class="fa fa-tag"></i>
@@ -177,7 +186,7 @@
     <a href="/tags/anthropic/" class="badge badge-secondary">Anthropic</a>
     <a href="/tags/automation/" class="badge badge-secondary">Automation</a>
     <a href="/tags/claude/" class="badge badge-secondary">Claude</a>
-    <a href="/tags/claude-code/" class="badge badge-secondary">Claude Code</a>
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
     <a href="/tags/context-engineering/" class="badge badge-secondary">Context-Engineering</a>
     <a href="/tags/data-engineering/" class="badge badge-secondary">Data-Engineering</a>
     <a href="/tags/design-systems/" class="badge badge-secondary">Design-Systems</a>
@@ -207,7 +216,7 @@
     <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
   </div>
 </div>
- 
+
           </div>
         </div>
       </div>
@@ -244,6 +253,9 @@
 
 <script src="/js/active.js"></script>
 
+<script src="/js/internal-search.js"></script>
+
+
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
 <script>
   hljs.initHighlightingOnLoad();
@@ -268,6 +280,9 @@
   document.addEventListener('DOMContentLoaded', function () {
     const toc = document.querySelector('#TableOfContents');
     const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
     const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
 
     

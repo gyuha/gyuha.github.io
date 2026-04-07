@@ -1,0 +1,24 @@
+{{ define "main" }}
+<section class="post">
+  <div class="post-title">
+    <h2>사이트 검색</h2>
+  </div>
+  <div class="post-content">
+    <form action='{{ "/search/" | relURL }}' method="get" class="mb-4">
+      <div class="form-group">
+        <label for="internal-search-input">검색어</label>
+        <input id="internal-search-input" type="search" name="q" class="form-control" placeholder='{{ i18n "menu_search_keyword" }}' />
+      </div>
+      <button type="submit" class="btn btn-primary">검색</button>
+    </form>
+
+    <div id="search-meta" class="post-summary">검색어를 입력해 주세요.</div>
+    <div id="search-results" class="mt-4"></div>
+  </div>
+</section>
+{{ end }}
+
+{{ define "side" }}
+{{- partial "side_category.html" . -}}
+{{- partial "side_tags.html" . -}}
+{{ end }}
