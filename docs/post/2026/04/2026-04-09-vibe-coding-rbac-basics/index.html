@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '바이브 코딩을 한다면 왜 RBAC를 알아야 하나: 유저·롤·퍼미션 설계의 기초'" />
+  <title>바이브 코딩을 한다면 왜 RBAC를 알아야 하나: 유저·롤·퍼미션 설계의 기초  | 신규하 블로그</title>
+  <meta property="og:title" content="바이브 코딩을 한다면 왜 RBAC를 알아야 하나: 유저·롤·퍼미션 설계의 기초" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-04-09"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/04/2026-04-09-vibe-coding-rbac-basics/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="vibe-coding" />
+  
+  <meta property="og:tags" content="database" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/04/2026-04-09-vibe-coding-rbac-basics/">
+          <h1>
+            바이브 코딩을 한다면 왜 RBAC를 알아야 하나: 유저·롤·퍼미션 설계의 기초
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/04/2026-04-09-vibe-coding-rbac-basics/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>이 영상의 포인트는 RBAC를 깊게 파는 보안 강의라기보다, <strong>바이브 코딩을 할 때 권한 구조를 어떻게 말해야 결과 품질이 달라지는가</strong> 에 있습니다. 발표자는 개발자가 아닌 사람도 이제는 제품을 직접 만드는 시대라 RBAC 같은 단어를 아는 것만으로도 AI에게 훨씬 더 좋은 결과를 끌어낼 수 있다고 말합니다. 특히 프로젝트가 복잡해질수록 촘촘한 권한 설정이 필요해지기 때문에, 역할 기반 권한 모델을 이해하는 것이 기본기가 된다는 설명입니다. <a href="https://youtu.be/z3yefLP9C3w?t=0">0:00</a> <a href="https://youtu.be/z3yefLP9C3w?t=13">0:13</a> <a href="https://youtu.be/z3yefLP9C3w?t=21">0:21</a></p>
+<p>영상은 RBAC를 중심으로 ABAC, ReBAC도 짧게 언급하지만, 핵심은 결국 “권한을 중복 없이 효율적으로 관리하는 데이터베이스 구조”를 이해시키는 데 있습니다. CMS를 예로 들어 user, role, permission, 그리고 이들을 연결하는 조인 테이블을 머메이드 다이어그램처럼 설명하며, 왜 이런 구조가 유지보수에 유리한지 보여 줍니다. <a href="https://youtu.be/z3yefLP9C3w?t=36">0:36</a> <a href="https://youtu.be/z3yefLP9C3w?t=195">3:15</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://youtu.be/z3yefLP9C3w?si=vJAr_1RsxZZECq0q">https://youtu.be/z3yefLP9C3w?si=vJAr_1RsxZZECq0q</a></li>
+</ul>
+<h2 id="1-rbac-abac-rebac는-모두-권한-제어-방식이지만-출발점이-다르다">1. RBAC, ABAC, ReBAC는 모두 권한 제어 방식이지만 출발점이 다르다</h2>
+<p>영상 초반에서 발표자는 현대 권한 제어 시스템으로 RBAC, ABAC, ReBAC를 간단히 소개합니다. RBAC는 역할(role)을 기준으로 권한을 묶는 방식이고, ABAC는 속성(attribute), ReBAC는 관계(relationship)를 기반으로 권한을 판단하는 방식이라는 설명입니다. 다만 이 영상은 세 개를 깊게 비교하기보다, 실제 프로젝트에서 가장 흔하고 기본적인 RBAC를 먼저 잡아 두는 쪽에 집중합니다. <a href="https://youtu.be/z3yefLP9C3w?t=36">0:36</a> <a href="https://youtu.be/z3yefLP9C3w?t=50">0:50</a> <a href="https://youtu.be/z3yefLP9C3w?t=63">1:03</a></p>
+<p>이 포인트가 중요한 이유는, 바이브 코딩에서 AI에게 “권한 시스템 넣어줘”라고 말하는 것과 “RBAC로 설계해줘”라고 말하는 것의 결과가 크게 다르기 때문입니다. 전자는 막연한 요구지만, 후자는 이미 어느 정도 정답 공간을 좁혀 주는 설계 힌트가 됩니다. <a href="https://youtu.be/z3yefLP9C3w?t=88">1:28</a> <a href="https://youtu.be/z3yefLP9C3w?t=92">1:32</a></p>
+<h2 id="2-rbac의-핵심은-사용자에게-바로-권한을-붙이지-않는다는-점이다">2. RBAC의 핵심은 사용자에게 바로 권한을 붙이지 않는다는 점이다</h2>
+<p>발표자는 RBAC 개념을 “관리자면 어떤 기능을 허용하고, 일반 사용자면 읽기만 허용한다” 수준으로 아주 쉽게 풀어 설명합니다. 하지만 진짜 핵심은 그걸 구현하는 테이블 구조입니다. 사용자(user)에게 권한(permission)을 직접 붙이는 대신, 먼저 역할(role)을 만들고 그 역할에 권한을 연결한 다음, 다시 사용자를 역할에 연결하는 식으로 중간 단계를 둡니다. <a href="https://youtu.be/z3yefLP9C3w?t=99">1:39</a> <a href="https://youtu.be/z3yefLP9C3w?t=114">1:54</a></p>
+<p>이 구조 덕분에 권한을 바꾸고 싶을 때 사용자 개별 레코드를 전부 수정할 필요가 없습니다. 관리자 역할이 가진 권한만 바꾸면, 그 역할을 가진 모든 사용자에게 한 번에 반영됩니다. 즉 RBAC는 권한을 단순히 “보안 설정”이 아니라 <strong>재사용 가능한 묶음으로 관리하는 방식</strong> 으로 보는 것이 맞습니다. <a href="https://youtu.be/z3yefLP9C3w?t=349">5:49</a> <a href="https://youtu.be/z3yefLP9C3w?t=379">6:19</a></p>
+<pre class="mermaid">flowchart LR
+    U["users"] --> UR["user_roles"]
+    UR --> R["roles"]
+    R --> RP["role_permissions"]
+    RP --> P["permissions"]</pre><h2 id="3-cms-예제에서는-users--roles--permissions--user_roles--role_permissions-가-핵심이다">3. CMS 예제에서는 <code>users / roles / permissions / user_roles / role_permissions</code> 가 핵심이다</h2>
+<p>영상의 중앙 설명은 CMS 예제를 통한 테이블 설계입니다. 가운데는 <code>roles</code>, 오른쪽은 <code>permissions</code>, 왼쪽은 <code>users</code> 가 있고, 역할과 권한은 <code>role_permissions</code>, 사용자와 역할은 <code>user_roles</code> 로 연결됩니다. permission에는 어떤 리소스에 대해 어떤 액션을 허용하는지 들어가며, 기본적으로는 create, read, update, delete 같은 CRUD 단위로 생각하면 된다고 설명합니다. <a href="https://youtu.be/z3yefLP9C3w?t=219">3:39</a> <a href="https://youtu.be/z3yefLP9C3w?t=240">4:00</a> <a href="https://youtu.be/z3yefLP9C3w?t=249">4:09</a></p>
+<p>예를 들어 관리자(admin) 역할이 post를 생성/수정/읽기/삭제할 수 있는 권한을 가진다면, 그 관계는 <code>role_permissions</code> 에 저장됩니다. 그리고 특정 사용자가 관리자라면, 그 사용자는 <code>user_roles</code> 를 통해 admin 역할에 연결됩니다. 이렇게 하면 사용자 → 역할 → 권한이 한 번에 이어지면서, 특정 사용자가 어떤 권한을 갖는지 자연스럽게 계산할 수 있습니다. <a href="https://youtu.be/z3yefLP9C3w?t=296">4:56</a> <a href="https://youtu.be/z3yefLP9C3w?t=319">5:19</a></p>
+<pre class="mermaid">flowchart TD
+    A["User: me"] --> B["Role: admin"]
+    B --> C1["Permission: post.create"]
+    B --> C2["Permission: post.read"]
+    B --> C3["Permission: post.update"]
+    B --> C4["Permission: post.delete"]</pre><h2 id="4-이-구조의-진짜-장점은-권한-변경의-파급을-한-곳에서-다룰-수-있다는-점이다">4. 이 구조의 진짜 장점은 ‘권한 변경의 파급’을 한 곳에서 다룰 수 있다는 점이다</h2>
+<p>발표자가 여러 번 강조하는 것은 중복 없이 관리된다는 점입니다. 예를 들어 “관리자도 사용자 삭제는 못 하게 하자”는 정책이 생기면, 모든 관리자 계정을 일일이 손보는 대신 <code>role_permissions</code> 에서 admin과 <code>user.delete</code> 사이의 연결만 지우면 됩니다. 반대로 관리자에게 새 권한을 주고 싶을 때도 역할과 권한의 관계만 추가하면 됩니다. <a href="https://youtu.be/z3yefLP9C3w?t=338">5:38</a> <a href="https://youtu.be/z3yefLP9C3w?t=361">6:01</a></p>
+<p>사용자 관점에서도 마찬가지입니다. 특정 사용자의 권한을 바꾸고 싶다면, 사용자 자체를 수정하기보다 <code>user_roles</code> 에서 어떤 역할을 연결할지만 바꾸면 됩니다. 즉 RBAC는 권한을 직접 관리하는 방식이 아니라, <strong>권한의 전파를 설계하는 방식</strong> 이라고 보는 편이 더 정확합니다. <a href="https://youtu.be/z3yefLP9C3w?t=365">6:05</a> <a href="https://youtu.be/z3yefLP9C3w?t=397">6:37</a></p>
+<h2 id="5-바이브-코딩에서-중요한-건-이-모델을-프롬프트-단서로-주는-일이다">5. 바이브 코딩에서 중요한 건 이 모델을 ‘프롬프트 단서’로 주는 일이다</h2>
+<p>이 영상은 이론 설명으로 끝나지 않고, Verdent 안의 planning 모드에서 PM 역할을 선택한 뒤 “CMS 시스템을 만들 거야. RBAC가 어떤 기능인지 설명해 주고 어떤 방식으로 데이터베이스를 구성해야 되는지 알려줘”라고 묻는 장면을 보여 줍니다. 발표자는 그림과 표를 통해 구조를 먼저 이해하고, 그다음 프론트엔드 작업으로 넘어갑니다. <a href="https://youtu.be/z3yefLP9C3w?t=132">2:12</a> <a href="https://youtu.be/z3yefLP9C3w?t=178">2:58</a> <a href="https://youtu.be/z3yefLP9C3w?t=418">6:58</a></p>
+<p>이 흐름이 실전에서 중요한 이유는, AI에게 곧바로 “CMS 만들어줘”라고 하기보다 “RBAC 기반 CMS”라고 말하면 정보 구조, 화면 역할, DB 스키마, CRUD 권한 설계가 한꺼번에 정리되기 쉽기 때문입니다. 다시 말해 RBAC는 보안 용어이면서 동시에 <strong>프롬프트의 설계 힌트</strong> 이기도 합니다. <a href="https://youtu.be/z3yefLP9C3w?t=13">0:13</a> <a href="https://youtu.be/z3yefLP9C3w?t=450">7:30</a></p>
+<h2 id="6-역할-예시를-먼저-정하면-ui-설계도-쉬워진다">6. 역할 예시를 먼저 정하면 UI 설계도 쉬워진다</h2>
+<p>후반부에서 발표자는 관리자, 에디터, 작가 등 네 개 정도의 권한 그룹을 먼저 잡아 두고, 각기 다른 permission을 갖도록 설계하는 예를 보여 줍니다. 이건 단순한 DB 스키마 설계가 아니라, 이후 프론트엔드에서 어떤 메뉴를 보여 줄지, 어떤 액션 버튼을 숨길지, 어떤 페이지 접근을 막을지까지 자연스럽게 이어집니다. <a href="https://youtu.be/z3yefLP9C3w?t=434">7:14</a> <a href="https://youtu.be/z3yefLP9C3w?t=440">7:20</a></p>
+<p>즉 RBAC는 백엔드의 권한 체크만을 위한 개념이 아닙니다. 화면 권한, 메뉴 노출, 액션 가능 여부, 관리자 도구 범위까지 함께 정리해 주기 때문에, 바이브 코딩에서 오히려 더 먼저 잡아 두면 좋은 구조입니다. <a href="https://youtu.be/z3yefLP9C3w?t=462">7:42</a></p>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<ul>
+<li>AI에게 권한 시스템을 만들라고 할 때는 막연히 말하지 말고 <code>RBAC</code> 라는 단어를 명시하는 편이 좋습니다. <a href="https://youtu.be/z3yefLP9C3w?t=88">1:28</a></li>
+<li>기본 구조는 <code>users</code>, <code>roles</code>, <code>permissions</code> 와 두 개의 조인 테이블이라는 점만 알아도 절반은 끝입니다. <a href="https://youtu.be/z3yefLP9C3w?t=219">3:39</a></li>
+<li>개별 사용자에 권한을 직접 붙이기보다 역할에 권한을 붙이고 사용자를 역할에 연결해야 변경 비용이 작아집니다. <a href="https://youtu.be/z3yefLP9C3w?t=338">5:38</a></li>
+<li>CMS처럼 역할이 분명한 시스템에서는 먼저 역할 집합을 정한 뒤 UI와 DB를 함께 설계하는 편이 효율적입니다. <a href="https://youtu.be/z3yefLP9C3w?t=434">7:14</a></li>
+<li>CRUD보다 더 세밀한 조건이 필요하면 ABAC나 ReBAC로 넘어갈 수 있지만, 시작점으로는 RBAC가 가장 이해하기 쉽고 프롬프트에도 잘 먹힙니다. <a href="https://youtu.be/z3yefLP9C3w?t=36">0:36</a></li>
+</ul>
+<h2 id="핵심-요약">핵심 요약</h2>
+<p>이 영상이 말하는 핵심은 간단합니다. RBAC를 아는 것은 개발자만의 교양이 아니라, AI와 함께 제품을 만드는 시대의 기본 설계 언어가 되어 가고 있다는 것입니다. 역할, 권한, 조인 테이블 구조를 알고 있으면 데이터베이스 설계도 쉬워지고, UI 역할 분리도 쉬워지고, 무엇보다 AI에게 더 정확한 문제 정의를 넘길 수 있습니다. <a href="https://youtu.be/z3yefLP9C3w?t=13">0:13</a> <a href="https://youtu.be/z3yefLP9C3w?t=195">3:15</a></p>
+<p>그래서 이 영상은 “RBAC가 뭔가요?”에 대한 입문 설명이면서 동시에, 바이브 코딩에서 어떤 단어를 알아야 결과 품질이 달라지는지를 보여 주는 사례이기도 합니다. 단어 하나가 프롬프트의 범위를 정하고, 그 범위가 곧 결과 구조를 바꾸기 때문입니다. <a href="https://youtu.be/z3yefLP9C3w?t=88">1:28</a></p>
+<h2 id="결론">결론</h2>
+<p>권한 시스템은 프로젝트가 커진 뒤 뒤늦게 덧붙이는 기능처럼 보이지만, 실제로는 초반 정보 구조를 결정하는 핵심 축입니다. 바이브 코딩을 한다면 RBAC를 “백엔드 이론”으로만 보지 말고, AI에게 시스템 구조를 설명할 때 써먹는 기본 어휘로 익혀 두는 편이 훨씬 유리합니다. <a href="https://youtu.be/z3yefLP9C3w?t=21">0:21</a> <a href="https://youtu.be/z3yefLP9C3w?t=418">6:58</a></p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 04월 09일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/04/2026-04-08-agent-reach-internet-scaffolding/" rel="prev">
+        <span>Agent Reach는 AI 에이전트에 인터넷 눈을 붙이는 스캐폴딩이다</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/04/2026-04-09-pro-workflow-self-correcting-memory/" rel="next">
+        <span>pro-workflow는 Claude Code를 어떻게 세션마다 더 똑똑하게 만들까</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-rbac-abac-rebac는-모두-권한-제어-방식이지만-출발점이-다르다">1. RBAC, ABAC, ReBAC는 모두 권한 제어 방식이지만 출발점이 다르다</a></li>
+    <li><a href="#2-rbac의-핵심은-사용자에게-바로-권한을-붙이지-않는다는-점이다">2. RBAC의 핵심은 사용자에게 바로 권한을 붙이지 않는다는 점이다</a></li>
+    <li><a href="#3-cms-예제에서는-users--roles--permissions--user_roles--role_permissions-가-핵심이다">3. CMS 예제에서는 <code>users / roles / permissions / user_roles / role_permissions</code> 가 핵심이다</a></li>
+    <li><a href="#4-이-구조의-진짜-장점은-권한-변경의-파급을-한-곳에서-다룰-수-있다는-점이다">4. 이 구조의 진짜 장점은 ‘권한 변경의 파급’을 한 곳에서 다룰 수 있다는 점이다</a></li>
+    <li><a href="#5-바이브-코딩에서-중요한-건-이-모델을-프롬프트-단서로-주는-일이다">5. 바이브 코딩에서 중요한 건 이 모델을 ‘프롬프트 단서’로 주는 일이다</a></li>
+    <li><a href="#6-역할-예시를-먼저-정하면-ui-설계도-쉬워진다">6. 역할 예시를 먼저 정하면 UI 설계도 쉬워진다</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/vibe-coding/" class="badge badge-secondary">Vibe-Coding</a>
+    <a href="/tags/database/" class="badge badge-secondary">Database</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
