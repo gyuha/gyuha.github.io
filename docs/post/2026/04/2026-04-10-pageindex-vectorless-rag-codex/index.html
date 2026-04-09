@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '벡터 DB 없이 RAG를 만든다는 뜻: Codex로 PageIndex 기반 Vectorless RAG 앱 만들기'" />
+  <title>벡터 DB 없이 RAG를 만든다는 뜻: Codex로 PageIndex 기반 Vectorless RAG 앱 만들기  | 신규하 블로그</title>
+  <meta property="og:title" content="벡터 DB 없이 RAG를 만든다는 뜻: Codex로 PageIndex 기반 Vectorless RAG 앱 만들기" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-04-10"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/04/2026-04-10-pageindex-vectorless-rag-codex/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="rag" />
+  
+  <meta property="og:tags" content="codex" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/04/2026-04-10-pageindex-vectorless-rag-codex/">
+          <h1>
+            벡터 DB 없이 RAG를 만든다는 뜻: Codex로 PageIndex 기반 Vectorless RAG 앱 만들기
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/04/2026-04-10-pageindex-vectorless-rag-codex/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>이 영상의 핵심은 “RAG를 더 잘 튜닝하는 법”이 아니라, <strong>아예 벡터와 청킹을 전제로 하지 않는 RAG를 Codex로 빠르게 조립하는 법</strong> 에 있습니다. 발표자는 전통적인 vector-based RAG가 문서를 잘게 자르고 임베딩으로 바꾼 뒤 벡터 DB에서 유사도 검색을 하는 방식이라고 먼저 정리한 다음, PageIndex는 문서의 트리 구조 인덱스를 만들고 추론 기반 검색을 수행하는 <code>vectorless RAG</code> 라고 소개합니다. <a href="https://youtu.be/y4875gXbKNQ?t=1">0:01</a> <a href="https://youtu.be/y4875gXbKNQ?t=83">1:23</a></p>
+<p>흥미로운 점은 발표가 이 개념 설명에서 멈추지 않는다는 데 있습니다. 실제로는 Codex에게 문서 기반 질의응답 앱 전체를 만들게 하고, 환경 변수 입력, Dockerfile 생성, 컨테이너 실행, 에러 수정, 재빌드까지 전 과정을 시연합니다. 즉 이 영상은 PageIndex 소개 영상이면서 동시에, <strong>AI 코딩 에이전트로 RAG 앱을 반복 수정하며 완성하는 실전 루프</strong> 를 보여 주는 튜토리얼이기도 합니다. <a href="https://youtu.be/y4875gXbKNQ?t=246">4:06</a> <a href="https://youtu.be/y4875gXbKNQ?t=498">8:18</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://youtu.be/y4875gXbKNQ?si=-b3t3-o9p2HpIRWV">https://youtu.be/y4875gXbKNQ?si=-b3t3-o9p2HpIRWV</a></li>
+<li><a href="https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=y4875gXbKNQ&amp;format=json">https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=y4875gXbKNQ&amp;format=json</a></li>
+</ul>
+<h2 id="1-pageindex는-왜-vectorless-rag-라고-불리나">1. PageIndex는 왜 <code>vectorless RAG</code> 라고 불리나</h2>
+<p>영상은 먼저 전통적인 RAG 파이프라인을 빠르게 복기합니다. 문서를 작은 chunk로 쪼개고, 임베딩 모델로 벡터를 만들고, 이를 벡터 DB에 저장한 뒤, 질의 시 유사도 검색으로 관련 청크를 꺼내 LLM에 넣는 방식입니다. 발표자는 이 흐름과 대비해 PageIndex를 “reasoning-based, vectorless RAG” 라고 설명합니다. 핵심은 문서의 트리 구조 인덱스를 만들고, 질의 시 tree search를 통해 관련 정보를 추론적으로 찾는다는 점입니다. <a href="https://youtu.be/y4875gXbKNQ?t=1">0:01</a> <a href="https://youtu.be/y4875gXbKNQ?t=83">1:23</a></p>
+<p>즉 PageIndex의 메시지는 단순히 “벡터 DB를 다른 걸로 바꿨다”가 아닙니다. 검색을 유사도 기반 근사 검색으로 보지 않고, <strong>문서 구조를 따라가며 이유를 설명할 수 있는 검색 과정</strong> 으로 재해석하려는 시도에 가깝습니다. 발표자가 나열하는 장점도 여기에 맞춰져 있습니다. no vectors, no chunking, human-like retrieval, transparent retrieval process. <a href="https://youtu.be/y4875gXbKNQ?t=83">1:23</a></p>
+<pre class="mermaid">flowchart LR
+    A["전통적 RAG"] --> B["chunking"]
+    B --> C["embeddings"]
+    C --> D["vector DB"]
+    D --> E["similarity search"]
+    E --> F["LLM answer"]
+
+    G["PageIndex"] --> H["문서 트리 인덱스"]
+    H --> I["reasoning-based tree search"]
+    I --> J["LLM answer"]</pre><h2 id="2-이-영상의-실전-포인트는-pageindex-자체보다-codex-작업-방식에-있다">2. 이 영상의 실전 포인트는 PageIndex 자체보다 Codex 작업 방식에 있다</h2>
+<p>발표자는 Visual Studio Code에서 Codex 확장을 열고, PageIndex 문서를 상단에 붙인 뒤 긴 프롬프트를 제공해 앱 생성을 시작합니다. 여기서 중요한 것은 AI에게 “앱 하나 만들어줘”라고 던지고 끝내지 않는다는 점입니다. 문서 링크, 요구사항, 이후 수정 지시를 순차적으로 주면서 Codex를 작업 실행자로 쓰고 있습니다. <a href="https://youtu.be/y4875gXbKNQ?t=205">3:25</a> <a href="https://youtu.be/y4875gXbKNQ?t=246">4:06</a></p>
+<p>곧바로 완벽한 결과가 나오는 것도 아닙니다. Codex가 Flask 기반 앱을 만들고 <code>.env</code> 에 필요한 키 자리를 만들어 주면, 발표자가 PageIndex API 키, OpenAI API 키, Flask secret key를 직접 채워 넣습니다. 이후 Dockerfile 생성, 컨테이너 실행 명령 생성, 실행 오류 수정까지 모두 대화형 반복으로 이어집니다. 즉 이 영상에서 진짜 배울 점은 “Codex가 RAG를 만든다”보다도, <strong>Codex에게 앱 초안을 만들게 하고 사람이 실행·오류·재지시 루프를 책임지는 방식</strong> 입니다. <a href="https://youtu.be/y4875gXbKNQ?t=328">5:28</a> <a href="https://youtu.be/y4875gXbKNQ?t=473">7:53</a></p>
+<h2 id="3-앱-생성은-한-번이-아니라-생성--실행--에러-전달--재생성-루프로-진행된다">3. 앱 생성은 한 번이 아니라 <code>생성 → 실행 → 에러 전달 → 재생성</code> 루프로 진행된다</h2>
+<p>영상 중반부는 사실상 디버깅 튜토리얼입니다. Docker 이미지를 빌드하고 컨테이너를 띄우는 과정에서 오류가 발생하자, 발표자는 그 에러 메시지를 그대로 Codex에 넘깁니다. Codex는 수정 사항을 반영하고, 사용자는 다시 이미지를 만들고 컨테이너를 재실행합니다. 이 루프가 한 번이 아니라 여러 번 반복됩니다. <a href="https://youtu.be/y4875gXbKNQ?t=666">11:06</a> <a href="https://youtu.be/y4875gXbKNQ?t=797">13:17</a> <a href="https://youtu.be/y4875gXbKNQ?t=999">16:39</a></p>
+<p>이 장면은 요즘 AI 코딩 워크플로의 본질을 잘 보여 줍니다. 에이전트는 코드 초안과 수정안을 빠르게 만들 수 있지만, 실제 실행 환경과 배포 환경에서는 여전히 예외가 계속 터집니다. 그래서 “에이전트가 전부 만든다”는 표현보다, <strong>에이전트가 문제 해결 속도를 끌어올리는 pair programmer + build operator</strong> 라는 표현이 더 정확합니다.</p>
+<pre class="mermaid">flowchart TD
+    A["요구사항 + 문서 링크"] --> B["Codex가 앱 초안 생성"]
+    B --> C["사람이 키/환경 변수 입력"]
+    C --> D["Docker 빌드/실행"]
+    D --> E["오류 발생"]
+    E --> F["오류를 Codex에 전달"]
+    F --> G["수정 코드 생성"]
+    G --> D</pre><h2 id="4-완성된-데모가-보여-주는-것은-검색보다-문서-근거-제시다">4. 완성된 데모가 보여 주는 것은 ‘검색’보다 ‘문서 근거 제시’다</h2>
+<p>수정 루프를 거친 뒤 앱이 제대로 동작하기 시작하면, 발표자는 PDF를 업로드하고 문서 내용에 대해 질문합니다. 이후 답변은 단순 텍스트 응답에 그치지 않고, 문서 ID와 문서 이름, 관련 페이지 같은 근거 정보를 함께 보여 줍니다. 특정 페이지 주제에 대해 묻자 문서에서 내용을 찾아 답했고, 이미지가 있는 페이지에 대해서는 해당 이미지를 다시 보여 주는 동작도 시연합니다. <a href="https://youtu.be/y4875gXbKNQ?t=1063">17:43</a> <a href="https://youtu.be/y4875gXbKNQ?t=1108">18:28</a> <a href="https://youtu.be/y4875gXbKNQ?t=1154">19:14</a></p>
+<p>여기서 눈에 띄는 포인트는 PageIndex의 “transparent retrieval” 주장과 실제 데모가 연결된다는 점입니다. 사용자가 답만 받는 것이 아니라, 문서 기준으로 어디서 그 답이 왔는지와 어떤 페이지가 관련 있는지를 같이 확인할 수 있기 때문입니다. 전통적인 벡터 RAG도 출처 표시를 붙일 수는 있지만, 이 영상은 PageIndex가 애초에 검색 과정을 좀 더 구조적이고 설명 가능한 흐름으로 가져가려 한다는 인상을 줍니다.</p>
+<h2 id="5-이-접근이-흥미로운-이유는-벡터-없는-검색보다-구조를-읽는-검색에-있다">5. 이 접근이 흥미로운 이유는 ‘벡터 없는 검색’보다 ‘구조를 읽는 검색’에 있다</h2>
+<p>이 영상을 보고 남는 인상은 단순히 벡터 DB를 없앴다는 사실보다, 검색을 문서 구조 이해와 추론 경로의 문제로 다시 보고 있다는 점입니다. 물론 영상만으로 PageIndex가 모든 상황에서 vector-based RAG보다 낫다고 결론 내릴 수는 없습니다. 하지만 적어도 발표자가 보여 준 프레임은 분명합니다. <strong>문서를 의미 없는 청크 묶음으로 취급하기보다, 구조를 가진 객체로 보고 그 구조를 따라 검색한다</strong> 는 방향입니다. <a href="https://youtu.be/y4875gXbKNQ?t=83">1:23</a></p>
+<p>Codex와 결합했을 때 이 접근이 더 흥미로운 이유도 여기에 있습니다. 개발자는 RAG 이론만 이해하는 데서 끝나지 않고, 곧바로 작은 웹앱으로 구현해서 동작 여부를 확인할 수 있습니다. 즉 개념과 데모 사이의 거리가 짧아집니다.</p>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<p>첫째, PageIndex 같은 대안을 볼 때 “벡터를 안 쓴다”는 표어만 보지 말고, 어떤 인덱스 구조와 검색 논리를 쓰는지 확인해야 합니다. 실제 차별점은 저장소 종류보다 retrieval reasoning에 있습니다.</p>
+<p>둘째, AI 코딩 에이전트로 RAG 앱을 만들 때는 처음부터 완성품을 기대하기보다, 실행 가능한 초안을 빨리 만든 뒤 오류를 계속 되먹이는 식으로 접근하는 편이 현실적입니다. 이 영상의 절반 이상이 바로 그 수정 루프입니다.</p>
+<p>셋째, 문서 질의응답 앱이라면 답변 정확도만 보지 말고 근거 페이지, 문서 ID, 이미지 재현처럼 출처를 얼마나 잘 드러내는지도 함께 봐야 합니다. 실제 사용성은 그 부분에서 갈리는 경우가 많습니다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>PageIndex는 문서를 chunk+embedding+vector DB로 다루는 대신, 트리 구조 인덱스와 추론 기반 tree search를 강조하는 vectorless RAG 프레임워크로 소개된다.</li>
+<li>영상의 실전 핵심은 PageIndex 자체보다 Codex를 이용해 Flask 앱, 환경 변수, Docker 설정, 디버깅을 반복하는 작업 방식에 있다.</li>
+<li>앱 생성은 한 번에 끝나지 않고 <code>생성 → 실행 → 에러 전달 → 수정 → 재실행</code> 루프로 진행된다.</li>
+<li>완성된 데모는 문서 답변뿐 아니라 관련 페이지와 이미지까지 보여 주며 retrieval transparency를 강조한다.</li>
+<li>이 접근의 진짜 포인트는 벡터 제거보다도, 검색을 문서 구조와 추론 경로 중심으로 재해석한다는 데 있다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>이 영상은 “새로운 RAG 프레임워크 소개”와 “AI 코딩 에이전트 실전 사용기”를 한 번에 묶어 보여 줍니다. PageIndex는 벡터 없는 검색이라는 강한 메시지를 던지지만, 실제로 더 인상적인 장면은 Codex가 만든 초안을 사람이 실행하고, 에러를 되먹이고, 다시 수정하며 점점 쓸 만한 앱으로 바꿔 가는 과정입니다.</p>
+<p>결국 여기서 배울 수 있는 것은 두 가지입니다. 하나는 RAG가 꼭 벡터 DB 중심이어야 하는 것은 아니라는 점, 다른 하나는 AI 코딩 에이전트의 가치는 완성품 자동 생산보다도 <strong>아이디어를 동작하는 프로토타입으로 빠르게 밀어 붙이는 반복 속도</strong> 에 있다는 점입니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 04월 10일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/04/2026-04-09-agent-skills-lifecycle-workflows/" rel="prev">
+        <span>Addy Osmani의 agent-skills는 왜 흥미로운가: 프롬프트가 아니라 개발 생명주기를 패키징한다</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/04/2026-04-10-claude-ios-app-threads/" rel="next">
+        <span>Claude가 모바일 앱을 통째로 만든다는 말의 의미: 프롬프트보다 생성 파이프라인이 중요하다</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-pageindex는-왜-vectorless-rag-라고-불리나">1. PageIndex는 왜 <code>vectorless RAG</code> 라고 불리나</a></li>
+    <li><a href="#2-이-영상의-실전-포인트는-pageindex-자체보다-codex-작업-방식에-있다">2. 이 영상의 실전 포인트는 PageIndex 자체보다 Codex 작업 방식에 있다</a></li>
+    <li><a href="#3-앱-생성은-한-번이-아니라-생성--실행--에러-전달--재생성-루프로-진행된다">3. 앱 생성은 한 번이 아니라 <code>생성 → 실행 → 에러 전달 → 재생성</code> 루프로 진행된다</a></li>
+    <li><a href="#4-완성된-데모가-보여-주는-것은-검색보다-문서-근거-제시다">4. 완성된 데모가 보여 주는 것은 ‘검색’보다 ‘문서 근거 제시’다</a></li>
+    <li><a href="#5-이-접근이-흥미로운-이유는-벡터-없는-검색보다-구조를-읽는-검색에-있다">5. 이 접근이 흥미로운 이유는 ‘벡터 없는 검색’보다 ‘구조를 읽는 검색’에 있다</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/rag/" class="badge badge-secondary">Rag</a>
+    <a href="/tags/codex/" class="badge badge-secondary">Codex</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

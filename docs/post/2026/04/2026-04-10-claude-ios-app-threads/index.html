@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude가 모바일 앱을 통째로 만든다는 말의 의미: 프롬프트보다 생성 파이프라인이 중요하다'" />
+  <title>Claude가 모바일 앱을 통째로 만든다는 말의 의미: 프롬프트보다 생성 파이프라인이 중요하다  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude가 모바일 앱을 통째로 만든다는 말의 의미: 프롬프트보다 생성 파이프라인이 중요하다" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-04-10"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/04/2026-04-10-claude-ios-app-threads/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude" />
+  
+  <meta property="og:tags" content="mobile" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/04/2026-04-10-claude-ios-app-threads/">
+          <h1>
+            Claude가 모바일 앱을 통째로 만든다는 말의 의미: 프롬프트보다 생성 파이프라인이 중요하다
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/04/2026-04-10-claude-ios-app-threads/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Threads에서 자주 보이는 AI 개발 도구 포스트 중에는 문장 하나만으로 사람을 멈추게 만드는 것들이 있습니다. 이번 글의 출발점도 그렇습니다. “Claude가 이제 여러분의 전체 모바일 앱을 구축할 수 있다. Apple 수준의 개발자처럼, 몇 분 만에, 무료로 가능하다”는 식의 짧고 강한 문장입니다. <a href="https://www.threads.com/@turtle_buff/post/DW5-Iw7D98s">Threads 원문</a> <a href="https://r.jina.ai/http://https://www.threads.com/@turtle_buff/post/DW5-Iw7D98s">Jina Reader 추출</a></p>
+<p>다만 원문은 긴 설명이나 코드 저장소 링크가 붙은 형태가 아니라, 강한 주장과 이미지 카드 중심의 짧은 홍보형 포스트에 가깝습니다. 그래서 이 글은 그 주장을 사실로 단정하기보다, <strong>이런 표현이 실제 개발 맥락에서 무엇을 뜻하는지</strong> 를 해석하는 방식으로 정리합니다. 다시 말해 아래 내용 중 스레드가 직접 말하는 부분은 짧고, 나머지는 그 문장을 실전 워크플로 관점에서 풀어쓴 해석입니다. <a href="https://www.threads.com/@turtle_buff/post/DW5-Iw7D98s">Threads 원문</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.threads.com/@turtle_buff/post/DW5-Iw7D98s?xmt=AQF0l_ShpexQVUdfGSTZA13_d7-QmVVb8-hGkpY-0P7BI1W9bvpgLRe45pI2I9dC91qTL-g&amp;slof=1">https://www.threads.com/@turtle_buff/post/DW5-Iw7D98s?xmt=AQF0l_ShpexQVUdfGSTZA13_d7-QmVVb8-hGkpY-0P7BI1W9bvpgLRe45pI2I9dC91qTL-g&amp;slof=1</a></li>
+<li><a href="https://r.jina.ai/http://https://www.threads.com/@turtle_buff/post/DW5-Iw7D98s">https://r.jina.ai/http://https://www.threads.com/@turtle_buff/post/DW5-Iw7D98s</a></li>
+</ul>
+<h2 id="1-원문이-실제로-말하는-것은-앱-완성보다-앱-생성-속도의-압축이다">1. 원문이 실제로 말하는 것은 ‘앱 완성’보다 ‘앱 생성 속도의 압축’이다</h2>
+<p>원문은 아주 짧습니다. Claude가 “전체 모바일 앱”을 만들 수 있고, 예전에는 팀이 몇 주와 큰 비용을 들여 하던 일을 이제는 몇 가지 강력한 프롬프트로 할 수 있다는 주장입니다. 여기에 붙은 카드 이미지도 <code>Claude | iOS</code> 라는 조합으로, 메시지를 더 직설적으로 밀어 줍니다. <a href="https://www.threads.com/@turtle_buff/post/DW5-Iw7D98s">Threads 원문</a> <a href="https://r.jina.ai/http://https://www.threads.com/@turtle_buff/post/DW5-Iw7D98s">Jina Reader 추출</a></p>
+<p>여기서 중요한 것은 이 문장을 문자 그대로 “기획부터 출시까지 인간 없이 끝난다”로 읽기보다, <strong>초기 앱 골격을 만드는 비용과 시간을 극단적으로 압축할 수 있다</strong> 는 메시지로 읽는 편이 현실적이라는 점입니다. 원문에는 저장소, 데모, TestFlight 링크, 성능 검증 같은 근거가 붙어 있지 않기 때문입니다. 따라서 이 포스트의 직접 근거는 어디까지나 “Claude를 iOS 앱 생성에 연결하는 프롬프트 번들 혹은 워크플로가 있다”는 주장 수준입니다. <a href="https://www.threads.com/@turtle_buff/post/DW5-Iw7D98s">Threads 원문</a></p>
+<h2 id="2-실전에서-전체-모바일-앱-생성은-보통-6단계-압축을-뜻한다">2. 실전에서 ‘전체 모바일 앱 생성’은 보통 6단계 압축을 뜻한다</h2>
+<p>아래는 원문이 직접 설명한 내용이 아니라, 그 주장을 현실적인 개발 작업으로 풀어쓴 해석입니다. 오늘날 AI가 “앱을 만든다”고 할 때 실제로 압축되는 것은 대체로 여섯 단계입니다. 앱 아이디어를 PRD로 정리하고, 화면 목록과 사용자 흐름을 만들고, 디자인 시스템과 컴포넌트 규칙을 정하고, 데이터 모델과 API 인터페이스를 만들고, 첫 화면들을 코드로 뽑고, 마지막으로 수정 루프를 빠르게 돌리는 과정입니다.</p>
+<p>즉 AI가 강한 것은 App Store 출시 자체보다도, <strong>모호한 요구사항을 실행 가능한 앱 초안으로 빠르게 바꾸는 앞단</strong> 입니다. 스레드의 “몇 주 걸리던 일이 몇 분으로 줄어든다”는 표현도 이 앞단 압축을 강조하는 쪽으로 읽는 것이 자연스럽습니다. 완전히 비어 있는 상태에서 첫 동작 버전까지 가는 거리가 엄청나게 줄어드는 것이지, 모든 운영·보안·성능·배포 이슈가 사라진다는 뜻은 아닙니다.</p>
+<pre class="mermaid">flowchart TD
+    A["아이디어"] --> B["PRD / 요구사항 정리"]
+    B --> C["화면 흐름 / 정보 구조"]
+    C --> D["디자인 시스템 / 컴포넌트"]
+    D --> E["데이터 모델 / API 인터페이스"]
+    E --> F["초기 앱 코드 생성"]
+    F --> G["반복 수정"]</pre><h2 id="3-프롬프트-몇-개가-강력해지는-이유는-프롬프트가-아니라-순서가-있기-때문이다">3. 프롬프트 몇 개가 강력해지는 이유는 프롬프트가 아니라 순서가 있기 때문이다</h2>
+<p>원문은 “몇 가지 강력한 프롬프트”를 강조하지만, 실제로 성과를 만드는 것은 프롬프트 문장 자체보다 <strong>프롬프트가 호출하는 작업 순서</strong> 입니다. 좋은 모바일 앱 생성 워크플로는 보통 한 번에 “앱 하나 만들어줘”라고 던지지 않습니다. 대신 앱 목적, 핵심 유저, 주요 화면, 상태 전이, 데이터 구조, 네이티브 기능 범위 같은 것을 순서대로 확정합니다.</p>
+<p>결국 잘 되는 앱 생성은 마법의 문장 한 줄보다 작은 결정들을 누적하는 체계에 가깝습니다. 이 점에서 이런 류의 Threads 포스트를 볼 때 가장 주의할 부분도 보입니다. 겉으로는 프롬프트 몇 줄이 전부인 것처럼 보이지만, 실제로는 그 뒤에 <strong>스펙 분해 → 코드 생성 → 에러 수정 → 디자인 정리 → 다시 생성</strong> 의 반복 루프가 숨어 있는 경우가 많습니다.</p>
+<pre class="mermaid">flowchart LR
+    A["짧은 프롬프트"] --> B["스펙 분해"]
+    B --> C["UI 생성"]
+    C --> D["상태 / 데이터 연결"]
+    D --> E["에러 수정"]
+    E --> F["디자인 다듬기"]
+    F --> G["실행 가능한 앱 초안"]</pre><h2 id="4-이-주장으로부터-실제로-배워야-할-것은-모바일-앱을-글로-설계하는-능력이다">4. 이 주장으로부터 실제로 배워야 할 것은 ‘모바일 앱을 글로 설계하는 능력’이다</h2>
+<p>이런 종류의 포스트가 던지는 진짜 신호는 “이제 코드를 몰라도 된다”가 아닙니다. 오히려 반대에 가깝습니다. 모바일 앱을 잘 만들려면 이제 코드만 잘 쓰는 것보다, <strong>앱의 구조를 텍스트로 정확히 지시하는 능력</strong> 이 훨씬 더 중요해집니다. 홈 화면에서 무엇이 보여야 하는지, 탭 구조는 어떤지, 상태는 어디에 저장하는지, 에러 시 UX는 어떻게 바뀌는지 같은 설명을 글로 잘 써야 모델 출력도 안정됩니다.</p>
+<p>그래서 앞으로의 모바일 앱 생성은 “디자인 감각 + 제품 감각 + 구조적 서술 능력”의 결합으로 가는 흐름에 더 가깝습니다. Claude 같은 도구는 그 지시를 코드와 컴포넌트로 번역하는 속도를 올려 주지만, 무엇을 만들지와 어떤 기준으로 고칠지는 여전히 사람이 잡아야 합니다. 이 해석은 원문에 직접 적혀 있지는 않지만, “몇 개의 강력한 프롬프트”라는 표현이 실제로 작동하려면 반드시 필요한 전제입니다. <a href="https://www.threads.com/@turtle_buff/post/DW5-Iw7D98s">Threads 원문</a></p>
+<h2 id="5-apple-수준이라는-표현은-품질-보증이-아니라-기대치-마케팅으로-보는-편이-안전하다">5. ‘Apple 수준’이라는 표현은 품질 보증이 아니라 기대치 마케팅으로 보는 편이 안전하다</h2>
+<p>원문에는 “Apple 수준의 개발자처럼”이라는 강한 문구가 들어갑니다. 하지만 이 표현은 구체적 품질 기준이라기보다 기대를 끌어올리는 마케팅 수사로 해석하는 편이 안전합니다. 실제 앱 품질은 화면 일관성, 접근성, 성능, 상태 관리 안정성, 네이티브 동작 완성도, 배포 준비도 같은 요소로 갈리는데, 원문에는 그 검증 근거가 포함되어 있지 않습니다. <a href="https://www.threads.com/@turtle_buff/post/DW5-Iw7D98s">Threads 원문</a></p>
+<p>따라서 이 포스트에서 현실적으로 건질 수 있는 메시지는 “Claude가 iOS 앱 프로토타입이나 1차 구현을 매우 빠르게 시작하게 해 줄 수 있다” 정도입니다. 그보다 더 강한 주장, 예를 들어 상용 출시 품질이 자동 보장된다는 식의 해석은 원문만으로는 뒷받침되지 않습니다.</p>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<p>첫째, 모바일 앱 생성에서 가장 먼저 자동화할 것은 코드가 아니라 요구사항 구조화입니다. AI에게 바로 코드부터 요청하기보다 앱 목적, 화면 목록, 핵심 동선, 상태 변화, 데이터 입출력을 먼저 명세하는 편이 결과가 훨씬 안정적입니다.</p>
+<p>둘째, “전체 앱 생성” 요청은 한 번에 끝내지 말고 단계로 나눠야 합니다. 화면 구조를 먼저 만들고, 그다음 컴포넌트 규칙을 정하고, 이후 데이터 연결과 네이티브 기능을 붙이는 식으로 분리해야 Claude의 출력 품질이 올라갑니다.</p>
+<p>셋째, 이런 홍보형 스레드는 도구의 가능성을 보는 용도로는 유용하지만, 그대로 믿고 개발 계획을 세우면 위험합니다. 저장소, 데모, 빌드 로그, 실제 코드 예시 같은 검증 가능한 산출물을 함께 확인하는 습관이 필요합니다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>원문 스레드는 Claude가 전체 모바일 앱을 매우 빠르게 만들 수 있다는 강한 주장을 던진다.</li>
+<li>하지만 직접 제공된 근거는 짧은 문장과 이미지 카드 수준이라, 상용 품질 보장으로 읽기에는 부족하다.</li>
+<li>이 주장을 실전적으로 해석하면 “아이디어에서 실행 가능한 앱 초안까지 가는 앞단 비용이 크게 줄었다”는 의미에 가깝다.</li>
+<li>진짜 중요한 것은 프롬프트 몇 줄보다도 스펙 분해와 생성 순서를 설계하는 능력이다.</li>
+<li>앞으로 모바일 앱 생성에서는 코드 작성 능력만큼이나 앱 구조를 글로 정확히 설명하는 능력이 중요해진다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>이 Threads 포스트는 정보량이 많지 않지만, 지금 AI 개발 도구 시장이 어디를 향하고 있는지는 꽤 선명하게 보여 줍니다. 사람들을 흥분시키는 포인트는 더 이상 “코드를 조금 도와준다”가 아니라, “앱 하나의 첫 버전을 거의 통째로 밀어붙인다”는 감각입니다.</p>
+<p>다만 그 가능성을 실무에 연결하려면 과장된 문구를 그대로 믿기보다, 실제로 압축되는 단계가 무엇인지 분해해서 보는 습관이 필요합니다. Claude가 모바일 앱을 만든다는 말의 핵심은 만능 자동화가 아니라, <strong>기획에서 앱 초안까지의 거리가 급격히 짧아졌다는 것</strong> 입니다. 그리고 그 변화의 중심에는 프롬프트 문장보다, 생성 파이프라인을 설계하는 사람이 있습니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 04월 10일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/04/2026-04-10-pageindex-vectorless-rag-codex/" rel="prev">
+        <span>벡터 DB 없이 RAG를 만든다는 뜻: Codex로 PageIndex 기반 Vectorless RAG 앱 만들기</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/04/2026-04-10-llm-wiki-token-saving-84-percent/" rel="next">
+        <span>AI 토큰 84% 절감이라는 말의 구조: Karpathy의 LLM Wiki를 Claude Code 운영으로 가져오기</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-원문이-실제로-말하는-것은-앱-완성보다-앱-생성-속도의-압축이다">1. 원문이 실제로 말하는 것은 ‘앱 완성’보다 ‘앱 생성 속도의 압축’이다</a></li>
+    <li><a href="#2-실전에서-전체-모바일-앱-생성은-보통-6단계-압축을-뜻한다">2. 실전에서 ‘전체 모바일 앱 생성’은 보통 6단계 압축을 뜻한다</a></li>
+    <li><a href="#3-프롬프트-몇-개가-강력해지는-이유는-프롬프트가-아니라-순서가-있기-때문이다">3. 프롬프트 몇 개가 강력해지는 이유는 프롬프트가 아니라 순서가 있기 때문이다</a></li>
+    <li><a href="#4-이-주장으로부터-실제로-배워야-할-것은-모바일-앱을-글로-설계하는-능력이다">4. 이 주장으로부터 실제로 배워야 할 것은 ‘모바일 앱을 글로 설계하는 능력’이다</a></li>
+    <li><a href="#5-apple-수준이라는-표현은-품질-보증이-아니라-기대치-마케팅으로-보는-편이-안전하다">5. ‘Apple 수준’이라는 표현은 품질 보증이 아니라 기대치 마케팅으로 보는 편이 안전하다</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude/" class="badge badge-secondary">Claude</a>
+    <a href="/tags/mobile/" class="badge badge-secondary">Mobile</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
