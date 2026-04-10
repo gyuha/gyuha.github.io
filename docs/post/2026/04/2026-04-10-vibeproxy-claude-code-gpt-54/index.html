@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude Code UI는 그대로 두고 GPT-5.4를 붙인다는 발상: VibeProxy로 모델만 바꾸기'" />
+  <title>Claude Code UI는 그대로 두고 GPT-5.4를 붙인다는 발상: VibeProxy로 모델만 바꾸기  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude Code UI는 그대로 두고 GPT-5.4를 붙인다는 발상: VibeProxy로 모델만 바꾸기" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-04-10"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/04/2026-04-10-vibeproxy-claude-code-gpt-54/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="gpt" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/04/2026-04-10-vibeproxy-claude-code-gpt-54/">
+          <h1>
+            Claude Code UI는 그대로 두고 GPT-5.4를 붙인다는 발상: VibeProxy로 모델만 바꾸기
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/04/2026-04-10-vibeproxy-claude-code-gpt-54/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>이 스레드가 흥미로운 이유는 “Claude Code 대신 GPT를 써라”가 아니라, <strong>Claude Code의 작업 환경은 그대로 두고 모델만 바꿔 붙일 수 있다</strong> 는 감각을 보여 주기 때문입니다. 작성자는 Claude Code 토큰이 빠르게 소진되는 상황에서, 기존에는 MCP로 GPT와 왕복했지만 그 역시 토큰과 세팅 비용이 들었고, 대신 <code>VibeProxy</code> 를 쓰면 Claude Code의 UI·설정·<code>CLAUDE.md</code> 를 그대로 유지하면서 모델만 <code>GPT-5.4</code> 로 바꿔 쓸 수 있다고 설명합니다. <a href="https://www.threads.com/@aychan3927/post/DW7wRVUD82s">Threads 원문</a> <a href="https://r.jina.ai/http://https://www.threads.com/@aychan3927/post/DW7wRVUD82s">Jina Reader 추출</a></p>
+<p>여기서 기술적으로 중요한 포인트는 “Claude Code를 다른 앱으로 대체한다”가 아니라, 모델 라우팅 계층을 중간에 하나 넣는다는 점입니다. 링크된 <code>automazeio/vibeproxy</code> 저장소도 이 도구를 “native macOS menu bar app” 이자, Claude Code·ChatGPT 등 기존 구독을 AI coding tools에서 API key 없이 쓸 수 있게 해 주는 프록시로 소개합니다. 즉 이 글의 핵심은 특정 모델 우열 비교보다, <strong>코딩 에이전트의 인터페이스와 백엔드 모델을 분리하는 운영 방식</strong> 에 있습니다. <a href="https://github.com/automazeio/vibeproxy">GitHub README</a> <a href="https://api.github.com/repos/automazeio/vibeproxy">GitHub API</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.threads.com/@aychan3927/post/DW7wRVUD82s?xmt=AQF0Ph6HLsn72fva0-hxwRHqyaODWVth9_8mlk7-uyWedi0iXG5zneo_yBbzc17j6IALiy86&amp;slof=1">https://www.threads.com/@aychan3927/post/DW7wRVUD82s?xmt=AQF0Ph6HLsn72fva0-hxwRHqyaODWVth9_8mlk7-uyWedi0iXG5zneo_yBbzc17j6IALiy86&amp;slof=1</a></li>
+<li><a href="https://r.jina.ai/http://https://www.threads.com/@aychan3927/post/DW7wRVUD82s">https://r.jina.ai/http://https://www.threads.com/@aychan3927/post/DW7wRVUD82s</a></li>
+<li><a href="https://github.com/automazeio/vibeproxy">https://github.com/automazeio/vibeproxy</a></li>
+<li><a href="https://raw.githubusercontent.com/automazeio/vibeproxy/main/README.md">https://raw.githubusercontent.com/automazeio/vibeproxy/main/README.md</a></li>
+</ul>
+<h2 id="1-이-스레드의-핵심은-모델-교체보다-전환-비용-제거다">1. 이 스레드의 핵심은 ‘모델 교체’보다 ‘전환 비용 제거’다</h2>
+<p>원문 스레드는 요즘 Claude Code 토큰이 빠르게 줄어드는 문제의식에서 시작합니다. 작성자는 예전에는 MCP를 통해 GPT에 요청을 보내고 다시 받는 식으로 우회했지만, 그것 역시 토큰을 먹고 세팅도 번거로웠다고 말합니다. 그리고 그 대안으로 <code>VibeProxy</code> 를 제시하며, Claude Code UI·세팅·<code>CLAUDE.md</code> 는 그대로 두고 모델만 바꿔 쓸 수 있다고 설명합니다. <a href="https://www.threads.com/@aychan3927/post/DW7wRVUD82s">Threads 원문</a></p>
+<p>이 말의 진짜 의미는 “GPT가 더 좋다”보다도, <strong>환경을 바꾸지 않고 모델만 교체할 수 있으니 전환 비용이 거의 없다</strong> 는 데 있습니다. 실제로 작성자는 한 프로젝트에서 터미널 두 개를 열어 Opus를 물린 Claude Code와 GPT-5.4를 물린 Claude Code를 번갈아 쓴다고 말합니다. 이 방식이 흥미로운 이유는, 모델 선택이 도구 교체가 아니라 세션 운영 문제로 바뀐다는 점입니다. <a href="https://r.jina.ai/http://https://www.threads.com/@aychan3927/post/DW7wRVUD82s">Jina Reader 추출</a></p>
+<pre class="mermaid">flowchart LR
+    A["Claude Code UI / 세팅 / CLAUDE.md"] --> B["프록시 레이어"]
+    B --> C["Anthropic 계열 모델"]
+    B --> D["GPT 계열 모델"]
+    B --> E["기타 연결 모델"]</pre><h2 id="2-vibeproxy-는-모델-앱이-아니라-구독-라우터에-가깝다">2. <code>VibeProxy</code> 는 모델 앱이 아니라 구독 라우터에 가깝다</h2>
+<p>링크된 GitHub 저장소는 <code>VibeProxy</code> 를 단순 프롬프트 툴이 아니라, 기존 Claude Code·ChatGPT·Gemini·Qwen 등의 구독을 AI coding tools에서 활용하게 해 주는 macOS 메뉴바 프록시 앱으로 설명합니다. README에 따르면 OAuth 인증, 토큰 관리, API 라우팅을 자동으로 처리하며 별도 API key 없이 연결하는 것이 핵심입니다. <a href="https://github.com/automazeio/vibeproxy">GitHub README</a></p>
+<p>이 설명은 스레드의 주장과 잘 맞물립니다. 사용자는 Claude Code의 워크플로를 버리지 않고, 중간 프록시가 어떤 백엔드 모델로 요청을 보낼지 조정하게 됩니다. 이 구조를 받아들이면 “나는 Claude Code 유저인가, ChatGPT 유저인가” 같은 구분보다, <strong>나는 어떤 UI와 어떤 모델 조합을 운영할 것인가</strong> 가 더 중요한 질문이 됩니다. <a href="https://github.com/automazeio/vibeproxy">GitHub README</a></p>
+<h2 id="3-스레드가-제시한-설정은-결국-환경-변수로-모델-라우팅을-바꾸는-방식이다">3. 스레드가 제시한 설정은 결국 환경 변수로 모델 라우팅을 바꾸는 방식이다</h2>
+<p>작성자는 세팅을 세 줄로 요약합니다. 먼저 <code>VibeProxy</code> 를 설치하고 OpenAI 구독 로그인을 한 뒤, 터미널에서 <code>ANTHROPIC_BASE_URL=http://localhost:8318 ANTHROPIC_MODEL=gpt-5.4 claude</code> 식으로 실행한다는 것입니다. 즉 Claude Code 클라이언트는 그대로 두고, 요청 대상 URL과 모델 이름만 프록시가 이해하는 값으로 바꿔 주는 방식입니다. <a href="https://r.jina.ai/http://https://www.threads.com/@aychan3927/post/DW7wRVUD82s">Jina Reader 추출</a></p>
+<p>이 지점이 실무적으로 중요합니다. 많은 사용자는 모델을 바꾸려면 도구 자체를 갈아타야 한다고 생각하지만, 실제로는 클라이언트와 서버 레이어를 분리하면 훨씬 유연해집니다. 스레드 작성자가 “클코에게 그 깃허브 레포를 주고 세팅해 달라고 하면 된다”고 말한 것도, 결국 이 작업이 복잡한 재개발이 아니라 환경 설정 자동화의 범주라는 뜻입니다. <a href="https://r.jina.ai/http://https://www.threads.com/@aychan3927/post/DW7wRVUD82s">Jina Reader 추출</a></p>
+<pre class="mermaid">flowchart TD
+    A["claude 명령 실행"] --> B["ANTHROPIC_BASE_URL=localhost 프록시"]
+    B --> C["VibeProxy"]
+    C --> D["OAuth / 토큰 관리"]
+    D --> E["선택한 백엔드 모델로 라우팅"]</pre><h2 id="4-이-방식의-장점은-모델-품질보다-운영-유연성에-있다">4. 이 방식의 장점은 모델 품질보다 운영 유연성에 있다</h2>
+<p>스레드 댓글에서도 이 장점이 드러납니다. 작성자는 Opus를 연결한 Claude Code와 GPT-5.4를 연결한 Claude Code를 한 프로젝트에서 번갈아 쓸 수 있고, <code>CLAUDE.md</code> 나 작업 습관을 다시 맞출 필요가 없다고 설명합니다. 즉 이 구조의 가장 큰 장점은 특정 모델 하나의 절대 성능이 아니라, <strong>같은 인터페이스 위에서 역할별로 모델을 분리해 운용할 수 있다는 점</strong> 입니다. <a href="https://r.jina.ai/http://https://www.threads.com/@aychan3927/post/DW7wRVUD82s">Jina Reader 추출</a></p>
+<p>예를 들어 한쪽 세션은 구현용, 다른 한쪽 세션은 검수·아이디어 확장용으로 쓸 수 있습니다. 이때 중요한 것은 사용자가 새로운 CLI나 새로운 프롬프트 습관을 다시 배우지 않아도 된다는 점입니다. 인터페이스 학습 비용이 0에 가까우니, 모델 실험 비용도 크게 줄어듭니다.</p>
+<h2 id="5-다만-원문-기준으로는-맥-중심의-커뮤니티-팁에-가깝다">5. 다만 원문 기준으로는 맥 중심의 커뮤니티 팁에 가깝다</h2>
+<p>한 가지 주의할 점도 있습니다. 스레드 작성자는 이 방법이 자신이 아는 한 맥에서 되는 방식이라고 언급하고, 댓글에서는 윈도우용 대안으로 다른 도구 이름을 짧게 언급합니다. 반면 <code>VibeProxy</code> README 역시 macOS 13+ 메뉴바 앱이라는 점을 분명히 적고 있습니다. 따라서 이 포스트를 범용적인 “모든 환경에서 Claude Code를 GPT-5.4로 바꾸는 법”으로 읽기보다, <strong>macOS 중심의 커뮤니티 운영 패턴</strong> 으로 보는 편이 정확합니다. <a href="https://r.jina.ai/http://https://www.threads.com/@aychan3927/post/DW7wRVUD82s">Jina Reader 추출</a> <a href="https://github.com/automazeio/vibeproxy">GitHub README</a></p>
+<p>또 하나는 모델명입니다. 스레드는 <code>GPT-5.4</code> 를 직접 언급하지만, 저장소 README는 구독 프록시 개념을 분명히 설명하는 반면 특정 최신 모델 표기는 시점에 따라 달라질 수 있습니다. 따라서 정확한 모델 지원 범위는 실제 릴리스/README를 다시 확인하는 편이 안전합니다. 이 글에서는 <strong>스레드 작성자의 사용 사례</strong> 와 <strong>저장소가 설명하는 프록시 구조</strong> 를 구분해 읽는 것이 중요합니다. <a href="https://github.com/automazeio/vibeproxy">GitHub README</a></p>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<p>첫째, 코딩 에이전트를 비교할 때 UI와 모델을 한 덩어리로 보지 않는 습관이 중요합니다. 인터페이스는 Claude Code가 편하고, 모델은 다른 것을 시험해 보고 싶다면 프록시 레이어가 좋은 절충안이 될 수 있습니다.</p>
+<p>둘째, <code>CLAUDE.md</code>, 명령 습관, 프로젝트 컨텍스트를 유지한 채 모델만 교체할 수 있으면 실험 비용이 크게 줄어듭니다. 이 점이 스레드가 말하는 “좋다”의 핵심에 더 가깝습니다.</p>
+<p>셋째, 이런 프록시 방식은 세션 역할 분리에 특히 유리합니다. 한 터미널은 구현, 다른 터미널은 리뷰·기획처럼 역할별로 모델을 나눠 운영하면 비교 실험이 쉬워집니다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>이 스레드의 포인트는 Claude Code를 버리는 것이 아니라, 모델만 바꿔 붙이는 방식이다.</li>
+<li><code>VibeProxy</code> 는 Claude Code 같은 클라이언트와 실제 백엔드 모델 사이에 들어가는 구독 프록시 레이어에 가깝다.</li>
+<li>작성자는 <code>ANTHROPIC_BASE_URL</code> 과 <code>ANTHROPIC_MODEL</code> 환경 변수로 Claude Code 요청을 프록시로 보내는 방법을 소개한다.</li>
+<li>가장 큰 장점은 새로운 도구를 다시 배우지 않고 같은 UI·세팅·<code>CLAUDE.md</code> 를 유지한 채 모델 실험을 할 수 있다는 점이다.</li>
+<li>다만 원문과 저장소 기준으로 보면 이 방식은 macOS 중심의 커뮤니티 팁으로 보는 편이 정확하다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>이 스레드는 단순히 “GPT-5.4가 좋다”는 모델 추천 글이라기보다, 코딩 에이전트 시대의 중요한 구조 변화를 보여 줍니다. 앞으로는 특정 앱과 특정 모델이 단단히 묶여 있기보다, UI·워크플로·메모리 레이어와 실제 추론 모델이 점점 더 분리될 가능성이 큽니다.</p>
+<p>그 변화 속에서 중요한 경쟁력은 어떤 모델을 쓰느냐 하나보다, <strong>같은 작업 환경을 유지한 채 얼마나 낮은 비용으로 모델을 교체하고 병행 운용할 수 있느냐</strong> 에 있을지도 모릅니다. <code>VibeProxy</code> 를 둘러싼 이 스레드는 바로 그 방향을 보여 주는 작은 사례입니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 04월 10일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/04/2026-04-10-claude-ios-app-threads/" rel="prev">
+        <span>Claude가 모바일 앱을 통째로 만든다는 말의 의미: 프롬프트보다 생성 파이프라인이 중요하다</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/04/2026-04-10-claude-advisor-tool-official/" rel="next">
+        <span>Claude Advisor Tool은 왜 중요한가: Opus에게 자문만 구하고 Sonnet이 실행하는 공식 패턴</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-이-스레드의-핵심은-모델-교체보다-전환-비용-제거다">1. 이 스레드의 핵심은 ‘모델 교체’보다 ‘전환 비용 제거’다</a></li>
+    <li><a href="#2-vibeproxy-는-모델-앱이-아니라-구독-라우터에-가깝다">2. <code>VibeProxy</code> 는 모델 앱이 아니라 구독 라우터에 가깝다</a></li>
+    <li><a href="#3-스레드가-제시한-설정은-결국-환경-변수로-모델-라우팅을-바꾸는-방식이다">3. 스레드가 제시한 설정은 결국 환경 변수로 모델 라우팅을 바꾸는 방식이다</a></li>
+    <li><a href="#4-이-방식의-장점은-모델-품질보다-운영-유연성에-있다">4. 이 방식의 장점은 모델 품질보다 운영 유연성에 있다</a></li>
+    <li><a href="#5-다만-원문-기준으로는-맥-중심의-커뮤니티-팁에-가깝다">5. 다만 원문 기준으로는 맥 중심의 커뮤니티 팁에 가깝다</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude Code</a>
+    <a href="/tags/gpt/" class="badge badge-secondary">Gpt</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
