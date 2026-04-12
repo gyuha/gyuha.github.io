@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '에이전트가 디자인을 따르게 만드는 문서, DESIGN.md: 스타일을 프롬프트가 아니라 설계도로 주는 법'" />
+  <title>에이전트가 디자인을 따르게 만드는 문서, DESIGN.md: 스타일을 프롬프트가 아니라 설계도로 주는 법  | 신규하 블로그</title>
+  <meta property="og:title" content="에이전트가 디자인을 따르게 만드는 문서, DESIGN.md: 스타일을 프롬프트가 아니라 설계도로 주는 법" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-04-12"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/04/2026-04-12-design-md-agent-design-spec/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="design" />
+  
+  <meta property="og:tags" content="agents" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/04/2026-04-12-design-md-agent-design-spec/">
+          <h1>
+            에이전트가 디자인을 따르게 만드는 문서, DESIGN.md: 스타일을 프롬프트가 아니라 설계도로 주는 법
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/04/2026-04-12-design-md-agent-design-spec/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p><code>DESIGN.md</code> 의 핵심은 의외로 단순합니다. 에이전트에게 “예쁘게 만들어줘”라고 말하는 대신, <strong>어떤 색을 쓰고, 어떤 폰트를 쓰고, 버튼과 레이아웃이 어떤 느낌이어야 하는지를 마크다운 문서로 먼저 건네는 것</strong> 입니다. 영상은 이것을 <code>agents.md</code>, <code>CLAUDE.md</code> 계열 문서와 같은 흐름으로 설명합니다. 에이전트가 코드를 만들 때 규칙 문서를 보듯, 디자인을 만들 때도 설계도 문서를 읽고 따라가게 하자는 것입니다. <a href="https://youtu.be/gvCmeuWPVkc?t=51">0:51</a> <a href="https://youtu.be/gvCmeuWPVkc?t=173">2:53</a></p>
+<p>이 관점이 중요한 이유는 디자인 지시를 감각적인 프롬프트 문장에만 맡기지 않기 때문입니다. 영상에서 발표자는 Google의 Stitch를 예로 들며, 먼저 색상·폰트·버튼 규칙 같은 디자인 가이드 문서를 만들고, 그 문서를 바탕으로 UI를 생성하는 흐름을 보여 줍니다. 즉 DESIGN.md는 결과물을 그려내는 도구가 아니라, <strong>결과물의 미감과 일관성을 강제하는 중간 규격 문서</strong> 로 이해하는 편이 정확합니다. <a href="https://youtu.be/gvCmeuWPVkc?t=75">1:15</a> <a href="https://youtu.be/gvCmeuWPVkc?t=128">2:08</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://youtu.be/gvCmeuWPVkc">https://youtu.be/gvCmeuWPVkc</a></li>
+</ul>
+<h2 id="1-designmd는-플레인-텍스트-디자인-시스템으로-볼-수-있다">1. DESIGN.md는 ‘플레인 텍스트 디자인 시스템’으로 볼 수 있다</h2>
+<p>영상은 DESIGN.md를 “human과 agent가 읽고, 고치고, 강제할 수 있는 문서”라는 식으로 설명합니다. 이 표현이 핵심입니다. 디자인 파일이 Figma나 이미지 시안만을 뜻하는 것이 아니라, 텍스트로 읽히는 규칙 문서라는 뜻이기 때문입니다. <a href="https://youtu.be/gvCmeuWPVkc?t=158">2:38</a> <a href="https://youtu.be/gvCmeuWPVkc?t=170">2:50</a></p>
+<p>이렇게 되면 디자인 시스템이 프런트엔드 코드 밖으로 빠져나옵니다. 버튼 색상, primary/secondary palette, body/headline font, spacing scale, overall tone 같은 것을 문장과 항목으로 먼저 고정한 뒤, 에이전트가 그 문서를 읽고 UI를 생성하는 구조가 됩니다. 발표자가 “디자인을 진행할 때 설계도를 보고 진행한다고 생각하면 된다”고 말한 이유가 바로 이것입니다. <a href="https://youtu.be/gvCmeuWPVkc?t=58">0:58</a> <a href="https://youtu.be/gvCmeuWPVkc?t=66">1:06</a></p>
+<pre class="mermaid">flowchart TD
+    A["디자인 목표"] --> B["DESIGN.md 작성"]
+    B --> C["색상 / 폰트 / 버튼 / spacing 규칙"]
+    C --> D["에이전트가 문서 읽기"]
+    D --> E["UI / 앱 / 사이트 생성"]
+    E --> F["일관된 미감 유지"]</pre><h2 id="2-google-stitch-맥락은-가이드-문서--결과물-생성-흐름을-잘-보여-준다">2. Google Stitch 맥락은 ‘가이드 문서 → 결과물 생성’ 흐름을 잘 보여 준다</h2>
+<p>영상은 Google의 Stitch를 DESIGN.md 개념의 출발점처럼 소개합니다. Stitch는 먼저 디자인 가이드 문서를 만들고, 그 문서를 바탕으로 오른쪽에 UI를 생성하는 식의 흐름을 보여 준다고 설명합니다. 여기에는 primary/secondary color, font 선택, 버튼 스타일 같은 요소가 포함됩니다. <a href="https://youtu.be/gvCmeuWPVkc?t=75">1:15</a> <a href="https://youtu.be/gvCmeuWPVkc?t=110">1:50</a></p>
+<p>발표자가 보기에 이 방식의 문제는 눈으로 보기엔 좋지만 중간 과정이 번거롭다는 점이었고, 그래서 Google이 더 직접적으로 쓸 수 있는 <code>DESIGN.md</code> 같은 문서 흐름을 제안했다고 해석합니다. 이 맥락에서 DESIGN.md는 단지 유행하는 파일명이 아니라, <strong>디자인 가이드를 인간 친화적이면서 에이전트 친화적인 텍스트 포맷으로 바꾸는 시도</strong> 로 볼 수 있습니다. <a href="https://youtu.be/gvCmeuWPVkc?t=123">2:03</a> <a href="https://youtu.be/gvCmeuWPVkc?t=151">2:31</a></p>
+<h2 id="3-핵심은-특정-사이트를-복제하는-것이-아니라-느낌의-기대값을-강제하는-데-있다">3. 핵심은 ‘특정 사이트를 복제’하는 것이 아니라 ‘느낌의 기대값’을 강제하는 데 있다</h2>
+<p>영상에서 발표자는 여러 프리셋 예시를 보여 주며 “이 사이트를 그대로 복제한다는 뜻이 아니다”라고 분명히 말합니다. 예를 들어 ElevenLabs, SpaceX, Miro 같은 스타일 문서를 가져오더라도, 그것은 검정 기반, 큰 여백, 특정 타이포, 특정 spacing, 파스텔 톤 같은 <strong>느낌의 기대값</strong> 을 전달하는 도구라는 것입니다. <a href="https://youtu.be/gvCmeuWPVkc?t=211">3:31</a> <a href="https://youtu.be/gvCmeuWPVkc?t=245">4:05</a></p>
+<p>이게 중요한 이유는 디자인 참조를 스크린샷 모사 수준에서 멈추지 않게 해 주기 때문입니다. 보통 에이전트에게 “SpaceX 느낌으로”라고 말하면 각자가 상상하는 범위가 다르지만, DESIGN.md로 색상·서체·간격·레이아웃 규칙을 넘겨주면 훨씬 안정된 결과를 기대할 수 있습니다. 발표자가 “기대값을 굉장히 높일 수 있다”고 말한 이유도 여기에 있습니다. <a href="https://youtu.be/gvCmeuWPVkc?t=278">4:38</a></p>
+<pre class="mermaid">flowchart LR
+    A["'SpaceX 느낌으로' 같은 모호한 요청"] --> B["출력 편차 큼"]
+    C["SpaceX 스타일 DESIGN.md"] --> D["색상/폰트/간격/톤 명시"]
+    D --> E["출력 일관성 증가"]</pre><h2 id="4-cursor에서는-designmd-파일을-먼저-두고-에이전트-모드에서-작업한다">4. Cursor에서는 DESIGN.md 파일을 먼저 두고 에이전트 모드에서 작업한다</h2>
+<p>영상 전반부 실습에서 발표자는 Cursor 프로젝트 폴더를 만든 뒤 <code>DESIGN.md</code> 파일을 생성하고, 프리셋 문서를 복사해 붙여 넣습니다. 그런 다음 에이전트 모드와 플랜 모드를 켜고, 예를 들어 React Native 기반의 노트 테이킹 앱을 특정 스타일 기대값으로 스캐폴딩하도록 요청합니다. <a href="https://youtu.be/gvCmeuWPVkc?t=382">6:22</a> <a href="https://youtu.be/gvCmeuWPVkc?t=446">7:26</a></p>
+<p>여기서 중요한 것은 디자인 문서가 웹사이트 전용이 아니라는 점입니다. 발표자는 원래 웹 디자인 예시였던 SpaceX 스타일을 모바일 앱 UI의 기대값으로도 밀어 넣어 봅니다. 즉 DESIGN.md는 특정 화면 타입보다도, <strong>어떤 제품이 어떤 미감을 가져야 하는지에 대한 상위 규격</strong> 으로 작동합니다. <a href="https://youtu.be/gvCmeuWPVkc?t=408">6:48</a> <a href="https://youtu.be/gvCmeuWPVkc?t=464">7:44</a></p>
+<h2 id="5-claude-code에서도-방식은-같다-문서를-파일로-저장하게-한-뒤-그-규격을-따르게-한다">5. Claude Code에서도 방식은 같다: 문서를 파일로 저장하게 한 뒤 그 규격을 따르게 한다</h2>
+<p>후반부에서 발표자는 Claude Code도 본질적으로 같다고 설명합니다. 프로젝트 폴더를 만든 뒤 Claude를 실행하고, <code>DESIGN.md 파일로 다음 내용을 저장해 줘</code> 같은 지시로 먼저 문서를 파일로 만들게 합니다. 이후 그 파일을 기준으로 앱을 생성하면, 예시처럼 SpaceX 계열의 강한 시각 톤이 일관되게 반영된 결과가 나온다고 보여 줍니다. <a href="https://youtu.be/gvCmeuWPVkc?t=614">10:14</a> <a href="https://youtu.be/gvCmeuWPVkc?t=665">11:05</a></p>
+<p>이 장면이 흥미로운 이유는 Cursor든 Claude Code든 결국 과정이 같다는 점입니다. 차이는 UI와 진입 장벽에 있을 뿐, <strong>프로젝트 폴더 안에 디자인 규격 문서를 두고 에이전트가 그 문서를 기준으로 결과물을 만들게 한다</strong> 는 핵심 흐름은 동일합니다. 발표자도 터미널 환경 때문에 다르게 느껴질 뿐 결국은 같은 방식이라고 말합니다. <a href="https://youtu.be/gvCmeuWPVkc?t=583">9:43</a> <a href="https://youtu.be/gvCmeuWPVkc?t=644">10:44</a></p>
+<h2 id="6-designmd가-필요한-진짜-이유는-기능을-더하는-것이-아니라-일관성을-유지하기-위해서다">6. DESIGN.md가 필요한 진짜 이유는 기능을 더하는 것이 아니라 일관성을 유지하기 위해서다</h2>
+<p>영상의 실습 결과를 보면 발표자는 “무슨 기능을 추가해도 SpaceX 스타일로 디자인이 될 것” 이라고 말합니다. 이 말이 DESIGN.md의 본질을 잘 보여 줍니다. 프런트엔드에서 더 어려운 일은 첫 화면 하나를 예쁘게 만드는 것이 아니라, 기능이 늘어날수록 미감을 잃지 않는 것입니다. <a href="https://youtu.be/gvCmeuWPVkc?t=675">11:15</a> <a href="https://youtu.be/gvCmeuWPVkc?t=691">11:31</a></p>
+<p>결국 DESIGN.md는 기능 개발 문서가 아니라 일관성 유지 문서입니다. 새로운 화면을 추가하더라도 색상과 서체, 간격과 버튼 톤, 전반적 분위기가 계속 같은 방향으로 나가게 만드는 가드레일에 가깝습니다. 그런 점에서 <code>CLAUDE.md</code> 가 코드 작업의 행위 규칙이라면, <code>DESIGN.md</code> 는 시각 결과물의 <strong>미감 규칙</strong> 이라고 볼 수 있습니다.</p>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<p>첫째, 디자인 지시는 프롬프트 한 줄보다 문서 한 장이 더 강합니다. 프로젝트가 길어질수록 “느낌”을 구두로 반복 설명하는 대신, DESIGN.md로 고정해 두는 편이 결과 일관성이 높습니다.</p>
+<p>둘째, 특정 사이트를 복제하려 하기보다 그 사이트의 색상·간격·타이포·레이아웃 감각을 추출해 규칙으로 바꾸는 것이 중요합니다. 그래야 저작물 모사 위험은 줄이고, 기대하는 미감은 유지할 수 있습니다.</p>
+<p>셋째, DESIGN.md는 웹뿐 아니라 앱, 랜딩 페이지, 대시보드 등 화면 기반 작업 전반에 적용할 수 있습니다. 핵심은 결과물 종류보다 “시각적 설계도”를 먼저 만든다는 점입니다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>DESIGN.md는 에이전트가 읽고 따르는 플레인 텍스트 디자인 시스템 문서다.</li>
+<li>Google Stitch 맥락은 디자인 가이드 문서 → 결과물 생성 흐름을 보여 주는 예시다.</li>
+<li>중요한 것은 특정 사이트 복제가 아니라, 그 사이트가 주는 미감의 기대값을 규칙으로 전달하는 것이다.</li>
+<li>Cursor와 Claude Code 모두 프로젝트 폴더 안에 DESIGN.md를 두고 같은 원리로 활용할 수 있다.</li>
+<li>DESIGN.md의 진짜 가치는 기능 추가보다도, 기능이 늘어나도 디자인 일관성을 유지하게 만드는 데 있다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>에이전트 시대의 디자인 작업은 점점 더 “좋은 프롬프트를 쓰는 법”에서 “좋은 설계 문서를 남기는 법”으로 이동하는 것처럼 보입니다. DESIGN.md는 그 흐름을 가장 직관적으로 보여 주는 예시입니다. 감각을 말로 계속 설명하는 대신, 색상·폰트·간격·톤을 문서화해 두고 에이전트가 그 문서를 읽게 만드는 방식입니다.</p>
+<p>결국 앞으로의 UI 작업에서 중요한 것은 에이전트가 얼마나 똑똑하냐만이 아니라, <strong>우리가 어떤 규격 문서를 남겨 에이전트의 출력 편차를 얼마나 줄일 수 있느냐</strong> 일지도 모릅니다. DESIGN.md는 그 질문에 꽤 실용적인 답을 주는 문서 형식입니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 04월 12일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/04/2026-04-12-rtk-cli-noise-compression/" rel="prev">
+        <span>에이전트가 읽을 CLI 출력을 먼저 줄여 버리자: rtk가 푸는 ‘터미널 노이즈’ 문제</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/04/2026-04-12-gemma4-unsloth-finetuning-colab/" rel="next">
+        <span>Gemma 4를 Colab에서 파인튜닝하는 가장 현실적인 경로: Unsloth 실습 흐름 정리</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-designmd는-플레인-텍스트-디자인-시스템으로-볼-수-있다">1. DESIGN.md는 ‘플레인 텍스트 디자인 시스템’으로 볼 수 있다</a></li>
+    <li><a href="#2-google-stitch-맥락은-가이드-문서--결과물-생성-흐름을-잘-보여-준다">2. Google Stitch 맥락은 ‘가이드 문서 → 결과물 생성’ 흐름을 잘 보여 준다</a></li>
+    <li><a href="#3-핵심은-특정-사이트를-복제하는-것이-아니라-느낌의-기대값을-강제하는-데-있다">3. 핵심은 ‘특정 사이트를 복제’하는 것이 아니라 ‘느낌의 기대값’을 강제하는 데 있다</a></li>
+    <li><a href="#4-cursor에서는-designmd-파일을-먼저-두고-에이전트-모드에서-작업한다">4. Cursor에서는 DESIGN.md 파일을 먼저 두고 에이전트 모드에서 작업한다</a></li>
+    <li><a href="#5-claude-code에서도-방식은-같다-문서를-파일로-저장하게-한-뒤-그-규격을-따르게-한다">5. Claude Code에서도 방식은 같다: 문서를 파일로 저장하게 한 뒤 그 규격을 따르게 한다</a></li>
+    <li><a href="#6-designmd가-필요한-진짜-이유는-기능을-더하는-것이-아니라-일관성을-유지하기-위해서다">6. DESIGN.md가 필요한 진짜 이유는 기능을 더하는 것이 아니라 일관성을 유지하기 위해서다</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/design/" class="badge badge-secondary">Design</a>
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
