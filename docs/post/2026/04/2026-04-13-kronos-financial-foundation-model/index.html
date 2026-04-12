@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '금융 시장에도 ‘언어 모델’이 가능할까: Kronos가 K-line을 토큰으로 읽는 방식'" />
+  <title>금융 시장에도 ‘언어 모델’이 가능할까: Kronos가 K-line을 토큰으로 읽는 방식  | 신규하 블로그</title>
+  <meta property="og:title" content="금융 시장에도 ‘언어 모델’이 가능할까: Kronos가 K-line을 토큰으로 읽는 방식" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-04-13"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/04/2026-04-13-kronos-financial-foundation-model/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="finance" />
+  
+  <meta property="og:tags" content="timeseries" />
+  
+  <meta property="og:tags" content="models" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/04/2026-04-13-kronos-financial-foundation-model/">
+          <h1>
+            금융 시장에도 ‘언어 모델’이 가능할까: Kronos가 K-line을 토큰으로 읽는 방식
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/04/2026-04-13-kronos-financial-foundation-model/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>이 Threads 스레드는 꽤 강한 문장으로 시작합니다. 금융 시장 전용 AI 파운데이션 모델이 오픈소스로 풀렸고, GitHub 스타 14,800개, AAAI 2026 채택, 120억 개 K-line 데이터로 학습되었다는 것입니다. 링크된 원문 저장소와 논문 초록을 확인해 보면, 핵심 메시지는 실제로 맞습니다. <code>Kronos</code> 는 “A Foundation Model for the Language of Financial Markets” 를 표방하며, 45개 글로벌 거래소에서 수집한 120억 개 이상의 K-line 레코드를 바탕으로 사전학습된 모델입니다. <a href="https://www.threads.com/@qjc.ai/post/DXB-qGvE3g1">Threads 원문</a> <a href="https://r.jina.ai/http://https://www.threads.com/@qjc.ai/post/DXB-qGvE3g1">Jina Reader 추출</a> <a href="https://arxiv.org/abs/2508.02739">arXiv 초록</a></p>
+<p>다만 이 프로젝트를 단순히 “금융 예측 모델 하나 더 나왔다” 정도로 보면 핵심을 놓치게 됩니다. Kronos의 진짜 흥미로운 지점은 주가 캔들스틱을 그냥 숫자 시계열로 보지 않고, <strong>언어처럼 토큰화해서 decoder-only Transformer에 태운다</strong> 는 데 있습니다. 즉 GPT가 텍스트 시퀀스를 다루듯, Kronos는 OHLCV 기반 K-line 시퀀스를 다룰 수 있게 설계된 금융 특화 foundation model 입니다. <a href="https://github.com/shiyu-coder/Kronos">GitHub README</a> <a href="https://arxiv.org/abs/2508.02739">arXiv 초록</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.threads.com/@qjc.ai/post/DXB-qGvE3g1?xmt=AQF0Vf3AHGrKF8RvH03ggoECJYoizqnLMXa_mSvqVA8n3AJGDnqk2We5VGXmd9jXusQt3Z1K&amp;slof=1">https://www.threads.com/@qjc.ai/post/DXB-qGvE3g1?xmt=AQF0Vf3AHGrKF8RvH03ggoECJYoizqnLMXa_mSvqVA8n3AJGDnqk2We5VGXmd9jXusQt3Z1K&amp;slof=1</a></li>
+<li><a href="https://r.jina.ai/http://https://www.threads.com/@qjc.ai/post/DXB-qGvE3g1">https://r.jina.ai/http://https://www.threads.com/@qjc.ai/post/DXB-qGvE3g1</a></li>
+<li><a href="https://github.com/shiyu-coder/Kronos">https://github.com/shiyu-coder/Kronos</a></li>
+<li><a href="https://raw.githubusercontent.com/shiyu-coder/Kronos/master/README.md">https://raw.githubusercontent.com/shiyu-coder/Kronos/master/README.md</a></li>
+<li><a href="https://arxiv.org/abs/2508.02739">https://arxiv.org/abs/2508.02739</a></li>
+<li><a href="https://api.github.com/repos/shiyu-coder/Kronos">https://api.github.com/repos/shiyu-coder/Kronos</a></li>
+</ul>
+<h2 id="1-kronos의-출발점은-금융-캔들스틱도-언어처럼-다룰-수-있는가라는-질문이다">1. Kronos의 출발점은 ‘금융 캔들스틱도 언어처럼 다룰 수 있는가’라는 질문이다</h2>
+<p>스레드가 요약하듯, Kronos의 출발점은 GPT가 언어를 이해하듯 주식 차트도 이해할 수 있느냐는 질문입니다. 논문 초록도 같은 문제의식을 더 엄밀하게 적습니다. 기존 시계열 파운데이션 모델들이 금융 candlestick(K-line) 데이터에서는 종종 비사전학습 아키텍처보다도 성능이 떨어지고, 변동성 예측이나 합성 데이터 생성 같은 다운스트림 과제도 충분히 다루지 못했다는 것입니다. <a href="https://r.jina.ai/http://https://www.threads.com/@qjc.ai/post/DXB-qGvE3g1">Jina Reader 추출</a> <a href="https://arxiv.org/abs/2508.02739">arXiv 초록</a></p>
+<p>즉 Kronos는 “일반 시계열 모델을 금융에 가져다 쓰는 것”이 아니라, 처음부터 금융 시장의 데이터 구조에 맞는 foundation model 을 만들려는 시도입니다. README가 자신을 “the first open-source foundation model for financial candlesticks” 라고 부르는 이유도 여기에 있습니다. <a href="https://github.com/shiyu-coder/Kronos">GitHub README</a></p>
+<h2 id="2-핵심-아이디어는-ohlcv를-이산-토큰으로-바꾼-뒤-autoregressive하게-학습시키는-것이다">2. 핵심 아이디어는 OHLCV를 이산 토큰으로 바꾼 뒤 autoregressive하게 학습시키는 것이다</h2>
+<p>README와 논문 초록을 보면 Kronos의 프레임은 두 단계입니다. 먼저 specialized tokenizer 가 연속적인 다차원 K-line 데이터, 즉 OHLCV를 계층적 이산 토큰으로 양자화합니다. 그런 다음 decoder-only transformer 가 그 토큰 시퀀스를 대상으로 다음 토큰 예측을 수행합니다. 스레드가 “BSQ로 이산 토큰화 → GPT처럼 다음 토큰 예측” 이라고 요약한 부분이 바로 이 구조입니다. <a href="https://github.com/shiyu-coder/Kronos">GitHub README</a> <a href="https://r.jina.ai/http://https://www.threads.com/@qjc.ai/post/DXB-qGvE3g1">Jina Reader 추출</a> <a href="https://arxiv.org/abs/2508.02739">arXiv 초록</a></p>
+<p>이 접근이 흥미로운 이유는 금융 시계열을 단순 회귀 문제로 보지 않고, <strong>시장 행위를 하나의 시퀀스 언어로 다시 표현한다</strong> 는 데 있습니다. 언어 모델이 단어의 순서를 통해 의미를 배우듯, Kronos는 가격 변동과 거래 활동 패턴을 토큰 시퀀스로 보고 시장의 temporal pattern 을 학습하려 합니다.</p>
+<pre class="mermaid">flowchart LR
+    A["OHLCV K-line 데이터"] --> B["전용 tokenizer"]
+    B --> C["계층적 이산 토큰"]
+    C --> D["decoder-only Transformer"]
+    D --> E["다음 토큰 예측"]
+    E --> F["예측 / 변동성 / 합성 데이터 생성"]</pre><h2 id="3-이-모델이-강조하는-건-범용-시계열-모델로는-안-된다는-주장이다">3. 이 모델이 강조하는 건 ‘범용 시계열 모델로는 안 된다’는 주장이다</h2>
+<p>스레드도 금융 데이터는 노이즈가 심하고 비정상적이라 범용 모델로는 충분하지 않다고 말합니다. 논문 초록은 이를 더 구체적인 수치로 뒷받침합니다. Kronos는 벤치마크에서 가격 예측 RankIC 를 기존 leading TSFM 대비 93%, 최고의 non-pretrained baseline 대비 87% 향상시켰고, 변동성 예측에서는 9% 낮은 MAE, 합성 K-line 생성에서는 22% 높은 generative fidelity 를 보였다고 적습니다. <a href="https://r.jina.ai/http://https://www.threads.com/@qjc.ai/post/DXB-qGvE3g1">Jina Reader 추출</a> <a href="https://arxiv.org/abs/2508.02739">arXiv 초록</a></p>
+<p>이 수치가 말하는 바는 단순한 “새 모델이 더 좋다”가 아닙니다. Kronos의 논리는 금융 시계열이 일반 TSFM의 평균적 귀납 편향으로는 잘 안 잡히고, 따라서 <strong>금융 K-line 전용 토큰화와 전용 사전학습이 필요하다</strong> 는 것입니다. 다시 말해 여기서의 승부처는 transformer 자체보다도 데이터 표현 방식에 있습니다.</p>
+<h2 id="4-데이터-스케일과-시장-범위가-foundation-model-서사를-가능하게-만든다">4. 데이터 스케일과 시장 범위가 foundation model 서사를 가능하게 만든다</h2>
+<p>논문 초록에 따르면 Kronos는 45개 글로벌 거래소에서 수집한 120억 개 이상의 K-line 레코드로 사전학습됐습니다. 스레드가 “주식, 선물, 외환, 옵션, 암호화폐 전부 커버”라고 강조한 부분도 이 광범위한 데이터 소스와 연결됩니다. <a href="https://r.jina.ai/http://https://www.threads.com/@qjc.ai/post/DXB-qGvE3g1">Jina Reader 추출</a> <a href="https://arxiv.org/abs/2508.02739">arXiv 초록</a></p>
+<p>이 스케일이 중요한 이유는 foundation model 이라는 이름이 단지 유행어가 아니기 때문입니다. 하나의 자산군, 하나의 거래소, 하나의 시장 주기만으로는 일반화된 표현을 만들기 어렵습니다. 하지만 여러 시장과 자산군을 함께 넣으면, 가격 동학과 거래 활동의 더 넓은 공통 구조를 학습할 가능성이 생깁니다. 이 점에서 Kronos는 “금융용 작은 예측기”라기보다, <strong>시장 패턴 표현을 학습하는 기반 모델</strong> 에 더 가깝습니다.</p>
+<h2 id="5-개발자-친화성도-꽤-강조된다">5. 개발자 친화성도 꽤 강조된다</h2>
+<p>스레드는 “pip install 하고 Python 5줄이면 끝”이라고 요약합니다. README 역시 <code>KronosPredictor</code> 클래스를 중심으로 매우 간단한 예측 예시를 제공합니다. 토크나이저와 모델을 Hugging Face에서 불러오고, <code>open/high/low/close</code> 가 포함된 DataFrame과 과거/미래 타임스탬프를 넣으면 예측 결과 DataFrame을 반환하는 식입니다. <a href="https://github.com/shiyu-coder/Kronos">GitHub README</a> <a href="https://r.jina.ai/http://https://www.threads.com/@qjc.ai/post/DXB-qGvE3g1">Jina Reader 추출</a></p>
+<p>또한 README는 <code>predict_batch</code> 로 여러 시계열을 병렬 예측하는 예시와, Qlib 기반의 파인튜닝 및 백테스트 파이프라인까지 공개합니다. 이 점에서 Kronos는 논문 전용 코드보다 <strong>연구자와 퀀트 개발자가 실제로 만져 볼 수 있는 공개 베이스라인</strong> 으로 설계됐다고 볼 수 있습니다.</p>
+<pre class="mermaid">flowchart TD
+    A["Hugging Face에서 모델/토크나이저 로드"] --> B["KronosPredictor 생성"]
+    B --> C["OHLCV DataFrame 입력"]
+    C --> D["예측 결과 반환"]
+    D --> E["배치 예측 / 파인튜닝 / 백테스트로 확장"]</pre><h2 id="6-모델-라인업과-한계도-함께-봐야-한다">6. 모델 라인업과 한계도 함께 봐야 한다</h2>
+<p>README의 model zoo 를 보면 공개 라인업은 <code>Kronos-mini</code> 4.1M, <code>Kronos-small</code> 24.7M, <code>Kronos-base</code> 102.3M 이고, <code>Kronos-large</code> 499.2M 은 아직 공개되지 않았습니다. 라이선스는 MIT입니다. 스레드가 MIT 라이선스, 상업적 사용 가능, BTC/USDT 라이브 데모 운영을 강조한 부분과도 맞닿습니다. <a href="https://github.com/shiyu-coder/Kronos">GitHub README</a> <a href="https://r.jina.ai/http://https://www.threads.com/@qjc.ai/post/DXB-qGvE3g1">Jina Reader 추출</a></p>
+<p>동시에 스레드는 한계도 분명히 적습니다. 블랙스완 이벤트 예측은 불가능하고, 수익 보장 도구가 아닌 확률적 예측 도구라는 점입니다. README의 Qlib 백테스트 파이프라인 설명도 비슷한 톤을 유지합니다. 그것은 데모용이며 production-ready quant system 이 아니고, 포트폴리오 최적화와 리스크 중립화 같은 단계가 더 필요하다고 경고합니다. 즉 Kronos를 만능 투자 엔진으로 읽기보다, <strong>금융 데이터 표현 학습을 위한 강한 오픈소스 기반 모델</strong> 로 보는 편이 맞습니다. <a href="https://github.com/shiyu-coder/Kronos">GitHub README</a> <a href="https://r.jina.ai/http://https://www.threads.com/@qjc.ai/post/DXB-qGvE3g1">Jina Reader 추출</a></p>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<p>첫째, 금융 시계열 문제를 다룬다면 일반 TSFM이나 일반 LLM 응용보다 데이터 표현 방식 자체를 먼저 봐야 합니다. Kronos의 핵심 차별점은 transformer보다 tokenizer에 더 가까울 수 있습니다.</p>
+<p>둘째, 이 프로젝트는 예측만이 아니라 변동성 예측과 합성 데이터 생성까지 함께 본다는 점이 흥미롭습니다. 금융 데이터 연구에서는 이 세 축이 같이 움직이는 경우가 많기 때문입니다.</p>
+<p>셋째, 다만 백테스트 예시가 있다고 해서 바로 실거래 시스템으로 연결되는 것은 아닙니다. README가 직접 production-ready quant system 이 아니라고 밝히고 있으므로, 포트폴리오 구성과 리스크 관리 층은 별도 설계가 필요합니다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>Kronos는 금융 K-line 데이터를 위한 decoder-only foundation model 이다.</li>
+<li>OHLCV를 전용 tokenizer로 이산 토큰화한 뒤 다음 토큰 예측으로 학습한다.</li>
+<li>45개 글로벌 거래소의 120억 개 이상 K-line 레코드를 사용해 사전학습됐다.</li>
+<li>논문 초록 기준 가격 예측 RankIC 93% 향상, 변동성 예측 9% 개선, 합성 데이터 생성 22% 향상을 보고한다.</li>
+<li>공개 라인업은 mini/small/base 이고, MIT 라이선스로 공개돼 있다.</li>
+<li>다만 이는 확률적 예측 기반 모델이며, 블랙스완 예측이나 완성형 투자 시스템으로 보는 것은 과장이다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>Kronos가 흥미로운 이유는 금융 데이터에 LLM류 사고방식을 그대로 이식하지 않고, 먼저 “시장 데이터의 언어”를 만들려 했다는 점입니다. 결국 foundation model 의 힘은 아키텍처보다도, 무엇을 하나의 시퀀스 언어로 간주할 것이냐에서 나오는 경우가 많습니다.</p>
+<p>그 의미에서 Kronos는 단순한 퀀트 모델 하나가 아니라, 금융 시계열을 범용 시계열과 다르게 취급해야 한다는 강한 주장입니다. 그리고 2026년 시점에서 이 주장을 가장 선명하게 구현한 오픈소스 사례 중 하나로 보입니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 04월 13일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/04/2026-04-13-learn-coding-by-playing-games-sites/" rel="prev">
+        <span>코딩을 게임처럼 배운다는 건 무엇이 다를까: X에서 화제가 된 10개 사이트 묶음</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/04/2026-04-13-insane-design-css-design-system-extractor/" rel="next">
+        <span>URL 하나로 design.md를 만드는 방법: insane-design은 ‘느낌 복제’보다 CSS 추출을 택한다</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-kronos의-출발점은-금융-캔들스틱도-언어처럼-다룰-수-있는가라는-질문이다">1. Kronos의 출발점은 ‘금융 캔들스틱도 언어처럼 다룰 수 있는가’라는 질문이다</a></li>
+    <li><a href="#2-핵심-아이디어는-ohlcv를-이산-토큰으로-바꾼-뒤-autoregressive하게-학습시키는-것이다">2. 핵심 아이디어는 OHLCV를 이산 토큰으로 바꾼 뒤 autoregressive하게 학습시키는 것이다</a></li>
+    <li><a href="#3-이-모델이-강조하는-건-범용-시계열-모델로는-안-된다는-주장이다">3. 이 모델이 강조하는 건 ‘범용 시계열 모델로는 안 된다’는 주장이다</a></li>
+    <li><a href="#4-데이터-스케일과-시장-범위가-foundation-model-서사를-가능하게-만든다">4. 데이터 스케일과 시장 범위가 foundation model 서사를 가능하게 만든다</a></li>
+    <li><a href="#5-개발자-친화성도-꽤-강조된다">5. 개발자 친화성도 꽤 강조된다</a></li>
+    <li><a href="#6-모델-라인업과-한계도-함께-봐야-한다">6. 모델 라인업과 한계도 함께 봐야 한다</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/finance/" class="badge badge-secondary">Finance</a>
+    <a href="/tags/timeseries/" class="badge badge-secondary">Timeseries</a>
+    <a href="/tags/models/" class="badge badge-secondary">Models</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
