@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Anthropic이 말하는 가장 효율적인 하네싱: Managed Agents는 왜 메타 하네스인가'" />
+  <title>Anthropic이 말하는 가장 효율적인 하네싱: Managed Agents는 왜 메타 하네스인가  | 신규하 블로그</title>
+  <meta property="og:title" content="Anthropic이 말하는 가장 효율적인 하네싱: Managed Agents는 왜 메타 하네스인가" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-04-14"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/04/2026-04-14-anthropic-managed-agents-meta-harness/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="anthropic" />
+  
+  <meta property="og:tags" content="agents" />
+  
+  <meta property="og:tags" content="infrastructure" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/04/2026-04-14-anthropic-managed-agents-meta-harness/">
+          <h1>
+            Anthropic이 말하는 가장 효율적인 하네싱: Managed Agents는 왜 메타 하네스인가
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/04/2026-04-14-anthropic-managed-agents-meta-harness/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Claude Managed Agents를 겉으로만 보면 “Anthropic이 콘솔에서 에이전트를 쉽게 돌리게 해 주는 기능”처럼 보입니다. 하지만 이 영상이 강조하는 핵심은 조금 다릅니다. Managed Agents는 단순 UI 기능이 아니라, Anthropic이 생각하는 <strong>가장 효율적인 agent harnessing 방식이 인프라 레벨에서 구현된 제품</strong> 이라는 것입니다. <a href="https://youtu.be/IAEV_fUAdWk">YouTube 영상</a> <a href="https://youtu.be/IAEV_fUAdWk?t=49">0:49</a></p>
+<p>공식 문서와 엔지니어링 블로그를 같이 보면 이 해석은 꽤 정확합니다. Anthropic은 Managed Agents를 “managed infrastructure 위에서 동작하는 pre-built, configurable agent harness” 로 설명하고, 더 나아가 engineering post에서는 이를 “meta-harness” 라고 부릅니다. 즉 특정 워크플로를 강제하는 제품이 아니라, 앞으로 바뀔 다양한 harness를 담을 수 있도록 만든 추상화 레이어라는 뜻입니다. <a href="https://platform.claude.com/docs/en/managed-agents/overview">Managed Agents overview</a> <a href="https://www.anthropic.com/engineering/managed-agents">Engineering blog</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://youtu.be/IAEV_fUAdWk?si=jCyjPJmbEWfgPTL3">https://youtu.be/IAEV_fUAdWk?si=jCyjPJmbEWfgPTL3</a></li>
+<li><a href="https://youtu.be/IAEV_fUAdWk?t=49">https://youtu.be/IAEV_fUAdWk?t=49</a></li>
+<li><a href="https://youtu.be/IAEV_fUAdWk?t=203">https://youtu.be/IAEV_fUAdWk?t=203</a></li>
+<li><a href="https://youtu.be/IAEV_fUAdWk?t=541">https://youtu.be/IAEV_fUAdWk?t=541</a></li>
+<li><a href="https://youtu.be/IAEV_fUAdWk?t=927">https://youtu.be/IAEV_fUAdWk?t=927</a></li>
+<li><a href="https://platform.claude.com/docs/en/managed-agents/overview">https://platform.claude.com/docs/en/managed-agents/overview</a></li>
+<li><a href="https://www.anthropic.com/engineering/managed-agents">https://www.anthropic.com/engineering/managed-agents</a></li>
+<li><a href="https://platform.claude.com/docs/en/about-claude/pricing">https://platform.claude.com/docs/en/about-claude/pricing</a></li>
+</ul>
+<h2 id="1-managed-agents는-에이전트-하나가-아니라-네-가지-추상화의-조합으로-이해해야-한다">1. Managed Agents는 ‘에이전트 하나’가 아니라 네 가지 추상화의 조합으로 이해해야 한다</h2>
+<p>영상 초반 실습에서 소개되는 콘솔 구조는 네 가지입니다. agent, session, environment, vault 입니다. 영상에서는 각각을 이렇게 설명합니다. agent는 실제 기능 정의, session은 실행 기록과 로그, environment는 실행 환경과 권한, vault는 credential 관리입니다. <a href="https://youtu.be/IAEV_fUAdWk?t=50">0:50</a> <a href="https://youtu.be/IAEV_fUAdWk?t=113">1:53</a></p>
+<p>Anthropic 공식 overview 문서도 거의 같은 구성을 보여 줍니다. 문서 기준 핵심 개념은 agent, environment, session, events 입니다. agent는 모델·system prompt·tools·MCP servers·skills, environment는 패키지와 네트워크가 설정된 컨테이너 템플릿, session은 특정 작업을 수행하는 실행 인스턴스, events는 앱과 agent 사이에서 오가는 메시지와 상태 업데이트입니다. <a href="https://platform.claude.com/docs/en/managed-agents/overview">Managed Agents overview</a></p>
+<p>즉 Managed Agents를 이해하는 첫 번째 포인트는 “에이전트를 만든다”가 아니라, <strong>정의(agent) / 환경(environment) / 실행(session) / 기록(events or logs) / 비밀(vault)</strong> 을 분리해서 본다는 점입니다.</p>
+<pre class="mermaid">flowchart LR
+    A["Agent"] --> D["Session"]
+    B["Environment"] --> D
+    C["Vault / Credentials"] --> D
+    D --> E["Events / Logs / Outputs"]</pre><h2 id="2-실습-예제가-support-agent인-이유는-이-분리가-가장-잘-드러나기-때문이다">2. 실습 예제가 support agent인 이유는 이 분리가 가장 잘 드러나기 때문이다</h2>
+<p>영상은 support agent 예제로 설명합니다. Notion과 Slack을 연결한 뒤, 예를 들어 Airbnb 숙소 안내 정보를 Notion 페이지에 넣어 두고, 사용자가 와이파이 비밀번호를 물으면 해당 정보를 검색해 답하는 형태입니다. <a href="https://youtu.be/IAEV_fUAdWk?t=203">3:23</a> <a href="https://youtu.be/IAEV_fUAdWk?t=441">7:21</a></p>
+<p>여기서 중요한 건 “RAG 비슷한 답변이 된다”가 아닙니다. agent는 support 역할을 정의하고, environment는 실행 권한을 정의하고, vault는 Notion/Slack 인증을 저장하고, session은 실제 문의 흐름을 기록합니다. 같은 자격증명을 여러 session이나 agent 조합에 재사용할 수 있다는 점도 영상에서 강조됩니다. 발표자가 “개발자라면 인터페이스 레이어로 나눈 것이라는 감이 올 것”이라고 말하는 이유가 바로 여기에 있습니다. <a href="https://youtu.be/IAEV_fUAdWk?t=369">6:09</a></p>
+<h2 id="3-anthropic이-이-구조를-택한-이유는-long-running-agent의-인프라-문제가-너무-뻔했기-때문이다">3. Anthropic이 이 구조를 택한 이유는 long-running agent의 인프라 문제가 너무 뻔했기 때문이다</h2>
+<p>영상 후반은 Anthropic engineering post를 길게 해설합니다. 핵심 메시지는 명확합니다. 처음에는 session, harness, sandbox를 하나의 컨테이너에 넣는 방식으로 시작했지만, 이 구조는 결국 “pet” 컨테이너 문제를 낳았습니다. 컨테이너가 죽으면 session이 날아가고, 응답하지 않으면 엔지니어가 직접 살려야 하며, 어디서 실패했는지 디버깅도 어려워집니다. <a href="https://youtu.be/IAEV_fUAdWk?t=541">9:01</a> <a href="https://www.anthropic.com/engineering/managed-agents">Engineering blog</a></p>
+<p>Anthropic 공식 글은 이 문제를 “brain”과 “hands”의 분리로 설명합니다. brain은 Claude와 harness, hands는 sandbox와 tools, 그리고 이 둘과 별도로 session log를 둡니다. 이렇게 하면 컨테이너가 죽어도 session 기록은 남고, harness가 죽어도 다시 <code>wake(sessionId)</code> 류의 방식으로 복구할 수 있으며, 손상된 부분만 교체할 수 있습니다. <a href="https://www.anthropic.com/engineering/managed-agents">Engineering blog</a></p>
+<h2 id="4-결국-핵심은-무엇이-실패해도-전체가-함께-죽지-않게-하자는-설계다">4. 결국 핵심은 ‘무엇이 실패해도 전체가 함께 죽지 않게 하자’는 설계다</h2>
+<p>영상은 이 부분을 아주 개발자 친화적으로 풉니다. 만약 environment가 실패해도 session 로그는 남아 있고, agent 정의도 남아 있고, vault에 저장한 credentials도 남아 있으니, 새 environment를 다시 띄워 마지막 session 상태에서 이어서 작업할 수 있다는 것입니다. <a href="https://youtu.be/IAEV_fUAdWk?t=778">12:58</a></p>
+<p>Anthropic 공식 글도 같은 논리를 말합니다. session은 Claude의 context window 자체가 아니라, 외부에 durably 저장된 event log 입니다. harness는 그 로그를 읽고 필요한 부분만 context로 가져오면 되고, sandbox는 그냥 <code>execute(name, input) -&gt; string</code> 인터페이스를 가진 도구처럼 취급됩니다. 이 추상화 덕분에 구체 구현은 바뀌어도 인터페이스는 유지됩니다. <a href="https://www.anthropic.com/engineering/managed-agents">Engineering blog</a></p>
+<pre class="mermaid">flowchart TD
+    A["Session log 외부 저장"] --> D["복구 가능"]
+    B["Harness 분리"] --> D
+    C["Sandbox/Tools 분리"] --> D
+    D --> E["컨테이너 장애에도 작업 지속"]</pre><h2 id="5-anthropic은-이-구조를-메타-하네스라고-부른다">5. Anthropic은 이 구조를 ‘메타 하네스’라고 부른다</h2>
+<p>공식 engineering post의 결론부가 중요한데, Anthropic은 Managed Agents를 특정 harness의 구현이 아니라 “future harnesses를 수용하는 시스템”으로 설명합니다. 즉 Claude Code 같은 훌륭한 harness도 있고, 좁은 도메인에 특화된 harness도 있을 수 있지만, Managed Agents는 그 위에 더 일반화된 인터페이스를 제공하는 시스템이라는 주장입니다. <a href="https://www.anthropic.com/engineering/managed-agents">Engineering blog</a></p>
+<p>영상에서도 같은 지점을 강조합니다. 앞으로 어떤 하네싱 방식이 유행하더라도, agent/session/environment/vault 같은 추상화 안으로 수용될 수 있게 만들려는 것이고, 그래서 “meta-harness” 라고 부를 수 있다는 설명입니다. <a href="https://youtu.be/IAEV_fUAdWk?t=867">14:27</a></p>
+<p>이 해석이 중요한 이유는, Managed Agents를 “Claude API의 상위 서비스” 정도로만 보면 그 진짜 포지션이 안 보이기 때문입니다. 이것은 단순 agent builder가 아니라, <strong>Anthropic이 agent 운영 계층 자체를 제품화하기 시작했다는 신호</strong> 에 가깝습니다.</p>
+<h2 id="6-비용-모델도-전형적인-서버리스-감각에-가깝다">6. 비용 모델도 전형적인 서버리스 감각에 가깝다</h2>
+<p>영상 마지막은 pricing을 짚습니다. 하나는 기존 Claude 모델 토큰 비용이고, 다른 하나는 session runtime 비용입니다. 공식 pricing 문서에 따르면 Claude Managed Agents는 tokens + session runtime 두 축으로 청구되며, session runtime은 <code>running</code> 상태 동안만 시간당 0.08달러입니다. idle, rescheduling, terminated 상태는 과금되지 않습니다. <a href="https://youtu.be/IAEV_fUAdWk?t=927">15:27</a> <a href="https://platform.claude.com/docs/en/about-claude/pricing">Pricing docs</a></p>
+<p>이 부분은 운영 관점에서 꽤 중요합니다. Anthropic은 environment 자체를 오래 띄워 두는 비용이 아니라, session이 실제로 돌고 있을 때의 runtime에 과금하는 식으로 제품을 설계했습니다. 발표자가 이를 서버리스 감각과 비슷하다고 설명하는 이유도 여기 있습니다. 즉 사용자는 컨테이너를 직접 돌보는 대신, <strong>실행 중인 agent 세션의 시간과 토큰</strong> 에 비용을 지불하는 구조입니다. <a href="https://platform.claude.com/docs/en/about-claude/pricing">Pricing docs</a></p>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<p>첫째, Managed Agents는 로컬에서 Claude Code를 잘 쓰는 사람을 위한 대체재라기보다, API 기반 서비스에서 long-running agent를 운영해야 하는 팀에게 더 맞습니다.</p>
+<p>둘째, 이 제품의 진짜 가치는 agent 성능보다 세션 지속성, 복구 가능성, 권한 분리, credential 안전성 같은 인프라 문제를 플랫폼이 대신 가져간다는 데 있습니다.</p>
+<p>셋째, <code>agent / environment / session / vault</code> 를 분리해서 생각하는 습관은 Managed Agents를 쓰지 않더라도 자체 agent 시스템 설계에 그대로 도움이 됩니다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>Managed Agents는 Anthropic이 생각하는 효율적인 agent harnessing을 인프라 제품으로 만든 것이다.</li>
+<li>핵심 개념은 agent, environment, session, events(그리고 콘솔 관점의 vault) 분리다.</li>
+<li>이 분리는 컨테이너 장애, 세션 복구, credential 격리, long-running task 안정성을 위해 필요하다.</li>
+<li>Anthropic 공식 engineering post는 이를 “brain과 hands의 분리”, 나아가 “meta-harness” 라고 설명한다.</li>
+<li>공식 pricing은 토큰 비용 + <code>running</code> 상태 기준 시간당 0.08달러의 session runtime 비용으로 구성된다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>Managed Agents가 흥미로운 이유는 새로운 agent 기능을 더 붙였기 때문이 아닙니다. 오히려 agent를 계속 돌릴 때 반드시 부딪히는 인프라 문제를 Anthropic이 먼저 추상화하고, 그 추상화를 그대로 서비스 경계로 만든 점이 더 중요합니다.</p>
+<p>그래서 이 제품은 “Claude가 대신 일한다”보다 “Claude를 일하게 만드는 운영 계층을 Anthropic이 맡는다”는 선언에 가깝습니다. 그런 의미에서 Managed Agents는 기능 출시라기보다, <strong>하네스를 제품으로 판다</strong> 는 전략의 시작점으로 보는 편이 맞습니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 04월 14일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/04/2026-04-14-chatgpt-personalization-custom-instructions-memory/" rel="prev">
+        <span>ChatGPT 개인화는 어디까지 설정해야 하나: Custom Instructions, Memory, Record Mode 정리</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/04/2026-04-15-claude-code-design-md-awesome-design/" rel="next">
+        <span>Claude Code 디자인이 강해진 이유: awesome-design과 design.md로 ‘좋은 미감’을 시스템화하기</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-managed-agents는-에이전트-하나가-아니라-네-가지-추상화의-조합으로-이해해야-한다">1. Managed Agents는 ‘에이전트 하나’가 아니라 네 가지 추상화의 조합으로 이해해야 한다</a></li>
+    <li><a href="#2-실습-예제가-support-agent인-이유는-이-분리가-가장-잘-드러나기-때문이다">2. 실습 예제가 support agent인 이유는 이 분리가 가장 잘 드러나기 때문이다</a></li>
+    <li><a href="#3-anthropic이-이-구조를-택한-이유는-long-running-agent의-인프라-문제가-너무-뻔했기-때문이다">3. Anthropic이 이 구조를 택한 이유는 long-running agent의 인프라 문제가 너무 뻔했기 때문이다</a></li>
+    <li><a href="#4-결국-핵심은-무엇이-실패해도-전체가-함께-죽지-않게-하자는-설계다">4. 결국 핵심은 ‘무엇이 실패해도 전체가 함께 죽지 않게 하자’는 설계다</a></li>
+    <li><a href="#5-anthropic은-이-구조를-메타-하네스라고-부른다">5. Anthropic은 이 구조를 ‘메타 하네스’라고 부른다</a></li>
+    <li><a href="#6-비용-모델도-전형적인-서버리스-감각에-가깝다">6. 비용 모델도 전형적인 서버리스 감각에 가깝다</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/anthropic/" class="badge badge-secondary">Anthropic</a>
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+    <a href="/tags/infrastructure/" class="badge badge-secondary">Infrastructure</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
