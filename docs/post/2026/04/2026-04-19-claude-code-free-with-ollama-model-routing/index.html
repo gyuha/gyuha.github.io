@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude Code를 무료처럼 쓰는 법: Ollama로 로컬·클라우드 모델을 붙이는 구조'" />
+  <title>Claude Code를 무료처럼 쓰는 법: Ollama로 로컬·클라우드 모델을 붙이는 구조  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude Code를 무료처럼 쓰는 법: Ollama로 로컬·클라우드 모델을 붙이는 구조" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-04-19"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/04/2026-04-19-claude-code-free-with-ollama-model-routing/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude" />
+  
+  <meta property="og:tags" content="ollama" />
+  
+  <meta property="og:tags" content="local-llm" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/04/2026-04-19-claude-code-free-with-ollama-model-routing/">
+          <h1>
+            Claude Code를 무료처럼 쓰는 법: Ollama로 로컬·클라우드 모델을 붙이는 구조
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/04/2026-04-19-claude-code-free-with-ollama-model-routing/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p><code>Claude Code is now FREE</code> 라는 제목은 눈길을 끌지만, 정확히 말하면 Claude Code 자체가 갑자기 무료 서비스가 됐다는 뜻은 아닙니다. 이 영상이 보여 주는 건 <strong>Claude Code라는 인터페이스와 워크플로를 유지한 채, 실제 모델 백엔드를 Ollama의 로컬 모델이나 무료 클라우드 모델로 바꾸는 방법</strong> 입니다. 즉 “Claude 모델을 공짜로 쓴다”보다, “Claude Code 클라이언트를 다른 모델에 연결한다”에 더 가깝습니다. <a href="https://youtu.be/8chCCBEWUZM">YouTube 영상</a></p>
+<p>이 해석은 Ollama의 공식 자료와도 맞아떨어집니다. Ollama는 2026년 1월부터 Anthropic Messages API 호환을 제공하고, 이후 <code>ollama launch</code> 명령으로 Claude Code를 로컬 또는 cloud 모델에 쉽게 연결할 수 있게 했습니다. 공식 문서도 “Claude Code with any Ollama model”이라고 설명합니다. 즉 무료라는 말의 실체는 <strong>Anthropic API 대신 Ollama 호환 엔드포인트를 통해 open model 또는 Ollama cloud model을 Claude Code에 꽂는 것</strong> 입니다. <a href="https://ollama.com/blog/claude">Ollama 공식 블로그</a> <a href="https://ollama.com/blog/launch">Ollama launch</a> <a href="https://docs.ollama.com/integrations/claude-code">Claude Code integration docs</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://youtu.be/8chCCBEWUZM">https://youtu.be/8chCCBEWUZM</a></li>
+<li><a href="https://ollama.com/blog/claude">https://ollama.com/blog/claude</a></li>
+<li><a href="https://ollama.com/blog/launch">https://ollama.com/blog/launch</a></li>
+<li><a href="https://docs.ollama.com/integrations/claude-code">https://docs.ollama.com/integrations/claude-code</a></li>
+<li><a href="https://docs.ollama.com/api/anthropic-compatibility">https://docs.ollama.com/api/anthropic-compatibility</a></li>
+</ul>
+<h2 id="1-claude-code가-무료라는-말은-claude-모델이-무료라는-뜻이-아니다">1. “Claude Code가 무료”라는 말은 “Claude 모델이 무료”라는 뜻이 아니다</h2>
+<p>영상은 세 가지 경로를 보여 줍니다. 첫째는 Ollama cloud의 무료 한도 안에 있는 모델을 Claude Code에 연결하는 방법, 둘째는 Gemma 같은 로컬 모델을 Claude Code에 붙이는 방법, 셋째는 OpenRouter의 무료 API 모델을 쓰는 방법입니다. 공통점은 모두 <strong>Claude Code 클라이언트를 유지하면서 모델 공급자만 바꾼다</strong> 는 점입니다. <a href="https://youtu.be/8chCCBEWUZM">YouTube 영상</a></p>
+<p>이 차이를 구분하는 것이 중요합니다. 사용자가 얻는 것은 Anthropic의 Claude 모델 무료 이용권이 아니라, Claude Code의 터미널 UX, tool use, 작업 방식, slash-command 흐름을 다른 모델 위에서 흉내 내거나 재사용하는 경험입니다. 즉 무료가 된 것은 “환경”에 가깝고, 모델 자체는 여전히 별개입니다.</p>
+<h2 id="2-이-구조를-가능하게-만든-핵심은-ollama의-anthropic-api-호환이다">2. 이 구조를 가능하게 만든 핵심은 Ollama의 Anthropic API 호환이다</h2>
+<p>Ollama 공식 블로그에 따르면, Ollama v0.14.0부터 Anthropic Messages API와 호환되기 시작했습니다. 그래서 Claude Code 같은 도구가 Ollama를 Anthropic API처럼 바라보고 연결할 수 있게 됐습니다. 공식 예시는 <code>ANTHROPIC_AUTH_TOKEN=ollama</code>, <code>ANTHROPIC_BASE_URL=http://localhost:11434</code> 같은 환경 변수로 설명하고, Claude Code를 <code>claude --model qwen3.5</code> 같은 방식으로 실행하는 예를 보여 줍니다. <a href="https://ollama.com/blog/claude">Ollama 공식 블로그</a></p>
+<p>즉 본질은 단순합니다. Claude Code는 Anthropic API를 기대하는데, Ollama가 그 API를 흉내 내는 레이어를 제공하니 중간에 연결이 됩니다. 이 덕분에 사용자는 Claude Code의 앞단은 그대로 두고, 뒷단 모델만 open model이나 Ollama cloud 모델로 바꿀 수 있습니다.</p>
+<h2 id="3-2026년-기준-가장-쉬운-방법은-ollama-launch-claude-다">3. 2026년 기준 가장 쉬운 방법은 <code>ollama launch claude</code> 다</h2>
+<p>영상 속 시연은 사실상 Ollama의 <code>launch</code> 기능을 이용하는 흐름입니다. Ollama는 2026년 1월 23일 <code>ollama launch</code> 를 발표했고, Claude Code, OpenCode, Codex, Droid 같은 코딩 도구를 one-command로 설정하고 실행할 수 있게 했습니다. <a href="https://ollama.com/blog/launch">Ollama launch</a></p>
+<p>공식 문서 기준 가장 간단한 진입은:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ollama launch claude
+</span></span></code></pre></div><p>입니다. 그리고 특정 모델을 바로 지정할 수도 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ollama launch claude --model kimi-k2.5:cloud
+</span></span><span style="display:flex;"><span>ollama launch claude --model glm-5:cloud
+</span></span></code></pre></div><p>즉 영상에서 말하는 “복붙해서 바로 Claude Code에 붙인다”는 경험은, 최신 기준으로는 <code>launch</code> 가 대부분의 번거로운 설정을 감춰 준 결과입니다.</p>
+<h2 id="4-무료-경로는-크게-세-가지다-로컬-모델-ollama-cloud-무료-한도-외부-무료-api">4. 무료 경로는 크게 세 가지다: 로컬 모델, Ollama cloud 무료 한도, 외부 무료 API</h2>
+<p>영상 내용을 공식 자료와 함께 정리하면 무료에 가까운 경로는 세 가지입니다.</p>
+<p>첫째, <strong>로컬 모델</strong> 입니다. Gemma, qwen3.5, glm-4.7-flash 같은 모델을 로컬에서 돌리면, API 비용은 없고 하드웨어 비용만 듭니다. 이 경우 “무료”라는 말은 돈 대신 GPU/CPU·RAM을 쓴다는 뜻입니다. <a href="https://youtu.be/8chCCBEWUZM">YouTube 영상</a> <a href="https://docs.ollama.com/integrations/claude-code">Claude Code integration docs</a></p>
+<p>둘째, <strong>Ollama cloud 모델의 무료 한도</strong> 입니다. Ollama 블로그는 cloud 모델이 generous limits even at the free tier 라고 설명합니다. 다만 이것은 무제한 무료가 아니라 free tier 안에서만 무료라는 뜻입니다. <a href="https://ollama.com/blog/launch">Ollama launch</a></p>
+<p>셋째, <strong>OpenRouter 같은 외부 무료 API 모델</strong> 입니다. 영상은 Elephant Alpha를 예로 들지만, 이 계열은 대체로 테스트 기간 동안만 무료인 경우가 많고, 모델이 수시로 바뀔 수 있습니다. 따라서 안정적인 워크플로라고 보기보다는, 단기적인 무료 우회 경로에 가깝습니다. <a href="https://youtu.be/8chCCBEWUZM">YouTube 영상</a></p>
+<pre class="mermaid">flowchart LR
+    A["Claude Code UI / CLI"] --> B["Ollama Anthropic-compatible API"]
+    B --> C["로컬 모델<br/>Gemma / Qwen / GLM 등"]
+    B --> D["Ollama cloud 모델<br/>free tier 한도"]
+    A --> E["외부 무료 API 모델<br/>예: OpenRouter 테스트 모델"]</pre><h2 id="5-진짜-중요한-건-claude-code의-ux를-재사용한다는-점이다">5. 진짜 중요한 건 “Claude Code의 UX”를 재사용한다는 점이다</h2>
+<p>이 방식이 매력적인 이유는 단순히 공짜라서가 아닙니다. 많은 사용자가 원하는 것은 Anthropic 모델 그 자체보다도, Claude Code의 작업 방식입니다. 터미널 기반 인터페이스, 파일 읽기와 수정, 명령 실행, 긴 문맥 유지, tool calling 흐름, agentic coding 습관 같은 것들입니다.</p>
+<p>Ollama 공식 문서도 이 점을 노립니다. “Open models can be used with Claude Code through Ollama’s Anthropic-compatible API” 라고 명시하고, 텔레그램 플러그인, headless mode, web search, subagents 같은 기능도 Claude Code와 연결되는 형태로 설명합니다. <a href="https://docs.ollama.com/integrations/claude-code">Claude Code integration docs</a> <a href="https://ollama.com/blog/web-search-subagents-claude-code">Subagents and web search</a></p>
+<p>즉 사용자는 모델 품질이 다소 떨어질 수 있더라도, 익숙한 agentic coding 인터페이스를 유지하는 이점을 얻습니다. 이것이 “Claude Code를 무료처럼 쓴다”는 표현이 실감나는 이유입니다.</p>
+<h2 id="6-다만-무료라고-해서-품질과-호환성이-자동으로-보장되지는-않는다">6. 다만 무료라고 해서 품질과 호환성이 자동으로 보장되지는 않는다</h2>
+<p>여기서 가장 중요한 단서는 Ollama가 권장 모델과 컨텍스트 길이를 따로 적고 있다는 점입니다. 공식 문서는 Claude Code가 큰 컨텍스트 윈도우를 필요로 하며, 최소 64k 토큰 정도를 권장합니다. <a href="https://docs.ollama.com/integrations/claude-code">Claude Code integration docs</a></p>
+<p>또한 “Claude Code와 연결된다”는 것과 “Anthropic Claude와 같은 품질이 나온다”는 것은 전혀 다른 이야기입니다. 코딩 에이전트는 단순 채팅보다 tool calling, structured output, 긴 문맥 유지, 지시 추종성이 더 중요합니다. 따라서 무료 로컬 모델로 붙인다고 해서 모두 같은 수준으로 잘 돌아가진 않습니다. 무료 cloud 모델이나 테스트 API 모델도 마찬가지로, 속도·안정성·정확도·무료 기간이 계속 달라질 수 있습니다.</p>
+<h2 id="7-그래서-이-영상의-진짜-메시지는-claude-code를-더-싸게-더-유연하게-쓴다에-가깝다">7. 그래서 이 영상의 진짜 메시지는 “Claude Code를 더 싸게, 더 유연하게 쓴다”에 가깝다</h2>
+<p>영상은 제목상 “free forever”에 가깝게 말하지만, 공식 자료를 함께 보면 더 정확한 결론은 이렇습니다. <strong>Claude Code를 Anthropic 모델에만 묶어 둘 필요가 없고, Ollama를 통해 로컬·클라우드 모델로 라우팅할 수 있다</strong> 는 것입니다. <a href="https://youtu.be/8chCCBEWUZM">YouTube 영상</a> <a href="https://ollama.com/blog/claude">Ollama 공식 블로그</a></p>
+<p>이 관점은 꽤 실용적입니다. 어떤 작업은 로컬 모델로 충분하고, 어떤 작업은 cloud 모델이 더 낫고, 어떤 상황에서는 임시 무료 API를 써도 됩니다. 즉 “Claude Code = Anthropic Claude”라는 고정 결합이 느슨해진 것입니다. 사용자는 이제 같은 작업 환경을 유지한 채, 비용과 품질 사이에서 더 유연하게 고를 수 있습니다.</p>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<p>첫째, 비용 절감이 목적이라면 가장 먼저 <code>ollama launch claude</code> 경로를 보는 것이 좋습니다. 2026년 현재 공식적으로 가장 단순한 설정 경로입니다.</p>
+<p>둘째, 완전 무료를 원한다면 로컬 모델이 가장 명확합니다. 대신 GPU 메모리, 속도, 컨텍스트 길이 한계를 감수해야 합니다.</p>
+<p>셋째, Ollama cloud free tier는 편하지만 한도와 모델 정책이 바뀔 수 있습니다. “오늘 무료”와 “장기적으로 무료”는 다르게 봐야 합니다.</p>
+<p>넷째, 외부 무료 API 모델은 실험용으로는 좋지만, 지속 가능한 팀 워크플로의 기본값으로 삼기엔 불안정할 수 있습니다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>“Claude Code가 무료가 됐다”는 말은 모델이 무료라는 뜻보다 인터페이스를 다른 무료/로컬 모델에 연결할 수 있다는 뜻에 가깝다.</li>
+<li>핵심 기술은 Ollama의 Anthropic Messages API 호환이다.</li>
+<li>2026년 현재 가장 쉬운 설정은 <code>ollama launch claude</code> 다.</li>
+<li>무료 경로는 로컬 모델, Ollama cloud free tier, 외부 무료 API 모델로 나눌 수 있다.</li>
+<li>중요한 건 Claude Code의 UX와 agentic coding 흐름을 유지한 채 모델을 바꿀 수 있다는 점이다.</li>
+<li>다만 무료 모델이 Anthropic Claude와 같은 품질을 보장하는 것은 아니다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>이 영상은 약간 과장된 제목을 쓰고 있지만, 내용 자체는 꽤 실용적입니다. 핵심은 “Claude Code를 꼭 Claude 모델과만 써야 하는가?”라는 질문에 아니라고 답하는 데 있습니다. Ollama의 호환 레이어와 launch 기능 덕분에, 우리는 Claude Code라는 작업 환경을 유지하면서 더 저렴하거나 무료에 가까운 모델로 뒤쪽 엔진을 바꿀 수 있게 됐습니다.</p>
+<p>따라서 지금 중요한 변화는 “Claude가 무료화됐다”가 아니라, <strong>Claude Code가 모델 라우팅 가능한 프론트엔드가 됐다</strong> 는 점입니다. 비용을 아끼고 싶거나, 로컬/온프레미스 환경에서 agentic coding을 실험하고 싶다면 이 흐름은 계속 볼 가치가 있습니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 04월 19일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/04/2026-04-18-solo-ai-game-dev-completion-over-fun/" rel="prev">
+        <span>AI 1인 게임 개발에서 진짜 중요한 건 재미보다 완성이다</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-claude-code가-무료라는-말은-claude-모델이-무료라는-뜻이-아니다">1. “Claude Code가 무료”라는 말은 “Claude 모델이 무료”라는 뜻이 아니다</a></li>
+    <li><a href="#2-이-구조를-가능하게-만든-핵심은-ollama의-anthropic-api-호환이다">2. 이 구조를 가능하게 만든 핵심은 Ollama의 Anthropic API 호환이다</a></li>
+    <li><a href="#3-2026년-기준-가장-쉬운-방법은-ollama-launch-claude-다">3. 2026년 기준 가장 쉬운 방법은 <code>ollama launch claude</code> 다</a></li>
+    <li><a href="#4-무료-경로는-크게-세-가지다-로컬-모델-ollama-cloud-무료-한도-외부-무료-api">4. 무료 경로는 크게 세 가지다: 로컬 모델, Ollama cloud 무료 한도, 외부 무료 API</a></li>
+    <li><a href="#5-진짜-중요한-건-claude-code의-ux를-재사용한다는-점이다">5. 진짜 중요한 건 “Claude Code의 UX”를 재사용한다는 점이다</a></li>
+    <li><a href="#6-다만-무료라고-해서-품질과-호환성이-자동으로-보장되지는-않는다">6. 다만 무료라고 해서 품질과 호환성이 자동으로 보장되지는 않는다</a></li>
+    <li><a href="#7-그래서-이-영상의-진짜-메시지는-claude-code를-더-싸게-더-유연하게-쓴다에-가깝다">7. 그래서 이 영상의 진짜 메시지는 “Claude Code를 더 싸게, 더 유연하게 쓴다”에 가깝다</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude/" class="badge badge-secondary">Claude</a>
+    <a href="/tags/ollama/" class="badge badge-secondary">Ollama</a>
+    <a href="/tags/local-llm/" class="badge badge-secondary">Local-Llm</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

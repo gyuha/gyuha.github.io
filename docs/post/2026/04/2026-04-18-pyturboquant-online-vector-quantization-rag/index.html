@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'TurboQuant를 RAG에 가져오면 무엇이 달라지나: 31GB 인덱스를 4GB로 줄이는 방식'" />
+  <title>TurboQuant를 RAG에 가져오면 무엇이 달라지나: 31GB 인덱스를 4GB로 줄이는 방식  | 신규하 블로그</title>
+  <meta property="og:title" content="TurboQuant를 RAG에 가져오면 무엇이 달라지나: 31GB 인덱스를 4GB로 줄이는 방식" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-04-18"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/04/2026-04-18-pyturboquant-online-vector-quantization-rag/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="rag" />
+  
+  <meta property="og:tags" content="vector" />
+  
+  <meta property="og:tags" content="retrieval" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/04/2026-04-18-pyturboquant-online-vector-quantization-rag/">
+          <h1>
+            TurboQuant를 RAG에 가져오면 무엇이 달라지나: 31GB 인덱스를 4GB로 줄이는 방식
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/04/2026-04-18-pyturboquant-online-vector-quantization-rag/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>RAG를 실제로 오래 굴려 본 사람이라면, 문제는 모델보다도 벡터 저장소에서 먼저 터지는 경우가 많다는 걸 압니다. 문서 수가 커질수록 임베딩 저장 공간이 커지고, 인덱싱 과정도 무거워지며, 온프레미스 환경에서는 메모리 예산이 곧 설계 제약이 됩니다. 이번 Threads 포스트가 흥미로운 이유는 바로 그 지점을 찌르기 때문입니다. Google Research의 <code>TurboQuant</code> 알고리즘을 RAG 쪽으로 가져온 <code>pyturboquant</code>가 공개됐고, 1,000만 chunk 규모에서 기존 float32 기준 약 31GB가 필요하던 인덱스를 약 4GB 수준으로 줄일 수 있다고 소개합니다. <a href="https://www.threads.com/@feelfree_ai/post/DXQ4zBMgF9W?xmt=AQF03oUnKsN-CjG0sqM7MqP6iOmFI3_Q_HYJoDXNuNOfNc2YhM-kId6WyfW4YRSDa4Y6LcA&amp;slof=1">Threads 원문</a></p>
+<p>이 수치는 README에도 거의 같은 맥락으로 설명됩니다. <code>BGE-base</code> 같은 768차원 임베딩을 4비트 inner-product quantizer로 저장하면, 벡터 하나당 약 392바이트만 쓰게 됩니다. float32의 3,072바이트와 비교하면 10M chunk에서 대략 31GB vs 4GB 정도가 됩니다. 핵심은 단순 압축률이 아닙니다. <strong>학습 없는 온라인 양자화라서 새 문서를 넣을 때 codebook 재학습이나 대규모 재인덱싱이 필요 없다는 점</strong> 이 더 중요합니다. <a href="https://raw.githubusercontent.com/jorgebmann/pyturboquant/main/README.md">README 원문</a></p>
+<p>2026년 4월 18일 기준 GitHub API 메타데이터를 보면 <code>jorgebmann/pyturboquant</code>는 별 59개, 포크 4개, 기본 브랜치 <code>main</code>, MIT 라이선스, Python 프로젝트입니다. 저장소 설명은 “A Python implementation of Google&rsquo;s TurboQuant framework (WIP)”로 되어 있고, 현재 LangChain 지원이 들어가 있으며 LlamaIndex는 roadmap에 올라 있습니다. <a href="https://api.github.com/repos/jorgebmann/pyturboquant">GitHub API</a> <a href="https://github.com/jorgebmann/pyturboquant">GitHub 저장소</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.threads.com/@feelfree_ai/post/DXQ4zBMgF9W?xmt=AQF03oUnKsN-CjG0sqM7MqP6iOmFI3_Q_HYJoDXNuNOfNc2YhM-kId6WyfW4YRSDa4Y6LcA&amp;slof=1">https://www.threads.com/@feelfree_ai/post/DXQ4zBMgF9W?xmt=AQF03oUnKsN-CjG0sqM7MqP6iOmFI3_Q_HYJoDXNuNOfNc2YhM-kId6WyfW4YRSDa4Y6LcA&amp;slof=1</a></li>
+<li><a href="https://github.com/jorgebmann/pyturboquant">https://github.com/jorgebmann/pyturboquant</a></li>
+<li><a href="https://raw.githubusercontent.com/jorgebmann/pyturboquant/main/README.md">https://raw.githubusercontent.com/jorgebmann/pyturboquant/main/README.md</a></li>
+<li><a href="https://api.github.com/repos/jorgebmann/pyturboquant">https://api.github.com/repos/jorgebmann/pyturboquant</a></li>
+<li><a href="https://arxiv.org/abs/2504.19874">https://arxiv.org/abs/2504.19874</a></li>
+</ul>
+<h2 id="1-왜-이-이야기가-rag에서-중요한가-병목이-모델이-아니라-벡터-저장소일-수-있어서다">1. 왜 이 이야기가 RAG에서 중요한가: 병목이 “모델”이 아니라 “벡터 저장소”일 수 있어서다</h2>
+<p>RAG를 작게 돌릴 때는 벡터 하나가 몇 KB인지 잘 체감되지 않습니다. 하지만 chunk 수가 수백만~수천만 개로 커지면 얘기가 달라집니다. 768차원 임베딩을 float32로 저장하면 벡터 하나당 3,072바이트가 필요합니다. 1,000만 개면 30GB가 훌쩍 넘어갑니다. 여기에 메타데이터와 문서 payload, 검색 엔진 오버헤드까지 붙으면 단일 머신 예산이 빠르게 커집니다. <a href="https://raw.githubusercontent.com/jorgebmann/pyturboquant/main/README.md">README 원문</a></p>
+<p>그래서 pyturboquant의 포인트는 단순히 “압축도 된다”가 아닙니다. <strong>온프레미스나 air-gapped 환경에서, 임베딩 저장소를 여전히 한 대의 워크스테이션이나 서버 안에 우겨 넣을 수 있게 만든다</strong> 는 점입니다. Threads가 프라이버시와 로컬 환경을 같이 강조한 이유도 여기에 있습니다.</p>
+<h2 id="2-turboquant의-핵심은-데이터-독립-온라인-양자화다">2. TurboQuant의 핵심은 데이터-독립 온라인 양자화다</h2>
+<p>논문 초록은 TurboQuant를 <code>data-oblivious algorithms, suitable for online applications</code> 라고 설명합니다. 즉 기존 Product Quantization 계열처럼 샘플을 뽑아 codebook을 학습하고, 데이터 분포가 바뀌면 다시 훈련해야 하는 방식과 다릅니다. <a href="https://arxiv.org/abs/2504.19874">arXiv</a></p>
+<p>README도 같은 점을 더 실용적으로 풀어 줍니다. <code>zero indexing time -- no codebook training, no k-means, no data passes</code> 라고 적습니다. 벡터는 랜덤 회전과 미리 계산된 Lloyd-Max codebook을 통해 <strong>서로 독립적으로</strong> 양자화됩니다. 이 말은 새 문서가 들어와도 기존 인덱스를 다시 훈련할 필요가 없다는 뜻입니다. 스트리밍 ingest에 잘 맞는 이유가 바로 여기 있습니다. <a href="https://raw.githubusercontent.com/jorgebmann/pyturboquant/main/README.md">README 원문</a></p>
+<h2 id="3-31gb--4gb는-마케팅-문구가-아니라-768차원-임베딩의-계산-결과다">3. “31GB → 4GB”는 마케팅 문구가 아니라 768차원 임베딩의 계산 결과다</h2>
+<p>README는 per-vector storage cost를 명시적으로 적습니다. inner-product quantizer에서 <code>bits=b</code>일 때 저장 비용은 <code>d*b/8 + 8</code> 바이트입니다. <a href="https://raw.githubusercontent.com/jorgebmann/pyturboquant/main/README.md">README 원문</a></p>
+<p>예를 들어 <code>BGE-base / Gemma embeddings</code> 같은 768차원 임베딩은:</p>
+<ul>
+<li>float32: 3,072 bytes</li>
+<li>fp16: 1,536 bytes</li>
+<li>4-bit quantization: 392 bytes</li>
+</ul>
+<p>입니다. 이걸 1,000만 개에 곱하면:</p>
+<ul>
+<li>float32: 약 30.7GB</li>
+<li>4-bit: 약 3.9GB</li>
+</ul>
+<p>가 됩니다. Threads의 “31GB가 4GB가 된다”는 표현은 바로 이 계산을 대중적으로 풀어 쓴 것입니다. 중요한 건 이 압축이 단순 파일 압축이 아니라, <strong>유사도 검색에 바로 쓸 수 있는 형태로 벡터를 줄인 것</strong> 이라는 점입니다.</p>
+<pre class="mermaid">flowchart LR
+    A["10M embeddings<br/>768d fp32"] --> B["약 31GB"]
+    A --> C["TurboQuant 4-bit"]
+    C --> D["약 4GB"]
+    D --> E["온프레미스 단일 머신 RAG 가능성 확대"]</pre><h2 id="4-양자화가-빠른-이유는-벡터마다-독립-처리되기-때문이다">4. 양자화가 빠른 이유는 “벡터마다 독립 처리”되기 때문이다</h2>
+<p>일반적인 벡터 압축 방식이 귀찮은 이유는 사전 학습입니다. 샘플을 뽑고, k-means로 codebook을 만들고, 분포가 바뀌면 드리프트를 걱정해야 합니다. pyturboquant는 이 부분을 크게 줄입니다. README의 비교 표에서도 FAISS IVF/PQ와 ScaNN은 training required이고 drift 시 rebuild가 필요하다고 적혀 있습니다. 반면 pyturboquant는 training이 없고 online ingestion이 가능하다고 설명합니다. <a href="https://raw.githubusercontent.com/jorgebmann/pyturboquant/main/README.md">README 원문</a></p>
+<p>이 차이는 운영에서 큽니다. 대규모 RAG는 한번 색인하고 끝나는 경우보다, 문서가 계속 들어오는 경우가 더 많습니다. 문서가 들어올 때마다 재학습과 재인덱싱이 필요하면 운영 비용이 크게 올라갑니다. 반대로 벡터가 독립적으로 양자화된다면, 인덱스는 append-friendly한 형태를 유지할 수 있습니다.</p>
+<h2 id="5-이-방법은-임베딩-모델을-줄이는-게-아니라-벡터-저장소를-줄이는-것이다">5. 이 방법은 임베딩 모델을 줄이는 게 아니라 벡터 저장소를 줄이는 것이다</h2>
+<p>README는 scope note에서 아주 중요하게 선을 긋습니다. pyturboquant는 embedding model 자체를 압축하는 것이 아니라 <strong>embedding vector store</strong> 를 압축하는 라이브러리입니다. 즉 임베딩 모델을 돌리는 VRAM은 그대로입니다. 모델 메모리를 줄이려면 AWQ, bitsandbytes, GGUF 같은 모델 양자화가 별도로 필요합니다. <a href="https://raw.githubusercontent.com/jorgebmann/pyturboquant/main/README.md">README 원문</a></p>
+<p>이 구분은 실무적으로 중요합니다. 온프레미스 RAG 예산은 크게 두 덩어리로 나뉩니다. 하나는 임베딩을 생성하는 모델 비용이고, 다른 하나는 생성된 임베딩을 저장하고 검색하는 인덱스 비용입니다. pyturboquant는 두 번째 문제를 푸는 도구입니다. 따라서 “이걸 쓰면 작은 GPU에서 임베딩 모델도 같이 돌아간다”는 식으로 과대 해석하면 안 됩니다. 정확한 해석은 <strong>저장소가 작아지니, 같은 머신에 같이 올려둘 가능성이 커진다</strong> 입니다.</p>
+<h2 id="6-아직-모든-문제를-해결한-것은-아니다-검색-계산은-현재-on이다">6. 아직 모든 문제를 해결한 것은 아니다: 검색 계산은 현재 O(n)이다</h2>
+<p>README는 제약도 숨기지 않습니다. 현재 검색 계산은 <code>O(n) per query</code> 이고, dense asymmetric matmul을 사용한다고 설명합니다. 즉 저장 메모리는 크게 줄었지만, 검색 복잡도 자체가 서브리니어로 해결된 것은 아닙니다. IVF partitioning 같은 sub-linear search는 v0.5.0 roadmap에 올라 있습니다. <a href="https://raw.githubusercontent.com/jorgebmann/pyturboquant/main/README.md">README 원문</a></p>
+<p>이 점은 중요합니다. pyturboquant는 “FAISS를 완전히 대체하는 완성형 ANN 시스템”이라기보다, <strong>온라인 양자화라는 primitive를 retrieval 쪽에 가져온 프로젝트</strong> 에 더 가깝습니다. 메모리와 인덱싱 시간 문제를 강하게 풀지만, billion-scale에서의 전체 검색 구조는 아직 발전 중입니다.</p>
+<h2 id="7-그래도-지금-매력적인-이유는-rag의-현실-문제를-정확히-건드리기-때문이다">7. 그래도 지금 매력적인 이유는 RAG의 현실 문제를 정확히 건드리기 때문이다</h2>
+<p>Threads 포스트가 직감적으로 맞는 이유는, 많은 팀이 겪는 현실 문제와 연결되기 때문입니다. RAG는 “정확도” 얘기를 많이 하지만, 실제 운영에서는 메모리, 프라이버시, 재인덱싱, 지속적 업데이트, 온프레미스 제약이 더 큰 병목일 때가 많습니다. <a href="https://www.threads.com/@feelfree_ai/post/DXQ4zBMgF9W?xmt=AQF03oUnKsN-CjG0sqM7MqP6iOmFI3_Q_HYJoDXNuNOfNc2YhM-kId6WyfW4YRSDa4Y6LcA&amp;slof=1">Threads 원문</a></p>
+<p>TurboQuant 계열은 바로 이 문제에 답합니다. 코드북 학습 없이 바로 양자화되고, 문서가 계속 들어와도 온라인으로 붙일 수 있으며, 벡터 저장소 크기를 대폭 줄입니다. 특히 로컬 임베딩 모델 + 로컬 벡터 저장소 조합을 선호하는 팀에게는 꽤 매력적입니다. README도 이를 <code>Use Case: On-Premise RAG</code> 로 전면에 두고 설명합니다. <a href="https://raw.githubusercontent.com/jorgebmann/pyturboquant/main/README.md">README 원문</a></p>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<p>첫째, 문서 수가 10만 이하라면 pyturboquant의 메모리 절감 효과가 체감상 크지 않을 수 있습니다. README도 작은 코퍼스에서는 문서 payload가 더 큰 비중을 차지한다고 적습니다.</p>
+<p>둘째, 문서 수가 100만~1000만 chunk로 커지고, 온프레미스나 사내 VPC 환경에서 메모리 예산이 빡빡해질수록 매력이 커집니다.</p>
+<p>셋째, 이 도구는 “훈련 없는 온라인 양자화”가 핵심이므로, 정적인 한 번짜리 배치 인덱싱보다 지속적으로 문서가 유입되는 환경에서 특히 빛날 수 있습니다.</p>
+<p>넷째, 검색 복잡도는 아직 완전히 해결된 것이 아니므로, 초대형 규모에서는 기존 ANN 인덱스와 어떻게 결합할지까지 같이 봐야 합니다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li><code>pyturboquant</code>는 Google Research의 TurboQuant를 Python으로 구현한 RAG용 벡터 양자화 라이브러리다.</li>
+<li>768차원 임베딩 기준 10M chunk에서 float32 약 31GB를 4-bit 약 4GB 수준으로 줄일 수 있다.</li>
+<li>핵심 강점은 codebook training 없는 온라인 양자화다.</li>
+<li>새 문서가 들어와도 재학습·재인덱싱 없이 바로 추가할 수 있다.</li>
+<li>LangChain 지원이 이미 들어가 있고, LlamaIndex는 roadmap에 있다.</li>
+<li>이 라이브러리는 임베딩 모델이 아니라 벡터 저장소를 압축한다.</li>
+<li>현재 검색 계산은 O(n)이라서, 메모리 문제를 강하게 풀지만 전체 ANN 문제를 모두 해결한 것은 아니다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p><code>pyturboquant</code>가 흥미로운 이유는 또 하나의 벡터 DB가 나왔기 때문이 아닙니다. 오히려 RAG의 병목을 “더 좋은 검색 모델”이 아니라 <strong>더 가벼운 저장과 더 쉬운 온라인 인덱싱</strong> 쪽에서 다시 보게 만든다는 점이 중요합니다. 많은 팀이 실제로 필요한 것은 새로운 논문 한 편보다, 메모리 30GB짜리 인덱스를 4GB짜리로 줄이고도 로컬에서 계속 굴릴 수 있는 운영 해법일 수 있습니다.</p>
+<p>그래서 이 프로젝트는 특히 온프레미스, 프라이버시, 메모리 제약, 지속적 문서 유입이 중요한 RAG에서 더 재미있습니다. 지금 당장 모든 ANN 문제를 대체하진 못하더라도, <code>TurboQuant</code> 가 retrieval 계층에 들어오기 시작했다는 사실 자체가 앞으로의 RAG 인프라 방향을 꽤 잘 보여 줍니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 04월 18일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/04/2026-04-18-do-you-even-need-a-database/" rel="prev">
+        <span>정말 데이터베이스가 필요할까: JSONL 파일, 메모리 맵, SQLite로 다시 보는 저장 전략</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/04/2026-04-18-lightrag-dual-level-retrieval-and-server/" rel="next">
+        <span>LightRAG를 다시 볼 이유: 듀얼 레벨 검색, 그래프 결합, 그리고 서버 제품화</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-왜-이-이야기가-rag에서-중요한가-병목이-모델이-아니라-벡터-저장소일-수-있어서다">1. 왜 이 이야기가 RAG에서 중요한가: 병목이 “모델”이 아니라 “벡터 저장소”일 수 있어서다</a></li>
+    <li><a href="#2-turboquant의-핵심은-데이터-독립-온라인-양자화다">2. TurboQuant의 핵심은 데이터-독립 온라인 양자화다</a></li>
+    <li><a href="#3-31gb--4gb는-마케팅-문구가-아니라-768차원-임베딩의-계산-결과다">3. “31GB → 4GB”는 마케팅 문구가 아니라 768차원 임베딩의 계산 결과다</a></li>
+    <li><a href="#4-양자화가-빠른-이유는-벡터마다-독립-처리되기-때문이다">4. 양자화가 빠른 이유는 “벡터마다 독립 처리”되기 때문이다</a></li>
+    <li><a href="#5-이-방법은-임베딩-모델을-줄이는-게-아니라-벡터-저장소를-줄이는-것이다">5. 이 방법은 임베딩 모델을 줄이는 게 아니라 벡터 저장소를 줄이는 것이다</a></li>
+    <li><a href="#6-아직-모든-문제를-해결한-것은-아니다-검색-계산은-현재-on이다">6. 아직 모든 문제를 해결한 것은 아니다: 검색 계산은 현재 O(n)이다</a></li>
+    <li><a href="#7-그래도-지금-매력적인-이유는-rag의-현실-문제를-정확히-건드리기-때문이다">7. 그래도 지금 매력적인 이유는 RAG의 현실 문제를 정확히 건드리기 때문이다</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/rag/" class="badge badge-secondary">Rag</a>
+    <a href="/tags/vector/" class="badge badge-secondary">Vector</a>
+    <a href="/tags/retrieval/" class="badge badge-secondary">Retrieval</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
