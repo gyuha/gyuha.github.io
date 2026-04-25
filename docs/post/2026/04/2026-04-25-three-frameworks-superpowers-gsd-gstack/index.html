@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude Code를 더 안정적으로 쓰는 3가지 프레임워크: Superpowers, GSD, GStack은 무엇이 다른가'" />
+  <title>Claude Code를 더 안정적으로 쓰는 3가지 프레임워크: Superpowers, GSD, GStack은 무엇이 다른가  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude Code를 더 안정적으로 쓰는 3가지 프레임워크: Superpowers, GSD, GStack은 무엇이 다른가" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-04-25"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/04/2026-04-25-three-frameworks-superpowers-gsd-gstack/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+  <meta property="og:tags" content="agents" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/04/2026-04-25-three-frameworks-superpowers-gsd-gstack/">
+          <h1>
+            Claude Code를 더 안정적으로 쓰는 3가지 프레임워크: Superpowers, GSD, GStack은 무엇이 다른가
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/04/2026-04-25-three-frameworks-superpowers-gsd-gstack/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Claude Code로 무언가를 빠르게 만드는 것은 이제 그리 어렵지 않습니다. 더 어려운 것은 그 코드가 믿을 만한가, 같은 작업을 반복해도 품질이 일정한가, 테스트와 보안은 충분한가, 그리고 무엇보다 모델이 중간에 맥락을 잃지 않는가입니다. 이번 영상이 흥미로운 이유는 이 문제를 “최고의 단일 프레임워크”로 해결하려 하지 않기 때문입니다. 대신 커뮤니티에서 많이 쓰는 세 가지 축을 꺼냅니다. <code>Superpowers</code>, <code>GSD</code>, <code>GStack</code>. 그리고 이 셋이 서로 경쟁자가 아니라, 사실은 서로 다른 병목을 해결한다고 설명합니다. <a href="https://www.youtube.com/watch?v=bzutStZJ1Ig">YouTube 영상</a></p>
+<p>영상의 핵심 메시지는 아주 간단합니다. 세 프레임워크는 같은 문제를 풀지 않습니다.</p>
+<ul>
+<li>Superpowers는 <strong>프로세스</strong> 를 제어합니다.</li>
+<li>GSD는 <strong>컨텍스트</strong> 를 제어합니다.</li>
+<li>GStack은 <strong>관점과 역할</strong> 을 제어합니다.</li>
+</ul>
+<p>이렇게 보면 왜 셋이 동시에 언급되는지가 분명해집니다. Claude Code의 실패는 한 가지 원인만으로 생기지 않기 때문입니다. 어떤 때는 계획 없이 코드를 써서 망가지고, 어떤 때는 컨텍스트가 썩어서 품질이 떨어지고, 어떤 때는 한 관점만으로 밀어붙여 제품적 판단이나 QA 시각이 빠집니다. 이 영상은 바로 그 세 종류의 실패를 구분해 줍니다. <a href="https://www.youtube.com/watch?v=bzutStZJ1Ig">YouTube 영상</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=bzutStZJ1Ig">https://www.youtube.com/watch?v=bzutStZJ1Ig</a></li>
+</ul>
+<h2 id="1-superpowers는-claude-code를-즉흥-코더에서-절차를-따르는-엔지니어로-바꾼다">1. Superpowers는 Claude Code를 ‘즉흥 코더’에서 ‘절차를 따르는 엔지니어’로 바꾼다</h2>
+<p>영상에서 가장 먼저 설명하는 것은 <code>Superpowers</code> 입니다. 여기서 Superpowers의 역할은 명확합니다. Claude Code가 임의로 코드를 툭 던지는 대신, <strong>정해진 소프트웨어 개발 방법론을 따르게 만드는 것</strong> 입니다. <a href="https://www.youtube.com/watch?v=bzutStZJ1Ig">YouTube 영상</a></p>
+<p>영상이 설명하는 흐름은 이렇습니다.</p>
+<ul>
+<li>먼저 명확화 질문을 한다</li>
+<li>무엇을 만들지 확인한다</li>
+<li>spec을 만든다</li>
+<li>구현 계획을 만든다</li>
+<li>테스트를 먼저 만든다</li>
+<li>구현한다</li>
+<li>리팩터링한다</li>
+</ul>
+<p>즉 Superpowers의 핵심은 “잘 쓰는 프롬프트”가 아니라, <strong>Claude에게 개발 절차를 강제하는 것</strong> 입니다. 영상은 특히 TDD를 강조합니다. 먼저 소프트웨어가 어떻게 동작해야 하는지를 테스트로 고정하고, 그다음 구현하도록 만드는 방식입니다.</p>
+<p>이 접근의 장점은 분명합니다. 출력 품질이 덜 흔들리고, 구현 전에 기대 행동이 먼저 정의되며, 이후 리팩터링까지 포함해 보다 안정적인 산출물을 얻기 쉽습니다. 결국 Superpowers는 Claude Code의 문제를 “모델이 덜 똑똑해서”가 아니라, <strong>절차가 없어서</strong> 생긴다고 보는 프레임워크입니다.</p>
+<h2 id="2-gsd는-컨텍스트-rot를-직접-겨냥한다">2. GSD는 ‘컨텍스트 rot’를 직접 겨냥한다</h2>
+<p>두 번째로 나오는 <code>GSD</code>는 방향이 다릅니다. 영상은 GSD가 해결하려는 문제를 <code>context rot</code> 라고 설명합니다. 세션 초반 20%쯤은 좋지만, 40%, 60%, 80%로 갈수록 출력 품질이 점점 떨어지는 현상입니다. <a href="https://www.youtube.com/watch?v=bzutStZJ1Ig">YouTube 영상</a></p>
+<p>GSD의 믿음은 단순합니다. 컨텍스트 창을 항상 50% 이하로 유지하면 모델 정확도를 더 안정적으로 지킬 수 있다는 것입니다. 그래서 GSD는 작업을 여러 단계로 나누고, 각 단계를 별도의 orchestrator와 서브에이전트가 수행하도록 합니다. 그리고 각 단계의 상태는 markdown 파일로 디스크에 저장합니다.</p>
+<p>즉 GSD의 핵심은:</p>
+<ul>
+<li>한 번의 긴 대화로 끝까지 가지 않고</li>
+<li>단계를 분리하고</li>
+<li>각 단계마다 새 orchestrator를 쓰고</li>
+<li>상태를 로컬 파일에 남기고</li>
+<li>다음 단계는 그 상태를 다시 읽어 이어 가는 것</li>
+</ul>
+<p>입니다.</p>
+<p>이 접근은 Superpowers와 확실히 다릅니다. Superpowers도 여러 단계를 갖지만, 영상이 지적하듯 기본적으로는 하나의 큰 orchestrator 대화 안에서 흐름을 이어 갑니다. 반면 GSD는 단계가 바뀔 때마다 <strong>오케스트레이터 자체를 교체</strong> 하며, 그 사이 상태를 파일로 저장합니다. 결국 GSD는 Claude Code의 문제를 “절차 부재”보다 <strong>긴 세션에서의 기억 오염과 품질 저하</strong> 로 보는 셈입니다.</p>
+<pre class="mermaid">flowchart LR
+    A["긴 단일 세션"] --> B["컨텍스트 rot"]
+    B --> C["정확도 하락"]
+
+    D["GSD 단계 분리"] --> E["단계별 새 orchestrator"]
+    E --> F["상태를 MD 파일에 저장"]
+    F --> G["항상 낮은 컨텍스트 점유율 유지"]</pre><h2 id="3-gstack은-한-에이전트가-다-안다는-가정을-버린다">3. GStack은 ‘한 에이전트가 다 안다’는 가정을 버린다</h2>
+<p>세 번째 프레임워크인 <code>GStack</code>은 또 다른 문제를 겨냥합니다. 영상 표현을 빌리면, GStack의 사명은 하나의 범용 에이전트를 여러 전문 역할로 분해하는 것입니다. CEO, 엔지니어링 매니저, 디자이너, 릴리스 엔지니어, QA 등 서로 다른 렌즈를 프로젝트 각 단계에 도입하는 방식입니다. <a href="https://www.youtube.com/watch?v=bzutStZJ1Ig">YouTube 영상</a></p>
+<p>여기서 중요한 차이는 단순 role prompt가 아니라는 점입니다. 영상은 GStack이 역할을 유지하기 위해 여러 레이어를 둔다고 설명합니다.</p>
+<ul>
+<li>역할 집중</li>
+<li>이전 단계의 데이터 흐름 위에서 작업</li>
+<li>품질 체크리스트</li>
+<li>자기 책임 범위만 처리</li>
+<li>단순한 요약과 다음 액션 중심 출력</li>
+</ul>
+<p>즉 “지금부터 CEO처럼 생각해” 수준이 아니라, <strong>각 역할이 무엇을 보고 무엇은 보지 않을지까지 구조적으로 제한</strong> 하는 접근입니다.</p>
+<p>이 방식이 중요한 이유는 개발이 늘 하나의 관점만으로 풀리지 않기 때문입니다.</p>
+<ul>
+<li>엔지니어는 구현 안정성을 본다</li>
+<li>CEO 관점은 가치와 우선순위를 본다</li>
+<li>QA는 사용자 흐름과 실패 시나리오를 본다</li>
+<li>디자이너는 시각적 일관성과 사용성을 본다</li>
+</ul>
+<p>GStack은 Claude Code의 실패를 “세션이 너무 길어서”도 아니고 “테스트가 없어서”도 아니라, <strong>하나의 시각만으로 밀어붙이기 때문</strong> 이라고 봅니다.</p>
+<h2 id="4-세-프레임워크는-같은-층위에-있지-않다">4. 세 프레임워크는 같은 층위에 있지 않다</h2>
+<p>이 영상이 좋은 이유는 바로 여기입니다. 많은 비교 영상이 “누가 더 좋냐”로 끝나는데, 이번 영상은 세 프레임워크를 같은 줄에 세우지 않습니다. 오히려 서로 다른 층위에 놓습니다.</p>
+<ul>
+<li>Superpowers는 작업 <strong>절차</strong> 를 설계한다</li>
+<li>GSD는 작업 <strong>세션 구조</strong> 를 설계한다</li>
+<li>GStack은 작업 <strong>판단 렌즈</strong> 를 설계한다</li>
+</ul>
+<p>이 차이를 이해하면 왜 셋을 모두 쓰려는 시도가 나오는지도 이해됩니다. 예를 들어 TDD와 계획이 있어도 세션이 너무 길어져 정확도가 무너지면 결과가 흔들립니다. 반대로 세션을 잘게 쪼개도 제품 관점과 QA 관점이 빠지면 결과물은 일방적일 수 있습니다. 또 역할 분리가 잘 되어 있어도 구현 과정 자체가 즉흥적이면 안정성이 떨어집니다.</p>
+<p>즉 세 프레임워크는 서로를 대체하기보다, <strong>Claude Code 실패의 서로 다른 원인을 커버하는 조합</strong> 에 가깝습니다.</p>
+<h2 id="5-영상의-핵심-결론-셋을-섞으면-파워-스택이-된다">5. 영상의 핵심 결론: 셋을 섞으면 ‘파워 스택’이 된다</h2>
+<p>영상 후반부는 아주 실용적입니다. 결국 셋을 합칠 수 있느냐는 질문으로 넘어가고, 답은 “그렇다”입니다. <a href="https://www.youtube.com/watch?v=bzutStZJ1Ig">YouTube 영상</a></p>
+<p>영상이 제안하는 조합은 대략 이렇습니다.</p>
+<ul>
+<li>전략적 기획과 상위 관점 리뷰는 <code>GStack</code></li>
+<li>프로젝트를 마일스톤으로 쪼개고, 각 단계의 컨텍스트를 보호하는 것은 <code>GSD</code></li>
+<li>실제 구현과 테스트 중심 실행은 <code>Superpowers</code></li>
+<li>마지막 QA나 polish 단계는 다시 <code>GStack</code></li>
+</ul>
+<p>이 배치는 꽤 설득력이 있습니다. GStack은 역할 기반 시각을 제공해 아이디어와 계획을 더 날카롭게 만들고, GSD는 그 계획을 지나치게 큰 작업 덩어리로 두지 않게 막고, Superpowers는 쪼개진 단위를 테스트 중심으로 구현하게 만듭니다.</p>
+<p>즉 하나의 “최고 프레임워크”를 찾는 대신:</p>
+<ol>
+<li>먼저 관점을 나누고</li>
+<li>그다음 컨텍스트를 나누고</li>
+<li>마지막으로 구현 절차를 엄격히 적용하는</li>
+</ol>
+<p>식의 스택이 되는 셈입니다.</p>
+<pre class="mermaid">flowchart TD
+    A["GStack"] --> B["아이디어 / 전략 / 역할별 리뷰"]
+    B --> C["GSD"]
+    C --> D["프로젝트를 작은 마일스톤으로 분해"]
+    D --> E["Superpowers"]
+    E --> F["TDD 기반 구현 / 리팩터링"]
+    F --> G["GStack QA / 폴리싱"]</pre><h2 id="6-실전에서-어떻게-골라야-할까">6. 실전에서 어떻게 골라야 할까</h2>
+<p>이 영상을 실무에 그대로 옮기면 선택 기준은 생각보다 단순합니다.</p>
+<p>만약 당신의 문제는:</p>
+<ul>
+<li>
+<p>Claude가 너무 즉흥적으로 코드를 써서 품질이 들쑥날쑥하다<br>
+→ <code>Superpowers</code></p>
+</li>
+<li>
+<p>작업이 길어질수록 세션 품질이 무너지고 반복 설명이 많아진다<br>
+→ <code>GSD</code></p>
+</li>
+<li>
+<p>한 관점으로만 밀어붙여 제품 감각, QA, 디자인 판단이 자주 빠진다<br>
+→ <code>GStack</code></p>
+</li>
+</ul>
+<p>일 가능성이 큽니다.</p>
+<p>즉 무엇이 최고냐보다, <strong>내 병목이 프로세스인지, 컨텍스트인지, 관점인지</strong> 먼저 진단하는 편이 훨씬 낫습니다.</p>
+<h2 id="7-이-영상이-시사하는-더-큰-방향-claude-code는-이제-운영-설계의-대상이다">7. 이 영상이 시사하는 더 큰 방향: Claude Code는 이제 ‘운영 설계’의 대상이다</h2>
+<p>예전에는 코딩 에이전트를 평가할 때 “코드를 얼마나 잘 쓰느냐”가 거의 전부였습니다. 하지만 이 영상은 그 시대가 지나가고 있음을 보여 줍니다. 이제 중요한 것은:</p>
+<ul>
+<li>어떤 절차를 강제할 것인가</li>
+<li>컨텍스트를 어떻게 보호할 것인가</li>
+<li>어떤 역할과 관점을 언제 투입할 것인가</li>
+</ul>
+<p>입니다.</p>
+<p>즉 Claude Code의 성능은 이제 모델 단독 성능이 아니라, <strong>어떤 운영 프레임 위에 올려 두느냐</strong> 에 크게 좌우됩니다. 이 점에서 Superpowers, GSD, GStack은 단순한 취향 차이의 도구가 아니라, Claude Code를 실제 개발 조직처럼 굴리기 위한 세 가지 구조적 해답으로 볼 수 있습니다.</p>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<p>세 프레임워크를 한 번에 모두 도입할 필요는 없습니다. 오히려 다음처럼 단계적으로 붙이는 편이 현실적입니다.</p>
+<ul>
+<li>먼저 <code>Superpowers</code> 로 테스트·계획 중심 습관을 만든다</li>
+<li>큰 프로젝트나 긴 세션에서 문제가 생기면 <code>GSD</code> 를 붙인다</li>
+<li>제품/디자인/QA 관점이 자주 빠지면 <code>GStack</code> 으로 역할 기반 리뷰를 추가한다</li>
+</ul>
+<p>그리고 팀이 어느 정도 익숙해지면, 영상이 말한 것처럼:</p>
+<ul>
+<li>GStack으로 기획</li>
+<li>GSD로 마일스톤 분해</li>
+<li>Superpowers로 구현</li>
+<li>GStack으로 QA</li>
+</ul>
+<p>같은 방식으로 파워 스택을 구성할 수 있습니다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li><code>Superpowers</code> 는 Claude Code의 개발 절차를 제어한다.</li>
+<li><code>GSD</code> 는 긴 세션에서 생기는 context rot를 막기 위해 단계별 새 orchestrator와 디스크 상태 저장을 사용한다.</li>
+<li><code>GStack</code> 은 하나의 범용 에이전트를 여러 전문 역할로 나누어 관점을 보강한다.</li>
+<li>세 프레임워크는 경쟁자가 아니라 서로 다른 실패 원인을 다룬다.</li>
+<li>따라서 무엇이 최고냐보다, 프로세스·컨텍스트·관점 중 어디가 병목인지 먼저 봐야 한다.</li>
+<li>영상의 최종 제안은 셋을 조합한 파워 스택이다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>이 영상이 보여 주는 가장 중요한 사실은, Claude Code를 잘 쓰는 방법이 더 이상 “프롬프트를 잘 쓰는 법”에만 머물지 않는다는 점입니다. 이제는 프로세스를 어떻게 제한할지, 세션을 어떻게 쪼갤지, 어떤 역할과 관점으로 리뷰할지를 설계해야 합니다.</p>
+<p>그 의미에서 Superpowers, GSD, GStack은 세 개의 대체재가 아니라 세 개의 설계 축입니다. Claude Code를 더 강하게 만든다기보다, <strong>Claude Code가 실패하는 서로 다른 이유를 줄이는 장치들</strong> 이라고 보는 편이 훨씬 정확합니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 04월 25일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/04/2026-04-22-chrome-devtools-mcp-browser-debugging-for-agents/" rel="prev">
+        <span>chrome-devtools-mcp가 중요한 이유: AI가 브라우저를 직접 디버깅하기 시작했다</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/04/2026-04-25-eight-claude-code-skills-workflow-map/" rel="next">
+        <span>2026년 Claude Code에 꼭 붙여볼 8가지 스킬: 바이브코딩을 운영체계로 바꾸는 흐름</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-superpowers는-claude-code를-즉흥-코더에서-절차를-따르는-엔지니어로-바꾼다">1. Superpowers는 Claude Code를 ‘즉흥 코더’에서 ‘절차를 따르는 엔지니어’로 바꾼다</a></li>
+    <li><a href="#2-gsd는-컨텍스트-rot를-직접-겨냥한다">2. GSD는 ‘컨텍스트 rot’를 직접 겨냥한다</a></li>
+    <li><a href="#3-gstack은-한-에이전트가-다-안다는-가정을-버린다">3. GStack은 ‘한 에이전트가 다 안다’는 가정을 버린다</a></li>
+    <li><a href="#4-세-프레임워크는-같은-층위에-있지-않다">4. 세 프레임워크는 같은 층위에 있지 않다</a></li>
+    <li><a href="#5-영상의-핵심-결론-셋을-섞으면-파워-스택이-된다">5. 영상의 핵심 결론: 셋을 섞으면 ‘파워 스택’이 된다</a></li>
+    <li><a href="#6-실전에서-어떻게-골라야-할까">6. 실전에서 어떻게 골라야 할까</a></li>
+    <li><a href="#7-이-영상이-시사하는-더-큰-방향-claude-code는-이제-운영-설계의-대상이다">7. 이 영상이 시사하는 더 큰 방향: Claude Code는 이제 ‘운영 설계’의 대상이다</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude/" class="badge badge-secondary">Claude</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
