@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'TradingAgents를 매매봇보다 분석 리포트 엔진으로 봐야 하는 이유'" />
+  <title>TradingAgents를 매매봇보다 분석 리포트 엔진으로 봐야 하는 이유  | 신규하 블로그</title>
+  <meta property="og:title" content="TradingAgents를 매매봇보다 분석 리포트 엔진으로 봐야 하는 이유" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-04-28"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/04/2026-04-28-tradingagents-multi-perspective-research-engine/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="trading" />
+  
+  <meta property="og:tags" content="agents" />
+  
+  <meta property="og:tags" content="finance" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/04/2026-04-28-tradingagents-multi-perspective-research-engine/">
+          <h1>
+            TradingAgents를 매매봇보다 분석 리포트 엔진으로 봐야 하는 이유
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/04/2026-04-28-tradingagents-multi-perspective-research-engine/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p><code>TradingAgents</code> 를 처음 보면 가장 먼저 눈에 띄는 건 숫자와 역할 분담입니다. 원본 저장소 <code>TauricResearch/TradingAgents</code> 를 보면, 분석가 4명, 연구원 2명, 트레이더, 리스크 매니지먼트, 포트폴리오 매니저까지 총 9개 역할이 등장합니다. Threads에서 표현한 것처럼, 단순히 LLM 하나가 종목을 찍는 게 아니라 펀더멘털·뉴스·심리·기술 분석이 각각 따로 들어오고, 강세/약세 토론까지 거쳐서 최종 결론이 나옵니다. <a href="https://github.com/TauricResearch/TradingAgents">GitHub 저장소</a> <a href="https://www.threads.com/@conanssam/post/DXo8AVZmN12">Threads 원문</a></p>
+<p>그런데 이 프로젝트를 “자동 매매봇”으로만 보면 핵심을 놓치기 쉽습니다. 오히려 더 흥미로운 점은, 한 종목을 볼 때 사람이 자주 빠뜨리는 반대 시나리오를 강제로 끌어온다는 데 있습니다. Threads 작성자도 40대 재테크 관점에서는 매매봇보다 <code>여러 시각의 분석 리포트 자동 생성기</code> 로 보는 게 맞다고 말합니다. 저는 이 해석이 꽤 정확하다고 봅니다. 원본 저장소 구조를 봐도 TradingAgents의 진짜 가치는 주문 실행보다, <strong>한 방향으로만 기울어진 인간의 해석을 다중 에이전트 토론으로 흔드는 것</strong> 에 있습니다. <a href="https://github.com/TauricResearch/TradingAgents">GitHub 저장소</a> <a href="https://www.threads.com/@conanssam/post/DXo8AVZmN12">Threads 원문</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://github.com/TauricResearch/TradingAgents">https://github.com/TauricResearch/TradingAgents</a></li>
+<li><a href="https://www.threads.com/@conanssam/post/DXo8AVZmN12">https://www.threads.com/@conanssam/post/DXo8AVZmN12</a></li>
+</ul>
+<h2 id="1-구조가-곧-메시지다-한-명의-천재가-아니라-역할-분업된-투자-회의">1. 구조가 곧 메시지다: 한 명의 천재가 아니라 역할 분업된 투자 회의</h2>
+<p>원본 저장소와 Threads에서 함께 확인되는 역할 구조는 이렇습니다.</p>
+<ul>
+<li>분석가 4명: 펀더멘털 / 심리 / 뉴스 / 기술</li>
+<li>연구원 2명: 강세 / 약세</li>
+<li>트레이더</li>
+<li>리스크 매니지먼트</li>
+<li>포트폴리오 매니저</li>
+</ul>
+<p>이 구조는 단순히 “에이전트가 많다”는 자랑이 아닙니다. <a href="https://github.com/TauricResearch/TradingAgents">GitHub 저장소</a> <a href="https://www.threads.com/@conanssam/post/DXo8AVZmN12">Threads 원문</a></p>
+<p>핵심은, 주식 판단을 한 개의 지능에 맡기지 않는다는 점입니다. 보통 개인 투자자는:</p>
+<ul>
+<li>차트만 보거나</li>
+<li>뉴스만 보거나</li>
+<li>확신이 서는 방향으로만 자료를 모읍니다</li>
+</ul>
+<p>그런데 TradingAgents는 처음부터 시야를 분할합니다. 펀더멘털과 기술적 분석이 다르고, 뉴스와 시장 심리는 또 다르며, 강세와 약세는 아예 서로 반대로 싸우게 만듭니다. 즉 이 프로젝트는 “누가 제일 똑똑하냐”보다, <strong>의사결정 전에 어떤 충돌을 의도적으로 만들어 넣을 것이냐</strong> 를 더 중요하게 보는 구조입니다.</p>
+<h2 id="2-강세약세-토론이-중요한-이유-혼자-볼-때-놓치는-반대-논리를-강제로-듣게-한다">2. 강세/약세 토론이 중요한 이유: 혼자 볼 때 놓치는 반대 논리를 강제로 듣게 한다</h2>
+<p>TradingAgents의 가장 흥미로운 지점은 연구원 두 명이 강세와 약세 관점으로 나뉘어 토론하는 구조입니다. 이건 단순한 역할놀이가 아닙니다. <a href="https://www.threads.com/@conanssam/post/DXo8AVZmN12">Threads 원문</a></p>
+<p>실제 투자 판단이 자주 망가지는 이유는 정보 부족보다도:</p>
+<ul>
+<li>확증편향</li>
+<li>이미 마음속으로 결론을 정해 둔 상태</li>
+<li>반대 근거를 읽어도 무시하는 습관</li>
+</ul>
+<p>때문인 경우가 많습니다.</p>
+<p>강세/약세 토론은 바로 이걸 겨냥합니다. 내가 특정 종목에 끌리더라도, 시스템은 약세 논리를 자동으로 끌어와 반대편 증거를 들이밉니다. 이 점 때문에 TradingAgents는 “정답을 주는 시스템”보다, <strong>성급한 확신을 늦추는 시스템</strong> 으로 보는 편이 더 맞습니다.</p>
+<h2 id="3-langgraph-기반이라는-점이-의미하는-것">3. LangGraph 기반이라는 점이 의미하는 것</h2>
+<p>Threads에서 이 프로젝트가 LangGraph 기반이고 <code>ta.propagate(&quot;NVDA&quot;, &quot;2026-01-15&quot;)</code> 같은 형태로 한 줄 실행된다고 설명하는 부분도 중요합니다. 저장소 README도 이 워크플로 중심 사용법을 전면에 두고 있습니다. <a href="https://github.com/TauricResearch/TradingAgents">GitHub 저장소</a> <a href="https://www.threads.com/@conanssam/post/DXo8AVZmN12">Threads 원문</a></p>
+<p>이 말은 결국 각 역할이 그냥 병렬로 흩어지는 것이 아니라:</p>
+<ul>
+<li>어떤 입력을 받고</li>
+<li>어떤 증거를 모으고</li>
+<li>누가 누구에게 넘기고</li>
+<li>마지막에 누가 승인하는지</li>
+</ul>
+<p>가 그래프 형태로 설계되어 있다는 뜻입니다.</p>
+<p>즉 TradingAgents의 진짜 강점은 분석가 숫자보다도, <strong>그 역할들의 상호작용이 정해진 워크플로로 구조화되어 있다</strong> 는 데 있습니다. 이 점에서 이 프로젝트는 채팅 여러 개 띄운 것보다 훨씬 “프로세스”에 가깝습니다.</p>
+<pre class="mermaid">flowchart TD
+    A["종목 입력"] --> B["분석가 4명: 펀더멘털/심리/뉴스/기술"]
+    B --> C["강세 연구원"]
+    B --> D["약세 연구원"]
+    C --> E["토론 / 근거 충돌"]
+    D --> E
+    E --> F["트레이더 결정"]
+    F --> G["리스크 매니지먼트"]
+    G --> H["포트폴리오 매니저 최종 승인"]</pre><h2 id="4-모델을-가리지-않는다는-점보다-더-중요한-것-깊은-사고용과-빠른-작업용을-나눌-수-있다">4. 모델을 가리지 않는다는 점보다 더 중요한 것: 깊은 사고용과 빠른 작업용을 나눌 수 있다</h2>
+<p>Threads는 GPT, Gemini, Claude, Grok, DeepSeek, Qwen, GLM, Ollama 등 여러 모델을 지원하고, 깊은 사고용 모델과 빠른 작업용 모델을 따로 지정할 수 있다고 설명합니다. 이 부분도 저장소 문서와 맞물리는 핵심 포인트입니다. <a href="https://github.com/TauricResearch/TradingAgents">GitHub 저장소</a> <a href="https://www.threads.com/@conanssam/post/DXo8AVZmN12">Threads 원문</a></p>
+<p>이 부분이 중요한 이유는, 투자 리서치도 사실 한 종류의 추론만 필요한 게 아니기 때문입니다.</p>
+<ul>
+<li>데이터 수집과 정리는 빠른 모델</li>
+<li>논리 충돌과 토론은 더 강한 모델</li>
+<li>요약과 형식화는 다시 저렴한 모델</li>
+</ul>
+<p>로 나눌 수 있습니다.</p>
+<p>즉 TradingAgents는 단순 다중 에이전트가 아니라, <strong>역할별 인지 비용을 다르게 배치할 수 있는 시스템</strong> 이기도 합니다. 이것이 실제 운영비를 생각하면 꽤 현실적인 장점입니다.</p>
+<h2 id="5-메모리-구조가-진짜-흥미롭다-한-번-본-종목의-과거-판단과-알파를-다시-학습-자산으로-쌓는다">5. 메모리 구조가 진짜 흥미롭다: 한 번 본 종목의 과거 판단과 알파를 다시 학습 자산으로 쌓는다</h2>
+<p>Threads에서 또 하나 중요하게 짚는 부분은 메모리입니다. 한 번 분석한 종목은 과거 결정과 SPY 대비 알파를 메모리에 쌓아, 다음 분석 때 다시 참고 자료로 들어간다고 합니다. <a href="https://github.com/TauricResearch/TradingAgents">GitHub 저장소</a> <a href="https://www.threads.com/@conanssam/post/DXo8AVZmN12">Threads 원문</a></p>
+<p>이건 단순 대화 이력 저장보다 훨씬 의미가 큽니다.</p>
+<ul>
+<li>과거에 왜 샀는지</li>
+<li>왜 틀렸는지</li>
+<li>당시 어떤 근거가 먹혔는지</li>
+<li>시장 벤치마크 대비 어떤 성과였는지</li>
+</ul>
+<p>를 다시 시스템이 끌어올 수 있기 때문입니다.</p>
+<p>즉 TradingAgents는 정적인 분석기가 아니라, <strong>반복 분석을 통해 자기 판단의 흔적을 축적하는 리서치 메모리 시스템</strong> 에 가까워집니다.</p>
+<h2 id="6-이-프로젝트를-매매봇보다-리포트-엔진으로-봐야-하는-이유">6. 이 프로젝트를 매매봇보다 리포트 엔진으로 봐야 하는 이유</h2>
+<p>Threads 작성자가 가장 실용적으로 짚은 부분이 바로 이것입니다. 40대 재테크 관점에서는 매매봇보다 <code>여러 시각의 분석 리포트 자동 생성기</code> 로 보는 게 맞다는 해석입니다. 저는 이 해석이 원본 저장소의 구조와도 가장 잘 맞는다고 봅니다. <a href="https://github.com/TauricResearch/TradingAgents">GitHub 저장소</a> <a href="https://www.threads.com/@conanssam/post/DXo8AVZmN12">Threads 원문</a></p>
+<p>이 관점이 좋은 이유는 현실적이기 때문입니다.</p>
+<p>실제 개인 투자자는 보통:</p>
+<ul>
+<li>자동 주문 체계보다</li>
+<li>종목을 보기 전 체크리스트</li>
+<li>반대 논리 검토</li>
+<li>강세/약세 근거 비교</li>
+</ul>
+<p>가 더 필요합니다.</p>
+<p>TradingAgents는 이 부분에 딱 맞습니다. 펀더멘털, 심리, 뉴스, 기술, 토론, 리스크, 포트폴리오 관점을 한 번에 강제로 통과시키면, 적어도 <strong>한쪽 논리만 보고 서두르는 실수</strong> 는 줄어듭니다.</p>
+<h2 id="7-저장소-규모와-현재-상태도-연구용-오픈소스치고-꽤-크다">7. 저장소 규모와 현재 상태도 연구용 오픈소스치고 꽤 크다</h2>
+<p>2026년 4월 28일 기준 <code>TauricResearch/TradingAgents</code> 저장소는:</p>
+<ul>
+<li>stars 54,208</li>
+<li>forks 9,817</li>
+<li>기본 브랜치 <code>main</code></li>
+<li>Apache-2.0 라이선스</li>
+<li>Python 프로젝트</li>
+<li>최신 릴리스 <code>v0.2.4</code> (2026-04-25)</li>
+</ul>
+<p>상태입니다. Threads에서 언급한 것처럼 관련 arXiv 논문(2412.20138)도 붙어 있어, 단순 데모라기보다 <strong>연구 기반 오픈소스 프로젝트</strong> 라는 성격이 분명합니다. <a href="https://github.com/TauricResearch/TradingAgents">GitHub 저장소</a></p>
+<h2 id="8-실전에서-더-유용한-활용법-주문-자동화보다-의사결정-보조">8. 실전에서 더 유용한 활용법: 주문 자동화보다 의사결정 보조</h2>
+<p>TradingAgents를 실제로 쓴다면 저는 다음 순서가 더 맞다고 봅니다.</p>
+<ol>
+<li>관심 종목 후보를 넣는다</li>
+<li>강세/약세 양쪽 논리를 읽는다</li>
+<li>리스크 항목을 본다</li>
+<li>포트폴리오 관점에서 그 종목의 위치를 생각한다</li>
+<li>마지막 의사결정은 사람이 한다</li>
+</ol>
+<p>즉 이 프로젝트를 자동 매매 시스템으로 바로 연결하기보다, <strong>투자 전 회의실을 자동으로 열어 주는 도구</strong> 로 보는 게 낫습니다.</p>
+<p>이 해석은 Threads의 “매매 자문 아님, 의사결정과 투자 책임은 본인”이라는 선 긋기와도 잘 맞습니다.</p>
+<pre class="mermaid">flowchart LR
+    A["인간 투자자"] --> B["TradingAgents 리포트"]
+    B --> C["강세 논리"]
+    B --> D["약세 논리"]
+    B --> E["리스크 점검"]
+    B --> F["포트폴리오 적합성"]
+    C --> G["최종 인간 판단"]
+    D --> G
+    E --> G
+    F --> G</pre><h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<p>이 프로젝트를 바로 실무에 적용한다면 다음처럼 쓰는 것이 가장 안전하고 유용합니다.</p>
+<ul>
+<li>자동 주문 엔진보다 분석 리포트 보조 도구로 쓴다</li>
+<li>강세/약세 논리를 일부러 둘 다 읽는다</li>
+<li>과거 메모리와 SPY 대비 성과 기록을 판단 보조로 쓴다</li>
+<li>한 모델만 고집하지 말고 역할에 따라 다른 모델을 쓴다</li>
+<li>최종 의사결정과 책임은 반드시 사람이 진다</li>
+</ul>
+<p>즉 핵심은 수익 자동화보다 <strong>판단 편향 완화</strong> 입니다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>TradingAgents는 단일 LLM 트레이더가 아니라 역할 분업된 투자 회의 구조를 가진다.</li>
+<li>핵심은 펀더멘털/심리/뉴스/기술 분석과 강세/약세 토론을 강제로 거치게 한다는 점이다.</li>
+<li>LangGraph 기반 구조 덕분에 분석 흐름이 워크플로로 고정된다.</li>
+<li>여러 모델을 역할별로 나눠 배치할 수 있고, 과거 판단과 알파를 메모리로 축적한다.</li>
+<li>실제 개인 투자자 관점에서는 자동 매매봇보다 다중 시각 분석 리포트 엔진으로 보는 편이 더 유용하다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>TradingAgents가 흥미로운 이유는 “LLM 9명이 종목을 사고판다”는 자극적인 문장 때문만은 아닙니다. 더 본질적인 포인트는, 한 종목을 볼 때 인간이 빠지기 쉬운 편향을 여러 역할과 반대 논리 토론으로 깨려고 한다는 데 있습니다.</p>
+<p>그래서 이 프로젝트는 자동 매매 시스템이라기보다, <strong>혼자 투자할 때 열기 어려운 내부 투자 회의를 매번 자동으로 열어 주는 도구</strong> 로 보는 편이 더 정확합니다. 실제 돈을 거는 순간 더 필요한 건 빠른 확신보다, 반대 시나리오를 강제로 듣는 구조일 수 있기 때문입니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 04월 28일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/04/2026-04-28-obsidian-llm-wiki-for-stock-analysis/" rel="prev">
+        <span>옵시디언으로 만드는 LLM Wiki는 왜 강한가: Raw → Wiki → Claude.md의 3계층 구조</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/04/2026-04-28-future-slide-skill-four-stage-slide-harness/" rel="next">
+        <span>future-slide-skill이 좋은 이유: 슬라이드를 한 번에 만들지 않고 4단계 하네스로 쪼갠다</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-구조가-곧-메시지다-한-명의-천재가-아니라-역할-분업된-투자-회의">1. 구조가 곧 메시지다: 한 명의 천재가 아니라 역할 분업된 투자 회의</a></li>
+    <li><a href="#2-강세약세-토론이-중요한-이유-혼자-볼-때-놓치는-반대-논리를-강제로-듣게-한다">2. 강세/약세 토론이 중요한 이유: 혼자 볼 때 놓치는 반대 논리를 강제로 듣게 한다</a></li>
+    <li><a href="#3-langgraph-기반이라는-점이-의미하는-것">3. LangGraph 기반이라는 점이 의미하는 것</a></li>
+    <li><a href="#4-모델을-가리지-않는다는-점보다-더-중요한-것-깊은-사고용과-빠른-작업용을-나눌-수-있다">4. 모델을 가리지 않는다는 점보다 더 중요한 것: 깊은 사고용과 빠른 작업용을 나눌 수 있다</a></li>
+    <li><a href="#5-메모리-구조가-진짜-흥미롭다-한-번-본-종목의-과거-판단과-알파를-다시-학습-자산으로-쌓는다">5. 메모리 구조가 진짜 흥미롭다: 한 번 본 종목의 과거 판단과 알파를 다시 학습 자산으로 쌓는다</a></li>
+    <li><a href="#6-이-프로젝트를-매매봇보다-리포트-엔진으로-봐야-하는-이유">6. 이 프로젝트를 매매봇보다 리포트 엔진으로 봐야 하는 이유</a></li>
+    <li><a href="#7-저장소-규모와-현재-상태도-연구용-오픈소스치고-꽤-크다">7. 저장소 규모와 현재 상태도 연구용 오픈소스치고 꽤 크다</a></li>
+    <li><a href="#8-실전에서-더-유용한-활용법-주문-자동화보다-의사결정-보조">8. 실전에서 더 유용한 활용법: 주문 자동화보다 의사결정 보조</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/trading/" class="badge badge-secondary">Trading</a>
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+    <a href="/tags/finance/" class="badge badge-secondary">Finance</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
