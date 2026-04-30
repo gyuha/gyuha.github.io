@@ -87,12 +87,37 @@
 
  <article class="post">
   <div class="post-title">
-    <a href="https://gyuha.com/post/2026/02/2026-02-21-ai-developer-six-month-control-system/" title="개발자가 AI를 길들이는 6개월 시스템: Hook·Skill·품질게이트로 재현성 높이기">
+    <a href="https://gyuha.com/post/2026/02/2026-02-22-claude-code-worktree-parallel-session-guide/" title="Claude Code Worktree 병렬 실행 가이드: 충돌 없이 여러 세션 운영하기">
       <div class="post-meta">
-        <h2>개발자가 AI를 길들이는 6개월 시스템: Hook·Skill·품질게이트로 재현성 높이기</h2>
+        <h2>Claude Code Worktree 병렬 실행 가이드: 충돌 없이 여러 세션 운영하기</h2>
         <time>
           <i class="far fa-clock"></i>
-          2026년 02월 21일 18시 40분
+          2026년 02월 22일 23시 15분
+        </time>
+         
+        <i class="far fa-folder"></i>
+        <a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+        
+      </div>
+    </a>
+  </div>
+  <div class="post-summary">
+    Claude Code를 여러 개 동시에 돌리면 생산성이 크게 오르지만, 같은 작업 디렉터리에서 병렬 실행하면 파일 충돌과 컨텍스트 꼬임이 빠르게 발생합니다. 최근 Threads에서 공유된 qjc.ai의 7개 연속 포스트는 이 문제를 git worktree + claude -w 조합으로 풀어내는 실전 감각을 잘 보여줬습니다.
+이 글은 해당 스레드 내용을 그대로 요약하는 데서 끝내지 않고, Anthropic 공식 문서와 교차 검증해서 지금 바로 재현 가능한 패턴과 검증이 필요한 주장을 분리해 정리합니다.
+ 
+    <a href="/post/2026/02/2026-02-22-claude-code-worktree-parallel-session-guide/" class="summary-more">더보기</a>
+    
+  </div>
+  <hr class="summary-sep" />
+</article>
+  <article class="post">
+  <div class="post-title">
+    <a href="https://gyuha.com/post/2026/02/2026-02-22-ai-file-upload-optimization/" title="파일 업로드 최적화: 두 개의 AI로 비용 절감과 성능 향상">
+      <div class="post-meta">
+        <h2>파일 업로드 최적화: 두 개의 AI로 비용 절감과 성능 향상</h2>
+        <time>
+          <i class="far fa-clock"></i>
+          2026년 02월 22일 20시 00분
         </time>
          
         <i class="far fa-folder"></i>
@@ -102,45 +127,24 @@
     </a>
   </div>
   <div class="post-summary">
-    &ldquo;AI가 똑똑한데도 일관되게 못 끝내는 이유&quot;를 팀 운영 관점에서 풀어낸 영상입니다. 핵심은 모델 성능 비교가 아니라, AI가 흔들리는 지점을 시스템으로 감싸서 생산성을 올리는 방법입니다.
-Sources https://www.youtube.com/watch?v=7vihh_G_434  
-    <a href="/post/2026/02/2026-02-21-ai-developer-six-month-control-system/" class="summary-more">더보기</a>
-    
-  </div>
-  <hr class="summary-sep" />
-</article>
-  <article class="post">
-  <div class="post-title">
-    <a href="https://gyuha.com/post/2026/02/2026-02-21-notebooklm-gemini3-mobile-video-workflow/" title="NotebookLM 신기능 실전 정리: 스마트폰에서 AI 리서치→인포그래픽→영상까지 5단계 워크플로우">
-      <div class="post-meta">
-        <h2>NotebookLM 신기능 실전 정리: 스마트폰에서 AI 리서치→인포그래픽→영상까지 5단계 워크플로우</h2>
-        <time>
-          <i class="far fa-clock"></i>
-          2026년 02월 21일 18시 25분
-        </time>
-         
-        <i class="far fa-folder"></i>
-        <a href="https://gyuha.com//categories/automation">Automation</a>
-        
-      </div>
-    </a>
-  </div>
-  <div class="post-summary">
-    NotebookLM이 Gemini 3 기반으로 업데이트되면서, 리서치-정리-시각화-블로그-영상화가 하나의 도구 안에서 이어지는 흐름이 현실화되었습니다. 이 글은 아래 영상을 바탕으로, 과장된 마케팅 문구는 걷어내고 실제로 재현 가능한 워크플로우만 추려서 정리한 실전 노트입니다.
+    당신이 회사에서 가장 비싼 고액 연봉의 컨설턴트를 고용했다고 상상해보세요. 그런데 100페이지짜리 방대한 PDF 문서를 그 컨설턴트 앞에 던져주며 &ldquo;이걸 읽고 요약해줘&quot;라고 요청합니다. 비싼 시간당 비용을 내면서 말이죠.
+이것이 지금 대부분의 AI 서비스가 범하고 있는 실수입니다. 대용량 파일을 고성능 AI 모델에 직접 업로드하면 비용은 폭등하고, 정작 중요한 핵심 내용은 누락되기 쉽습니다.
+더 나은 방법이 있습니다. 두 개의 AI 시스템을 역할 분담시키는 것입니다. 저렴하고 빠른 AI가 파일을 읽고 요약하면, 고성능 AI가 그 요약만 받아서 정확한 답변을 제공합니다.
+이 글에서는 왜 파일 직접 업로드가 문제인지, 그리고 두 개의 AI를 활용해 비용을 절감하고 성능을 향상시키는 구체적인 방법을 소개합니다.
  
-    <a href="/post/2026/02/2026-02-21-notebooklm-gemini3-mobile-video-workflow/" class="summary-more">더보기</a>
+    <a href="/post/2026/02/2026-02-22-ai-file-upload-optimization/" class="summary-more">더보기</a>
     
   </div>
   <hr class="summary-sep" />
 </article>
   <article class="post">
   <div class="post-title">
-    <a href="https://gyuha.com/post/2026/02/2026-02-21-anthropic-skills-complete-guide/" title="Anthropic Skill 가이드 전체 재구성: 설계, 테스트, 배포, 트러블슈팅까지">
+    <a href="https://gyuha.com/post/2026/02/2026-02-22-claude-md-ultimate-guide/" title="Claude Code CLAUDE.md 완성 가이드: 공식 문서 &#43; 실전 패턴으로 만드는 고성능 프로젝트 메모리">
       <div class="post-meta">
-        <h2>Anthropic Skill 가이드 전체 재구성: 설계, 테스트, 배포, 트러블슈팅까지</h2>
+        <h2>Claude Code CLAUDE.md 완성 가이드: 공식 문서 &#43; 실전 패턴으로 만드는 고성능 프로젝트 메모리</h2>
         <time>
           <i class="far fa-clock"></i>
-          2026년 02월 21일 17시 30분
+          2026년 02월 22일 19시 55분
         </time>
          
         <i class="far fa-folder"></i>
@@ -150,46 +154,21 @@ Sources https://www.youtube.com/watch?v=7vihh_G_434
     </a>
   </div>
   <div class="post-summary">
-    이 글은 Anthropic의 PDF 문서 The Complete Guide to Building Skills for Claude를 &ldquo;요약&quot;이 아니라 전체 흐름 기준으로 재구성한 버전입니다.
-문서의 챕터 구조(Introduction, Fundamentals, Planning and design, Testing and iteration, Distribution and sharing, Patterns and troubleshooting, Resources and references, Reference A/B/C)를 그대로 따라가면서, 실무에서 바로 쓸 수 있게 한국어로 재정렬했습니다.
-Sources https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Skill-for-Claude.pdf  
-    <a href="/post/2026/02/2026-02-21-anthropic-skills-complete-guide/" class="summary-more">더보기</a>
-    
-  </div>
-  <hr class="summary-sep" />
-</article>
-  <article class="post">
-  <div class="post-title">
-    <a href="https://gyuha.com/post/2026/02/2026-02-21-how-to-design-animation/" title="애니메이션 설계는 감각이 아니라 그래프다: 실무에 바로 쓰는 분해·조합 프레임워크">
-      <div class="post-meta">
-        <h2>애니메이션 설계는 감각이 아니라 그래프다: 실무에 바로 쓰는 분해·조합 프레임워크</h2>
-        <time>
-          <i class="far fa-clock"></i>
-          2026년 02월 21일 08시 05분
-        </time>
-         
-        <i class="far fa-folder"></i>
-        <a href="https://gyuha.com//categories/product">Product</a>
-        
-      </div>
-    </a>
-  </div>
-  <div class="post-summary">
-    애니메이션을 잘 만드는 사람은 &ldquo;감각이 좋다&quot;고 자주 말하지만, 실제 구현 단계에서는 감각만으로 재현 가능한 결과를 만들기 어렵습니다. 이번 글은 kciter의 글을 기반으로, 애니메이션을 그래프와 상태 전환 문제로 바꿔서 설계하는 실무 프레임워크를 정리한 요약 노트입니다.
+    CLAUDE.md는 Claude Code에서 단순한 메모 파일이 아니라, 세션마다 재주입되는 작업 기준 문서입니다. 그래서 이 파일의 밀도가 낮으면 매번 같은 실수가 반복되고, 반대로 핵심만 압축하면 결과 품질이 빠르게 안정됩니다. 이 글은 공식 문서에서 확인 가능한 사실과 커뮤니티 실전 패턴을 분리해, 바로 복붙 가능한 운영 형태로 재구성합니다.
  
-    <a href="/post/2026/02/2026-02-21-how-to-design-animation/" class="summary-more">더보기</a>
+    <a href="/post/2026/02/2026-02-22-claude-md-ultimate-guide/" class="summary-more">더보기</a>
     
   </div>
   <hr class="summary-sep" />
 </article>
   <article class="post">
   <div class="post-title">
-    <a href="https://gyuha.com/post/2026/02/2026-02-20-rag-contextual-retrieval-practical-guide/" title="아직도 RAG 쓰세요? 단순 RAG는 줄이고, Contextual Retrieval로 올리는 실전 가이드">
+    <a href="https://gyuha.com/post/2026/02/2026-02-22-writing-good-claude-md-practical-guide/" title="좋은 CLAUDE.md 작성법: 지시를 줄이고 성능을 올리는 실전 가이드">
       <div class="post-meta">
-        <h2>아직도 RAG 쓰세요? 단순 RAG는 줄이고, Contextual Retrieval로 올리는 실전 가이드</h2>
+        <h2>좋은 CLAUDE.md 작성법: 지시를 줄이고 성능을 올리는 실전 가이드</h2>
         <time>
           <i class="far fa-clock"></i>
-          2026년 02월 20일 22시 00분
+          2026년 02월 22일 18시 35분
         </time>
          
         <i class="far fa-folder"></i>
@@ -199,48 +178,47 @@ Sources https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Ski
     </a>
   </div>
   <div class="post-summary">
-    RAG는 죽지 않았습니다. 다만 &ldquo;문서를 잘라서 벡터 DB에 넣고 Top-k만 붙이는 단순 RAG&quot;가 빠르게 한계를 드러내고 있습니다.
-이 글은 아래 영상을 바탕으로, 왜 단순 RAG가 흔들리는지와 지금 바로 적용할 수 있는 개선 패턴을 정리한 실전 노트입니다.
-영상: 아직도 RAG 쓰세요? 이거 보고 나면 멈춥니다 채널: 메이커 에반 | Maker Evan  
-    <a href="/post/2026/02/2026-02-20-rag-contextual-retrieval-practical-guide/" class="summary-more">더보기</a>
+    코딩 에이전트 품질이 들쭉날쭉한 팀을 보면, 모델 자체보다 CLAUDE.md 설계에서 문제가 시작되는 경우가 많습니다. 이 글은 HumanLayer의 &ldquo;Writing a good CLAUDE.md&quot;를 바탕으로, 실제 프로젝트에서 바로 적용할 수 있는 운영 원칙을 압축해 정리합니다.
+ 
+    <a href="/post/2026/02/2026-02-22-writing-good-claude-md-practical-guide/" class="summary-more">더보기</a>
     
   </div>
   <hr class="summary-sep" />
 </article>
   <article class="post">
   <div class="post-title">
-    <a href="https://gyuha.com/post/2026/02/2026-02-19-caddy-vs-nginx-and-caddy-usage/" title="Caddy vs Nginx 비교와 Caddy 사용법: 예제로 이해하는 웹서버 선택 가이드">
+    <a href="https://gyuha.com/post/2026/02/2026-02-22-git-worktree-claude-parallel/" title="Git Worktree로 Claude Code 5개 세션을 동시에 돌리는 놀라운 방법">
       <div class="post-meta">
-        <h2>Caddy vs Nginx 비교와 Caddy 사용법: 예제로 이해하는 웹서버 선택 가이드</h2>
+        <h2>Git Worktree로 Claude Code 5개 세션을 동시에 돌리는 놀라운 방법</h2>
         <time>
           <i class="far fa-clock"></i>
-          2026년 02월 19일 11시 50분
+          2026년 02월 22일 00시 00분
         </time>
          
         <i class="far fa-folder"></i>
-        <a href="https://gyuha.com//categories/infrastructure">Infrastructure</a>
+        <a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
         
       </div>
     </a>
   </div>
   <div class="post-summary">
-    웹서버를 처음 고를 때 가장 자주 나오는 질문이 있습니다.
-&ldquo;Nginx를 써야 할까, Caddy를 써도 될까?&rdquo;
-이 글은 같은 요구사항을 두 서버 설정으로 나란히 보여주면서, 어디서 차이가 나는지 직관적으로 설명합니다.
+    요약 Git Worktree와 Claude Code의 조합으로 파일 충돌, 브랜치 충돌, 파일 잠금 문제 없이 여러 작업을 병렬로 처리하는 방법을 소개합니다. 하나의 명령어로 격리된 작업 환경을 만들고, 여러 Claude Code 세션을 동시에 실행할 수 있습니다.
+본문 Claude Code 세션 5개를 동시에 돌리고 있어요. 서로 코드 충돌? 없습니다. 브랜치 충돌? 없습니다. 파일 잠금? 없습니다. 비밀은 딱 한 줄이에요.
+claude -w feature-auth --tmux Git Worktree란? 하나의 리포에서 여러 브랜치를 동시에 체크아웃하는 기능이에요. 폴더를 복사하는 게 아니라 Git이 관리하는 격리 공간을 만드는 거예요.
  
-    <a href="/post/2026/02/2026-02-19-caddy-vs-nginx-and-caddy-usage/" class="summary-more">더보기</a>
+    <a href="/post/2026/02/2026-02-22-git-worktree-claude-parallel/" class="summary-more">더보기</a>
     
   </div>
   <hr class="summary-sep" />
 </article>
   <article class="post">
   <div class="post-title">
-    <a href="https://gyuha.com/post/2026/02/2026-02-18-claude-code-core-guide-opus-46/" title="Claude Code 핵심 가이드: 설치부터 Agent Team까지 (2026년 2월, Opus 4.6 기준)">
+    <a href="https://gyuha.com/post/2026/02/2026-02-21-claude-code-vibe-coding-workflow/" title="Claude Code 바이브 코딩 워크플로우: Skill·MCP·Agent·검증·Context 운영 한 번에 정리">
       <div class="post-meta">
-        <h2>Claude Code 핵심 가이드: 설치부터 Agent Team까지 (2026년 2월, Opus 4.6 기준)</h2>
+        <h2>Claude Code 바이브 코딩 워크플로우: Skill·MCP·Agent·검증·Context 운영 한 번에 정리</h2>
         <time>
           <i class="far fa-clock"></i>
-          2026년 02월 18일 23시 29분
+          2026년 02월 21일 23시 35분
         </time>
          
         <i class="far fa-folder"></i>
@@ -250,9 +228,33 @@ Sources https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Ski
     </a>
   </div>
   <div class="post-summary">
-    Claude Code를 막 도입했거나, 쓰고는 있는데 결과 품질이 들쑥날쑥하다면 이 글을 먼저 읽어보세요. 이 포스트는 2026년 2월 기준 Opus 4.6 환경을 바탕으로, 설치부터 운영 자동화까지 실제로 바로 적용할 수 있는 핵심만 압축해 정리합니다.
+    Claude Code를 &ldquo;그냥 잘 답하는 도구&quot;로 쓰면 세션이 길어질수록 품질이 흔들리고, 같은 작업도 매번 다시 설명하게 됩니다. 반대로 Skill-MCP-Agent-검증-Context 문서화를 체계로 묶으면, 바이브 코딩도 재현 가능한 개발 프로세스로 바뀝니다.
  
-    <a href="/post/2026/02/2026-02-18-claude-code-core-guide-opus-46/" class="summary-more">더보기</a>
+    <a href="/post/2026/02/2026-02-21-claude-code-vibe-coding-workflow/" class="summary-more">더보기</a>
+    
+  </div>
+  <hr class="summary-sep" />
+</article>
+  <article class="post">
+  <div class="post-title">
+    <a href="https://gyuha.com/post/2026/02/2026-02-21-webmcp-chrome-agentic-web-guide/" title="구글 WebMCP 핵심 정리: 웹사이트를 에이전트 친화적으로 바꾸는 가장 현실적인 방법">
+      <div class="post-meta">
+        <h2>구글 WebMCP 핵심 정리: 웹사이트를 에이전트 친화적으로 바꾸는 가장 현실적인 방법</h2>
+        <time>
+          <i class="far fa-clock"></i>
+          2026년 02월 21일 22시 00분
+        </time>
+         
+        <i class="far fa-folder"></i>
+        <a href="https://gyuha.com//categories/web">Web</a>
+        
+      </div>
+    </a>
+  </div>
+  <div class="post-summary">
+    브라우저를 쓰는 AI 에이전트가 늘어나면서, 웹사이트는 이제 &ldquo;사람만 읽기 좋은 UI&quot;를 넘어 &ldquo;에이전트가 결정적으로 조작하기 좋은 인터페이스&quot;를 요구받고 있습니다.
+ 
+    <a href="/post/2026/02/2026-02-21-webmcp-chrome-agentic-web-guide/" class="summary-more">더보기</a>
     
   </div>
   <hr class="summary-sep" />
@@ -302,9 +304,9 @@ Sources https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Ski
     <li class="page-item">
       <a class="page-link" href="#">46</a>
     </li>
-                                                                   
+                                                                            
     <li class="page-item ">
-      <a class="page-link" href="/page/53/">53</a>
+      <a class="page-link" href="/page/54/">54</a>
     </li>
      
     <li class="page-item ">
@@ -312,7 +314,7 @@ Sources https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Ski
     </li>
     
     <li class="page-item ">
-      <a class="page-link" href="/page/53/" tabindex="-1">&raquo;&raquo;</a>
+      <a class="page-link" href="/page/54/" tabindex="-1">&raquo;&raquo;</a>
     </li>
     
   </ul>
@@ -403,11 +405,15 @@ Sources https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Ski
     태그
   </div>
   <div class="widget-content">
+    <a href="/tags/agent-harness/" class="badge badge-secondary">Agent Harness</a>
+    <a href="/tags/agent-skills/" class="badge badge-secondary">Agent Skills</a>
     <a href="/tags/agent-md/" class="badge badge-secondary">Agent-Md</a>
     <a href="/tags/agentic-workflow/" class="badge badge-secondary">Agentic Workflow</a>
     <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
     <a href="/tags/ai/" class="badge badge-secondary">Ai</a>
     <a href="/tags/ai-agents/" class="badge badge-secondary">AI Agents</a>
+    <a href="/tags/ai-engineering/" class="badge badge-secondary">AI Engineering</a>
+    <a href="/tags/ai-tools/" class="badge badge-secondary">AI Tools</a>
     <a href="/tags/ai-video/" class="badge badge-secondary">Ai-Video</a>
     <a href="/tags/animation/" class="badge badge-secondary">Animation</a>
     <a href="/tags/anthropic/" class="badge badge-secondary">Anthropic</a>
@@ -472,6 +478,8 @@ Sources https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Ski
     <a href="/tags/notebooklm/" class="badge badge-secondary">Notebooklm</a>
     <a href="/tags/obsidian/" class="badge badge-secondary">Obsidian</a>
     <a href="/tags/ollama/" class="badge badge-secondary">Ollama</a>
+    <a href="/tags/open-source/" class="badge badge-secondary">Open Source</a>
+    <a href="/tags/openai/" class="badge badge-secondary">Openai</a>
     <a href="/tags/opencode/" class="badge badge-secondary">Opencode</a>
     <a href="/tags/opensource/" class="badge badge-secondary">Opensource</a>
     <a href="/tags/personalization/" class="badge badge-secondary">Personalization</a>
@@ -479,9 +487,11 @@ Sources https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Ski
     <a href="/tags/plugins/" class="badge badge-secondary">Plugins</a>
     <a href="/tags/postgresql/" class="badge badge-secondary">Postgresql</a>
     <a href="/tags/pptx/" class="badge badge-secondary">Pptx</a>
+    <a href="/tags/product-engineer/" class="badge badge-secondary">Product-Engineer</a>
     <a href="/tags/productivity/" class="badge badge-secondary">Productivity</a>
     <a href="/tags/project-management/" class="badge badge-secondary">Project-Management</a>
     <a href="/tags/prompt-engineering/" class="badge badge-secondary">Prompt-Engineering</a>
+    <a href="/tags/prompting/" class="badge badge-secondary">Prompting</a>
     <a href="/tags/prompts/" class="badge badge-secondary">Prompts</a>
     <a href="/tags/python/" class="badge badge-secondary">Python</a>
     <a href="/tags/quant/" class="badge badge-secondary">Quant</a>

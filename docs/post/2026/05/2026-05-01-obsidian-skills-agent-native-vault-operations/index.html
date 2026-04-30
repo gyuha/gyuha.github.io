@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'obsidian-skills가 흥미로운 이유: 에이전트가 옵시디언 볼트를 네이티브하게 다루게 만든다'" />
+  <title>obsidian-skills가 흥미로운 이유: 에이전트가 옵시디언 볼트를 네이티브하게 다루게 만든다  | 신규하 블로그</title>
+  <meta property="og:title" content="obsidian-skills가 흥미로운 이유: 에이전트가 옵시디언 볼트를 네이티브하게 다루게 만든다" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-05-01"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/05/2026-05-01-obsidian-skills-agent-native-vault-operations/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="Obsidian" />
+  
+  <meta property="og:tags" content="Agent Skills" />
+  
+  <meta property="og:tags" content="Claude Code" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/05/2026-05-01-obsidian-skills-agent-native-vault-operations/">
+          <h1>
+            obsidian-skills가 흥미로운 이유: 에이전트가 옵시디언 볼트를 네이티브하게 다루게 만든다
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/05/2026-05-01-obsidian-skills-agent-native-vault-operations/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p><code>kepano/obsidian-skills</code>는 단순한 “옵시디언용 프롬프트 모음”이 아니다. 이 저장소의 진짜 의미는 <strong>에이전트가 옵시디언 볼트를 사람처럼이 아니라, 옵시디언 문법과 파일 형식을 이해하는 도구처럼 다루게 만든다</strong>는 데 있다.</p>
+<p>즉, 일반 마크다운 편집 수준을 넘어서</p>
+<ul>
+<li>Obsidian Flavored Markdown</li>
+<li>Bases</li>
+<li>JSON Canvas</li>
+<li>Obsidian CLI</li>
+<li>웹 문서 정제 ingest</li>
+</ul>
+<p>까지 한꺼번에 스킬로 묶는다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>GitHub: <a href="https://github.com/kepano/obsidian-skills">https://github.com/kepano/obsidian-skills</a></li>
+<li>README: <a href="https://raw.githubusercontent.com/kepano/obsidian-skills/main/README.md">https://raw.githubusercontent.com/kepano/obsidian-skills/main/README.md</a></li>
+</ul>
+<h2 id="1-이-저장소는-옵시디언-자동화보다-볼트-운영-레이어에-가깝다">1. 이 저장소는 “옵시디언 자동화”보다 “볼트 운영 레이어”에 가깝다</h2>
+<p>README 첫 문장부터 방향이 분명하다.<br>
+이 스킬들은 Agent Skills specification을 따르기 때문에 Claude Code, Codex CLI, OpenCode 같은 <strong>skills-compatible agent</strong>에서 공통으로 쓸 수 있다.</p>
+<p>이 말은 중요하다.</p>
+<p>옵시디언을 다루는 방법이 이제 특정 앱 플러그인에 묶이지 않고,</p>
+<ul>
+<li>스킬 표준</li>
+<li>파일 포맷</li>
+<li>CLI</li>
+</ul>
+<p>조합으로 추상화된다는 뜻이기 때문이다.</p>
+<p>즉 <code>obsidian-skills</code>는 “에이전트가 옵시디언을 이해하게 만드는 번역기”가 아니라, <strong>볼트를 조작하는 공용 작업 프로토콜</strong>에 가깝다.</p>
+<pre class="mermaid">flowchart LR
+    A[Claude Code / Codex / OpenCode] --> B[obsidian-skills]
+    B --> C[Obsidian Markdown]
+    B --> D[Obsidian Bases]
+    B --> E[JSON Canvas]
+    B --> F[Obsidian CLI]
+    B --> G[Defuddle]
+    C --> H[Vault]
+    D --> H
+    E --> H
+    F --> H
+    G --> H</pre><h2 id="2-핵심은-5개-스킬이-서로-다른-파일-형식과-작업층을-담당한다는-점이다">2. 핵심은 5개 스킬이 서로 다른 파일 형식과 작업층을 담당한다는 점이다</h2>
+<p>이 저장소의 장점은 “옵시디언 지원”을 한 덩어리로 다루지 않는다는 데 있다.</p>
+<h3 id="2-1-obsidian-markdown">2-1. obsidian-markdown</h3>
+<p>이 스킬은 일반 Markdown이 아니라 <strong>Obsidian Flavored Markdown</strong>을 다룬다.</p>
+<ul>
+<li>wikilinks</li>
+<li>embeds</li>
+<li>callouts</li>
+<li>properties</li>
+<li>block references</li>
+</ul>
+<p>같은 문법을 정확히 이해하게 만든다.</p>
+<p>이 차이는 크다.<br>
+에이전트가 평범한 Markdown 편집기처럼 행동하면 옵시디언 볼트의 연결 구조를 잘 못 쓴다.<br>
+반대로 이 스킬이 있으면 노트 하나를 쓰는 게 아니라 <strong>볼트의 링크 그래프를 갱신</strong>하는 쪽으로 움직인다.</p>
+<h3 id="2-2-obsidian-bases">2-2. obsidian-bases</h3>
+<p><code>.base</code> 파일을 다루는 스킬은 특히 중요하다.<br>
+옵시디언을 메모 앱으로만 보지 않고, 데이터베이스적 뷰를 가진 작업 공간으로 보게 만들기 때문이다.</p>
+<ul>
+<li>filters</li>
+<li>formulas</li>
+<li>summaries</li>
+<li>table/cards/list/map views</li>
+</ul>
+<p>를 YAML로 다루는 방식은, 에이전트가 노트를 단순 문서가 아니라 <strong>조회 가능한 구조화 데이터</strong>로 취급하게 만든다.</p>
+<h3 id="2-3-json-canvas">2-3. json-canvas</h3>
+<p><code>.canvas</code> 파일은 시각적 구조를 담당한다.</p>
+<ul>
+<li>nodes</li>
+<li>edges</li>
+<li>groups</li>
+<li>layout</li>
+</ul>
+<p>를 JSON Canvas spec에 맞춰 만들 수 있기 때문에, 에이전트가 마인드맵, 플로우, 조사 보드, 설계도 같은 시각 결과물을 파일로 직접 생성할 수 있다.</p>
+<p>이건 단순 시각화가 아니라, 텍스트 중심 PKM을 <strong>공간적 사고 도구</strong>로 확장하는 역할이다.</p>
+<h3 id="2-4-obsidian-cli">2-4. obsidian-cli</h3>
+<p>이 스킬은 이미 열려 있는 Obsidian 인스턴스와 CLI로 상호작용한다.</p>
+<ul>
+<li>읽기</li>
+<li>생성</li>
+<li>append</li>
+<li>search</li>
+<li>property set</li>
+<li>daily note 작업</li>
+<li>task 관리</li>
+<li>plugin/theme 개발</li>
+</ul>
+<p>까지 포함한다.</p>
+<p>즉 파일을 수정하는 것에 그치지 않고, <strong>실행 중인 옵시디언 환경을 조작</strong>하는 층까지 올라간다.</p>
+<h3 id="2-5-defuddle">2-5. defuddle</h3>
+<p><code>defuddle</code>은 웹 페이지를 깨끗한 Markdown으로 정리해 주는 ingest 도구다.</p>
+<p>이 스킬이 중요한 이유는, 많은 볼트 작업이 사실</p>
+<ul>
+<li>읽기</li>
+<li>정리</li>
+<li>요약</li>
+<li>링크화</li>
+</ul>
+<p>이기 때문이다.</p>
+<p>즉 외부 웹을 볼트 안으로 들여올 때, 광고/네비게이션/잡음을 제거한 <strong>토큰 효율적인 입력 파이프라인</strong>을 제공한다.</p>
+<h2 id="3-이-저장소는-노트-작성보다-지식-운영에-더-가깝다">3. 이 저장소는 “노트 작성”보다 “지식 운영”에 더 가깝다</h2>
+<p>겉으로 보면 5개 스킬이 따로 노는 것 같지만, 실제로는 하나의 흐름으로 읽는 편이 맞다.</p>
+<ol>
+<li><code>defuddle</code>로 웹 자료를 Markdown으로 정리한다</li>
+<li><code>obsidian-markdown</code>으로 영구 노트나 정리 문서를 만든다</li>
+<li><code>obsidian-bases</code>로 구조화된 뷰를 만든다</li>
+<li><code>json-canvas</code>로 시각 맵을 만든다</li>
+<li><code>obsidian-cli</code>로 실제 볼트 운영과 검색, 갱신을 수행한다</li>
+</ol>
+<p>즉 이 저장소는 “예쁘게 메모 쓰기”보다 <strong>수집 → 구조화 → 시각화 → 운영</strong> 루프를 제공한다.</p>
+<pre class="mermaid">flowchart TD
+    A[웹/문서 입력] --> B[defuddle]
+    B --> C[obsidian-markdown]
+    C --> D[obsidian-bases]
+    C --> E[json-canvas]
+    D --> F[vault query / dashboards]
+    E --> F
+    F --> G[obsidian-cli로 검색·수정·운영]</pre><h2 id="4-기존-옵시디언--ai-글들과-다른-점">4. 기존 옵시디언 + AI 글들과 다른 점</h2>
+<p>우리가 최근 다뤘던 옵시디언 관련 흐름은 주로</p>
+<ul>
+<li>raw / permanent / wiki 구조</li>
+<li>Claude Code 기반 ingest</li>
+<li>제텔카스텐 자동화</li>
+</ul>
+<p>같은 지식 관리 파이프라인에 가까웠다.</p>
+<p>반면 <code>obsidian-skills</code>는 그 위에 한 층 더 올라간다.<br>
+이 저장소는 “무엇을 정리할까”보다 <strong>에이전트가 옵시디언의 파일 형식과 인터페이스를 얼마나 정확히 다루는가</strong>에 초점이 있다.</p>
+<p>즉 이전 글들이 워크플로 설계였다면, 이 저장소는 그 워크플로를 받쳐 주는 <strong>파일 포맷/도구 하네스</strong>에 가깝다.</p>
+<h2 id="5-설치-방식도-중요한-메시지를-준다">5. 설치 방식도 중요한 메시지를 준다</h2>
+<p>README는 세 가지 설치 방식을 보여 준다.</p>
+<ul>
+<li>marketplace</li>
+<li><code>npx skills</code></li>
+<li>수동 설치</li>
+</ul>
+<p>그리고 Claude Code, Codex CLI, OpenCode 각각에 맞는 배치 방식을 설명한다.</p>
+<p>이건 단순 설치 안내가 아니다.<br>
+옵시디언 작업이 이제 한 제품 내부 기능이 아니라, <strong>에이전트 생태계 전반에서 재사용 가능한 skill pack</strong>이 되고 있다는 신호다.</p>
+<p>즉 이 저장소의 진짜 가치는 옵시디언만이 아니라, <strong>skills ecosystem</strong>에 있다.</p>
+<h2 id="6-실전-적용-포인트">6. 실전 적용 포인트</h2>
+<p>이 저장소는 특히 이런 경우에 강하다.</p>
+<h3 id="6-1-볼트를-지식-db처럼-운영할-때">6-1. 볼트를 지식 DB처럼 운영할 때</h3>
+<ul>
+<li><code>.base</code> 파일</li>
+<li>properties</li>
+<li>structured note conventions</li>
+</ul>
+<p>이 중요할수록 효과가 크다.</p>
+<h3 id="6-2-조사리서치-볼트를-운영할-때">6-2. 조사/리서치 볼트를 운영할 때</h3>
+<ul>
+<li><code>defuddle</code>로 웹 수집</li>
+<li><code>obsidian-markdown</code>으로 정리</li>
+<li><code>json-canvas</code>로 관계 시각화</li>
+</ul>
+<p>루프가 잘 맞는다.</p>
+<h3 id="6-3-에이전트가-실제-볼트를-수정해야-할-때">6-3. 에이전트가 실제 볼트를 수정해야 할 때</h3>
+<p>그냥 마크다운 파일만 쓰게 하는 것보다, 옵시디언 CLI와 형식별 스킬을 주는 편이 훨씬 안전하다.</p>
+<h2 id="7-결론">7. 결론</h2>
+<p><code>kepano/obsidian-skills</code>가 흥미로운 이유는 옵시디언에 AI를 “붙였다”는 데 있지 않다.<br>
+진짜 의미는 <strong>옵시디언 볼트를 에이전트가 오해 없이 다룰 수 있는 네이티브 작업 공간으로 만든다</strong>는 데 있다.</p>
+<p>그래서 이 저장소는 단순 생산성 팁보다 더 큰 흐름을 보여 준다.</p>
+<ul>
+<li>메모 앱이 파일 기반 지식 시스템으로 바뀌고</li>
+<li>그 파일 시스템이 에이전트 친화적 스킬 표준으로 포장되며</li>
+<li>결국 볼트 전체가 하나의 작업 가능한 지식 환경이 된다</li>
+</ul>
+<p>옵시디언을 AI와 함께 오래 쓸 생각이라면, 이 저장소는 “노트 잘 쓰는 법”보다 <strong>에이전트가 볼트를 제대로 다루게 만드는 기본기</strong>에 더 가깝다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 05월 01일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-01-openai-prompt-guidance-outcome-first/" rel="prev">
+        <span>OpenAI 프롬프트 가이드가 말하는 핵심: 과정을 지시하지 말고 결과를 정의하라</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-01-huashu-design-html-native-design-skill/" rel="next">
+        <span>Huashu Design이 흥미로운 이유: Claude Code 안에서 바로 돌아가는 HTML 네이티브 디자인 스킬</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-이-저장소는-옵시디언-자동화보다-볼트-운영-레이어에-가깝다">1. 이 저장소는 “옵시디언 자동화”보다 “볼트 운영 레이어”에 가깝다</a></li>
+    <li><a href="#2-핵심은-5개-스킬이-서로-다른-파일-형식과-작업층을-담당한다는-점이다">2. 핵심은 5개 스킬이 서로 다른 파일 형식과 작업층을 담당한다는 점이다</a>
+      <ul>
+        <li><a href="#2-1-obsidian-markdown">2-1. obsidian-markdown</a></li>
+        <li><a href="#2-2-obsidian-bases">2-2. obsidian-bases</a></li>
+        <li><a href="#2-3-json-canvas">2-3. json-canvas</a></li>
+        <li><a href="#2-4-obsidian-cli">2-4. obsidian-cli</a></li>
+        <li><a href="#2-5-defuddle">2-5. defuddle</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-이-저장소는-노트-작성보다-지식-운영에-더-가깝다">3. 이 저장소는 “노트 작성”보다 “지식 운영”에 더 가깝다</a></li>
+    <li><a href="#4-기존-옵시디언--ai-글들과-다른-점">4. 기존 옵시디언 + AI 글들과 다른 점</a></li>
+    <li><a href="#5-설치-방식도-중요한-메시지를-준다">5. 설치 방식도 중요한 메시지를 준다</a></li>
+    <li><a href="#6-실전-적용-포인트">6. 실전 적용 포인트</a>
+      <ul>
+        <li><a href="#6-1-볼트를-지식-db처럼-운영할-때">6-1. 볼트를 지식 DB처럼 운영할 때</a></li>
+        <li><a href="#6-2-조사리서치-볼트를-운영할-때">6-2. 조사/리서치 볼트를 운영할 때</a></li>
+        <li><a href="#6-3-에이전트가-실제-볼트를-수정해야-할-때">6-3. 에이전트가 실제 볼트를 수정해야 할 때</a></li>
+      </ul>
+    </li>
+    <li><a href="#7-결론">7. 결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/obsidian/" class="badge badge-secondary">Obsidian</a>
+    <a href="/tags/agent-skills/" class="badge badge-secondary">Agent Skills</a>
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude Code</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
