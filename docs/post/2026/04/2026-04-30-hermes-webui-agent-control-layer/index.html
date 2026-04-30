@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Hermes &#43; WebUI가 흥미로운 이유: 에이전트를 ‘터미널 앱’에서 ‘운영 가능한 시스템’으로 바꾼다'" />
+  <title>Hermes &#43; WebUI가 흥미로운 이유: 에이전트를 ‘터미널 앱’에서 ‘운영 가능한 시스템’으로 바꾼다  | 신규하 블로그</title>
+  <meta property="og:title" content="Hermes &#43; WebUI가 흥미로운 이유: 에이전트를 ‘터미널 앱’에서 ‘운영 가능한 시스템’으로 바꾼다" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-04-30"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/04/2026-04-30-hermes-webui-agent-control-layer/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="hermes" />
+  
+  <meta property="og:tags" content="agents" />
+  
+  <meta property="og:tags" content="webui" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/04/2026-04-30-hermes-webui-agent-control-layer/">
+          <h1>
+            Hermes &#43; WebUI가 흥미로운 이유: 에이전트를 ‘터미널 앱’에서 ‘운영 가능한 시스템’으로 바꾼다
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/04/2026-04-30-hermes-webui-agent-control-layer/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>이 영상의 핵심은 <code>Hermes WebUI가 예쁘다</code>는 데 있지 않습니다. 더 중요한 포인트는, Hermes 같은 오픈소스 에이전트가 강력해질수록 오히려 <strong>터미널만으로는 관리가 어려워지고, 그 위에 시각적 운영 레이어가 필요해진다</strong> 는 점을 잘 보여 준다는 것입니다. 영상은 바로 그 간극을 WebUI가 메운다고 설명합니다. <a href="https://www.youtube.com/watch?v=RxbkSe4Et4k">YouTube</a></p>
+<p>Hermes 자체는 이미 강력한 오픈소스 에이전트입니다. 공식 GitHub README는 이를 <code>the self-improving AI agent</code> 라고 설명하고, 내장 학습 루프, 지속 메모리, 스케줄링, 병렬 서브에이전트, 다중 플랫폼 게이트웨이를 강점으로 내세웁니다. 그런데 이런 능력이 많아질수록 사용자에게 필요한 것은 또 하나 생깁니다. 바로 <strong>현재 무슨 일이 벌어지고 있는지 보고, 스킬과 세션과 메모리를 정리하고, 작업을 시각적으로 통제하는 인터페이스</strong> 입니다. <a href="https://github.com/NousResearch/hermes-agent">Hermes Agent GitHub</a>, <a href="https://hermes-agent.ai/tools/hermes-web-ui">Hermes Web UI</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=RxbkSe4Et4k">https://www.youtube.com/watch?v=RxbkSe4Et4k</a></li>
+<li><a href="https://github.com/NousResearch/hermes-agent">https://github.com/NousResearch/hermes-agent</a></li>
+<li><a href="https://hermes-agent.ai/tools/hermes-web-ui">https://hermes-agent.ai/tools/hermes-web-ui</a></li>
+</ul>
+<h2 id="1-hermes가-강한-이유와-webui가-필요한-이유는-같은-곳에서-나온다">1. Hermes가 강한 이유와 WebUI가 필요한 이유는 같은 곳에서 나온다</h2>
+<p>Hermes Agent 공식 README를 보면 이 프로젝트는 꽤 야심찹니다.</p>
+<ul>
+<li>built-in learning loop</li>
+<li>persistent memory</li>
+<li>skills self-improvement</li>
+<li>FTS5 기반 세션 검색</li>
+<li>scheduled automations</li>
+<li>subagent parallelization</li>
+<li>Telegram/Discord/Slack/WhatsApp/Signal/CLI 게이트웨이</li>
+</ul>
+<p>즉 Hermes는 단순 채팅형 에이전트가 아니라, <strong>시간을 두고 학습하고, 여러 채널에 걸쳐 일하고, 스케줄과 메모리를 끌고 가는 시스템</strong> 입니다. <a href="https://github.com/NousResearch/hermes-agent">Hermes Agent GitHub</a></p>
+<p>문제는 바로 여기서 생깁니다. 기능이 많아질수록 CLI만으로는:</p>
+<ul>
+<li>현재 어떤 세션이 살아 있는지</li>
+<li>어떤 스케줄 잡이 도는지</li>
+<li>어떤 스킬이 활성화돼 있는지</li>
+<li>어떤 메모리와 프로필이 붙어 있는지</li>
+</ul>
+<p>를 한눈에 보기 어렵습니다.</p>
+<p>그래서 WebUI는 부가 기능이 아니라, <strong>복잡해진 에이전트 런타임을 사람이 운영 가능한 형태로 바꾸는 인터페이스</strong> 로 등장합니다.</p>
+<h2 id="2-공식-설명도-webui를-cli-대체가-아니라-시각적-제어-레이어로-본다">2. 공식 설명도 WebUI를 “CLI 대체”가 아니라 “시각적 제어 레이어”로 본다</h2>
+<p>Hermes Web UI 공식 페이지는 이 도구를 browser-based dashboard 라고 설명합니다. 주요 목적도 분명합니다.</p>
+<ul>
+<li>active agents 모니터링</li>
+<li>conversation history inspection</li>
+<li>skill management</li>
+<li>browser-based control panel</li>
+</ul>
+<p>그리고 가장 중요한 문장은 이것입니다. WebUI는 CLI를 대체한다기보다, <strong>모니터링과 관리가 쉬워지는 visual control layer</strong> 로 이해해야 한다는 점입니다. <a href="https://hermes-agent.ai/tools/hermes-web-ui">Hermes Web UI</a></p>
+<p>이 정의는 영상의 흐름과 정확히 맞습니다. 영상도 반복해서 “터미널보다 훨씬 관리하기 쉽다”, “에이전트와 직접 대화하기 편하다”, “여러 에이전트와 프로필을 정리하기 좋다”고 설명합니다. <a href="https://www.youtube.com/watch?v=RxbkSe4Et4k">YouTube</a></p>
+<h2 id="3-이-영상이-보여-주는-가장-큰-변화는-예쁜-ui가-아니라-운영-가시성이다">3. 이 영상이 보여 주는 가장 큰 변화는 ‘예쁜 UI’가 아니라 ‘운영 가시성’이다</h2>
+<p>영상 초반은 Hermes의 기존 터미널 UI와 WebUI를 직접 비교합니다. 메시지는 분명합니다. 터미널 UI도 괜찮지만:</p>
+<ul>
+<li>세션이 많아지면 지저분해지고</li>
+<li>상태를 한눈에 보기 어렵고</li>
+<li>비기술 사용자에게는 진입 장벽이 높아집니다</li>
+</ul>
+<p>반면 WebUI는:</p>
+<ul>
+<li>현재 에이전트가 online인지</li>
+<li>어떤 provider/model이 연결돼 있는지</li>
+<li>reasoning mode가 무엇인지</li>
+<li>어떤 task list가 살아 있는지</li>
+</ul>
+<p>를 더 쉽게 드러냅니다. <a href="https://www.youtube.com/watch?v=RxbkSe4Et4k">YouTube</a></p>
+<p>이 차이는 꽤 큽니다. 에이전트가 실험 단계에서는 CLI로 충분할 수 있지만, 실제로 일상 업무에 붙기 시작하면 중요한 것은 추론 품질만이 아니라 <strong>상태 가시성(state visibility)</strong> 입니다.</p>
+<h2 id="4-hermes-webui는-에이전트-운영-대시보드처럼-작동한다">4. Hermes WebUI는 “에이전트 운영 대시보드”처럼 작동한다</h2>
+<p>영상 중반 이후를 보면 WebUI가 단순 채팅창이 아니라 운영 대시보드처럼 보입니다.</p>
+<ul>
+<li>provider 전환</li>
+<li>reasoning mode 변경</li>
+<li>spaces 전환</li>
+<li>personal memory 확인</li>
+<li>scheduled jobs 확인/삭제</li>
+<li>active tasks 관리</li>
+<li>prompt 수정</li>
+<li>output 위치 변경</li>
+<li>스케줄 수정</li>
+<li>skills 관리</li>
+</ul>
+<p>이런 것들이 한 화면 안에서 이뤄집니다. <a href="https://www.youtube.com/watch?v=RxbkSe4Et4k">YouTube</a></p>
+<p>즉 이 도구는 “에이전트와 대화하는 화면”이 아니라, <strong>에이전트 런타임의 설정·기억·스케줄·세션을 직접 다루는 관리 콘솔</strong> 에 가깝습니다.</p>
+<pre class="mermaid">flowchart LR
+    A["Hermes CLI / runtime"] --> B["WebUI control layer"]
+    B --> C["세션 / spaces"]
+    B --> D["memory / profiles"]
+    B --> E["scheduled jobs"]
+    B --> F["skills 관리"]
+    B --> G["provider / model / reasoning"]</pre><h2 id="5-claude-code와의-비교가-꽤-정확하다-즉시성-vs-통제력">5. Claude Code와의 비교가 꽤 정확하다: 즉시성 vs 통제력</h2>
+<p>영상에서 가장 인상적인 비유 중 하나는 Claude Code와 Hermes의 차이를 <code>바로 탈 수 있는 차</code> 와 <code>직접 조립하는 차</code> 로 비교한 부분입니다. <a href="https://www.youtube.com/watch?v=RxbkSe4Et4k">YouTube</a></p>
+<p>이 비유는 단순 취향 문제가 아닙니다.</p>
+<ul>
+<li>Claude Code는 덜 기술적이고 바로 쓸 수 있다</li>
+<li>Hermes는 더 많은 설정과 관리가 필요하다</li>
+<li>대신 모델 선택, 성격, 스킬, 런타임 전반에 대한 통제력이 훨씬 크다</li>
+</ul>
+<p>즉 Hermes + WebUI 조합은 “누구나 바로 쓰는 도구”보다는, <strong>오픈소스 에이전트를 자기 방식대로 운용하고 싶은 사용자</strong> 에게 더 잘 맞습니다.</p>
+<p>이 관점은 중요합니다. 많은 오픈소스 에이전트 프로젝트가 기능은 많은데 실제 운영 감각이 떨어지는 이유는, 사용자가 그 복잡성을 다 받아내야 하기 때문입니다. WebUI는 바로 그 복잡성의 일부를 흡수합니다.</p>
+<h2 id="6-특히-여러-모델과-provider를-오가는-사람에게-의미가-크다">6. 특히 여러 모델과 provider를 오가는 사람에게 의미가 크다</h2>
+<p>영상은 provider 전환 장면도 꽤 강조합니다. OpenRouter, Ollama, Mistral, DeepSeek 같은 다양한 경로를 바꿔 가며 연결하는 데모를 보여 줍니다. <a href="https://www.youtube.com/watch?v=RxbkSe4Et4k">YouTube</a></p>
+<p>공식 README도 Hermes가 OpenRouter 200+ models, OpenAI, Anthropic, Hugging Face, 자체 endpoint 등 다양한 모델 공급자를 바꿔 쓸 수 있다고 밝힙니다. <a href="https://github.com/NousResearch/hermes-agent">Hermes Agent GitHub</a></p>
+<p>이 말은 곧:</p>
+<ul>
+<li>모델 실험을 많이 하는 사람</li>
+<li>비용/성능 조합을 자주 바꾸는 사람</li>
+<li>로컬 모델과 원격 모델을 섞어 쓰는 사람</li>
+</ul>
+<p>에게는 WebUI가 꽤 큰 가치가 있다는 뜻입니다. CLI에서도 할 수는 있지만, <strong>시각적으로 현재 연결 상태를 확인하고 프로필 단위로 정리하는 것</strong> 이 운영 부담을 크게 줄입니다.</p>
+<h2 id="7-memory-spaces-scheduled-jobs가-한-화면에-보인다는-점이-진짜-중요하다">7. Memory, spaces, scheduled jobs가 한 화면에 보인다는 점이 진짜 중요하다</h2>
+<p>영상에서 후반부에 가장 눈에 띄는 것은 채팅 자체보다:</p>
+<ul>
+<li>personal memory</li>
+<li>spaces</li>
+<li>scheduled jobs</li>
+<li>active tasks</li>
+</ul>
+<p>같은 운영성 요소입니다. <a href="https://www.youtube.com/watch?v=RxbkSe4Et4k">YouTube</a></p>
+<p>이게 왜 중요하냐면, 현대 에이전트 시스템은 점점:</p>
+<ul>
+<li>단일 대화</li>
+<li>단일 작업</li>
+<li>단일 세션</li>
+</ul>
+<p>에서 벗어나고 있기 때문입니다.</p>
+<p>에이전트가 실제로 유용해지려면:</p>
+<ul>
+<li>작업별 공간이 분리되고</li>
+<li>기억을 선택적으로 관리하고</li>
+<li>자동 스케줄 작업이 돌고</li>
+<li>실패한 잡과 활성 잡을 구분해 정리해야 합니다</li>
+</ul>
+<p>즉 WebUI가 필요한 이유는 결국 <strong>에이전트가 장기 실행 시스템이 되기 시작했기 때문</strong> 입니다.</p>
+<h2 id="8-팀-도입-관점에서도-webui는-데모용-이상이다">8. 팀 도입 관점에서도 WebUI는 ‘데모용’ 이상이다</h2>
+<p>공식 Hermes Web UI 설명은 이 도구가 founders, operators, small teams 에게 특히 유용하다고 말합니다. 이유는 명확합니다.</p>
+<ul>
+<li>learning curve를 낮추고</li>
+<li>demos를 더 깔끔하게 만들고</li>
+<li>터미널에 익숙하지 않은 동료도 이해하기 쉽게 해 주기 때문입니다 <a href="https://hermes-agent.ai/tools/hermes-web-ui">Hermes Web UI</a></li>
+</ul>
+<p>이건 단순 “보기 좋다” 수준이 아닙니다. 에이전트 시스템은 혼자 실험할 때보다 <strong>팀 안에서 설명하고 넘겨주고 같이 관리할 수 있을 때</strong> 훨씬 가치가 커집니다. WebUI는 바로 그 지점을 돕습니다.</p>
+<p>즉 Hermes WebUI는 개인의 편의성 도구를 넘어서, <strong>에이전트의 조직 내 채택 가능성</strong> 을 높이는 요소로도 볼 수 있습니다.</p>
+<pre class="mermaid">flowchart TD
+    A["오픈소스 에이전트 기능 증가"] --> B["CLI 복잡성 증가"]
+    B --> C["가시성 부족"]
+    C --> D["운영/도입 어려움"]
+    D --> E["WebUI 필요"]
+    E --> F["모니터링"]
+    E --> G["메모리/스킬 관리"]
+    E --> H["세션/스케줄 제어"]
+    E --> I["팀 설명/데모"]</pre><h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<p>이 영상에서 바로 가져갈 수 있는 포인트는 꽤 실용적입니다.</p>
+<ol>
+<li>Hermes를 serious하게 쓸 거라면 CLI만이 아니라 WebUI도 같이 본다</li>
+<li>WebUI는 채팅창이 아니라 운영 콘솔로 이해한다</li>
+<li>여러 provider/model을 자주 바꾸는 경우 특히 가치가 크다</li>
+<li>scheduled jobs, memory, spaces, skills가 늘어나면 시각 관리 레이어가 사실상 필수에 가까워진다</li>
+<li>팀 공유나 데모, 운영 인수인계가 필요한 경우 WebUI가 도입 장벽을 크게 낮춘다</li>
+</ol>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>Hermes Agent는 이미 학습 루프, 메모리, 스케줄링, 병렬화가 있는 강한 오픈소스 에이전트다.</li>
+<li>기능이 많아질수록 CLI만으로는 운영 가시성이 부족해진다.</li>
+<li>Hermes WebUI는 CLI 대체가 아니라 메모리·세션·스킬·스케줄을 관리하는 visual control layer다.</li>
+<li>이 조합은 Claude Code보다 더 많은 설정을 요구하지만, 대신 통제력과 커스터마이징이 크다.</li>
+<li>여러 모델과 provider를 실험하거나 팀 단위로 운영할수록 WebUI의 가치가 커진다.</li>
+<li>결국 WebUI의 진짜 의미는 ‘예쁜 화면’이 아니라 에이전트를 운영 가능한 시스템으로 바꾸는 데 있다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p><code>Hermes + WebUI</code> 가 흥미로운 이유는 또 하나의 채팅 UI가 생겼기 때문이 아닙니다. 더 중요한 것은, 오픈소스 에이전트가 강해질수록 필요한 것이 단순 추론 능력이 아니라 <strong>가시성과 통제력</strong> 이라는 사실을 잘 보여 주기 때문입니다.</p>
+<p>Hermes가 엔진이라면 WebUI는 계기판이자 관제탑에 가깝습니다. 그리고 에이전트가 점점 장기 기억, 스케줄 잡, 여러 세션과 스킬을 끌고 가는 방향으로 진화할수록, 이런 시각적 운영 레이어는 선택이 아니라 사실상 기본 요소가 될 가능성이 큽니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 04월 30일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/04/2026-04-30-obsidian-zettelkasten-automation-with-claude-code/" rel="prev">
+        <span>옵시디언 &#43; Claude Code로 제텔카스텐을 자동화한다는 것: 메모가 서로 말을 걸게 만드는 구조</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/04/2026-04-30-claude-code-higgsfield-mcp-content-machine/" rel="next">
+        <span>Claude Code &#43; Higgsfield MCP가 흥미로운 이유: 콘텐츠 제작을 한 파이프라인으로 묶는다</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-hermes가-강한-이유와-webui가-필요한-이유는-같은-곳에서-나온다">1. Hermes가 강한 이유와 WebUI가 필요한 이유는 같은 곳에서 나온다</a></li>
+    <li><a href="#2-공식-설명도-webui를-cli-대체가-아니라-시각적-제어-레이어로-본다">2. 공식 설명도 WebUI를 “CLI 대체”가 아니라 “시각적 제어 레이어”로 본다</a></li>
+    <li><a href="#3-이-영상이-보여-주는-가장-큰-변화는-예쁜-ui가-아니라-운영-가시성이다">3. 이 영상이 보여 주는 가장 큰 변화는 ‘예쁜 UI’가 아니라 ‘운영 가시성’이다</a></li>
+    <li><a href="#4-hermes-webui는-에이전트-운영-대시보드처럼-작동한다">4. Hermes WebUI는 “에이전트 운영 대시보드”처럼 작동한다</a></li>
+    <li><a href="#5-claude-code와의-비교가-꽤-정확하다-즉시성-vs-통제력">5. Claude Code와의 비교가 꽤 정확하다: 즉시성 vs 통제력</a></li>
+    <li><a href="#6-특히-여러-모델과-provider를-오가는-사람에게-의미가-크다">6. 특히 여러 모델과 provider를 오가는 사람에게 의미가 크다</a></li>
+    <li><a href="#7-memory-spaces-scheduled-jobs가-한-화면에-보인다는-점이-진짜-중요하다">7. Memory, spaces, scheduled jobs가 한 화면에 보인다는 점이 진짜 중요하다</a></li>
+    <li><a href="#8-팀-도입-관점에서도-webui는-데모용-이상이다">8. 팀 도입 관점에서도 WebUI는 ‘데모용’ 이상이다</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/hermes/" class="badge badge-secondary">Hermes</a>
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+    <a href="/tags/webui/" class="badge badge-secondary">Webui</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
