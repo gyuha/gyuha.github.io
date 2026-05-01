@@ -199,18 +199,19 @@ Required guidance:
 3. Use Mermaid in major sections by default unless the section is purely narrative.
 4. Keep diagrams readable with short labels and consistent direction (`LR` or `TD`).
 5. Ensure diagrams render through the existing Hugo Mermaid pipeline (`render-codeblock-mermaid.html`).
-6. Use color actively in Mermaid flowcharts to improve grouping and emphasis; do not leave all nodes in default style when color can improve clarity.
-7. Prefer semantic color grouping by role (for example: input, processing, validation, output) and keep one consistent palette within a diagram.
-8. Use Mermaid styling primitives (`classDef`, `class`, `style`, and link styling when needed) to apply node and path colors explicitly.
-9. Maintain readability and accessibility: use **pastel / light fill colors** for node backgrounds (for example `#c5dcef`, `#c0ecd3`, `#ffc8c4`, `#fde8c0`, `#e0c8ef`) and set text color to `#333` (not `#fff`) so labels remain legible on light backgrounds. Avoid deeply saturated fills that make text hard to read.
-10. When applying color, keep visual noise low: limit palette size and use color intentionally for structure, not decoration.
-11. If Mermaid node labels or edge labels include special characters (for example `/`, `@`, `:`, `#`), wrap the label text in double quotes to avoid parser errors.
-12. For `sequenceDiagram`, use double quotes only when needed (for example when labels/messages contain special characters that may break parsing), and keep plain labels unquoted by default.
-13. In Mermaid labels, do not use `\n` for line breaks; use HTML `<br>` instead.
-14. Never use Mermaid reserved words or Mermaid styling command names as `classDef` names. Forbidden names include `style`, `class`, `click`, `linkStyle`, `end`, `default`, `start`, `stop`, and other Mermaid keywords. Use descriptive alternatives such as `artStyle`, `nodeTone`, `terminal`, `done`, `finish`, or `result` instead.
-15. If a diagram uses `classDef`, sanity-check that every class name is a plain descriptive identifier, not a Mermaid command. Example: use `artStyle` instead of `style`.
-16. To apply a `classDef` class to nodes, always use `class node1,node2 className` syntax. The classDef name is **not** a command — writing `artStyle className node1` is invalid Mermaid and will silently break rendering. Correct form: `class node1,node2 artStyle`. Wrong form: `artStyle node1,node2 artStyle` or `artStyle className node1`.
-17. Prefer top-to-bottom (`TD`) flow direction over left-to-right (`LR`) for Mermaid flowcharts and graphs. The blog content area is narrow, so wide `LR` diagrams often overflow or require horizontal scrolling. Use `LR` only when the diagram has very few nodes (3 or fewer columns) and clearly fits within the content width.
+6. Always add explicit colors when drawing Mermaid flowcharts/graphs; a default-style-only diagram is incomplete unless Mermaid syntax for that diagram type cannot support styling.
+7. Use color actively to improve grouping and emphasis, especially for roles such as input, processing, validation, output, success, and failure.
+8. Prefer semantic color grouping by role and keep one consistent palette within a diagram.
+9. Use Mermaid styling primitives (`classDef`, `class`, `style`, and link styling when needed) to apply node and path colors explicitly.
+10. Maintain readability and accessibility: use **pastel / light fill colors** for node backgrounds (for example `#c5dcef`, `#c0ecd3`, `#ffc8c4`, `#fde8c0`, `#e0c8ef`) and set text color to `#333` (not `#fff`) so labels remain legible on light backgrounds. Avoid deeply saturated fills that make text hard to read.
+11. When applying color, keep visual noise low: limit palette size and use color intentionally for structure, not decoration.
+12. If Mermaid node labels or edge labels include special characters (for example `/`, `@`, `:`, `#`), wrap the label text in double quotes to avoid parser errors.
+13. For `sequenceDiagram`, use double quotes only when needed (for example when labels/messages contain special characters that may break parsing), and keep plain labels unquoted by default.
+14. In Mermaid labels, do not use `\n` for line breaks; use HTML `<br>` instead.
+15. Never use Mermaid reserved words or Mermaid styling command names as `classDef` names. Forbidden names include `style`, `class`, `click`, `linkStyle`, `end`, `default`, `start`, `stop`, and other Mermaid keywords. Use descriptive alternatives such as `artStyle`, `nodeTone`, `terminal`, `done`, `finish`, or `result` instead.
+16. If a diagram uses `classDef`, sanity-check that every class name is a plain descriptive identifier, not a Mermaid command. Example: use `artStyle` instead of `style`.
+17. To apply a `classDef` class to nodes, always use `class node1,node2 className` syntax. The classDef name is **not** a command — writing `artStyle className node1` is invalid Mermaid and will silently break rendering. Correct form: `class node1,node2 artStyle`. Wrong form: `artStyle node1,node2 artStyle` or `artStyle className node1`.
+18. Prefer top-to-bottom (`TD`) flow direction over left-to-right (`LR`) for Mermaid flowcharts and graphs. When a Mermaid chart would place 4 or more nodes/steps/columns horizontally, split or stack it vertically with `TD` instead of making it long left-to-right. The blog content area is narrow, so wide `LR` diagrams often overflow or require horizontal scrolling. Use `LR` only when the diagram has 3 or fewer columns and clearly fits within the content width.
 - Practical expectation: for technical posts, include Mermaid frequently; if a section can be clearer with a chart, add one.
 
 ## URL-Only Auto-Post Delegation Rule
