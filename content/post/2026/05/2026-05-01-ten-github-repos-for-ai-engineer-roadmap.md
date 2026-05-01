@@ -47,7 +47,7 @@ X 원문은 강한 문장으로 시작한다. 하지만 실제로 더 유용한 
 즉, 이건 “최고의 저장소 10개”라기보다 **AI 엔지니어링을 구성하는 10개 시야**에 가깝다.
 
 ```mermaid
-flowchart LR
+flowchart 
     A[예제 이해<br/>awesome-llm-apps] --> B[프레임워크<br/>LangChain]
     B --> C[오케스트레이션<br/>LangGraph / crewAI]
     C --> D[모델 실행<br/>Ollama]
