@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'GStack &#43; GSD &#43; Superpowers를 같이 쓰는 이유: 기획·컨텍스트·TDD를 분리한 뒤 Ralph loop로 자동화하기'" />
+  <title>GStack &#43; GSD &#43; Superpowers를 같이 쓰는 이유: 기획·컨텍스트·TDD를 분리한 뒤 Ralph loop로 자동화하기  | 신규하 블로그</title>
+  <meta property="og:title" content="GStack &#43; GSD &#43; Superpowers를 같이 쓰는 이유: 기획·컨텍스트·TDD를 분리한 뒤 Ralph loop로 자동화하기" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-05-01"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/05/2026-05-01-gstack-gsd-superpowers-ralph-loop-workflow/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="GStack" />
+  
+  <meta property="og:tags" content="GSD" />
+  
+  <meta property="og:tags" content="Superpowers" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/05/2026-05-01-gstack-gsd-superpowers-ralph-loop-workflow/">
+          <h1>
+            GStack &#43; GSD &#43; Superpowers를 같이 쓰는 이유: 기획·컨텍스트·TDD를 분리한 뒤 Ralph loop로 자동화하기
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/05/2026-05-01-gstack-gsd-superpowers-ralph-loop-workflow/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>이번 영상의 핵심은 <code>GStack vs GSD vs Superpowers</code> 비교가 아니다.<br>
+핵심은 <strong>세 프레임워크를 각각 잘하는 위치에 배치한 뒤, 마지막엔 Ralph loop로 자동화까지 연결하는 것</strong>이다.</p>
+<p>즉 이 영상은 “무엇이 최고인가?”보다 <strong>기획은 GStack, 컨텍스트 관리는 GSD, 실행 품질은 Superpowers</strong>라는 식의 역할 분리를 제안한다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>YouTube: <a href="https://www.youtube.com/watch?v=BlTpG51x94w">https://www.youtube.com/watch?v=BlTpG51x94w</a></li>
+</ul>
+<h2 id="1-영상의-전제-대부분의-spec-workflow는-결국-같은-큰-흐름을-따른다">1. 영상의 전제: 대부분의 spec workflow는 결국 같은 큰 흐름을 따른다</h2>
+<p>영상은 먼저 대부분의 spec framework가 크게 같은 흐름을 따른다고 본다.</p>
+<ol>
+<li>brainstorming</li>
+<li>planning</li>
+<li>execution</li>
+<li>review / verification</li>
+</ol>
+<p>즉 이름이 다르고 스킬 이름이 달라도, 본질은 <strong>생각을 정리하고, 계획으로 쪼개고, 구현하고, 검증하는 루프</strong>다.</p>
+<p>중요한 차이는 이 큰 틀보다, 각 프레임워크가 어디에서 가장 강한가에 있다.</p>
+<h2 id="2-세-프레임워크의-역할을-이렇게-나눈다">2. 세 프레임워크의 역할을 이렇게 나눈다</h2>
+<p>영상은 세 프레임워크를 같은 레벨의 경쟁자로 두지 않는다.<br>
+오히려 서로 다른 문제를 푸는 도구로 나눈다.</p>
+<h3 id="2-1-gstack--기획과-관점-확장">2-1. GStack = 기획과 관점 확장</h3>
+<p>GStack의 장점은 role-based 사고다.</p>
+<ul>
+<li>CEO</li>
+<li>designer</li>
+<li>engineer manager</li>
+<li>security manager</li>
+</ul>
+<p>같은 역할을 통해 아이디어를 다양한 시각에서 검토하고, 제품 의도를 더 선명하게 만드는 데 강하다.</p>
+<p>즉 GStack은 코드 생성기보다 <strong>spec clarification 엔진</strong>에 가깝다.</p>
+<h3 id="2-2-gsd--context-rot-방지">2-2. GSD = context rot 방지</h3>
+<p>GSD는 긴 세션에서 정확도가 무너지는 <code>context rot</code> 문제를 다룬다.<br>
+영상은 대략 컨텍스트 창의 절반을 넘기기 시작하면 정확도가 떨어진다고 보고, GSD를 통해 spec을 여러 phase로 나눠 각 세션이 짧게 유지되도록 한다.</p>
+<p>즉 GSD는 아이디어 생성보다 <strong>세션 분할과 작업 단위 설계</strong>에 초점이 있다.</p>
+<h3 id="2-3-superpowers--tdd-중심-실행-품질">2-3. Superpowers = TDD 중심 실행 품질</h3>
+<p>Superpowers의 강점은 test-driven development다.<br>
+영상은 다른 프레임워크에 비해 Superpowers가 <code>tests first</code> 관점을 강하게 밀어 준다고 본다.</p>
+<p>즉 Superpowers는 기획용보다 <strong>phase별 execution quality control</strong>에 적합하다는 해석이다.</p>
+<pre class="mermaid">flowchart LR
+    A[GStack] --> A1[아이디어 정리]
+    A --> A2[관점 확장]
+    B[GSD] --> B1[phase 분리]
+    B --> B2[context rot 방지]
+    C[Superpowers] --> C1[TDD 실행]
+    C --> C2[검증 품질]</pre><h2 id="3-영상이-제안하는-실제-조합-순서">3. 영상이 제안하는 실제 조합 순서</h2>
+<p>영상의 워크플로는 비교적 명확하다.</p>
+<ol>
+<li><code>GStack</code>으로 intent를 명확히 하고 spec을 만든다</li>
+<li><code>GSD</code>로 그 spec을 여러 phase로 쪼갠다</li>
+<li>각 phase를 <code>Superpowers</code> 스타일의 TDD 실행으로 구현한다</li>
+</ol>
+<p>이 순서의 핵심은 “좋은 spec을 한 번에 전부 실행하지 않는다”는 점이다.<br>
+오히려</p>
+<ul>
+<li>기획은 넓게</li>
+<li>실행은 좁게</li>
+<li>세션은 짧게</li>
+<li>검증은 촘촘하게</li>
+</ul>
+<p>가 기본 철학이다.</p>
+<h2 id="4-왜-굳이-쪼개야-하나-context-rot-때문이다">4. 왜 굳이 쪼개야 하나: context rot 때문이다</h2>
+<p>영상이 가장 강하게 밀어 주는 논리는 이것이다.<br>
+spec이 좋아도, 그걸 한 세션에서 통째로 실행시키면 정확도가 떨어진다.</p>
+<p>그래서 GSD가 중요한 이유는 단순 task breakdown이 아니라, <strong>에이전트가 매 phase마다 짧고 깨끗한 문맥 안에서 일하게 만드는 것</strong>이다.</p>
+<p>이건 우리가 최근 여러 번 다뤘던</p>
+<ul>
+<li>compact</li>
+<li>clear</li>
+<li>handoff file</li>
+<li>context reset</li>
+</ul>
+<p>논리와 완전히 맞닿아 있다.</p>
+<p>즉 GSD의 가치는 “계획표를 예쁘게 만든다”가 아니라, <strong>정확도 하락을 구조적으로 막는다</strong>는 데 있다.</p>
+<h2 id="5-greenfield에서는-강력하지만-brownfield에서는-과할-수-있다">5. greenfield에서는 강력하지만, brownfield에서는 과할 수 있다</h2>
+<p>영상은 이 조합이 모든 상황에 맞는다고 말하지 않는다.<br>
+오히려 꽤 실용적으로 선을 긋는다.</p>
+<h3 id="5-1-greenfield">5-1. greenfield</h3>
+<p>처음부터 만드는 프로젝트, 특히 비교적 큰 프로젝트라면 이 풀 스택 조합이 잘 맞는다.</p>
+<ul>
+<li>GStack으로 넓게 기획</li>
+<li>GSD로 phase 분할</li>
+<li>Superpowers로 TDD 실행</li>
+</ul>
+<p>이런 구조가 오히려 안정적이다.</p>
+<h3 id="5-2-brownfield">5-2. brownfield</h3>
+<p>기존 코드베이스에 기능을 추가하는 정도라면, 이 전체 조합은 너무 무거울 수 있다.<br>
+영상도 이런 경우엔</p>
+<ul>
+<li>Superpowers만 쓰거나</li>
+<li>GStack + Superpowers 정도만 쓰는 식</li>
+</ul>
+<p>으로 더 가볍게 가는 걸 권한다.</p>
+<p>이 지점이 중요하다.<br>
+좋은 워크플로는 무조건 많은 단계가 아니라, <strong>상황에 맞는 최소 조합</strong>이어야 한다.</p>
+<h2 id="6-이번-영상의-새-포인트는-ralph-loop-기반-자동화다">6. 이번 영상의 새 포인트는 Ralph loop 기반 자동화다</h2>
+<p>이 영상이 기존 <code>GStack/GSD/Superpowers</code> 비교 영상과 다른 핵심은 여기다.<br>
+사람이 phase를 하나씩 열고 새 세션을 계속 띄우는 건 정확하지만 오래 걸린다. 그래서 발표자는 이를 <code>Ralph loop</code> 스타일의 build loop로 자동화하자고 제안한다.</p>
+<p>구조는 대략 이렇다.</p>
+<ol>
+<li>spec을 phase별 prompt로 쪼갠다</li>
+<li>그 상태를 하나의 state file에 저장한다</li>
+<li>build loop가 완료 여부를 읽는다</li>
+<li>아직 끝나지 않은 phase를 headless session에 위임한다</li>
+<li>끝나면 다음 phase로 넘어간다</li>
+</ol>
+<p>즉 사람 손으로 하던</p>
+<ul>
+<li>새 세션 시작</li>
+<li>다음 phase 전달</li>
+<li>상태 기록</li>
+<li>반복</li>
+</ul>
+<p>을 루프 엔진이 대신 수행하는 것이다.</p>
+<pre class="mermaid">flowchart TD
+    A[GStack spec] --> B[GSD phase 분리]
+    B --> C[state file 저장]
+    C --> D[Ralph loop / build loop]
+    D --> E[headless session에 phase 위임]
+    E --> F[Superpowers 스타일 실행]
+    F --> G[완료 여부 기록]
+    G --> D</pre><h2 id="7-이-조합을-어떻게-읽어야-하나">7. 이 조합을 어떻게 읽어야 하나</h2>
+<p>이 영상의 좋은 점은 세 프레임워크를 “stacking”이 아니라 <strong>pipeline specialization</strong>으로 본다는 데 있다.</p>
+<ul>
+<li>GStack은 넓게 생각하게 한다</li>
+<li>GSD는 문맥을 작게 유지한다</li>
+<li>Superpowers는 구현 품질을 강제한다</li>
+<li>Ralph loop는 그 반복을 자동화한다</li>
+</ul>
+<p>즉 각각의 강점을 한 파이프라인의 다른 위치에 배치하는 방식이다.</p>
+<p>이 관점은 중요하다.<br>
+많은 사람이 프레임워크를 설치형 상품처럼 보지만, 실제로는 이런 것들이 <strong>작업 공정의 부품</strong>에 가깝기 때문이다.</p>
+<h2 id="8-결론">8. 결론</h2>
+<p>이 영상은 “최고의 프레임워크 1개”를 찾는 방향이 아니다.<br>
+오히려 에이전트 개발 워크플로를 이렇게 분해한다.</p>
+<ul>
+<li>의도를 명확히 하는 엔진</li>
+<li>세션을 잘게 쪼개는 엔진</li>
+<li>구현 품질을 높이는 엔진</li>
+<li>반복을 자동화하는 루프</li>
+</ul>
+<p>그리고 그 자리에 각각</p>
+<ul>
+<li>GStack</li>
+<li>GSD</li>
+<li>Superpowers</li>
+<li>Ralph loop</li>
+</ul>
+<p>를 배치한다.</p>
+<p>그래서 이 영상의 핵심 메시지는 단순하다.</p>
+<p><strong>정확도를 높이려면 한 프레임워크를 맹신하기보다, 기획·문맥·실행·반복을 서로 다른 레이어로 나눠 설계해야 한다.</strong></p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 05월 01일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-01-huashu-design-html-native-design-skill/" rel="prev">
+        <span>Huashu Design이 흥미로운 이유: Claude Code 안에서 바로 돌아가는 HTML 네이티브 디자인 스킬</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-01-design-md-google-stitch-design-spec/" rel="next">
+        <span>design.md가 중요한 이유: AI 디자인 지시를 대화가 아니라 파일로 고정한다</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-영상의-전제-대부분의-spec-workflow는-결국-같은-큰-흐름을-따른다">1. 영상의 전제: 대부분의 spec workflow는 결국 같은 큰 흐름을 따른다</a></li>
+    <li><a href="#2-세-프레임워크의-역할을-이렇게-나눈다">2. 세 프레임워크의 역할을 이렇게 나눈다</a>
+      <ul>
+        <li><a href="#2-1-gstack--기획과-관점-확장">2-1. GStack = 기획과 관점 확장</a></li>
+        <li><a href="#2-2-gsd--context-rot-방지">2-2. GSD = context rot 방지</a></li>
+        <li><a href="#2-3-superpowers--tdd-중심-실행-품질">2-3. Superpowers = TDD 중심 실행 품질</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-영상이-제안하는-실제-조합-순서">3. 영상이 제안하는 실제 조합 순서</a></li>
+    <li><a href="#4-왜-굳이-쪼개야-하나-context-rot-때문이다">4. 왜 굳이 쪼개야 하나: context rot 때문이다</a></li>
+    <li><a href="#5-greenfield에서는-강력하지만-brownfield에서는-과할-수-있다">5. greenfield에서는 강력하지만, brownfield에서는 과할 수 있다</a>
+      <ul>
+        <li><a href="#5-1-greenfield">5-1. greenfield</a></li>
+        <li><a href="#5-2-brownfield">5-2. brownfield</a></li>
+      </ul>
+    </li>
+    <li><a href="#6-이번-영상의-새-포인트는-ralph-loop-기반-자동화다">6. 이번 영상의 새 포인트는 Ralph loop 기반 자동화다</a></li>
+    <li><a href="#7-이-조합을-어떻게-읽어야-하나">7. 이 조합을 어떻게 읽어야 하나</a></li>
+    <li><a href="#8-결론">8. 결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/gstack/" class="badge badge-secondary">Gstack</a>
+    <a href="/tags/gsd/" class="badge badge-secondary">GSD</a>
+    <a href="/tags/superpowers/" class="badge badge-secondary">Superpowers</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

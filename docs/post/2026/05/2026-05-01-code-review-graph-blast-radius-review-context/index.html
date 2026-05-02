@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'code-review-graph가 흥미로운 이유: 코드 리뷰에서 전체 코드베이스 대신 변경 반경만 읽게 만든다'" />
+  <title>code-review-graph가 흥미로운 이유: 코드 리뷰에서 전체 코드베이스 대신 변경 반경만 읽게 만든다  | 신규하 블로그</title>
+  <meta property="og:title" content="code-review-graph가 흥미로운 이유: 코드 리뷰에서 전체 코드베이스 대신 변경 반경만 읽게 만든다" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-05-01"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/05/2026-05-01-code-review-graph-blast-radius-review-context/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="Code Review" />
+  
+  <meta property="og:tags" content="Knowledge Graph" />
+  
+  <meta property="og:tags" content="Claude Code" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/05/2026-05-01-code-review-graph-blast-radius-review-context/">
+          <h1>
+            code-review-graph가 흥미로운 이유: 코드 리뷰에서 전체 코드베이스 대신 변경 반경만 읽게 만든다
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/05/2026-05-01-code-review-graph-blast-radius-review-context/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p><code>tirth8205/code-review-graph</code>는 이름 그대로 코드 리뷰용 그래프이지만, 실제로는 더 큰 문제를 겨냥한다. <strong>AI 코딩 도구가 매번 저장소 전체를 다시 읽으며 토큰을 태우는 구조</strong>를, 변경 반경 중심의 로컬 지식 그래프로 바꾸려는 프로젝트다.</p>
+<p>그래서 이 저장소는 단순 시각화 툴보다, <strong>리뷰 시점의 컨텍스트 압축기</strong>로 보는 편이 더 정확하다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>GitHub: <a href="https://github.com/tirth8205/code-review-graph">https://github.com/tirth8205/code-review-graph</a></li>
+<li>README: <a href="https://raw.githubusercontent.com/tirth8205/code-review-graph/main/README.md">https://raw.githubusercontent.com/tirth8205/code-review-graph/main/README.md</a></li>
+</ul>
+<h2 id="1-이-프로젝트가-푸는-문제는-ai가-너무-많이-읽는다는-것이다">1. 이 프로젝트가 푸는 문제는 “AI가 너무 많이 읽는다”는 것이다</h2>
+<p>README의 문제 정의는 명확하다.<br>
+AI 코딩 도구는 작업할 때마다 전체 코드베이스를 다시 읽는 경향이 있고, 이건 토큰과 시간 낭비를 만든다.</p>
+<p><code>code-review-graph</code>는 이 흐름을 이렇게 바꾼다.</p>
+<ol>
+<li>Tree-sitter로 저장소를 파싱한다</li>
+<li>함수, 클래스, import, call 관계를 그래프로 저장한다</li>
+<li>변경이 생기면 blast radius를 계산한다</li>
+<li>리뷰 시점에 <strong>정말 관련 있는 파일만</strong> 읽게 한다</li>
+</ol>
+<p>즉 “더 좋은 리뷰 프롬프트”보다 먼저, <strong>리뷰 입력을 줄이는 구조</strong>를 만든다.</p>
+<pre class="mermaid">flowchart LR
+    A[전체 저장소] --> B[Tree-sitter 파싱]
+    B --> C[로컬 코드 그래프]
+    C --> D[변경 감지]
+    D --> E[Blast Radius 계산]
+    E --> F[최소 리뷰 컨텍스트]
+    F --> G[AI 리뷰]</pre><h2 id="2-graphify류와-닮았지만-초점은-훨씬-더-리뷰에-가깝다">2. Graphify류와 닮았지만, 초점은 훨씬 더 “리뷰”에 가깝다</h2>
+<p>이 저장소는 우리가 이미 여러 번 다뤘던 그래프 기반 컨텍스트 도구들과 닮아 있다.<br>
+하지만 차이도 뚜렷하다.</p>
+<ul>
+<li>Graphify 계열은 <code>코드베이스를 먼저 이해시키는 always-on knowledge layer</code>에 가깝고</li>
+<li><code>code-review-graph</code>는 <code>변경점 리뷰와 영향 범위 계산</code>에 더 직접적으로 맞춰져 있다</li>
+</ul>
+<p>특히 README가 강조하는 포인트는:</p>
+<ul>
+<li>blast-radius analysis</li>
+<li>risk-scored reviews</li>
+<li>detect_changes</li>
+<li>test coverage gaps</li>
+<li>review workflows</li>
+</ul>
+<p>같은 <strong>리뷰 전용 시그널</strong>이다.</p>
+<p>즉 이 프로젝트는 “AI에게 구조를 알려 준다”를 넘어, <strong>리뷰어가 지금 무엇을 읽어야 하는지까지 좁혀 주는 하네스</strong>다.</p>
+<h2 id="3-핵심-설계는-blast-radius다">3. 핵심 설계는 blast radius다</h2>
+<p>이 저장소의 중심 개념은 blast radius다.<br>
+파일 하나가 바뀌면, 단순히 그 파일만 보면 되는 경우는 드물다.</p>
+<ul>
+<li>누가 그 함수를 호출하는가</li>
+<li>어떤 클래스가 상속에 묶여 있는가</li>
+<li>어떤 테스트가 영향을 받는가</li>
+<li>어떤 흐름(entry point → call chain)이 흔들리는가</li>
+</ul>
+<p>를 함께 봐야 한다.</p>
+<p><code>code-review-graph</code>는 바로 이 영향을 그래프로 추적해서, <strong>리뷰 범위를 ‘변경 파일’에서 ‘변경 영향 반경’으로 확장</strong>한다.</p>
+<p>이게 중요한 이유는, 리뷰 품질을 올리려면 전체 저장소를 읽는 것보다 <strong>관련된 곳을 빠짐없이 읽는 것</strong>이 더 중요하기 때문이다.</p>
+<h2 id="4-증분-업데이트가-있어야-그래프가-실전-도구가-된다">4. 증분 업데이트가 있어야 그래프가 실전 도구가 된다</h2>
+<p>그래프 기반 툴이 자주 실패하는 이유는 첫 인덱싱이 아니라 <strong>업데이트 비용</strong> 때문이다.<br>
+한 번 만들고 나서 금방 낡아 버리면, 결국 다시 전체 스캔으로 돌아간다.</p>
+<p>이 저장소는 그 점을 꽤 강하게 의식한다.</p>
+<ul>
+<li>파일 저장</li>
+<li>git commit</li>
+<li>hook</li>
+<li>SHA-256 기반 변경 판별</li>
+<li>changed files only 재파싱</li>
+</ul>
+<p>구조로, 변경된 부분만 빠르게 다시 인덱싱하는 방식을 택한다.</p>
+<p>README 기준으로는 2,900 파일 프로젝트도 증분 업데이트가 2초 이내라고 설명한다.</p>
+<p>즉 이 프로젝트의 경쟁력은 “그래프를 만든다”보다 <strong>그래프를 계속 신선하게 유지한다</strong>는 쪽에 있다.</p>
+<pre class="mermaid">flowchart TD
+    A[파일 수정 / git commit] --> B[hook 실행]
+    B --> C[변경 파일 식별]
+    C --> D[관련 의존성 찾기]
+    D --> E[변경 부분만 재파싱]
+    E --> F[그래프 갱신]
+    F --> G[다음 리뷰에서 즉시 사용]</pre><h2 id="5-벤치마크-숫자는-언제-유리한가를-같이-읽어야-한다">5. 벤치마크 숫자는 “언제 유리한가”를 같이 읽어야 한다</h2>
+<p>README에는 몇 가지 흥미로운 수치가 나온다.</p>
+<ul>
+<li>자동 평가 기준 평균 <code>8.2x</code> 토큰 감소</li>
+<li>monorepo 사례에선 <code>49x</code> 수준의 축소</li>
+<li>설명 문구에는 리뷰 기준 <code>6.8x fewer tokens</code> 라는 표현도 있음</li>
+<li>impact recall <code>1.0</code></li>
+<li>평균 F1 <code>0.54</code></li>
+</ul>
+<p>여기서 중요한 건 숫자 하나를 외우는 게 아니다.</p>
+<h3 id="5-1-큰-프로젝트일수록-유리하다">5-1. 큰 프로젝트일수록 유리하다</h3>
+<p>Next.js monorepo 예시처럼 파일 수가 많을수록, 그래프가 관련 없는 파일을 쳐내는 효과가 커진다.</p>
+<h3 id="5-2-작은-단일-파일-수정엔-손해일-수도-있다">5-2. 작은 단일 파일 수정엔 손해일 수도 있다</h3>
+<p>README도 인정하듯, 작은 패키지의 단순 수정에서는 그래프 메타데이터가 오히려 원문 파일보다 클 수 있다.</p>
+<h3 id="5-3-recall-우선-전략이다">5-3. recall 우선 전략이다</h3>
+<p>영향 파일을 놓치지 않는 대신, 다소 넓게 잡는 보수적 전략을 택한다.<br>
+리뷰에서는 이 편이 낫다. 중요한 의존성을 놓치는 것보다 약간 더 많이 읽는 편이 안전하기 때문이다.</p>
+<p>즉 이 저장소는 “항상 가장 적은 토큰”보다 <strong>안전하게 덜 읽는 방식</strong>을 선택한다.</p>
+<h2 id="6-mcp와-다중-도구-지원이-실전성을-높인다">6. MCP와 다중 도구 지원이 실전성을 높인다</h2>
+<p>Quick Start를 보면 <code>install</code> 명령 하나가 여러 플랫폼을 자동 감지하고 MCP 구성을 써 준다.</p>
+<ul>
+<li>Codex</li>
+<li>Claude Code</li>
+<li>Cursor</li>
+<li>Windsurf</li>
+<li>Zed</li>
+<li>Continue</li>
+<li>OpenCode</li>
+<li>Qwen</li>
+<li>Kiro</li>
+</ul>
+<p>등을 폭넓게 다루는 구조다.</p>
+<p>이건 중요하다.<br>
+좋은 코드 그래프도 특정 에디터 전용이면 adoption이 어렵다.<br>
+반면 이 프로젝트는 그래프 자체를 로컬에 두고, <strong>MCP를 통해 여러 에이전트 프런트엔드에 공급하는 공용 백엔드</strong>처럼 동작한다.</p>
+<h2 id="7-단순-그래프-뷰어를-넘어-분석-기능이-많다">7. 단순 그래프 뷰어를 넘어 분석 기능이 많다</h2>
+<p>README의 기능표를 보면 이 프로젝트는 생각보다 훨씬 넓다.</p>
+<ul>
+<li>semantic search</li>
+<li>hub / bridge detection</li>
+<li>surprise scoring</li>
+<li>knowledge gap analysis</li>
+<li>graph traversal</li>
+<li>graph diff</li>
+<li>wiki generation</li>
+<li>multi-repo registry</li>
+<li>daemon</li>
+<li>Obsidian / GraphML / Cypher export</li>
+</ul>
+<p>이걸 보면 <code>code-review-graph</code>는 사실 코드 리뷰 도구에서 출발했지만, 점점 <strong>로컬 코드 지식 인프라</strong>로 확장되는 느낌이 강하다.</p>
+<p>다만 글의 중심은 여전히 리뷰에 두는 편이 맞다.<br>
+기능이 많아질수록 오히려 핵심 가치가 흐려질 수 있는데, 이 저장소의 핵심은 아직도 <strong>무엇을 읽지 않을지 결정해 주는 것</strong>에 있다.</p>
+<h2 id="8-실전-적용-포인트">8. 실전 적용 포인트</h2>
+<p>이 프로젝트는 특히 이런 환경에서 잘 맞는다.</p>
+<h3 id="8-1-pr-리뷰가-자주-비싸지는-팀">8-1. PR 리뷰가 자주 비싸지는 팀</h3>
+<p>변경 하나 볼 때마다 관련 파일을 수동으로 추적하는 비용이 큰 팀에 적합하다.</p>
+<h3 id="8-2-모노레포">8-2. 모노레포</h3>
+<p>저장소가 큰데 실제 영향 범위는 좁은 경우, 효과가 가장 크다.</p>
+<h3 id="8-3-여러-에이전트-툴을-병행하는-환경">8-3. 여러 에이전트 툴을 병행하는 환경</h3>
+<p>MCP 기반이라 Claude Code, Codex, Cursor 등을 섞어 쓰는 팀에도 어울린다.</p>
+<h3 id="8-4-구조-이해와-리뷰를-같이-하고-싶은-경우">8-4. 구조 이해와 리뷰를 같이 하고 싶은 경우</h3>
+<p>리뷰뿐 아니라 아키텍처 맵, wiki, diff, export도 활용할 수 있다.</p>
+<h2 id="9-결론">9. 결론</h2>
+<p><code>code-review-graph</code>가 흥미로운 이유는 “코드베이스 그래프를 만든다”는 데 있지 않다.<br>
+진짜 의미는 <strong>리뷰 시점에 AI가 전체 코드를 다시 읽지 않게 만들고, 대신 변경의 영향 반경만 읽게 만든다</strong>는 데 있다.</p>
+<p>그래서 이 저장소는 단순한 최적화 툴이 아니라, 리뷰 워크플로를 바꾸는 하네스에 가깝다.</p>
+<ul>
+<li>전체 읽기 → 영향 반경 읽기</li>
+<li>매번 재스캔 → 증분 갱신</li>
+<li>막연한 리뷰 → risk-scored review</li>
+</ul>
+<p>이 세 가지 전환이 필요한 팀이라면, 이 프로젝트는 꽤 실용적인 레이어가 될 수 있다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 05월 01일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-01-design-md-google-stitch-design-spec/" rel="prev">
+        <span>design.md가 중요한 이유: AI 디자인 지시를 대화가 아니라 파일로 고정한다</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-01-agentic-design-patterns-hands-on-pattern-catalog/" rel="next">
+        <span>Agentic Design Patterns가 흥미로운 이유: 프레임워크보다 패턴 카탈로그로 에이전트를 배운다</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-이-프로젝트가-푸는-문제는-ai가-너무-많이-읽는다는-것이다">1. 이 프로젝트가 푸는 문제는 “AI가 너무 많이 읽는다”는 것이다</a></li>
+    <li><a href="#2-graphify류와-닮았지만-초점은-훨씬-더-리뷰에-가깝다">2. Graphify류와 닮았지만, 초점은 훨씬 더 “리뷰”에 가깝다</a></li>
+    <li><a href="#3-핵심-설계는-blast-radius다">3. 핵심 설계는 blast radius다</a></li>
+    <li><a href="#4-증분-업데이트가-있어야-그래프가-실전-도구가-된다">4. 증분 업데이트가 있어야 그래프가 실전 도구가 된다</a></li>
+    <li><a href="#5-벤치마크-숫자는-언제-유리한가를-같이-읽어야-한다">5. 벤치마크 숫자는 “언제 유리한가”를 같이 읽어야 한다</a>
+      <ul>
+        <li><a href="#5-1-큰-프로젝트일수록-유리하다">5-1. 큰 프로젝트일수록 유리하다</a></li>
+        <li><a href="#5-2-작은-단일-파일-수정엔-손해일-수도-있다">5-2. 작은 단일 파일 수정엔 손해일 수도 있다</a></li>
+        <li><a href="#5-3-recall-우선-전략이다">5-3. recall 우선 전략이다</a></li>
+      </ul>
+    </li>
+    <li><a href="#6-mcp와-다중-도구-지원이-실전성을-높인다">6. MCP와 다중 도구 지원이 실전성을 높인다</a></li>
+    <li><a href="#7-단순-그래프-뷰어를-넘어-분석-기능이-많다">7. 단순 그래프 뷰어를 넘어 분석 기능이 많다</a></li>
+    <li><a href="#8-실전-적용-포인트">8. 실전 적용 포인트</a>
+      <ul>
+        <li><a href="#8-1-pr-리뷰가-자주-비싸지는-팀">8-1. PR 리뷰가 자주 비싸지는 팀</a></li>
+        <li><a href="#8-2-모노레포">8-2. 모노레포</a></li>
+        <li><a href="#8-3-여러-에이전트-툴을-병행하는-환경">8-3. 여러 에이전트 툴을 병행하는 환경</a></li>
+        <li><a href="#8-4-구조-이해와-리뷰를-같이-하고-싶은-경우">8-4. 구조 이해와 리뷰를 같이 하고 싶은 경우</a></li>
+      </ul>
+    </li>
+    <li><a href="#9-결론">9. 결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/code-review/" class="badge badge-secondary">Code Review</a>
+    <a href="/tags/knowledge-graph/" class="badge badge-secondary">Knowledge Graph</a>
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
