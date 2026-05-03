@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Hermes Swarm Mode가 흥미로운 이유: 에이전트를 하나씩 쓰지 않고 로컬 오케스트레이터로 팀처럼 돌린다'" />
+  <title>Hermes Swarm Mode가 흥미로운 이유: 에이전트를 하나씩 쓰지 않고 로컬 오케스트레이터로 팀처럼 돌린다  | 신규하 블로그</title>
+  <meta property="og:title" content="Hermes Swarm Mode가 흥미로운 이유: 에이전트를 하나씩 쓰지 않고 로컬 오케스트레이터로 팀처럼 돌린다" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-05-03"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/05/2026-05-03-hermes-swarm-mode-local-orchestrator/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="Hermes" />
+  
+  <meta property="og:tags" content="AI Agents" />
+  
+  <meta property="og:tags" content="Multi Agent" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/05/2026-05-03-hermes-swarm-mode-local-orchestrator/">
+          <h1>
+            Hermes Swarm Mode가 흥미로운 이유: 에이전트를 하나씩 쓰지 않고 로컬 오케스트레이터로 팀처럼 돌린다
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/05/2026-05-03-hermes-swarm-mode-local-orchestrator/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>이 영상의 핵심은 Hermes가 새로 똑똑해졌다는 데 있지 않다.<br>
+핵심은 <strong>에이전트를 하나씩 순서대로 쓰는 대신, 로컬 워크스페이스 안에서 여러 역할을 동시에 돌리는 <code>swarm mode</code>가 들어왔다는 것</strong>이다.</p>
+<p>즉 Hermes는 더 이상 단일 에이전트 앱이라기보다, <strong>오케스트레이터가 전문가 팀을 자동 라우팅하는 로컬 컨트롤 플레인</strong>에 가까워진다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>YouTube: <a href="https://www.youtube.com/watch?v=pSzeCN4NoBU">https://www.youtube.com/watch?v=pSzeCN4NoBU</a></li>
+</ul>
+<h2 id="1-문제-정의가-명확하다-에이전트가-느린-이유는-다-한-명이-하기-때문이다">1. 문제 정의가 명확하다: 에이전트가 느린 이유는 다 한 명이 하기 때문이다</h2>
+<p>영상은 기존 불만을 아주 명확하게 잡는다.</p>
+<ul>
+<li>한 에이전트가 계획도 세우고</li>
+<li>구현도 하고</li>
+<li>리뷰도 하고</li>
+<li>검토도 하고</li>
+</ul>
+<p>모든 걸 순차적으로 처리하면 당연히 느려진다.</p>
+<p>그래서 <code>swarm mode</code>의 발상은 단순하다.</p>
+<ul>
+<li>planner</li>
+<li>builder</li>
+<li>reviewer</li>
+</ul>
+<p>같은 역할을 나눠서 <strong>동시에 움직이게 하자</strong>는 것이다.</p>
+<p>이건 사실 우리가 최근 계속 다뤘던 역할 분리 흐름과 정확히 맞닿아 있다.<br>
+다만 Hermes는 그걸 CLI 해킹이 아니라 <strong>UI와 control plane이 있는 로컬 도구</strong> 안에서 구현한다는 점이 다르다.</p>
+<h2 id="2-hermes-workspace--swarm의-핵심은-오케스트레이터가-목표를-받아-자동-라우팅한다는-점이다">2. Hermes Workspace + Swarm의 핵심은 “오케스트레이터가 목표를 받아 자동 라우팅한다”는 점이다</h2>
+<p>영상 설명을 따르면, 사용자는 목표만 주면 된다.</p>
+<p>예:</p>
+<ul>
+<li>블로그를 만들어라</li>
+<li>키워드 전략을 세워라</li>
+<li>콘텐츠 캘린더를 만들어라</li>
+</ul>
+<p>그러면 swarm 오케스트레이터가:</p>
+<ol>
+<li>목표를 읽고</li>
+<li>필요한 역할을 조합하고</li>
+<li>각 에이전트에 미션을 나누고</li>
+<li>병렬로 실행을 시작한다</li>
+</ol>
+<p>즉 사용자 입장에서는 “팀 구성”을 일일이 짜지 않아도, <strong>goal → routing plan → specialist execution</strong> 흐름이 자동으로 이어진다.</p>
+<pre class="mermaid">flowchart TD
+    A[사용자 목표 입력] --> B[Hermes Orchestrator]
+    B --> C[Routing Plan 생성]
+    C --> D[Planner]
+    C --> E[Builder]
+    C --> F[Reviewer]
+    D --> G[로컬 산출물]
+    E --> G
+    F --> G</pre><h2 id="3-기존-hermes-webui-글과-다른-지점-이번엔-control-panel이-아니라-병렬-운영-그-자체다">3. 기존 Hermes WebUI 글과 다른 지점: 이번엔 control panel이 아니라 병렬 운영 그 자체다</h2>
+<p>우리가 전에 다뤘던 Hermes + WebUI 흐름은</p>
+<ul>
+<li>가시성</li>
+<li>스케줄링</li>
+<li>메모리</li>
+<li>운영 통제</li>
+</ul>
+<p>에 더 가까웠다.</p>
+<p>이번 영상의 새 포인트는 그 위에 <strong>동시 실행되는 agent swarms</strong>가 올라왔다는 점이다.</p>
+<p>즉 WebUI가 “운영 가능한 시스템”을 만들었다면, Swarm Mode는 거기서 한 걸음 더 나아가 <strong>조직형 병렬 실행기</strong>를 붙인 셈이다.</p>
+<h2 id="4-ui가-중요한-이유-swarm은-추상-개념이-아니라-실제-제어-가능한-오피스처럼-보인다">4. UI가 중요한 이유: swarm은 추상 개념이 아니라 실제 제어 가능한 오피스처럼 보인다</h2>
+<p>영상에서 인상적인 부분은 swarm UI의 시각화다.</p>
+<ul>
+<li>swarm 목록</li>
+<li>worker 역할</li>
+<li>blocked / ready 상태</li>
+<li>office view</li>
+<li>round table / grid view</li>
+<li>개별 agent terminal</li>
+</ul>
+<p>이런 인터페이스가 나온다.</p>
+<p>이건 단순 예쁨 문제가 아니다.<br>
+멀티에이전트는 보통 내부적으로는 돌아가도, 사람이 보기엔 “대체 누가 뭘 하고 있지?”가 불투명하다.<br>
+Hermes는 그걸 <strong>오피스처럼 보이게</strong> 만든다.</p>
+<p>즉 swarm mode의 실전성은 병렬성뿐 아니라, <strong>사람이 관찰하고 개입할 수 있는 시각적 control plane</strong>에 있다.</p>
+<h2 id="5-역할-프리셋--커스텀-에이전트가-같이-있다는-점도-실용적이다">5. 역할 프리셋 + 커스텀 에이전트가 같이 있다는 점도 실용적이다</h2>
+<p>영상에 따르면 새 swarm을 추가할 때:</p>
+<ul>
+<li>builder</li>
+<li>reviewer</li>
+<li>triage</li>
+<li>기타 preset role</li>
+</ul>
+<p>를 선택할 수 있고, 각 역할에는 미리 system prompt와 skills가 붙어 있다.</p>
+<p>동시에 완전 커스텀 에이전트도 만들 수 있다.</p>
+<ul>
+<li>system prompt</li>
+<li>mission</li>
+<li>skill set</li>
+</ul>
+<p>을 바꿔 넣는 식이다.</p>
+<p>이건 중요하다.<br>
+좋은 멀티에이전트 시스템은 프리셋만 강요해도 안 되고, 완전 자유만 줘도 운영이 어려운데, Hermes는 <strong>preset + custom의 중간지대</strong>를 노린다.</p>
+<h2 id="6-로컬-출력과-모바일-접근이-같이-붙는-점이-의외로-강하다">6. 로컬 출력과 모바일 접근이 같이 붙는 점이 의외로 강하다</h2>
+<p>영상은 두 가지를 특히 강조한다.</p>
+<h3 id="6-1-산출물이-로컬에-떨어진다">6-1. 산출물이 로컬에 떨어진다</h3>
+<p>작성된 콘텐츠, 계획, 전략 파일이 로컬 디렉터리에 바로 생긴다.<br>
+즉 swarm은 웹 SaaS 안에서만 끝나는 것이 아니라, <strong>내 작업 디렉터리에 파일을 남기는 도구</strong>다.</p>
+<h3 id="6-2-모바일에서도-접근할-수-있다">6-2. 모바일에서도 접근할 수 있다</h3>
+<p>로컬 워크스페이스이지만 모바일 접근까지 붙어 있어서, 에이전트 팀을 폰에서 확인하고 돌릴 수 있다는 점을 밀고 있다.</p>
+<p>이건 결과적으로 swarm을 “한 번 실행하는 데모”보다 <strong>상시 돌아가는 운영 시스템</strong>처럼 보이게 만든다.</p>
+<pre class="mermaid">flowchart LR
+    A[Hermes Workspace 로컬 UI] --> B[Swarm Control]
+    B --> C[다수 에이전트 실행]
+    C --> D[로컬 파일 산출물]
+    B --> E[모바일 접근]</pre><h2 id="7-영상-데모가-보여-주는-건-사실-seo-팀이지-기능보다-패턴이다">7. 영상 데모가 보여 주는 건 사실 SEO 팀이지, 기능보다 패턴이다</h2>
+<p>데모에서는 SEO용 블로그, 키워드 전략, 콘텐츠 캘린더, 내부 링크 전략 등을 swarm이 만들어 낸다.<br>
+하지만 중요한 건 SEO 자체가 아니다.</p>
+<p>중요한 건 이 패턴이다.</p>
+<ul>
+<li>한 에이전트는 키워드 조사</li>
+<li>한 에이전트는 콘텐츠 작성</li>
+<li>한 에이전트는 내부 링크 전략</li>
+<li>한 에이전트는 계획 정리</li>
+</ul>
+<p>를 동시에 수행하고, 최종적으로 하나의 로컬 산출물 묶음으로 남긴다는 점이다.</p>
+<p>즉 swarm mode는 특정 산업 기능이 아니라, <strong>복수 역할을 가진 작업팀 패턴</strong>을 제공한다.</p>
+<h2 id="8-다만-영상도-안정성-문제는-인정한다">8. 다만 영상도 안정성 문제는 인정한다</h2>
+<p>좋은 점만 있는 건 아니다.<br>
+영상에서도 새 swarm feature가 약간 buggy할 수 있다고 경고한다.</p>
+<p>예를 들면:</p>
+<ul>
+<li>어떤 agent가 blocked 상태가 되거나</li>
+<li>잘못된 API 설정으로 멈추거나</li>
+<li>개별 설정을 다시 확인해야 하는 상황</li>
+</ul>
+<p>이 생길 수 있다.</p>
+<p>이건 오히려 중요한 신호다.<br>
+멀티에이전트 시스템이 강력할수록, single-agent보다 설정과 관측 가능성이 더 중요해진다.<br>
+Hermes가 UI를 밀어 주는 이유도 바로 여기에 있다.</p>
+<h2 id="9-결론">9. 결론</h2>
+<p>이 영상의 핵심은 단순하다.</p>
+<p><strong>에이전트를 더 똑똑하게 만드는 것보다, 여러 에이전트를 어떻게 팀처럼 조정할지가 더 중요해지고 있다.</strong></p>
+<p>Hermes Swarm Mode는 그 변화의 한 예다.</p>
+<ul>
+<li>목표를 주면</li>
+<li>오케스트레이터가 역할을 라우팅하고</li>
+<li>여러 에이전트가 동시에 일하고</li>
+<li>사람이 UI에서 상태를 보고 개입하고</li>
+<li>산출물은 로컬에 남는다</li>
+</ul>
+<p>즉 Hermes는 단일 AI 비서에서, <strong>로컬에서 운영되는 다중 에이전트 팀 매니저</strong> 쪽으로 성격이 바뀌고 있다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 05월 03일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-03-llm-wiki-pattern-vs-rag-ingest-query-lint/" rel="prev">
+        <span>LLM Wiki가 RAG와 다른 이유: 검색이 아니라 위키를 계속 다시 쓴다</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-03-claude-code-vs-codex-workstyle-split/" rel="next">
+        <span>Claude Code vs Codex 논쟁의 결론은 하나가 아니다: 더 빠른 백엔드형 vs 더 깊은 풀스택형</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-문제-정의가-명확하다-에이전트가-느린-이유는-다-한-명이-하기-때문이다">1. 문제 정의가 명확하다: 에이전트가 느린 이유는 다 한 명이 하기 때문이다</a></li>
+    <li><a href="#2-hermes-workspace--swarm의-핵심은-오케스트레이터가-목표를-받아-자동-라우팅한다는-점이다">2. Hermes Workspace + Swarm의 핵심은 “오케스트레이터가 목표를 받아 자동 라우팅한다”는 점이다</a></li>
+    <li><a href="#3-기존-hermes-webui-글과-다른-지점-이번엔-control-panel이-아니라-병렬-운영-그-자체다">3. 기존 Hermes WebUI 글과 다른 지점: 이번엔 control panel이 아니라 병렬 운영 그 자체다</a></li>
+    <li><a href="#4-ui가-중요한-이유-swarm은-추상-개념이-아니라-실제-제어-가능한-오피스처럼-보인다">4. UI가 중요한 이유: swarm은 추상 개념이 아니라 실제 제어 가능한 오피스처럼 보인다</a></li>
+    <li><a href="#5-역할-프리셋--커스텀-에이전트가-같이-있다는-점도-실용적이다">5. 역할 프리셋 + 커스텀 에이전트가 같이 있다는 점도 실용적이다</a></li>
+    <li><a href="#6-로컬-출력과-모바일-접근이-같이-붙는-점이-의외로-강하다">6. 로컬 출력과 모바일 접근이 같이 붙는 점이 의외로 강하다</a>
+      <ul>
+        <li><a href="#6-1-산출물이-로컬에-떨어진다">6-1. 산출물이 로컬에 떨어진다</a></li>
+        <li><a href="#6-2-모바일에서도-접근할-수-있다">6-2. 모바일에서도 접근할 수 있다</a></li>
+      </ul>
+    </li>
+    <li><a href="#7-영상-데모가-보여-주는-건-사실-seo-팀이지-기능보다-패턴이다">7. 영상 데모가 보여 주는 건 사실 SEO 팀이지, 기능보다 패턴이다</a></li>
+    <li><a href="#8-다만-영상도-안정성-문제는-인정한다">8. 다만 영상도 안정성 문제는 인정한다</a></li>
+    <li><a href="#9-결론">9. 결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/hermes/" class="badge badge-secondary">Hermes</a>
+    <a href="/tags/ai-agents/" class="badge badge-secondary">AI Agents</a>
+    <a href="/tags/multi-agent/" class="badge badge-secondary">Multi Agent</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude Code Game Studios가 흥미로운 이유: 자율 에이전트보다 조직도와 승인 루프를 만든다'" />
+  <title>Claude Code Game Studios가 흥미로운 이유: 자율 에이전트보다 조직도와 승인 루프를 만든다  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude Code Game Studios가 흥미로운 이유: 자율 에이전트보다 조직도와 승인 루프를 만든다" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-05-03"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/05/2026-05-03-claude-code-game-studios-hierarchy-collaboration/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="Claude Code" />
+  
+  <meta property="og:tags" content="Multi Agent" />
+  
+  <meta property="og:tags" content="Game Dev" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/05/2026-05-03-claude-code-game-studios-hierarchy-collaboration/">
+          <h1>
+            Claude Code Game Studios가 흥미로운 이유: 자율 에이전트보다 조직도와 승인 루프를 만든다
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/05/2026-05-03-claude-code-game-studios-hierarchy-collaboration/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p><code>Claude Code Game Studios</code>를 처음 보면 숫자부터 눈에 들어온다.<br>
+현재 README 기준으로는 <strong>49개 에이전트, 72개 스킬, 12개 훅, 11개 규칙, 39개 템플릿</strong>이다. 하지만 이 프로젝트의 진짜 흥미로운 점은 숫자가 아니다.</p>
+<p>핵심은 <strong>에이전트를 더 자율적으로 만드는 대신, 실제 게임 스튜디오처럼 위계·역할·승인 구조를 설계했다</strong>는 데 있다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Threads: <a href="https://www.threads.com/@eddiemoon0720/post/DX1k9OME2IN">https://www.threads.com/@eddiemoon0720/post/DX1k9OME2IN</a></li>
+<li>GitHub: <a href="https://github.com/Donchitos/Claude-Code-Game-Studios">https://github.com/Donchitos/Claude-Code-Game-Studios</a></li>
+<li>README: <a href="https://raw.githubusercontent.com/Donchitos/Claude-Code-Game-Studios/main/README.md">https://raw.githubusercontent.com/Donchitos/Claude-Code-Game-Studios/main/README.md</a></li>
+</ul>
+<h2 id="1-이-프로젝트는-게임-만들기-스킬-팩보다-조직-설계에-가깝다">1. 이 프로젝트는 “게임 만들기 스킬 팩”보다 조직 설계에 가깝다</h2>
+<p>Threads 요약도 잘 짚었지만, 원본 README를 보면 방향이 더 분명하다.</p>
+
+  <blockquote>
+    <p>Turn a single Claude Code session into a full game development studio.</p>
+
+  </blockquote>
+
+<p>즉 한 세션 안에 단일 범용 어시스턴트를 두는 대신,</p>
+<ul>
+<li>director</li>
+<li>department lead</li>
+<li>specialist</li>
+</ul>
+<p>역할을 분리해 <strong>조직 구조를 코드화</strong>한다.</p>
+<p>이건 단순 멀티에이전트보다 한 단계 더 나간다.<br>
+보통 멀티에이전트 예시는 “여러 에이전트가 있다”에서 끝나지만, 이 저장소는:</p>
+<ul>
+<li>누가 누구에게 위임하는지</li>
+<li>누가 같은 계층에서 자문만 가능한지</li>
+<li>갈등은 어디로 escalation 되는지</li>
+<li>어떤 변경은 producer가 조정하는지</li>
+</ul>
+<p>까지 정한다.</p>
+<p>즉 에이전트가 아니라 <strong>에이전트 운영 규범</strong>을 만든 프로젝트다.</p>
+<h2 id="2-가장-중요한-구조는-3계층-위계다">2. 가장 중요한 구조는 3계층 위계다</h2>
+<p>README 기준 계층은 이렇게 잡혀 있다.</p>
+<h3 id="2-1-tier-1--directors">2-1. Tier 1 — Directors</h3>
+<ul>
+<li><code>creative-director</code></li>
+<li><code>technical-director</code></li>
+<li><code>producer</code></li>
+</ul>
+<p>이 레이어는 비전, 기술 방향, 조정 역할을 맡는다.</p>
+<h3 id="2-2-tier-2--department-leads">2-2. Tier 2 — Department Leads</h3>
+<ul>
+<li>game design</li>
+<li>programming</li>
+<li>art</li>
+<li>audio</li>
+<li>narrative</li>
+<li>QA</li>
+<li>release</li>
+<li>localization</li>
+</ul>
+<p>등의 책임자를 둔다.</p>
+<h3 id="2-3-tier-3--specialists">2-3. Tier 3 — Specialists</h3>
+<p>여기에는 실제 실행 담당 역할이 대거 들어간다.</p>
+<ul>
+<li>gameplay programmer</li>
+<li>engine programmer</li>
+<li>AI programmer</li>
+<li>network programmer</li>
+<li>UI programmer</li>
+<li>level designer</li>
+<li>economy designer</li>
+<li>sound designer</li>
+<li>writer</li>
+<li>performance analyst</li>
+<li>devops engineer</li>
+<li>security engineer</li>
+<li>accessibility specialist</li>
+</ul>
+<p>등이다.</p>
+<p>이 구조의 의미는 명확하다.<br>
+에이전트를 “똑똑한 개인”으로 보는 대신, <strong>의사결정과 실행을 분리한 팀</strong>으로 본다.</p>
+<pre class="mermaid">flowchart TD
+    A[Tier 1 Directors] --> B[Tier 2 Department Leads]
+    B --> C[Tier 3 Specialists]
+    A --> D[비전 / 우선순위 / 조정]
+    B --> E[도메인 책임]
+    C --> F[실제 작업 실행]</pre><h2 id="3-그런데-더-중요한-건-자율이-아니라-협업-프로토콜이다">3. 그런데 더 중요한 건 “자율”이 아니라 “협업 프로토콜”이다</h2>
+<p>Threads가 강조한 대로, README에는 아주 선명한 문장이 있다.</p>
+
+  <blockquote>
+    <p>This is NOT an auto-pilot system.</p>
+
+  </blockquote>
+
+<p>이 프로젝트는 자율 에이전트 열풍과 정반대 방향에 서 있다.<br>
+핵심은 5단계 협업 프로토콜이다.</p>
+<ol>
+<li>Ask</li>
+<li>Present options</li>
+<li>You decide</li>
+<li>Draft</li>
+<li>Approve</li>
+</ol>
+<p>즉 에이전트는 먼저 질문하고, 여러 옵션을 제시하고, <strong>최종 결정은 반드시 사용자가 내리며, 승인 없이는 아무것도 확정하지 않는다.</strong></p>
+<p>이 철학이 중요한 이유는, 대형 게임 프로젝트에서 가장 비싼 실수는 대개</p>
+<ul>
+<li>코드를 빨리 쓴 것</li>
+</ul>
+<p>이 아니라</p>
+<ul>
+<li>잘못된 결정을 너무 빨리 굳힌 것</li>
+</ul>
+<p>이기 때문이다.</p>
+<h2 id="4-스킬이-72개나-되는-이유도-결국-공정-분해-때문이다">4. 스킬이 72개나 되는 이유도 결국 공정 분해 때문이다</h2>
+<p>README를 보면 72개 스킬은 단순 많아 보이려고 넣은 게 아니다.<br>
+게임 개발 공정을 세밀하게 분해한다.</p>
+<p>예를 들면:</p>
+<ul>
+<li>onboarding / navigation</li>
+<li>game design</li>
+<li>art &amp; assets</li>
+<li>UX &amp; interface</li>
+<li>architecture</li>
+<li>stories &amp; sprints</li>
+<li>reviews &amp; analysis</li>
+<li>QA &amp; testing</li>
+<li>production</li>
+<li>release</li>
+<li>creative &amp; content</li>
+<li>team orchestration</li>
+</ul>
+<p>즉 이 저장소는 “게임을 만든다”를 하나의 명령으로 보지 않고, <strong>기획-설계-자산-구현-검토-릴리스</strong>의 공정으로 나눈다.</p>
+<p>특히 <code>/team-combat</code>, <code>/team-ui</code>, <code>/team-release</code> 같은 팀 오케스트레이션 명령은 여러 에이전트를 한 기능 단위로 묶는 패턴을 보여 준다.</p>
+<h2 id="5-hooks와-path-scoped-rules가-이-프로젝트를-진짜-운영체계처럼-만든다">5. Hooks와 path-scoped rules가 이 프로젝트를 진짜 운영체계처럼 만든다</h2>
+<p>이 저장소가 인상적인 이유는 agent/skill 숫자보다도 <strong>운영 안전장치</strong>가 많다는 점이다.</p>
+<p>README 기준:</p>
+<ul>
+<li>12 hooks</li>
+<li>11 path-scoped rules</li>
+</ul>
+<p>가 들어 있다.</p>
+<p>Hooks는:</p>
+<ul>
+<li>commit / push 전 검증</li>
+<li>asset naming / JSON 구조 확인</li>
+<li>세션 시작 시 최근 브랜치/커밋 확인</li>
+<li>compact 전후 상태 보존</li>
+<li>subagent audit trail</li>
+</ul>
+<p>같은 역할을 한다.</p>
+<p>Path-scoped rules는 파일 위치에 따라 다른 기준을 적용한다.</p>
+<ul>
+<li><code>src/gameplay/**</code></li>
+<li><code>src/core/**</code></li>
+<li><code>src/ai/**</code></li>
+<li><code>src/networking/**</code></li>
+<li><code>src/ui/**</code></li>
+<li><code>design/gdd/**</code></li>
+<li><code>tests/**</code></li>
+<li><code>prototypes/**</code></li>
+</ul>
+<p>등에 서로 다른 제약을 붙인다.</p>
+<p>즉 “에이전트가 뭘 할 수 있나”보다 <strong>어디서 무엇을 하면 안 되는가</strong>까지 구조화한다.</p>
+<pre class="mermaid">flowchart LR
+    A[사용자 결정] --> B[Agent Hierarchy]
+    B --> C[Skills]
+    C --> D[파일 수정 / 문서 생성]
+    D --> E[Hooks]
+    D --> F[Path-scoped Rules]
+    E --> G[검증 / 경고 / 상태 보존]
+    F --> G</pre><h2 id="6-엔진별-전용-세트가-있다는-점도-실전적이다">6. 엔진별 전용 세트가 있다는 점도 실전적이다</h2>
+<p>이 프로젝트는 게임 개발을 너무 추상적으로만 다루지 않는다.<br>
+README에는 엔진별 specialist 세트가 아예 따로 있다.</p>
+<ul>
+<li>Godot 4</li>
+<li>Unity</li>
+<li>Unreal Engine 5</li>
+</ul>
+<p>그리고 각 엔진마다:</p>
+<ul>
+<li>GDScript / Shaders / GDExtension</li>
+<li>DOTS/ECS / Addressables / UI Toolkit</li>
+<li>GAS / Blueprints / Replication / UMG</li>
+</ul>
+<p>같은 세부 하위 전문성을 대응시킨다.</p>
+<p>이건 중요한 차별점이다.<br>
+많은 agent framework는 “게임 개발”을 한 덩어리로 보지만, 실제 현업에서는 <strong>엔진별로 문제 구조가 완전히 다르다.</strong></p>
+<h2 id="7-이-프로젝트가-주는-인사이트-자동화의-핵심은-역할-분리다">7. 이 프로젝트가 주는 인사이트: 자동화의 핵심은 역할 분리다</h2>
+<p>Threads 작성자가 마지막에 짚은 포인트가 좋다.<br>
+48개나 49개 에이전트를 한 번에 다 쓸 필요는 없다. 오히려 작은 조합부터 시작하면 된다.</p>
+<p>예를 들어:</p>
+<ul>
+<li><code>/brainstorm</code></li>
+<li><code>/sprint-plan</code></li>
+<li><code>/code-review</code></li>
+</ul>
+<p>정도만 써도 이미</p>
+<ul>
+<li>기획</li>
+<li>실행 계획</li>
+<li>검토</li>
+</ul>
+<p>가 분리된다.</p>
+<p>즉 이 저장소의 진짜 교훈은 “많이 깔자”가 아니라, <strong>중요한 의사결정과 실행 단계를 역할별로 분리하라</strong>에 가깝다.</p>
+<h2 id="8-결론">8. 결론</h2>
+<p><code>Claude Code Game Studios</code>는 단순히 Claude Code를 게임 제작에 쓰는 템플릿이 아니다.<br>
+진짜 의미는 <strong>AI를 자율 비서로 대하는 대신, 실제 조직처럼 위계·승인·검증 구조를 가진 팀으로 설계한다</strong>는 데 있다.</p>
+<p>그래서 이 저장소가 흥미로운 이유도 여기 있다.</p>
+<ul>
+<li>더 많은 자율성</li>
+</ul>
+<p>이 아니라,</p>
+<ul>
+<li>더 나은 역할 분리</li>
+<li>더 명확한 escalation</li>
+<li>더 강한 승인 루프</li>
+<li>더 촘촘한 운영 가드레일</li>
+</ul>
+<p>을 제안하기 때문이다.</p>
+<p>게임 개발이든 다른 도메인이든, 앞으로 멀티에이전트 시스템에서 중요한 건 “몇 개의 에이전트를 썼는가”보다 <strong>누가 무엇을 결정하고 누가 무엇을 검증하는가</strong>일 가능성이 크다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 05월 03일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-03-claude-code-vs-codex-workstyle-split/" rel="prev">
+        <span>Claude Code vs Codex 논쟁의 결론은 하나가 아니다: 더 빠른 백엔드형 vs 더 깊은 풀스택형</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-이-프로젝트는-게임-만들기-스킬-팩보다-조직-설계에-가깝다">1. 이 프로젝트는 “게임 만들기 스킬 팩”보다 조직 설계에 가깝다</a></li>
+    <li><a href="#2-가장-중요한-구조는-3계층-위계다">2. 가장 중요한 구조는 3계층 위계다</a>
+      <ul>
+        <li><a href="#2-1-tier-1--directors">2-1. Tier 1 — Directors</a></li>
+        <li><a href="#2-2-tier-2--department-leads">2-2. Tier 2 — Department Leads</a></li>
+        <li><a href="#2-3-tier-3--specialists">2-3. Tier 3 — Specialists</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-그런데-더-중요한-건-자율이-아니라-협업-프로토콜이다">3. 그런데 더 중요한 건 “자율”이 아니라 “협업 프로토콜”이다</a></li>
+    <li><a href="#4-스킬이-72개나-되는-이유도-결국-공정-분해-때문이다">4. 스킬이 72개나 되는 이유도 결국 공정 분해 때문이다</a></li>
+    <li><a href="#5-hooks와-path-scoped-rules가-이-프로젝트를-진짜-운영체계처럼-만든다">5. Hooks와 path-scoped rules가 이 프로젝트를 진짜 운영체계처럼 만든다</a></li>
+    <li><a href="#6-엔진별-전용-세트가-있다는-점도-실전적이다">6. 엔진별 전용 세트가 있다는 점도 실전적이다</a></li>
+    <li><a href="#7-이-프로젝트가-주는-인사이트-자동화의-핵심은-역할-분리다">7. 이 프로젝트가 주는 인사이트: 자동화의 핵심은 역할 분리다</a></li>
+    <li><a href="#8-결론">8. 결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/multi-agent/" class="badge badge-secondary">Multi Agent</a>
+    <a href="/tags/game-dev/" class="badge badge-secondary">Game Dev</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
