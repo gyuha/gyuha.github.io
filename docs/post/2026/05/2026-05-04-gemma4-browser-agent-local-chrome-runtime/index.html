@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Gemma 4 Browser Agent가 중요한 이유: 브라우저를 로컬 AI 에이전트 런타임으로 바꾼다'" />
+  <title>Gemma 4 Browser Agent가 중요한 이유: 브라우저를 로컬 AI 에이전트 런타임으로 바꾼다  | 신규하 블로그</title>
+  <meta property="og:title" content="Gemma 4 Browser Agent가 중요한 이유: 브라우저를 로컬 AI 에이전트 런타임으로 바꾼다" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-05-04"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/05/2026-05-04-gemma4-browser-agent-local-chrome-runtime/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="Gemma" />
+  
+  <meta property="og:tags" content="Browser Agent" />
+  
+  <meta property="og:tags" content="Chrome" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/05/2026-05-04-gemma4-browser-agent-local-chrome-runtime/">
+          <h1>
+            Gemma 4 Browser Agent가 중요한 이유: 브라우저를 로컬 AI 에이전트 런타임으로 바꾼다
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/05/2026-05-04-gemma4-browser-agent-local-chrome-runtime/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>이 영상의 핵심은 “무료 크롬 자동화 도구”가 아니다.</p>
+<p>더 정확히 말하면,<br>
+<strong>브라우저 안에 로컬 추론 모델과 도구 호출 루프를 넣어 브라우저 자체를 AI 에이전트 런타임으로 바꾼다</strong>는 데 있다.</p>
+<p>즉 이 프로젝트는 브라우저 확장이라기보다, <strong>온디바이스 브라우저 에이전트의 기준 구현(reference implementation)</strong> 에 가깝다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>YouTube: <a href="https://www.youtube.com/watch?v=8P3enx5Z490">https://www.youtube.com/watch?v=8P3enx5Z490</a></li>
+<li>GitHub: <a href="https://github.com/nico-martin/gemma4-browser-extension">https://github.com/nico-martin/gemma4-browser-extension</a></li>
+</ul>
+<h2 id="1-이-프로젝트의-핵심은-브라우저용-chatgpt가-아니다">1. 이 프로젝트의 핵심은 “브라우저용 ChatGPT”가 아니다</h2>
+<p>공식 저장소 설명은 아주 명확하다.</p>
+
+  <blockquote>
+    <p>On-device AI agent Chrome extension powered by Transformers.js and Gemma 4</p>
+
+  </blockquote>
+
+<p>여기서 중요한 단어는 세 개다.</p>
+<ul>
+<li>on-device</li>
+<li>agent</li>
+<li>browser</li>
+</ul>
+<p>즉 목표는 웹페이지를 요약해 주는 가벼운 보조 도구가 아니라:</p>
+<ul>
+<li>모델이 로컬에서 돌고</li>
+<li>브라우저 도구를 호출하며</li>
+<li>탭, 히스토리, 페이지 내용을 에이전트 루프로 다루는 것</li>
+</ul>
+<p>이다.</p>
+<h2 id="2-왜-이게-중요한가-대부분의-브라우저-ai는-결국-서버형이기-때문이다">2. 왜 이게 중요한가: 대부분의 브라우저 AI는 결국 서버형이기 때문이다</h2>
+<p>영상이 잘 짚는 부분은 바로 이 점이다.</p>
+<p>기존 브라우저 AI 보조도구는 대개:</p>
+<ul>
+<li>확장을 설치하고</li>
+<li>현재 페이지나 탭 정보를 서버로 보내고</li>
+<li>서버의 모델이 처리한 결과를 돌려주는</li>
+</ul>
+<p>구조다.</p>
+<p>이 방식은 능력은 좋을 수 있지만,</p>
+<ul>
+<li>프라이버시 문제가 있고</li>
+<li>사용량 비용이 들고</li>
+<li>오프라인에서는 죽는다</li>
+</ul>
+<p>는 한계가 있다.</p>
+<p>Gemma 4 Browser Assistant는 반대로:</p>
+<ul>
+<li>모델을 한 번 내려받고</li>
+<li>브라우저 내부 저장소에 캐시하고</li>
+<li>WebGPU로 로컬 추론을 돌리고</li>
+<li>외부 모델 서버 없이 동작</li>
+</ul>
+<p>하는 방향을 택한다.</p>
+<p>즉 “브라우저에서 AI를 쓴다”가 아니라<br>
+**“브라우저가 AI 실행 환경이 된다”**는 쪽에 더 가깝다.</p>
+<h2 id="3-저장소-기준-기능도-꽤-실용적이다">3. 저장소 기준 기능도 꽤 실용적이다</h2>
+<p>공식 README 기준 이 에이전트는 세 묶음의 기능을 가진다.</p>
+<h3 id="3-1-tab-management">3-1. Tab Management</h3>
+<ul>
+<li><code>get_open_tabs</code></li>
+<li><code>go_to_tab</code></li>
+<li><code>open_url</code></li>
+<li><code>close_tab</code></li>
+</ul>
+<p>즉 탭을 자연어로 찾고, 전환하고, 열고, 닫을 수 있다.</p>
+<h3 id="3-2-website-interaction-rag">3-2. Website Interaction (RAG)</h3>
+<ul>
+<li><code>ask_website</code></li>
+<li><code>highlight_website_element</code></li>
+</ul>
+<p>현재 페이지에서 관련 내용을 semantic similarity로 뽑아내고, 필요한 부분을 하이라이트할 수 있다.</p>
+<h3 id="3-3-history-vector-database">3-3. History Vector Database</h3>
+<ul>
+<li><code>find_history</code></li>
+</ul>
+<p>단순 URL이나 제목 키워드가 아니라, 방문 기록의 의미 기반 검색을 하도록 설계되어 있다.</p>
+<p>즉 이건 단순 브라우저 챗봇이 아니라<br>
+<strong>탭 + 페이지 + 히스토리라는 브라우저 상태 전체를 다루는 로컬 에이전트</strong>다.</p>
+<pre class="mermaid">flowchart LR
+    A[자연어 요청] --> B[브라우저 에이전트]
+    B --> C[탭 관리]
+    B --> D[웹페이지 RAG]
+    B --> E[히스토리 의미 검색]
+    C --> F[브라우저 상태 변경]
+    D --> G[요약 / 추출 / 하이라이트]
+    E --> H[과거 페이지 회수]</pre><h2 id="4-아키텍처가-특히-중요하다-mv3-제약-위에서-잘-쪼갰다">4. 아키텍처가 특히 중요하다: MV3 제약 위에서 잘 쪼갰다</h2>
+<p>공식 README는 이 확장을 3계층으로 설명한다.</p>
+<ul>
+<li>Background Script</li>
+<li>Side Panel</li>
+<li>Content Script</li>
+</ul>
+<h3 id="background-script">Background Script</h3>
+<p>모델을 한 번만 로드하고, 추론과 도구 실행을 중앙에서 처리한다.</p>
+<h3 id="side-panel">Side Panel</h3>
+<p>사용자와 대화하는 채팅 UI다.<br>
+팝업이 아니라 지속되는 패널이라 세션 연속성이 좋다.</p>
+<h3 id="content-script">Content Script</h3>
+<p>실제 웹페이지 DOM에 접근해:</p>
+<ul>
+<li>제목</li>
+<li>문단</li>
+<li>리스트</li>
+</ul>
+<p>같은 구조를 추출하고, 필요한 요소를 하이라이트한다.</p>
+<p>이 구조가 중요한 이유는, 브라우저 AI 확장에서 제일 어려운 부분이 종종 모델 성능이 아니라 <strong>어디서 어떤 일을 하게 배치하느냐</strong>이기 때문이다.</p>
+<p>README가 말하듯, 무거운 ML 추론은 background에서 하고, UI는 side panel에서 얇게 유지하고, DOM 조작은 content script에 맡기는 게 합리적이다.</p>
+<h2 id="5-영상의-두-모델-구조도-흥미롭다">5. 영상의 “두 모델 구조”도 흥미롭다</h2>
+<p>영상에 따르면 이 확장은 모델을 하나만 쓰지 않는다.</p>
+<ul>
+<li><code>Gemma 4 E2B instruct</code>
+<ul>
+<li>reasoning brain</li>
+<li>도구 호출 판단</li>
+<li>응답 생성</li>
+</ul>
+</li>
+<li><code>all-MiniLM-L6-v2</code>
+<ul>
+<li>embedding model</li>
+<li>페이지/히스토리 semantic search</li>
+</ul>
+</li>
+</ul>
+<p>공식 README에서도 <code>ask_website</code>가 <code>all-MiniLM-L6-v2</code> 임베딩을 써서 semantic similarity로 relevant section을 고른다고 설명한다.</p>
+<p>이 구성이 중요한 이유는, 로컬 브라우저 에이전트가 되려면 단순 채팅 모델만으로는 부족하기 때문이다.</p>
+<p>필요한 건:</p>
+<ul>
+<li>reasoning</li>
+<li>tool use</li>
+<li>retrieval</li>
+</ul>
+<p>의 결합이다.</p>
+<p>즉 이 프로젝트는 “브라우저에서 LLM 하나 돌리기”가 아니라<br>
+<strong>작은 로컬 에이전트 스택</strong>에 가깝다.</p>
+<h2 id="6-webgpu가-핵심이다-무료인-이유가-공짜-마법은-아니다">6. WebGPU가 핵심이다: 무료인 이유가 공짜 마법은 아니다</h2>
+<p>영상 제목에는 <code>No API Key</code>가 붙어 있다.<br>
+이건 맞지만, 더 정확한 표현이 필요하다.</p>
+<p>무료인 이유는 누군가 공짜 GPU 서버를 제공해서가 아니라,</p>
+<ul>
+<li>모델이 로컬에 있고</li>
+<li>브라우저가 WebGPU를 쓰고</li>
+<li>사용자의 하드웨어가 추론 비용을 부담</li>
+</ul>
+<p>하기 때문이다.</p>
+<p>즉 비용이 사라진 게 아니라 <strong>클라우드 추론 비용이 로컬 연산으로 이동한 것</strong>이다.</p>
+<p>그래서 이 구조의 장점은:</p>
+<ul>
+<li>API 키 불필요</li>
+<li>토큰 과금 없음</li>
+<li>데이터 외부 전송 없음</li>
+</ul>
+<p>이지만, 반대로:</p>
+<ul>
+<li>WebGPU 지원 필요</li>
+<li>현대적인 GPU 필요</li>
+<li>로컬 추론 속도 한계</li>
+</ul>
+<p>도 함께 따라온다.</p>
+<h2 id="7-이-프로젝트의-진짜-의의는-private-browsing-copilot이-아니라-browser-native-agent-runtime이다">7. 이 프로젝트의 진짜 의의는 “private browsing copilot”이 아니라 “browser-native agent runtime”이다</h2>
+<p>이 확장은 기존의 브라우저 요약 툴보다 한 단계 더 나아간다.</p>
+<p>왜냐하면:</p>
+<ul>
+<li>모델이 브라우저 안에 있고</li>
+<li>브라우저 상태를 도구로 읽고</li>
+<li>DOM에서 정보를 추출하고</li>
+<li>히스토리를 벡터 검색하고</li>
+<li>탭을 조작하며</li>
+<li>그 결과를 다시 에이전트 루프에 넣기 때문이다</li>
+</ul>
+<p>즉 브라우저는 더 이상 단순한 표시창이 아니라,<br>
+<strong>에이전트가 직접 상태를 읽고 바꾸는 작업 공간</strong>이 된다.</p>
+<pre class="mermaid">flowchart TD
+    A[Side Panel 사용자 요청] --> B[Background Agent]
+    B --> C[Gemma 4 추론]
+    B --> D[도구 호출]
+    D --> E[Content Script DOM 추출]
+    D --> F[Tabs / History 접근]
+    E --> B
+    F --> B
+    B --> G[응답 / 액션]</pre><h2 id="8-지금-시점에서-특히-흥미로운-이유">8. 지금 시점에서 특히 흥미로운 이유</h2>
+<p>2026년 시점에 이 프로젝트가 흥미로운 이유는 두 가지다.</p>
+<h3 id="첫째-브라우저-확장이-로컬-ai-에이전트의-유력한-폼팩터가-되고-있다는-점">첫째, 브라우저 확장이 로컬 AI 에이전트의 유력한 폼팩터가 되고 있다는 점</h3>
+<p>브라우저는 이미:</p>
+<ul>
+<li>탭</li>
+<li>히스토리</li>
+<li>DOM</li>
+<li>폼</li>
+<li>검색</li>
+</ul>
+<p>이라는 거대한 사용자 작업 맥락을 갖고 있다.</p>
+<p>이걸 클라우드 서버 없이 바로 다루는 건 꽤 강력하다.</p>
+<h3 id="둘째-reference-implementation이라는-점">둘째, reference implementation이라는 점</h3>
+<p>이건 단순 제품 하나보다 더 중요할 수 있다.</p>
+<p>왜냐하면 이 구조는 앞으로:</p>
+<ul>
+<li>로컬 연구 도구</li>
+<li>프라이버시 민감한 업무 도구</li>
+<li>브라우저 자동화 에이전트</li>
+</ul>
+<p>의 기본 청사진이 될 수 있기 때문이다.</p>
+<p>즉 Gemma 4 Browser Assistant의 진짜 가치는 “요약 잘해 준다”가 아니라,<br>
+<strong>브라우저를 로컬 에이전트 OS처럼 쓰는 구조를 구체적으로 보여 준다</strong>는 데 있다.</p>
+<h2 id="9-최신-저장소-기준-메타데이터">9. 최신 저장소 기준 메타데이터</h2>
+<p>GitHub 기준 현재 확인한 저장소 정보는 다음과 같다.</p>
+<ul>
+<li>저장소: <code>nico-martin/gemma4-browser-extension</code></li>
+<li>stars: <code>797</code></li>
+<li>forks: <code>108</code></li>
+<li>기본 브랜치: <code>main</code></li>
+<li>주 언어: <code>TypeScript</code></li>
+</ul>
+<p>이 정도면 단순 데모를 넘어, 실제로 꽤 많은 사람이 참고하는 구현체가 됐다고 볼 수 있다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 05월 04일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-04-lazyweb-mcp-design-context-real-app-screens/" rel="prev">
+        <span>Lazyweb MCP가 흥미로운 이유: AI 에이전트에 ‘실제 앱 화면’ 컨텍스트를 넣는다</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-04-dot-studio-figma-style-agent-choreography/" rel="next">
+        <span>DOT Studio가 흥미로운 이유: OpenCode 위에 Figma 같은 에이전트 안무판을 얹는다</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-이-프로젝트의-핵심은-브라우저용-chatgpt가-아니다">1. 이 프로젝트의 핵심은 “브라우저용 ChatGPT”가 아니다</a></li>
+    <li><a href="#2-왜-이게-중요한가-대부분의-브라우저-ai는-결국-서버형이기-때문이다">2. 왜 이게 중요한가: 대부분의 브라우저 AI는 결국 서버형이기 때문이다</a></li>
+    <li><a href="#3-저장소-기준-기능도-꽤-실용적이다">3. 저장소 기준 기능도 꽤 실용적이다</a>
+      <ul>
+        <li><a href="#3-1-tab-management">3-1. Tab Management</a></li>
+        <li><a href="#3-2-website-interaction-rag">3-2. Website Interaction (RAG)</a></li>
+        <li><a href="#3-3-history-vector-database">3-3. History Vector Database</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-아키텍처가-특히-중요하다-mv3-제약-위에서-잘-쪼갰다">4. 아키텍처가 특히 중요하다: MV3 제약 위에서 잘 쪼갰다</a>
+      <ul>
+        <li><a href="#background-script">Background Script</a></li>
+        <li><a href="#side-panel">Side Panel</a></li>
+        <li><a href="#content-script">Content Script</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-영상의-두-모델-구조도-흥미롭다">5. 영상의 “두 모델 구조”도 흥미롭다</a></li>
+    <li><a href="#6-webgpu가-핵심이다-무료인-이유가-공짜-마법은-아니다">6. WebGPU가 핵심이다: 무료인 이유가 공짜 마법은 아니다</a></li>
+    <li><a href="#7-이-프로젝트의-진짜-의의는-private-browsing-copilot이-아니라-browser-native-agent-runtime이다">7. 이 프로젝트의 진짜 의의는 “private browsing copilot”이 아니라 “browser-native agent runtime”이다</a></li>
+    <li><a href="#8-지금-시점에서-특히-흥미로운-이유">8. 지금 시점에서 특히 흥미로운 이유</a>
+      <ul>
+        <li><a href="#첫째-브라우저-확장이-로컬-ai-에이전트의-유력한-폼팩터가-되고-있다는-점">첫째, 브라우저 확장이 로컬 AI 에이전트의 유력한 폼팩터가 되고 있다는 점</a></li>
+        <li><a href="#둘째-reference-implementation이라는-점">둘째, reference implementation이라는 점</a></li>
+      </ul>
+    </li>
+    <li><a href="#9-최신-저장소-기준-메타데이터">9. 최신 저장소 기준 메타데이터</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/gemma/" class="badge badge-secondary">Gemma</a>
+    <a href="/tags/browser-agent/" class="badge badge-secondary">Browser Agent</a>
+    <a href="/tags/chrome/" class="badge badge-secondary">Chrome</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
