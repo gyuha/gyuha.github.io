@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Context Mode가 중요한 이유: 토큰 절감보다 세션 연속성과 도구 샌드박싱을 해결한다'" />
+  <title>Context Mode가 중요한 이유: 토큰 절감보다 세션 연속성과 도구 샌드박싱을 해결한다  | 신규하 블로그</title>
+  <meta property="og:title" content="Context Mode가 중요한 이유: 토큰 절감보다 세션 연속성과 도구 샌드박싱을 해결한다" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-05-07"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/05/2026-05-07-context-mode-session-continuity-and-tool-sandboxing/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="Context" />
+  
+  <meta property="og:tags" content="MCP" />
+  
+  <meta property="og:tags" content="Claude Code" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/05/2026-05-07-context-mode-session-continuity-and-tool-sandboxing/">
+          <h1>
+            Context Mode가 중요한 이유: 토큰 절감보다 세션 연속성과 도구 샌드박싱을 해결한다
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/05/2026-05-07-context-mode-session-continuity-and-tool-sandboxing/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Context Mode의 README 첫 문장은 꽤 정확하다.</p>
+<p><strong>The other half of the context problem.</strong></p>
+<p>많은 사람이 컨텍스트 문제를 “긴 대화”로만 생각하지만, 이 프로젝트는 다른 절반을 찌른다.</p>
+<ul>
+<li>도구 출력이 너무 크고</li>
+<li>그 출력이 문맥창을 오염시키고</li>
+<li>압축 이후에는 에이전트가 무엇을 하던 중이었는지 잊어버린다</li>
+</ul>
+<p>즉 Context Mode는 단순 토큰 절감기가 아니라,<br>
+<strong>도구 샌드박싱과 세션 연속성을 묶어 컨텍스트 위생을 관리하는 레이어</strong>에 가깝다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>GitHub: <a href="https://github.com/mksglu/context-mode">https://github.com/mksglu/context-mode</a></li>
+<li>README: <a href="https://raw.githubusercontent.com/mksglu/context-mode/main/README.md">https://raw.githubusercontent.com/mksglu/context-mode/main/README.md</a></li>
+</ul>
+<h2 id="1-context-mode가-보는-문제는-대화가-길다보다-도구가-너무-많이-쏟아낸다다">1. Context Mode가 보는 문제는 “대화가 길다”보다 “도구가 너무 많이 쏟아낸다”다</h2>
+<p>README의 문제 정의는 아주 구체적이다.</p>
+<ul>
+<li>Playwright snapshot 한 번에 <code>56 KB</code></li>
+<li>GitHub issues 20개에 <code>59 KB</code></li>
+<li>access log 하나에 <code>45 KB</code></li>
+</ul>
+<p>즉 문맥창은 사용자가 장황해서만 차는 게 아니라,<br>
+<strong>도구가 raw output을 그대로 뿜어내기 때문에</strong> 금방 소모된다.</p>
+<p>이 관점은 중요하다.</p>
+<p>왜냐하면 실제 코딩 에이전트 세션에서 문맥을 가장 많이 먹는 경우가 자주:</p>
+<ul>
+<li>브라우저 스냅샷</li>
+<li>로그</li>
+<li>대량 파일 읽기</li>
+<li>이슈/문서 덤프</li>
+</ul>
+<p>같은 도구 출력이기 때문이다.</p>
+<p>Context Mode는 바로 이 raw output flood를 문제의 시작점으로 본다.</p>
+<h2 id="2-이-프로젝트의-핵심은-단일-기능이-아니라-4개-층이다">2. 이 프로젝트의 핵심은 단일 기능이 아니라 4개 층이다</h2>
+<p>README는 Context Mode가 네 가지를 함께 해결한다고 말한다.</p>
+<ol>
+<li>Context Saving</li>
+<li>Session Continuity</li>
+<li>Think in Code</li>
+<li>Output Compression</li>
+</ol>
+<p>이 네 개를 따로 보면 익숙한 이야기지만, 한 시스템 안에 묶어 둔 점이 차별점이다.</p>
+<h3 id="2-1-context-saving">2-1. Context Saving</h3>
+<p>sandbox tools로 raw data를 컨텍스트 창 밖에 둔다.</p>
+<p>README 표현대로면:</p>
+<ul>
+<li><code>315 KB → 5.4 KB</code></li>
+<li><code>98% reduction</code></li>
+</ul>
+<p>즉 핵심은 “도구를 쓰지 말라”가 아니라<br>
+<strong>도구 출력 전체를 LLM 문맥에 다 싣지 말라</strong>는 것이다.</p>
+<h3 id="2-2-session-continuity">2-2. Session Continuity</h3>
+<p>파일 편집, git 작업, task, error, user decision을 SQLite에 기록한다.</p>
+<p>그리고 compact 이후에는 이걸 다시 긴 텍스트로 밀어 넣는 대신:</p>
+<ul>
+<li>FTS5</li>
+<li>BM25 search</li>
+</ul>
+<p>로 필요한 것만 재검색한다.</p>
+<p>즉 압축 이후의 기억 상실을 줄이려는 구조다.</p>
+<h3 id="2-3-think-in-code">2-3. Think in Code</h3>
+<p>README에서 가장 인상적인 주장이다.</p>
+
+  <blockquote>
+    <p>The LLM should program the analysis, not compute it.</p>
+
+  </blockquote>
+
+<p>즉 50개 파일을 일일이 읽게 하지 말고:</p>
+<ul>
+<li>스크립트를 쓰게 하고</li>
+<li>계산은 스크립트가 하게 하고</li>
+<li>결과만 짧게 받아라</li>
+</ul>
+<p>는 것이다.</p>
+<p>이건 단순 최적화가 아니라 <strong>에이전트 사고방식 교정</strong>에 가깝다.</p>
+<h3 id="2-4-output-compression">2-4. Output Compression</h3>
+<p>README는 거의 스타일 가이드처럼 말한다.</p>
+<ul>
+<li>terse like caveman</li>
+<li>only fluff die</li>
+<li>fragments OK</li>
+</ul>
+<p>즉 기술 정보는 유지하되:</p>
+<ul>
+<li>군더더기</li>
+<li>헤징</li>
+<li>불필요한 예의</li>
+<li>장황한 연결어</li>
+</ul>
+<p>를 죽여서 출력 토큰도 줄인다.</p>
+<h2 id="3-진짜-차별점은-세션-연속성이다">3. 진짜 차별점은 “세션 연속성”이다</h2>
+<p>토큰 절감 도구는 이미 많다.<br>
+하지만 Context Mode가 더 흥미로운 이유는 <code>Session Continuity</code>를 전면에 둔다는 점이다.</p>
+<p>README에 따르면, compact 후에도 다음이 추적된다.</p>
+<ul>
+<li>file edit</li>
+<li>git operation</li>
+<li>task</li>
+<li>error</li>
+<li>user decision</li>
+</ul>
+<p>그리고 이전 세션을 무조건 다 끌고 오는 게 아니라:</p>
+<ul>
+<li>fresh session이면 이전 데이터 삭제</li>
+<li>이어 가는 세션이면 relevant event만 재검색</li>
+</ul>
+<p>하는 식이다.</p>
+<p>즉 이 프로젝트는 “기억을 많이 남기자”보다<br>
+<strong>지금 필요한 기억만 재구성하자</strong>는 쪽에 가깝다.</p>
+<p>이게 훨씬 실용적이다.</p>
+<pre class="mermaid">flowchart TD
+    A[도구 실행 / 파일 편집 / Git / 오류] --> B[SQLite Event Store]
+    B --> C[FTS5 인덱싱]
+    C --> D[BM25 검색]
+    D --> E[다음 턴에 필요한 정보만 복원]</pre><h2 id="4-think-in-code는-사실-가장-큰-철학적-전환이다">4. Think in Code는 사실 가장 큰 철학적 전환이다</h2>
+<p>README가 드는 예시는 강력하다.</p>
+<ul>
+<li>Before: <code>47 × Read() = 700 KB</code></li>
+<li>After: <code>1 × ctx_execute() = 3.6 KB</code></li>
+</ul>
+<p>이건 단순히 압축을 잘하는 수준이 아니다.</p>
+<p>에이전트에게:</p>
+<ul>
+<li>데이터를 직접 먹이지 말고</li>
+<li>분석 스크립트를 생성하게 하고</li>
+<li>결과만 뽑게 하라</li>
+</ul>
+<p>고 강제하는 것이다.</p>
+<p>즉 LLM을:</p>
+<ul>
+<li>데이터 처리기</li>
+</ul>
+<p>가 아니라</p>
+<ul>
+<li>분석 프로그램 생성기</li>
+</ul>
+<p>로 다시 위치시킨다.</p>
+<p>이 관점은 앞으로 더 중요해질 가능성이 크다.<br>
+컨텍스트 문제는 모델 창이 커져도 사라지지 않기 때문이다.</p>
+<h2 id="5-14개-플랫폼-지원도-설치-편의성보다-습관-강제력에서-의미가-있다">5. 14개 플랫폼 지원도 “설치 편의성”보다 “습관 강제력”에서 의미가 있다</h2>
+<p>README는 14개 플랫폼을 지원한다고 말한다.</p>
+<p>특히 hook-capable platform에서는:</p>
+<ul>
+<li>SessionStart</li>
+<li>PreToolUse</li>
+<li>PostToolUse</li>
+<li>PreCompact</li>
+</ul>
+<p>같은 훅으로 routing을 강제할 수 있다고 설명한다.</p>
+<p>이게 중요한 이유는 Context Mode의 가치는 단순 설치가 아니라,<br>
+<strong>에이전트가 raw Bash/Read/WebFetch 대신 sandbox tool을 우선 쓰게 만드는 것</strong>에 있기 때문이다.</p>
+<p>즉 좋은 아이디어만으로는 부족하고,<br>
+실제로 그 행동을 세션 시작부터 주입해야 한다.</p>
+<p>그래서 이 프로젝트는 도구 모음이라기보다<br>
+<strong>행동 교정 런타임</strong>에 더 가깝다.</p>
+<h2 id="6-claude-code-지원-방식도-흥미롭다-mcp-only가-아니라-pluginhooks다">6. Claude Code 지원 방식도 흥미롭다: MCP-only가 아니라 plugin+hooks다</h2>
+<p>README의 Claude Code 섹션을 보면 두 가지 길을 준다.</p>
+<h3 id="full-plugin-install">Full plugin install</h3>
+<ul>
+<li>marketplace add</li>
+<li>plugin install</li>
+<li>SessionStart / PreToolUse / PostToolUse / PreCompact</li>
+<li>slash commands</li>
+</ul>
+<h3 id="mcp-only-install">MCP-only install</h3>
+<ul>
+<li>MCP tools만 사용</li>
+<li>routing 강제는 없음</li>
+</ul>
+<p>즉 개발자는 “그냥 도구 몇 개 더 추가”하는 것도 가능하지만,<br>
+제작자는 분명히 <strong>전체 plugin + hooks 경로</strong>를 권장한다.</p>
+<p>왜냐하면 Context Mode의 본질은 도구 개수보다<br>
+<strong>도구 선택 습관을 바꾸는 것</strong>이기 때문이다.</p>
+<h2 id="7-output-compression은-과해-보이지만-실은-agent-ux를-겨냥한다">7. Output Compression은 과해 보이지만, 실은 agent UX를 겨냥한다</h2>
+<p>README의 압축 규칙은 일부러 과장돼 보인다.</p>
+<ul>
+<li>caveman style</li>
+<li>fragments OK</li>
+<li>filler die</li>
+</ul>
+<p>하지만 이건 나름 타당하다.</p>
+<p>코딩 에이전트 세션에서 자주 낭비되는 건:</p>
+<ul>
+<li>쓸데없는 친절</li>
+<li>반복 설명</li>
+<li>“just / really / basically” 같은 filler</li>
+</ul>
+<p>같은 것들이다.</p>
+<p>즉 Output Compression은 단순 글쓰기 스타일이 아니라<br>
+<strong>토큰 예산을 technical substance에 몰아주기 위한 응답 프로토콜</strong>이다.</p>
+<p>다만 이 부분은 호불호가 있을 수 있다.<br>
+설명 중심 사용자는 오히려 답변이 너무 거칠다고 느낄 수 있기 때문이다.</p>
+<h2 id="8-이-프로젝트를-가장-잘-설명하는-표현은-context-saver보다-context-hygiene-runtime이다">8. 이 프로젝트를 가장 잘 설명하는 표현은 “context saver”보다 “context hygiene runtime”이다</h2>
+<p>Context Mode는 단순히 용량을 줄이지 않는다.</p>
+<ul>
+<li>raw output를 샌드박싱하고</li>
+<li>이벤트를 저장하고</li>
+<li>필요한 정보만 검색해 복원하고</li>
+<li>에이전트에게 코드를 쓰게 하고</li>
+<li>출력 자체도 압축한다</li>
+</ul>
+<p>즉 문제를 단일 포인트가 아니라 <strong>문맥 수명주기 전체</strong>에서 본다.</p>
+<p>그래서 이 프로젝트는 단순 최적화 도구보다,<br>
+<strong>AI coding session의 위생 관리 런타임</strong>이라고 부르는 편이 더 정확하다.</p>
+<pre class="mermaid">flowchart LR
+    A[Raw Tool Output] --> B[Sandbox]
+    B --> C[Small Context Footprint]
+    C --> D[Longer Sessions]
+    D --> E[Compact Event Retrieval]
+    E --> F[Session Continuity]</pre><h2 id="9-최신-저장소-기준-메타데이터">9. 최신 저장소 기준 메타데이터</h2>
+<p>GitHub 기준 현재 확인한 저장소 정보는 다음과 같다.</p>
+<ul>
+<li>저장소: <code>mksglu/context-mode</code></li>
+<li>설명: <code>Context window optimization for AI coding agents...</code></li>
+<li>stars: <code>13,594</code></li>
+<li>forks: <code>932</code></li>
+<li>기본 브랜치: <code>main</code></li>
+<li>주 언어: <code>TypeScript</code></li>
+</ul>
+<p>라이선스는 주의가 필요하다.</p>
+<ul>
+<li>GitHub API 응답: <code>NOASSERTION</code></li>
+<li>README 배지: <code>ELv2</code></li>
+</ul>
+<p>즉 현재는 <strong>README와 GitHub 메타데이터가 완전히 일치하지 않으므로</strong>, 실제 사용 전에는 저장소의 LICENSE 파일을 직접 확인하는 편이 안전하다.</p>
+<h2 id="10-결론">10. 결론</h2>
+<p>Context Mode가 중요한 이유는 “토큰 98% 절감” 수치 자체보다,<br>
+그 절감을 위해 <strong>에이전트가 일하는 방식을 바꾼다</strong>는 점에 있다.</p>
+<p>핵심은:</p>
+<ul>
+<li>raw output를 문맥에 다 밀어 넣지 말 것</li>
+<li>필요한 기억만 다시 찾을 것</li>
+<li>LLM에게 데이터를 직접 읽히지 말고 코드를 쓰게 할 것</li>
+<li>답변도 압축해서 토큰을 아낄 것</li>
+</ul>
+<p>이다.</p>
+<p>즉 이 프로젝트는 단순 saver가 아니라<br>
+<strong>도구 샌드박싱 + 세션 연속성 + think-in-code를 결합한 context runtime</strong>으로 보는 편이 맞다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 05월 07일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-06-claude-usage-limit-mcp-cli-context-strategy/" rel="prev">
+        <span>Claude 사용 한도의 진짜 원인은 대화량만이 아니다: MCP를 줄이고 CLI로 바꾸는 컨텍스트 전략</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-context-mode가-보는-문제는-대화가-길다보다-도구가-너무-많이-쏟아낸다다">1. Context Mode가 보는 문제는 “대화가 길다”보다 “도구가 너무 많이 쏟아낸다”다</a></li>
+    <li><a href="#2-이-프로젝트의-핵심은-단일-기능이-아니라-4개-층이다">2. 이 프로젝트의 핵심은 단일 기능이 아니라 4개 층이다</a>
+      <ul>
+        <li><a href="#2-1-context-saving">2-1. Context Saving</a></li>
+        <li><a href="#2-2-session-continuity">2-2. Session Continuity</a></li>
+        <li><a href="#2-3-think-in-code">2-3. Think in Code</a></li>
+        <li><a href="#2-4-output-compression">2-4. Output Compression</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-진짜-차별점은-세션-연속성이다">3. 진짜 차별점은 “세션 연속성”이다</a></li>
+    <li><a href="#4-think-in-code는-사실-가장-큰-철학적-전환이다">4. Think in Code는 사실 가장 큰 철학적 전환이다</a></li>
+    <li><a href="#5-14개-플랫폼-지원도-설치-편의성보다-습관-강제력에서-의미가-있다">5. 14개 플랫폼 지원도 “설치 편의성”보다 “습관 강제력”에서 의미가 있다</a></li>
+    <li><a href="#6-claude-code-지원-방식도-흥미롭다-mcp-only가-아니라-pluginhooks다">6. Claude Code 지원 방식도 흥미롭다: MCP-only가 아니라 plugin+hooks다</a>
+      <ul>
+        <li><a href="#full-plugin-install">Full plugin install</a></li>
+        <li><a href="#mcp-only-install">MCP-only install</a></li>
+      </ul>
+    </li>
+    <li><a href="#7-output-compression은-과해-보이지만-실은-agent-ux를-겨냥한다">7. Output Compression은 과해 보이지만, 실은 agent UX를 겨냥한다</a></li>
+    <li><a href="#8-이-프로젝트를-가장-잘-설명하는-표현은-context-saver보다-context-hygiene-runtime이다">8. 이 프로젝트를 가장 잘 설명하는 표현은 “context saver”보다 “context hygiene runtime”이다</a></li>
+    <li><a href="#9-최신-저장소-기준-메타데이터">9. 최신 저장소 기준 메타데이터</a></li>
+    <li><a href="#10-결론">10. 결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/context/" class="badge badge-secondary">Context</a>
+    <a href="/tags/mcp/" class="badge badge-secondary">MCP</a>
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
