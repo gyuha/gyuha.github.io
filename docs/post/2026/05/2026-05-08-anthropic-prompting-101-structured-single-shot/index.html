@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Anthropic Prompting 101의 핵심: 좋은 프롬프트는 길이가 아니라 구조다'" />
+  <title>Anthropic Prompting 101의 핵심: 좋은 프롬프트는 길이가 아니라 구조다  | 신규하 블로그</title>
+  <meta property="og:title" content="Anthropic Prompting 101의 핵심: 좋은 프롬프트는 길이가 아니라 구조다" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-05-08"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/05/2026-05-08-anthropic-prompting-101-structured-single-shot/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="Prompting" />
+  
+  <meta property="og:tags" content="Claude" />
+  
+  <meta property="og:tags" content="Anthropic" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/05/2026-05-08-anthropic-prompting-101-structured-single-shot/">
+          <h1>
+            Anthropic Prompting 101의 핵심: 좋은 프롬프트는 길이가 아니라 구조다
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/05/2026-05-08-anthropic-prompting-101-structured-single-shot/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Anthropic의 <code>Prompting 101</code> 영상은 프롬프트를 “예쁘게 쓰는 문장 기술”로 설명하지 않는다.</p>
+<p>핵심은 오히려 반대다.<br>
+<strong>좋은 프롬프트는 문장력이 아니라 구조</strong>라는 것이다.</p>
+<p>특히 API 기반 애플리케이션에서는 대화를 여러 번 주고받기보다,<br>
+한 번의 메시지로 처음부터 맞는 답을 받는 <code>single-shot</code> 설계가 중요하다는 점을 아주 실전적으로 보여 준다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>YouTube: <a href="https://www.youtube.com/watch?v=ysPbXH0LpIE">https://www.youtube.com/watch?v=ysPbXH0LpIE</a></li>
+<li>Anthropic Prompting docs: <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview">https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview</a></li>
+<li>Anthropic Console: <a href="https://console.anthropic.com/">https://console.anthropic.com/</a></li>
+</ul>
+<h2 id="1-prompting-101이-실제로-가르치는-건-말-잘하기가-아니라-작업-설계다">1. Prompting 101이 실제로 가르치는 건 “말 잘하기”가 아니라 “작업 설계”다</h2>
+<p>영상 초반에서 Anthropic 팀은 prompt engineering을 이렇게 설명한다.</p>
+<ul>
+<li>clear instructions</li>
+<li>give the model the context it needs</li>
+<li>arrange information in the best way</li>
+</ul>
+<p>이 정의가 중요하다.</p>
+<p>많은 사람이 프롬프트를:</p>
+<ul>
+<li>멋진 한 문장</li>
+<li>비밀 프롬프트</li>
+<li>창의적인 주문</li>
+</ul>
+<p>처럼 생각하지만, Anthropic은 이를 <strong>작업 설계 문서</strong>에 더 가깝게 본다.</p>
+<p>즉 질문을 잘하는 것보다:</p>
+<ul>
+<li>모델이 무슨 역할인지</li>
+<li>어떤 데이터를 보는지</li>
+<li>어떤 순서로 판단해야 하는지</li>
+<li>어떤 형식으로 답해야 하는지</li>
+</ul>
+<p>를 구조적으로 설계하는 게 중요하다는 뜻이다.</p>
+<h2 id="2-영상이-강조하는-첫-번째-원칙-single-shot-task에서는-프롬프트-구조가-더-중요해진다">2. 영상이 강조하는 첫 번째 원칙: single-shot task에서는 프롬프트 구조가 더 중요해진다</h2>
+<p>영상은 챗봇식 대화와 API 태스크를 구분한다.</p>
+<h3 id="챗봇형">챗봇형</h3>
+<ul>
+<li>몇 번이고 왕복하면서 수정 가능</li>
+</ul>
+<h3 id="애플리케이션형">애플리케이션형</h3>
+<ul>
+<li>한 번의 메시지로</li>
+<li>처음부터 정확한 결과를 얻어야 함</li>
+</ul>
+<p>보험사 사고 판정 예시는 바로 이 후자다.</p>
+<p>즉 사용자는 길게 대화를 이어가며 정정할 수 없다.<br>
+그래서 프롬프트가 처음부터:</p>
+<ul>
+<li>역할</li>
+<li>배경</li>
+<li>자료</li>
+<li>절차</li>
+<li>출력 포맷</li>
+</ul>
+<p>을 다 갖춰야 한다.</p>
+<p>이건 에이전트 하네스나 백엔드 프롬프트 설계에서도 그대로 적용된다.</p>
+<h2 id="3-anthropic이-제시한-기본-뼈대는-5단계다">3. Anthropic이 제시한 기본 뼈대는 5단계다</h2>
+<p>영상은 좋은 prompt structure를 대략 다음처럼 설명한다.</p>
+<ol>
+<li>task description</li>
+<li>content</li>
+<li>detailed instructions</li>
+<li>examples</li>
+<li>reminder / final emphasis</li>
+</ol>
+<p>이 흐름이 좋은 이유는 모델이 정보를 읽는 순서를 통제할 수 있기 때문이다.</p>
+<h3 id="task-description">Task Description</h3>
+<p>“너는 오늘 무엇을 하러 왔는가?”</p>
+<h3 id="content">Content</h3>
+<p>실제로 분석할 이미지/문서/데이터</p>
+<h3 id="detailed-instructions">Detailed Instructions</h3>
+<p>어떤 절차로 판단할지</p>
+<h3 id="examples">Examples</h3>
+<p>어려운 케이스를 어떻게 처리할지</p>
+<h3 id="reminder">Reminder</h3>
+<p>환각 금지, 근거 확인, 출력 형식 등 마지막 제약</p>
+<p>즉 프롬프트는 감성적 설득이 아니라,<br>
+<strong>입력 순서와 판단 절차를 정렬하는 컨테이너</strong>다.</p>
+<h2 id="4-첫-번째-개선은-상황을-설명하는-것만으로도-크게-일어난다">4. 첫 번째 개선은 “상황을 설명하는 것”만으로도 크게 일어난다</h2>
+<p>영상의 데모는 아주 재밌다.</p>
+<p>스웨덴어 차량 사고 보고서와 손그림 스케치를 그냥 던졌을 때 Claude는 처음에 이를 스키 사고처럼 오해한다.</p>
+<p>왜냐하면:</p>
+<ul>
+<li>무슨 도메인인지</li>
+<li>어떤 종류의 폼인지</li>
+<li>무엇을 판단해야 하는지</li>
+</ul>
+<p>가 안 주어졌기 때문이다.</p>
+<p>하지만 두 번째 버전에서:</p>
+<ul>
+<li>자동차 보험 사고라는 점</li>
+<li>인간 클레임 조정사를 돕는 역할이라는 점</li>
+<li>확신 없으면 판단하지 말라는 점</li>
+</ul>
+<p>을 넣자, 모델은 적어도 <strong>차량 사고 문맥</strong>으로 해석하기 시작한다.</p>
+<p>이 장면이 중요한 이유는, 모델이 멍청해서 실수한 게 아니라<br>
+<strong>우리가 상황을 충분히 안 줘서 추정으로 메웠다</strong>는 걸 보여 주기 때문이다.</p>
+<h2 id="5-두-번째-개선은-static-context를-system-prompt로-올리는-것이다">5. 두 번째 개선은 static context를 system prompt로 올리는 것이다</h2>
+<p>영상에서 가장 실무적인 팁 중 하나는 이것이다.</p>
+<p>폼의 구조처럼 <strong>항상 바뀌지 않는 정보</strong>는 system prompt 쪽에 올려라.</p>
+<p>예를 들면:</p>
+<ul>
+<li>이 폼은 항상 같은 레이아웃이다</li>
+<li>두 개의 컬럼은 vehicle A / B를 뜻한다</li>
+<li>17개 체크박스는 각각 어떤 의미를 가진다</li>
+<li>사람들은 X 대신 동그라미, 낙서, 애매한 표시를 할 수 있다</li>
+</ul>
+<p>이런 정보는 매 요청마다 새로 추론하게 하지 말고,<br>
+미리 알려 주는 편이 낫다.</p>
+<p>이건 RAG나 prompt caching과도 잘 연결된다.</p>
+<p>즉 <code>dynamic input</code>과 <code>static background knowledge</code>를 분리하면:</p>
+<ul>
+<li>모델의 해석 비용이 줄고</li>
+<li>입력 이해 정확도가 올라가고</li>
+<li>응답도 더 안정된다</li>
+</ul>
+<h2 id="6-영상이-계속-강조하는-건-claude-loves-structure다">6. 영상이 계속 강조하는 건 “Claude loves structure”다</h2>
+<p>Anthropic 팀은 중간에 아주 분명히 말한다.</p>
+<p>Claude는 구조를 좋아한다.</p>
+<p>그래서 추천하는 도구가:</p>
+<ul>
+<li>XML tags</li>
+<li>Markdown sections</li>
+<li>명시적 구획</li>
+</ul>
+<p>이다.</p>
+<p>이건 단순 미관 문제가 아니다.</p>
+<p>예를 들어:</p>
+<ul>
+<li><code>&lt;task_context&gt;</code></li>
+<li><code>&lt;background&gt;</code></li>
+<li><code>&lt;examples&gt;</code></li>
+<li><code>&lt;important_guidelines&gt;</code></li>
+</ul>
+<p>처럼 구획이 나뉘면, 모델은 어떤 정보가 어떤 역할인지 더 잘 추적한다.</p>
+<p>즉 구분자는 사람이 보기 좋으라고 넣는 게 아니라,<br>
+<strong>모델이 문맥의 계층을 읽기 쉽게 하려고 넣는 것</strong>이다.</p>
+<pre class="mermaid">flowchart TD
+    A[Task Description] --> B[Static Background]
+    B --> C[Dynamic Content]
+    C --> D[Detailed Instructions]
+    D --> E[Examples]
+    E --> F[Reminder + Output Format]
+    F --> G[Single-shot Response]</pre><h2 id="7-세-번째-개선은-판단-순서를-지정하는-것이다">7. 세 번째 개선은 “판단 순서”를 지정하는 것이다</h2>
+<p>영상에서 가장 중요한 부분 중 하나는 detailed instructions 단계다.</p>
+<p>보험 사례에서는 판단 순서가 핵심이었다.</p>
+<p>Anthropic 팀이 제안한 흐름은 대략 이렇다.</p>
+<ol>
+<li>먼저 폼을 읽어라</li>
+<li>어떤 체크박스가 표시됐는지 확인해라</li>
+<li>그 사실을 바탕으로 스케치를 해석해라</li>
+<li>마지막에 책임 판단을 내려라</li>
+</ol>
+<p>이게 중요한 이유는, 모델이 자유롭게 판단 순서를 정하게 두면<br>
+그림 같은 애매한 데이터부터 읽고 추정을 시작할 수 있기 때문이다.</p>
+<p>즉 좋은 프롬프트는 정보만 주는 게 아니라<br>
+<strong>어떤 순서로 추론해야 하는지까지 준다.</strong></p>
+<p>이건 코드 리뷰, 버그 트리아주, 로그 분석 같은 작업에도 그대로 적용된다.</p>
+<h2 id="8-examples와-conversation-history는-정답-기억이-아니라-판단-습관-주입이다">8. Examples와 conversation history는 “정답 기억”이 아니라 “판단 습관 주입”이다</h2>
+<p>영상 후반은 examples와 conversation history도 언급한다.</p>
+<p>특히 examples는:</p>
+<ul>
+<li>어려운 사례</li>
+<li>자주 틀리는 회색지대</li>
+<li>인간이 이미 올바르게 레이블한 케이스</li>
+</ul>
+<p>를 system prompt 안에 few-shot처럼 넣을 수 있다고 설명한다.</p>
+<p>핵심은 단순 예시가 아니라:</p>
+<ul>
+<li>어떤 데이터를 받고</li>
+<li>어떤 reasoning을 통해</li>
+<li>어떤 output을 내는지</li>
+</ul>
+<p>를 패턴으로 주입하는 것이다.</p>
+<p>즉 examples는 모델에게 답을 외우게 하기보다<br>
+<strong>판단 습관을 시연하는 장치</strong>에 가깝다.</p>
+<h2 id="9-마지막-개선은-출력-형식을-미리-닫는-것이다">9. 마지막 개선은 출력 형식을 미리 닫는 것이다</h2>
+<p>영상의 마지막 포인트는 output formatting이다.</p>
+<p>애플리케이션 관점에서는 이게 매우 중요하다.</p>
+<p>인간 입장에서는 설명이 길어도 괜찮지만,</p>
+<ul>
+<li>DB에 저장하려면</li>
+<li>후속 시스템이 파싱하려면</li>
+<li>대시보드에 쓰려면</li>
+</ul>
+<p>결과가 구조화되어야 한다.</p>
+<p>그래서 Anthropic 팀은:</p>
+<ul>
+<li>XML tags</li>
+<li>prefilling</li>
+<li>JSON-like 시작 토큰</li>
+</ul>
+<p>같은 방식으로 출력을 닫는 방법을 설명한다.</p>
+<p>즉 좋은 프롬프트는 “잘 생각해 줘”에서 끝나지 않고,<br>
+<strong>답을 어디에 써먹을지까지 고려해서 형식을 강제</strong>한다.</p>
+<h2 id="10-이-영상이-진짜로-말하는-핵심">10. 이 영상이 진짜로 말하는 핵심</h2>
+<p>이 전체 데모를 한 문장으로 요약하면 이렇다.</p>
+<p>모델은 추론을 대신해 주지만,<br>
+<strong>무엇을 먼저 보고 어떤 순서로 판단하며 어떤 형식으로 결론을 내릴지는 여전히 사람이 설계해야 한다.</strong></p>
+<p>즉 Prompting 101은 “프롬프트 장인 되기”가 아니라:</p>
+<ul>
+<li>상황을 명확히 주고</li>
+<li>바뀌지 않는 배경은 system prompt로 옮기고</li>
+<li>추론 순서를 설계하고</li>
+<li>예시로 경계 사례를 보강하고</li>
+<li>출력 포맷까지 닫으라</li>
+</ul>
+<p>는 매우 실무적인 메시지다.</p>
+<h2 id="11-결론">11. 결론</h2>
+<p>Anthropic의 Prompting 101이 좋은 이유는 프롬프트를 신비화하지 않기 때문이다.</p>
+<p>핵심은 결국 구조다.</p>
+<ul>
+<li>task</li>
+<li>content</li>
+<li>instructions</li>
+<li>examples</li>
+<li>reminders</li>
+<li>output format</li>
+</ul>
+<p>을 나누고, 그 안에서 모델이 추정해야 할 부분을 줄이는 것.</p>
+<p>즉 좋은 프롬프트는 화려한 문장이 아니라,<br>
+<strong>모델이 처음부터 일을 제대로 하게 만드는 작업 설계 문서</strong>다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 05월 08일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-08-ima2-gen-local-gpt-image-studio/" rel="prev">
+        <span>ima2-gen이 흥미로운 이유: GPT Image 2를 작은 로컬 스튜디오처럼 다루게 만든다</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-08-memory-is-not-rag-run-ledger-promotion/" rel="next">
+        <span>AI Memory는 왜 RAG가 아닌가: Run Ledger에 실패를 남기고 검증된 지식만 승격해야 한다</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-prompting-101이-실제로-가르치는-건-말-잘하기가-아니라-작업-설계다">1. Prompting 101이 실제로 가르치는 건 “말 잘하기”가 아니라 “작업 설계”다</a></li>
+    <li><a href="#2-영상이-강조하는-첫-번째-원칙-single-shot-task에서는-프롬프트-구조가-더-중요해진다">2. 영상이 강조하는 첫 번째 원칙: single-shot task에서는 프롬프트 구조가 더 중요해진다</a>
+      <ul>
+        <li><a href="#챗봇형">챗봇형</a></li>
+        <li><a href="#애플리케이션형">애플리케이션형</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-anthropic이-제시한-기본-뼈대는-5단계다">3. Anthropic이 제시한 기본 뼈대는 5단계다</a>
+      <ul>
+        <li><a href="#task-description">Task Description</a></li>
+        <li><a href="#content">Content</a></li>
+        <li><a href="#detailed-instructions">Detailed Instructions</a></li>
+        <li><a href="#examples">Examples</a></li>
+        <li><a href="#reminder">Reminder</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-첫-번째-개선은-상황을-설명하는-것만으로도-크게-일어난다">4. 첫 번째 개선은 “상황을 설명하는 것”만으로도 크게 일어난다</a></li>
+    <li><a href="#5-두-번째-개선은-static-context를-system-prompt로-올리는-것이다">5. 두 번째 개선은 static context를 system prompt로 올리는 것이다</a></li>
+    <li><a href="#6-영상이-계속-강조하는-건-claude-loves-structure다">6. 영상이 계속 강조하는 건 “Claude loves structure”다</a></li>
+    <li><a href="#7-세-번째-개선은-판단-순서를-지정하는-것이다">7. 세 번째 개선은 “판단 순서”를 지정하는 것이다</a></li>
+    <li><a href="#8-examples와-conversation-history는-정답-기억이-아니라-판단-습관-주입이다">8. Examples와 conversation history는 “정답 기억”이 아니라 “판단 습관 주입”이다</a></li>
+    <li><a href="#9-마지막-개선은-출력-형식을-미리-닫는-것이다">9. 마지막 개선은 출력 형식을 미리 닫는 것이다</a></li>
+    <li><a href="#10-이-영상이-진짜로-말하는-핵심">10. 이 영상이 진짜로 말하는 핵심</a></li>
+    <li><a href="#11-결론">11. 결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/prompting/" class="badge badge-secondary">Prompting</a>
+    <a href="/tags/claude/" class="badge badge-secondary">Claude</a>
+    <a href="/tags/anthropic/" class="badge badge-secondary">Anthropic</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

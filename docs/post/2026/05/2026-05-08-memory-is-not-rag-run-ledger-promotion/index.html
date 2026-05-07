@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'AI Memory는 왜 RAG가 아닌가: Run Ledger에 실패를 남기고 검증된 지식만 승격해야 한다'" />
+  <title>AI Memory는 왜 RAG가 아닌가: Run Ledger에 실패를 남기고 검증된 지식만 승격해야 한다  | 신규하 블로그</title>
+  <meta property="og:title" content="AI Memory는 왜 RAG가 아닌가: Run Ledger에 실패를 남기고 검증된 지식만 승격해야 한다" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-05-08"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/05/2026-05-08-memory-is-not-rag-run-ledger-promotion/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="Memory" />
+  
+  <meta property="og:tags" content="RAG" />
+  
+  <meta property="og:tags" content="Agents" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/05/2026-05-08-memory-is-not-rag-run-ledger-promotion/">
+          <h1>
+            AI Memory는 왜 RAG가 아닌가: Run Ledger에 실패를 남기고 검증된 지식만 승격해야 한다
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/05/2026-05-08-memory-is-not-rag-run-ledger-promotion/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>AI 에이전트에서 <code>memory</code>는 가장 쉽게 과장되는 기능 중 하나다.</p>
+<p>모든 대화와 실패를 다 기억시키면 더 똑똑해질 것 같지만, 실제로는 반대일 때가 많다.<br>
+오래된 가정과 일회성 실패가 다음 작업을 오염시키기 때문이다.</p>
+<p>그래서 중요한 건 “많은 기억”이 아니라<br>
+<strong>실패는 먼저 Run Ledger에 남기고, 반복 가능하고 검증된 사실만 Memory로 승격하는 절차</strong>다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Moonshot Notes: <a href="https://moonshotnotes.com/posts/coding-agent-runtime-04-ai-memory-run-ledger/">https://moonshotnotes.com/posts/coding-agent-runtime-04-ai-memory-run-ledger/</a></li>
+<li>GitHub Copilot Memory docs: <a href="https://docs.github.com/en/copilot/how-tos/context/copilot-memories">https://docs.github.com/en/copilot/how-tos/context/copilot-memories</a></li>
+<li>Claude Code memory docs: <a href="https://docs.anthropic.com/en/docs/claude-code/memory">https://docs.anthropic.com/en/docs/claude-code/memory</a></li>
+</ul>
+<h2 id="1-rag와-memory는-목적부터-다르다">1. RAG와 Memory는 목적부터 다르다</h2>
+<p>Moonshot Notes 글의 가장 중요한 문장은 이 구분이다.</p>
+<ul>
+<li>RAG는 외부 지식을 검색하는 계층</li>
+<li>Memory는 검증된 반복 지식을 다음 작업에 넘기는 계층</li>
+</ul>
+<p>예를 들어:</p>
+<h3 id="rag에-가까운-것">RAG에 가까운 것</h3>
+<ul>
+<li>API 문서 검색</li>
+<li>README 검색</li>
+<li>이전 PR 검색</li>
+<li>이슈 검색</li>
+</ul>
+<h3 id="memory-후보에-가까운-것">Memory 후보에 가까운 것</h3>
+<ul>
+<li>이 저장소는 <code>pnpm</code>만 사용한다</li>
+<li>integration test 전에 <code>db:prepare</code>를 실행해야 한다</li>
+<li>billing 모듈 수정 시 contract test도 같이 바꿔야 한다</li>
+<li><code>src/lib/db.ts</code>를 거치지 않는 DB 접근은 금지한다</li>
+</ul>
+<p>즉 RAG는 지금 당장 필요한 외부 지식을 끌어오는 것이고,<br>
+Memory는 <strong>작업을 하면서 확인된 반복 지식</strong>을 다음 턴과 다음 작업으로 넘기는 것이다.</p>
+<h2 id="2-memory를-제대로-설계하려면-계층을-나눠야-한다">2. Memory를 제대로 설계하려면 계층을 나눠야 한다</h2>
+<p>이 글이 좋은 이유는 “기억”이라는 단어를 한 덩어리로 보지 않기 때문이다.</p>
+<p>구분해야 하는 대상은 최소한 이 정도다.</p>
+<ul>
+<li>Transcript</li>
+<li>Failure Artifact</li>
+<li>Memory Candidate</li>
+<li>Validated Memory</li>
+</ul>
+<p>이걸 섞어 버리면 모든 실패가 곧바로 장기 기억이 되고,<br>
+결국 에이전트는 오래된 실패와 우연한 조건에 끌려다니게 된다.</p>
+<p>즉 중요한 건 저장량이 아니라 <strong>승격 절차</strong>다.</p>
+<h2 id="3-github-copilot-memory가-보여-주는-핵심-원칙-3가지">3. GitHub Copilot Memory가 보여 주는 핵심 원칙 3가지</h2>
+<p>Moonshot Notes는 GitHub Copilot Memory 문서를 예로 들며 세 가지 원칙을 뽑아낸다.</p>
+<ol>
+<li>Memory에는 출처가 있어야 한다</li>
+<li>현재 코드베이스에서 검증되어야 한다</li>
+<li>오래된 memory는 만료되어야 한다</li>
+</ol>
+<p>이건 매우 중요하다.</p>
+<p>좋은 memory는 단순 문장이 아니라:</p>
+<ul>
+<li>Fact</li>
+<li>Source</li>
+<li>Scope</li>
+<li>Validated At</li>
+<li>Expiration</li>
+</ul>
+<p>을 가져야 한다.</p>
+<p>즉 “아까 테스트가 실패했다”는 건 memory가 아니다.<br>
+그건 transcript이거나 run ledger entry다.</p>
+<p>반대로 “integration test 실행 전 <code>pnpm db:prepare</code>가 필요하다”는 사실은:</p>
+<ul>
+<li>package.json</li>
+<li>docs</li>
+<li>CI workflow</li>
+</ul>
+<p>로 검증되었다면 장기 기억 후보가 된다.</p>
+<pre class="mermaid">flowchart LR
+    A[Transcript / Run Output] --> B[Failure Artifact]
+    B --> C[Memory Candidate]
+    C --> D[Validation]
+    D --> E[Validated Memory]
+    E --> F[Expiration / Revalidation]</pre><h2 id="4-claude-code-memory가-보여-주는-건-instruction과-memory의-분리다">4. Claude Code memory가 보여 주는 건 <code>instruction</code>과 <code>memory</code>의 분리다</h2>
+<p>Moonshot Notes는 Claude Code memory 문서도 함께 끌어온다.</p>
+<p>여기서 중요한 구분은 다음이다.</p>
+<ul>
+<li><code>CLAUDE.md</code> = 사람이 쓰는 instruction / workflow / rule</li>
+<li>Auto memory = 에이전트가 작업 중 배운 패턴</li>
+<li>Permission policy = 실제 차단과 승인</li>
+</ul>
+<p>이 구분이 중요한 이유는 memory를 enforcement와 섞으면 안 되기 때문이다.</p>
+<p>예를 들어:</p>
+<ul>
+<li><code>CLAUDE.md</code>에 “secret을 읽지 마라”라고 적는 건 instruction</li>
+<li>실제 secret 접근 차단은 permission layer가 해야 한다</li>
+</ul>
+<p>즉 memory는 어디까지나 <strong>context</strong>다.<br>
+정책 집행 레이어가 아니다.</p>
+<p>이 원칙은 많은 agent runtime 설계에서 자주 흐려진다.</p>
+<h2 id="5-장기-기억이-어려운-이유는-단순-저장-문제가-아니라-시간성-때문이다">5. 장기 기억이 어려운 이유는 단순 저장 문제가 아니라 시간성 때문이다</h2>
+<p>글은 LoCoMo 같은 장기 기억 연구도 함께 끌어온다.</p>
+<p>핵심 메시지는 이것이다.</p>
+<p>장기 기억은 단순한 저장소가 아니라:</p>
+<ul>
+<li>temporal reasoning</li>
+<li>causal reasoning</li>
+<li>multi-hop reasoning</li>
+</ul>
+<p>과 얽혀 있다.</p>
+<p>코딩 에이전트에서도 마찬가지다.</p>
+<p>예전에는 맞았던 기억이 지금은 틀릴 수 있다.</p>
+<ul>
+<li>예전에는 npm을 썼지만 지금은 pnpm이다</li>
+<li>예전 테스트 명령은 더 이상 유효하지 않다</li>
+<li>예전 DB 경로는 리팩터링으로 사라졌다</li>
+</ul>
+<p>그래서 memory 시스템의 핵심은 많이 저장하는 것이 아니라,<br>
+<strong>적게 저장하되 계속 검증하는 것</strong>이다.</p>
+<h2 id="6-실패는-goal이-아니라-task-attempt-단위로-남겨야-한다">6. 실패는 goal이 아니라 task attempt 단위로 남겨야 한다</h2>
+<p>이 글에서 가장 실무적인 부분은 <code>실패 산출물 단위</code>를 다루는 대목이다.</p>
+<p>실패는 보통 goal 전체에서 일어나지 않는다.</p>
+<ul>
+<li>Goal: checkout flow 개선</li>
+<li>Task: payment client 교체</li>
+<li>Attempt: 특정 구현을 시도했다가 실패</li>
+</ul>
+<p>즉 실패를 기록하는 적절한 크기는:</p>
+<ul>
+<li>Agent Turn보다 크고</li>
+<li>Goal보다 작고</li>
+<li>검토 가능한 단위</li>
+</ul>
+<p>여야 한다.</p>
+<p>이걸 Moonshot Notes는 <code>Task Attempt</code>라고 정리한다.</p>
+<p>너무 작으면 노이즈가 많고,<br>
+너무 크면 원인을 잃는다.</p>
+<h2 id="7-그래서-run-ledger가-필요하다">7. 그래서 Run Ledger가 필요하다</h2>
+<p>글이 제안하는 기본 구조는 <code>Run Ledger</code>다.</p>
+<p>Run Ledger는 장기 기억이 아니라 <strong>작업 실행 기록</strong>이다.</p>
+<p>예시 구조는 대략 이렇다.</p>
+<ul>
+<li>task_id</li>
+<li>attempt_id</li>
+<li>input</li>
+<li>action</li>
+<li>result</li>
+<li>evidence</li>
+<li>diagnosis</li>
+<li>next_action</li>
+<li>memory_decision</li>
+</ul>
+<p>여기서 중요한 건 마지막 필드다.</p>
+<p><code>memory_decision: 보류</code></p>
+<p>즉 한 번의 실패는 그냥 memory로 승격하지 않는다.<br>
+먼저 ledger에 남기고, 나중에 반복성과 검증이 확인되면 그때 memory 후보가 된다.</p>
+<p>이 구조 덕분에 에이전트는:</p>
+<ul>
+<li>실패를 잊지 않으면서도</li>
+<li>실패를 곧바로 진리로 오해하지 않을 수 있다</li>
+</ul>
+<h2 id="8-이-설계가-좋은-이유는-실패를-보존하되-오염은-막는다는-점이다">8. 이 설계가 좋은 이유는 “실패를 보존하되 오염은 막는다”는 점이다</h2>
+<p>대부분의 memory 설계는 둘 중 하나로 치우친다.</p>
+<h3 id="아무것도-안-남기는-경우">아무것도 안 남기는 경우</h3>
+<ul>
+<li>같은 실패를 반복한다</li>
+<li>배운 게 축적되지 않는다</li>
+</ul>
+<h3 id="모든-걸-남기는-경우">모든 걸 남기는 경우</h3>
+<ul>
+<li>오래된 실패가 현재를 오염시킨다</li>
+<li>일회성 사건이 규칙처럼 굳어진다</li>
+</ul>
+<p>Run Ledger + promotion 모델은 이 둘의 중간을 잡는다.</p>
+<ul>
+<li>실패는 버리지 않는다</li>
+<li>하지만 ledger에 둔다</li>
+<li>검증되기 전까지는 memory가 아니다</li>
+</ul>
+<p>즉 기억 시스템을 “보관소”가 아니라<br>
+<strong>승격 파이프라인</strong>으로 본다.</p>
+<pre class="mermaid">flowchart TD
+    A[Task Attempt 실패] --> B[Run Ledger 기록]
+    B --> C{반복되는가?}
+    C -- 아니오 --> D[Ledger에만 유지]
+    C -- 예 --> E{출처 검증 가능한가?}
+    E -- 아니오 --> D
+    E -- 예 --> F[Memory Candidate]
+    F --> G[Validated Memory]</pre><h2 id="9-이-글의-진짜-결론은-memory는-저장소가-아니라-정책이라는-점이다">9. 이 글의 진짜 결론은 “Memory는 저장소가 아니라 정책”이라는 점이다</h2>
+<p>Moonshot Notes 글을 읽고 나면 핵심이 선명해진다.</p>
+<p>Memory 시스템의 차별점은 벡터 DB나 저장 매체가 아니다.</p>
+<p>진짜 차이는:</p>
+<ul>
+<li>무엇을 transcript로 볼지</li>
+<li>무엇을 failure artifact로 남길지</li>
+<li>무엇을 memory candidate로 올릴지</li>
+<li>무엇을 validated memory로 승인할지</li>
+<li>언제 만료하고 재검증할지</li>
+</ul>
+<p>를 정하는 정책에 있다.</p>
+<p>즉 Memory는 기술보다 <strong>운영 규칙</strong>에 가깝다.</p>
+<h2 id="10-결론">10. 결론</h2>
+<p>“AI Memory는 RAG가 아니다”라는 제목은 과장이 아니다.</p>
+<p>RAG는 지금 필요한 지식을 가져오는 계층이고,<br>
+Memory는 반복해서 써야 할 검증된 지식을 유지하는 계층이다.</p>
+<p>그리고 그 사이에는 반드시:</p>
+<ul>
+<li>Transcript</li>
+<li>Failure Artifact</li>
+<li>Run Ledger</li>
+<li>Validation</li>
+<li>Expiration</li>
+</ul>
+<p>이 있어야 한다.</p>
+<p>결국 좋은 memory 시스템은 많이 기억하는 시스템이 아니라,<br>
+<strong>실패를 ledger에 남기고 검증된 사실만 승격시키는 시스템</strong>이다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 05월 08일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-08-anthropic-prompting-101-structured-single-shot/" rel="prev">
+        <span>Anthropic Prompting 101의 핵심: 좋은 프롬프트는 길이가 아니라 구조다</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-rag와-memory는-목적부터-다르다">1. RAG와 Memory는 목적부터 다르다</a>
+      <ul>
+        <li><a href="#rag에-가까운-것">RAG에 가까운 것</a></li>
+        <li><a href="#memory-후보에-가까운-것">Memory 후보에 가까운 것</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-memory를-제대로-설계하려면-계층을-나눠야-한다">2. Memory를 제대로 설계하려면 계층을 나눠야 한다</a></li>
+    <li><a href="#3-github-copilot-memory가-보여-주는-핵심-원칙-3가지">3. GitHub Copilot Memory가 보여 주는 핵심 원칙 3가지</a></li>
+    <li><a href="#4-claude-code-memory가-보여-주는-건-instruction과-memory의-분리다">4. Claude Code memory가 보여 주는 건 <code>instruction</code>과 <code>memory</code>의 분리다</a></li>
+    <li><a href="#5-장기-기억이-어려운-이유는-단순-저장-문제가-아니라-시간성-때문이다">5. 장기 기억이 어려운 이유는 단순 저장 문제가 아니라 시간성 때문이다</a></li>
+    <li><a href="#6-실패는-goal이-아니라-task-attempt-단위로-남겨야-한다">6. 실패는 goal이 아니라 task attempt 단위로 남겨야 한다</a></li>
+    <li><a href="#7-그래서-run-ledger가-필요하다">7. 그래서 Run Ledger가 필요하다</a></li>
+    <li><a href="#8-이-설계가-좋은-이유는-실패를-보존하되-오염은-막는다는-점이다">8. 이 설계가 좋은 이유는 “실패를 보존하되 오염은 막는다”는 점이다</a>
+      <ul>
+        <li><a href="#아무것도-안-남기는-경우">아무것도 안 남기는 경우</a></li>
+        <li><a href="#모든-걸-남기는-경우">모든 걸 남기는 경우</a></li>
+      </ul>
+    </li>
+    <li><a href="#9-이-글의-진짜-결론은-memory는-저장소가-아니라-정책이라는-점이다">9. 이 글의 진짜 결론은 “Memory는 저장소가 아니라 정책”이라는 점이다</a></li>
+    <li><a href="#10-결론">10. 결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/memory/" class="badge badge-secondary">Memory</a>
+    <a href="/tags/rag/" class="badge badge-secondary">Rag</a>
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

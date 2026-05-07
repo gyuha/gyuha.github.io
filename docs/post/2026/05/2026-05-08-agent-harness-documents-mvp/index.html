@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '개발 하네스에 왜 문서 세트가 필요한가: goal.md부터 permission-policy.md까지'" />
+  <title>개발 하네스에 왜 문서 세트가 필요한가: goal.md부터 permission-policy.md까지  | 신규하 블로그</title>
+  <meta property="og:title" content="개발 하네스에 왜 문서 세트가 필요한가: goal.md부터 permission-policy.md까지" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-05-08"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/05/2026-05-08-agent-harness-documents-mvp/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="Harness" />
+  
+  <meta property="og:tags" content="Documents" />
+  
+  <meta property="og:tags" content="Agents" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/05/2026-05-08-agent-harness-documents-mvp/">
+          <h1>
+            개발 하네스에 왜 문서 세트가 필요한가: goal.md부터 permission-policy.md까지
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/05/2026-05-08-agent-harness-documents-mvp/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>에이전트 런타임을 만들겠다고 하면 보통 바로 거대한 시스템이 떠오른다.</p>
+<ul>
+<li>SQLite state</li>
+<li>agent scheduler</li>
+<li>multi-agent orchestrator</li>
+<li>memory graph</li>
+<li>permission engine</li>
+</ul>
+<p>하지만 실제로는 그 전에 해야 할 일이 있다.<br>
+<strong>에이전트가 무엇을 해야 하고, 어디서 멈추고, 무엇을 남겨야 하는지 문서로 먼저 분리하는 것</strong>이다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Moonshot Notes: <a href="https://moonshotnotes.com/posts/coding-agent-runtime-05-harness-documents/">https://moonshotnotes.com/posts/coding-agent-runtime-05-harness-documents/</a></li>
+<li>OpenAI Codex harness 글: <a href="https://openai.com/index/introducing-upgrades-to-codex/">https://openai.com/index/introducing-upgrades-to-codex/</a></li>
+</ul>
+<h2 id="1-이-글의-핵심은-런타임을-당장-만들지-않아도-된다는-점이다">1. 이 글의 핵심은 “런타임을 당장 만들지 않아도 된다”는 점이다</h2>
+<p>Moonshot Notes 글의 가장 실용적인 메시지는 이것이다.</p>
+
+  <blockquote>
+    <p>처음부터 거대한 agent runtime을 만들 필요는 없습니다.</p>
+
+  </blockquote>
+
+<p>이 말이 중요한 이유는, 많은 팀이 에이전트 운영을 도입하려 할 때 너무 일찍 복잡한 인프라를 상상하기 때문이다.</p>
+<p>하지만 MVP 단계에서 진짜 필요한 건:</p>
+<ul>
+<li>스케줄러가 아니라 목표 정의</li>
+<li>큐 엔진이 아니라 실행 기록</li>
+<li>메모리 그래프가 아니라 기억 승격 기준</li>
+<li>정책 엔진이 아니라 중단 조건 문서</li>
+</ul>
+<p>다.</p>
+<p>즉 초기 하네스의 핵심은 코드가 아니라 <strong>문서 계약</strong>이다.</p>
+<h2 id="2-최소-문서-세트-5개가-이-글의-핵심-제안이다">2. 최소 문서 세트 5개가 이 글의 핵심 제안이다</h2>
+<p>Moonshot Notes는 문서 기반 하네스의 최소 세트를 아주 명확하게 제시한다.</p>
+<ul>
+<li><code>goal.md</code></li>
+<li><code>run-ledger.md</code></li>
+<li><code>artifact-contract.md</code></li>
+<li><code>memory-policy.md</code></li>
+<li><code>permission-policy.md</code></li>
+</ul>
+<p>이 구조가 좋은 이유는 역할을 섞지 않게 만들기 때문이다.</p>
+<p>각 문서는 서로 다른 질문에 답한다.</p>
+<h3 id="goalmd">goal.md</h3>
+<p>무엇을 끝낼 것인가?</p>
+<h3 id="run-ledgermd">run-ledger.md</h3>
+<p>실제로 무엇을 했는가?</p>
+<h3 id="artifact-contractmd">artifact-contract.md</h3>
+<p>무엇을 남길 것인가?</p>
+<h3 id="memory-policymd">memory-policy.md</h3>
+<p>무엇을 기억할 것인가?</p>
+<h3 id="permission-policymd">permission-policy.md</h3>
+<p>무엇을 막을 것인가?</p>
+<p>즉 좋은 하네스는 “에이전트에게 뭘 하라고 시킨다”에서 끝나지 않고,<br>
+<strong>목표 / 실행 / 산출물 / 기억 / 권한을 서로 다른 계약으로 분리</strong>한다.</p>
+<h2 id="3-왜-파일-기반-문서-세트로-시작하는가">3. 왜 파일 기반 문서 세트로 시작하는가</h2>
+<p>글은 파일 기반 하네스의 장점을 다섯 가지 정도로 요약한다.</p>
+<ul>
+<li>사람이 읽기 쉽다</li>
+<li>git으로 추적 가능하다</li>
+<li>도구 독립적이다</li>
+<li>점진적으로 확장 가능하다</li>
+<li>실패를 대화가 아니라 산출물로 남길 수 있다</li>
+</ul>
+<p>이건 매우 현실적이다.</p>
+<p>처음부터 데이터베이스와 앱 서버를 만들면 멋있어 보일 수 있지만,</p>
+<ul>
+<li>팀원이 읽기 어렵고</li>
+<li>규칙을 검토하기 어렵고</li>
+<li>변경 이력도 눈에 잘 안 들어온다</li>
+</ul>
+<p>반면 문서 세트는:</p>
+<ul>
+<li>PR에서 바로 검토할 수 있고</li>
+<li>diff가 남고</li>
+<li>Claude Code, Codex, Cursor 등 어떤 에이전트와도 함께 쓸 수 있다</li>
+</ul>
+<p>즉 MVP로서는 파일이 훨씬 강하다.</p>
+<h2 id="4-추천-디렉터리-구조가-좋은-이유는-기억과-산출물을-분리하기-때문이다">4. 추천 디렉터리 구조가 좋은 이유는 ‘기억’과 ‘산출물’을 분리하기 때문이다</h2>
+<p>글이 제안하는 구조는 대략 이런 식이다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>agent-runtime/
+</span></span><span style="display:flex;"><span>  goals/
+</span></span><span style="display:flex;"><span>    profile-update/
+</span></span><span style="display:flex;"><span>      goal.md
+</span></span><span style="display:flex;"><span>      plan.md
+</span></span><span style="display:flex;"><span>      run-ledger.md
+</span></span><span style="display:flex;"><span>      artifacts/
+</span></span><span style="display:flex;"><span>        changed-files.md
+</span></span><span style="display:flex;"><span>        test-result.md
+</span></span><span style="display:flex;"><span>        risk-summary.md
+</span></span><span style="display:flex;"><span>  policies/
+</span></span><span style="display:flex;"><span>    artifact-contract.md
+</span></span><span style="display:flex;"><span>    memory-policy.md
+</span></span><span style="display:flex;"><span>    permission-policy.md
+</span></span><span style="display:flex;"><span>  memory/
+</span></span><span style="display:flex;"><span>    candidates/
+</span></span><span style="display:flex;"><span>    validated/
+</span></span></code></pre></div><p>이 구조가 좋은 이유는, <code>기록</code>과 <code>정책</code>과 <code>기억</code>이 한 파일에 뒤섞이지 않기 때문이다.</p>
+<p>예를 들면 흔히 이런 혼란이 생긴다.</p>
+<ul>
+<li>실패 기록을 memory처럼 남긴다</li>
+<li>산출물 요구사항을 goal 문서 안에만 묻어 둔다</li>
+<li>권한 정책을 instruction 문장으로만 처리한다</li>
+</ul>
+<p>이렇게 되면 에이전트는 경계를 잃는다.</p>
+<p>반대로 위 구조는:</p>
+<ul>
+<li>현재 goal</li>
+<li>실행 이력</li>
+<li>결과 산출물</li>
+<li>승격된 기억</li>
+<li>금지 사항</li>
+</ul>
+<p>을 서로 다른 위치에 둔다.</p>
+<h2 id="5-goalmd는-단순-todo가-아니라-중단-조건까지-포함한-계약이다">5. goal.md는 단순 TODO가 아니라 중단 조건까지 포함한 계약이다</h2>
+<p>글이 제시하는 <code>goal.md</code> 템플릿에서 특히 중요한 부분은 <code>Stop Conditions</code>다.</p>
+<p>예시로는 이런 것들이 들어간다.</p>
+<ul>
+<li>DB schema 변경 필요 시 중단</li>
+<li>인증/권한 로직 변경 필요 시 중단</li>
+<li>외부 비용 발생 시 중단</li>
+<li>secret 접근 필요 시 중단</li>
+<li>production 배포 필요 시 중단</li>
+</ul>
+<p>이게 핵심이다.</p>
+<p>에이전트 작업이 위험해지는 이유는 자주 목표가 없어서가 아니라,<br>
+<strong>어디서 멈춰야 하는지 정의되지 않아서</strong>다.</p>
+<p>즉 좋은 goal 문서는:</p>
+<ul>
+<li>목표</li>
+<li>범위</li>
+<li>완료 조건</li>
+</ul>
+<p>뿐 아니라</p>
+<ul>
+<li>중단 조건</li>
+</ul>
+<p>을 함께 갖고 있어야 한다.</p>
+<pre class="mermaid">flowchart TD
+    A[goal.md] --> B[Objective]
+    A --> C[Scope]
+    A --> D[Done Criteria]
+    A --> E[Stop Conditions]
+    A --> F[Artifact Contract]</pre><h2 id="6-run-ledgermd는-대화-로그가-아니라-작업-일지다">6. run-ledger.md는 대화 로그가 아니라 작업 일지다</h2>
+<p>Moonshot Notes는 Run Ledger를 계속 강조해 왔고, 이번 글에서도 그 역할이 명확해진다.</p>
+<p>핵심 필드는 다음과 같다.</p>
+<ul>
+<li>task_id</li>
+<li>attempt_id</li>
+<li>input</li>
+<li>action</li>
+<li>result</li>
+<li>evidence</li>
+<li>diagnosis</li>
+<li>next_action</li>
+<li>artifact_created</li>
+<li>memory_decision</li>
+<li>human_review_required</li>
+</ul>
+<p>이 구조가 좋은 이유는 작업 이력을 “채팅 기록”이 아니라 <strong>검토 가능한 시도 단위의 기록</strong>으로 바꾸기 때문이다.</p>
+<p>즉 나중에 사람이 이 문서를 보면:</p>
+<ul>
+<li>무엇을 시도했고</li>
+<li>왜 실패했고</li>
+<li>다음엔 무엇을 해야 하는지</li>
+</ul>
+<p>를 대화 로그를 뒤지지 않고 바로 파악할 수 있다.</p>
+<h2 id="7-artifact-contractmd가-중요한-이유는-예쁜-응답-대신-검토-가능한-산출물을-강제하기-때문이다">7. artifact-contract.md가 중요한 이유는 ‘예쁜 응답’ 대신 ‘검토 가능한 산출물’을 강제하기 때문이다</h2>
+<p>많은 에이전트 작업은 마지막 응답이 너무 잘 써져 있어서 오히려 위험하다.</p>
+<ul>
+<li>요약은 그럴듯한데</li>
+<li>실제 변경 파일 목록이 없고</li>
+<li>실행한 검증 명령이 안 남고</li>
+<li>실패한 테스트가 가려진다</li>
+</ul>
+<p><code>artifact-contract.md</code>는 이런 문제를 막기 위해:</p>
+<ul>
+<li>changed files</li>
+<li>test result</li>
+<li>failure artifact</li>
+<li>risk summary</li>
+</ul>
+<p>를 명시적으로 요구한다.</p>
+<p>즉 최종 출력은 “대답”이 아니라 <strong>검토 가능한 패키지</strong>가 된다.</p>
+<p>이 관점은 에이전트 작업을 사람 검토와 연결하는 데 매우 중요하다.</p>
+<h2 id="8-memory-policy와-permission-policy를-분리한-것이-특히-좋다">8. memory-policy와 permission-policy를 분리한 것이 특히 좋다</h2>
+<p>이 두 문서는 비슷해 보이지만 절대 같은 게 아니다.</p>
+<h3 id="memory-policymd-1">memory-policy.md</h3>
+<ul>
+<li>무엇을 다음 작업의 전제로 남길 것인가</li>
+<li>어떤 실패는 ledger에만 둘 것인가</li>
+<li>언제 validated memory로 승격할 것인가</li>
+</ul>
+<h3 id="permission-policymd-1">permission-policy.md</h3>
+<ul>
+<li>secret 접근 금지</li>
+<li>외부 비용 발생 금지</li>
+<li>production 변경 금지</li>
+<li>특정 디렉터리/명령 차단</li>
+</ul>
+<p>즉 memory는 <strong>context 필터</strong>이고, permission은 <strong>행동 제약</strong>이다.</p>
+<p>이 둘을 섞으면 보통:</p>
+<ul>
+<li>“이건 기억이야? 규칙이야?”</li>
+<li>“모델이 참고만 해야 하나, 실제로 멈춰야 하나?”</li>
+</ul>
+<p>가 흐려진다.</p>
+<p>문서 세트가 이 둘을 분리하면 에이전트도, 사람도 해석이 쉬워진다.</p>
+<h2 id="9-이-문서-세트의-진짜-가치는-나중에-db로-승격-가능하다는-점이다">9. 이 문서 세트의 진짜 가치는 “나중에 DB로 승격 가능하다”는 점이다</h2>
+<p>글은 반복해서 말한다.</p>
+<p>지금은 파일로 시작해도 되지만, 나중에는:</p>
+<ul>
+<li>SQLite state</li>
+<li>runtime state</li>
+<li>app server</li>
+</ul>
+<p>로 승격할 수 있다.</p>
+<p>이게 중요한 이유는 문서 세트가 일회성 임시방편이 아니기 때문이다.</p>
+<p>오히려 좋은 문서 세트는:</p>
+<ul>
+<li>나중에 상태 저장 구조로 옮기기 쉬운 스키마 초안</li>
+<li>런타임 모델의 선언적 인터페이스</li>
+</ul>
+<p>가 된다.</p>
+<p>즉 이 문서들은 프로토타입 산출물이 아니라,<br>
+<strong>장래 런타임의 스키마를 먼저 파일로 실험하는 단계</strong>로 볼 수 있다.</p>
+<pre class="mermaid">flowchart LR
+    A[파일 기반 문서 하네스] --> B[Git 추적]
+    A --> C[사람 검토]
+    A --> D[도구 독립]
+    A --> E[에이전트 작업 경계 정의]
+    E --> F[나중에 DB / runtime state로 승격]</pre><h2 id="10-결론">10. 결론</h2>
+<p>이 글의 핵심은 단순하다.</p>
+<p>에이전트 런타임을 만들기 전에,<br>
+먼저 <strong>작업 계약과 산출물 계약을 파일로 분리하라</strong>는 것이다.</p>
+<p>그 시작점은 거대한 시스템이 아니라:</p>
+<ul>
+<li><code>goal.md</code></li>
+<li><code>run-ledger.md</code></li>
+<li><code>artifact-contract.md</code></li>
+<li><code>memory-policy.md</code></li>
+<li><code>permission-policy.md</code></li>
+</ul>
+<p>같은 문서 세트다.</p>
+<p>결국 좋은 하네스는 “에이전트에게 무엇을 시킬까?”에서 끝나지 않는다.<br>
+<strong>어디서 멈출지, 무엇을 남길지, 무엇을 기억할지, 무엇을 막을지를 명시하는 것</strong>이 진짜 시작이다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 05월 08일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-07-claude-genius-anti-sycophancy-claude-md/" rel="prev">
+        <span>claude-genius가 흥미로운 이유: 5KB짜리 CLAUDE.md로 아첨하는 코드 리뷰를 줄인다</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-08-ima2-gen-local-gpt-image-studio/" rel="next">
+        <span>ima2-gen이 흥미로운 이유: GPT Image 2를 작은 로컬 스튜디오처럼 다루게 만든다</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-이-글의-핵심은-런타임을-당장-만들지-않아도-된다는-점이다">1. 이 글의 핵심은 “런타임을 당장 만들지 않아도 된다”는 점이다</a></li>
+    <li><a href="#2-최소-문서-세트-5개가-이-글의-핵심-제안이다">2. 최소 문서 세트 5개가 이 글의 핵심 제안이다</a>
+      <ul>
+        <li><a href="#goalmd">goal.md</a></li>
+        <li><a href="#run-ledgermd">run-ledger.md</a></li>
+        <li><a href="#artifact-contractmd">artifact-contract.md</a></li>
+        <li><a href="#memory-policymd">memory-policy.md</a></li>
+        <li><a href="#permission-policymd">permission-policy.md</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-왜-파일-기반-문서-세트로-시작하는가">3. 왜 파일 기반 문서 세트로 시작하는가</a></li>
+    <li><a href="#4-추천-디렉터리-구조가-좋은-이유는-기억과-산출물을-분리하기-때문이다">4. 추천 디렉터리 구조가 좋은 이유는 ‘기억’과 ‘산출물’을 분리하기 때문이다</a></li>
+    <li><a href="#5-goalmd는-단순-todo가-아니라-중단-조건까지-포함한-계약이다">5. goal.md는 단순 TODO가 아니라 중단 조건까지 포함한 계약이다</a></li>
+    <li><a href="#6-run-ledgermd는-대화-로그가-아니라-작업-일지다">6. run-ledger.md는 대화 로그가 아니라 작업 일지다</a></li>
+    <li><a href="#7-artifact-contractmd가-중요한-이유는-예쁜-응답-대신-검토-가능한-산출물을-강제하기-때문이다">7. artifact-contract.md가 중요한 이유는 ‘예쁜 응답’ 대신 ‘검토 가능한 산출물’을 강제하기 때문이다</a></li>
+    <li><a href="#8-memory-policy와-permission-policy를-분리한-것이-특히-좋다">8. memory-policy와 permission-policy를 분리한 것이 특히 좋다</a>
+      <ul>
+        <li><a href="#memory-policymd-1">memory-policy.md</a></li>
+        <li><a href="#permission-policymd-1">permission-policy.md</a></li>
+      </ul>
+    </li>
+    <li><a href="#9-이-문서-세트의-진짜-가치는-나중에-db로-승격-가능하다는-점이다">9. 이 문서 세트의 진짜 가치는 “나중에 DB로 승격 가능하다”는 점이다</a></li>
+    <li><a href="#10-결론">10. 결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/harness/" class="badge badge-secondary">Harness</a>
+    <a href="/tags/documents/" class="badge badge-secondary">Documents</a>
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
