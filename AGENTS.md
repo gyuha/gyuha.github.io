@@ -212,6 +212,7 @@ Required guidance:
 16. If a diagram uses `classDef`, sanity-check that every class name is a plain descriptive identifier, not a Mermaid command. Example: use `artStyle` instead of `style`.
 17. To apply a `classDef` class to nodes, always use `class node1,node2 className` syntax. The classDef name is **not** a command — writing `artStyle className node1` is invalid Mermaid and will silently break rendering. Correct form: `class node1,node2 artStyle`. Wrong form: `artStyle node1,node2 artStyle` or `artStyle className node1`.
 18. Prefer top-to-bottom (`TD`) flow direction over left-to-right (`LR`) for Mermaid flowcharts and graphs. When a Mermaid chart would place 4 or more nodes/steps/columns horizontally, split or stack it vertically with `TD` instead of making it long left-to-right. The blog content area is narrow, so wide `LR` diagrams often overflow or require horizontal scrolling. Use `LR` only when the diagram has 3 or fewer columns and clearly fits within the content width.
+19. Apply colors proactively, not minimally: by default, style all major semantic groups in each Mermaid diagram (for example inputs/processes/decisions/outputs or success/failure paths) instead of coloring only one or two nodes.
 - Practical expectation: for technical posts, include Mermaid frequently; if a section can be clearer with a chart, add one.
 
 ## URL-Only Auto-Post Delegation Rule
