@@ -323,6 +323,9 @@ flowchart TD
 | 4 | `subagents/` | 위임 · 격리 에이전트 | AI |
 | 5 | `plugins/` | 배포 · 팀 정렬 | 정적 |
 
+
+![alt text](/img/2026/05/claude-agent-dev-kit.jpg)
+
 ---
 
 ## 마치며
