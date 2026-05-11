@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Graphify를 팀에서 쓰는 법: 코드베이스를 파일 묶음이 아니라 공유 가능한 지식 그래프로 커밋하기'" />
+  <title>Graphify를 팀에서 쓰는 법: 코드베이스를 파일 묶음이 아니라 공유 가능한 지식 그래프로 커밋하기  | 신규하 블로그</title>
+  <meta property="og:title" content="Graphify를 팀에서 쓰는 법: 코드베이스를 파일 묶음이 아니라 공유 가능한 지식 그래프로 커밋하기" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-05-11"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/05/2026-05-11-graphify-team-shared-code-knowledge-graph/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="Graphify" />
+  
+  <meta property="og:tags" content="Knowledge Graph" />
+  
+  <meta property="og:tags" content="Coding Agents" />
+  
+  <meta property="og:tags" content="Code Review" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/05/2026-05-11-graphify-team-shared-code-knowledge-graph/">
+          <h1>
+            Graphify를 팀에서 쓰는 법: 코드베이스를 파일 묶음이 아니라 공유 가능한 지식 그래프로 커밋하기
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/05/2026-05-11-graphify-team-shared-code-knowledge-graph/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>AI 코딩 도구를 쓸 때 가장 자주 하는 일은 결국 “맥락 전달”이다.</p>
+<ul>
+<li>이 파일을 읽어라</li>
+<li>저 폴더를 봐라</li>
+<li>이 함수와 저 모듈의 관계를 이해해라</li>
+<li>DB schema와 API route가 어떻게 이어지는지 봐라</li>
+</ul>
+<p>문제는 코드베이스가 커질수록 파일을 하나씩 던져 주는 방식이 금방 한계에 부딪힌다는 점이다.<br>
+<code>Graphify</code>가 흥미로운 이유는 이 문제를 “더 많이 읽히기”가 아니라 <strong>코드베이스를 쿼리 가능한 지식 그래프로 바꾸기</strong>로 풀기 때문이다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Threads: <a href="https://www.threads.com/@feelfree_ai/post/DYMUzLoE158">https://www.threads.com/@feelfree_ai/post/DYMUzLoE158</a></li>
+<li>GitHub: <a href="https://github.com/safishamsi/graphify">https://github.com/safishamsi/graphify</a></li>
+</ul>
+<h2 id="1-이번-graphify-글의-초점은-토큰-절감보다-팀-공유-산출물이다">1. 이번 Graphify 글의 초점은 토큰 절감보다 “팀 공유 산출물”이다</h2>
+<p>Graphify는 이미 여러 번 다룰 만큼 흥미로운 도구다.</p>
+<p>기존에는 주로:</p>
+<ul>
+<li>71.5배 토큰 절감</li>
+<li>always-on knowledge graph</li>
+<li>OpenCode / Claude Code / Codex와의 연결</li>
+</ul>
+<p>같은 관점이 중요했다.</p>
+<p>이번 Threads 글에서 새롭게 강조되는 지점은 조금 다르다.</p>
+<p><strong>분석 결과물 자체를 Git에 커밋해 팀 전체가 같은 코드 맥락을 공유할 수 있다</strong>는 점이다.</p>
+<p>즉 Graphify를 개인용 탐색 도구로만 보면 절반만 보는 것이다.<br>
+더 중요한 운영 방식은 <code>graphify-out/</code>을 팀의 shared artifact로 다루는 것이다.</p>
+<h2 id="2-graphify가-만들어-주는-핵심-산출물-3개">2. Graphify가 만들어 주는 핵심 산출물 3개</h2>
+<p>현재 README 기준 Graphify를 실행하면 기본적으로 다음 세 가지가 중요하다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>graphify-out/
+</span></span><span style="display:flex;"><span>├── graph.html
+</span></span><span style="display:flex;"><span>├── GRAPH_REPORT.md
+</span></span><span style="display:flex;"><span>└── graph.json
+</span></span></code></pre></div><p>각 파일의 역할은 다르다.</p>
+<h3 id="graphhtml">graph.html</h3>
+<p>브라우저에서 여는 시각화 파일이다.</p>
+<ul>
+<li>node 클릭</li>
+<li>search</li>
+<li>filter</li>
+<li>community 탐색</li>
+</ul>
+<p>같은 작업에 좋다.</p>
+<p>사람이 “이 코드베이스가 어떻게 생겼는지” 빠르게 감을 잡는 데 유리하다.</p>
+<h3 id="graph_reportmd">GRAPH_REPORT.md</h3>
+<p>AI 에이전트가 먼저 읽기 좋은 요약 진입점이다.</p>
+<p>여기에는:</p>
+<ul>
+<li>god nodes</li>
+<li>surprising connections</li>
+<li>suggested questions</li>
+<li>inline rationale</li>
+<li>confidence tags</li>
+</ul>
+<p>같은 정보가 들어간다.</p>
+<p>즉 <code>GRAPH_REPORT.md</code>는 단순 리포트가 아니라 <strong>에이전트용 지도 첫 페이지</strong>에 가깝다.</p>
+<h3 id="graphjson">graph.json</h3>
+<p>전체 그래프 원본이다.</p>
+<p>나중에:</p>
+<ul>
+<li>query</li>
+<li>shortest path</li>
+<li>node neighbor 탐색</li>
+<li>MCP server</li>
+</ul>
+<p>로 다시 사용할 수 있다.</p>
+<p>즉 <code>graph.json</code>은 “예쁜 결과물”이 아니라 <strong>지속 재사용 가능한 구조화된 memory artifact</strong>다.</p>
+<pre class="mermaid">flowchart LR
+    A[Codebase / Docs / Schemas] --> B[Graphify]
+    B --> C[graph.html]
+    B --> D[GRAPH_REPORT.md]
+    B --> E[graph.json]
+    C --> F[Human Exploration]
+    D --> G[Agent Navigation]
+    E --> H[Query / MCP / Automation]</pre><h2 id="3-코드를-전부-읽히는-것과-관계를-먼저-주는-것은-다르다">3. “코드를 전부 읽히는 것”과 “관계를 먼저 주는 것”은 다르다</h2>
+<p>AI 에이전트에게 파일을 통째로 많이 넣으면 더 잘할 것 같지만, 실제로는 그렇지 않을 때가 많다.</p>
+<p>문제가 되는 것은 파일 수가 아니라:</p>
+<ul>
+<li>어떤 모듈이 중심인지</li>
+<li>어떤 함수가 어디서 호출되는지</li>
+<li>DB schema가 어느 API와 이어지는지</li>
+<li>문서의 설계 의도가 어느 코드에 반영됐는지</li>
+<li>어떤 연결이 추론이고 어떤 연결이 실제 추출인지</li>
+</ul>
+<p>같은 <strong>관계 정보</strong>다.</p>
+<p>Graphify는 이 관계를 먼저 만든다.</p>
+<p>README 기준으로 code는 tree-sitter 기반 AST와 call-graph pass로 분석하고,<br>
+문서·PDF·이미지·영상 같은 비정형 입력은 모델을 통해 개념과 관계를 추출한다.</p>
+<p>즉 Graphify의 가치는 “검색”보다<br>
+<strong>코드베이스를 relationship-first representation으로 바꾸는 것</strong>에 있다.</p>
+<h2 id="4-threads의-100-로컬-표현은-코드-분석에-대해서는-맞지만-전체-입력에는-예외가-있다">4. Threads의 “100% 로컬” 표현은 코드 분석에 대해서는 맞지만, 전체 입력에는 예외가 있다</h2>
+<p>Threads 원문은 “코드는 100% 로컬에서 분석”된다고 설명한다.<br>
+이 부분은 Graphify README의 privacy 설명과도 맞다.</p>
+<p>공식 README 기준:</p>
+<ul>
+<li>code files는 tree-sitter로 로컬 처리</li>
+<li>video / audio는 faster-whisper로 로컬 전사</li>
+<li>telemetry 없음</li>
+</ul>
+<p>다만 중요한 예외가 있다.</p>
+<p>Docs, PDFs, images는 semantic extraction을 위해 사용 중인 AI assistant의 model API로 전달될 수 있다.<br>
+Headless extraction도 Gemini, Kimi, Claude, OpenAI, Ollama, Bedrock 같은 backend 설정을 요구한다.</p>
+<p>따라서 정확히는 이렇게 이해해야 한다.</p>
+<ul>
+<li><strong>코드 구조 분석은 로컬</strong></li>
+<li><strong>문서/PDF/이미지 의미 추출은 설정한 모델 backend에 따라 외부 API를 쓸 수 있음</strong></li>
+<li><strong>민감한 문서까지 넣을 때는 <code>.graphifyignore</code>와 backend 정책을 확인해야 함</strong></li>
+</ul>
+<p>이 뉘앙스는 실무에서 중요하다.<br>
+“코드 유출 방지”는 강점이지만, 모든 입력이 항상 완전 로컬이라고 생각하면 위험하다.</p>
+<h2 id="5-팀에서-쓰려면-graphify-out을-커밋-가능한-artifact로-봐야-한다">5. 팀에서 쓰려면 <code>graphify-out/</code>을 커밋 가능한 artifact로 봐야 한다</h2>
+<p>Graphify README는 <code>graphify-out/</code>을 Git에 커밋하는 팀 워크플로를 명시한다.</p>
+<p>흐름은 이렇다.</p>
+<ol>
+<li>한 사람이 <code>/graphify .</code>를 실행한다</li>
+<li>생성된 <code>graphify-out/</code>을 commit한다</li>
+<li>팀원이 pull한다</li>
+<li>각자의 AI assistant가 즉시 같은 graph를 읽는다</li>
+<li>이후 commit hook으로 graph를 갱신한다</li>
+</ol>
+<p>여기서 핵심은 “모두가 같은 지도에서 출발한다”는 점이다.</p>
+<p>보통 AI 코딩 작업은 사람마다:</p>
+<ul>
+<li>다른 세션</li>
+<li>다른 컨텍스트</li>
+<li>다른 요약</li>
+<li>다른 파일 탐색 경로</li>
+</ul>
+<p>를 갖는다.</p>
+<p>Graphify를 팀 artifact로 커밋하면 최소한 코드베이스의 구조 지도는 공유된다.</p>
+<pre class="mermaid">sequenceDiagram
+    participant DevA as Developer A
+    participant Git as Git Repo
+    participant DevB as Developer B
+    participant Agent as AI Assistant
+
+    DevA->>DevA: /graphify .
+    DevA->>Git: commit graphify-out/
+    DevB->>Git: pull
+    DevB->>Agent: ask about codebase
+    Agent->>Agent: read GRAPH_REPORT.md first
+    Agent->>DevB: answer with shared project map</pre><h2 id="6-hook이-붙으면-그래프는-문서가-아니라-살아-있는-map이-된다">6. hook이 붙으면 그래프는 문서가 아니라 살아 있는 map이 된다</h2>
+<p>Graphify는 <code>graphify hook install</code>을 제공한다.</p>
+<p>README 기준 이 hook은:</p>
+<ul>
+<li>commit 후 graph를 rebuild하고</li>
+<li>AST 기반 업데이트는 API 비용 없이 처리하고</li>
+<li><code>graph.json</code> merge driver도 설정해 conflict marker 문제를 줄인다</li>
+</ul>
+<p>즉 팀에서 중요한 것은 “한 번 예쁜 그래프를 만드는 것”이 아니다.</p>
+<p>중요한 것은 코드가 바뀔 때마다 그래프도 따라 움직이게 하는 것이다.</p>
+<p>이 지점에서 Graphify는 문서 생성 도구가 아니라<br>
+<strong>코드베이스의 구조 index를 유지하는 개발 인프라</strong>가 된다.</p>
+<h2 id="7-다양한-ai-도구-지원은-도구별-지식-단절을-줄인다">7. 다양한 AI 도구 지원은 “도구별 지식 단절”을 줄인다</h2>
+<p>현재 v7 README 기준 Graphify는 굉장히 많은 플랫폼을 지원한다.</p>
+<ul>
+<li>Claude Code</li>
+<li>Codex</li>
+<li>OpenCode</li>
+<li>Cursor</li>
+<li>Gemini CLI</li>
+<li>GitHub Copilot CLI</li>
+<li>VS Code Copilot Chat</li>
+<li>Aider</li>
+<li>OpenClaw</li>
+<li>Factory Droid</li>
+<li>Trae</li>
+<li>Hermes</li>
+<li>Kimi Code</li>
+<li>Kiro</li>
+<li>Pi coding agent</li>
+<li>Google Antigravity</li>
+</ul>
+<p>이 목록이 중요한 이유는 단순 호환성 자랑이 아니다.</p>
+<p>팀 안에서 사람마다 쓰는 AI 도구가 달라도,<br>
+<code>GRAPH_REPORT.md</code>와 <code>graph.json</code>이라는 공통 산출물을 기준으로 같은 프로젝트 지도를 공유할 수 있다는 뜻이다.</p>
+<p>즉 Graphify는 특정 AI coding assistant의 plugin이라기보다,<br>
+<strong>AI 코딩 도구들 사이의 공통 codebase map layer</strong>에 가까워지고 있다.</p>
+<h2 id="8-graph_reportmd를-먼저-읽게-만드는-것이-핵심-운영-패턴이다">8. <code>GRAPH_REPORT.md</code>를 먼저 읽게 만드는 것이 핵심 운영 패턴이다</h2>
+<p>Graphify README는 각 플랫폼별 install 명령을 제공한다.</p>
+<p>예를 들어:</p>
+<ul>
+<li><code>graphify claude install</code></li>
+<li><code>graphify codex install</code></li>
+<li><code>graphify opencode install</code></li>
+<li><code>graphify cursor install</code></li>
+<li><code>graphify pi install</code></li>
+</ul>
+<p>이 설정의 핵심은 AI assistant가 코드 질문에 답하기 전에 <code>GRAPH_REPORT.md</code>를 먼저 읽게 만드는 것이다.</p>
+<p>이게 중요한 이유는 간단하다.</p>
+<p>AI가 처음부터 grep으로 헤매는 대신:</p>
+<ul>
+<li>god nodes</li>
+<li>surprising connections</li>
+<li>suggested questions</li>
+<li>confidence tags</li>
+</ul>
+<p>를 먼저 보고 시작한다.</p>
+<p>결국 Graphify의 실전 가치는 <code>graph.html</code>의 시각화보다,<br>
+에이전트의 첫 탐색 경로를 바꾸는 데 있다.</p>
+<h2 id="9-최신-저장소-메타데이터">9. 최신 저장소 메타데이터</h2>
+<p>GitHub API 기준 현재 정보는 다음과 같다.</p>
+<ul>
+<li>저장소: <code>safishamsi/graphify</code></li>
+<li>설명: 코드, SQL schema, R script, shell script, docs, papers, images, videos를 queryable knowledge graph로 변환</li>
+<li>기본 브랜치: <code>v7</code></li>
+<li>stars: <code>46,384</code></li>
+<li>forks: <code>5,031</code></li>
+<li>주 언어: <code>Python</code></li>
+<li>라이선스: <code>MIT</code></li>
+<li>최근 push: <code>2026-05-09</code></li>
+</ul>
+<p>README 기준 설치 패키지는 <code>graphifyy</code>이고, CLI 명령은 <code>graphify</code>다.<br>
+PyPI의 다른 <code>graphify*</code> 패키지와 혼동하지 말라는 안내도 포함되어 있다.</p>
+<h2 id="10-결론-graphify는-코드-읽기-도구가-아니라-팀의-shared-context-artifact다">10. 결론: Graphify는 코드 읽기 도구가 아니라 팀의 shared context artifact다</h2>
+<p>Graphify를 개인이 “코드 이해 도우미”로 쓰는 것도 충분히 가치 있다.</p>
+<p>하지만 이번 Threads 글이 짚은 더 중요한 포인트는 따로 있다.</p>
+<p><strong>코드베이스의 관계 지도를 파일로 만들고, 그 파일을 팀과 에이전트가 함께 쓰는 것.</strong></p>
+<p>이 관점에서 Graphify는:</p>
+<ul>
+<li>RAG보다 구조적이고</li>
+<li>단순 요약보다 재사용 가능하고</li>
+<li>문서보다 최신성을 유지하기 쉽고</li>
+<li>에이전트별 세션 기억보다 공유 가능하다</li>
+</ul>
+<p>물론 모든 입력이 항상 완전 로컬이라는 식으로 과장해서는 안 된다.<br>
+코드 분석은 로컬이지만, 문서·이미지·PDF 의미 추출은 사용하는 모델 backend에 따라 외부 API를 탈 수 있다.</p>
+<p>그럼에도 Graphify가 던지는 방향은 분명하다.</p>
+<p>앞으로 AI 코딩의 핵심은 “파일을 얼마나 많이 넣느냐”가 아니라,<br>
+<strong>코드베이스의 관계와 설계 의도를 얼마나 좋은 공유 artifact로 만들어 두느냐</strong>가 될 가능성이 크다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 05월 11일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-10-ai-output-from-markdown-to-html/" rel="prev">
+        <span>AI 출력은 이제 문서가 아니라 인터페이스다: Claude 팀이 Markdown을 떠나는 이유</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-이번-graphify-글의-초점은-토큰-절감보다-팀-공유-산출물이다">1. 이번 Graphify 글의 초점은 토큰 절감보다 “팀 공유 산출물”이다</a></li>
+    <li><a href="#2-graphify가-만들어-주는-핵심-산출물-3개">2. Graphify가 만들어 주는 핵심 산출물 3개</a>
+      <ul>
+        <li><a href="#graphhtml">graph.html</a></li>
+        <li><a href="#graph_reportmd">GRAPH_REPORT.md</a></li>
+        <li><a href="#graphjson">graph.json</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-코드를-전부-읽히는-것과-관계를-먼저-주는-것은-다르다">3. “코드를 전부 읽히는 것”과 “관계를 먼저 주는 것”은 다르다</a></li>
+    <li><a href="#4-threads의-100-로컬-표현은-코드-분석에-대해서는-맞지만-전체-입력에는-예외가-있다">4. Threads의 “100% 로컬” 표현은 코드 분석에 대해서는 맞지만, 전체 입력에는 예외가 있다</a></li>
+    <li><a href="#5-팀에서-쓰려면-graphify-out을-커밋-가능한-artifact로-봐야-한다">5. 팀에서 쓰려면 <code>graphify-out/</code>을 커밋 가능한 artifact로 봐야 한다</a></li>
+    <li><a href="#6-hook이-붙으면-그래프는-문서가-아니라-살아-있는-map이-된다">6. hook이 붙으면 그래프는 문서가 아니라 살아 있는 map이 된다</a></li>
+    <li><a href="#7-다양한-ai-도구-지원은-도구별-지식-단절을-줄인다">7. 다양한 AI 도구 지원은 “도구별 지식 단절”을 줄인다</a></li>
+    <li><a href="#8-graph_reportmd를-먼저-읽게-만드는-것이-핵심-운영-패턴이다">8. <code>GRAPH_REPORT.md</code>를 먼저 읽게 만드는 것이 핵심 운영 패턴이다</a></li>
+    <li><a href="#9-최신-저장소-메타데이터">9. 최신 저장소 메타데이터</a></li>
+    <li><a href="#10-결론-graphify는-코드-읽기-도구가-아니라-팀의-shared-context-artifact다">10. 결론: Graphify는 코드 읽기 도구가 아니라 팀의 shared context artifact다</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/graphify/" class="badge badge-secondary">Graphify</a>
+    <a href="/tags/knowledge-graph/" class="badge badge-secondary">Knowledge Graph</a>
+    <a href="/tags/coding-agents/" class="badge badge-secondary">Coding Agents</a>
+    <a href="/tags/code-review/" class="badge badge-secondary">Code Review</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
