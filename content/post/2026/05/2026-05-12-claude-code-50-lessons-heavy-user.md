@@ -93,7 +93,7 @@ Claude Code는 현재 작업 디렉터리와 프로젝트 memory를 기준으로
 
 ```mermaid
 flowchart LR
-    A[Project Folder] --> B[/init]
+    A[Project Folder] --> B["/init"]
     B --> C[CLAUDE.md]
     C --> D[Rules]
     C --> E[Commands]
