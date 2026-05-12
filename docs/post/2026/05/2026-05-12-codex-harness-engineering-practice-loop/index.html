@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'OpenAI Codex로 하네스 엔지니어링을 실습한다는 것: 모델을 믿는 게 아니라 작업 루프를 설계하는 법'" />
+  <title>OpenAI Codex로 하네스 엔지니어링을 실습한다는 것: 모델을 믿는 게 아니라 작업 루프를 설계하는 법  | 신규하 블로그</title>
+  <meta property="og:title" content="OpenAI Codex로 하네스 엔지니어링을 실습한다는 것: 모델을 믿는 게 아니라 작업 루프를 설계하는 법" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-05-12"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/05/2026-05-12-codex-harness-engineering-practice-loop/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="Codex" />
+  
+  <meta property="og:tags" content="Harness Engineering" />
+  
+  <meta property="og:tags" content="OpenAI" />
+  
+  <meta property="og:tags" content="Agent" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/05/2026-05-12-codex-harness-engineering-practice-loop/">
+          <h1>
+            OpenAI Codex로 하네스 엔지니어링을 실습한다는 것: 모델을 믿는 게 아니라 작업 루프를 설계하는 법
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/05/2026-05-12-codex-harness-engineering-practice-loop/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Codex를 잘 쓰는 방법은 “좋은 프롬프트 한 줄”이 아니다.</p>
+<p>실제로 중요한 것은 Codex가 일할 수 있는 환경을 어떻게 짜느냐다.</p>
+<ul>
+<li>어떤 파일을 먼저 읽게 할지</li>
+<li>어떤 규칙을 따르게 할지</li>
+<li>어느 범위를 건드리지 못하게 할지</li>
+<li>언제 계획을 세우게 할지</li>
+<li>완료 전에 무엇으로 검증할지</li>
+<li>실패하면 어떤 로그를 남길지</li>
+</ul>
+<p>이런 구조를 만드는 것이 하네스 엔지니어링이다.<br>
+ZeroCho TV의 <code>OpenAI Codex로 하는 하네스 엔지니어링 실습 요약본</code> 영상은 바로 이 관점에서 Codex를 다룬다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>YouTube: <a href="https://www.youtube.com/watch?v=MpeuOAmctAg">https://www.youtube.com/watch?v=MpeuOAmctAg</a></li>
+<li>OpenAI: <a href="https://openai.com/index/harness-engineering/">https://openai.com/index/harness-engineering/</a></li>
+<li>Codex: <a href="https://openai.com/ko-KR/codex/">https://openai.com/ko-KR/codex/</a></li>
+<li>Codex overview: <a href="https://platform.openai.com/docs/codex/overview">https://platform.openai.com/docs/codex/overview</a></li>
+</ul>
+<h2 id="1-하네스-엔지니어링은-codex를-더-똑똑하게-만드는-기술이-아니다">1. 하네스 엔지니어링은 Codex를 더 똑똑하게 만드는 기술이 아니다</h2>
+<p>하네스 엔지니어링을 처음 들으면 “에이전트를 더 강하게 만드는 프롬프트 기술”처럼 느껴질 수 있다.</p>
+<p>하지만 더 정확히는 반대다.</p>
+<p>하네스는 모델의 자유도를 무한히 늘리는 것이 아니라,<br>
+<strong>모델이 안전하게 일할 수 있는 작업장과 규칙을 만드는 것</strong>이다.</p>
+<p>OpenAI의 Harness Engineering 글도 같은 방향을 말한다.</p>
+<p>Codex에게 1,000페이지짜리 매뉴얼을 던지는 것이 아니라,<br>
+작업에 필요한 지도를 주고, 검증 루프와 문서 구조를 통해 행동을 안정화하는 쪽에 가깝다.</p>
+<p>즉 핵심은:</p>
+<ul>
+<li>모델 성능</li>
+<li>프롬프트 문장</li>
+<li>최신 기능</li>
+</ul>
+<p>보다:</p>
+<ul>
+<li>레포 구조</li>
+<li>프로젝트 문서</li>
+<li>검증 명령어</li>
+<li>CI</li>
+<li>권한 정책</li>
+<li>반복 가능한 작업 루프</li>
+</ul>
+<p>에 있다.</p>
+<pre class="mermaid">flowchart LR
+    A[Codex Model] --> B[Harness]
+    B --> C[Project Instructions]
+    B --> D[Tools / Sandbox]
+    B --> E[Tests / CI]
+    B --> F[Docs / Memory]
+    B --> G[Review Loop]
+    G --> H[Safer Patch]</pre><h2 id="2-codex-실습의-핵심은-바로-만들기가-아니라-먼저-작업-루프를-고정하기다">2. Codex 실습의 핵심은 “바로 만들기”가 아니라 “먼저 작업 루프를 고정하기”다</h2>
+<p>영상 제목은 “프로그램을 뚝딱 만들어내는 모습”을 강조한다.</p>
+<p>하지만 하네스 관점에서 보면 중요한 장면은 결과물이 아니라 과정이다.</p>
+<p>좋은 Codex 작업 루프는 대략 이렇게 흘러간다.</p>
+<ol>
+<li>목표를 짧게 정의한다</li>
+<li>관련 파일과 문서를 읽게 한다</li>
+<li>작업 범위를 정한다</li>
+<li>계획을 먼저 세운다</li>
+<li>구현한다</li>
+<li>테스트와 lint를 실행한다</li>
+<li>diff를 검토한다</li>
+<li>실패하면 원인을 기록하고 다시 반복한다</li>
+</ol>
+<p>이 순서가 중요한 이유는 Codex가 코드를 빨리 만들 수 있기 때문이다.</p>
+<p>빠른 도구일수록 더 강한 안전장치가 필요하다.<br>
+그렇지 않으면 빠르게 잘못된 방향으로 간다.</p>
+<h2 id="3-codex에게-필요한-것은-긴-설명서보다-짧고-정확한-지도다">3. Codex에게 필요한 것은 긴 설명서보다 “짧고 정확한 지도”다</h2>
+<p>OpenAI의 Harness Engineering 글에서 중요한 메시지는 “map”이다.</p>
+<p>Codex에게 모든 배경지식을 한꺼번에 밀어 넣기보다,<br>
+어디를 봐야 하고 무엇을 지켜야 하는지 알려 주는 지도가 필요하다.</p>
+<p>예를 들면:</p>
+<ul>
+<li>프로젝트 구조 요약</li>
+<li>테스트 명령어</li>
+<li>formatting 규칙</li>
+<li>금지 파일</li>
+<li>API contract 위치</li>
+<li>migration 주의사항</li>
+<li>배포 전 체크리스트</li>
+</ul>
+<p>이런 것들이 하네스의 기본 지도다.</p>
+<p>Codex는 강한 코딩 능력을 갖고 있지만,<br>
+레포의 숨은 규칙과 팀의 암묵지를 자동으로 아는 것은 아니다.</p>
+<p>따라서 하네스의 첫 번째 역할은 <strong>암묵지를 파일로 바꾸는 것</strong>이다.</p>
+<h2 id="4-계획-모드는-느려지는-단계가-아니라-비용을-줄이는-단계다">4. 계획 모드는 “느려지는 단계”가 아니라 비용을 줄이는 단계다</h2>
+<p>AI 코딩을 처음 쓰면 바로 구현부터 시키고 싶다.</p>
+<p>하지만 하네스 엔지니어링에서는 planning 단계가 중요하다.</p>
+<p>계획을 먼저 세우면:</p>
+<ul>
+<li>구현 범위가 줄어든다</li>
+<li>필요 없는 파일 수정을 막는다</li>
+<li>테스트 전략이 먼저 정해진다</li>
+<li>사람의 승인 지점이 생긴다</li>
+<li>실패했을 때 원인을 추적하기 쉽다</li>
+</ul>
+<p>즉 planning은 속도를 늦추는 의식이 아니라,<br>
+뒤쪽 rework를 줄이는 비용 절감 장치다.</p>
+<p>Codex가 강해질수록 planning은 더 중요해진다.</p>
+<p>약한 모델은 못 해서 멈추지만,<br>
+강한 모델은 잘못된 목표도 그럴듯하게 완성해 버릴 수 있기 때문이다.</p>
+<h2 id="5-검증-명령어는-프롬프트보다-강하다">5. 검증 명령어는 프롬프트보다 강하다</h2>
+<p>하네스의 핵심은 “완료 기준”이다.</p>
+<p>Codex에게:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>잘 구현해줘.
+</span></span></code></pre></div><p>라고 말하는 것보다:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>수정 후 npm test, npm run lint, 관련 E2E 테스트를 실행하고
+</span></span><span style="display:flex;"><span>실패가 있으면 원인을 설명한 뒤 다시 수정해.
+</span></span></code></pre></div><p>라고 말하는 편이 훨씬 강하다.</p>
+<p>검증 명령어는 모델의 자기평가보다 객관적이다.</p>
+<ul>
+<li>test pass</li>
+<li>lint pass</li>
+<li>typecheck pass</li>
+<li>build pass</li>
+<li>snapshot diff</li>
+<li>E2E result</li>
+</ul>
+<p>같은 신호가 있어야 Codex의 작업을 믿을 수 있다.</p>
+<p>하네스 엔지니어링에서 중요한 것은 Codex가 “완료했습니다”라고 말하는 순간이 아니라,<br>
+<strong>완료라고 말하기 전에 어떤 증거를 만들었는가</strong>다.</p>
+<h2 id="6-권한과-sandbox는-생산성을-떨어뜨리는-장치가-아니라-사고-반경을-줄이는-장치다">6. 권한과 sandbox는 생산성을 떨어뜨리는 장치가 아니라 사고 반경을 줄이는 장치다</h2>
+<p>Codex는 파일을 읽고, 수정하고, 명령을 실행할 수 있다.</p>
+<p>이 능력은 강력하지만 위험하다.</p>
+<p>그래서 하네스에는 반드시 권한과 sandbox 사고가 들어가야 한다.</p>
+<p>예를 들어:</p>
+<ul>
+<li>secret 파일 읽기 금지</li>
+<li>production DB 접근 금지</li>
+<li>migration 자동 실행 금지</li>
+<li>lockfile 수정 전 확인</li>
+<li>generated file 대량 수정 금지</li>
+<li>destructive command 제한</li>
+</ul>
+<p>같은 규칙이 필요하다.</p>
+<p>권한 제한은 Codex를 불신해서가 아니라,<br>
+실수했을 때 피해 범위를 줄이기 위한 것이다.</p>
+<p>좋은 하네스는 Codex가 실수하지 않게 만드는 것이 아니라,<br>
+<strong>실수해도 복구 가능한 경계 안에서 일하게 만든다</strong>.</p>
+<h2 id="7-문서와-메모리는-많을수록-좋다가-아니다">7. 문서와 메모리는 “많을수록 좋다”가 아니다</h2>
+<p>하네스 엔지니어링에서 자주 하는 실수가 있다.</p>
+<p>모든 규칙, 모든 회의록, 모든 문서를 하나의 거대한 instruction file에 넣는 것이다.</p>
+<p>하지만 OpenAI의 글도 지적하듯, 거대한 instruction은 오히려 문제를 만든다.</p>
+<ul>
+<li>task context를 밀어낸다</li>
+<li>핵심 규칙이 묻힌다</li>
+<li>오래된 문서가 새 작업을 오염시킨다</li>
+<li>모델이 잘못된 우선순위를 따른다</li>
+</ul>
+<p>따라서 좋은 하네스는 문서를 계층화한다.</p>
+<ul>
+<li>항상 읽을 짧은 프로젝트 지도</li>
+<li>필요할 때 읽을 세부 문서</li>
+<li>작업 후 갱신할 run ledger</li>
+<li>검증된 내용만 승격하는 memory</li>
+<li>오래된 문서를 정리하는 doc-gardening 루프</li>
+</ul>
+<p>즉 Codex에게 필요한 것은 거대한 기억이 아니라<br>
+<strong>필요할 때 찾아갈 수 있는 짧은 지도와 최신 문서 구조</strong>다.</p>
+<pre class="mermaid">flowchart TD
+    A[Short Project Map] --> B[Codex Task]
+    C[Detailed Docs] --> B
+    D[Run Ledger] --> E[Memory Candidate]
+    E --> F[Validated Memory]
+    F --> A
+    G[Doc Gardening] --> C</pre><h2 id="8-하네스의-성패는-반복-가능한가로-판단해야-한다">8. 하네스의 성패는 “반복 가능한가”로 판단해야 한다</h2>
+<p>한 번 성공한 데모는 충분하지 않다.</p>
+<p>하네스가 좋다는 것은 같은 종류의 작업을 반복했을 때:</p>
+<ul>
+<li>더 빨리 시작하고</li>
+<li>덜 헤매고</li>
+<li>덜 위험하게 수정하고</li>
+<li>검증을 빼먹지 않고</li>
+<li>실패 기록이 다음 작업에 반영되고</li>
+<li>사람이 review하기 쉬운 patch가 나오는 것</li>
+</ul>
+<p>이다.</p>
+<p>즉 하네스는 데모용 prompt가 아니라 <strong>반복 가능한 작업 시스템</strong>이다.</p>
+<p>Codex가 강력해질수록 이 반복성의 가치가 커진다.</p>
+<h2 id="9-codex-하네스-실습에서-가져갈-운영-체크리스트">9. Codex 하네스 실습에서 가져갈 운영 체크리스트</h2>
+<p>실제로 Codex를 하네스 안에서 쓰려면 최소한 다음을 정해야 한다.</p>
+<h3 id="작업-전">작업 전</h3>
+<ul>
+<li>목표 한 문장</li>
+<li>건드릴 수 있는 영역</li>
+<li>건드리면 안 되는 영역</li>
+<li>관련 문서 위치</li>
+<li>실행해야 할 검증 명령어</li>
+</ul>
+<h3 id="작업-중">작업 중</h3>
+<ul>
+<li>먼저 계획 작성</li>
+<li>작은 patch 단위 유지</li>
+<li>중간 diff 확인</li>
+<li>위험한 명령은 승인 후 실행</li>
+<li>실패 로그 남기기</li>
+</ul>
+<h3 id="작업-후">작업 후</h3>
+<ul>
+<li>test / lint / build 실행</li>
+<li>사람이 diff review</li>
+<li>배운 규칙은 문서나 memory 후보로 남김</li>
+<li>오래된 지시는 제거</li>
+</ul>
+<p>이 체크리스트가 없으면 Codex는 여전히 똑똑하지만, 결과는 매번 흔들린다.</p>
+<h2 id="10-결론-codex는-개발자를-대체하기보다-개발자의-작업장을-더-엄격하게-요구한다">10. 결론: Codex는 개발자를 대체하기보다 개발자의 작업장을 더 엄격하게 요구한다</h2>
+<p>Codex가 강력해질수록 “이제 그냥 시키면 되겠네”라고 생각하기 쉽다.</p>
+<p>하지만 실제로는 반대다.</p>
+<p>강한 모델일수록:</p>
+<ul>
+<li>더 명확한 목표</li>
+<li>더 좁은 작업 범위</li>
+<li>더 강한 검증</li>
+<li>더 안전한 권한</li>
+<li>더 좋은 문서 구조</li>
+<li>더 나은 review 루프</li>
+</ul>
+<p>가 필요하다.</p>
+<p>즉 Codex 시대의 핵심 역량은 프롬프트를 잘 쓰는 것에서 끝나지 않는다.</p>
+<p><strong>Codex가 일할 작업장, 규칙, 검증, 기억, 권한을 설계하는 것.</strong></p>
+<p>그게 하네스 엔지니어링이다.</p>
+<p>영상이 보여 주는 실습의 의미도 여기에 있다.<br>
+Codex가 프로그램을 “뚝딱” 만드는 장면보다 중요한 것은, 그 뚝딱이 우연이 아니라 반복 가능한 개발 루프가 되도록 통제하는 구조다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 05월 12일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-12-six-claude-code-skills-businesses-pay-for/" rel="prev">
+        <span>기업이 실제로 돈 내는 Claude Code 스킬 6가지: 화려함보다 반복 병목을 줄이는 스킬이 팔린다</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-12-hermes-agent-24h-automation-setup-use-cases/" rel="next">
+        <span>Hermes Agent를 제대로 이해하는 법: 챗봇이 아니라 24시간 돌아가는 맞춤 자동화 시스템</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-하네스-엔지니어링은-codex를-더-똑똑하게-만드는-기술이-아니다">1. 하네스 엔지니어링은 Codex를 더 똑똑하게 만드는 기술이 아니다</a></li>
+    <li><a href="#2-codex-실습의-핵심은-바로-만들기가-아니라-먼저-작업-루프를-고정하기다">2. Codex 실습의 핵심은 “바로 만들기”가 아니라 “먼저 작업 루프를 고정하기”다</a></li>
+    <li><a href="#3-codex에게-필요한-것은-긴-설명서보다-짧고-정확한-지도다">3. Codex에게 필요한 것은 긴 설명서보다 “짧고 정확한 지도”다</a></li>
+    <li><a href="#4-계획-모드는-느려지는-단계가-아니라-비용을-줄이는-단계다">4. 계획 모드는 “느려지는 단계”가 아니라 비용을 줄이는 단계다</a></li>
+    <li><a href="#5-검증-명령어는-프롬프트보다-강하다">5. 검증 명령어는 프롬프트보다 강하다</a></li>
+    <li><a href="#6-권한과-sandbox는-생산성을-떨어뜨리는-장치가-아니라-사고-반경을-줄이는-장치다">6. 권한과 sandbox는 생산성을 떨어뜨리는 장치가 아니라 사고 반경을 줄이는 장치다</a></li>
+    <li><a href="#7-문서와-메모리는-많을수록-좋다가-아니다">7. 문서와 메모리는 “많을수록 좋다”가 아니다</a></li>
+    <li><a href="#8-하네스의-성패는-반복-가능한가로-판단해야-한다">8. 하네스의 성패는 “반복 가능한가”로 판단해야 한다</a></li>
+    <li><a href="#9-codex-하네스-실습에서-가져갈-운영-체크리스트">9. Codex 하네스 실습에서 가져갈 운영 체크리스트</a>
+      <ul>
+        <li><a href="#작업-전">작업 전</a></li>
+        <li><a href="#작업-중">작업 중</a></li>
+        <li><a href="#작업-후">작업 후</a></li>
+      </ul>
+    </li>
+    <li><a href="#10-결론-codex는-개발자를-대체하기보다-개발자의-작업장을-더-엄격하게-요구한다">10. 결론: Codex는 개발자를 대체하기보다 개발자의 작업장을 더 엄격하게 요구한다</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/codex/" class="badge badge-secondary">Codex</a>
+    <a href="/tags/harness-engineering/" class="badge badge-secondary">Harness Engineering</a>
+    <a href="/tags/openai/" class="badge badge-secondary">OpenAI</a>
+    <a href="/tags/agent/" class="badge badge-secondary">Agent</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
