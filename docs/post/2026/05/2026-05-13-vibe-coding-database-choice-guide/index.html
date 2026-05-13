@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '바이브 코딩 전에 데이터베이스를 고르는 법: SQLite, Supabase, PostgreSQL, NoSQL, DuckDB를 책임 기준으로 나누기'" />
+  <title>바이브 코딩 전에 데이터베이스를 고르는 법: SQLite, Supabase, PostgreSQL, NoSQL, DuckDB를 책임 기준으로 나누기  | 신규하 블로그</title>
+  <meta property="og:title" content="바이브 코딩 전에 데이터베이스를 고르는 법: SQLite, Supabase, PostgreSQL, NoSQL, DuckDB를 책임 기준으로 나누기" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-05-13"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/05/2026-05-13-vibe-coding-database-choice-guide/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="vibe-coding" />
+  
+  <meta property="og:tags" content="postgresql" />
+  
+  <meta property="og:tags" content="security" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/05/2026-05-13-vibe-coding-database-choice-guide/">
+          <h1>
+            바이브 코딩 전에 데이터베이스를 고르는 법: SQLite, Supabase, PostgreSQL, NoSQL, DuckDB를 책임 기준으로 나누기
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/05/2026-05-13-vibe-coding-database-choice-guide/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>바이브 코딩으로 앱을 만들면 처음에는 화면이 빠르게 나옵니다. 그런데 어느 순간 질문이 바뀝니다. &ldquo;이 데이터는 어디에 저장하지?&rdquo; 바이브랩스 영상은 이 지점에서 SQLite, Supabase, PostgreSQL, NoSQL 같은 이름을 외우기보다, <strong>내 서비스가 감당해야 할 책임</strong> 을 기준으로 데이터베이스를 고르라고 말합니다. <a href="https://youtu.be/GxhMuz7N6T4?t=0">0:00</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://youtu.be/GxhMuz7N6T4?si=r0Xb6XXDqzuFQEQ5">https://youtu.be/GxhMuz7N6T4?si=r0Xb6XXDqzuFQEQ5</a></li>
+<li>Supabase Row Level Security docs: <a href="https://supabase.com/docs/guides/database/postgres/row-level-security">https://supabase.com/docs/guides/database/postgres/row-level-security</a></li>
+<li>Supabase API keys docs: <a href="https://supabase.com/docs/guides/api/api-keys">https://supabase.com/docs/guides/api/api-keys</a></li>
+<li>SQLite serverless docs: <a href="https://sqlite.org/serverless.html">https://sqlite.org/serverless.html</a></li>
+<li>DuckDB docs: <a href="https://duckdb.org/">https://duckdb.org/</a></li>
+</ul>
+<h2 id="db-선택은-기술이-아니라-책임의-선택이다">DB 선택은 기술이 아니라 책임의 선택이다</h2>
+<p>영상은 초반에 &ldquo;DB 선택은 기술이 아니라 책임의 선택&quot;이라고 정리합니다. <a href="https://youtu.be/GxhMuz7N6T4?t=99">1:39</a> 이 말은 초보자에게 특히 중요합니다. 데이터베이스를 고른다는 것은 단순히 저장소를 고르는 것이 아닙니다. 인증, 권한, 백업, 동시접속, 배포, 장애 대응, 데이터 이전 가능성까지 어느 정도까지 직접 책임질지 정하는 일입니다.</p>
+<p>예를 들어 구글 시트나 노션은 시작이 쉽지만 서비스의 핵심 DB로 쓰기에는 한계가 있습니다. SQLite는 작고 단순한 앱에는 강력하지만 여러 사용자가 동시에 쓰고 권한을 나눠야 하는 SaaS에는 별도 설계가 필요합니다. Supabase는 많은 책임을 대신 맡아 주지만, Row Level Security와 키 관리를 이해하지 못하면 보안 사고로 이어질 수 있습니다.</p>
+<pre class="mermaid">flowchart TD
+    A["DB 선택"] --> B["저장 책임"]
+    A --> C["권한 책임"]
+    A --> D["운영 책임"]
+    A --> E["확장 책임"]
+    B --> F["어디에 저장할까"]
+    C --> G["누가 무엇을 볼 수 있나"]
+    D --> H["백업·장애·배포"]
+    E --> I["사용자/트래픽 증가"]
+
+    classDef rootTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef responsibilityTone fill:#fde8c0,stroke:#c59a45,color:#333
+    classDef detailTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    class A rootTone
+    class B,C,D,E responsibilityTone
+    class F,G,H,I detailTone</pre><p>따라서 좋은 질문은 &ldquo;요즘은 Supabase가 좋나요?&ldquo;가 아닙니다. &ldquo;내 서비스는 로그인과 권한이 필요한가?&rdquo;, &ldquo;동시 사용자가 몇 명인가?&rdquo;, &ldquo;운영을 내가 할 수 있는가?&rdquo;, &ldquo;데이터가 유출되면 얼마나 치명적인가?&ldquo;입니다.</p>
+<h2 id="자전거-소형차-운전기사-딸린-중형차-트럭-서랍장-분석실">자전거, 소형차, 운전기사 딸린 중형차, 트럭, 서랍장, 분석실</h2>
+<p>영상은 데이터베이스를 차와 공간에 비유합니다. 구글 시트/노션은 자전거, SQLite는 소형차, Supabase는 운전기사 딸린 중형차, PostgreSQL 직접 운영은 트럭, MongoDB 같은 NoSQL은 서랍장, DuckDB는 분석실에 가깝습니다. <a href="https://youtu.be/GxhMuz7N6T4?t=166">2:46</a></p>
+<p>이 비유의 장점은 &ldquo;좋고 나쁨&quot;이 아니라 &ldquo;맞는 상황&quot;을 보게 한다는 점입니다.</p>
+<pre class="mermaid">flowchart TD
+    A["데이터 저장 선택지"] --> B["구글 시트/노션<br>자전거"]
+    A --> C["SQLite<br>소형차"]
+    A --> D["Supabase<br>운전기사 딸린 중형차"]
+    A --> E["PostgreSQL 직접 운영<br>트럭"]
+    A --> F["NoSQL<br>서랍장"]
+    A --> G["DuckDB<br>분석실"]
+
+    classDef rootTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef simpleTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    classDef managedTone fill:#fde8c0,stroke:#c59a45,color:#333
+    classDef heavyTone fill:#ffc8c4,stroke:#c96f68,color:#333
+    classDef analysisTone fill:#e0c8ef,stroke:#9871b0,color:#333
+    class A rootTone
+    class B,C simpleTone
+    class D managedTone
+    class E,F heavyTone
+    class G analysisTone</pre><p>처음에는 자전거나 소형차가 빠릅니다. 하지만 유료 고객이 생기고 권한이 복잡해지면 중형차나 트럭이 필요해집니다. 반대로 분석용 데이터만 빠르게 훑어야 하는데 운영 DB를 무겁게 붙이는 것도 낭비입니다.</p>
+<h2 id="sqlite-의외로-좋은-출발점">SQLite: 의외로 좋은 출발점</h2>
+<p>영상은 SQLite를 의외로 좋은 출발점으로 봅니다. <a href="https://youtu.be/GxhMuz7N6T4?t=212">3:32</a> SQLite 공식 문서도 SQLite를 별도 서버 프로세스 없이 애플리케이션이 직접 데이터베이스 파일을 읽고 쓰는 serverless 구조로 설명합니다. <a href="https://sqlite.org/serverless.html">SQLite serverless docs</a></p>
+<p>SQLite가 좋은 이유는 단순합니다. 설치가 쉽고, 로컬 개발이 빠르고, 작은 앱에서는 운영 부담이 낮습니다. 개인 도구, 내부 관리자 페이지, 작은 데스크톱 앱, 초기 프로토타입처럼 사용자가 적고 권한 구조가 단순한 경우에는 충분히 좋은 선택입니다.</p>
+<pre class="mermaid">flowchart TD
+    A["SQLite가 맞는 경우"] --> B["사용자 수가 작음"]
+    A --> C["동시 쓰기 적음"]
+    A --> D["권한 구조 단순"]
+    A --> E["로컬/초기 MVP"]
+    B --> F["빠른 시작"]
+    C --> F
+    D --> F
+    E --> F
+
+    classDef fitTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    classDef resultTone fill:#fde8c0,stroke:#c59a45,color:#333
+    class A,B,C,D,E fitTone
+    class F resultTone</pre><p>다만 SQLite가 만능은 아닙니다. 여러 사용자가 동시에 쓰고, 사용자별 권한을 엄격히 나누고, 서버 여러 대에서 같은 DB를 안정적으로 쓰는 구조라면 별도 설계가 필요합니다. 그래서 SQLite는 &ldquo;작아서 나쁜 DB&quot;가 아니라, 책임 범위가 작을 때 아주 좋은 DB라고 보는 편이 정확합니다.</p>
+<h2 id="supabase-빠른-중형차지만-rls와-키-관리를-이해해야-한다">Supabase: 빠른 중형차지만 RLS와 키 관리를 이해해야 한다</h2>
+<p>영상은 Supabase의 매력과 함께 RLS, anon key, service role key 같은 함정을 짚습니다. <a href="https://youtu.be/GxhMuz7N6T4?t=266">4:26</a> Supabase는 PostgreSQL 기반 DB, Auth, Storage, Realtime, API를 빠르게 붙일 수 있어 바이브 코딩에서 매우 매력적입니다. 하지만 &ldquo;무료고 편하다&quot;는 이유만으로 붙이면 보안 책임을 놓치기 쉽습니다.</p>
+<p>Supabase 공식 RLS 문서는 public schema의 테이블에서 RLS를 반드시 활성화해야 한다고 설명합니다. API를 통해 만든 테이블은 기본으로 RLS가 활성화되지만, SQL editor나 raw SQL로 만든 테이블은 직접 활성화해야 합니다. <a href="https://supabase.com/docs/guides/database/postgres/row-level-security">Supabase RLS docs</a></p>
+<p>또한 API keys 문서는 <code>anon</code>/publishable key와 <code>service_role</code>/secret key의 차이를 설명합니다. 특히 <code>service_role</code> 키는 프로젝트 데이터에 높은 권한으로 접근할 수 있으므로 클라이언트에 노출하면 안 됩니다. <a href="https://supabase.com/docs/guides/api/api-keys">Supabase API keys docs</a></p>
+<pre class="mermaid">flowchart TD
+    A["Supabase 사용"] --> B["Auth + Postgres + API 빠르게 확보"]
+    B --> C{"RLS 이해했나?"}
+    C -->|예| D["사용자별 접근 정책 작성"]
+    C -->|아니오| E["데이터 노출 위험"]
+    B --> F{"키 관리 이해했나?"}
+    F -->|예| G["anon/publishable은 클라이언트<br>service_role은 서버만"]
+    F -->|아니오| H["service_role 노출 위험"]
+
+    classDef goodTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    classDef warnTone fill:#ffc8c4,stroke:#c96f68,color:#333
+    classDef processTone fill:#fde8c0,stroke:#c59a45,color:#333
+    class A,B,C,F processTone
+    class D,G goodTone
+    class E,H warnTone</pre><p>Supabase는 초보자에게 좋은 선택일 수 있습니다. 단, &ldquo;백엔드를 안 만들어도 된다&quot;가 아니라 &ldquo;백엔드의 많은 부분을 Supabase에 위임한다&quot;로 이해해야 합니다. 위임하더라도 권한 정책과 키 관리 책임은 여전히 사용자에게 남습니다.</p>
+<h2 id="postgresql-직접-운영-트럭은-강하지만-운전할-줄-알아야-한다">PostgreSQL 직접 운영: 트럭은 강하지만 운전할 줄 알아야 한다</h2>
+<p>영상은 PostgreSQL 직접 운영을 트럭에 비유합니다. <a href="https://youtu.be/GxhMuz7N6T4?t=383">6:23</a> PostgreSQL은 강력하고 표준적이며 확장성도 높습니다. 복잡한 관계형 데이터, 트랜잭션, 인덱스, 쿼리 최적화, 안정적인 운영이 필요한 서비스에는 좋은 선택입니다.</p>
+<p>하지만 직접 운영은 DB 엔진 선택 이상의 책임을 뜻합니다. 백업, 마이그레이션, 모니터링, connection pooling, 장애 복구, 권한 설정, 보안 패치까지 챙겨야 합니다. 개발자가 혼자 만드는 초기 앱에서 이 모든 것을 감당하려 하면 제품 검증보다 운영에 시간을 빼앗길 수 있습니다.</p>
+<pre class="mermaid">flowchart TD
+    A["PostgreSQL 직접 운영"] --> B["강력한 관계형 모델"]
+    A --> C["트랜잭션/인덱스/확장성"]
+    A --> D["운영 책임"]
+    D --> E["백업"]
+    D --> F["모니터링"]
+    D --> G["보안 패치"]
+    D --> H["장애 복구"]
+
+    classDef powerTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    classDef opsTone fill:#ffc8c4,stroke:#c96f68,color:#333
+    class A,B,C powerTone
+    class D,E,F,G,H opsTone</pre><p>그래서 직접 운영 PostgreSQL은 &ldquo;언젠가 가야 할 최종 목적지&quot;가 아닙니다. 지금 서비스가 감당해야 하는 데이터 복잡도와 운영 역량이 맞을 때 선택하는 도구입니다. 많은 초기 서비스는 managed PostgreSQL이나 Supabase 같은 중간 단계를 거치는 편이 더 현실적입니다.</p>
+<h2 id="nosql-서랍장은-유연하지만-질서가-필요하다">NoSQL: 서랍장은 유연하지만 질서가 필요하다</h2>
+<p>영상은 MongoDB 같은 NoSQL을 서랍장에 비유합니다. <a href="https://youtu.be/GxhMuz7N6T4?t=383">6:23</a> 서랍장은 형태가 다른 물건을 빨리 넣기에 좋습니다. JSON 문서처럼 구조가 자주 바뀌는 데이터, 이벤트 로그, 사용자별 설정, 중첩된 문서 구조에는 NoSQL이 자연스러울 수 있습니다.</p>
+<p>하지만 유연함은 장점이자 위험입니다. 스키마가 느슨하면 초반에는 빠르지만, 시간이 지나면서 같은 필드가 여러 형태로 저장되고, 쿼리 기준이 흔들리고, 데이터 정합성이 애플리케이션 코드로 밀려납니다.</p>
+<pre class="mermaid">flowchart TD
+    A["NoSQL"] --> B["유연한 문서 구조"]
+    B --> C["빠른 프로토타입"]
+    B --> D["변화가 잦은 데이터"]
+    A --> E["스키마 느슨함"]
+    E --> F["데이터 형태 불일치"]
+    E --> G["정합성 책임이 코드로 이동"]
+
+    classDef plusTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    classDef riskTone fill:#ffc8c4,stroke:#c96f68,color:#333
+    class A,B,C,D plusTone
+    class E,F,G riskTone</pre><p>NoSQL은 &ldquo;관계형을 몰라도 되게 해 주는 쉬운 DB&quot;가 아닙니다. 오히려 데이터 모델링을 더 신중히 해야 합니다. 관계가 많고 정합성이 중요한 서비스라면 관계형 DB가 더 단순할 수 있습니다.</p>
+<h2 id="duckdb-서비스-db가-아니라-분석실">DuckDB: 서비스 DB가 아니라 분석실</h2>
+<p>영상은 DuckDB를 분석실에 비유합니다. <a href="https://youtu.be/GxhMuz7N6T4?t=166">2:46</a> DuckDB 공식 문서는 DuckDB를 어디서나 실행되는 SQL database로 소개하며, Parquet, JSON, S3, data lakes 같은 데이터 소스를 직접 쿼리할 수 있다고 설명합니다. <a href="https://duckdb.org/">DuckDB docs</a></p>
+<p>DuckDB는 서비스의 주 운영 DB라기보다 분석용 도구에 가깝습니다. CSV, Parquet, 로그, export된 데이터를 빠르게 SQL로 분석하거나, 로컬 데이터 science workflow에서 쓰기 좋습니다. SQLite가 작은 OLTP 앱에 가깝다면, DuckDB는 embedded analytics에 초점이 있습니다.</p>
+<pre class="mermaid">flowchart TD
+    A["DuckDB"] --> B["로컬/임베디드 분석"]
+    B --> C["CSV / Parquet / JSON"]
+    B --> D["로그·export 데이터"]
+    B --> E["대화형 SQL 분석"]
+    A --> F["서비스 운영 DB 대체재는 아님"]
+
+    classDef analysisTone fill:#e0c8ef,stroke:#9871b0,color:#333
+    classDef cautionTone fill:#ffc8c4,stroke:#c96f68,color:#333
+    class A,B,C,D,E analysisTone
+    class F cautionTone</pre><p>바이브 코딩 앱에서 DuckDB는 &ldquo;사용자 데이터를 저장하는 메인 DB&quot;보다 &ldquo;운영 데이터를 분석하는 보조 도구&quot;로 생각하는 편이 안전합니다.</p>
+<h2 id="db를-고르기-위한-7가지-질문">DB를 고르기 위한 7가지 질문</h2>
+<p>영상은 DB를 고르기 위한 7가지 질문을 제시합니다. <a href="https://youtu.be/GxhMuz7N6T4?t=470">7:50</a> 설명란에는 질문 전체가 그대로 나오지는 않지만, 영상의 흐름과 설명을 기준으로 보면 초보자가 최소한 아래 질문을 통과해야 합니다.</p>
+<pre class="mermaid">flowchart TD
+    A["DB 선택 7가지 질문"] --> B["1. 로그인/사용자별 권한이 필요한가"]
+    A --> C["2. 동시 사용자가 얼마나 되는가"]
+    A --> D["3. 데이터 관계가 복잡한가"]
+    A --> E["4. 운영/백업을 직접 할 수 있는가"]
+    A --> F["5. 데이터 유출 시 위험이 큰가"]
+    A --> G["6. 분석이 주목적인가, 서비스 운영이 주목적인가"]
+    A --> H["7. 나중에 이전할 가능성을 고려했는가"]
+
+    classDef questionTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef itemTone fill:#fde8c0,stroke:#c59a45,color:#333
+    class A questionTone
+    class B,C,D,E,F,G,H itemTone</pre><p>이 질문에 따라 선택은 달라집니다. 로그인 없는 작은 도구라면 SQLite가 적절할 수 있습니다. 로그인과 사용자별 데이터가 필요하고 빠르게 만들고 싶다면 Supabase가 현실적입니다. 데이터 관계와 운영 요구가 커지면 managed PostgreSQL이나 직접 운영 PostgreSQL을 검토해야 합니다. 분석이 목적이라면 DuckDB가 더 잘 맞을 수 있습니다.</p>
+<h2 id="초보가-자주-빠지는-두-가지-착각">초보가 자주 빠지는 두 가지 착각</h2>
+<p>영상은 초보가 자주 빠지는 착각도 짚습니다. <a href="https://youtu.be/GxhMuz7N6T4?t=536">8:56</a></p>
+<p>첫 번째 착각은 &ldquo;Supabase를 쓰면 백엔드를 몰라도 된다&quot;입니다. Supabase는 많은 것을 대신 해 주지만, 권한 정책과 키 관리까지 자동으로 안전하게 해 주지는 않습니다. RLS를 이해하지 못하면 사용자가 다른 사용자의 데이터를 읽을 수 있는 구조를 만들 수 있습니다.</p>
+<p>두 번째 착각은 &ldquo;처음부터 가장 강한 DB를 쓰면 안전하다&quot;입니다. PostgreSQL 직접 운영은 강하지만, 운영 능력이 없으면 오히려 위험합니다. 초보에게는 기술적으로 강한 선택보다 책임 범위가 맞는 선택이 더 안전합니다.</p>
+<pre class="mermaid">flowchart TD
+    A["착각 1<br>Supabase면 백엔드 몰라도 됨"] --> B["RLS/키 관리 책임 남음"]
+    C["착각 2<br>처음부터 강한 DB가 안전"] --> D["운영 책임이 커짐"]
+    B --> E["책임 기준으로 선택"]
+    D --> E
+
+    classDef mistakeTone fill:#ffc8c4,stroke:#c96f68,color:#333
+    classDef lessonTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    class A,C mistakeTone
+    class B,D,E lessonTone</pre><h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<p>첫째, MVP라면 가장 작은 책임부터 시작합니다. 로그인도 없고 동시 쓰기도 적다면 SQLite나 간단한 저장소로 충분할 수 있습니다.</p>
+<p>둘째, 로그인과 사용자별 데이터가 들어가면 권한 설계를 먼저 합니다. Supabase를 쓰더라도 RLS와 키 관리를 이해하지 못한 상태로 공개하면 안 됩니다.</p>
+<p>셋째, PostgreSQL 직접 운영은 운영 역량이 있을 때 선택합니다. &ldquo;언젠가 커질 서비스니까 처음부터 트럭&quot;이 아니라, 실제로 트럭이 필요한 시점인지 판단해야 합니다.</p>
+<p>넷째, 분석과 운영 DB를 구분합니다. DuckDB는 분석에 강하지만, 사용자 요청을 처리하는 서비스 메인 DB로 무조건 적합한 것은 아닙니다.</p>
+<p>다섯째, AI에게 DB를 고르게 할 때도 질문을 먼저 던지게 해야 합니다. &ldquo;내 앱에 DB 추천해 줘&quot;보다 &ldquo;사용자 수, 권한, 동시 쓰기, 운영 역량을 질문한 뒤 DB를 추천해 줘&quot;가 더 안전합니다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>바이브 코딩에서 DB 선택은 기술 이름 암기가 아니라 책임 범위 선택입니다. <a href="https://youtu.be/GxhMuz7N6T4?t=99">1:39</a></li>
+<li>SQLite는 작은 앱과 초기 MVP에 의외로 좋은 출발점입니다. <a href="https://youtu.be/GxhMuz7N6T4?t=212">3:32</a></li>
+<li>Supabase는 빠르게 앱을 만들 수 있지만 RLS, anon key, service role key를 이해해야 합니다. <a href="https://youtu.be/GxhMuz7N6T4?t=266">4:26</a></li>
+<li>PostgreSQL 직접 운영은 강력하지만 백업, 모니터링, 보안, 장애 대응 책임을 함께 가져옵니다. <a href="https://youtu.be/GxhMuz7N6T4?t=383">6:23</a></li>
+<li>NoSQL은 유연하지만 데이터 정합성과 스키마 질서가 애플리케이션 책임으로 이동할 수 있습니다.</li>
+<li>DuckDB는 운영 DB보다 로컬/임베디드 분석용 도구로 이해하는 편이 좋습니다.</li>
+<li>좋은 DB 선택은 &ldquo;무엇이 유행인가&quot;가 아니라 &ldquo;내 서비스가 어떤 책임을 감당해야 하는가&quot;에서 출발합니다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>앱은 화면에서 시작하지만 서비스는 데이터에서 버팁니다. 영상의 마지막 메시지도 이 방향입니다. <a href="https://youtu.be/GxhMuz7N6T4?t=715">11:55</a> 바이브 코딩은 화면을 빠르게 만드는 데 강하지만, 데이터가 들어가는 순간부터는 저장, 권한, 보안, 백업, 확장이라는 현실적인 책임이 생깁니다.</p>
+<p>처음부터 가장 강한 DB를 고르는 것이 정답은 아닙니다. 반대로 가장 쉬운 DB를 무조건 고르는 것도 정답이 아닙니다. 좋은 선택은 현재 서비스의 책임 범위와 운영 역량을 맞추는 것입니다. 그래서 DB 선택의 첫 질문은 &ldquo;무슨 DB가 좋나요?&ldquo;가 아니라, <strong>&ldquo;내가 지금 어디까지 책임질 수 있나요?&rdquo;</strong> 여야 합니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 05월 13일 20시 24분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/data">Data</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-13-claude-code-six-real-tools-after-400-hours/" rel="prev">
+        <span>Claude Code 400시간 후 남은 핵심 도구 6개: 많이 설치하는 것보다 실제 일이 되는 스킬만 남기는 법</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-13-hermes-docker-google-chat-setup-guide/" rel="next">
+        <span>Hermes를 Docker 샌드박스와 Google Chat으로 운영하기: 내 PC의 에이전트를 모바일 메신저로 부르는 구조</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#db-선택은-기술이-아니라-책임의-선택이다">DB 선택은 기술이 아니라 책임의 선택이다</a></li>
+    <li><a href="#자전거-소형차-운전기사-딸린-중형차-트럭-서랍장-분석실">자전거, 소형차, 운전기사 딸린 중형차, 트럭, 서랍장, 분석실</a></li>
+    <li><a href="#sqlite-의외로-좋은-출발점">SQLite: 의외로 좋은 출발점</a></li>
+    <li><a href="#supabase-빠른-중형차지만-rls와-키-관리를-이해해야-한다">Supabase: 빠른 중형차지만 RLS와 키 관리를 이해해야 한다</a></li>
+    <li><a href="#postgresql-직접-운영-트럭은-강하지만-운전할-줄-알아야-한다">PostgreSQL 직접 운영: 트럭은 강하지만 운전할 줄 알아야 한다</a></li>
+    <li><a href="#nosql-서랍장은-유연하지만-질서가-필요하다">NoSQL: 서랍장은 유연하지만 질서가 필요하다</a></li>
+    <li><a href="#duckdb-서비스-db가-아니라-분석실">DuckDB: 서비스 DB가 아니라 분석실</a></li>
+    <li><a href="#db를-고르기-위한-7가지-질문">DB를 고르기 위한 7가지 질문</a></li>
+    <li><a href="#초보가-자주-빠지는-두-가지-착각">초보가 자주 빠지는 두 가지 착각</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/vibe-coding/" class="badge badge-secondary">Vibe Coding</a>
+    <a href="/tags/postgresql/" class="badge badge-secondary">Postgresql</a>
+    <a href="/tags/security/" class="badge badge-secondary">Security</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
