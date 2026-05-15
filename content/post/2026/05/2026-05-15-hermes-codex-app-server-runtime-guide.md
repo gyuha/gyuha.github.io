@@ -1,0 +1,355 @@
+---
+title: "Hermes에서 Codex App-Server Runtime을 켜면 무엇이 달라지나: 기본 에이전트 루프 대신 Codex 런타임을 쓰는 구조"
+date: 2026-05-15T11:28:00+09:00
+draft: false
+categories:
+  - Automation
+tags:
+  - agents
+  - workflow
+  - automation
+description: "Hermes Agent의 Codex App-Server Runtime은 Hermes가 직접 도구 루프를 돌리는 대신 Codex의 app-server 런타임에 OpenAI turn을 넘기는 옵션이다. 이 글은 도구 구성, 플러그인 마이그레이션, MCP 콜백, 지원 기능과 빠지는 기능, 활성화 절차와 트레이드오프를 정리한다."
+---
+
+Hermes Agent의 **Codex App-Server Runtime** 은 단순한 "Codex 연동"이 아닙니다. 이 옵션을 켜면 Hermes가 직접 툴 루프를 실행하는 대신, `openai/*` 와 `openai-codex/*` turn을 Codex CLI의 app-server 런타임으로 넘깁니다. 즉 Hermes는 세션, 게이트웨이, 메모리/스킬 리뷰 같은 바깥 껍데기를 맡고, 실제 터미널 명령 실행·파일 수정·샌드박스·플러그인 호출은 Codex 쪽 런타임에서 처리합니다. <https://hermes-agent.nousresearch.com/docs/user-guide/features/codex-app-server-runtime>
+
+<!--more-->
+
+## Sources
+
+- Hermes Agent 공식 문서: <https://hermes-agent.nousresearch.com/docs/user-guide/features/codex-app-server-runtime>
+- Codex CLI 저장소: <https://github.com/openai/codex>
+
+## 한 줄로 요약하면
+
+이 기능은 **Hermes를 Codex의 외부 오케스트레이터처럼 쓰는 방식** 입니다.
+
+- 기본 모드에서는 Hermes가 자기 도구 루프를 직접 실행합니다.
+- Codex runtime 모드에서는 Hermes가 OpenAI turn을 Codex app-server에 넘깁니다.
+- Codex가 기본 도구와 샌드박스를 담당합니다.
+- Hermes는 부족한 도구를 MCP 콜백으로 다시 제공합니다.
+
+```mermaid
+flowchart TD
+    A["사용자 요청"] --> B["Hermes 세션"]
+    B --> C{"런타임 선택"}
+    C -->|기본값| D["Hermes 기본 tool loop"]
+    C -->|옵션 활성화| E["Codex app-server runtime"]
+    E --> F["Codex built-in tools + sandbox"]
+    F --> G["Hermes MCP callback tools"]
+
+    classDef inputTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef processTone fill:#fde8c0,stroke:#c59a45,color:#333
+    classDef codexTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    classDef callbackTone fill:#e0c8ef,stroke:#9871b0,color:#333
+    class A,B inputTone
+    class C,D processTone
+    class E,F codexTone
+    class G callbackTone
+```
+
+문서 표현을 그대로 풀면, Hermes는 "shell around it"에 가까워집니다. Codex가 실제 작업 런타임이 되고, Hermes는 그 바깥의 세션 DB, slash command, gateway, memory/skill review를 감쌉니다.
+
+## 왜 굳이 이 모드가 필요한가
+
+공식 문서는 이 모드의 이유를 꽤 분명하게 설명합니다.
+
+- ChatGPT 구독 인증 흐름으로 OpenAI agent turn을 실행할 수 있음
+- Codex의 자체 툴셋과 샌드박스를 그대로 활용할 수 있음
+- Codex 플러그인이 자동으로 옮겨와 Hermes 세션에서 동작함
+- 반대로 Hermes의 강한 도구는 MCP 콜백으로 계속 쓸 수 있음
+
+즉 이 기능의 핵심 가치는 **둘 중 하나를 버리는 것** 이 아니라, Codex 런타임과 Hermes 도구층을 겹쳐 쓰는 데 있습니다.
+
+```mermaid
+flowchart TD
+    A["Codex runtime을 켜는 이유"] --> B["ChatGPT subscription auth 활용"]
+    A --> C["Codex sandbox 사용"]
+    A --> D["Codex curated plugins 사용"]
+    A --> E["Hermes 도구는 MCP callback으로 유지"]
+
+    classDef rootTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef reasonTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    class A rootTone
+    class B,C,D,E reasonTone
+```
+
+실무적으로 보면 이런 사용자에게 특히 매력적입니다.
+
+- 이미 Codex CLI를 쓰고 있음
+- Codex 플러그인 생태계도 함께 쓰고 싶음
+- 하지만 Hermes의 브라우저 자동화, 비전, 이미지 생성, 스킬 시스템은 버리고 싶지 않음
+
+## 실제 도구는 세 층으로 나뉜다
+
+문서에서 가장 중요한 대목은 "모델이 실제로 어떤 도구를 갖게 되느냐"입니다. 여기서는 도구가 세 층으로 나뉩니다.
+
+## 1. Codex의 기본 내장 도구
+
+Codex app-server runtime이 켜지면 가장 먼저 항상 들어오는 것은 Codex의 built-in toolset입니다.
+
+- `shell`
+- `apply_patch`
+- `update_plan`
+- `view_image`
+- `web_search`
+
+공식 문서 설명을 그대로 요약하면, 이 다섯 개는 Hermes 개입 없이 Codex 런타임만으로 바로 사용 가능합니다. 그래서 파일 읽기, 탐색, 검색, 빌드, 실행, 구조화된 패치 적용 같은 작업은 Codex가 네이티브로 담당합니다. <https://hermes-agent.nousresearch.com/docs/user-guide/features/codex-app-server-runtime>
+
+```mermaid
+flowchart TD
+    A["Codex built-in tools"] --> B["shell"]
+    A --> C["apply_patch"]
+    A --> D["update_plan"]
+    A --> E["view_image"]
+    A --> F["web_search"]
+
+    B --> G["터미널 / 파일 읽기 / 실행"]
+    C --> H["구조화된 멀티파일 수정"]
+    D --> I["런타임 내부 계획 추적"]
+    E --> J["로컬 이미지 로드"]
+    F --> K["웹 검색"]
+
+    classDef rootTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef toolTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    classDef detailTone fill:#fde8c0,stroke:#c59a45,color:#333
+    class A rootTone
+    class B,C,D,E,F toolTone
+    class G,H,I,J,K detailTone
+```
+
+이 구조 때문에 Codex runtime 모드에서는 "읽기/쓰기/검색/실행"의 기본 축이 Hermes가 아니라 Codex 쪽으로 넘어갑니다.
+
+## 2. Codex 플러그인 자동 마이그레이션
+
+두 번째 층은 Codex의 native plugin입니다. 문서에 따르면 Hermes는 runtime 활성화 시 Codex의 `plugin/list` RPC를 조회하고, 이미 설치된 플러그인을 `~/.codex/config.toml` 기준으로 활성화합니다.
+
+대표 예시는 다음과 같습니다.
+
+- Linear
+- GitHub
+- Gmail
+- Google Calendar
+- Outlook 계열
+- Canva
+
+즉 이미 Codex CLI에서 설치해 둔 curated plugin이 있다면, Hermes session 안에서도 같은 인증 기반으로 이어서 활용하게 됩니다.
+
+```mermaid
+flowchart TD
+    A["Codex plugin install 상태"] --> B["Hermes가 plugin/list 조회"]
+    B --> C["설치된 curated plugin 발견"]
+    C --> D["~/.codex/config.toml 반영"]
+    D --> E["Hermes 세션에서 plugin 사용"]
+
+    classDef startTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef processTone fill:#fde8c0,stroke:#c59a45,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    class A startTone
+    class B,C,D processTone
+    class E resultTone
+```
+
+반대로 아직 설치하지 않은 플러그인은 자동으로 생기지 않습니다. 먼저 Codex 쪽에서 설치되어 있어야 합니다.
+
+## 3. Hermes 도구 MCP 콜백
+
+세 번째 층은 Codex에 없는 기능을 Hermes가 다시 제공하는 callback layer입니다. 공식 문서는 Hermes가 자신을 MCP 서버로 등록하고, Codex가 없는 도구를 필요로 할 때 그쪽으로 되돌아와 호출한다고 설명합니다.
+
+여기에는 대체로 Hermes 쪽 강점이 들어갑니다.
+
+- `web_search`, `web_extract`
+- `browser_*`
+- `vision_analyze`
+- `image_generate`
+- `skill_view`, `skills_list`
+- `text_to_speech`
+
+```mermaid
+flowchart TD
+    A["Codex runtime 작업 중"] --> B{"Codex built-in으로 충분한가?"}
+    B -->|예| C["Codex가 직접 처리"]
+    B -->|아니오| D["Hermes MCP callback 호출"]
+    D --> E["browser_*"]
+    D --> F["vision_analyze"]
+    D --> G["image_generate"]
+    D --> H["skills / TTS / web_extract"]
+
+    classDef inputTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef yesTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    classDef callbackTone fill:#e0c8ef,stroke:#9871b0,color:#333
+    classDef toolTone fill:#fde8c0,stroke:#c59a45,color:#333
+    class A,B inputTone
+    class C yesTone
+    class D callbackTone
+    class E,F,G,H toolTone
+```
+
+이 구성이 중요한 이유는, Codex runtime을 켜더라도 Hermes의 차별점이 완전히 사라지지 않기 때문입니다. 오히려 **Codex 기본 런타임 + Hermes 보조 능력** 으로 재조합됩니다.
+
+## 하지만 빠지는 기능도 있다
+
+문서상 가장 주의할 부분은 여기입니다. Codex runtime에서는 Hermes의 모든 기능이 그대로 유지되지 않습니다. 공식 문서에 따르면 다음 네 가지는 **stateless MCP callback** 으로는 처리할 수 없어서 빠집니다.
+
+- `delegate_task`
+- `memory`
+- `session_search`
+- `todo`
+
+문서의 설명을 풀면, 이 도구들은 "현재 돌고 있는 Hermes agent loop의 상태"를 필요로 합니다. 그런데 Codex runtime 아래의 MCP callback은 그 중간 상태를 직접 몰고 갈 수 없으므로, 이 기능은 기본 runtime으로 돌아가야 안전하게 쓸 수 있습니다.
+
+```mermaid
+flowchart TD
+    A["Hermes 기본 runtime"] --> B["agent loop state 보유"]
+    B --> C["delegate_task"]
+    B --> D["memory"]
+    B --> E["session_search"]
+    B --> F["todo"]
+
+    G["Codex runtime + stateless MCP callback"] --> H["중간 loop state 없음"]
+    H --> I["위 4개 도구는 직접 지원 불가"]
+
+    classDef hermesTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    classDef codexTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef warnTone fill:#ffc8c4,stroke:#c96f68,color:#333
+    class A,B,C,D,E,F hermesTone
+    class G,H codexTone
+    class I warnTone
+```
+
+즉 이 모드는 "상위 오케스트레이션보다 실행 런타임이 더 중요할 때" 잘 맞고, 반대로 Hermes 고유의 memory/subagent loop에 크게 의존한다면 기본 runtime이 더 낫습니다.
+
+## `/goal`, kanban, cron은 어느 정도까지 되나
+
+문서는 이 부분도 꽤 상세히 나눠 설명합니다.
+
+### `/goal`
+
+공식 문서에 따르면 `/goal`은 동작합니다. goal state는 Hermes 쪽 `state_meta`와 session id에 묶여 유지되고, 각 continuation prompt는 다시 Codex turn으로 실행됩니다. 다만 continuation이 새 Codex turn으로 다시 시작되므로, 긴 작업에서는 approval 정책이 turn마다 재평가될 수 있다고 문서가 경고합니다.
+
+### Kanban
+
+Kanban도 동작한다고 설명합니다. 다만 worker가 `hermes chat -q` subprocess로 뜨고, 전역 설정이 `codex_app_server`이면 worker 역시 Codex runtime으로 올라옵니다. 이때 task 수행은 Codex built-in toolset으로 처리하고, Hermes callback에 노출된 `kanban_*` 도구를 통해 보고합니다.
+
+### Cron
+
+Cron은 공식 문서에서 "specifically tested" 되지 않았다고 적혀 있습니다. 다만 코드 경로는 CLI와 같아서, 해당 cron의 설정이 `openai_runtime: codex_app_server`이면 Codex runtime으로 실행된다고 설명합니다. 대신 앞서 빠지는 네 가지 도구 제약은 그대로 적용됩니다.
+
+```mermaid
+flowchart TD
+    A["Workflow feature"] --> B["/goal"]
+    A --> C["kanban"]
+    A --> D["cron"]
+
+    B --> E["지원됨"]
+    C --> F["지원됨"]
+    D --> G["동작 가능하지만 별도 검증 부족"]
+
+    E --> H["새 Codex turn마다 approval 재평가 가능"]
+    F --> I["kanban_* callback 필요"]
+    G --> J["default runtime 의존 도구는 주의"]
+
+    classDef featureTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef okTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    classDef cautionTone fill:#fde8c0,stroke:#c59a45,color:#333
+    classDef riskTone fill:#ffc8c4,stroke:#c96f68,color:#333
+    class A,B,C,D featureTone
+    class E,F okTone
+    class G,H,I,J cautionTone
+```
+
+실무적으로 해석하면 이렇습니다.
+
+- 일반적인 단일 작업과 Codex plugin 활용에는 잘 맞음
+- kanban 작업자 실행도 가능함
+- 하지만 Hermes의 장기 기억/세션 검색/서브에이전트 루프 중심 자동화는 제한됨
+
+## 준비물과 활성화 절차
+
+문서 기준 prerequisite는 비교적 명확합니다.
+
+1. Codex CLI 설치
+2. `codex login`으로 OAuth 인증
+3. 필요하면 Codex curated plugin 설치
+
+활성화는 Hermes 세션 안에서 다음 명령을 쓰면 됩니다.
+
+```text
+/codex-runtime codex_app_server
+```
+
+문서에 따르면 이 명령은 다음을 수행합니다.
+
+- `codex` 설치 여부 확인
+- `config.yaml`에 `model.openai_runtime: codex_app_server` 저장
+- 사용자 MCP 서버를 `~/.codex/config.toml`로 마이그레이션
+- 설치된 Codex plugin 탐지 및 마이그레이션
+- Hermes 도구를 Codex가 부를 수 있도록 MCP 서버 등록
+- `default_permissions = ":workspace"` 설정
+
+```mermaid
+flowchart TD
+    A["/codex-runtime codex_app_server"] --> B["Codex CLI 설치 확인"]
+    A --> C["Hermes config.yaml 업데이트"]
+    A --> D["MCP 서버 마이그레이션"]
+    A --> E["Codex plugin 탐지"]
+    A --> F["Hermes callback MCP 등록"]
+    A --> G["workspace 권한 기본값 설정"]
+
+    classDef cmdTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef actionTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    class A cmdTone
+    class B,C,D,E,F,G actionTone
+```
+
+문서상 변경은 **다음 세션부터 적용** 됩니다. 즉 현재 세션의 캐시된 에이전트를 그대로 바꾸는 방식은 아닙니다.
+
+## 결국 어떤 경우에 켜는 게 맞나
+
+이 문서를 바탕으로 정리하면, Codex App-Server Runtime은 다음처럼 판단하면 됩니다.
+
+켜는 쪽이 맞는 경우:
+
+- Codex CLI와 ChatGPT 구독 인증 흐름을 그대로 쓰고 싶을 때
+- Codex의 샌드박스와 기본 툴셋을 선호할 때
+- Codex curated plugin을 Hermes에서도 이어서 쓰고 싶을 때
+- Hermes의 브라우저/비전/이미지/스킬 도구도 같이 유지하고 싶을 때
+
+기본 runtime이 더 나은 경우:
+
+- `delegate_task` 중심의 서브에이전트 오케스트레이션이 중요할 때
+- Hermes `memory`, `session_search`, `todo`에 의존할 때
+- 비 OpenAI provider를 함께 쓰는 구성이 중요할 때
+
+```mermaid
+flowchart TD
+    A["선택 기준"] --> B["Codex runtime 추천"]
+    A --> C["Hermes 기본 runtime 추천"]
+
+    B --> D["Codex tools / sandbox 선호"]
+    B --> E["Curated plugins 활용"]
+    B --> F["ChatGPT auth 기반 OpenAI turn"]
+
+    C --> G["delegate_task 필요"]
+    C --> H["memory / session_search 필요"]
+    C --> I["Hermes 고유 agent loop 기능 중요"]
+
+    classDef rootTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef codexTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    classDef hermesTone fill:#fde8c0,stroke:#c59a45,color:#333
+    class A rootTone
+    class B,D,E,F codexTone
+    class C,G,H,I hermesTone
+```
+
+## 정리
+
+Hermes의 Codex App-Server Runtime은 "Hermes에 Codex를 붙였다" 수준보다 더 구조적인 변화입니다. 이 모드를 켜면 실행 런타임의 중심이 Hermes에서 Codex로 옮겨갑니다. 대신 Hermes는 도구 callback, 세션 관리, goal/kanban 같은 외곽 워크플로를 계속 맡습니다.
+
+즉 이 기능의 본질은 통합입니다.
+
+- **Codex는 실행 엔진**
+- **Hermes는 오케스트레이터**
+- **MCP callback은 둘 사이의 접착층**
+
+그래서 이 문서를 읽고 얻어야 할 핵심은 단순한 on/off 팁이 아닙니다. 자신의 워크플로가 **실행 런타임 중심인지, 에이전트 루프 중심인지** 먼저 구분해야 Codex runtime이 진짜 이득이 되는지 판단할 수 있습니다.
