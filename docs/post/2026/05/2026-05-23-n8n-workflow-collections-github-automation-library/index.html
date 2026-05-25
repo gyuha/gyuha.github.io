@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'n8n 자동화 모음집이 왜 이렇게 많이 퍼질까: 워크플로를 &#39;템플릿&#39;이 아니라 실행 가능한 운영 라이브러리로 보는 관점'" />
+  <title>n8n 자동화 모음집이 왜 이렇게 많이 퍼질까: 워크플로를 &#39;템플릿&#39;이 아니라 실행 가능한 운영 라이브러리로 보는 관점  | 신규하 블로그</title>
+  <meta property="og:title" content="n8n 자동화 모음집이 왜 이렇게 많이 퍼질까: 워크플로를 &#39;템플릿&#39;이 아니라 실행 가능한 운영 라이브러리로 보는 관점" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-05-23"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/05/2026-05-23-n8n-workflow-collections-github-automation-library/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="automation" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+  <meta property="og:tags" content="agents" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/05/2026-05-23-n8n-workflow-collections-github-automation-library/">
+          <h1>
+            n8n 자동화 모음집이 왜 이렇게 많이 퍼질까: 워크플로를 &#39;템플릿&#39;이 아니라 실행 가능한 운영 라이브러리로 보는 관점
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/05/2026-05-23-n8n-workflow-collections-github-automation-library/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Threads에서 소개된 내용은 단순히 &ldquo;별 많은 n8n 저장소 몇 개&rdquo; 추천이 아니다. 더 정확히 말하면, <strong>자동화 레시피가 이제는 코드 스니펫처럼 유통되는 시대</strong> 를 보여 준다. 과거에는 개발자가 Stack Overflow 답변이나 GitHub 예제를 가져와 조합했다면, 지금은 n8n 워크플로 JSON 자체가 하나의 재사용 단위가 된다. 즉 사람들은 더 이상 &ldquo;자동화 아이디어&quot;만 가져가는 게 아니라, <strong>바로 import해서 실행 가능한 운영 흐름</strong> 을 라이브러리처럼 가져간다.<a href="https://www.threads.com/@k1utch_ai/post/DYqujwtEa75?xmt=AQG0fepEq2NIMKEjaBQPovITEualvWC6509cCD3TH6Je4w">Threads 원문</a></p>
+<p>원문이 특히 강조한 것은 몇몇 대형 저장소다. Zie619의 대규모 수집 저장소, enescingoz의 주제별 템플릿 모음, lucaswalter의 AI 에이전트 중심 워크플로, Danitilahun의 검색 가능한 대형 아카이브까지, 서로 성격은 다르지만 공통점이 있다. 모두 n8n을 &ldquo;캔버스 위에서 직접 그리는 도구&quot;가 아니라, <strong>검색·복제·수정 가능한 자동화 자산 저장소</strong> 로 다루고 있다는 점이다.<a href="https://github.com/Zie619/n8n-workflows">Zie619 저장소</a> <a href="https://github.com/enescingoz/awesome-n8n-templates">enescingoz 저장소</a> <a href="https://github.com/lucaswalter/n8n-ai-workflows">lucaswalter 저장소</a> <a href="https://github.com/Danitilahun/n8n-workflow-templates">Danitilahun 저장소</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Threads: <a href="https://www.threads.com/@k1utch_ai/post/DYqujwtEa75?xmt=AQG0fepEq2NIMKEjaBQPovITEualvWC6509cCD3TH6Je4w">클러치 AI Threads 포스트</a></li>
+<li>GitHub: <a href="https://github.com/Zie619/n8n-workflows">Zie619/n8n-workflows</a></li>
+<li>GitHub: <a href="https://github.com/enescingoz/awesome-n8n-templates">enescingoz/awesome-n8n-templates</a></li>
+<li>GitHub: <a href="https://github.com/lucaswalter/n8n-ai-workflows">lucaswalter/n8n-ai-workflows</a></li>
+<li>GitHub: <a href="https://github.com/Danitilahun/n8n-workflow-templates">Danitilahun/n8n-workflow-templates</a></li>
+</ul>
+<h2 id="threads-원문이-말하는-핵심은-워크플로-검색-비용이-거의-0에-가까워졌다는-점이다">Threads 원문이 말하는 핵심은 &ldquo;워크플로 검색 비용이 거의 0에 가까워졌다&quot;는 점이다</h2>
+<p>Threads 원문은 여러 저장소를 짧게 나열하지만, 사실 그 메시지는 명확하다. 이제 n8n 자동화를 처음부터 직접 그리지 않아도, 이미 공개된 대규모 컬렉션을 검색해서 가져오고 수정하면 된다는 것이다. 특히 Zie619 저장소는 &ldquo;n8n 사이트의 워크플로와 직접 찾은 것들을 모아 둔 대형 컬렉션&quot;으로 소개되고, enescingoz 저장소는 폴더별로 정리된 280개 이상의 템플릿 묶음으로 언급된다. lucaswalter는 AI 에이전트 성격이 강한 자동화 예제를, Danitilahun은 2천 개가 넘는 워크플로를 검색 가능하게 정리한 저장소로 소환된다.<a href="https://www.threads.com/@k1utch_ai/post/DYqujwtEa75?xmt=AQG0fepEq2NIMKEjaBQPovITEualvWC6509cCD3TH6Je4w">Threads 원문</a></p>
+<p>이 구조는 본질적으로 &ldquo;자동화 개발&quot;의 진입 비용을 바꾼다. 예전에는:</p>
+<ul>
+<li>어떤 흐름을 만들지 직접 설계하고</li>
+<li>각 SaaS API 연결법을 문서에서 찾고</li>
+<li>노드를 배치한 뒤</li>
+<li>오류 처리를 수동으로 붙이고</li>
+<li>실제 운영에서 다시 다듬는</li>
+</ul>
+<p>순서가 필요했다.</p>
+<p>지금은 먼저 거대한 공개 워크플로 라이브러리에서 비슷한 사례를 찾고, 그 JSON을 가져와 수정하는 쪽이 더 자연스러운 출발점이 됐다.</p>
+<pre class="mermaid">flowchart TD
+    A["자동화 요구"] --> B["예전 방식<br>직접 설계"]
+    A --> C["지금 방식<br>공개 워크플로 검색"]
+    B --> D["API 문서 탐색"]
+    D --> E["노드 수동 구성"]
+    E --> F["운영 중 수정"]
+    C --> G["유사 템플릿 선택"]
+    G --> H["가져와서 수정"]
+    H --> I["빠른 운영 시작"]
+
+    classDef inputTone fill:#c5dcef,stroke:#5b8db8,color:#333;
+    classDef oldTone fill:#ffc8c4,stroke:#c97f7a,color:#333;
+    classDef newTone fill:#c0ecd3,stroke:#69a97d,color:#333;
+
+    class A inputTone
+    class B,D,E,F oldTone
+    class C,G,H,I newTone</pre><h2 id="zie619-저장소가-의미-있는-이유는-템플릿-집합을-넘어서-검색-가능한-데이터셋이기-때문이다">Zie619 저장소가 의미 있는 이유는 &ldquo;템플릿 집합&quot;을 넘어서 검색 가능한 데이터셋이기 때문이다</h2>
+<p>가장 큰 컬렉션으로 언급된 Zie619 저장소는 단순히 JSON 파일을 많이 모아 둔 레포가 아니다. GitHub 공개 정보 기준으로 이 저장소는 수천 개의 워크플로를 카테고리별로 정리하고, 별도의 GitHub Pages 검색 인터페이스까지 제공한다. 웹에서 바로 검색하고, JSON을 다운로드하고, 카테고리와 통합 서비스 기준으로 탐색하는 흐름이 준비돼 있다.<a href="https://github.com/Zie619/n8n-workflows">Zie619 저장소</a> <a href="https://zie619.github.io/n8n-workflows/">워크플로 검색 사이트</a></p>
+<p>이 점이 중요하다. 워크플로가 4천 개를 넘어가면 그건 더 이상 &ldquo;샘플 모음&quot;이 아니라, <strong>자동화 패턴 데이터셋</strong> 에 가깝다. 즉 사용자는 이 저장소를 보며:</p>
+<ul>
+<li>어떤 서비스 조합이 자주 쓰이는지</li>
+<li>어떤 문제를 n8n으로 해결하는지</li>
+<li>어떤 노드 연결 패턴이 반복되는지</li>
+</ul>
+<p>를 역으로 학습할 수 있다.</p>
+<pre class="mermaid">flowchart TD
+    A["대형 워크플로 저장소"] --> B["JSON 예제 모음"]
+    A --> C["검색 인터페이스"]
+    A --> D["카테고리 구조"]
+    A --> E["반복 패턴 데이터셋"]
+    E --> F["자동화 학습"]
+    E --> G["빠른 재사용"]
+    E --> H["패턴 비교"]
+
+    classDef repoTone fill:#c5dcef,stroke:#5b8db8,color:#333;
+    classDef assetTone fill:#c0ecd3,stroke:#69a97d,color:#333;
+    classDef useTone fill:#fde8c0,stroke:#c9a647,color:#333;
+
+    class A repoTone
+    class B,C,D,E assetTone
+    class F,G,H useTone</pre><p>즉 이 저장소의 진짜 가치는 &ldquo;많다&quot;가 아니라, <strong>많은 것을 탐색 가능한 구조로 바꿨다</strong> 는 데 있다.</p>
+<h2 id="enescingoz-저장소는-주제별-cookbook에-더-가깝다">enescingoz 저장소는 &ldquo;주제별 cookbook&quot;에 더 가깝다</h2>
+<p>반면 enescingoz의 <code>awesome-n8n-templates</code>는 성격이 조금 다르다. 이쪽은 방대한 전체 수집보다, Gmail, Telegram, Google Drive, Slack, Discord, WhatsApp, OpenAI, Notion 같은 실제 사용 축으로 정리된 주제별 템플릿 컬렉션에 가깝다. 공개 설명에서도 &ldquo;280개 이상의 무료 ready-to-import 템플릿&quot;을 강조한다.<a href="https://github.com/enescingoz/awesome-n8n-templates">enescingoz 저장소</a></p>
+<p>이 구조는 대규모 데이터셋보다 <strong>실무 cookbook</strong> 에 더 가깝다. 예를 들어:</p>
+<ul>
+<li>이메일 자동화가 필요하면 Gmail 섹션으로</li>
+<li>문서 요약이 필요하면 OpenAI나 Notion 섹션으로</li>
+<li>메신저 자동화가 필요하면 Telegram이나 WhatsApp 섹션으로</li>
+</ul>
+<p>바로 내려갈 수 있다.</p>
+<p>즉 Zie619가 &ldquo;광범위한 수집 아카이브&quot;라면, enescingoz는 &ldquo;업무별 빠른 출발 레시피북&rdquo; 쪽이다.</p>
+<pre class="mermaid">flowchart TD
+    A["Awesome n8n Templates"] --> B["Email / Gmail"]
+    A --> C["Telegram / Messaging"]
+    A --> D["Docs / Drive / Sheets"]
+    A --> E["OpenAI / AI"]
+    A --> F["DevOps / Other"]
+
+    classDef rootTone fill:#c5dcef,stroke:#5b8db8,color:#333;
+    classDef groupTone fill:#c0ecd3,stroke:#69a97d,color:#333;
+
+    class A rootTone
+    class B,C,D,E,F groupTone</pre><h2 id="lucaswalter와-danitilahun-저장소는-ai-에이전트화와-탐색성을-각각-밀어-올린다">lucaswalter와 Danitilahun 저장소는 &ldquo;AI 에이전트화&quot;와 &ldquo;탐색성&quot;을 각각 밀어 올린다</h2>
+<p>Threads 원문이 lucaswalter 저장소를 따로 언급한 이유도 있다. 이 저장소는 단순한 Slack 알림이나 Gmail 자동응답보다, <strong>AI 에이전트·콘텐츠 생성·도구 호출</strong> 에 더 무게가 실린 예제가 많다. 공개 설명 자체가 &ldquo;AI automations and AI agents&rdquo; 컬렉션임을 전면에 둔다.<a href="https://github.com/lucaswalter/n8n-ai-workflows">lucaswalter 저장소</a></p>
+<p>한편 Danitilahun 저장소는 2,053개 워크플로를 전문적으로 정리하고, 즉시 검색·분석·브라우징 가능한 문서 시스템을 제공한다고 설명한다. 여기서 강조점은 단순 수량보다 <strong>탐색성과 문서화</strong> 다.<a href="https://github.com/Danitilahun/n8n-workflow-templates">Danitilahun 저장소</a></p>
+<p>즉 네 저장소를 나란히 놓고 보면 역할이 구분된다.</p>
+<ul>
+<li>Zie619: 최대 규모 수집 아카이브</li>
+<li>enescingoz: 주제별 cookbook</li>
+<li>lucaswalter: AI 에이전트 중심 패턴</li>
+<li>Danitilahun: 검색성과 문서화 강화</li>
+</ul>
+<p>이렇게 보면 Threads 원문은 &ldquo;무조건 하나를 쓰라&quot;가 아니라, <strong>목적에 따라 다른 라이브러리를 고르라</strong> 는 추천으로 읽는 편이 맞다.</p>
+<h2 id="왜-이런-저장소들이-ai-시대에-더-중요해졌나">왜 이런 저장소들이 AI 시대에 더 중요해졌나</h2>
+<p>AI가 코드와 노드 구성을 대신 짜 주는 시대라면, 오히려 예제 저장소의 가치가 줄어들 것처럼 보일 수 있다. 하지만 실제로는 반대다. 이유는 세 가지다.</p>
+<h3 id="1-ai는-빈-화면보다-예제를-더-잘-변형한다">1. AI는 빈 화면보다 예제를 더 잘 변형한다</h3>
+<p>완전히 빈 캔버스에서 요구를 정확히 변환하는 것보다, 이미 돌아가는 워크플로를 읽고 수정하는 편이 훨씬 안정적이다. 특히 n8n처럼 노드 연결, 자격증명, 트리거, 예외 처리까지 얽힌 환경에서는 이 차이가 크다.</p>
+<h3 id="2-사람도-정답보다-출발점이-필요하다">2. 사람도 &ldquo;정답&quot;보다 &ldquo;출발점&quot;이 필요하다</h3>
+<p>자동화는 아이디어보다 연결 디테일에서 막히는 경우가 많다. 공개 저장소는 정답을 주기보다, <strong>현실적인 시작 구조</strong> 를 준다.</p>
+<h3 id="3-워크플로-자체가-학습-데이터가-된다">3. 워크플로 자체가 학습 데이터가 된다</h3>
+<p>수천 개 워크플로를 보면 어떤 통합이 자주 쓰이는지, 어떤 자동화가 실제 수요를 갖는지, 어디에 AI 에이전트가 붙는지 감이 잡힌다. 즉 워크플로 라이브러리는 실행 자산이면서 동시에 시장·업무 패턴 데이터셋이기도 하다.</p>
+<pre class="mermaid">flowchart TD
+    A["공개 워크플로 라이브러리"] --> B["빠른 출발점 제공"]
+    A --> C["AI가 변형하기 쉬운 입력"]
+    A --> D["반복 패턴 학습"]
+    B --> E["구축 시간 단축"]
+    C --> F["정확한 수정"]
+    D --> G["업무 기회 발견"]
+
+    classDef sourceTone fill:#c5dcef,stroke:#5b8db8,color:#333;
+    classDef valueTone fill:#c0ecd3,stroke:#69a97d,color:#333;
+    classDef resultTone fill:#fde8c0,stroke:#c9a647,color:#333;
+
+    class A sourceTone
+    class B,C,D valueTone
+    class E,F,G resultTone</pre><h2 id="하지만-그대로-가져다-쓰면-위험하다">하지만 그대로 가져다 쓰면 위험하다</h2>
+<p>이런 저장소를 &ldquo;자동화 골드마인&quot;처럼 소개하는 글은 많지만, 실제 운영에서는 주의할 점도 뚜렷하다.</p>
+<p>첫째, <strong>버전 호환성</strong> 문제다. 예전 n8n 버전에서 만든 워크플로는 최신 노드나 자격증명 방식과 안 맞을 수 있다.</p>
+<p>둘째, <strong>자격증명과 보안 설정</strong> 문제다. 워크플로 JSON은 노드 구조를 잘 보여 주지만, 실제 운영에서는 인증 정보, 웹훅 공개 범위, 에러 처리, 재시도 정책까지 다시 점검해야 한다.</p>
+<p>셋째, <strong>과도한 복잡도 전파</strong> 문제다. 멋져 보이는 워크플로를 그대로 가져오면 내가 이해하지 못하는 분기, 조건문, 외부 호출이 함께 들어온다. 자동화는 복붙으로 시작할 수는 있어도, 운영은 결국 <strong>내가 설명 가능한 수준으로 단순화</strong> 해야 한다.</p>
+<p>넷째, AI 에이전트가 포함된 워크플로는 특히 더 주의해야 한다. 모델 호출, 외부 도구 사용, 데이터 저장이 한 흐름에 묶이면 비용·보안·오작동 범위가 동시에 커진다.</p>
+<h2 id="실전에서는-가져오기보다-가지치기가-더-중요하다">실전에서는 &ldquo;가져오기&quot;보다 &ldquo;가지치기&quot;가 더 중요하다</h2>
+<p>그래서 이런 저장소를 가장 잘 쓰는 방법은 무조건 많이 모으는 것이 아니다. 오히려 다음 순서가 더 현실적이다.</p>
+<ol>
+<li>내 업무와 가장 가까운 템플릿 하나를 찾는다</li>
+<li>import해서 구조를 읽는다</li>
+<li>필요 없는 분기와 노드를 제거한다</li>
+<li>인증, 웹훅, 에러 처리만 먼저 점검한다</li>
+<li>작은 데이터로 테스트한다</li>
+<li>통과한 뒤에만 실제 운영으로 옮긴다</li>
+</ol>
+<p>즉 워크플로 컬렉션의 가치는 &ldquo;그대로 실행&quot;보다, <strong>빠르게 출발하고 내 환경에 맞게 가지치기하는 재료</strong> 로 볼 때 가장 크다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>Threads 원문이 보여 주는 핵심은, n8n 워크플로가 이제 <strong>검색 가능한 운영 라이브러리</strong> 처럼 유통된다는 점이다.</li>
+<li>Zie619는 대규모 수집 아카이브, enescingoz는 주제별 cookbook, lucaswalter는 AI 에이전트 중심 컬렉션, Danitilahun은 검색성과 문서화 강화 쪽에 가깝다.</li>
+<li>이런 저장소는 단순 템플릿 모음이 아니라, 자동화 패턴 데이터셋이자 빠른 출발점 역할을 한다.</li>
+<li>AI 시대일수록 빈 화면에서 시작하기보다 <strong>돌아가는 예제를 변형하는 방식</strong> 이 더 강해진다.</li>
+<li>다만 버전 호환성, 자격증명, 보안, 과도한 복잡도 문제 때문에 그대로 복붙해서 운영하면 위험하다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>이 Threads 포스트가 흥미로운 이유는, n8n 예제 저장소 몇 개를 추천해서가 아니다. 더 본질적으로는 <strong>자동화가 이제 코드처럼 복제되고, 검색되고, 수정되는 자산이 됐다</strong> 는 흐름을 압축해서 보여 주기 때문이다. 앞으로 n8n을 잘 쓰는 사람은 가장 많은 템플릿을 모은 사람이 아니라, 공개된 워크플로를 빠르게 읽고, 내 환경에 맞게 줄이고, 안전하게 운영 가능한 형태로 바꾸는 사람일 가능성이 크다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 05월 23일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/automation">Automation</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-23-harness-click-ai-agentic-coding-demo/" rel="prev">
+        <span>왜 &#39;딸깍 AI&#39;가 그냥 자동완성이 아닌가: 인터뷰 하네스와 다중 에이전트 루프로 보는 실전 시연</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-24-fastest-growing-github-repos-agent-infrastructure-theme/" rel="next">
+        <span>이번 주 GitHub 급등 저장소 10개가 보여 준 것: AI 앱보다 &#39;에이전트 인프라&#39;가 더 뜨거워지는 흐름</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#threads-원문이-말하는-핵심은-워크플로-검색-비용이-거의-0에-가까워졌다는-점이다">Threads 원문이 말하는 핵심은 &ldquo;워크플로 검색 비용이 거의 0에 가까워졌다&quot;는 점이다</a></li>
+    <li><a href="#zie619-저장소가-의미-있는-이유는-템플릿-집합을-넘어서-검색-가능한-데이터셋이기-때문이다">Zie619 저장소가 의미 있는 이유는 &ldquo;템플릿 집합&quot;을 넘어서 검색 가능한 데이터셋이기 때문이다</a></li>
+    <li><a href="#enescingoz-저장소는-주제별-cookbook에-더-가깝다">enescingoz 저장소는 &ldquo;주제별 cookbook&quot;에 더 가깝다</a></li>
+    <li><a href="#lucaswalter와-danitilahun-저장소는-ai-에이전트화와-탐색성을-각각-밀어-올린다">lucaswalter와 Danitilahun 저장소는 &ldquo;AI 에이전트화&quot;와 &ldquo;탐색성&quot;을 각각 밀어 올린다</a></li>
+    <li><a href="#왜-이런-저장소들이-ai-시대에-더-중요해졌나">왜 이런 저장소들이 AI 시대에 더 중요해졌나</a>
+      <ul>
+        <li><a href="#1-ai는-빈-화면보다-예제를-더-잘-변형한다">1. AI는 빈 화면보다 예제를 더 잘 변형한다</a></li>
+        <li><a href="#2-사람도-정답보다-출발점이-필요하다">2. 사람도 &ldquo;정답&quot;보다 &ldquo;출발점&quot;이 필요하다</a></li>
+        <li><a href="#3-워크플로-자체가-학습-데이터가-된다">3. 워크플로 자체가 학습 데이터가 된다</a></li>
+      </ul>
+    </li>
+    <li><a href="#하지만-그대로-가져다-쓰면-위험하다">하지만 그대로 가져다 쓰면 위험하다</a></li>
+    <li><a href="#실전에서는-가져오기보다-가지치기가-더-중요하다">실전에서는 &ldquo;가져오기&quot;보다 &ldquo;가지치기&quot;가 더 중요하다</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/automation/" class="badge badge-secondary">Automation</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
