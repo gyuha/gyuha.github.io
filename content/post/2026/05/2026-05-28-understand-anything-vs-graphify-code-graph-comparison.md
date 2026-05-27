@@ -1,0 +1,222 @@
+---
+title: "Understand Anything vs Graphify: 같은 '코드 지식 그래프'여도 왜 한쪽은 더 보기 쉽고 다른 쪽은 더 싸게 느껴질까"
+date: 2026-05-28T00:00:00+09:00
+draft: false
+categories:
+  - Developer Tools
+tags:
+  - claude-code
+  - agents
+  - workflow
+description: "Eric Tech의 비교 영상을 바탕으로, Understand Anything과 Graphify를 설치 방식, 그래프 생성 비용, 대시보드 시각화, 질의 응답 품질, 로컬 모델 지원, 자동 업데이트 관점에서 정리했다."
+---
+
+이 영상이 좋은 이유는 `Understand Anything`과 `Graphify`를 단순히 "둘 다 코드 그래프 도구"로 묶지 않고, 실제로 무엇이 다른지 **비교 기준을 분해해서** 보여 주기 때문이다. 발표자는 자신의 SaaS 코드베이스에 두 도구를 모두 설치해 보고, 그래프를 만드는 데 드는 토큰과 시간, 대시보드 품질, 질문 응답의 형태, 자동 업데이트, 로컬 모델 지원까지 순서대로 비교한다.[영상 00:20](https://youtu.be/Ynv_WYO_slw?t=20) [영상 00:37](https://youtu.be/Ynv_WYO_slw?t=37)
+
+이 비교가 특히 유용한 이유는, 최근 코드 그래프/코드 지식 베이스 도구가 많아졌지만 실제 선택 기준은 대체로 비슷하기 때문이다. 결국 우리가 궁금한 건 다음이다.
+
+- 설치가 얼마나 번거로운가
+- 그래프 생성 비용이 얼마나 드는가
+- 사람이 보기 쉬운가
+- AI가 실제로 잘 읽는가
+- 로컬 모델로도 돌릴 수 있는가
+- 코드 변경 후 업데이트가 쉬운가
+
+이 영상은 바로 그 기준들로 `Understand Anything`과 `Graphify`를 비교해 준다.[영상 10:23](https://youtu.be/Ynv_WYO_slw?t=623) [영상 14:14](https://youtu.be/Ynv_WYO_slw?t=854)
+
+<!--more-->
+
+## Sources
+
+- 영상: [Understand-Anything vs Graphify: I Tested Both on My SaaS](https://youtu.be/Ynv_WYO_slw?si=a2SkPr9ZkBN0px5x)
+- GitHub: [Lum1104/Understand-Anything](https://github.com/Lum1104/Understand-Anything)
+- GitHub: [safishamsi/graphify](https://github.com/safishamsi/graphify)
+
+## 설치 방식부터 이미 성격이 조금 다르다
+
+영상 초반에서 발표자는 `Graphify`는 `uv` 기반 설치와 스킬 설치 흐름을 거치고, `Understand Anything`은 Claude Code 플러그인 마켓플레이스 명령으로 빠르게 프로젝트 레벨 설치를 진행한다.[영상 01:42](https://youtu.be/Ynv_WYO_slw?t=102) [영상 02:15](https://youtu.be/Ynv_WYO_slw?t=135)
+
+공식 README를 보면 이 차이는 실제 제품 성격과도 맞닿아 있다.
+
+- `Understand Anything`은 Claude Code 플러그인 중심이고, `/understand`, `/understand-dashboard`, `/understand-explain` 같은 명령이 전면에 나온다.[Understand Anything GitHub](https://github.com/Lum1104/Understand-Anything)
+- `Graphify`는 Python/uv 설치형 CLI에 가깝고, `/graphify .`, `graphify install`, `graphify extract`, `graphify query`처럼 명령과 백엔드 옵션이 더 넓게 드러난다.[Graphify GitHub](https://github.com/safishamsi/graphify)
+
+즉 설치 UX만 봐도:
+
+- `Understand Anything`: 플러그인형 경험
+- `Graphify`: 툴체인/CLI형 경험
+
+에 더 가깝다.
+
+```mermaid
+flowchart TD
+    A["코드 그래프 도구 설치"] --> B["Understand Anything"]
+    A --> C["Graphify"]
+    B --> D["Claude Code 플러그인 설치"]
+    B --> E["/understand 중심 사용"]
+    C --> F["uv / pipx / CLI 설치"]
+    C --> G["/graphify . 중심 사용"]
+
+    classDef rootTone fill:#c5dcef,stroke:#5b8db8,color:#333;
+    classDef uaTone fill:#c0ecd3,stroke:#69a97d,color:#333;
+    classDef gTone fill:#fde8c0,stroke:#c9a647,color:#333;
+
+    class A rootTone
+    class B,D,E uaTone
+    class C,F,G gTone
+```
+
+## 그래프 생성 비용 비교에서는 영상 기준으로 Graphify가 더 유리하게 나온다
+
+영상에서 발표자는 같은 코드베이스에 두 도구를 모두 적용한 뒤, 그래프 생성에 들어간 토큰과 시간을 비교한다. 여기서 결론은 명확하다. 영상 시점 기준으로 `Understand Anything`이 `Graphify`보다 **대략 두 배 정도 토큰을 더 소비했다** 고 설명한다.[영상 06:25](https://youtu.be/Ynv_WYO_slw?t=385) [영상 06:32](https://youtu.be/Ynv_WYO_slw?t=392)
+
+뒤쪽 요약에서는 `Understand Anything`의 전체 소비량이 약 200K 토큰 수준이었다고 다시 언급하면서, 토큰 예산이 민감하다면 이 항목에서는 `Graphify`가 이긴다고 정리한다.[영상 10:03](https://youtu.be/Ynv_WYO_slw?t=603) [영상 10:08](https://youtu.be/Ynv_WYO_slw?t=608)
+
+이 차이는 도구 철학과도 맞다.
+
+- `Understand Anything`은 더 풍부한 시각화와 설명 계층을 많이 생성한다
+- `Graphify`는 상대적으로 더 가볍고 실용적인 그래프 추출과 질의 흐름에 가깝다
+
+즉 같은 "지식 그래프"라도 어느 정도의 **추가 구조와 설명을 선생님처럼 만들어 주느냐** 에 따라 비용이 달라질 수 있다.
+
+```mermaid
+flowchart TD
+    A["그래프 생성 비교"] --> B["Understand Anything"]
+    A --> C["Graphify"]
+    B --> D["토큰 소비 더 큼"]
+    B --> E["더 풍부한 시각화 / 설명"]
+    C --> F["토큰 소비 더 적음"]
+    C --> G["더 가벼운 추출"]
+
+    classDef compareTone fill:#c5dcef,stroke:#5b8db8,color:#333;
+    classDef uaTone fill:#ffc8c4,stroke:#c97f7a,color:#333;
+    classDef gTone fill:#c0ecd3,stroke:#69a97d,color:#333;
+
+    class A compareTone
+    class B,D,E uaTone
+    class C,F,G gTone
+```
+
+다만 이 수치는 영상 속 특정 SaaS 코드베이스와 설정 기준의 결과이므로, 절대값보다 **경향성** 으로 읽는 편이 안전하다.
+
+## 대시보드 시각화는 영상 기준으로 Understand Anything 쪽이 더 강하게 평가된다
+
+그래프를 만든 뒤 발표자는 먼저 `Understand Anything`의 `/understand-dashboard`를 열어 본다. 여기서는 프로젝트 개요, 레이어별 구분, 컴포넌트 연결, 노드 상세 설명이 비교적 정돈된 형태로 나온다. 발표자는 이 대시보드가 더 시각적으로 좋고, 사람이 이해하기 더 쉽다고 평가한다.[영상 06:46](https://youtu.be/Ynv_WYO_slw?t=406) [영상 07:12](https://youtu.be/Ynv_WYO_slw?t=432)
+
+이후 중간 요약에서도 "대시보드 시각화는 Understand Anything이 확실히 이긴다"고 말한다.[영상 10:10](https://youtu.be/Ynv_WYO_slw?t=610) [영상 10:19](https://youtu.be/Ynv_WYO_slw?t=619)
+
+이건 공식 README와도 맞아떨어진다. `Understand Anything`은 애초에 "graphs that teach"를 표방하며, guided tour, domain view, onboarding, explain 류 기능을 전면에 둔다. 즉 사람에게 **가르치는 인터페이스** 를 더 중시한다.[Understand Anything GitHub](https://github.com/Lum1104/Understand-Anything)
+
+반면 `Graphify`는 그래프 시각화도 제공하지만, README 전반에서 더 강하게 드러나는 것은:
+
+- 멀티 포맷 추출
+- 질의
+- path/explain/query
+- wiki/obsidian/SVG/GraphML/Neo4j export
+
+같은 **활용 범위와 데이터 파이프라인** 이다.[Graphify GitHub](https://github.com/safishamsi/graphify)
+
+```mermaid
+flowchart TD
+    A["시각화 관점"] --> B["Understand Anything"]
+    A --> C["Graphify"]
+    B --> D["프로젝트 개요"]
+    B --> E["레이어 시각화"]
+    B --> F["사람 친화적 이해"]
+    C --> G["실용적 그래프 결과"]
+    C --> H["확장 / export 지향"]
+
+    classDef rootTone fill:#c5dcef,stroke:#5b8db8,color:#333;
+    classDef uaTone fill:#c0ecd3,stroke:#69a97d,color:#333;
+    classDef gTone fill:#fde8c0,stroke:#c9a647,color:#333;
+
+    class A rootTone
+    class B,D,E,F uaTone
+    class C,G,H gTone
+```
+
+즉 시각화는 둘 다 하지만, `Understand Anything`은 더 "대시보드 제품" 같고, `Graphify`는 더 "그래프 툴체인" 같다.
+
+## 실제 질문 응답 비교에서도 Understand Anything이 더 "읽기 쉬운 답"을 준다고 평가된다
+
+영상 중반의 가장 유용한 비교는 같은 질문을 두 도구에 각각 던지는 장면이다. 발표자는 `Graphify explain`과 `Understand Explain` 류 명령으로 같은 기능에 대해 묻고, 두 응답을 나란히 본다.[영상 10:42](https://youtu.be/Ynv_WYO_slw?t=642) [영상 11:01](https://youtu.be/Ynv_WYO_slw?t=661)
+
+그 결론은 이렇다.
+
+- 두 도구 모두 핵심 정답은 대체로 찾는다
+- 하지만 `Understand Anything`은 파일 위치, 출처, 단계별 알고리즘, flow chart까지 더 구조화해서 보여 준다
+- `Graphify`는 더 텍스트 중심이고 규칙·파일 나열이 많다
+
+발표자는 그래서 응답 품질 자체보다도 **사람이 이해하기 쉽게 재구성한 정도** 에서 `Understand Anything`을 더 높게 평가한다.[영상 11:09](https://youtu.be/Ynv_WYO_slw?t=669) [영상 12:11](https://youtu.be/Ynv_WYO_slw?t=731)
+
+흥미로운 점은 이 단계에서는 토큰 사용량이 "대략 비슷하다"고도 말한다. 즉 질의 단계에서는 큰 차이가 없는데, **같은 비용으로 더 시각적이고 설명적인 답** 을 주는 쪽이 `Understand Anything`처럼 느껴졌다는 것이다.[영상 12:24](https://youtu.be/Ynv_WYO_slw?t=744) [영상 12:30](https://youtu.be/Ynv_WYO_slw?t=750)
+
+## 자동 업데이트는 두 도구 모두 실무적으로 유용한 축으로 보인다
+
+영상 후반에서 발표자는 stale data, 즉 그래프가 코드 변경 후 낡아지는 문제도 짚는다. 여기서는 두 도구 모두 자동 업데이트나 변경 반영 기능을 제공한다고 보고, 이 항목은 사실상 비긴다고 평가한다.[영상 14:00](https://youtu.be/Ynv_WYO_slw?t=840) [영상 14:09](https://youtu.be/Ynv_WYO_slw?t=849)
+
+공식 README도 이를 뒷받침한다.
+
+- `Understand Anything`은 `/understand --auto-update`를 통해 포스트 커밋 훅 기반 증분 갱신을 설명한다.[Understand Anything GitHub](https://github.com/Lum1104/Understand-Anything)
+- `Graphify`는 `/graphify . --update`와 `graphify hook install`을 통해 변경 파일 재추출과 커밋 후 자동 재빌드를 제공한다.[Graphify GitHub](https://github.com/safishamsi/graphify)
+
+이 기능이 중요한 이유는 코드 그래프 도구가 금방 버려지는 가장 흔한 이유가 **처음 한 번 돌린 뒤 곧 낡아 버리는 것** 이기 때문이다. 자동 업데이트가 있어야 비로소 이 도구들은 문서가 아니라 **살아 있는 색인 계층** 이 된다.
+
+## 로컬 모델 지원은 Graphify 쪽이 분명한 강점으로 소개된다
+
+영상 마지막 비교 축은 프라이버시와 로컬 모델이다. 여기서 발표자는 `Graphify`는 Ollama나 AWS Bedrock 같은 백엔드 모델을 지정해 돌릴 수 있고, 로컬 모델 경로/백엔드 구성이 가능하다고 설명한다. 반면 `Understand Anything`은 영상 시점 기준으로 이런 로컬 모델 경로가 기본 문서에 드러나지 않고, IDE가 연결된 기본 제공 모델 프로바이더를 쓴다고 평가한다.[영상 14:14](https://youtu.be/Ynv_WYO_slw?t=854) [영상 14:43](https://youtu.be/Ynv_WYO_slw?t=883)
+
+공식 README를 보면 이 차이는 실제로 꽤 명확하다.
+
+- `Graphify` README는 `ollama`, `bedrock`, `openai`, `gemini`, `claude`, `kimi` 등 백엔드 옵션을 꽤 폭넓게 적고, `graphify extract --backend ollama` 같은 예시도 준다.[Graphify GitHub](https://github.com/safishamsi/graphify)
+- 반면 `Understand Anything` README는 Claude Code 플러그인/다중 플랫폼 설치는 강하지만, 로컬 추론 모델 선택을 전면에 두지는 않는다.[Understand Anything GitHub](https://github.com/Lum1104/Understand-Anything)
+
+```mermaid
+flowchart TD
+    A["로컬 모델 / 프라이버시"] --> B["Understand Anything"]
+    A --> C["Graphify"]
+    B --> D["IDE 연결 모델 중심"]
+    B --> E["로컬 백엔드 옵션 전면 문서화 적음"]
+    C --> F["Ollama 지원"]
+    C --> G["Bedrock / 다중 백엔드"]
+    C --> H["로컬 모델 경로 제어 강함"]
+
+    classDef rootTone fill:#c5dcef,stroke:#5b8db8,color:#333;
+    classDef uaTone fill:#ffc8c4,stroke:#c97f7a,color:#333;
+    classDef gTone fill:#c0ecd3,stroke:#69a97d,color:#333;
+
+    class A rootTone
+    class B,D,E uaTone
+    class C,F,G,H gTone
+```
+
+그래서 민감한 코드베이스나 로컬 LLM 실험이 중요하다면, 이 축에서는 `Graphify`가 더 매력적으로 보일 수 있다.
+
+## 영상의 최종 결론은 "둘 중 하나만 고르지 말고 역할을 나눠 써도 된다"는 쪽이다
+
+영상 마지막 정리에서 발표자는 아주 실무적인 결론을 내린다.
+
+- 더 좋은 시각화와 인간 친화적 이해가 필요하면 `Understand Anything`
+- 더 낮은 토큰 소비와 로컬 모델 유연성이 필요하면 `Graphify`
+
+라는 식이다.[영상 15:11](https://youtu.be/Ynv_WYO_slw?t=911) [영상 15:38](https://youtu.be/Ynv_WYO_slw?t=938)
+
+심지어 두 그래프를 같은 저장소에 함께 유지하면서 상황에 따라 둘 다 쓰는 것도 추천한다. 이 결론이 설득력 있는 이유는 두 도구가 정말 같은 문제를 푸는 듯 보이지만, 사실은 미묘하게 다른 최적점을 갖기 때문이다.
+
+- `Understand Anything`: 온보딩, 설명, 대시보드, 사람이 이해하기 쉬운 구조
+- `Graphify`: 범용 추출, 멀티 포맷, 로컬 모델, 비용 민감한 그래프 운용
+
+즉 "누가 절대적으로 낫다"보다, **무엇을 더 중요하게 보느냐에 따라 선택 기준이 달라진다** 는 것이다.
+
+## 핵심 요약
+
+- 이 영상은 `Understand Anything`과 `Graphify`를 설치, 비용, 시각화, 질의 응답, 자동 업데이트, 로컬 모델 지원으로 나눠 비교한다.
+- 영상 기준으로 그래프 생성 토큰 비용은 `Graphify`가 더 낮게 나왔다.
+- 대시보드 시각화와 사람이 읽기 쉬운 설명 구조는 `Understand Anything`이 더 강하게 평가됐다.
+- 실제 질문 응답에서 두 도구 모두 핵심 답은 찾지만, `Understand Anything`이 더 구조화된 설명과 시각화를 제공한다고 평가된다.
+- 자동 업데이트는 두 도구 모두 실무적으로 유용한 강점이다.
+- 로컬 모델·프라이버시 제어는 `Graphify` 쪽이 공식 문서상 더 강하게 드러난다.
+
+## 결론
+
+`Understand Anything`과 `Graphify`는 둘 다 "코드 지식 그래프"라는 이름 아래 묶일 수 있지만, 실제로는 서로 다른 쪽으로 더 최적화돼 있다. 하나는 **사람에게 가르치는 대시보드와 설명 인터페이스** 에 가깝고, 다른 하나는 **비용 효율과 범용 추출, 로컬 모델 유연성** 에 더 가깝다. 그래서 이 영상의 진짜 가치는 "누가 더 좋은가"를 단정하지 않는 데 있다. 오히려 더 실전적인 답은, **시각화가 필요할 땐 Understand Anything, 비용과 로컬 제어가 중요할 땐 Graphify** 처럼 역할을 나눠 보는 것이다.
