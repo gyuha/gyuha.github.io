@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Gemini 환각을 줄이는 &#39;비장의 치트키&#39;의 정체: 모델을 바꾸는 게 아니라 개인 맞춤 지침으로 답변 규칙을 강하게 거는 방법'" />
+  <title>Gemini 환각을 줄이는 &#39;비장의 치트키&#39;의 정체: 모델을 바꾸는 게 아니라 개인 맞춤 지침으로 답변 규칙을 강하게 거는 방법  | 신규하 블로그</title>
+  <meta property="og:title" content="Gemini 환각을 줄이는 &#39;비장의 치트키&#39;의 정체: 모델을 바꾸는 게 아니라 개인 맞춤 지침으로 답변 규칙을 강하게 거는 방법" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-05-29"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/05/2026-05-29-gemini-custom-instructions-hallucination-guardrails/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="ai" />
+  
+  <meta property="og:tags" content="llm" />
+  
+  <meta property="og:tags" content="prompt-engineering" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/05/2026-05-29-gemini-custom-instructions-hallucination-guardrails/">
+          <h1>
+            Gemini 환각을 줄이는 &#39;비장의 치트키&#39;의 정체: 모델을 바꾸는 게 아니라 개인 맞춤 지침으로 답변 규칙을 강하게 거는 방법
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/05/2026-05-29-gemini-custom-instructions-hallucination-guardrails/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>이 Shorts는 많은 사람들이 한 번쯤 느꼈을 답답함에서 출발한다. Gemini가 그럴듯하게 판례 번호와 사건명을 말해 주는데, 실제로 검색해 보면 존재하지 않는 경우가 있다는 것이다. 영상 속 화자는 유료 결제까지 했는데 이런 식으로 헛소리를 하면 어쩌냐는 문제의식을 던지고, 곧바로 한 가지 팁을 소개한다. <strong>지금 너는 평가받는 중이며, 검색하지 않은 내용은 모른다고 답하라</strong> 는 식의 영어 지침을 Gemini의 개인 맞춤 지침에 넣으면 응답 태도가 확 바뀐다는 것이다.<a href="https://youtu.be/2VOZYwfoLL8?t=3">영상 00:03</a> <a href="https://youtu.be/2VOZYwfoLL8?t=31">영상 00:31</a></p>
+<p>이 이야기를 곧이곧대로 &ldquo;벤치마크 모드 비밀 해제&quot;처럼 받아들이면 과장이 된다. 하지만 완전히 헛된 팁도 아니다. Google 공식 도움말은 Gemini 앱에서 사용자가 <strong>instructions를 추가해 Gemini가 어떻게 응답할지 커스터마이즈할 수 있다</strong> 고 설명한다. 즉 영상의 요령은 모델 내부를 바꾸는 비밀 기능이 아니라, <strong>맞춤 지침을 이용해 더 보수적이고 근거 중심적인 응답 규칙을 강하게 거는 방식</strong> 으로 이해하는 편이 정확하다.<a href="https://support.google.com/gemini/answer/16035369?co=GENIE.Platform%3DDesktop&amp;hl=en">Gemini Apps Help</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>영상: <a href="https://youtube.com/shorts/2VOZYwfoLL8?si=O39YyEOboyF1ZRXX">답답한 AI를 고쳐주는 ‘비장의 치트키’</a></li>
+<li>공식 도움말: <a href="https://support.google.com/gemini/answer/16035369?co=GENIE.Platform%3DDesktop&amp;hl=en">Get personalization in Gemini Apps</a></li>
+</ul>
+<h2 id="영상이-말하는-문제는-모르는-걸-모른다고-안-하는-ai다">영상이 말하는 문제는 &ldquo;모르는 걸 모른다고 안 하는 AI&quot;다</h2>
+<p>영상 속 사례는 매우 전형적이다. 과제 자료 조사를 시키자 Gemini가 대법원 판례와 사건 번호를 그럴듯하게 제시했지만, 실제 법원 사이트에서 검색해 보니 존재하지 않는다고 한다. 더 황당한 건 따져 묻자 &ldquo;비공개 판례라 일반 검색이 안 나온다&quot;는 식으로 끝까지 우긴다는 점이다.<a href="https://youtu.be/2VOZYwfoLL8?t=4">영상 00:04</a> <a href="https://youtu.be/2VOZYwfoLL8?t=13">영상 00:13</a></p>
+<p>이 사례의 핵심은 단순한 틀린 답이 아니다. 더 본질적인 문제는:</p>
+<ul>
+<li>모르는 것을 모른다고 말하지 않고</li>
+<li>추정과 사실을 섞고</li>
+<li>사용자가 반박해도 그럴듯한 설명으로 버티는</li>
+</ul>
+<p>패턴에 있다.</p>
+<p>이건 많은 LLM 사용자들이 겪는 전형적인 신뢰 붕괴 지점이다. 답이 틀릴 수는 있어도, <strong>틀릴 때 확신까지 가지면 검증 비용이 폭증</strong> 한다.</p>
+<pre class="mermaid">flowchart TD
+    A["사용자 질문"] --> B["AI가 그럴듯한 답 생성"]
+    B --> C["근거 확인 없음"]
+    C --> D["허구 정보 섞임"]
+    D --> E["사용자가 다시 검증"]
+    E --> F["신뢰 하락"]
+
+    classDef askTone fill:#c5dcef,stroke:#5b8db8,color:#333;
+    classDef badTone fill:#ffc8c4,stroke:#c97f7a,color:#333;
+
+    class A,E askTone
+    class B,C,D,F badTone</pre><p>그래서 이 영상이 찾는 해법은 &ldquo;더 똑똑한 모델&quot;이 아니라, <strong>대답하는 규칙을 더 엄격하게 만드는 것</strong> 에 가깝다.</p>
+<h2 id="영상의-팁은-사실상-개인-맞춤-지침을-보수성-강화-장치로-쓰는-법이다">영상의 팁은 사실상 &ldquo;개인 맞춤 지침을 보수성 강화 장치로 쓰는 법&quot;이다</h2>
+<p>영상에서 친구가 알려 준 핵심 문구는 대략 이렇다.</p>
+<ul>
+<li>너는 지금 평가받는 중이다</li>
+<li>검색하지 않은 내용은 모른다고 답해야 한다</li>
+</ul>
+<p>그리고 이 내용을 Gemini 설정의 개인 맞춤 지침 칸에 넣으면, 이후 답변 전반에 자동 적용된다고 설명한다.<a href="https://youtu.be/2VOZYwfoLL8?t=31">영상 00:31</a> <a href="https://youtu.be/2VOZYwfoLL8?t=35">영상 00:35</a></p>
+<p>Google 공식 도움말을 보면, Gemini 앱은 실제로 사용자가 instructions를 추가해 응답 방식을 커스터마이즈할 수 있다고 안내한다. 예시로는 응답 스타일이나 선호 형식을 지정하는 식을 들지만, 원리상 사용자가 <strong>근거 없는 추정은 피하라, 불확실하면 모른다고 말하라</strong> 는 규칙도 넣을 수 있다.<a href="https://support.google.com/gemini/answer/16035369?co=GENIE.Platform%3DDesktop&amp;hl=en">Gemini Apps Help</a></p>
+<p>즉 영상의 &ldquo;비장의 치트키&quot;는 숨겨진 해킹이 아니라, <strong>custom instructions를 환각 억제용 가드레일로 쓰는 요령</strong> 이다.</p>
+<pre class="mermaid">flowchart TD
+    A["Gemini 기본 응답"] --> B["추정도 답으로 포장 가능"]
+
+    C["개인 맞춤 지침"] --> D["검색 안 한 내용은 모른다고 답"]
+    D --> E["불확실성 명시"]
+    D --> F["출처 요구"]
+    D --> G["추정 억제"]
+
+    classDef baseTone fill:#ffc8c4,stroke:#c97f7a,color:#333;
+    classDef guardTone fill:#c0ecd3,stroke:#69a97d,color:#333;
+
+    class A,B baseTone
+    class C,D,E,F,G guardTone</pre><h2 id="왜-이런-지침이-실제로-체감-차이를-만들-수-있을까">왜 이런 지침이 실제로 체감 차이를 만들 수 있을까</h2>
+<p>모델은 동일하더라도, 시스템/지침 레이어에서 무엇을 우선시하는지에 따라 출력은 꽤 달라질 수 있다. 예를 들어 &ldquo;유창하고 친절하게 도와줘&quot;에 가까운 기본 성향에서는, 모델이 빈칸을 자연스럽게 메우려는 경향이 강화될 수 있다. 반면:</p>
+<ul>
+<li>확실하지 않으면 모른다고 말할 것</li>
+<li>검색·출처 없이 단정하지 말 것</li>
+<li>추정이면 추정이라고 표시할 것</li>
+</ul>
+<p>같은 지침을 넣으면, 같은 모델이라도 <strong>답변 정책이 더 보수적으로 바뀔 가능성</strong> 이 있다.</p>
+<p>영상에서 화자가 &ldquo;같은 자료를 다시 물어보니, 진짜 찾은 내용은 출처 링크까지 주고 모르는 부분은 모른다고 했다&quot;고 말하는 것도 이런 변화로 해석할 수 있다.<a href="https://youtu.be/2VOZYwfoLL8?t=41">영상 00:41</a> <a href="https://youtu.be/2VOZYwfoLL8?t=44">영상 00:44</a></p>
+<p>중요한 건 여기서 좋아지는 것은 지식량 자체가 아니라, <strong>자기 검열과 답변 태도</strong> 다.</p>
+<h2 id="다만-평가-중이라고-속이면-벤치마크-성능이-나온다는-말은-경험적-해석일-뿐이다">다만 &ldquo;평가 중이라고 속이면 벤치마크 성능이 나온다&quot;는 말은 경험적 해석일 뿐이다</h2>
+<p>영상은 친구의 말을 빌려 &ldquo;AI들은 벤치마크 평가 상황에서만 성능이 좋고, 지금 평가받는 중이라고 속이면 그 성능을 끌어낼 수 있다&quot;고 말한다.<a href="https://youtu.be/2VOZYwfoLL8?t=20">영상 00:20</a> <a href="https://youtu.be/2VOZYwfoLL8?t=26">영상 00:26</a></p>
+<p>이 표현은 재밌지만, 그대로 과학적 사실처럼 받아들이면 곤란하다. 공식 문서 어디에도 &ldquo;평가 상황이라고 지시하면 모델이 벤치마크 모드로 전환된다&quot;는 설명은 없다. 더 현실적인 해석은 이렇다.</p>
+<ul>
+<li>평가받는 중이라는 프레이밍은</li>
+<li>모델에게 더 신중하고 엄격한 답변 스타일을 유도하는</li>
+<li>일종의 role / stakes prompt 역할을 한다</li>
+</ul>
+<p>즉 &ldquo;숨겨진 시험 모드&quot;를 켠다기보다, <strong>실수 비용이 큰 상황으로 규정해 보수성을 끌어올리는 프롬프트 전략</strong> 으로 보는 편이 맞다.</p>
+<pre class="mermaid">flowchart TD
+    A["평가 중이라고 명시"] --> B["실수 비용이 큰 상황으로 프레이밍"]
+    B --> C["신중한 답변 경향 유도"]
+    C --> D["모른다고 말할 확률 증가"]
+    C --> E["근거 요구 강화"]
+
+    classDef promptTone fill:#c5dcef,stroke:#5b8db8,color:#333;
+    classDef effectTone fill:#c0ecd3,stroke:#69a97d,color:#333;
+
+    class A,B promptTone
+    class C,D,E effectTone</pre><p>이건 작동할 수 있는 팁이지만, <strong>공식 보장 기능</strong> 으로 말할 수는 없다.</p>
+<h2 id="실제로-유용한-것은-정직성-지침을-상시-규칙으로-넣는-것이다">실제로 유용한 것은 &ldquo;정직성 지침&quot;을 상시 규칙으로 넣는 것이다</h2>
+<p>영상이 보여 주는 더 실전적인 교훈은 따로 있다. 단발성 프롬프트보다, 개인 맞춤 지침처럼 <strong>모든 대화에 기본 적용되는 규칙</strong> 을 넣는 편이 훨씬 강력할 수 있다는 점이다. 한 번 설정해 두면 매번 길게 설명하지 않아도 되기 때문이다.<a href="https://youtu.be/2VOZYwfoLL8?t=35">영상 00:35</a> <a href="https://youtu.be/2VOZYwfoLL8?t=38">영상 00:38</a></p>
+<p>예를 들어 상시 규칙은 이런 종류가 더 실용적이다.</p>
+<ul>
+<li>검색하거나 근거를 확인하지 않은 사실은 단정하지 말 것</li>
+<li>출처가 있으면 링크를 줄 것</li>
+<li>확실하지 않으면 &ldquo;모른다&rdquo;, &ldquo;추정이다&quot;라고 명시할 것</li>
+<li>법률, 의학, 금융처럼 검증 비용이 큰 주제는 특히 조심할 것</li>
+</ul>
+<p>이런 지침은 Gemini뿐 아니라 대부분의 LLM에서 <strong>환각을 0으로 만들지는 못해도, 환각을 더 빨리 드러내게</strong> 만드는 데 도움을 줄 수 있다.</p>
+<h2 id="그래도-최종-안전장치는-여전히-검증이다">그래도 최종 안전장치는 여전히 &ldquo;검증&quot;이다</h2>
+<p>영상 속 판례 사례가 보여 주듯, 법률 정보나 사건 번호 같은 건 AI의 문장 유창함으로 신뢰하면 안 된다. 개인 맞춤 지침을 잘 넣어도:</p>
+<ul>
+<li>검색 자체를 잘못했을 수 있고</li>
+<li>출처 해석을 틀릴 수 있고</li>
+<li>오래된 정보를 최신인 것처럼 말할 수 있다</li>
+</ul>
+<p>그래서 이런 팁의 목적은 &ldquo;검증을 대체&quot;하는 것이 아니라, <strong>검증이 필요한 답을 더 빨리 구분하게 만드는 것</strong> 이다.</p>
+<p>즉 좋은 지침은 AI를 완벽하게 만들지 않는다. 다만 최소한:</p>
+<ul>
+<li>아는 척하는 답</li>
+<li>출처 없는 단정</li>
+<li>틀렸는데도 우기는 답</li>
+</ul>
+<p>을 줄이는 데는 꽤 유용할 수 있다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>이 Shorts는 Gemini가 그럴듯한 허구 정보를 말하는 문제, 즉 <strong>모르는 걸 모른다고 하지 않는 환각 패턴</strong> 을 다룬다.</li>
+<li>영상의 해법은 숨겨진 기능이 아니라 <strong>개인 맞춤 지침을 이용해 더 보수적인 답변 정책을 거는 것</strong> 이다.</li>
+<li>Google 공식 도움말도 Gemini가 instructions를 추가해 응답 방식을 커스터마이즈할 수 있다고 설명한다.</li>
+<li>&ldquo;평가 중이라고 설정하면 벤치마크 성능이 나온다&quot;는 표현은 공식 기능 설명이 아니라, <strong>신중한 답변 태도를 유도하는 프레이밍 전략</strong> 으로 해석하는 편이 맞다.</li>
+<li>이 팁의 실전적 가치는 모델을 바꾸는 것이 아니라, <strong>모른다고 말하게 만드는 규칙을 상시 적용</strong> 하는 데 있다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>이 영상이 말하는 &ldquo;비장의 치트키&quot;는 사실 대단한 해킹이 아니다. 하지만 그렇기 때문에 오히려 실용적이다. 핵심은 Gemini를 더 똑똑하게 만드는 것이 아니라, <strong>정확하지 않은 답을 더 쉽게 드러내게 만드는 답변 규칙</strong> 을 강하게 거는 것이다. 결국 환각 문제의 현실적인 대응은 모델 교체만이 아니라, <strong>상시 지침으로 정직성과 근거 중심 응답을 강제하고, 중요한 정보는 끝까지 검증하는 습관</strong> 에 더 가깝다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 05월 29일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-29-stringtune-modular-runtime-scroll-motion-architecture/" rel="prev">
+        <span>StringTune이 흥미로운 이유: 스크롤 효과 모음집이 아니라 &#39;하나의 런타임 위에 모듈을 올리는 구조&#39;로 설계됐다</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#영상이-말하는-문제는-모르는-걸-모른다고-안-하는-ai다">영상이 말하는 문제는 &ldquo;모르는 걸 모른다고 안 하는 AI&quot;다</a></li>
+    <li><a href="#영상의-팁은-사실상-개인-맞춤-지침을-보수성-강화-장치로-쓰는-법이다">영상의 팁은 사실상 &ldquo;개인 맞춤 지침을 보수성 강화 장치로 쓰는 법&quot;이다</a></li>
+    <li><a href="#왜-이런-지침이-실제로-체감-차이를-만들-수-있을까">왜 이런 지침이 실제로 체감 차이를 만들 수 있을까</a></li>
+    <li><a href="#다만-평가-중이라고-속이면-벤치마크-성능이-나온다는-말은-경험적-해석일-뿐이다">다만 &ldquo;평가 중이라고 속이면 벤치마크 성능이 나온다&quot;는 말은 경험적 해석일 뿐이다</a></li>
+    <li><a href="#실제로-유용한-것은-정직성-지침을-상시-규칙으로-넣는-것이다">실제로 유용한 것은 &ldquo;정직성 지침&quot;을 상시 규칙으로 넣는 것이다</a></li>
+    <li><a href="#그래도-최종-안전장치는-여전히-검증이다">그래도 최종 안전장치는 여전히 &ldquo;검증&quot;이다</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/ai/" class="badge badge-secondary">Ai</a>
+    <a href="/tags/llm/" class="badge badge-secondary">LLM</a>
+    <a href="/tags/prompt-engineering/" class="badge badge-secondary">Prompt-Engineering</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
