@@ -1,0 +1,234 @@
+---
+title: "Claude Code Dynamic Workflows가 진짜 의미하는 것: 외부 하네스가 본체 안으로 흡수되기 시작했다는 신호"
+date: 2026-05-30T00:00:00+09:00
+draft: false
+categories:
+  - Developer Tools
+tags:
+  - claude-code
+  - agents
+  - workflow
+description: "Maker Evan 영상과 Anthropic 공식 발표를 바탕으로, Claude Code Dynamic Workflows를 단순 멀티에이전트 기능이 아니라 계획을 코드로 박아 넣고 백그라운드 런타임에서 병렬 서브에이전트를 돌리는 내장 하네스 층으로 해석했다."
+---
+
+이 영상이 중요한 이유는 `Dynamic Workflows`를 기능 하나로 설명하지 않기 때문이다. 발표자는 처음부터 이 기능을 "에이전트를 여러 개 돌리는 옵션" 수준이 아니라, **Claude Code가 어디로 가고 있는지 보여 주는 신호** 라고 해석한다. 그리고 그 핵심을 한 문장으로 요약하면 이렇다. 예전에는 플러그인, 스킬, 웹 오케스트레이션 툴, 외부 멀티에이전트 프레임워크처럼 도구 바깥에 붙이던 하네스가 있었는데, 이제 그 하네스가 하나둘씩 Claude Code 안으로 들어오고 있다는 것이다.[영상 00:22](https://youtu.be/WklhyUhD4ko?t=22) [영상 01:48](https://youtu.be/WklhyUhD4ko?t=108)
+
+Anthropic의 공식 발표도 이 해석을 뒷받침한다. 2026년 5월 28일 공개된 블로그 포스트에 따르면, Dynamic Workflows는 Claude가 orchestration script를 동적으로 작성해 수십~수백 개의 병렬 subagent를 한 세션 안에서 돌리고, 결과를 검증한 뒤 하나의 coordinated answer로 돌려주는 기능이다. 회사는 이를 "원래 분기별로 계획하던 일을 며칠 안에 끝내게 해 주는 기능"이라고 소개한다.[Anthropic 공식 발표](https://claude.com/blog/introducing-dynamic-workflows-in-claude-code)
+
+<!--more-->
+
+## Sources
+
+- 영상: [아직도 클로드코드에 외부 툴 붙이세요? 이제 다 안에 있습니다](https://youtu.be/WklhyUhD4ko?si=NxrexYbCTY8EfxUE)
+- Anthropic 공식 발표: [Introducing dynamic workflows in Claude Code](https://claude.com/blog/introducing-dynamic-workflows-in-claude-code)
+
+## 먼저 하네스부터 이해해야 이 기능이 왜 중요한지 보인다
+
+영상은 Dynamic Workflows 얘기보다 먼저 "하네스"를 풀어 설명한다. 예전의 AI 코딩 도구는 똑똑한 신입 직원 한 명 같은 존재였고, 혼자서 큰 프로젝트 전체를 굴리기엔 버거웠다. 그래서 사람들이 그 위에 플러그인, 스킬, 웹 오케스트레이션 도구, 멀티에이전트 프레임워크를 붙여 더 큰 일을 시키도록 감쌌다. 발표자는 이런 바깥쪽 관리 체계 전체를 하네스라고 부른다.[영상 01:08](https://youtu.be/WklhyUhD4ko?t=68) [영상 01:37](https://youtu.be/WklhyUhD4ko?t=97)
+
+즉 하네스는 모델 그 자체가 아니다. 더 정확히 말하면:
+
+- 여러 에이전트를 어떻게 나눠 돌릴지
+- 누가 검증할지
+- 중간 결과를 어떻게 이어받을지
+- 장시간 작업을 어떻게 지속할지
+
+같은 운영 장치 전체를 뜻한다.
+
+```mermaid
+flowchart TD
+    A["기존 AI 코딩 도구"] --> B["플러그인"]
+    A --> C["스킬"]
+    A --> D["외부 오케스트레이션"]
+    A --> E["멀티에이전트 프레임워크"]
+    B --> F["하네스"]
+    C --> F
+    D --> F
+    E --> F
+
+    classDef toolTone fill:#c5dcef,stroke:#5b8db8,color:#333;
+    classDef partTone fill:#fde8c0,stroke:#c9a647,color:#333;
+    classDef harnessTone fill:#c0ecd3,stroke:#69a97d,color:#333;
+
+    class A toolTone
+    class B,C,D,E partTone
+    class F harnessTone
+```
+
+그래서 Dynamic Workflows의 진짜 포인트는 "병렬 실행" 하나가 아니라, **하네스 기능이 본체 안으로 흡수되고 있다는 점** 에 있다.
+
+## Dynamic Workflows의 핵심은 "계획을 머릿속이 아니라 코드에 박는다"는 점이다
+
+영상에서 발표자가 가장 중요하게 짚는 차이는 이것이다. 기존에 여러 에이전트를 돌리거나 스킬을 쓸 때, 계획은 Claude 본인의 머릿속에 있었다. 다음에 뭘 시킬지, 어떤 순서로 진행할지, 중간 결과를 어떻게 이어받을지를 매 턴마다 모델이 즉흥적으로 잡았다.[영상 02:33](https://youtu.be/WklhyUhD4ko?t=153) [영상 02:41](https://youtu.be/WklhyUhD4ko?t=161)
+
+반면 Dynamic Workflows는 그 계획을 **아예 코드 안에 박아 넣는다** 고 설명한다. 반복문, 분기, 중간 결과 저장까지 스크립트가 들고 있으므로, 매니저가 머릿속으로만 기억하던 진행 순서를 문서화된 매뉴얼로 바꾸는 셈이라는 것이다.[영상 02:45](https://youtu.be/WklhyUhD4ko?t=165) [영상 02:58](https://youtu.be/WklhyUhD4ko?t=178)
+
+Anthropic 공식 발표도 같은 설명을 한다. 워크플로가 시작되면 Claude는 프롬프트를 바탕으로 계획을 세우고, 이를 subtasks로 쪼개고, 병렬 subagent에 팬아웃한 뒤, 결과를 체크해서 하나의 답으로 접어 넣는다고 적는다. 즉 계획과 조정이 더 이상 단일 대화 맥락의 즉흥성에만 의존하지 않는다.[Anthropic 공식 발표](https://claude.com/blog/introducing-dynamic-workflows-in-claude-code)
+
+```mermaid
+flowchart TD
+    A["기존 방식"] --> B["계획이 Claude 머릿속에 있음"]
+    B --> C["매 턴 즉흥적으로 다음 단계 결정"]
+
+    D["Dynamic Workflows"] --> E["계획이 스크립트에 기록됨"]
+    E --> F["반복 / 분기 / 중간 결과 관리"]
+    F --> G["병렬 서브에이전트 지휘"]
+
+    classDef oldTone fill:#ffc8c4,stroke:#c97f7a,color:#333;
+    classDef newTone fill:#c0ecd3,stroke:#69a97d,color:#333;
+
+    class A,B,C oldTone
+    class D,E,F,G newTone
+```
+
+이 차이 때문에 Dynamic Workflows는 단순 "더 많은 에이전트"가 아니라, **운영 로직의 외부화** 에 더 가깝다.
+
+## 왜 계획을 코드에 박아 넣는 것이 그렇게 중요한가
+
+영상은 이 질문에 두 가지로 답한다.
+
+### 1. 컨텍스트 메모리 오염을 줄인다
+
+기존 방식에서는 에이전트 50개를 돌리면 그 결과가 Claude의 대화 컨텍스트에 한꺼번에 쌓여 금방 꽉 찬다. 발표자는 이를 AI의 "적을 수 있는 공간"이 한정돼 있는 문제, 즉 컨텍스트 윈도우 문제로 설명한다.[영상 03:25](https://youtu.be/WklhyUhD4ko?t=205) [영상 03:35](https://youtu.be/WklhyUhD4ko?t=215)
+
+반면 워크플로우는 중간 결과를 대화창이 아니라 **스크립트 변수/런타임 상태** 에 담아 두기 때문에, 최종적으로는 정리된 답 하나만 위로 올라온다. 영상 표현을 그대로 빌리면 "Claude 머릿속은 안 더러워지는 것"이다.[영상 03:43](https://youtu.be/WklhyUhD4ko?t=223) [영상 03:47](https://youtu.be/WklhyUhD4ko?t=227)
+
+### 2. 독립적인 검증 루프를 걸 수 있다
+
+영상은 워크플로우 안에서 에이전트끼리 서로 검사를 시킬 수 있다고 설명한다. 한 에이전트가 "이건 버그다"라고 가져오면, 다른 에이전트가 "진짜 맞나?" 하고 반박과 검증을 해 보는 식이다. 혼자 만들고 혼자 검사하는 구조보다 더 믿을 만하다는 것이다.[영상 03:54](https://youtu.be/WklhyUhD4ko?t=234) [영상 04:05](https://youtu.be/WklhyUhD4ko?t=245)
+
+Anthropic도 공식 글에서 "agents address the problem from independent angles, other agents try to refute what they found"라고 말한다. 즉 품질은 단순 병렬화에서 오는 것이 아니라, **병렬 + 상호 반박 구조** 에서 온다.[Anthropic 공식 발표](https://claude.com/blog/introducing-dynamic-workflows-in-claude-code)
+
+```mermaid
+flowchart TD
+    A["문제"] --> B["병렬 서브에이전트 실행"]
+    B --> C["중간 결과 런타임에 저장"]
+    C --> D["다른 에이전트가 반박 / 검증"]
+    D --> E["수렴된 최종 답"]
+
+    classDef flowTone fill:#c0ecd3,stroke:#69a97d,color:#333;
+
+    class A,B,C,D,E flowTone
+```
+
+즉 이 구조의 장점은 "한 번에 많이 돌린다"가 아니라, **메모리 관리와 품질 관리가 함께 좋아진다** 는 데 있다.
+
+## 실제 사용법은 생각보다 단순하다
+
+영상은 Dynamic Workflows의 진입 장벽이 의외로 낮다고 설명한다.
+
+- 가장 쉬운 시작은 Claude Code 기본 내장 `/deep research`
+- 내 작업에 맞는 워크플로우를 만들고 싶으면 프롬프트에 그냥 "워크플로우로 점검해 줘" 같은 표현을 넣기
+- Claude가 스크립트를 짜고 실행해도 되는지 묻는 흐름 따르기
+- 진행 상황은 `/workflows`에서 보기
+- 마음에 든 워크플로우는 저장하기
+
+라는 식이다.[영상 04:31](https://youtu.be/WklhyUhD4ko?t=271) [영상 05:18](https://youtu.be/WklhyUhD4ko?t=318)
+
+공식 발표도 비슷하다. 시작 방법은 두 가지라고 말한다.
+
+1. Claude에게 직접 dynamic workflow를 만들라고 요청하기
+2. effort 메뉴에서 `ultracode`를 켜서, Claude가 자동으로 워크플로우가 필요한지 판단하게 하기
+
+그리고 최적의 경험을 위해 auto mode를 켜 두라고 권한다.[Anthropic 공식 발표](https://claude.com/blog/introducing-dynamic-workflows-in-claude-code)
+
+```mermaid
+flowchart TD
+    A["워크플로우 시작"] --> B["직접 요청<br>Create a workflow"]
+    A --> C["ultracode 켜기"]
+    B --> D["Claude가 스크립트 생성"]
+    C --> D
+    D --> E["승인 후 실행"]
+    E --> F["/workflows로 진행 상황 확인"]
+
+    classDef startTone fill:#c5dcef,stroke:#5b8db8,color:#333;
+    classDef runTone fill:#c0ecd3,stroke:#69a97d,color:#333;
+
+    class A,B,C startTone
+    class D,E,F runTone
+```
+
+즉 진입 자체는 단순하지만, 내부에서 돌아가는 것은 꽤 큰 오케스트레이션이다.
+
+## 발표자가 느낀 실제 체감은 "리서치보다 코드 작업에서 더 빛난다"는 것이다
+
+영상은 장점만 말하지 않는다. 발표자는 직접 써 본 경험으로:
+
+- 리서치, 계획 짜기, 자료 조사 쪽은 기대보다 별로였다
+- 토큰은 많이 먹는데 결과가 그만한 값을 못 할 때가 있었다
+- 여러 에이전트가 넓게 훑다 보니 깊이보다 산만함이 생길 수 있었다
+
+고 말한다.[영상 08:06](https://youtu.be/WklhyUhD4ko?t=486) [영상 08:29](https://youtu.be/WklhyUhD4ko?t=509)
+
+반대로 코드 쪽, 특히:
+
+- 리팩토링
+- 코드베이스 전체에 흩어진 버그 찾기
+- 같은 패턴을 여러 곳에서 한꺼번에 바꾸는 작업
+
+에는 강하게 감탄했다고 한다. 이 경우에는 토큰값이 아깝지 않았다고까지 말한다.[영상 09:02](https://youtu.be/WklhyUhD4ko?t=542) [영상 09:21](https://youtu.be/WklhyUhD4ko?t=561)
+
+Anthropic의 공식 사례도 비슷하다. 대규모 버그 헌트, 보안 감사, 프레임워크 교체, API deprecation 대응, 수천 파일에 걸친 migration 같은 작업을 주된 use case로 제시한다. 즉 이 기능은 본질적으로 **병렬화가 가치 있는 대규모 엔지니어링 작업** 에 최적화돼 있다.[Anthropic 공식 발표](https://claude.com/blog/introducing-dynamic-workflows-in-claude-code)
+
+## 비용과 제약도 분명히 알아야 한다
+
+영상과 공식 발표 모두 이 기능이 토큰을 훨씬 많이 먹는다고 경고한다.
+
+- 영상: "무지막지하게 먹는다", 아무 작업에나 쓰면 안 된다고 경고[영상 08:06](https://youtu.be/WklhyUhD4ko?t=486)
+- 공식 발표: typical Claude Code session보다 substantially more tokens를 소비할 수 있다고 명시[Anthropic 공식 발표](https://claude.com/blog/introducing-dynamic-workflows-in-claude-code)
+
+영상은 또 몇 가지 제약도 말한다.
+
+- 당시 research preview 단계였다
+- 유료 플랜에서 설정을 켜야 했다
+- 작업 중간에 사람이 끼어들어 방향을 바꾸는 것은 안 된다
+- 단계별 승인을 원하면 워크플로우를 쪼개야 한다
+
+그리고 같은 세션 안에서는 중간 결과를 이어받을 수 있지만, Claude Code를 완전히 껐다 켜면 처음부터 다시 시작한다고 말한다.[영상 03:05](https://youtu.be/WklhyUhD4ko?t=185) [영상 09:37](https://youtu.be/WklhyUhD4ko?t=577)
+
+다만 공식 발표는 진행 상황 저장 덕분에 **중단된 작업이 이어서 재개** 된다고 설명한다. 여기에는 영상 촬영 당시 체감과 기능의 최신 상태 차이가 있을 수 있다. 안전하게 해석하면, 이 부분은 **연구 프리뷰 단계 특성과 버전/환경에 따라 차이가 있을 수 있으니 실제 사용 전 최신 동작을 확인해야 한다** 는 정도다.[Anthropic 공식 발표](https://claude.com/blog/introducing-dynamic-workflows-in-claude-code)
+
+## 이 기능이 "큰 흐름의 신호"라는 해석은 꽤 설득력 있다
+
+영상의 가장 중요한 메시지는 후반부에 나온다. 발표자는 예전엔 외부 프레임워크에서 하던 일들이:
+
+- 여러 에이전트 병렬 실행
+- 백그라운드 장시간 작업
+- 결과 교차 검증
+
+이제 Claude Code 안으로 들어오고 있다고 말한다. 스마트폰 초창기에는 손전등 앱, 녹음 앱, QR 앱을 따로 깔았지만 지금은 대부분 기본 기능으로 들어와 있는 것과 비슷한 흐름으로 비유한다.[영상 06:13](https://youtu.be/WklhyUhD4ko?t=373) [영상 06:35](https://youtu.be/WklhyUhD4ko?t=395)
+
+이 관찰은 공식 발표의 톤과도 맞닿아 있다. Anthropic은 Dynamic Workflows를 단순 "새 명령"으로 소개하지 않고, 기존엔 몇 주 걸리던 복잡한 엔지니어링 작업을 end-to-end로 맡길 수 있는 구조로 소개한다. 즉 본체의 역할이 "유능한 조수"에서 **오케스트레이션 가능한 작업 환경** 쪽으로 넓어지고 있는 셈이다.[Anthropic 공식 발표](https://claude.com/blog/introducing-dynamic-workflows-in-claude-code)
+
+```mermaid
+flowchart TD
+    A["예전"] --> B["외부 멀티에이전트 도구"]
+    A --> C["외부 오케스트레이션"]
+    A --> D["외부 검증 파이프라인"]
+
+    E["지금"] --> F["Claude Code 내부 Dynamic Workflows"]
+    F --> G["병렬 서브에이전트"]
+    F --> H["백그라운드 런타임"]
+    F --> I["상호 검증"]
+
+    classDef oldTone fill:#ffc8c4,stroke:#c97f7a,color:#333;
+    classDef newTone fill:#c0ecd3,stroke:#69a97d,color:#333;
+
+    class A,B,C,D oldTone
+    class E,F,G,H,I newTone
+```
+
+그래서 이 기능을 이해하는 핵심은 "워크플로우를 한 번 돌려봤다"가 아니라, **외부 하네스 생태계와 본체 기능의 경계가 재편되고 있다** 는 점을 읽는 데 있다.
+
+## 핵심 요약
+
+- Dynamic Workflows의 본질은 단순 멀티에이전트 실행이 아니라 **계획을 스크립트로 외부화하고 병렬 서브에이전트를 런타임에서 지휘하는 내장 하네스** 다.
+- 기존 방식은 Claude의 대화 컨텍스트 안에 계획과 결과가 쌓였지만, 워크플로우는 중간 결과를 런타임 상태로 관리해 컨텍스트 오염을 줄인다.
+- 에이전트 간 상호 검증 구조 덕분에 단순 병렬화보다 품질 향상에 더 큰 의미가 있다.
+- 실전 체감상 리서치보다 **리팩토링, 버그 픽스, 대규모 코드 작업** 에 더 강하게 빛난다.
+- 토큰 사용량은 매우 커질 수 있으므로, 큰 작업·고비용 작업에서만 꺼내는 것이 맞다.
+- 가장 큰 신호는 외부 툴이 하던 하네스 기능이 Claude Code 본체 안으로 흡수되기 시작했다는 점이다.
+
+## 결론
+
+`Dynamic Workflows`를 그냥 "에이전트를 많이 돌리는 기능"으로만 보면 반만 본 셈이다. 더 중요한 건, **외부에서 덕지덕지 붙이던 하네스가 Claude Code 내부의 기본 실행 모델이 되어 가고 있다** 는 신호다. 계획, 병렬화, 검증, 장시간 실행이 본체 안으로 들어오면, 앞으로의 경쟁은 어떤 외부 래퍼를 잘 붙이느냐보다 **본체가 얼마나 스스로 거대한 작업 환경이 되느냐** 쪽으로 이동할 가능성이 크다. 이 영상이 말하는 "큰 흐름"은 바로 그 변화다.
