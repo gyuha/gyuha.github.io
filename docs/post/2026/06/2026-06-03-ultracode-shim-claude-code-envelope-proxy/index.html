@@ -305,6 +305,103 @@
 <li>“UltraCode-like” 경험과 “Anthropic 원본과 1:1 동일”은 같은 말이 아닙니다</li>
 </ul>
 <p>즉 이 프로젝트의 가치는 “원본 복제 성공” 여부 하나가 아니라, <strong>사용자가 체감하는 고급 에이전트 모드의 상당 부분이 외부 하네스로 재구성 가능하다는 점을 증명하려 한다</strong> 는 데 있습니다.</p>
+<h2 id="11-부록-각-실행-모드를-nodeedge로-본-지도">11. 부록: 각 실행 모드를 node·edge로 본 지도</h2>
+<p>지금까지 정리한 하네스 논의를 한 단계 더 시각화하면, Claude Code의 각 실행 모드는 결국 <strong>노드(작업 단위)와 엣지(흐름)의 조합</strong> 으로 환원됩니다. 같은 인터페이스 안에서도 일반 채팅, Skill, Subagent, Batch, Deep Research, Ultracode, <code>/goal</code>은 서로 다른 그래프 모양을 가지며, 이 그래프 모양 자체가 곧 하네스의 성격입니다. 단순 응답일수록 그래프는 선형이고, 깊은 추론·자율 실행일수록 루프와 fan-out이 등장합니다. 아래는 각 모드를 개별 그래프로 분리해 본 지도입니다.</p>
+<h3 id="일반-채팅">일반 채팅</h3>
+<p>가장 단순한 선형 흐름입니다. 입력이 들어오면 곧장 답변으로 이어집니다.</p>
+<pre class="mermaid">flowchart TD
+    User["User"] -->|"답변"| Answer["Answer"]
+
+    classDef inputTone fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef outputTone fill:#c0ecd3,stroke:#5ca379,color:#333,stroke-width:1px;
+
+    class User inputTone;
+    class Answer outputTone;</pre><h3 id="skill">Skill</h3>
+<p>작업 자체(Task)와 참조 지식(Skill)이 합류해 하나의 결과를 만듭니다. Skill은 실행을 대체하는 게 아니라 작업법을 보강하는 입력으로 들어옵니다.</p>
+<pre class="mermaid">flowchart TD
+    Task["Task"] -->|"작업법"| Output["Output"]
+    Skill["Skill"] -->|"참조"| Output
+
+    classDef inputTone fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef refTone fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+    classDef outputTone fill:#c0ecd3,stroke:#5ca379,color:#333,stroke-width:1px;
+
+    class Task inputTone;
+    class Skill refTone;
+    class Output outputTone;</pre><h3 id="subagent">Subagent</h3>
+<p>메인이 작업을 갈래로 나눠 위임하고, 갈래의 결과를 다시 한 곳으로 모읍니다. fan-out 후 합류하는 기본형입니다.</p>
+<pre class="mermaid">flowchart TD
+    Main["Main"] --> Front["Front"]
+    Main --> Back["Back"]
+    Front --> Collect["Collect"]
+    Back --> Collect
+
+    classDef mainTone fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef workTone fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+    classDef outputTone fill:#c0ecd3,stroke:#5ca379,color:#333,stroke-width:1px;
+
+    class Main mainTone;
+    class Front,Back workTone;
+    class Collect outputTone;</pre><h3 id="batch">Batch</h3>
+<p>여러 작업이 각자의 에이전트로 병렬 분배되고, 결과가 한 번에 합쳐집니다. Subagent와 달리 입력 자체가 처음부터 복수입니다.</p>
+<pre class="mermaid">flowchart TD
+    Task1["Task 1"] --> Agent1["Agent 1"]
+    Task2["Task 2"] --> Agent2["Agent 2"]
+    Agent1 --> Results["Results"]
+    Agent2 --> Results
+
+    classDef inputTone fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef workTone fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+    classDef outputTone fill:#c0ecd3,stroke:#5ca379,color:#333,stroke-width:1px;
+
+    class Task1,Task2 inputTone;
+    class Agent1,Agent2 workTone;
+    class Results outputTone;</pre><h3 id="deep-research">Deep Research</h3>
+<p>계획 후 검색과 검증이 서로 오가는 루프가 핵심입니다. 검증이 부족하면 다시 검색으로 돌아가고, 충분해지면 보고서로 빠져나옵니다.</p>
+<pre class="mermaid">flowchart TD
+    Plan["Plan"] --> Search["Search"]
+    Search --> Verify["Verify"]
+    Verify --> Search
+    Search --> Report["Report"]
+
+    classDef planTone fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+    classDef loopTone fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef outputTone fill:#c0ecd3,stroke:#5ca379,color:#333,stroke-width:1px;
+
+    class Plan planTone;
+    class Search,Verify loopTone;
+    class Report outputTone;</pre><h3 id="ultracode">Ultracode</h3>
+<p>계획 후 빌드하면 반드시 리뷰를 거칩니다. 리뷰에서 수정이 필요하면(<code>fix</code>) 다시 계획(Replan)으로 돌아가 재빌드(<code>again</code>)하고, 통과하면 완료로 빠집니다. 빌드가 곧장 완료로 가지 않고 항상 리뷰 루프를 도는, 가장 깊은 하네스입니다.</p>
+<pre class="mermaid">flowchart TD
+    Plan["Plan"] --> Build["Build"]
+    Build --> Review["Review"]
+    Review -->|"fix"| Replan["Replan"]
+    Replan -->|"again"| Build
+    Review --> Done["Done"]
+
+    classDef planTone fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+    classDef loopTone fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef retryTone fill:#ffc8c4,stroke:#d9736a,color:#333,stroke-width:1px;
+    classDef outputTone fill:#c0ecd3,stroke:#5ca379,color:#333,stroke-width:1px;
+
+    class Plan planTone;
+    class Build,Review loopTone;
+    class Replan retryTone;
+    class Done outputTone;</pre><h3 id="goal">/goal</h3>
+<p>목표를 세우고 다음 단계로 나아갈 수 있으면(<code>가능</code>) 진행하며, 검사 결과 아직 미완이면(<code>not yet</code>) 다시 다음 단계로 돌아가고, 완료되면(<code>done</code>) 종료합니다. 목표 충족 여부가 루프의 종료 조건입니다.</p>
+<pre class="mermaid">flowchart TD
+    Goal["Goal"] -->|"가능"| Next["Next"]
+    Next --> Check["Check"]
+    Check -->|"not yet"| Next
+    Check -->|"done"| Complete["Complete"]
+
+    classDef goalTone fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+    classDef loopTone fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef outputTone fill:#c0ecd3,stroke:#5ca379,color:#333,stroke-width:1px;
+
+    class Goal goalTone;
+    class Next,Check loopTone;
+    class Complete outputTone;</pre><p>이 지도가 말하는 바는 분명합니다. <strong>모드의 차이는 모델의 차이가 아니라 그래프 위상의 차이</strong> 입니다. 선형(일반 채팅)에서 fan-out(Subagent·Batch), 다시 루프(Deep Research·Ultracode·<code>/goal</code>)로 갈수록 하네스가 떠안는 제어 책임이 커지고, 이것이 곧 앞 절들에서 본 “경쟁 단위가 모델에서 하네스로 이동한다”는 흐름과 정확히 겹칩니다.</p>
 <h2 id="핵심-요약">핵심 요약</h2>
 <ul>
 <li>Threads가 소개한 핵심 프로젝트는 <code>OnlyTerp/UltraCode-Shim</code>이다</li>
@@ -394,6 +491,17 @@
     <li><a href="#8-신뢰성-설계가-들어간-점도-의미가-크다">8. 신뢰성 설계가 들어간 점도 의미가 크다</a></li>
     <li><a href="#9-이-프로젝트가-시사하는-진짜-변화-경쟁-단위가-모델에서-하네스로-이동한다">9. 이 프로젝트가 시사하는 진짜 변화: 경쟁 단위가 모델에서 하네스로 이동한다</a></li>
     <li><a href="#10-다만-주의할-점도-있다-비슷한-효과와-동일한-내부-동작은-다르다">10. 다만 주의할 점도 있다: “비슷한 효과”와 “동일한 내부 동작”은 다르다</a></li>
+    <li><a href="#11-부록-각-실행-모드를-nodeedge로-본-지도">11. 부록: 각 실행 모드를 node·edge로 본 지도</a>
+      <ul>
+        <li><a href="#일반-채팅">일반 채팅</a></li>
+        <li><a href="#skill">Skill</a></li>
+        <li><a href="#subagent">Subagent</a></li>
+        <li><a href="#batch">Batch</a></li>
+        <li><a href="#deep-research">Deep Research</a></li>
+        <li><a href="#ultracode">Ultracode</a></li>
+        <li><a href="#goal">/goal</a></li>
+      </ul>
+    </li>
     <li><a href="#핵심-요약">핵심 요약</a></li>
     <li><a href="#결론">결론</a></li>
   </ul>
