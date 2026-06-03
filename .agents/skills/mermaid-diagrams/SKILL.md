@@ -198,6 +198,7 @@ flowchart LR
 - **Syntax errors** - Misspellings break diagrams; validate syntax in Mermaid Live
 - **Overcomplexity** - Split complex diagrams into multiple focused views
 - **Missing relationships** - Document all important connections between entities
+- **Reserved words as `classDef` names** - NEVER name a `classDef` after a Mermaid keyword. This silently or loudly breaks rendering. Real failure seen: `classDef graph fill:...` produced `Parse error ... Expecting ... got 'GRAPH'`. Forbidden names include: `graph`, `flowchart`, `subgraph`, `style`, `class`, `click`, `linkStyle`, `end`, `default`, `start`, `stop`. Always use a descriptive suffix instead — `graphTone`, `artStyle`, `nodeTone`, `terminal`, `result`, `done`. After writing any diagram, validate (e.g. `task build`) to catch this before commit.
 
 ## When to Create Diagrams
 
