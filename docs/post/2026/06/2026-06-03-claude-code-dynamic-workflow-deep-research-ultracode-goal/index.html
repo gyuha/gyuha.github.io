@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude Code Dynamic Workflow 총정리: 딥리서치, 울트라코드, 배치, 서브에이전트, Goal은 어떻게 다를까'" />
+  <title>Claude Code Dynamic Workflow 총정리: 딥리서치, 울트라코드, 배치, 서브에이전트, Goal은 어떻게 다를까  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude Code Dynamic Workflow 총정리: 딥리서치, 울트라코드, 배치, 서브에이전트, Goal은 어떻게 다를까" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-06-03"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/06/2026-06-03-claude-code-dynamic-workflow-deep-research-ultracode-goal/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+  <meta property="og:tags" content="agents" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/06/2026-06-03-claude-code-dynamic-workflow-deep-research-ultracode-goal/">
+          <h1>
+            Claude Code Dynamic Workflow 총정리: 딥리서치, 울트라코드, 배치, 서브에이전트, Goal은 어떻게 다를까
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/06/2026-06-03-claude-code-dynamic-workflow-deep-research-ultracode-goal/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Claude Code에 Dynamic Workflow가 들어온 뒤로, <code>딥리서치</code>, <code>울트라코드</code>, <code>서브에이전트</code>, <code>배치</code>, <code>goal</code>을 한 덩어리로 이해하려는 사람이 많아졌습니다. 그런데 이 기능들은 겉보기에는 모두 “에이전트를 오래 돌리는 기능”처럼 보이지만, 실제 목적과 설계 철학은 꽤 다릅니다. 이번 영상은 그 차이를 꽤 체계적으로 설명합니다. 핵심은 단순합니다. <strong>오른쪽으로 갈수록 더 오래, 더 많은 토큰을 쓰고, 더 강한 목표 추종성을 가지지만, 그만큼 더 무거운 하네스와 더 정확한 작업 정의가 필요하다</strong> 는 것입니다. <a href="https://youtu.be/9fx2_1aTzq8?t=30">영상 0:30</a> <a href="https://youtu.be/9fx2_1aTzq8?t=570">영상 9:30</a></p>
+<p>특히 이 영상이 유용한 이유는 Dynamic Workflow를 단순히 “병렬 에이전트 많이 돌리는 기능”으로 설명하지 않기 때문입니다. 발표자는 Dynamic Workflow의 본질을 <strong>목표를 들은 메인 에이전트가 먼저 계획을 세우고, 그 계획을 페이즈별 하네스로 쪼개고, 각 페이즈 안에서 필요한 만큼 병렬 에이전트를 동적으로 생성해 검증 루프까지 돌리는 방식</strong> 으로 설명합니다. 이 관점으로 보면 딥리서치와 울트라코드는 비슷한 엔진 위에 다른 목적을 얹은 것이고, goal은 또 다른 끝단에 위치합니다. <a href="https://youtu.be/9fx2_1aTzq8?t=60">영상 1:00</a> <a href="https://youtu.be/9fx2_1aTzq8?t=270">영상 4:30</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://youtu.be/9fx2_1aTzq8?si=qK7HlFnvUpHy5g6z">https://youtu.be/9fx2_1aTzq8?si=qK7HlFnvUpHy5g6z</a></li>
+</ul>
+<h2 id="1-dynamic-workflow는-정적-하네스의-반대편에-있다">1. Dynamic Workflow는 “정적 하네스”의 반대편에 있다</h2>
+<p>영상 초반 설명의 핵심은 이것입니다. 전통적인 하네싱은 정적입니다. 사람이 직접 단계와 규칙을 정의하고, 계속 손으로 관리해야 합니다. 그런데 Dynamic Workflow에서는 사용자가 리서치나 코드 생성 목표를 던지면, 메인 에이전트가 먼저 “어떻게 일해야 하는지”를 계획하고, 그 결과를 페이즈별 하네스로 동적으로 생성합니다. <a href="https://youtu.be/9fx2_1aTzq8?t=60">영상 1:00</a> <a href="https://youtu.be/9fx2_1aTzq8?t=90">영상 1:30</a></p>
+<p>즉 사용자는 그냥 싱글 프롬프트를 던지지만, 내부에서는 다음 일이 벌어집니다.</p>
+<ul>
+<li>목표 해석</li>
+<li>단계 분해</li>
+<li>각 페이즈의 목표와 산출물 정의</li>
+<li>각 페이즈별 병렬 작업 생성</li>
+<li>검증과 수정 반복</li>
+</ul>
+<pre class="mermaid">flowchart TD
+    A["사용자 목표 입력"] --> B["메인 에이전트 계획 수립"]
+    B --> C["페이즈 분해"]
+    C --> D["페이즈별 하네스 생성"]
+    D --> E["병렬 에이전트 실행"]
+    E --> F["검증 / 수정 루프"]
+    F --> G["최종 결과물"]
+
+    classDef inputTone fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef planTone fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+    classDef execTone fill:#c0ecd3,stroke:#5ca379,color:#333,stroke-width:1px;
+
+    class A inputTone;
+    class B,C,D planTone;
+    class E,F,G execTone;</pre><p>그래서 Dynamic Workflow라는 이름이 붙습니다. 사용자가 미리 워크플로를 정의해 두는 것이 아니라, <strong>요청마다 워크플로가 새로 생성되기 때문</strong> 입니다. <a href="https://youtu.be/9fx2_1aTzq8?t=270">영상 4:30</a></p>
+<h2 id="2-딥리서치의-구조-조사--검증--추가-조사--리포트">2. 딥리서치의 구조: 조사 → 검증 → 추가 조사 → 리포트</h2>
+<p>발표자는 딥리서치를 가장 이해하기 쉬운 예로 씁니다. 딥리서치는 우선 조사를 하고, 조사 결과를 검증하고, 부족하면 더 조사하고, 충분하면 리포트를 내는 식의 순환 구조를 가집니다. 여기서 중요한 건 일반 채팅과 다르게 한 번 답을 내고 끝나지 않는다는 점입니다. 일반 채팅은 턴 제한과 상호작용 설계 때문에 “일단 한 번 내놓는 것”이 목표에 가깝지만, 딥리서치는 <strong>완성도 높은 조사 결과를 만들기 위해 여러 번 되돌아가는 것</strong> 이 목적입니다. <a href="https://youtu.be/9fx2_1aTzq8?t=120">영상 2:00</a> <a href="https://youtu.be/9fx2_1aTzq8?t=150">영상 2:30</a></p>
+<pre class="mermaid">flowchart TD
+    A["리서치 목표"] --> B["초기 조사"]
+    B --> C["정보 수집"]
+    C --> D["검증"]
+    D --> E{"추가 조사 필요?"}
+    E -->|예| B
+    E -->|아니오| F["리포트 작성"]
+
+    classDef startTone fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef workTone fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+    classDef endTone fill:#c0ecd3,stroke:#5ca379,color:#333,stroke-width:1px;
+
+    class A startTone;
+    class B,C,D,E workTone;
+    class F endTone;</pre><p>영상에서는 실제 워크플로 화면도 언급합니다. 스코프를 잡고, 검색 페이즈에서 목적 달성을 위해 여러 병렬 에이전트를 띄우고, 소스별로 정보를 모은 뒤, 다시 더 많은 에이전트로 이를 검증하고, 마지막에 리포트를 작성한다는 구조입니다. <a href="https://youtu.be/9fx2_1aTzq8?t=180">영상 3:00</a> <a href="https://youtu.be/9fx2_1aTzq8?t=240">영상 4:00</a></p>
+<h2 id="3-울트라코드의-구조-계획--병렬-구현--검증--재계획">3. 울트라코드의 구조: 계획 → 병렬 구현 → 검증 → 재계획</h2>
+<p>울트라코드는 리서치가 아니라 코드 생성/수정에 초점을 둡니다. 하지만 엔진 자체는 발표자 설명대로 딥리서치와 “같은 계열”입니다. 차이는 페이즈의 성격입니다. 코드를 크게 바꾸는 요청을 받으면, 메인 에이전트는 먼저 단계들을 생각합니다. 예를 들어 클린 아키텍처로 바꾸고, 포트를 만든 뒤, 각 어댑터를 병렬 구현하고, 통합하고, 검증하고, 안 되는 것이 있으면 다시 코딩하는 흐름입니다. <a href="https://youtu.be/9fx2_1aTzq8?t=300">영상 5:00</a> <a href="https://youtu.be/9fx2_1aTzq8?t=360">영상 6:00</a></p>
+<p>발표자는 울트라코드에서 특히 계획이 중요하다고 말합니다. 왜냐하면 울트라코드는 <code>xhigh</code> 사고 수준으로 설계를 먼저 하고, 그다음 각 페이즈 안의 에이전트들이 자신에게 배정된 일에 집중하게 만들기 때문입니다. 결국 결과물의 질은 “얼마나 잘 코딩했나” 이전에 <strong>초기 설계와 단계 분해를 얼마나 잘했나</strong> 에 크게 좌우됩니다. <a href="https://youtu.be/9fx2_1aTzq8?t=390">영상 6:30</a> <a href="https://youtu.be/9fx2_1aTzq8?t=420">영상 7:00</a></p>
+<pre class="mermaid">flowchart TD
+    A["큰 코드 변경 요청"] --> B["xhigh 계획 수립"]
+    B --> C["Foundation 페이즈"]
+    C --> D["Build 페이즈"]
+    D --> E["Integration 페이즈"]
+    E --> F["Review / Validation"]
+    F --> G{"수정 필요?"}
+    G -->|예| B
+    G -->|아니오| H["완료"]
+
+    classDef requestTone fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef phaseTone fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+    classDef resultTone fill:#c0ecd3,stroke:#5ca379,color:#333,stroke-width:1px;
+
+    class A requestTone;
+    class B,C,D,E,F,G phaseTone;
+    class H resultTone;</pre><p>영상에서는 실제 예시로 foundation, build, integrate, review 같은 단계가 나뉘고, 단계마다 몇 개 에이전트를 쓸지 표시된다고 설명합니다. 다만 코드 변경은 컨텍스트 일관성이 중요하기 때문에 딥리서치처럼 70개씩 무한히 쓰기보다는, 더 적은 수의 에이전트를 오래 돌리는 쪽에 가깝다고 말합니다. <a href="https://youtu.be/9fx2_1aTzq8?t=420">영상 7:00</a> <a href="https://youtu.be/9fx2_1aTzq8?t=450">영상 7:30</a></p>
+<h2 id="4-왜-딥리서치와-울트라코드는-비슷하지만-같지-않은가">4. 왜 딥리서치와 울트라코드는 비슷하지만 같지 않은가</h2>
+<p>발표자는 둘이 같은 다이나믹 워크플로 계열이라고 보면서도, 목적의 차이를 분명히 짚습니다. 딥리서치는 “정확하고 완성도 높은 조사 결과”가 목적이고, 울트라코드는 “잘 설계된 병렬 코딩과 검증을 통한 빠른 구현”이 목적입니다. 둘 다 병렬 에이전트, 페이즈 분해, 검증 루프를 쓰지만, 토큰을 어디에 쓰는지가 다릅니다. 코드 생성은 각 에이전트가 더 오래 실행되기 때문에, 개수는 적어도 토큰을 적게 쓰는 것이 아니라는 점도 강조합니다. <a href="https://youtu.be/9fx2_1aTzq8?t=440">영상 7:20</a> <a href="https://youtu.be/9fx2_1aTzq8?t=480">영상 8:00</a></p>
+<pre class="mermaid">flowchart TD
+    A["Dynamic Workflow"] --> B["Deep Research"]
+    A --> C["UltraCode"]
+    B --> D["조사 품질 극대화"]
+    B --> E["소스 수집 / 검증 / 리포트"]
+    C --> F["구현 속도와 품질 균형"]
+    C --> G["계획 / 병렬 구현 / 검증"]
+
+    classDef rootTone fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef researchTone fill:#c0ecd3,stroke:#5ca379,color:#333,stroke-width:1px;
+    classDef codeTone fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+
+    class A rootTone;
+    class B,D,E researchTone;
+    class C,F,G codeTone;</pre><p>즉 “같은 엔진, 다른 목적”이라고 보는 편이 가장 정확합니다.</p>
+<h2 id="5-서브에이전트는-무엇이-다른가-직접-정의한-병렬-단위">5. 서브에이전트는 무엇이 다른가: 직접 정의한 병렬 단위</h2>
+<p>영상에서 서브에이전트는 초창기 혁신 기능으로 설명됩니다. 중요한 점은 서브에이전트는 사용자가 직접 정의하고, 메인 에이전트에게 특정 작업을 위임하는 비교적 명시적 메커니즘이라는 것입니다. 예를 들어 검색 전용, 구현 전용, 특정 프롬프트를 가진 에이전트를 띄우고, 결과는 다시 메인 에이전트가 취합합니다. <a href="https://youtu.be/9fx2_1aTzq8?t=480">영상 8:00</a> <a href="https://youtu.be/9fx2_1aTzq8?t=510">영상 8:30</a></p>
+<p>핵심은 Dynamic Workflow처럼 “요청마다 하네스 자체가 생성되는 것”과는 다르다는 점입니다. 서브에이전트는 여전히 사람이 정한 의도와 역할 분할이 중심입니다.</p>
+<pre class="mermaid">flowchart TD
+    A["메인 에이전트"] --> B["서브에이전트 1"]
+    A --> C["서브에이전트 2"]
+    A --> D["서브에이전트 3"]
+    B --> E["결과 취합"]
+    C --> E
+    D --> E
+    E --> F["메인 에이전트가 통합"]
+
+    classDef mainTone fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef subTone fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+    classDef mergeTone fill:#c0ecd3,stroke:#5ca379,color:#333,stroke-width:1px;
+
+    class A,F mainTone;
+    class B,C,D subTone;
+    class E mergeTone;</pre><p>발표자 말대로라면 서브에이전트는 “튜닝된 에이전트 단위” 자체를 쓰는 방식이고, Dynamic Workflow는 그보다 한 단계 위에서 <strong>페이즈와 하네스를 생성하는 오케스트레이션 계층</strong> 에 가깝습니다.</p>
+<h2 id="6-배치는-무엇이-다른가-독립적인-동일류-작업을-공장처럼-병렬-처리한다">6. 배치는 무엇이 다른가: 독립적인 동일류 작업을 공장처럼 병렬 처리한다</h2>
+<p>배치에 대한 설명은 꽤 실용적입니다. 발표자는 배치를 “비슷한 성격의 독립 작업을 묶어 한 번에 돌리는 방식”으로 설명합니다. 예를 들어 버그 1번부터 100번까지가 서로 독립적이라면, 각각을 병렬 에이전트에게 던져 동시에 수정하는 식입니다. <a href="https://youtu.be/9fx2_1aTzq8?t=540">영상 9:00</a> <a href="https://youtu.be/9fx2_1aTzq8?t=570">영상 9:30</a></p>
+<p>즉 배치는 창의적 계획보다 <strong>작업 공장화</strong> 에 가깝습니다.</p>
+<ul>
+<li>이미 정의된 작업들</li>
+<li>서로 독립적임</li>
+<li>같은 패턴으로 실행 가능</li>
+</ul>
+<pre class="mermaid">flowchart TD
+    A["작업 목록"] --> B["버그 1"]
+    A --> C["버그 2"]
+    A --> D["버그 3"]
+    A --> E["버그 N"]
+    B --> F["동시 처리"]
+    C --> F
+    D --> F
+    E --> F
+    F --> G["결과 묶음 반환"]
+
+    classDef listTone fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef workTone fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+    classDef outTone fill:#c0ecd3,stroke:#5ca379,color:#333,stroke-width:1px;
+
+    class A listTone;
+    class B,C,D,E,F workTone;
+    class G outTone;</pre><p>그래서 배치는 서브에이전트를 가장 극단적으로 활용하는 목적형 도구라고 볼 수 있습니다. 반면 Dynamic Workflow는 독립 작업 집합보다 <strong>목표 달성을 위한 단계형 실행 구조</strong> 에 초점을 둡니다.</p>
+<h2 id="7-일반-채팅에서-goal까지-점점-더-무겁고-점점-더-목표-지향적이다">7. 일반 채팅에서 goal까지: 점점 더 무겁고, 점점 더 목표 지향적이다</h2>
+<p>영상 후반부의 가장 좋은 부분은 도구들을 하나의 스펙트럼 위에 올려 놓는 장면입니다. 발표자는 왼쪽에서 오른쪽으로 갈수록 토큰 사용량이 늘고, 목표 추종성도 높아진다고 설명합니다. 순서는 대략 <code>일반 채팅 → 스킬 → 서브에이전트 → 배치 → 딥리서치/울트라코드 → goal</code>입니다. <a href="https://youtu.be/9fx2_1aTzq8?t=600">영상 10:00</a> <a href="https://youtu.be/9fx2_1aTzq8?t=660">영상 11:00</a></p>
+<pre class="mermaid">flowchart TD
+    A["일반 채팅"] --> B["스킬"]
+    B --> C["서브에이전트"]
+    C --> D["배치"]
+    D --> E["딥리서치 / 울트라코드"]
+    E --> F["Goal"]
+
+    classDef lowTone fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef midTone fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+    classDef highTone fill:#c0ecd3,stroke:#5ca379,color:#333,stroke-width:1px;
+
+    class A,B lowTone;
+    class C,D midTone;
+    class E,F highTone;</pre><p>각 단계의 느낌은 이렇습니다.</p>
+<ul>
+<li>일반 채팅: 빨리 한 번 답을 받기 위한 모드</li>
+<li>스킬: 자주 하는 작업을 재사용 가능한 절차로 묶은 것</li>
+<li>서브에이전트: 특정 역할을 가진 에이전트를 병렬/직렬로 활용</li>
+<li>배치: 독립 작업을 대량 동시 처리</li>
+<li>딥리서치/울트라코드: 동적으로 워크플로를 만들고 검증 루프를 돈다</li>
+<li>goal: 완료될 때까지 거의 집착적으로 목표를 추종한다</li>
+</ul>
+<p>이 스펙트럼이 중요한 이유는 “무조건 더 오른쪽이 더 좋다”가 아니라, <strong>작업 난이도와 검증 요구에 따라 적당한 지점을 골라야 한다</strong> 는 걸 보여 주기 때문입니다.</p>
+<h2 id="8-goal은-왜-별개처럼-느껴지는가">8. goal은 왜 별개처럼 느껴지는가</h2>
+<p>발표자는 goal을 가장 목표 지향적인 끝단으로 둡니다. 여기서는 턴 제한보다 목표 달성이 훨씬 더 중요해지고, 실패해도 쉽게 포기하지 않으며, 완료 조건이 명확해야 합니다. 그래서 goal을 쓸 때는 메타프롬프팅을 강하게 권합니다. “이 작업을 goal로 돌릴 건데, 너 자신에게 먹일 goal 프롬프트를 먼저 만들어 달라”는 식입니다. <a href="https://youtu.be/9fx2_1aTzq8?t=690">영상 11:30</a> <a href="https://youtu.be/9fx2_1aTzq8?t=750">영상 12:30</a></p>
+<p>goal이 별도로 느껴지는 이유는 다음과 같습니다.</p>
+<ul>
+<li>몇 턴 안에 끝내는 것보다 목표 완수가 우선이다</li>
+<li>검증 기준, 완료 조건, 성공 조건 정의가 매우 중요하다</li>
+<li>실패해도 쉽게 “안 됩니다”로 끝내지 않는다</li>
+</ul>
+<pre class="mermaid">flowchart TD
+    A["Goal Prompt"] --> B["성공 조건 확인"]
+    B --> C["실행"]
+    C --> D["검증"]
+    D --> E{"성공했나?"}
+    E -->|아니오| F["다시 시도 / 경로 수정"]
+    F --> C
+    E -->|예| G["종료"]
+
+    classDef promptTone fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef loopTone fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+    classDef doneTone fill:#c0ecd3,stroke:#5ca379,color:#333,stroke-width:1px;
+
+    class A promptTone;
+    class B,C,D,E,F loopTone;
+    class G doneTone;</pre><p>영상 설명대로라면 울트라코드는 “빨리 잘 끝내는 쪽”에 더 가깝고, goal은 “될 때까지 끝내지 않는 쪽”에 더 가깝습니다. <a href="https://youtu.be/9fx2_1aTzq8?t=930">영상 15:30</a> <a href="https://youtu.be/9fx2_1aTzq8?t=960">영상 16:00</a></p>
+<h2 id="9-그래서-언제-무엇을-써야-하나">9. 그래서 언제 무엇을 써야 하나</h2>
+<p>발표자의 추천은 꽤 실전적입니다.</p>
+<ul>
+<li>기본은 일반 채팅이나 스킬에서 시작한다</li>
+<li>역할 분리가 필요하면 서브에이전트를 쓴다</li>
+<li>독립 태스크 묶음이면 배치를 쓴다</li>
+<li>깊은 조사면 딥리서치를 쓴다</li>
+<li>큰 리팩터링이나 프레임워크 변경처럼 빠르게 단계별 전진이 중요하면 울트라코드를 쓴다</li>
+<li>검증이 어렵고 완료 조건이 분명한 고난도 작업은 goal을 고려한다</li>
+</ul>
+<pre class="mermaid">flowchart TD
+    A["작업 시작"] --> B{"짧고 단순한가"}
+    B -->|예| C["일반 채팅 / 스킬"]
+    B -->|아니오| D{"역할 분리나 병렬이 필요한가"}
+    D -->|예| E["서브에이전트 / 배치"]
+    D -->|아니오| F{"깊은 조사인가"}
+    F -->|예| G["딥리서치"]
+    F -->|아니오| H{"큰 코드 작업인가"}
+    H -->|예| I["울트라코드"]
+    H -->|아니오| J{"완료 조건이 절대적인가"}
+    J -->|예| K["Goal"]
+    J -->|아니오| C
+
+    classDef decisionTone fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+    classDef lightTone fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef heavyTone fill:#c0ecd3,stroke:#5ca379,color:#333,stroke-width:1px;
+
+    class A,B,D,F,H,J decisionTone;
+    class C,E lightTone;
+    class G,I,K heavyTone;</pre><p>결국 이 영상의 실전 메시지는 “가장 센 기능을 무조건 쓰지 말고, 난이도에 맞춰 오른쪽으로 이동하라”에 가깝습니다. <a href="https://youtu.be/9fx2_1aTzq8?t=1020">영상 17:00</a> <a href="https://youtu.be/9fx2_1aTzq8?t=1050">영상 17:30</a></p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>Dynamic Workflow는 요청마다 페이즈와 하네스를 동적으로 생성하는 구조다</li>
+<li>딥리서치는 조사와 검증을 반복해 완성도 높은 리포트를 만드는 데 초점이 있다</li>
+<li>울트라코드는 계획, 병렬 구현, 검증을 통해 큰 코드 변경을 빠르게 전진시키는 데 초점이 있다</li>
+<li>서브에이전트는 사람이 정의한 역할 단위를 메인 에이전트가 활용하는 방식이다</li>
+<li>배치는 독립 작업을 공장처럼 병렬 처리하는 방식이다</li>
+<li>goal은 가장 목표 지향적이며, 완료 조건이 명확할수록 강력하다</li>
+<li>일반 채팅에서 goal로 갈수록 토큰 사용량과 목표 추종성이 함께 올라간다</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>이 영상이 좋은 이유는 Claude Code의 여러 실행 모드를 “누가 더 강하다”가 아니라 <strong>어떤 종류의 문제를 어떤 방식으로 해결하도록 설계됐는가</strong> 로 설명하기 때문입니다. Dynamic Workflow는 단순 병렬화가 아니라, 목표를 해석하고 하네스를 만들어내는 오케스트레이션 레이어입니다. 그래서 실전에서는 딥리서치와 울트라코드, 배치와 서브에이전트, goal을 경쟁 관계로 보기보다 <strong>같은 스펙트럼 위의 다른 기어</strong> 로 보는 편이 훨씬 정확합니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 06월 03일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/06/2026-06-03-grill-with-docs-context-adr-shared-language/" rel="prev">
+        <span>Matt Pocock이 /grill-me 대신 /grill-with-docs를 쓰는 이유: AI와의 대화를 CONTEXT.md와 ADR로 고정하는 법</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-dynamic-workflow는-정적-하네스의-반대편에-있다">1. Dynamic Workflow는 “정적 하네스”의 반대편에 있다</a></li>
+    <li><a href="#2-딥리서치의-구조-조사--검증--추가-조사--리포트">2. 딥리서치의 구조: 조사 → 검증 → 추가 조사 → 리포트</a></li>
+    <li><a href="#3-울트라코드의-구조-계획--병렬-구현--검증--재계획">3. 울트라코드의 구조: 계획 → 병렬 구현 → 검증 → 재계획</a></li>
+    <li><a href="#4-왜-딥리서치와-울트라코드는-비슷하지만-같지-않은가">4. 왜 딥리서치와 울트라코드는 비슷하지만 같지 않은가</a></li>
+    <li><a href="#5-서브에이전트는-무엇이-다른가-직접-정의한-병렬-단위">5. 서브에이전트는 무엇이 다른가: 직접 정의한 병렬 단위</a></li>
+    <li><a href="#6-배치는-무엇이-다른가-독립적인-동일류-작업을-공장처럼-병렬-처리한다">6. 배치는 무엇이 다른가: 독립적인 동일류 작업을 공장처럼 병렬 처리한다</a></li>
+    <li><a href="#7-일반-채팅에서-goal까지-점점-더-무겁고-점점-더-목표-지향적이다">7. 일반 채팅에서 goal까지: 점점 더 무겁고, 점점 더 목표 지향적이다</a></li>
+    <li><a href="#8-goal은-왜-별개처럼-느껴지는가">8. goal은 왜 별개처럼 느껴지는가</a></li>
+    <li><a href="#9-그래서-언제-무엇을-써야-하나">9. 그래서 언제 무엇을 써야 하나</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
