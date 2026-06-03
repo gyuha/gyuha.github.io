@@ -190,11 +190,11 @@
     F --> G
 
     classDef source fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
-    classDef graph fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+    classDef graphTone fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
     classDef unified fill:#c0ecd3,stroke:#5ca379,color:#333,stroke-width:1px;
 
     class A,B,C source;
-    class D,E,F graph;
+    class D,E,F graphTone;
     class G unified;</pre><p>이 설계의 좋은 점은, 하나의 거대한 “정답 그래프”에 모든 것을 억지로 욱여넣지 않고 <strong>관점별 그래프를 독립적으로 유지한다</strong> 는 데 있습니다. 덕분에 레이어별 저장 전략과 질의 방식도 다르게 최적화할 수 있습니다.</p>
 <h2 id="6-첫-번째-레이어-ebpf-네트워크-플로우는-빠짐없이-본다는-강점이-있다">6. 첫 번째 레이어: eBPF 네트워크 플로우는 “빠짐없이 본다”는 강점이 있다</h2>
 <p>eBPF 기반 네트워크 플로우 레이어는 커널 수준에서 실제 네트워크 연결을 포착합니다. 어떤 서비스가 어떤 서비스의 IP에 어떤 프로토콜로 연결했는지 알 수 있기 때문에, 이 레이어의 가장 큰 장점은 <strong>포괄성</strong> 입니다. 계측이 안 된 서비스도 실제 네트워크 통신만 있으면 보입니다. <a href="https://netflixtechblog.com/from-silos-to-service-topology-why-netflix-built-a-real-time-service-map-0165ba13a7bc">Netflix TechBlog</a></p>

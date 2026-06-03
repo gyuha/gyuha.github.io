@@ -131,11 +131,11 @@ flowchart TD
     F --> G
 
     classDef source fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
-    classDef graph fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+    classDef graphTone fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
     classDef unified fill:#c0ecd3,stroke:#5ca379,color:#333,stroke-width:1px;
 
     class A,B,C source;
-    class D,E,F graph;
+    class D,E,F graphTone;
     class G unified;
 ```
 
