@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Fable 5가 게임 코드를 짜줘도 에셋은 남는다: sprite-gen, perfectPixel, Kenney를 함께 봐야 하는 이유'" />
+  <title>Fable 5가 게임 코드를 짜줘도 에셋은 남는다: sprite-gen, perfectPixel, Kenney를 함께 봐야 하는 이유  | 신규하 블로그</title>
+  <meta property="og:title" content="Fable 5가 게임 코드를 짜줘도 에셋은 남는다: sprite-gen, perfectPixel, Kenney를 함께 봐야 하는 이유" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-06-17"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/06/2026-06-17-game-asset-bottleneck-after-fable5-sprite-gen-perfectpixel-kenney/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="agents" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/06/2026-06-17-game-asset-bottleneck-after-fable5-sprite-gen-perfectpixel-kenney/">
+          <h1>
+            Fable 5가 게임 코드를 짜줘도 에셋은 남는다: sprite-gen, perfectPixel, Kenney를 함께 봐야 하는 이유
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/06/2026-06-17-game-asset-bottleneck-after-fable5-sprite-gen-perfectpixel-kenney/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>이 Shorts가 재밌는 이유는 “요즘 AI로 게임 쉽게 만든다”는 말을 그대로 반복하지 않는다는 데 있습니다. 오히려 반대로, <strong>코드는 빨라졌는데 에셋은 여전히 어렵다</strong> 는 현실을 짚습니다. 자막 초반부터 최근 Fable 5 같은 모델 덕분에 프롬프트 한 번으로 돌아가는 게임을 구현하는 모습도 보이지만, 실제 게임 제작에서 늘 막히는 건 에셋이라고 말합니다. <a href="https://www.youtube.com/watch?v=MOcUPkbjzDI&amp;t=0">영상 0:00</a> <a href="https://www.youtube.com/watch?v=MOcUPkbjzDI&amp;t=9">영상 0:09</a></p>
+<p>이 영상이 소개하는 <code>sprite-gen</code>, <code>perfectPixel</code>, <code>Kenney</code>는 각각 다른 층의 문제를 푸는 도구입니다. 하나는 <strong>생성</strong>, 하나는 <strong>정렬과 후처리</strong>, 하나는 <strong>처음부터 쓸 수 있는 기반 에셋</strong> 에 가깝습니다. 세 개를 함께 보면 “AI 게임 개발”의 병목이 단순히 모델 성능이 아니라 <strong>에셋 파이프라인의 품질</strong> 이라는 점이 더 잘 보입니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.youtube.com/shorts/MOcUPkbjzDI">YouTube Shorts - 게임 제작할 때 이런 것들 한번 써보세요! sprite-gen, perfectPixel, kenney</a></li>
+<li><a href="https://github.com/aldegad/sprite-gen">GitHub - aldegad/sprite-gen</a></li>
+<li><a href="https://github.com/theamusing/perfectPixel">GitHub - theamusing/perfectPixel</a></li>
+<li><a href="https://kenney.nl/assets">Kenney Assets</a></li>
+<li><a href="https://kenney.nl/support">Kenney Support - licensing</a></li>
+</ul>
+<h2 id="1-ai-게임-개발의-진짜-병목은-코드가-아니라-움직이는-에셋이다">1. AI 게임 개발의 진짜 병목은 코드가 아니라 “움직이는 에셋”이다</h2>
+<p>자막은 최근 Fable 5가 나와 프롬프트 한 방에 돌아가는 게임을 구현하는 모습도 봤지만, 게임을 만들 때 가장 고민되는 건 에셋이라고 말합니다. 특히 2D 게임에서는 움직이는 캐릭터, 도트 느낌 이미지, 스프라이트가 중요하다고 짚습니다. <a href="https://www.youtube.com/watch?v=MOcUPkbjzDI&amp;t=3">영상 0:03</a> <a href="https://www.youtube.com/watch?v=MOcUPkbjzDI&amp;t=15">영상 0:15</a></p>
+<p>이건 꽤 정확한 지적입니다. AI 코드 생성은:</p>
+<ul>
+<li>게임 루프</li>
+<li>상태 관리</li>
+<li>입력 처리</li>
+<li>UI 연결</li>
+</ul>
+<p>같은 부분을 많이 가속하지만, 플레이어가 실제로 보는 결과는 결국 <strong>일관된 시각 자산과 애니메이션</strong> 위에서 결정됩니다. 특히 2D 게임에서는 캐릭터가 한 프레임씩 자연스럽게 이어지고, 투명 배경이 깨끗하며, 그리드가 맞고, 아이소메트릭이면 바닥 축도 맞아야 합니다.</p>
+<pre class="mermaid">flowchart TD
+    A["AI 게임 개발"] --> B["코드 생성은 빨라짐"]
+    A --> C["에셋 파이프라인은 여전히 병목"]
+    C --> D["스프라이트 생성"]
+    C --> E["그리드 정렬"]
+    C --> F["애니메이션 연결"]
+    C --> G["기반 에셋 확보"]
+
+    classDef root fill:#c5dcef,color:#333,stroke:#5b8db8,stroke-width:1px;
+    classDef codeTone fill:#c0ecd3,color:#333,stroke:#5ca379,stroke-width:1px;
+    classDef assetTone fill:#ffc8c4,color:#333,stroke:#c46b6b,stroke-width:1px;
+
+    class A root;
+    class B codeTone;
+    class C,D,E,F,G assetTone;</pre><p>즉 이 Shorts는 “AI로 게임 만든다”를 보여 주는 영상이 아니라, <strong>AI가 코드는 해결해도 에셋 공정은 별도 전략이 필요하다</strong> 는 걸 알려 주는 짧은 안내문에 가깝습니다.</p>
+<h2 id="2-sprite-gen은-ai에게-스프라이트-시트를-시키면-왜-망가지는가를-정면으로-푸는-도구다">2. <code>sprite-gen</code>은 “AI에게 스프라이트 시트를 시키면 왜 망가지는가”를 정면으로 푸는 도구다</h2>
+<p>자막은 첫 번째 도구로 <code>sprite-gen</code>을 소개하면서, 그냥 AI에게 스프라이트를 만들어 보라고 하면 실제 애니메이션으로 만들었을 때 잘 안 되는 경우가 많다고 설명합니다. 움직임이 매끄럽게 이어져야 하는데 AI가 만든 프레임은 이상한 경우가 많기 때문입니다. <a href="https://www.youtube.com/watch?v=MOcUPkbjzDI&amp;t=25">영상 0:25</a> <a href="https://www.youtube.com/watch?v=MOcUPkbjzDI&amp;t=32">영상 0:32</a></p>
+<p><code>sprite-gen</code> README는 이 문제를 더 노골적으로 설명합니다. 이미지 모델에게 “sprite sheet”를 요청하면 프레임마다 얼굴이 바뀌고, 배경이 남고, 포즈가 겹치고, 엔진이 바로 쓸 수 없는 PNG가 나온다고 말합니다. 그리고 이 저장소는 그 간극을 메우기 위해:</p>
+<ul>
+<li>row 단위 생성</li>
+<li>캐릭터 정체성 고정</li>
+<li>chroma background 제거</li>
+<li>pose별 clean transparent frame 추출</li>
+<li>runtime atlas + machine-readable manifest 생성</li>
+</ul>
+<p>을 제공한다고 설명합니다. <a href="https://github.com/aldegad/sprite-gen">sprite-gen README</a></p>
+<pre class="mermaid">flowchart TD
+    A["기본 캐릭터 이미지"] --> B["상태별 row 생성"]
+    B --> C["배경 제거 / alpha 정리"]
+    C --> D["프레임 추출"]
+    D --> E["runtime atlas 생성"]
+    E --> F["manifest.json.frame_layout"]
+
+    classDef input fill:#c5dcef,color:#333,stroke:#5b8db8,stroke-width:1px;
+    classDef process fill:#c0ecd3,color:#333,stroke:#5ca379,stroke-width:1px;
+    classDef out fill:#e0c8ef,color:#333,stroke:#8b6fb3,stroke-width:1px;
+
+    class A input;
+    class B,C,D,E process;
+    class F out;</pre><p>즉 <code>sprite-gen</code>은 “스프라이트를 더 예쁘게 만들어 주는 AI”가 아니라, <strong>생성 모델의 불안정한 출력을 게임 엔진이 쓸 수 있는 스프라이트 자산으로 바꾸는 파이프라인</strong> 에 가깝습니다.</p>
+<h2 id="3-이-도구의-진짜-포인트는-생성보다도-큐레이션-웹뷰에-있다">3. 이 도구의 진짜 포인트는 생성보다도 “큐레이션 웹뷰”에 있다</h2>
+<p>ZeroCho가 영상에서 말하는 핵심 중 하나는 이런 라이브러리들이 후처리까지 진행해서 훨씬 더 자연스럽게 나온다는 점입니다. <a href="https://www.youtube.com/watch?v=MOcUPkbjzDI&amp;t=67">영상 1:07</a></p>
+<p><code>sprite-gen</code> README도 비슷한 메시지를 더 상세히 적습니다. 생성이 90%를 만들어 주더라도 마지막 10%는 사람의 큐레이션이 필요하고, 이를 위해 웹뷰에서:</p>
+<ul>
+<li>프레임 비교</li>
+<li>개별 프레임 선택/거절</li>
+<li>비파괴적 이동/회전/스케일/시어 조정</li>
+<li>라이브 루프 미리보기</li>
+</ul>
+<p>를 제공한다고 설명합니다. <a href="https://github.com/aldegad/sprite-gen">sprite-gen README</a></p>
+<pre class="mermaid">flowchart TD
+    A["AI가 만든 프레임 세트"] --> B["큐레이션 웹뷰"]
+    B --> C["문제 프레임 제거"]
+    B --> D["위치/회전/스케일 보정"]
+    B --> E["루프 미리보기"]
+    C --> F["최종 베이크"]
+    D --> F
+    E --> F
+
+    classDef ai fill:#c5dcef,color:#333,stroke:#5b8db8,stroke-width:1px;
+    classDef human fill:#fde8c0,color:#333,stroke:#c89d42,stroke-width:1px;
+    classDef out fill:#c0ecd3,color:#333,stroke:#5ca379,stroke-width:1px;
+
+    class A ai;
+    class B,C,D,E human;
+    class F out;</pre><p>이 구조는 중요한 함의를 갖습니다. 결국 게임 에셋 생성에서 문제는 “AI가 만들어 주느냐”보다, <strong>AI가 만든 것을 인간이 빠르게 고를 수 있느냐</strong> 입니다. <code>sprite-gen</code>은 생성기를 넘어, 그 고르는 시간을 줄이는 품질 관리 레이어까지 포함하고 있습니다.</p>
+<h2 id="4-perfectpixel은-생성이-아니라-정렬-문제를-푼다">4. <code>perfectPixel</code>은 생성이 아니라 “정렬” 문제를 푼다</h2>
+<p>영상의 두 번째 도구 <code>perfectPixel</code>은 도트 애니메이션을 어색함 없이 만들어 준다고 설명됩니다. 직접 만들어 보면 왜 이런 라이브러리가 존재하는지 알 수 있다고 말하면서, 특히 후처리 덕분에 더 자연스럽게 나온다고 강조합니다. <a href="https://www.youtube.com/watch?v=MOcUPkbjzDI&amp;t=51">영상 0:51</a> <a href="https://www.youtube.com/watch?v=MOcUPkbjzDI&amp;t=69">영상 1:09</a></p>
+<p>공식 README는 이 도구의 초점을 더 분명히 말합니다. AI가 만든 픽셀 스타일 이미지는 셀 크기가 들쭉날쭉하고, 그리드가 비정사각형이거나 흔들려서 일반 스케일링으로는 샘플링이 잘 안 된다고 설명합니다. <code>perfectPixel</code>은:</p>
+<ul>
+<li>자동 grid size 감지</li>
+<li>그리드 정렬</li>
+<li>aligned pixel-perfect 결과 생성</li>
+</ul>
+<p>을 제공한다고 말합니다. <a href="https://github.com/theamusing/perfectPixel">perfectPixel README</a></p>
+<p>또한 알고리즘 설명도 공개되어 있습니다.</p>
+<ol>
+<li>FFT magnitude로 grid size 탐지</li>
+<li>Sobel edge로 그리드를 edge에 맞게 refinement</li>
+<li>그리드 기준으로 원본 샘플링</li>
+</ol>
+<p><a href="https://github.com/theamusing/perfectPixel">perfectPixel README</a></p>
+<pre class="mermaid">flowchart TD
+    A["AI pixel-style 이미지"] --> B["FFT로 grid size 탐지"]
+    B --> C["Sobel edge로 grid 보정"]
+    C --> D["grid 기준 재샘플링"]
+    D --> E["pixel-perfect 결과"]
+
+    classDef input fill:#c5dcef,color:#333,stroke:#5b8db8,stroke-width:1px;
+    classDef process fill:#c0ecd3,color:#333,stroke:#5ca379,stroke-width:1px;
+    classDef out fill:#e0c8ef,color:#333,stroke:#8b6fb3,stroke-width:1px;
+
+    class A input;
+    class B,C,D process;
+    class E out;</pre><p>즉 <code>perfectPixel</code>은 생성 모델을 대체하지 않습니다. 대신 <strong>생성 모델이 뿌린 픽셀을 실제 격자 위로 다시 앉히는 정렬기</strong> 라고 보는 편이 맞습니다.</p>
+<h2 id="5-sprite-gen과-perfectpixel은-비슷해-보여도-푸는-문제가-다르다">5. <code>sprite-gen</code>과 <code>perfectPixel</code>은 비슷해 보여도 푸는 문제가 다르다</h2>
+<p>짧은 영상만 보면 둘 다 “게임용 픽셀아트 보정 도구”처럼 보이지만, 실제 역할은 다릅니다.</p>
+<pre class="mermaid">flowchart TD
+    A["에셋 파이프라인 문제"] --> B["애니메이션 가능한 스프라이트 필요"]
+    A --> C["격자에 맞는 깔끔한 픽셀 필요"]
+
+    B --> D["sprite-gen"]
+    C --> E["perfectPixel"]
+
+    D --> F["프레임/상태/아틀라스/매니페스트"]
+    E --> G["그리드 감지/정렬/리샘플링"]
+
+    classDef problem fill:#c5dcef,color:#333,stroke:#5b8db8,stroke-width:1px;
+    classDef tool fill:#c0ecd3,color:#333,stroke:#5ca379,stroke-width:1px;
+    classDef out fill:#e0c8ef,color:#333,stroke:#8b6fb3,stroke-width:1px;
+
+    class A,B,C problem;
+    class D,E tool;
+    class F,G out;</pre><ul>
+<li><code>sprite-gen</code>은 <strong>캐릭터를 움직이는 프레임 자산</strong> 으로 만드는 문제를 푼다</li>
+<li><code>perfectPixel</code>은 <strong>이미 픽셀 스타일인 이미지를 격자에 맞게 정돈하는 문제</strong> 를 푼다</li>
+</ul>
+<p>그래서 이 둘은 경쟁 관계라기보다, 경우에 따라 <strong>연결해서 쓰는 연속 공정</strong> 으로 보는 편이 더 자연스럽습니다.</p>
+<h2 id="6-kenney는-ai가-만들기-전에-쓸-수-있는-기반-에셋이라는-세-번째-해법이다">6. <code>Kenney</code>는 “AI가 만들기 전에 쓸 수 있는 기반 에셋”이라는 세 번째 해법이다</h2>
+<p>영상 마지막에서는 그냥 기반 에셋 하나로 <code>Kenney</code>를 소개합니다. 미니맵, 3D/2D, 타워 디펜스, 자동차, 텍스처 팩 등 무료 팩이 많고, 이런 기반 팩이 있으면 GPT 이미지 등에 “이걸 기반으로 45도 돌려 줘” 같은 식으로 재창조할 수 있다고 설명합니다. <a href="https://www.youtube.com/watch?v=MOcUPkbjzDI&amp;t=77">영상 1:17</a> <a href="https://www.youtube.com/watch?v=MOcUPkbjzDI&amp;t=86">영상 1:26</a></p>
+<p>공식 Kenney 자산 페이지를 보면 실제로:</p>
+<ul>
+<li>2D</li>
+<li>3D</li>
+<li>UI</li>
+<li>Audio</li>
+<li>Pixel</li>
+<li>Textures</li>
+</ul>
+<p>카테고리로 나뉜 대규모 무료 에셋 라이브러리가 있고, <code>Factory Kit</code>, <code>Input Prompts</code>, <code>Car Kit</code>, <code>Platformer Kit</code>, <code>Retro Textures Fantasy</code> 같은 팩이 공개돼 있습니다. <a href="https://kenney.nl/assets">Kenney Assets</a></p>
+<p>또한 지원 페이지는 asset pages의 게임 에셋이 <strong>CC0(public domain)</strong> 라이선스라고 설명합니다. <a href="https://kenney.nl/support">Kenney Support</a></p>
+<pre class="mermaid">flowchart TD
+    A["Kenney 기반 에셋"] --> B["바로 사용"]
+    A --> C["참고용 레퍼런스"]
+    A --> D["AI 재생성의 출발점"]
+
+    classDef asset fill:#c0ecd3,color:#333,stroke:#5ca379,stroke-width:1px;
+
+    class A,B,C,D asset;</pre><p>이게 중요한 이유는, 모든 것을 AI로 처음부터 생성하려 하지 않아도 되기 때문입니다. 특히 게임 에셋에서는 <strong>기반 팩 → 수정 → 조합 → 일부 AI 보강</strong> 이 오히려 더 빠르고 안정적인 경우가 많습니다.</p>
+<h2 id="7-그래서-이-세-도구는-생성-정렬-기반-에셋의-세-층을-이룬다">7. 그래서 이 세 도구는 “생성-정렬-기반 에셋”의 세 층을 이룬다</h2>
+<p>이 Shorts가 은근히 좋은 이유는 세 도구가 서로 다른 층을 채운다는 점입니다.</p>
+<pre class="mermaid">flowchart TD
+    A["게임 에셋 제작"] --> B["기반 에셋 확보"]
+    A --> C["AI 생성"]
+    A --> D["정렬/후처리"]
+    A --> E["애니메이션화"]
+
+    B --> F["Kenney"]
+    C --> G["image model / GPT 이미지 등"]
+    D --> H["perfectPixel"]
+    E --> I["sprite-gen"]
+
+    classDef root fill:#c5dcef,color:#333,stroke:#5b8db8,stroke-width:1px;
+    classDef layer fill:#c0ecd3,color:#333,stroke:#5ca379,stroke-width:1px;
+    classDef model fill:#fde8c0,color:#333,stroke:#c89d42,stroke-width:1px;
+
+    class A root;
+    class B,D,E,F,H,I layer;
+    class C,G model;</pre><p>이 구조를 보면 왜 ZeroCho가 “이런 라이브러리들이 왜 존재하는지 직접 해 보면 안다”고 말했는지가 분명해집니다. <a href="https://www.youtube.com/watch?v=MOcUPkbjzDI&amp;t=61">영상 1:01</a></p>
+<p>AI 모델은 멋진 한 장 이미지를 잘 만들 수 있습니다. 하지만 게임 개발자는 한 장 그림이 아니라:</p>
+<ul>
+<li>프레임 간 일관성</li>
+<li>투명 배경</li>
+<li>엔진이 읽을 수 있는 atlas</li>
+<li>그리드 정렬</li>
+<li>재사용 가능한 기본 팩</li>
+</ul>
+<p>이 필요합니다. 즉 게임 에셋 문제는 “이미지 생성”보다 훨씬 더 생산공학적인 문제입니다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>이 Shorts는 AI 게임 개발의 진짜 병목이 <strong>코드가 아니라 에셋 파이프라인</strong> 임을 짚습니다.<br></li>
+<li><code>sprite-gen</code>은 불안정한 생성 이미지를 게임 엔진이 쓸 수 있는 스프라이트 아틀라스와 매니페스트로 바꾸는 도구입니다.<br></li>
+<li><code>perfectPixel</code>은 AI 픽셀 이미지의 흔들린 그리드를 자동 탐지·보정해 픽셀 퍼펙트 결과를 만드는 정렬 도구입니다.<br></li>
+<li><code>Kenney</code>는 공짜로 쓸 수 있는 기반 에셋 라이브러리이자, AI 재생성의 레퍼런스 출발점 역할을 합니다.<br></li>
+<li>세 도구를 함께 보면, AI 게임 개발은 모델 성능 문제가 아니라 <strong>생성·정렬·기반 에셋 확보를 잇는 공정 설계 문제</strong> 로 보입니다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>Fable 5 같은 모델이 게임 코드를 빠르게 짜 주는 시대에도, 완성도 있는 게임을 만드는 데서 가장 고통스러운 부분은 여전히 에셋일 수 있습니다. 그리고 이 영상이 좋은 이유는 그 문제를 막연한 불평이 아니라, <strong>세 가지 다른 층의 도구</strong> 로 나눠 보여 주기 때문입니다.</p>
+<p>결국 게임 제작에서 중요한 건 “AI가 얼마나 멋진 그림을 만들 수 있나”보다, <strong>그 그림을 실제 플레이 가능한 자산으로 어떻게 바꿀 것인가</strong> 입니다. <code>sprite-gen</code>, <code>perfectPixel</code>, <code>Kenney</code>는 바로 그 간극을 메우는 서로 다른 해법들입니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 06월 17일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/06/2026-06-15-claude-code-higgsfield-facebook-video-factory/" rel="prev">
+        <span>Claude Code와 Higgsfield로 &#39;1인 콘텐츠 공장&#39;을 만든다는 말의 뜻: 페이스북 쇼츠 자동화 5단계</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-ai-게임-개발의-진짜-병목은-코드가-아니라-움직이는-에셋이다">1. AI 게임 개발의 진짜 병목은 코드가 아니라 “움직이는 에셋”이다</a></li>
+    <li><a href="#2-sprite-gen은-ai에게-스프라이트-시트를-시키면-왜-망가지는가를-정면으로-푸는-도구다">2. <code>sprite-gen</code>은 “AI에게 스프라이트 시트를 시키면 왜 망가지는가”를 정면으로 푸는 도구다</a></li>
+    <li><a href="#3-이-도구의-진짜-포인트는-생성보다도-큐레이션-웹뷰에-있다">3. 이 도구의 진짜 포인트는 생성보다도 “큐레이션 웹뷰”에 있다</a></li>
+    <li><a href="#4-perfectpixel은-생성이-아니라-정렬-문제를-푼다">4. <code>perfectPixel</code>은 생성이 아니라 “정렬” 문제를 푼다</a></li>
+    <li><a href="#5-sprite-gen과-perfectpixel은-비슷해-보여도-푸는-문제가-다르다">5. <code>sprite-gen</code>과 <code>perfectPixel</code>은 비슷해 보여도 푸는 문제가 다르다</a></li>
+    <li><a href="#6-kenney는-ai가-만들기-전에-쓸-수-있는-기반-에셋이라는-세-번째-해법이다">6. <code>Kenney</code>는 “AI가 만들기 전에 쓸 수 있는 기반 에셋”이라는 세 번째 해법이다</a></li>
+    <li><a href="#7-그래서-이-세-도구는-생성-정렬-기반-에셋의-세-층을-이룬다">7. 그래서 이 세 도구는 “생성-정렬-기반 에셋”의 세 층을 이룬다</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
