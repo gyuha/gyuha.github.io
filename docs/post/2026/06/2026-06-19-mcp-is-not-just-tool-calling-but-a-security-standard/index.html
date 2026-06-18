@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'MCP를 단순 함수 호출로 보면 위험한 이유: tool·resource·prompt 분리와 &#39;새로운 API 게이트웨이&#39;라는 관점'" />
+  <title>MCP를 단순 함수 호출로 보면 위험한 이유: tool·resource·prompt 분리와 &#39;새로운 API 게이트웨이&#39;라는 관점  | 신규하 블로그</title>
+  <meta property="og:title" content="MCP를 단순 함수 호출로 보면 위험한 이유: tool·resource·prompt 분리와 &#39;새로운 API 게이트웨이&#39;라는 관점" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-06-19"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/06/2026-06-19-mcp-is-not-just-tool-calling-but-a-security-standard/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="mcp" />
+  
+  <meta property="og:tags" content="security" />
+  
+  <meta property="og:tags" content="automation" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/06/2026-06-19-mcp-is-not-just-tool-calling-but-a-security-standard/">
+          <h1>
+            MCP를 단순 함수 호출로 보면 위험한 이유: tool·resource·prompt 분리와 &#39;새로운 API 게이트웨이&#39;라는 관점
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/06/2026-06-19-mcp-is-not-just-tool-calling-but-a-security-standard/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>이 Shorts의 핵심은 “MCP 서버를 하나 만들었더니 보안팀에 불려갔다”는 자극적인 제목에 있지 않습니다. 진짜 중요한 메시지는, <strong>MCP를 그냥 LLM용 함수 호출 래퍼로 보면 설계와 보안 모두에서 큰 사고가 난다</strong> 는 점입니다. 자막은 MCP가 단순한 함수 호출 방식이 아니라 표준이며, 그래서 위협 모델도 가치도 새로워진다고 설명합니다. <a href="https://www.youtube.com/watch?v=gEcoswh9sCs&amp;t=0">영상 0:00</a></p>
+<p>짧은 영상이지만 문제의식은 꽤 선명합니다. MCP는 “도구를 하나 더 붙이는 방식”이 아니라, <strong>도구·데이터·워크플로를 AI 클라이언트에 표준 방식으로 노출하는 프로토콜 계층</strong> 입니다. 그리고 바로 그 표준성 때문에, 한 번 잘못 열어 두면 사고 범위도 같이 커집니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://youtube.com/shorts/gEcoswh9sCs?si=80Pjf3KZZY9ujFua">YouTube Shorts - 사내 DB를 AI에게 직접 열어줬더니, 보안팀에 호출됐습니다 (MCP 서버 구축)</a></li>
+<li><a href="https://docs.anthropic.com/en/docs/agents-and-tools/mcp">Anthropic Docs - What is the Model Context Protocol (MCP)?</a></li>
+<li><a href="https://modelcontextprotocol.io/specification/2025-06-18">MCP Specification</a></li>
+<li><a href="https://modelcontextprotocol.io/docs/learn/server-concepts">MCP Server Concepts</a></li>
+<li><a href="https://modelcontextprotocol.io/specification/2025-06-18/server/resources">MCP Resources Spec</a></li>
+<li><a href="https://modelcontextprotocol.io/specification/2025-06-18/server/tools">MCP Tools Spec</a></li>
+<li><a href="https://modelcontextprotocol.io/specification/2025-06-18/server/prompts">MCP Prompts Spec</a></li>
+<li><a href="https://www.anthropic.com/news/model-context-protocol">Anthropic - Introducing the Model Context Protocol</a></li>
+</ul>
+<h2 id="1-mcp의-첫-번째-가치는-새-기능이-아니라-표준이다">1. MCP의 첫 번째 가치는 “새 기능”이 아니라 “표준”이다</h2>
+<p>자막은 기존에는 LLM마다 도구 연결 방식이 달라서, 같은 사내 DB 도구를 OpenAI용, 다른 클라이언트용으로 두 번 만들어야 했다고 말합니다. MCP는 이것을 통일했고, Claude Desktop, Cursor, OpenAI 등 MCP를 지원하는 모든 클라이언트에서 그대로 동작한다고 설명합니다. <a href="https://www.youtube.com/watch?v=gEcoswh9sCs&amp;t=12">영상 0:12</a> <a href="https://www.youtube.com/watch?v=gEcoswh9sCs&amp;t=22">영상 0:22</a></p>
+<p>Anthropic 공식 문서도 MCP를 AI 애플리케이션과 외부 시스템을 연결하는 <strong>open-source standard</strong> 라고 설명합니다. 또한 “USB-C for AI applications”라는 비유를 사용합니다. <a href="https://docs.anthropic.com/en/docs/agents-and-tools/mcp">Anthropic MCP</a></p>
+<pre class="mermaid">flowchart TD
+    A["기존 방식"] --> B["모델마다 다른 연결 방식"]
+    B --> C["같은 도구를 여러 번 구현"]
+
+    D["MCP 방식"] --> E["표준 인터페이스"]
+    E --> F["여러 클라이언트에서 재사용"]
+
+    classDef oldTone fill:#fde8c0,color:#333,stroke:#c89d42,stroke-width:1px;
+    classDef newTone fill:#c0ecd3,color:#333,stroke:#5ca379,stroke-width:1px;
+
+    class A,B,C oldTone;
+    class D,E,F newTone;</pre><p>즉 MCP의 진짜 가치는 “도구를 더 쉽게 연결한다”가 아니라, <strong>한 번 만든 연결을 여러 AI 클라이언트에 공통 자산처럼 노출할 수 있게 만든다</strong> 는 데 있습니다.</p>
+<h2 id="2-그래서-위험도-달라진다-표준이-되면-사고도-범용화된다">2. 그래서 위험도 달라진다: 표준이 되면 사고도 범용화된다</h2>
+<p>영상은 “그래서 위협도 가치도 새로워요”라고 말합니다. <a href="https://www.youtube.com/watch?v=gEcoswh9sCs&amp;t=9">영상 0:09</a> 이 표현은 꽤 정확합니다. 표준이 되면 좋은 점은 분명하지만, 동시에 한 번 잘못 만든 서버는 <strong>모든 MCP 호환 클라이언트에서 재사용되는 위험한 관문</strong> 이 될 수 있기 때문입니다.</p>
+<p>Anthropic의 MCP 소개 글도 MCP를 secure, two-way connections를 만드는 표준으로 설명하지만, 보안이 자동으로 생긴다고 말하지는 않습니다. <a href="https://www.anthropic.com/news/model-context-protocol">Anthropic News</a></p>
+<p>즉 표준은 보안을 대신해 주지 않습니다. 오히려 표준이 되면:</p>
+<ul>
+<li>연결면이 넓어지고</li>
+<li>재사용성이 커지고</li>
+<li>잘못된 서버 하나의 영향 범위가 커집니다</li>
+</ul>
+<p>이 점을 먼저 이해해야 합니다.</p>
+<h2 id="3-영상의-핵심-통찰은-mcp의-세-primitive-분리에-있다">3. 영상의 핵심 통찰은 MCP의 세 primitive 분리에 있다</h2>
+<p>설명란은 MCP가 <code>tool</code>, <code>resource</code>, <code>prompt</code>의 세 primitive 분리로 권한 통제를 가능하게 한다고 적습니다. <a href="https://youtube.com/shorts/gEcoswh9sCs?si=80Pjf3KZZY9ujFua">영상 설명란</a></p>
+<p>자막도 같은 점을 강조합니다. MCP가 도구를 세 가지로 분리한 설계는 권한 통제의 단위를 다르게 가져가기 위한 분리라고 설명합니다. AI가 자유롭게 읽는 것은 허용하되, 실행은 제한적으로 두는 정책이 자연스러워진다고 말합니다. <a href="https://www.youtube.com/watch?v=gEcoswh9sCs&amp;t=31">영상 0:31</a></p>
+<p>공식 specification도 서버 기능을 다음처럼 나눕니다.</p>
+<ul>
+<li><code>Resources</code>: 모델이나 사용자가 읽을 맥락/데이터</li>
+<li><code>Prompts</code>: 사용자용 템플릿 메시지와 워크플로</li>
+<li><code>Tools</code>: 모델이 실행할 함수</li>
+</ul>
+<p><a href="https://modelcontextprotocol.io/specification/2025-06-18">MCP Specification</a> <a href="https://modelcontextprotocol.io/specification/2025-06-18/server/resources">Resources</a> <a href="https://modelcontextprotocol.io/specification/2025-06-18/server/prompts">Prompts</a> <a href="https://modelcontextprotocol.io/specification/2025-06-18/server/tools">Tools</a></p>
+<pre class="mermaid">flowchart TD
+    A["MCP Server"] --> B["Resources"]
+    A --> C["Prompts"]
+    A --> D["Tools"]
+
+    B --> E["읽기 전용 맥락/데이터"]
+    C --> F["템플릿 메시지/워크플로"]
+    D --> G["실행 가능한 함수"]
+
+    classDef root fill:#c5dcef,color:#333,stroke:#5b8db8,stroke-width:1px;
+    classDef nodeTone fill:#c0ecd3,color:#333,stroke:#5ca379,stroke-width:1px;
+
+    class A root;
+    class B,C,D,E,F,G nodeTone;</pre><p>이 분리는 단순 분류가 아닙니다. <strong>읽을 수 있는 것과 실행할 수 있는 것을 같은 채널에 섞지 않기 위한 설계</strong> 입니다.</p>
+<h2 id="4-모든-것을-tool로-노출하면-읽기와-실행의-경계가-사라진다">4. 모든 것을 tool로 노출하면 “읽기”와 “실행”의 경계가 사라진다</h2>
+<p>자막은 이 분리를 무시하고 모든 작업을 tool로 노출하면 사고가 일어난다고 경고합니다. 특히 read-only 작업만이라는 원칙이 깨지면, AI가 select 용도로 만든 도구로 drop table 같은 호출을 하게 된다고 설명합니다. <a href="https://www.youtube.com/watch?v=gEcoswh9sCs&amp;t=44">영상 0:44</a> <a href="https://www.youtube.com/watch?v=gEcoswh9sCs&amp;t=51">영상 0:51</a></p>
+<p>여기서 영상은 이를 SQL injection과는 다른 종류의 <strong>의미적 인젝션</strong> 이라고 부릅니다. <a href="https://www.youtube.com/watch?v=gEcoswh9sCs&amp;t=58">영상 0:58</a></p>
+<p>이 표현은 실무적으로 꽤 유용합니다. SQL injection은 문자열이 의도치 않게 쿼리 구조를 바꾸는 문제고, 여기서 말하는 semantic injection은 <strong>모델이 읽기 도구와 실행 도구의 의미적 경계를 잘못 넘는 문제</strong> 에 더 가깝습니다.</p>
+<pre class="mermaid">flowchart TD
+    A["모든 것을 Tool로 노출"] --> B["읽기/실행 경계 붕괴"]
+    B --> C["의도치 않은 파괴적 호출 가능"]
+    C --> D["semantic injection 위험"]
+
+    classDef risk fill:#ffc8c4,color:#333,stroke:#c46b6b,stroke-width:1px;
+
+    class A,B,C,D risk;</pre><p>즉 read-only 데이터를 굳이 tool로 만들 필요가 있는지, resource로 노출하면 되는지부터 다시 생각해야 합니다.</p>
+<h2 id="5-ai가-자유롭게-읽는-건-오케이-실행은-제한적으로라는-정책이-왜-자연스러운가">5. “AI가 자유롭게 읽는 건 오케이, 실행은 제한적으로”라는 정책이 왜 자연스러운가</h2>
+<p>영상이 짚는 설계 감각은 단순하지만 중요합니다. 읽기와 실행을 분리하면, “AI가 자유롭게 읽는 건 오케이, 실행은 제한적으로”라는 정책이 자연스럽게 만들어진다는 것입니다. <a href="https://www.youtube.com/watch?v=gEcoswh9sCs&amp;t=38">영상 0:38</a></p>
+<p>이건 보안팀 시각에서도 설득력이 있습니다.</p>
+<ul>
+<li>DB schema, 제품 카탈로그, 매뉴얼 같은 것은 resource</li>
+<li>반복적인 안전 워크플로는 prompt</li>
+<li>실제 쓰기·삭제·결제·변경은 tool</li>
+</ul>
+<p>처럼 나눠야 권한 정책이 깔끔해집니다.</p>
+<pre class="mermaid">flowchart TD
+    A["읽기 중심 정보"] --> B["Resource로 노출"]
+    C["반복 워크플로"] --> D["Prompt로 노출"]
+    E["상태 변경 작업"] --> F["Tool로 노출"]
+
+    classDef readTone fill:#c0ecd3,color:#333,stroke:#5ca379,stroke-width:1px;
+    classDef promptTone fill:#fde8c0,color:#333,stroke:#c89d42,stroke-width:1px;
+    classDef writeTone fill:#ffc8c4,color:#333,stroke:#c46b6b,stroke-width:1px;
+
+    class A,B readTone;
+    class C,D promptTone;
+    class E,F writeTone;</pre><p>이렇게 나누면 “읽기 권한은 넓게, 실행 권한은 좁게”라는 원칙이 기술 구조와 바로 맞물립니다.</p>
+<h2 id="6-방어는-모델이-아니라-tool-단계에서-시작해야-한다">6. 방어는 모델이 아니라 tool 단계에서 시작해야 한다</h2>
+<p>자막은 “방어는 툴 단계에서 시작해요”라고 말합니다. <a href="https://www.youtube.com/watch?v=gEcoswh9sCs&amp;t=61">영상 1:01</a> 이건 상당히 중요한 원칙입니다.</p>
+<p>모델에게 “조심해라”, “파괴적 명령은 하지 마라”라고 프롬프트를 넣는 것은 필요할 수 있지만, 그건 마지막 보조선에 가깝습니다. 실제 방어선은:</p>
+<ul>
+<li>애초에 어떤 capability를 노출할지</li>
+<li>읽기와 쓰기를 어떻게 분리할지</li>
+<li>destructive tool을 만들지 말지</li>
+<li>tool parameter를 어떻게 제한할지</li>
+</ul>
+<p>에서 결정됩니다.</p>
+<p>즉 보안은 prompt layer보다 <strong>tool design layer</strong> 에서 먼저 시작해야 합니다.</p>
+<h2 id="7-mcp-서버는-사실상-새로운-api-게이트웨이처럼-다뤄야-한다">7. MCP 서버는 사실상 “새로운 API 게이트웨이”처럼 다뤄야 한다</h2>
+<p>영상 후반의 가장 중요한 문장은 이것입니다. 핵심은 MCP 서버를 새로운 API 게이트웨이로 인식하는 것이라고 말합니다. 그리고 인증, rate limit, 감사 추적, 권한 통제, REST API에서 했던 모든 보안 고민을 처음부터 다시 해야 한다고 설명합니다. <a href="https://www.youtube.com/watch?v=gEcoswh9sCs&amp;t=63">영상 1:03</a> <a href="https://www.youtube.com/watch?v=gEcoswh9sCs&amp;t=71">영상 1:11</a></p>
+<p>이 비유는 실무적으로 매우 정확합니다. MCP 서버는 단순 라이브러리가 아니라:</p>
+<ul>
+<li>인증 경계</li>
+<li>권한 경계</li>
+<li>감사 경계</li>
+<li>호출 경계</li>
+</ul>
+<p>를 새로 만드는 진입점입니다.</p>
+<pre class="mermaid">flowchart TD
+    A["MCP Server"] --> B["인증"]
+    A --> C["권한 통제"]
+    A --> D["감사 추적"]
+    A --> E["Rate limit"]
+    A --> F["도구 노출 정책"]
+
+    classDef gateway fill:#c5dcef,color:#333,stroke:#5b8db8,stroke-width:1px;
+    classDef control fill:#c0ecd3,color:#333,stroke:#5ca379,stroke-width:1px;
+
+    class A gateway;
+    class B,C,D,E,F control;</pre><p>즉 REST API를 설계할 때 하던 사고방식을 버리면 안 됩니다. 오히려 더 세밀하게 다시 가져와야 합니다.</p>
+<h2 id="8-그럼에도-결국-mcp의-진짜-가치는-한-번-만들어-여러-llm에-노출하는-표준성이다">8. 그럼에도 결국 MCP의 진짜 가치는 “한 번 만들어 여러 LLM에 노출하는 표준성”이다</h2>
+<p>영상 마지막은 다시 표준성으로 돌아옵니다. 진짜 가치는 한 번 만든 MCP 서버를 모든 MCP 호환 클라이언트에서 재사용 가능하다는 데 있다고 말합니다. 사내 도구를 한 곳에서 만들고 모든 LLM에 노출시킬 수 있다는 것입니다. <a href="https://www.youtube.com/watch?v=gEcoswh9sCs&amp;t=79">영상 1:19</a> <a href="https://www.youtube.com/watch?v=gEcoswh9sCs&amp;t=88">영상 1:28</a></p>
+<p>이 장점은 매우 큽니다.</p>
+<ul>
+<li>도구 구현 중복 감소</li>
+<li>클라이언트 교체 비용 감소</li>
+<li>사내 표준 인터페이스 형성</li>
+<li>LLM 벤더 락인 완화</li>
+</ul>
+<p>즉 보안 사고만 잘 다루면, MCP는 단순한 편의성 도구가 아니라 <strong>조직 내부 AI 인터페이스 표준</strong> 이 될 수 있습니다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>이 Shorts는 MCP를 단순 함수 호출 래퍼가 아니라 <strong>도구 표준 프로토콜</strong> 로 봐야 한다고 말합니다.<br></li>
+<li>MCP의 핵심 primitive는 <code>resources</code>, <code>prompts</code>, <code>tools</code>이며, 이 분리는 곧 권한 분리 구조입니다.<br></li>
+<li>모든 것을 tool로 노출하면 읽기와 실행의 경계가 무너져 semantic injection 같은 위험이 커집니다.<br></li>
+<li>read-only 정보는 resource, 반복 워크플로는 prompt, 상태 변경 작업은 tool로 나누는 사고가 자연스럽습니다.<br></li>
+<li>MCP 서버는 사실상 새로운 API 게이트웨이이므로 인증, 권한, 감사, rate limit 등 기존 API 보안 사고를 그대로 다시 적용해야 합니다.<br></li>
+<li>그럼에도 진짜 가치는 한 번 만든 서버를 여러 MCP 호환 LLM 클라이언트에 재사용할 수 있는 표준성에 있습니다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>MCP를 “AI에게 함수 몇 개 더 붙이는 방식”으로 이해하면 설계가 단순해 보이지만, 실제로는 가장 위험한 오해일 수 있습니다. MCP는 도구, 데이터, 워크플로를 AI 클라이언트에 연결하는 표준 계층이고, 그래서 잘 설계하면 조직 전체의 공통 인터페이스가 되지만, 잘못 설계하면 조직 전체의 공통 취약점이 됩니다.</p>
+<p>결국 중요한 질문은 영상 마지막 문장 그대로입니다. <strong>당신의 MCP 서버를 AI에게 어디까지 열어 줄 것인가? 그리고 그 권한은 누가 정의할 것인가?</strong> 이 질문에 구조적으로 답할 수 있을 때만 MCP는 편리한 연결 방식이 아니라, 안전한 표준이 됩니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 06월 19일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/infrastructure">Infrastructure</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/06/2026-06-19-loop-pipeline-needs-document-auditor-not-more-prompts/" rel="prev">
+        <span>루프 파이프라인에 더 필요한 건 문서 생성기가 아니라 문서 감사관이다: Planning Loop Supervisor의 진짜 역할</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-mcp의-첫-번째-가치는-새-기능이-아니라-표준이다">1. MCP의 첫 번째 가치는 “새 기능”이 아니라 “표준”이다</a></li>
+    <li><a href="#2-그래서-위험도-달라진다-표준이-되면-사고도-범용화된다">2. 그래서 위험도 달라진다: 표준이 되면 사고도 범용화된다</a></li>
+    <li><a href="#3-영상의-핵심-통찰은-mcp의-세-primitive-분리에-있다">3. 영상의 핵심 통찰은 MCP의 세 primitive 분리에 있다</a></li>
+    <li><a href="#4-모든-것을-tool로-노출하면-읽기와-실행의-경계가-사라진다">4. 모든 것을 tool로 노출하면 “읽기”와 “실행”의 경계가 사라진다</a></li>
+    <li><a href="#5-ai가-자유롭게-읽는-건-오케이-실행은-제한적으로라는-정책이-왜-자연스러운가">5. “AI가 자유롭게 읽는 건 오케이, 실행은 제한적으로”라는 정책이 왜 자연스러운가</a></li>
+    <li><a href="#6-방어는-모델이-아니라-tool-단계에서-시작해야-한다">6. 방어는 모델이 아니라 tool 단계에서 시작해야 한다</a></li>
+    <li><a href="#7-mcp-서버는-사실상-새로운-api-게이트웨이처럼-다뤄야-한다">7. MCP 서버는 사실상 “새로운 API 게이트웨이”처럼 다뤄야 한다</a></li>
+    <li><a href="#8-그럼에도-결국-mcp의-진짜-가치는-한-번-만들어-여러-llm에-노출하는-표준성이다">8. 그럼에도 결국 MCP의 진짜 가치는 “한 번 만들어 여러 LLM에 노출하는 표준성”이다</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/mcp/" class="badge badge-secondary">MCP</a>
+    <a href="/tags/security/" class="badge badge-secondary">Security</a>
+    <a href="/tags/automation/" class="badge badge-secondary">Automation</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
