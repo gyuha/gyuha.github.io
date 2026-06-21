@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '무료 AI 도구만으로 2D 게임 아트를 끝까지 만드는 법: 캐릭터, 타일, 패럴랙스, 애니메이션, 투명 PNG 프레임'" />
+  <title>무료 AI 도구만으로 2D 게임 아트를 끝까지 만드는 법: 캐릭터, 타일, 패럴랙스, 애니메이션, 투명 PNG 프레임  | 신규하 블로그</title>
+  <meta property="og:title" content="무료 AI 도구만으로 2D 게임 아트를 끝까지 만드는 법: 캐릭터, 타일, 패럴랙스, 애니메이션, 투명 PNG 프레임" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-06-22"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/06/2026-06-22-free-ai-2d-game-art-pipeline-chatgpt-photopea-blender/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="ai" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/06/2026-06-22-free-ai-2d-game-art-pipeline-chatgpt-photopea-blender/">
+          <h1>
+            무료 AI 도구만으로 2D 게임 아트를 끝까지 만드는 법: 캐릭터, 타일, 패럴랙스, 애니메이션, 투명 PNG 프레임
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/06/2026-06-22-free-ai-2d-game-art-pipeline-chatgpt-photopea-blender/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>이 영상이 흥미로운 이유는 단순히 &ldquo;AI로 그림을 뽑는다&quot;에서 멈추지 않기 때문입니다.<br>
+보통 게임용 에셋 튜토리얼은 캐릭터 하나 생성하거나 배경 한 장 만드는 데서 끝납니다. 그런데 이 영상은 <strong>실제 게임 엔진에 넣을 수 있는 형태</strong> 까지 밀어붙입니다.</p>
+<p>즉 목표가 다릅니다.</p>
+<ul>
+<li>예쁜 이미지 한 장</li>
+<li>가 아니라</li>
+<li>반복 가능한 2D 게임 아트 생산 파이프라인</li>
+</ul>
+<p>입니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://youtu.be/Gb6zy40WojA?si=foWDsXS8zHzrOI33">https://youtu.be/Gb6zy40WojA?si=foWDsXS8zHzrOI33</a></li>
+</ul>
+<h2 id="이-영상이-만드는-것은-이미지가-아니라-게임용-자산-세트다">이 영상이 만드는 것은 &ldquo;이미지&quot;가 아니라 &ldquo;게임용 자산 세트&quot;다</h2>
+<p>영상의 전체 흐름은 아래처럼 정리할 수 있습니다.</p>
+<ol>
+<li>메인 캐릭터 생성</li>
+<li>같은 화풍의 환경 에셋팩 생성</li>
+<li>패럴랙스용 배경 레이어 분리</li>
+<li>오브젝트를 잘라 transparent PNG로 변환</li>
+<li>타일 가능한 seamless texture 제작</li>
+<li>캐릭터를 애니메이션 친화적 포즈로 다시 생성</li>
+<li>외부 AI로 walk / idle 같은 짧은 루프 제작</li>
+<li>Blender에서 투명 PNG 프레임으로 추출</li>
+</ol>
+<p>즉 이건 생성형 AI 튜토리얼이라기보다, <strong>2D 사이드스크롤 게임용 아트 공장 조립법</strong> 에 가깝습니다.</p>
+<pre class="mermaid">flowchart TD
+    A["캐릭터 콘셉트"] --> B["메인 캐릭터 생성"]
+    B --> C["같은 화풍의 환경 에셋팩"]
+    C --> D["패럴랙스 배경 레이어"]
+    D --> E["PNG 분리 / 배경제거"]
+    E --> F["반복 가능한 텍스처"]
+    F --> G["애니메이션용 캐릭터 포즈"]
+    G --> H["AI 애니메이션"]
+    H --> I["Blender 프레임 추출"]
+    I --> J["게임 엔진 투입 가능 자산"]
+
+    classDef step fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef result fill:#c0ecd3,stroke:#63a37b,color:#333,stroke-width:1px;
+
+    class A,B,C,D,E,F,G,H,I step
+    class J result</pre><h2 id="1-캐릭터는-단독-이미지가-아니라-전체-세계관의-기준점이다">1. 캐릭터는 단독 이미지가 아니라 전체 세계관의 기준점이다</h2>
+<p>영상은 가장 먼저 ChatGPT에서 캐릭터를 만듭니다.<br>
+예시로는:</p>
+<ul>
+<li>messy black hair</li>
+<li>yellow hoodie</li>
+<li>small fluffy companion creature</li>
+</ul>
+<p>같은 묘사를 넣습니다.</p>
+<p>여기서 중요한 포인트는 캐릭터 예쁘게 뽑기 자체가 아닙니다.<br>
+영상도 explicitly 말하듯이 <strong>consistency</strong> 가 핵심입니다.</p>
+<p>이 캐릭터가 이후 모든 자산의 기준이 됩니다.</p>
+<ul>
+<li>풀 타일</li>
+<li>바위</li>
+<li>나무</li>
+<li>버섯</li>
+<li>플랫폼</li>
+<li>장식용 오브젝트</li>
+<li>패럴랙스 배경</li>
+</ul>
+<p>까지 전부 이 캐릭터의 화풍에 맞춰야 하기 때문입니다.</p>
+<p>즉 캐릭터 프롬프트는 그냥 주인공 생성용 문장이 아니라, <strong>전체 비주얼 시스템의 스타일 토큰</strong> 입니다.</p>
+<pre class="mermaid">flowchart TD
+    A["캐릭터 설명"] --> B["색감"]
+    A --> C["선 느낌"]
+    A --> D["비율"]
+    A --> E["표정 / 분위기"]
+    B --> F["환경 에셋 화풍 통일"]
+    C --> F
+    D --> F
+    E --> F
+
+    classDef base fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef style fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+    classDef result fill:#c0ecd3,stroke:#63a37b,color:#333,stroke-width:1px;
+
+    class A base
+    class B,C,D,E style
+    class F result</pre><h2 id="2-환경-에셋팩-생성의-핵심은-모듈형이라는-점이다">2. 환경 에셋팩 생성의 핵심은 &ldquo;모듈형&quot;이라는 점이다</h2>
+<p>두 번째 단계에서 영상은 전체 환경 에셋팩을 생성합니다.<br>
+여기서 중요한 키워드는 <code>complete cohesive 2D side-scrolling game environment asset pack</code> 입니다.</p>
+<p>즉 한 장의 배경 일러스트를 뽑는 게 아니라, <strong>재조합 가능한 부품 묶음</strong> 을 요구합니다.</p>
+<p>예시로 영상이 언급하는 구성은:</p>
+<ul>
+<li>grass tiles</li>
+<li>rocks</li>
+<li>trees</li>
+<li>mushrooms</li>
+<li>fences</li>
+<li>platforms</li>
+<li>decorative props</li>
+<li>seamless textures</li>
+</ul>
+<p>입니다.</p>
+<p>이 단계가 중요한 이유는, 게임에서는 “그림 하나”보다 <strong>조립 가능한 반복 단위</strong> 가 더 중요하기 때문입니다.</p>
+<p>예쁜 한 장 배경은 마케팅 이미지로는 좋지만, 실제 레벨 디자인에는:</p>
+<ul>
+<li>타일 반복</li>
+<li>플랫폼 재배치</li>
+<li>충돌 영역 설정</li>
+<li>장식 요소 재사용</li>
+</ul>
+<p>이 더 중요합니다.</p>
+<p>그래서 이 단계는 이미지 생성이라기보다, <strong>레벨 빌딩용 키트 생산</strong> 에 가깝습니다.</p>
+<h2 id="3-패럴랙스-배경은-깊이-레이어를-미리-분리해서-생성해야-한다">3. 패럴랙스 배경은 깊이 레이어를 미리 분리해서 생성해야 한다</h2>
+<p>영상의 세 번째 포인트는 패럴랙스입니다.<br>
+많은 초보자가 배경을 한 장으로 만들고 끝내지만, 패럴랙스는 원리상 처음부터 <strong>깊이별로 따로</strong> 있어야 합니다.</p>
+<p>영상에서 요구하는 구조는:</p>
+<ul>
+<li>far background</li>
+<li>mid background</li>
+<li>gameplay layer</li>
+<li>foreground elements</li>
+</ul>
+<p>를 각각 별도 이미지 파일로 만드는 것입니다.</p>
+<p>이게 중요한 이유는 레이어마다 이동 속도가 달라야 하기 때문입니다.</p>
+<ul>
+<li>가장 먼 배경은 아주 천천히 이동</li>
+<li>중간 레이어는 조금 더 빨리 이동</li>
+<li>전경은 가장 빠르게 이동</li>
+</ul>
+<p>그래야 사이드스크롤에서 깊이감이 생깁니다.</p>
+<pre class="mermaid">flowchart TD
+    A["Far background<br>가장 느림"] --> B["Mid background<br>중간 속도"]
+    B --> C["Gameplay layer<br>기준 레이어"]
+    C --> D["Foreground<br>가장 빠름"]
+
+    classDef far fill:#e0c8ef,stroke:#8e6bb8,color:#333,stroke-width:1px;
+    classDef mid fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef game fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+    classDef fore fill:#ffc8c4,stroke:#c26a6a,color:#333,stroke-width:1px;
+
+    class A far
+    class B mid
+    class C game
+    class D fore</pre><p>즉 패럴랙스는 나중에 엔진에서 억지로 해결하는 게 아니라, <strong>생성 단계부터 레이어 구조로 설계해야 한다</strong> 는 것이 영상의 핵심입니다.</p>
+<h2 id="4-microsoft-photos와-photopea가-들어가는-이유는-후처리-때문이다">4. Microsoft Photos와 Photopea가 들어가는 이유는 &ldquo;후처리&rdquo; 때문이다</h2>
+<p>이 영상이 현실적인 이유는 생성만 하지 않고 후처리를 따로 다룬다는 점입니다.</p>
+<h3 id="microsoft-photos-단계">Microsoft Photos 단계</h3>
+<p>영상은 먼저 Microsoft Photos에서:</p>
+<ul>
+<li>crop</li>
+<li>unwanted area erase</li>
+<li>save as copy</li>
+</ul>
+<p>를 반복합니다.</p>
+<p>이건 정교한 편집보다는 <strong>거친 1차 정리</strong> 에 가깝습니다.<br>
+즉 AI가 만든 원본 이미지에서 불필요한 영역을 먼저 잘라내는 단계입니다.</p>
+<h3 id="photopea-단계">Photopea 단계</h3>
+<p>그 다음에는 Photopea로 넘어가서:</p>
+<ul>
+<li><code>Select &gt; Color Range</code></li>
+<li>fuzziness 조절</li>
+<li>배경 삭제</li>
+<li>transparent PNG export</li>
+</ul>
+<p>를 진행합니다.</p>
+<p>이 두 단계를 분리한 이유는 분명합니다.</p>
+<ul>
+<li>Photos는 빠른 정리</li>
+<li>Photopea는 정밀한 배경제거와 PNG 추출</li>
+</ul>
+<p>입니다.</p>
+<pre class="mermaid">flowchart TD
+    A["AI 원본 이미지"] --> B["Microsoft Photos<br>크롭 / 지우개 / 복사 저장"]
+    B --> C["Photopea<br>Color Range"]
+    C --> D["배경제거"]
+    D --> E["Transparent PNG"]
+
+    classDef source fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef process fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+    classDef result fill:#c0ecd3,stroke:#63a37b,color:#333,stroke-width:1px;
+
+    class A source
+    class B,C,D process
+    class E result</pre><p>즉 이 파이프라인은 생성 AI가 모든 걸 끝내준다고 보지 않습니다.<br>
+중간에 <strong>사람이 편집 가능한 브라우저형 툴</strong> 이 반드시 들어갑니다.</p>
+<h2 id="5-여러-오브젝트를-자동-분할하는-단계가-왜-중요한가">5. 여러 오브젝트를 자동 분할하는 단계가 왜 중요한가</h2>
+<p>영상의 slice 단계는 특히 실무적입니다.<br>
+에셋팩을 한 장 이미지로 뽑으면 실제 게임에선 곧바로 쓰기 어렵습니다.</p>
+<p>왜냐하면 게임 엔진은:</p>
+<ul>
+<li>각각의 나무</li>
+<li>각각의 돌</li>
+<li>각각의 버섯</li>
+<li>각각의 플랫폼</li>
+</ul>
+<p>을 개별 파일이나 개별 sprite로 다뤄야 하기 때문입니다.</p>
+<p>영상은 Photopea의 slice 기능으로:</p>
+<ul>
+<li>divide</li>
+<li>object 수 기준 분할</li>
+<li>수동 조정</li>
+<li>PNG export</li>
+</ul>
+<p>를 통해 zip 안에 분리된 transparent asset들을 뽑아냅니다.</p>
+<p>이건 사실상 <strong>미니 sprite extraction 단계</strong> 입니다.</p>
+<h2 id="6-seamless-texture-단계는-예쁜-표면이-아니라-무한-반복-가능한-표면을-만든다">6. seamless texture 단계는 &ldquo;예쁜 표면&quot;이 아니라 &ldquo;무한 반복 가능한 표면&quot;을 만든다</h2>
+<p>게임 엔진에서는 grass, dirt, stone 같은 바닥/벽 재질이 한 장으로 끝나지 않습니다.<br>
+반복되어야 합니다.</p>
+<p>그래서 영상은 Photopea에서:</p>
+<ul>
+<li><code>Filter &gt; Other &gt; Offset</code></li>
+<li>seam 노출</li>
+<li>spot healing brush로 seam 제거</li>
+</ul>
+<p>를 통해 tileable texture를 만듭니다.</p>
+<p>핵심은 seam을 일부러 드러낸 다음, 그 연결부를 수동으로 지우는 것입니다.</p>
+<pre class="mermaid">flowchart TD
+    A["텍스처 원본"] --> B["Offset 적용"]
+    B --> C["이음새 노출"]
+    C --> D["Healing으로 seam 제거"]
+    D --> E["Seamless texture"]
+    E --> F["게임 엔진에서 무한 반복"]
+
+    classDef source fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef process fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+    classDef result fill:#c0ecd3,stroke:#63a37b,color:#333,stroke-width:1px;
+
+    class A source
+    class B,C,D process
+    class E,F result</pre><p>이 단계가 빠지면 게임은 AI 그림을 썼더라도 결국 바닥이나 벽이 끊겨 보입니다.<br>
+즉 texture 생성이 아니라 <strong>texture 엔진 적합화</strong> 단계라고 보는 편이 정확합니다.</p>
+<h2 id="7-애니메이션용-캐릭터는-처음-캐릭터와-다르게-만들어야-한다">7. 애니메이션용 캐릭터는 처음 캐릭터와 다르게 만들어야 한다</h2>
+<p>영상 후반부의 중요한 포인트는, 애니메이션용 캐릭터를 처음 만든 정면/일러스트형 캐릭터와 다르게 다시 생성한다는 점입니다.</p>
+<p>여기서 요구사항은:</p>
+<ul>
+<li>side view</li>
+<li>walking pose</li>
+<li>centered character</li>
+<li>solid green chroma key background</li>
+</ul>
+<p>입니다.</p>
+<p>이건 왜 중요할까요.</p>
+<p>애니메이션 모델은 “멋진 캐릭터 이미지”보다:</p>
+<ul>
+<li>출발 포즈가 명확하고</li>
+<li>실루엣이 잘 보이고</li>
+<li>배경 제거가 쉬운</li>
+</ul>
+<p>입력을 더 잘 다룹니다.</p>
+<p>또 초록색 오브젝트를 애니메이션할 때는 blue background로 바꾸라고 한 팁도 꽤 실용적입니다.<br>
+즉 영상은 AI 애니메이션 품질을 위해 <strong>입력 이미지를 애니메이션 친화적으로 재설계</strong> 하라고 말합니다.</p>
+<h2 id="8-tencent-ai-studio는-완성-엔진이-아니라-짧은-모션-생성기-역할을-한다">8. Tencent AI Studio는 &ldquo;완성 엔진&quot;이 아니라 짧은 모션 생성기 역할을 한다</h2>
+<p>애니메이션 단계에서 영상은 Tencent AI Studio의 <code>Hunyuan Video 1.5 I2V</code> 계열 흐름을 사용합니다.<br>
+입력은 캐릭터 이미지 하나, 출력은 짧은 walk cycle 입니다.</p>
+<p>여기서 중요한 건 ambition을 낮추는 방식입니다.</p>
+<p>영상은 프로토타입 단계에선 보통:</p>
+<ul>
+<li>walk</li>
+<li>idle</li>
+</ul>
+<p>두 개만 있어도 충분하다고 말합니다.</p>
+<p>이게 실전적입니다.<br>
+처음부터 공격, 피격, 점프, 낙하, climb, death 전부 만들지 않고, <strong>게임플레이 테스트에 필요한 최소 루프부터 확보</strong> 하는 전략이기 때문입니다.</p>
+<pre class="mermaid">flowchart TD
+    A["애니메이션용 캐릭터 이미지"] --> B["I2V 모델 입력"]
+    B --> C["Walk cycle 생성"]
+    B --> D["Idle 생성"]
+    C --> E["초기 플레이 테스트"]
+    D --> E
+
+    classDef input fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef process fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+    classDef result fill:#c0ecd3,stroke:#63a37b,color:#333,stroke-width:1px;
+
+    class A input
+    class B process
+    class C,D,E result</pre><h2 id="9-blender는-비디오를-게임용-프레임-시트-재료로-바꾸는-단계다">9. Blender는 비디오를 &ldquo;게임용 프레임 시트 재료&quot;로 바꾸는 단계다</h2>
+<p>애니메이션이 나왔다고 바로 게임 엔진에서 쓰기 좋은 건 아닙니다.<br>
+영상은 Blender Video Editing과 compositor를 이용해:</p>
+<ul>
+<li>영상 불러오기</li>
+<li>frame range 설정</li>
+<li>green screen keying</li>
+<li>RGBA PNG export</li>
+</ul>
+<p>를 합니다.</p>
+<p>이 단계의 목적은 단순 변환이 아닙니다.</p>
+<ol>
+<li>루프용 시작/끝 프레임을 맞춘다</li>
+<li>그린 스크린을 제거한다</li>
+<li>알파가 있는 프레임 PNG로 뽑는다</li>
+</ol>
+<p>즉 비디오를 <strong>엔진 친화적인 sprite frame 묶음</strong> 으로 다시 가공하는 것입니다.</p>
+<pre class="mermaid">flowchart TD
+    A["AI 애니메이션 비디오"] --> B["Blender Video Editing"]
+    B --> C["Loop 구간 선택"]
+    C --> D["Compositor Keying"]
+    D --> E["Green screen 제거"]
+    E --> F["PNG RGBA 프레임 export"]
+    F --> G["게임 엔진용 애니메이션 프레임"]
+
+    classDef source fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef process fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+    classDef result fill:#c0ecd3,stroke:#63a37b,color:#333,stroke-width:1px;
+
+    class A source
+    class B,C,D,E,F process
+    class G result</pre><p>영상 마지막 팁인 “Blender project file을 저장하라”도 중요합니다.<br>
+이걸 저장해 두면 다음 캐릭터나 다음 모션에서 같은 keying / export 셋업을 재사용할 수 있습니다. 즉 한 번 만든 파이프라인이 다음 작업의 템플릿이 됩니다.</p>
+<h2 id="이-워크플로우의-진짜-장점">이 워크플로우의 진짜 장점</h2>
+<p>이 영상의 장점은 “무료”보다 <strong>연결성</strong> 에 있습니다.</p>
+<p>각 도구는 사실 각자 따로 보면 익숙한 것들입니다.</p>
+<ul>
+<li>ChatGPT: 이미지 생성</li>
+<li>Microsoft Photos: 빠른 편집</li>
+<li>Photopea: 배경제거 / 분할 / 텍스처 정리</li>
+<li>Tencent AI Studio: I2V 애니메이션</li>
+<li>Blender: 프레임 추출</li>
+</ul>
+<p>하지만 중요한 건 각각이 아니라, 이걸 아래처럼 한 줄로 묶었다는 점입니다.</p>
+<pre class="mermaid">flowchart TD
+    A["ChatGPT<br>캐릭터 / 에셋 / 배경"] --> B["Microsoft Photos<br>1차 정리"]
+    B --> C["Photopea<br>PNG / Slice / Texture"]
+    C --> D["Tencent AI Studio<br>애니메이션"]
+    D --> E["Blender<br>투명 프레임 export"]
+    E --> F["게임 엔진 입력 자산"]
+
+    classDef tool fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef process fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+    classDef result fill:#c0ecd3,stroke:#63a37b,color:#333,stroke-width:1px;
+
+    class A,B,C,D,E tool
+    class F result</pre><p>즉 한 도구가 다 해결하는 게 아니라, <strong>각 단계에서 가장 싼 도구를 이어 붙이는 파이프라인 설계</strong> 가 핵심입니다.</p>
+<h2 id="이-방식의-한계도-분명하다">이 방식의 한계도 분명하다</h2>
+<p>물론 이 방식은 프로토타이핑과 솔로 개발에 강하지만, 한계도 분명합니다.</p>
+<h3 id="1-스타일-일관성이-완전-자동은-아니다">1. 스타일 일관성이 완전 자동은 아니다</h3>
+<p>처음 캐릭터 설명을 기준점으로 삼아도, 여러 번 생성하면 색/선/비율이 조금씩 흔들릴 수 있습니다.</p>
+<h3 id="2-충돌체--게임플레이-데이터는-따로-필요하다">2. 충돌체 / 게임플레이 데이터는 따로 필요하다</h3>
+<p>이미지와 프레임이 생겨도:</p>
+<ul>
+<li>hitbox</li>
+<li>pivot</li>
+<li>collision</li>
+<li>animation state machine</li>
+</ul>
+<p>은 게임 엔진에서 다시 잡아야 합니다.</p>
+<h3 id="3-장시간-애니메이션보다는-짧은-루프에-더-적합하다">3. 장시간 애니메이션보다는 짧은 루프에 더 적합하다</h3>
+<p>영상도 walk / idle 중심입니다.<br>
+복잡한 전투 모션 세트까지 한 번에 안정적으로 해결하는 방법으로 소개되진 않습니다.</p>
+<h3 id="4-수작업-편집은-여전히-남는다">4. 수작업 편집은 여전히 남는다</h3>
+<p>배경제거, 분할선 조정, seam 보정, loop 구간 선택은 결국 사람이 확인해야 합니다.</p>
+<p>즉 &ldquo;완전 자동 제작&quot;이라기보다 <strong>사람이 감독하는 무료 AI 아트 파이프라인</strong> 이라고 보는 편이 맞습니다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>이 영상은 예쁜 AI 그림 생성법이 아니라 <strong>2D 게임 자산 생산 파이프라인</strong> 을 보여 준다</li>
+<li>캐릭터 프롬프트는 전체 게임 비주얼의 기준점 역할을 한다</li>
+<li>환경 에셋팩은 단일 배경이 아니라 <strong>모듈형 레벨 빌딩 키트</strong> 로 생성해야 한다</li>
+<li>패럴랙스는 처음부터 깊이별 레이어로 분리해야 한다</li>
+<li>Photos와 Photopea는 후처리, PNG 추출, slice, seamless texture 단계에서 핵심 역할을 한다</li>
+<li>애니메이션용 캐릭터는 별도 포즈와 chroma background로 다시 준비해야 품질이 오른다</li>
+<li>Tencent AI Studio와 Blender를 연결하면 게임 엔진에 넣을 수 있는 transparent PNG 프레임까지 도달할 수 있다</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>이 영상의 진짜 가치는 &ldquo;무료 툴 소개&quot;가 아닙니다.<br>
+더 중요한 건, AI 이미지 생성물을 <strong>게임 엔진이 먹을 수 있는 단위로 계속 쪼개고 정리하는 사고방식</strong> 을 보여 준다는 점입니다.</p>
+<p>즉 이 워크플로우는 한 장의 그림을 만드는 법이 아니라, <strong>게임용 2D 아트를 생산 라인처럼 만드는 법</strong> 에 가깝습니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 06월 22일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/06/2026-06-21-ponytail-lazy-senior-dev-skill-for-agents/" rel="prev">
+        <span>ponytail이 왜 이렇게 빨리 퍼졌나: AI를 더 똑똑하게 만드는 게 아니라 &#39;게으른 시니어 개발자&#39;처럼 덜 만들게 한다</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#이-영상이-만드는-것은-이미지가-아니라-게임용-자산-세트다">이 영상이 만드는 것은 &ldquo;이미지&quot;가 아니라 &ldquo;게임용 자산 세트&quot;다</a></li>
+    <li><a href="#1-캐릭터는-단독-이미지가-아니라-전체-세계관의-기준점이다">1. 캐릭터는 단독 이미지가 아니라 전체 세계관의 기준점이다</a></li>
+    <li><a href="#2-환경-에셋팩-생성의-핵심은-모듈형이라는-점이다">2. 환경 에셋팩 생성의 핵심은 &ldquo;모듈형&quot;이라는 점이다</a></li>
+    <li><a href="#3-패럴랙스-배경은-깊이-레이어를-미리-분리해서-생성해야-한다">3. 패럴랙스 배경은 깊이 레이어를 미리 분리해서 생성해야 한다</a></li>
+    <li><a href="#4-microsoft-photos와-photopea가-들어가는-이유는-후처리-때문이다">4. Microsoft Photos와 Photopea가 들어가는 이유는 &ldquo;후처리&rdquo; 때문이다</a>
+      <ul>
+        <li><a href="#microsoft-photos-단계">Microsoft Photos 단계</a></li>
+        <li><a href="#photopea-단계">Photopea 단계</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-여러-오브젝트를-자동-분할하는-단계가-왜-중요한가">5. 여러 오브젝트를 자동 분할하는 단계가 왜 중요한가</a></li>
+    <li><a href="#6-seamless-texture-단계는-예쁜-표면이-아니라-무한-반복-가능한-표면을-만든다">6. seamless texture 단계는 &ldquo;예쁜 표면&quot;이 아니라 &ldquo;무한 반복 가능한 표면&quot;을 만든다</a></li>
+    <li><a href="#7-애니메이션용-캐릭터는-처음-캐릭터와-다르게-만들어야-한다">7. 애니메이션용 캐릭터는 처음 캐릭터와 다르게 만들어야 한다</a></li>
+    <li><a href="#8-tencent-ai-studio는-완성-엔진이-아니라-짧은-모션-생성기-역할을-한다">8. Tencent AI Studio는 &ldquo;완성 엔진&quot;이 아니라 짧은 모션 생성기 역할을 한다</a></li>
+    <li><a href="#9-blender는-비디오를-게임용-프레임-시트-재료로-바꾸는-단계다">9. Blender는 비디오를 &ldquo;게임용 프레임 시트 재료&quot;로 바꾸는 단계다</a></li>
+    <li><a href="#이-워크플로우의-진짜-장점">이 워크플로우의 진짜 장점</a></li>
+    <li><a href="#이-방식의-한계도-분명하다">이 방식의 한계도 분명하다</a>
+      <ul>
+        <li><a href="#1-스타일-일관성이-완전-자동은-아니다">1. 스타일 일관성이 완전 자동은 아니다</a></li>
+        <li><a href="#2-충돌체--게임플레이-데이터는-따로-필요하다">2. 충돌체 / 게임플레이 데이터는 따로 필요하다</a></li>
+        <li><a href="#3-장시간-애니메이션보다는-짧은-루프에-더-적합하다">3. 장시간 애니메이션보다는 짧은 루프에 더 적합하다</a></li>
+        <li><a href="#4-수작업-편집은-여전히-남는다">4. 수작업 편집은 여전히 남는다</a></li>
+      </ul>
+    </li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/ai/" class="badge badge-secondary">Ai</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
