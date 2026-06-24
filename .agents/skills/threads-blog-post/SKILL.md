@@ -43,20 +43,25 @@ author: threads-glm
 
 URL 접근 시 다음 순서로 시도합니다:
 
-1. **Jina Reader (1순위)**: WebFetch 툴로 `https://r.jina.ai/<원본URL>` 요청
+1. **insane-search (1순위)**: 설치되어 있다면 `insane-search` 스킬을 먼저 사용
+   - 목적: Threads 공개 페이지가 기본 fetch/Jina에서 막힐 때, 공개 경로를 단계적으로 재시도
+   - 기대 동작: syndication/oEmbed/공개 읽기 표면/Jina/TLS 임퍼소네이션/브라우저 경로까지 적응적으로 시도
+   - 결과가 충분하면 이 결과를 원본으로 사용
+   - 추출 방법 기록값은 `insane-search` 로 남김
+2. **Jina Reader (2순위)**: insane-search를 사용할 수 없거나 결과가 비어있거나 불충분한 경우
+   - WebFetch 툴로 `https://r.jina.ai/<원본URL>` 요청
    - 예: `https://r.jina.ai/https://www.threads.net/@username/post/...`
-   - Jina Reader는 페이지를 정제된 Markdown으로 반환하므로 가장 빠르고 안정적
-   - 내용이 충분하면 이 결과로 진행
-2. **agent-browser (2순위)**: Jina Reader 결과가 비어있거나 불충분한 경우
+   - Jina Reader는 페이지를 정제된 Markdown으로 반환하므로 가장 빠른 범용 폴백
+3. **agent-browser (3순위)**: Jina Reader 결과도 비어있거나 불충분한 경우
    - 브라우저 자동화로 페이지 직접 접근
-3. **playwright-cli (3순위)**: agent-browser도 실패한 경우
+4. **playwright-cli (4순위)**: agent-browser도 실패한 경우
    - 페이지 로드 후 `document.body.innerText` 추출
 
 추출 후 공통 처리:
 - Threads.net 포스트 본문, 텍스트, 이미지, 작성자 정보, 작성일 수집
 - Open Graph 메타데이터 및 JSON-LD 데이터 추출
 - 인라인 코드/코드 블록 식별
-- 추출 방법을 `jina-reader`, `browser`, `playwright` 중 하나로 기록
+- 추출 방법을 `insane-search`, `jina-reader`, `browser`, `playwright` 중 하나로 기록
 
 **출력 형식**:
 ```json
@@ -174,5 +179,6 @@ threads 블로그로 변환해줘: https://threads.net/@username/post/...
 - **삭제된 포스트**: 404 처리 및 사용자 안내
 - **이미지 다운로드 실패**: 대체 텍스트로 대체
 - **파싱 오류**: 원본 HTML 보존 및 수동 편집 요청
-- **Jina Reader 실패/불충분**: agent-browser → playwright-cli 순서로 자동 폴백
+- **insane-search 사용 가능 시**: 반드시 1순위로 시도
+- **insane-search 실패/불충분**: Jina Reader → agent-browser → playwright-cli 순서로 자동 폴백
 - **모든 방법 실패 시**: 접근 가능한 메타데이터만 사용하고 소스를 partial로 표시
