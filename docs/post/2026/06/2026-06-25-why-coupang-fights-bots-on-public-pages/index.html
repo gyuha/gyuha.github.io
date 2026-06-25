@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '왜 쿠팡은 공개 상품 페이지에서까지 봇을 강하게 막을까: 상품 페이지가 곧 자동화 인프라의 표면이기 때문이다'" />
+  <title>왜 쿠팡은 공개 상품 페이지에서까지 봇을 강하게 막을까: 상품 페이지가 곧 자동화 인프라의 표면이기 때문이다  | 신규하 블로그</title>
+  <meta property="og:title" content="왜 쿠팡은 공개 상품 페이지에서까지 봇을 강하게 막을까: 상품 페이지가 곧 자동화 인프라의 표면이기 때문이다" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-06-25"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/06/2026-06-25-why-coupang-fights-bots-on-public-pages/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="automation" />
+  
+  <meta property="og:tags" content="agents" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/06/2026-06-25-why-coupang-fights-bots-on-public-pages/">
+          <h1>
+            왜 쿠팡은 공개 상품 페이지에서까지 봇을 강하게 막을까: 상품 페이지가 곧 자동화 인프라의 표면이기 때문이다
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/06/2026-06-25-why-coupang-fights-bots-on-public-pages/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Threads 원문이 던지는 질문은 단순하지만 날카롭습니다.<br></p>
+
+  <blockquote>
+    <p>“쿠팡은 봇 자동화를 죽기살기로 막는다. 이상하지 않아? 그냥 상품 페이지인데 왜 이렇게까지.”</p>
+
+  </blockquote>
+
+<p>이 질문은 중요합니다.<br>
+왜냐하면 겉으로 보기에는 상품 상세 페이지가 그냥 HTML 한 장처럼 보이지만, 실제로는 그 페이지가 <strong>가격 관찰, 상품 카탈로그 수집, 광고·순위 추적, 경쟁사 모니터링, 재판매 자동화</strong> 가 몰리는 표면이기 때문입니다.</p>
+<p>즉 문제는 “웹페이지를 읽는다”가 아니라, <strong>그 웹페이지가 여러 비즈니스 자동화의 입력 채널</strong> 이라는 데 있습니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.threads.com/@why.anthropic/post/DZ_Qu6qlg58?xmt=AQG0RT_LRUByGqvI44_zzYpBZyarGaD1iVhtbRPcvS_gPT8OqhdRva_qNXZgKNlJc9rm7k61&amp;slof=1">https://www.threads.com/@why.anthropic/post/DZ_Qu6qlg58?xmt=AQG0RT_LRUByGqvI44_zzYpBZyarGaD1iVhtbRPcvS_gPT8OqhdRva_qNXZgKNlJc9rm7k61&amp;slof=1</a></li>
+<li><a href="https://github.com/fivetaku/insane-search">https://github.com/fivetaku/insane-search</a></li>
+<li><a href="https://github.com/fivetaku/insane-search/blob/main/README.ko.md">https://github.com/fivetaku/insane-search/blob/main/README.ko.md</a></li>
+<li><a href="https://news.hada.io/topic?id=28598">https://news.hada.io/topic?id=28598</a></li>
+<li><a href="https://news.coupang.com/archives/56782/">https://news.coupang.com/archives/56782/</a></li>
+<li><a href="https://news.coupang.com/archives/26868/?print=print">https://news.coupang.com/archives/26868/?print=print</a></li>
+</ul>
+<h2 id="threads-원문이-실제로-말한-것">Threads 원문이 실제로 말한 것</h2>
+<p>공개 메타데이터 기준으로 이 Threads 포스트에서 직접 확인 가능한 문장은 짧습니다.</p>
+<ul>
+<li>쿠팡은 봇 자동화를 강하게 막는다</li>
+<li>“그냥 상품 페이지인데 왜 이렇게까지”라는 의문이 든다</li>
+<li>직접 우회해 보다가 업계의 비밀 하나를 알게 됐다고 말한다</li>
+</ul>
+<p>여기서 “업계 비밀”의 구체 내용을 공개 메타데이터만으로는 복원할 수 없습니다.<br>
+그래서 이 글에서는 그 부분을 단정하지 않고, 왜 그런 질문이 자연스럽게 나오는지 <strong>공개적으로 확인 가능한 자료만으로</strong> 구조적으로 설명하겠습니다.</p>
+<h2 id="상품-페이지는-더-이상-읽기용-페이지가-아니다">상품 페이지는 더 이상 &ldquo;읽기용 페이지&quot;가 아니다</h2>
+<p>일반 사용자는 쿠팡 상품 페이지를 이렇게 봅니다.</p>
+<ul>
+<li>상품 사진</li>
+<li>가격</li>
+<li>리뷰</li>
+<li>배송 정보</li>
+<li>옵션 선택</li>
+</ul>
+<p>그런데 자동화 관점에서 보면 같은 페이지는 전혀 다르게 보입니다.</p>
+<ul>
+<li>가격 변동 신호</li>
+<li>광고/노출 순위 확인 지점</li>
+<li>카탈로그 데이터 수집 표면</li>
+<li>경쟁 상품 모니터링 입력</li>
+<li>재고/배송 문구 변화 감시 포인트</li>
+</ul>
+<p>즉 사람 눈에는 “상품 상세 페이지”지만, 봇 눈에는 <strong>운영 데이터 피드의 공개 표면</strong> 입니다.</p>
+<pre class="mermaid">flowchart TD
+    A["사람이 보는 쿠팡 상품 페이지"] --> B["사진 / 가격 / 리뷰 / 배송"]
+
+    C["자동화가 보는 쿠팡 상품 페이지"] --> D["가격 추적"]
+    C --> E["카탈로그 수집"]
+    C --> F["광고 / 순위 모니터링"]
+    C --> G["경쟁 분석"]
+    C --> H["재판매 / 리스팅 자동화 입력"]
+
+    classDef human fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef bot fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+
+    class A,B human
+    class C,D,E,F,G,H bot</pre><p>그래서 “왜 그냥 페이지를 이렇게까지 막지?”라는 질문은, 실제로는 다음으로 바뀝니다.</p>
+
+  <blockquote>
+    <p>왜 공개 상품 페이지가 데이터 API처럼 소비되는 것을 강하게 막지?</p>
+
+  </blockquote>
+
+<h2 id="insane-search가-쿠팡을-예시로-드는-이유">insane-search가 쿠팡을 예시로 드는 이유</h2>
+<p><code>insane-search</code> README는 지원 예시로 쿠팡을 직접 언급합니다.<br>
+그리고 “Everything else flows through Phase 1~3 automatically — including Coupang (curl_cffi safari)”라고 설명합니다. 즉 쿠팡이 별도 public API-first 플랫폼이 아니라, <strong>WAF / 차단 회피가 필요한 공개 페이지 계열</strong> 로 분류된다는 뜻입니다. <a href="https://github.com/fivetaku/insane-search">https://github.com/fivetaku/insane-search</a> <a href="https://github.com/fivetaku/insane-search/blob/main/README.ko.md">https://github.com/fivetaku/insane-search/blob/main/README.ko.md</a></p>
+<p>GeekNews 소개글은 이 프로젝트를 만든 이유를 더 직접적으로 설명합니다.</p>
+<ul>
+<li>Claude Code가 403을 보면 너무 빨리 포기한다</li>
+<li>사이트·기법 고정 바이어스를 만들지 않는다</li>
+<li>공개 경로를 끝까지 시도한다</li>
+</ul>
+<p>즉 쿠팡이 예시로 자주 나오는 이유는 단순 인기 사이트라서가 아니라, <strong>“공개 페이지인데 기본 읽기 경로가 자주 막히는 대표 케이스”</strong> 이기 때문입니다. <a href="https://news.hada.io/topic?id=28598">https://news.hada.io/topic?id=28598</a></p>
+<h2 id="왜-커머스는-공개-html도-api처럼-방어할까">왜 커머스는 공개 HTML도 API처럼 방어할까</h2>
+<p>이제 핵심 질문으로 돌아오면, 이유는 대체로 세 층으로 설명할 수 있습니다.</p>
+<h3 id="1-가격-정보는-곧-경쟁-정보다">1. 가격 정보는 곧 경쟁 정보다</h3>
+<p>커머스에서 가격은 단순 표시값이 아닙니다.<br>
+다른 셀러나 자동화 시스템이 가격을 대량으로 읽을 수 있으면:</p>
+<ul>
+<li>가격 추적</li>
+<li>자동 가격 매칭</li>
+<li>최저가 반응</li>
+<li>프로모션 감지</li>
+</ul>
+<p>가 가능해집니다.</p>
+<p>즉 HTML 가격 표시는 사용자 편의이면서 동시에 <strong>경쟁 정보 배포 채널</strong> 이 됩니다.</p>
+<h3 id="2-상품-카탈로그는-곧-데이터-자산이다">2. 상품 카탈로그는 곧 데이터 자산이다</h3>
+<p>제목, 옵션, 속성, 카테고리, 배송 문구, 리뷰 수 같은 것들이 대량 추출되면:</p>
+<ul>
+<li>타 마켓 리스팅 자동 생성</li>
+<li>유사 상품 탐색</li>
+<li>대량 리서치</li>
+<li>광고 세팅 자동화</li>
+</ul>
+<p>로 이어질 수 있습니다.</p>
+<p>즉 상품 상세는 쇼핑 UI이면서 동시에 <strong>상품 그래프의 공개 노드</strong> 입니다.</p>
+<h3 id="3-순위와-노출은-곧-광고판매-전략의-입력이다">3. 순위와 노출은 곧 광고·판매 전략의 입력이다</h3>
+<p>상품이 어떤 질의에서 어떻게 노출되는지, 어떤 문구가 붙는지, 어떤 배지가 뜨는지는 셀러 운영 자동화에 매우 중요한 입력입니다.</p>
+<p>즉 상품 페이지는 구매용 표면이면서 동시에 <strong>성장 운영 대시보드의 외부 관측 포인트</strong> 가 됩니다.</p>
+<pre class="mermaid">flowchart TD
+    A["공개 상품 페이지"] --> B["가격 데이터"]
+    A --> C["카탈로그 데이터"]
+    A --> D["노출 / 순위 신호"]
+
+    B --> E["자동 가격 추적"]
+    C --> F["리스팅 / 분석 자동화"]
+    D --> G["광고 / 성장 전략 자동화"]
+
+    classDef page fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef data fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+    classDef ops fill:#c0ecd3,stroke:#63a37b,color:#333,stroke-width:1px;
+
+    class A page
+    class B,C,D data
+    class E,F,G ops</pre><p>그래서 쿠팡이 막는 것은 “그냥 페이지 읽기”가 아니라, 그 페이지를 통해 발생하는 <strong>대규모 운영 자동화의 연쇄 반응</strong> 이라고 보는 편이 더 정확합니다.</p>
+<h2 id="쿠팡은-실제로-자동화ai-자체에는-매우-적극적이다">쿠팡은 실제로 자동화·AI 자체에는 매우 적극적이다</h2>
+<p>여기서 역설이 하나 있습니다.<br>
+쿠팡은 봇을 막는 회사이면서 동시에 자동화와 AI를 매우 적극적으로 밀고 있는 회사이기도 합니다.</p>
+<p>쿠팡 공식 자료는:</p>
+<ul>
+<li>AI 기반 자동화</li>
+<li>로봇 기술</li>
+<li>오토메이션 직군 확대</li>
+<li>엔드투엔드 물류 혁신</li>
+</ul>
+<p>을 반복해서 강조합니다. <a href="https://news.coupang.com/archives/56782/">https://news.coupang.com/archives/56782/</a> <a href="https://news.coupang.com/archives/26868/?print=print">https://news.coupang.com/archives/26868/?print=print</a></p>
+<p>즉 내부에서는 자동화를 극도로 밀어붙이고, 외부 공개 표면에서는 자동화 접근을 강하게 통제하는 구조입니다.</p>
+<p>이게 이상해 보일 수 있지만, 사실은 일관됩니다.</p>
+<p>왜냐하면 기업 입장에서 중요한 건 자동화 그 자체가 아니라:</p>
+<ul>
+<li><strong>누가</strong></li>
+<li><strong>어떤 데이터에</strong></li>
+<li><strong>어떤 규모로</strong></li>
+<li><strong>어떤 목적을 가지고</strong></li>
+</ul>
+<p>자동화하느냐이기 때문입니다.</p>
+<p>즉 내부 최적화용 자동화와 외부 무차별 수집용 자동화는 전혀 다른 문제입니다.</p>
+<pre class="mermaid">flowchart TD
+    A["쿠팡 내부 자동화"] --> B["물류 / 운영 최적화"]
+    A --> C["AI 기반 효율 향상"]
+
+    D["쿠팡 외부 자동화"] --> E["가격 수집"]
+    D --> F["카탈로그 크롤링"]
+    D --> G["경쟁 운영 자동화"]
+
+    classDef internal fill:#c0ecd3,stroke:#63a37b,color:#333,stroke-width:1px;
+    classDef external fill:#ffc8c4,stroke:#c26a6a,color:#333,stroke-width:1px;
+
+    class A,B,C internal
+    class D,E,F,G external</pre><p>즉 “자동화에 적극적인 회사가 왜 봇을 막지?”가 아니라,</p>
+
+  <blockquote>
+    <p>내부 자산으로서의 자동화는 밀고, 외부에서 내 표면을 API처럼 쓰는 자동화는 제한한다</p>
+
+  </blockquote>
+
+<p>가 더 정확한 설명입니다.</p>
+<h2 id="결국-상품-페이지는-마지막-공개-api처럼-취급된다">결국 상품 페이지는 &ldquo;마지막 공개 API&quot;처럼 취급된다</h2>
+<p>로그인월도 없고 공개 HTML도 보이니, 사람 입장에서는 그냥 웹페이지처럼 느껴집니다.<br>
+하지만 에이전트와 자동화 시스템 입장에서는:</p>
+<ul>
+<li>공개적으로 읽을 수 있고</li>
+<li>구조화 데이터가 있고</li>
+<li>가격/배송/리뷰 같은 중요 신호가 있고</li>
+<li>대량 수집 가치가 큰</li>
+</ul>
+<p>거의 <strong>반쯤 공개 API 같은 표면</strong> 입니다.</p>
+<p>그래서 방어도 달라집니다.</p>
+<ul>
+<li>일반 뉴스 페이지보다 더 공격적으로</li>
+<li>기본 fetch나 단순 curl이 쉽게 막히고</li>
+<li>브라우저 정체성, TLS 지문, 쿠키 워밍 같은 층까지 보게 됩니다</li>
+</ul>
+<p>이 점은 insane-search 같은 도구가 쿠팡을 별도로 언급하는 이유와도 연결됩니다.</p>
+<h2 id="업계-비밀이라는-말은-아마-페이지가-곧-운영-인터페이스라는-뜻에-가깝다">업계 비밀이라는 말은 아마 &ldquo;페이지가 곧 운영 인터페이스&quot;라는 뜻에 가깝다</h2>
+<p>Threads 본문은 “업계 비밀 하나를 알게 됐다”고 말하지만, 공개 메타데이터만으로 그 문장의 정확한 후속 설명은 확인할 수 없습니다.<br>
+그래서 아래 내용은 <strong>공개 자료를 바탕으로 한 해석</strong> 입니다.</p>
+<p>가장 가능성 높은 해석은 이것입니다.</p>
+
+  <blockquote>
+    <p>커머스 업계에서 공개 상품 페이지는 단순 고객용 페이지가 아니라,<br>
+가격·광고·카탈로그·경쟁 관찰이 몰리는 운영 인터페이스이기도 하다.</p>
+
+  </blockquote>
+
+<p>즉 페이지가 곧 돈이 흐르는 입력 채널이기 때문에, 사이트는 HTML을 보여주면서도 API만큼 강하게 방어할 유인을 갖습니다.</p>
+<p>이건 “보여 주는 것”과 “기계가 대량으로 읽는 것”이 전혀 다른 문제이기 때문입니다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>Threads 원문에서 직접 확인 가능한 핵심은 “쿠팡은 왜 공개 상품 페이지에서까지 봇을 강하게 막느냐”는 질문이다</li>
+<li>쿠팡 상품 페이지는 사람에게는 상세 페이지지만, 자동화 시스템에게는 가격·카탈로그·노출 신호의 입력 채널이다</li>
+<li><code>insane-search</code>가 쿠팡을 차단 강한 공개 페이지 사례로 다루는 것도 같은 맥락이다</li>
+<li>쿠팡은 내부적으로는 AI·자동화·로봇을 강하게 밀고 있지만, 외부 자동화 접근은 별도로 통제한다</li>
+<li>즉 커머스 상품 페이지는 더 이상 단순 HTML이 아니라, 반쯤 공개 API처럼 취급되는 운영 표면이다</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>왜 쿠팡은 “그냥 상품 페이지”를 이렇게까지 막을까요?<br>
+답은 그 페이지가 더 이상 그냥 페이지가 아니기 때문입니다.</p>
+<p>그건 고객에게는 쇼핑 화면이지만, 경쟁자와 자동화 시스템에게는 <strong>가격, 순위, 카탈로그, 배송 신호가 흐르는 공개 운영 인터페이스</strong> 이기도 합니다.</p>
+<p>그래서 이 문제는 스크래핑의 문제가 아니라, 결국 <strong>공개 웹페이지가 어디까지 데이터 인프라로 간주되는가</strong> 의 문제라고 보는 편이 더 정확합니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 06월 25일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/insights">Insights</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/06/2026-06-24-anthropic-cybersecurity-skills-community-library/" rel="prev">
+        <span>Anthropic-Cybersecurity-Skills가 왜 주목받나: 817개 보안 플레이북을 AI 에이전트용 스킬 형식으로 구조화한 이유</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#threads-원문이-실제로-말한-것">Threads 원문이 실제로 말한 것</a></li>
+    <li><a href="#상품-페이지는-더-이상-읽기용-페이지가-아니다">상품 페이지는 더 이상 &ldquo;읽기용 페이지&quot;가 아니다</a></li>
+    <li><a href="#insane-search가-쿠팡을-예시로-드는-이유">insane-search가 쿠팡을 예시로 드는 이유</a></li>
+    <li><a href="#왜-커머스는-공개-html도-api처럼-방어할까">왜 커머스는 공개 HTML도 API처럼 방어할까</a>
+      <ul>
+        <li><a href="#1-가격-정보는-곧-경쟁-정보다">1. 가격 정보는 곧 경쟁 정보다</a></li>
+        <li><a href="#2-상품-카탈로그는-곧-데이터-자산이다">2. 상품 카탈로그는 곧 데이터 자산이다</a></li>
+        <li><a href="#3-순위와-노출은-곧-광고판매-전략의-입력이다">3. 순위와 노출은 곧 광고·판매 전략의 입력이다</a></li>
+      </ul>
+    </li>
+    <li><a href="#쿠팡은-실제로-자동화ai-자체에는-매우-적극적이다">쿠팡은 실제로 자동화·AI 자체에는 매우 적극적이다</a></li>
+    <li><a href="#결국-상품-페이지는-마지막-공개-api처럼-취급된다">결국 상품 페이지는 &ldquo;마지막 공개 API&quot;처럼 취급된다</a></li>
+    <li><a href="#업계-비밀이라는-말은-아마-페이지가-곧-운영-인터페이스라는-뜻에-가깝다">업계 비밀이라는 말은 아마 &ldquo;페이지가 곧 운영 인터페이스&quot;라는 뜻에 가깝다</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/automation/" class="badge badge-secondary">Automation</a>
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
