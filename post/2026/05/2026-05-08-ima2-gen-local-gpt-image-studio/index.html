@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'ima2-gen이 흥미로운 이유: GPT Image 2를 작은 로컬 스튜디오처럼 다루게 만든다'" />
+  <title>ima2-gen이 흥미로운 이유: GPT Image 2를 작은 로컬 스튜디오처럼 다루게 만든다  | 신규하 블로그</title>
+  <meta property="og:title" content="ima2-gen이 흥미로운 이유: GPT Image 2를 작은 로컬 스튜디오처럼 다루게 만든다" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-05-08"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/05/2026-05-08-ima2-gen-local-gpt-image-studio/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="Image Generation" />
+  
+  <meta property="og:tags" content="Codex" />
+  
+  <meta property="og:tags" content="OpenAI" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/05/2026-05-08-ima2-gen-local-gpt-image-studio/">
+          <h1>
+            ima2-gen이 흥미로운 이유: GPT Image 2를 작은 로컬 스튜디오처럼 다루게 만든다
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/05/2026-05-08-ima2-gen-local-gpt-image-studio/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p><code>ima2-gen</code>을 한 줄로 설명하면 README 표현 그대로다.</p>
+<p><strong>ChatGPT/Codex 이미지 워크플로를 작은 데스크톱형 웹앱으로 옮긴 로컬 이미지 생성 스튜디오</strong></p>
+<p>이 프로젝트가 흥미로운 이유는 이미지 생성 모델 하나를 감싸는 CLI에 머물지 않고,<br>
+<strong>히스토리·브랜칭·배치·캔버스 편집까지 묶은 작업 환경</strong>으로 확장하려 하기 때문이다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>GitHub: <a href="https://github.com/lidge-jun/ima2-gen">https://github.com/lidge-jun/ima2-gen</a></li>
+<li>README: <a href="https://raw.githubusercontent.com/lidge-jun/ima2-gen/main/README.md">https://raw.githubusercontent.com/lidge-jun/ima2-gen/main/README.md</a></li>
+<li>Live site: <a href="https://lidge-jun.github.io/ima2-gen/">https://lidge-jun.github.io/ima2-gen/</a></li>
+</ul>
+<h2 id="1-ima2-gen의-본질은-모델-호출기보다-작은-이미지-작업실이다">1. ima2-gen의 본질은 “모델 호출기”보다 “작은 이미지 작업실”이다</h2>
+<p>README가 스스로를 설명하는 문장이 좋다.</p>
+
+  <blockquote>
+    <p>a local image generation studio for people who want the ChatGPT/Codex image workflow in a small desktop-like web app</p>
+
+  </blockquote>
+
+<p>즉 이 프로젝트는:</p>
+<ul>
+<li>프롬프트 한 줄 보내기</li>
+<li>결과 이미지 한 장 받기</li>
+</ul>
+<p>에서 끝나지 않는다.</p>
+<p>대신 사용자가 실제로 필요한 작업 흐름을 의식한다.</p>
+<ul>
+<li>이전 결과를 다시 이어가기</li>
+<li>여러 후보를 병렬로 뽑기</li>
+<li>브랜치 분기하기</li>
+<li>캔버스에서 마무리 편집하기</li>
+<li>히스토리를 로컬에 보존하기</li>
+</ul>
+<p>즉 “generate API wrapper”가 아니라<br>
+<strong>로컬 이미지 생성 워크벤치</strong>에 더 가깝다.</p>
+<h2 id="2-이-프로젝트의-가장-독특한-부분은-provider-경로를-둘로-나눈-점이다">2. 이 프로젝트의 가장 독특한 부분은 provider 경로를 둘로 나눈 점이다</h2>
+<p>README는 image generation 경로를 두 가지로 설명한다.</p>
+<ul>
+<li><code>provider: &quot;oauth&quot;</code> → local Codex/ChatGPT OAuth proxy</li>
+<li><code>provider: &quot;api&quot;</code> → OpenAI Responses API + hosted image_generation tool</li>
+</ul>
+<p>이 구조가 중요한 이유는 사용자가 두 가지 서로 다른 운영 방식을 고를 수 있기 때문이다.</p>
+<h3 id="oauth-경로">OAuth 경로</h3>
+<ul>
+<li>로컬에서 빠르게 실험</li>
+<li>기본값으로 쓰기 쉬움</li>
+<li>API 키를 따로 다루지 않는 흐름</li>
+</ul>
+<h3 id="api-경로">API 경로</h3>
+<ul>
+<li>OpenAI API key 기반</li>
+<li>classic generate / edit / mask-guided edit / multimode / node generation</li>
+<li>세부 옵션을 더 명시적으로 제어</li>
+</ul>
+<p>즉 <code>ima2-gen</code>은 단순히 “무료 경로”만 파는 게 아니라,<br>
+<strong>실험용 로컬 OAuth 하네스와 정식 API 경로를 모두 품은 이중 백엔드 스튜디오</strong>다.</p>
+<h2 id="3-quick-start가-단순한-이유도-중요하다">3. Quick Start가 단순한 이유도 중요하다</h2>
+<p>README의 첫 시작은 매우 짧다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>npx ima2-gen serve
+</span></span></code></pre></div><p>그리고 Codex 로그인만 되어 있으면 바로 웹 UI가 뜬다.</p>
+<p>이 단순함이 의미 있는 이유는, 이미지 생성 툴이 자주 실패하는 이유가 모델 성능이 아니라 <strong>설치 마찰</strong>이기 때문이다.</p>
+<p>사용자는 보통:</p>
+<ul>
+<li>복잡한 API 설정</li>
+<li>키 관리</li>
+<li>별도 대시보드</li>
+<li>빌드 파이프라인</li>
+</ul>
+<p>없이 바로 써 보고 싶어 한다.</p>
+<p><code>ima2-gen</code>은 그 첫 접점을 최대한 얇게 만든다.</p>
+<p>즉 이미지 생성 도구를 “API 제품”보다<br>
+<strong>로컬에서 바로 열리는 앱</strong>처럼 느끼게 한다.</p>
+<h2 id="4-classic--node--multimode--canvas라는-4분해가-꽤-좋다">4. Classic / Node / Multimode / Canvas라는 4분해가 꽤 좋다</h2>
+<p>README를 읽으면 이 프로젝트가 어떤 사용자 행동을 상정하는지 드러난다.</p>
+<h3 id="classic-mode">Classic Mode</h3>
+<p>한 번의 프롬프트로 빠르게 하나의 강한 결과를 얻고 싶을 때.</p>
+<h3 id="node-mode">Node Mode</h3>
+<p>좋은 이미지 하나를 출발점으로 여러 방향으로 분기하고 싶을 때.</p>
+<h3 id="multimode-batches">Multimode Batches</h3>
+<p>같은 프롬프트에서 여러 후보를 병렬 생성하고 비교할 때.</p>
+<h3 id="canvas-mode">Canvas Mode</h3>
+<p>거의 맞는 이미지 위에:</p>
+<ul>
+<li>annotation</li>
+<li>erase</li>
+<li>cleanup</li>
+<li>alpha export</li>
+</ul>
+<p>같은 후처리를 할 때.</p>
+<p>이 4분해가 중요한 이유는 이미지 생성 실무가 실제로:</p>
+<ul>
+<li>생성</li>
+<li>비교</li>
+<li>분기</li>
+<li>후편집</li>
+</ul>
+<p>의 반복이기 때문이다.</p>
+<p>즉 <code>ima2-gen</code>은 모델을 쓰는 순간보다<br>
+<strong>모델을 쓴 뒤에 사용자가 하는 다음 행동</strong>을 더 잘 의식하고 있다.</p>
+<pre class="mermaid">flowchart LR
+    A[Prompt] --> B[Classic]
+    B --> C[좋은 결과]
+    C --> D[Node branching]
+    C --> E[Canvas cleanup]
+    A --> F[Multimode batch]
+    F --> C</pre><h2 id="5-node-mode가-있다는-건-이미지-생성--그래프-탐색으로-본다는-뜻이다">5. Node Mode가 있다는 건 “이미지 생성 = 그래프 탐색”으로 본다는 뜻이다</h2>
+<p>README의 Node Mode 설명은 꽤 인상적이다.</p>
+<p>각 node는:</p>
+<ul>
+<li>자기만의 prompt</li>
+<li>자기만의 result</li>
+</ul>
+<p>를 갖고, child node는 parent image를 source로 삼는다.</p>
+<p>이건 중요하다.</p>
+<p>이미지 생성은 종종 한 번에 정답을 얻는 행위가 아니라:</p>
+<ul>
+<li>좋은 시드 하나를 찾고</li>
+<li>여러 방향으로 분기하고</li>
+<li>가장 가능성 있는 가지를 계속 키우는</li>
+</ul>
+<p>탐색 과정이기 때문이다.</p>
+<p>즉 Node Mode는 이미지 생성을 “한 장 뽑기”가 아니라<br>
+<strong>branchable search tree</strong>로 보는 UX다.</p>
+<h2 id="6-canvas-mode가-붙으면서-이-도구는-생성기보다-편집기-쪽으로-더-가까워진다">6. Canvas Mode가 붙으면서 이 도구는 생성기보다 편집기 쪽으로 더 가까워진다</h2>
+<p>많은 생성 도구는 결과를 뽑고 나면 끝난다.</p>
+<p>하지만 <code>ima2-gen</code>은:</p>
+<ul>
+<li>zoom / pan</li>
+<li>annotation</li>
+<li>eraser</li>
+<li>multiselect</li>
+<li>sticky notes</li>
+<li>background cleanup</li>
+<li>alpha / matte export</li>
+</ul>
+<p>까지 제공한다.</p>
+<p>즉 모델의 출력이 조금만 아쉬워도 다시 전체 프롬프트를 돌리는 게 아니라,<br>
+<strong>가까운 결과를 다듬어 다음 반복으로 넘길 수 있게</strong> 만든다.</p>
+<p>이건 실제 작업에서 굉장히 중요하다.</p>
+<p>좋은 이미지 생성 워크플로는 새로 만드는 것보다<br>
+<strong>거의 맞는 결과를 더 싸게 수정하는 능력</strong>에 좌우될 때가 많기 때문이다.</p>
+<h2 id="7-prompt-library-import도-이-프로젝트가-단순-앱이-아니라는-신호다">7. Prompt Library import도 이 프로젝트가 단순 앱이 아니라는 신호다</h2>
+<p>README는 prompt library import를 꽤 비중 있게 다룬다.</p>
+<p>가져올 수 있는 소스가:</p>
+<ul>
+<li>local files</li>
+<li>GitHub folders</li>
+<li>curated sources</li>
+<li>GPT-image hint packs</li>
+</ul>
+<p>까지 열려 있다.</p>
+<p>이건 단순 편의 기능처럼 보이지만, 실제로는 지식 운영 기능에 가깝다.</p>
+<p>즉 이미지를 잘 뽑는 경험이:</p>
+<ul>
+<li>개별 세션의 일회성 성공</li>
+</ul>
+<p>이 아니라</p>
+<ul>
+<li>재사용 가능한 프롬프트 자산</li>
+</ul>
+<p>으로 축적되도록 설계한 것이다.</p>
+<p>이렇게 되면 <code>ima2-gen</code>은 생성 앱이 아니라<br>
+<strong>프롬프트 자산을 쌓는 이미지 작업 환경</strong>이 된다.</p>
+<h2 id="8-cli와-web-ui를-둘-다-끝까지-챙긴-점도-좋다">8. CLI와 Web UI를 둘 다 끝까지 챙긴 점도 좋다</h2>
+<p>프로젝트 이름만 보면 CLI 같지만, 실제로는 Web UI가 중심이고 CLI도 꽤 깊다.</p>
+<p>예를 들면:</p>
+<ul>
+<li><code>ima2 gen</code></li>
+<li><code>ima2 edit</code></li>
+<li><code>ima2 multimode</code></li>
+<li><code>ima2 ls</code></li>
+<li><code>ima2 show</code></li>
+<li><code>ima2 prompt ls</code></li>
+</ul>
+<p>등이 다 있다.</p>
+<p>이건 사용자 층을 넓힌다.</p>
+<h3 id="web-ui가-좋은-경우">Web UI가 좋은 경우</h3>
+<ul>
+<li>이미지를 보고 비교해야 할 때</li>
+<li>Canvas로 직접 손봐야 할 때</li>
+</ul>
+<h3 id="cli가-좋은-경우">CLI가 좋은 경우</h3>
+<ul>
+<li>배치 실행</li>
+<li>자동화</li>
+<li>빠른 반복</li>
+<li>서버/스크립트 연동</li>
+</ul>
+<p>즉 <code>ima2-gen</code>은 시각 작업 도구이면서도,<br>
+<strong>자동화 가능한 이미지 파이프라인의 일부</strong>로도 설계돼 있다.</p>
+<h2 id="9-이-프로젝트를-가장-잘-설명하는-표현은-openai-image-harness다">9. 이 프로젝트를 가장 잘 설명하는 표현은 “OpenAI image harness”다</h2>
+<p>README에는 이런 말들이 계속 나온다.</p>
+<ul>
+<li>local image generation studio</li>
+<li>Codex OAuth</li>
+<li>OpenAI-compatible workflow</li>
+<li>desktop-like web app</li>
+</ul>
+<p>그래서 이 프로젝트의 본질은 모델 자체보다,<br>
+<strong>이미지 생성 모델을 어떻게 다루게 해 주느냐</strong>에 있다.</p>
+<p>즉 <code>ima2-gen</code>은 이미지 모델이 아니라<br>
+<strong>OpenAI 계열 이미지 생성 백엔드를 위한 작업 하네스</strong>라고 보는 편이 더 정확하다.</p>
+<pre class="mermaid">flowchart TD
+    A[Codex OAuth / OpenAI API] --> B[ima2-gen]
+    B --> C[Classic]
+    B --> D[Node]
+    B --> E[Multimode]
+    B --> F[Canvas]
+    C --> G[Local gallery / history]
+    D --> G
+    E --> G
+    F --> G</pre><h2 id="10-최신-저장소-기준-메타데이터">10. 최신 저장소 기준 메타데이터</h2>
+<p>GitHub 기준 현재 확인한 저장소 정보는 다음과 같다.</p>
+<ul>
+<li>저장소: <code>lidge-jun/ima2-gen</code></li>
+<li>설명: <code>Minimal CLI + web UI for OpenAI GPT Image 2 generation...</code></li>
+<li>stars: <code>179</code></li>
+<li>forks: <code>29</code></li>
+<li>기본 브랜치: <code>main</code></li>
+<li>주 언어: <code>TypeScript</code></li>
+</ul>
+<p>라이선스는 주의가 필요하다.</p>
+<ul>
+<li>GitHub API 응답에서는 <code>null</code></li>
+<li>README 배지에는 <code>MIT</code></li>
+</ul>
+<p>즉 실제 사용 전에는 저장소의 <code>LICENSE</code> 파일을 직접 확인하는 편이 안전하다.</p>
+<h2 id="11-결론">11. 결론</h2>
+<p><code>ima2-gen</code>이 흥미로운 이유는 GPT Image 2를 단순 호출하게 해 주는 도구가 아니라,<br>
+<strong>생성 → 비교 → 분기 → 후편집 → 기록</strong>이라는 실제 이미지 작업 루프를 작은 로컬 스튜디오로 묶어 준다는 데 있다.</p>
+<p>특히:</p>
+<ul>
+<li>OAuth와 API 두 경로를 동시에 제공하고</li>
+<li>Node branching으로 탐색성을 주고</li>
+<li>Canvas로 후편집을 붙이고</li>
+<li>Prompt library로 지식을 축적한다는 점</li>
+</ul>
+<p>이 결합되면서, <code>ima2-gen</code>은 단순 CLI보다 훨씬 큰 의미를 가진다.</p>
+<p>즉 이 프로젝트의 본질은 “이미지 생성기”가 아니라<br>
+<strong>OpenAI 이미지 워크플로를 데스크톱형 작업실로 바꾸는 하네스</strong>다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 05월 08일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-08-agent-harness-documents-mvp/" rel="prev">
+        <span>개발 하네스에 왜 문서 세트가 필요한가: goal.md부터 permission-policy.md까지</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-08-anthropic-prompting-101-structured-single-shot/" rel="next">
+        <span>Anthropic Prompting 101의 핵심: 좋은 프롬프트는 길이가 아니라 구조다</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-ima2-gen의-본질은-모델-호출기보다-작은-이미지-작업실이다">1. ima2-gen의 본질은 “모델 호출기”보다 “작은 이미지 작업실”이다</a></li>
+    <li><a href="#2-이-프로젝트의-가장-독특한-부분은-provider-경로를-둘로-나눈-점이다">2. 이 프로젝트의 가장 독특한 부분은 provider 경로를 둘로 나눈 점이다</a>
+      <ul>
+        <li><a href="#oauth-경로">OAuth 경로</a></li>
+        <li><a href="#api-경로">API 경로</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-quick-start가-단순한-이유도-중요하다">3. Quick Start가 단순한 이유도 중요하다</a></li>
+    <li><a href="#4-classic--node--multimode--canvas라는-4분해가-꽤-좋다">4. Classic / Node / Multimode / Canvas라는 4분해가 꽤 좋다</a>
+      <ul>
+        <li><a href="#classic-mode">Classic Mode</a></li>
+        <li><a href="#node-mode">Node Mode</a></li>
+        <li><a href="#multimode-batches">Multimode Batches</a></li>
+        <li><a href="#canvas-mode">Canvas Mode</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-node-mode가-있다는-건-이미지-생성--그래프-탐색으로-본다는-뜻이다">5. Node Mode가 있다는 건 “이미지 생성 = 그래프 탐색”으로 본다는 뜻이다</a></li>
+    <li><a href="#6-canvas-mode가-붙으면서-이-도구는-생성기보다-편집기-쪽으로-더-가까워진다">6. Canvas Mode가 붙으면서 이 도구는 생성기보다 편집기 쪽으로 더 가까워진다</a></li>
+    <li><a href="#7-prompt-library-import도-이-프로젝트가-단순-앱이-아니라는-신호다">7. Prompt Library import도 이 프로젝트가 단순 앱이 아니라는 신호다</a></li>
+    <li><a href="#8-cli와-web-ui를-둘-다-끝까지-챙긴-점도-좋다">8. CLI와 Web UI를 둘 다 끝까지 챙긴 점도 좋다</a>
+      <ul>
+        <li><a href="#web-ui가-좋은-경우">Web UI가 좋은 경우</a></li>
+        <li><a href="#cli가-좋은-경우">CLI가 좋은 경우</a></li>
+      </ul>
+    </li>
+    <li><a href="#9-이-프로젝트를-가장-잘-설명하는-표현은-openai-image-harness다">9. 이 프로젝트를 가장 잘 설명하는 표현은 “OpenAI image harness”다</a></li>
+    <li><a href="#10-최신-저장소-기준-메타데이터">10. 최신 저장소 기준 메타데이터</a></li>
+    <li><a href="#11-결론">11. 결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/image-generation/" class="badge badge-secondary">Image Generation</a>
+    <a href="/tags/codex/" class="badge badge-secondary">Codex</a>
+    <a href="/tags/openai/" class="badge badge-secondary">OpenAI</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

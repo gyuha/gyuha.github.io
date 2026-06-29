@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'claude-mem이 왜 이렇게 커졌나: 세션 로그를 저장하는 게 아니라 컨텍스트를 압축해 다음 에이전트 세션에 다시 주입하는 구조'" />
+  <title>claude-mem이 왜 이렇게 커졌나: 세션 로그를 저장하는 게 아니라 컨텍스트를 압축해 다음 에이전트 세션에 다시 주입하는 구조  | 신규하 블로그</title>
+  <meta property="og:title" content="claude-mem이 왜 이렇게 커졌나: 세션 로그를 저장하는 게 아니라 컨텍스트를 압축해 다음 에이전트 세션에 다시 주입하는 구조" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-05-25"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/05/2026-05-25-claude-mem-persistent-context-across-agent-sessions/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="agents" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/05/2026-05-25-claude-mem-persistent-context-across-agent-sessions/">
+          <h1>
+            claude-mem이 왜 이렇게 커졌나: 세션 로그를 저장하는 게 아니라 컨텍스트를 압축해 다음 에이전트 세션에 다시 주입하는 구조
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/05/2026-05-25-claude-mem-persistent-context-across-agent-sessions/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p><code>claude-mem</code>이 주목받는 이유를 한 문장으로 줄이면, &ldquo;대화 내용을 저장한다&quot;가 아니라 <strong>에이전트가 세션 사이에서 프로젝트 맥락을 잃지 않게 만드는 하네스</strong> 라는 점에 있다. 저장소 설명도 이를 매우 직접적으로 말한다. 이 프로젝트는 &ldquo;모든 에이전트에 대해 세션 간 persistent context를 제공&quot;하며, 세션 동안 에이전트가 한 일을 캡처하고, AI로 압축하고, 다음 세션에 관련 맥락을 다시 주입한다고 설명한다.<a href="https://github.com/thedotmack/claude-mem">GitHub 저장소</a></p>
+<p>2026년 5월 25일 기준 GitHub API로 확인한 이 저장소의 별 수는 77,994개였다. 설명란에는 Claude Code뿐 아니라 OpenClaw, Codex, Gemini, Hermes, Copilot, OpenCode 등 여러 에이전트 환경에서 동작한다고 적혀 있다. 즉 이 프로젝트는 단순한 Claude Code 플러그인에 머물지 않고, <strong>에이전트 공통 메모리 계층</strong> 을 지향하는 방향으로 확장되고 있다.<a href="https://github.com/thedotmack/claude-mem">GitHub API 확인, 2026-05-25</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>GitHub: <a href="https://github.com/thedotmack/claude-mem">thedotmack/claude-mem</a></li>
+<li>공식 문서: <a href="https://docs.claude-mem.ai/">docs.claude-mem.ai</a></li>
+<li>홈페이지: <a href="https://claude-mem.ai">claude-mem.ai</a></li>
+</ul>
+<h2 id="이-프로젝트가-푸는-문제는-세션이-끊길-때마다-ai가-다시-초보자가-되는-것이다">이 프로젝트가 푸는 문제는 &ldquo;세션이 끊길 때마다 AI가 다시 초보자가 되는 것&quot;이다</h2>
+<p>많은 AI 코딩 도구는 한 세션 안에서는 꽤 똑똑해 보인다. 하지만 세션이 끝나거나, 다른 IDE/CLI로 넘어가거나, 다음 날 다시 열면 이전 맥락을 거의 잃는다. 그러면 사용자는:</p>
+<ul>
+<li>지금까지 무엇을 했는지 다시 설명하고</li>
+<li>어떤 시도를 했는지 반복해서 적고</li>
+<li>실패한 접근과 성공한 접근을 다시 구분하고</li>
+<li>프로젝트 특유의 규칙과 상태를 다시 주입해야 한다</li>
+</ul>
+<p><code>claude-mem</code>은 바로 이 지점을 해결하려 한다. README는 세션 중 도구 사용 관찰을 자동으로 수집하고, semantic summary를 만든 뒤, 미래 세션이 시작될 때 관련 맥락을 다시 보여 준다고 설명한다.<a href="https://github.com/thedotmack/claude-mem">GitHub 저장소</a></p>
+<p>즉 핵심은 전체 로그를 그대로 들고 다니는 것이 아니라, <strong>미래 세션에 필요한 만큼만 재구성된 기억</strong> 을 제공하는 것이다.</p>
+<pre class="mermaid">flowchart TD
+    A["현재 세션의 작업"] --> B["도구 사용 / 관찰 수집"]
+    B --> C["요약 / 압축 저장"]
+    C --> D["세션 종료 후 메모리 보존"]
+    D --> E["다음 세션 시작"]
+    E --> F["관련 맥락 재주입"]
+
+    classDef sessionTone fill:#c5dcef,stroke:#5b8db8,color:#333;
+    classDef memoryTone fill:#c0ecd3,stroke:#69a97d,color:#333;
+    classDef nextTone fill:#fde8c0,stroke:#c9a647,color:#333;
+
+    class A,E sessionTone
+    class B,C,D memoryTone
+    class F nextTone</pre><h2 id="readme가-강조하는-핵심은-캡처--압축--재주입의-자동-루프다">README가 강조하는 핵심은 &ldquo;캡처 → 압축 → 재주입&quot;의 자동 루프다</h2>
+<p>README는 이 시스템을 자동으로 동작하는 persistent memory compression system이라고 부른다. 사용자는 수동으로 메모를 남기지 않아도 되고, 각 세션 종료 후 회고 문서를 따로 정리하지 않아도 된다. 대신 훅과 워커가 백그라운드에서:</p>
+<ul>
+<li>관찰을 수집하고</li>
+<li>요약을 만들고</li>
+<li>저장하고</li>
+<li>검색 가능하게 만들고</li>
+<li>필요한 세션에만 다시 넣는다</li>
+</ul>
+<p>라는 루프를 수행한다.<a href="https://github.com/thedotmack/claude-mem">GitHub 저장소</a></p>
+<p>이 점에서 <code>claude-mem</code>은 단순한 노트 앱이나 RAG 캐시보다 더 하네스적이다. 저장이 목적이 아니라, <strong>미래 세션의 토큰과 인지 비용을 줄이기 위한 압축 메커니즘</strong> 이 목적이기 때문이다.</p>
+<h2 id="설치-방식이-npm-라이브러리가-아니라-작동하는-시스템인-이유">설치 방식이 &ldquo;npm 라이브러리&quot;가 아니라 &ldquo;작동하는 시스템&quot;인 이유</h2>
+<p>README는 설치 명령을 매우 강하게 구분한다. 권장 설치는 <code>npx claude-mem install</code>이고, Claude Code 안에서는 플러그인 마켓플레이스 명령도 지원한다. 반면 <code>npm install -g claude-mem</code>은 SDK/library만 설치할 뿐, 플러그인 훅이나 워커 서비스 설정은 하지 않는다고 명시한다.<a href="https://github.com/thedotmack/claude-mem">GitHub 저장소</a></p>
+<p>이 안내는 중요하다. <code>claude-mem</code>은 패키지 몇 개 불러오는 라이브러리가 아니라:</p>
+<ul>
+<li>훅 등록</li>
+<li>워커 실행</li>
+<li>데이터 디렉터리 생성</li>
+<li>검색 인덱스 준비</li>
+<li>웹 뷰어 기동</li>
+</ul>
+<p>같은 <strong>운영 환경 전체</strong> 가 있어야 의미가 생기는 시스템이기 때문이다.</p>
+<p>즉 이 프로젝트는 &ldquo;패키지 설치&quot;보다 <strong>메모리 인프라 부팅</strong> 에 가깝다.</p>
+<pre class="mermaid">flowchart TD
+    A["npx claude-mem install"] --> B["플러그인 / 훅 등록"]
+    A --> C["워커 서비스 준비"]
+    A --> D["데이터 저장소 준비"]
+    A --> E["검색 구성요소 준비"]
+    B --> F["자동 메모리 루프 동작"]
+    C --> F
+    D --> F
+    E --> F
+
+    classDef installTone fill:#c5dcef,stroke:#5b8db8,color:#333;
+    classDef infraTone fill:#c0ecd3,stroke:#69a97d,color:#333;
+    classDef runTone fill:#fde8c0,stroke:#c9a647,color:#333;
+
+    class A installTone
+    class B,C,D,E infraTone
+    class F runTone</pre><h2 id="아키텍처의-중심은-훅과-워커-서비스다">아키텍처의 중심은 훅과 워커 서비스다</h2>
+<p>README의 &ldquo;How It Works&rdquo; 섹션은 이 시스템의 핵심 구성요소를 꽤 명확히 적어 둔다.</p>
+<ul>
+<li>5개의 라이프사이클 훅</li>
+<li>Smart Install용 pre-hook</li>
+<li>포트 37777에서 동작하는 Worker Service와 Web Viewer</li>
+<li>SQLite 데이터베이스</li>
+<li><code>mem-search</code> 스킬</li>
+<li>Chroma 벡터 데이터베이스</li>
+</ul>
+<p>여기서 특히 중요한 것은 훅과 워커의 역할 분리다. 훅은 세션 라이프사이클의 특정 시점에 관찰을 발생시키고, 워커는 HTTP API와 UI, 검색 엔드포인트, 저장소 관리 등을 맡는다. 즉 훅이 &ldquo;센서&quot;라면 워커는 &ldquo;메모리 운영체제&quot;에 가깝다.<a href="https://github.com/thedotmack/claude-mem">GitHub 저장소</a></p>
+<pre class="mermaid">flowchart TD
+    A["에이전트 세션"] --> B["Lifecycle Hooks"]
+    B --> C["관찰 이벤트 생성"]
+    C --> D["Worker Service :37777"]
+    D --> E["SQLite"]
+    D --> F["Chroma Vector DB"]
+    D --> G["Web Viewer UI"]
+    D --> H["Search API / mem-search"]
+
+    classDef sessionTone fill:#c5dcef,stroke:#5b8db8,color:#333;
+    classDef hookTone fill:#fde8c0,stroke:#c9a647,color:#333;
+    classDef coreTone fill:#c0ecd3,stroke:#69a97d,color:#333;
+
+    class A sessionTone
+    class B,C hookTone
+    class D,E,F,G,H coreTone</pre><p>이 설계 때문에 <code>claude-mem</code>은 단순한 &ldquo;세션 텍스트 저장기&quot;가 아니라, <strong>관찰 이벤트를 구조화해서 검색 가능한 메모리로 바꾸는 파이프라인</strong> 으로 읽힌다.</p>
+<h2 id="검색-설계가-흥미로운-이유는-처음부터-전체를-주지-않는다는-점이다">검색 설계가 흥미로운 이유는 &ldquo;처음부터 전체를 주지 않는다&quot;는 점이다</h2>
+<p>README에서 가장 눈에 띄는 부분 중 하나는 MCP Search Tools 설명이다. 여기서는 토큰 효율적인 3단계 워크플로를 전면에 둔다.</p>
+<ol>
+<li><code>search</code>로 compact index를 본다</li>
+<li><code>timeline</code>으로 주변 시퀀스를 본다</li>
+<li><code>get_observations</code>로 정말 필요한 ID만 전체 상세를 가져온다</li>
+</ol>
+<p>README는 이 구조가 약 10배 토큰 절감을 준다고 주장한다. 중요한 건 수치 자체보다 철학이다. 즉 메모리 검색은 &ldquo;관련 없어 보이는 모든 과거를 한 번에 주입&quot;하는 방식이 아니라, <strong>좁혀 가며 불러오는 progressive disclosure 구조</strong> 로 설계돼 있다.<a href="https://github.com/thedotmack/claude-mem">GitHub 저장소</a></p>
+<pre class="mermaid">flowchart TD
+    A["메모리 질의"] --> B["search<br>압축 인덱스"]
+    B --> C["timeline<br>주변 맥락 확인"]
+    C --> D["get_observations<br>선별된 상세 조회"]
+
+    classDef queryTone fill:#c5dcef,stroke:#5b8db8,color:#333;
+    classDef layerTone fill:#fde8c0,stroke:#c9a647,color:#333;
+    classDef detailTone fill:#c0ecd3,stroke:#69a97d,color:#333;
+
+    class A queryTone
+    class B,C layerTone
+    class D detailTone</pre><p>이 설계는 최근의 코드 그래프나 검색 레이어 도구들과도 결이 비슷하다. 전체 본문을 다 넣는 대신, <strong>먼저 인덱스를 보고 그다음 필요한 것만 펼친다</strong> 는 것이다.</p>
+<h2 id="progressive-disclosure는-그냥-ux가-아니라-메모리-철학이다">Progressive Disclosure는 그냥 UX가 아니라 메모리 철학이다</h2>
+<p>README는 주요 기능 목록에서도 &ldquo;Progressive Disclosure&quot;를 별도 항목으로 강조한다. 또 공식 문서 링크 중에서도 <code>context-engineering</code>과 <code>progressive-disclosure</code>를 따로 둔다. 이건 단순 UI 디테일이 아니다. 이 프로젝트는 컨텍스트 주입을 &ldquo;많이 넣을수록 좋다&quot;가 아니라, <strong>필요한 만큼만 층층이 여는 것</strong> 으로 이해하고 있다.<a href="https://github.com/thedotmack/claude-mem">GitHub 저장소</a></p>
+<p>이 철학이 중요한 이유는 세션 메모리 시스템이 자칫하면 반대로 토큰 낭비와 혼란을 늘릴 수 있기 때문이다. 과거를 모두 기억하는 것은 좋아 보이지만, 실제로는:</p>
+<ul>
+<li>무엇이 현재 문제와 관련 있는지 좁히기 어렵고</li>
+<li>긴 기억이 현재 추론을 오염시키고</li>
+<li>중요한 사실이 사소한 기록에 묻히기 쉽다</li>
+</ul>
+<p><code>claude-mem</code>은 이 문제를 &ldquo;모두 저장&quot;이 아니라 <strong>모두 저장하되, 모두 주입하지는 않는다</strong> 는 방식으로 푼다.</p>
+<h2 id="개인정보-제어와-인용-기능까지-넣은-건-운영-툴로-가고-있다는-신호다">개인정보 제어와 인용 기능까지 넣은 건 &ldquo;운영 툴&quot;로 가고 있다는 신호다</h2>
+<p>README는 <code>&lt;private&gt;</code> 태그로 민감한 내용을 저장에서 제외할 수 있다고 설명하고, 관찰 ID를 통해 과거 기록을 인용하거나 웹 뷰어에서 조회할 수 있다고 적어 둔다. 이는 단순 편의 기능처럼 보이지만 사실 운영 관점에서 중요하다.<a href="https://github.com/thedotmack/claude-mem">GitHub 저장소</a></p>
+<p>메모리 시스템이 실제 팀과 프로젝트에서 쓰이려면:</p>
+<ul>
+<li>민감 정보를 배제할 수 있어야 하고</li>
+<li>어떤 기억을 근거로 현재 판단이 나왔는지 추적 가능해야 하며</li>
+<li>사람이 UI에서 직접 확인할 수 있어야 한다</li>
+</ul>
+<p>즉 이 프로젝트는 벌써부터 메모리를 &ldquo;잘 저장하는 기능&quot;보다 <strong>감사 가능하고 운영 가능한 기억 시스템</strong> 으로 만들려는 방향을 보인다.</p>
+<h2 id="openclaw-gemini-codex까지-지원한다는-건-claude-전용-해킹을-넘어섰다는-뜻이다">OpenClaw, Gemini, Codex까지 지원한다는 건 &ldquo;Claude 전용 해킹&quot;을 넘어섰다는 뜻이다</h2>
+<p>README는 Claude Code 네이티브 플러그인 설치 외에 Gemini CLI, OpenCode, OpenClaw Gateway, 그리고 여러 IDE/CLI 지원을 강조한다. 이게 의미하는 바는 명확하다. 메모리 계층이 특정 모델 앱 안에 갇히는 게 아니라, <strong>에이전트 런타임 바깥에 독립 레이어로 서려는 것</strong> 이다.<a href="https://github.com/thedotmack/claude-mem">GitHub 저장소</a></p>
+<p>이 관점은 앞으로 더 중요해질 가능성이 크다. 실제 작업에서는 한 사람이:</p>
+<ul>
+<li>Claude Code로 구현하고</li>
+<li>Codex로 리뷰하고</li>
+<li>Gemini로 대체 관점을 보고</li>
+<li>OpenClaw나 Hermes로 자동화 에이전트를 돌릴 수 있다</li>
+</ul>
+<p>그럴 때 세션 메모리가 각 도구 안에 갇혀 있으면 매번 컨텍스트가 끊어진다. <code>claude-mem</code>의 멀티 플랫폼 지향은 바로 이 단절을 줄이려는 시도다.</p>
+<pre class="mermaid">flowchart TD
+    A["공통 메모리 계층"] --> B["Claude Code"]
+    A --> C["Codex"]
+    A --> D["Gemini CLI"]
+    A --> E["OpenClaw / Hermes"]
+    A --> F["기타 에이전트 환경"]
+
+    classDef memTone fill:#c0ecd3,stroke:#69a97d,color:#333;
+    classDef clientTone fill:#c5dcef,stroke:#5b8db8,color:#333;
+
+    class A memTone
+    class B,C,D,E,F clientTone</pre><h2 id="한계도-분명하다-메모리를-잘-저장하는-것과-잘-판단하는-것은-다르다">한계도 분명하다. 메모리를 잘 저장하는 것과 잘 판단하는 것은 다르다</h2>
+<p>README가 아무리 강력해 보여도, 메모리 시스템이 모든 문제를 해결해 주는 것은 아니다. 저장과 주입이 좋아져도 여전히 남는 문제가 있다.</p>
+<ul>
+<li>무엇을 관찰로 남길지 기준이 과하면 노이즈가 늘 수 있다</li>
+<li>어떤 요약이 중요한지 판단이 틀리면 잘못된 기억이 강화될 수 있다</li>
+<li>오래된 기억이 현재 코드 상태와 어긋날 수 있다</li>
+<li>메모리 검색이 잘못 매치되면 오히려 현재 판단을 흐릴 수 있다</li>
+</ul>
+<p>그래서 <code>claude-mem</code>의 가치는 &ldquo;영구 기억&rdquo; 자체보다, <strong>영구 기억을 토큰 효율적이고 점진적으로 다루려는 운영 철학</strong> 에 있다. 결국 핵심은 많이 기억하는 것이 아니라, <strong>적절한 순간에 적절한 크기로 꺼내는 것</strong> 이다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li><code>claude-mem</code>의 본질은 세션 로그 저장기가 아니라 <strong>세션 간 컨텍스트 압축·재주입 시스템</strong> 이다.</li>
+<li>훅이 관찰을 수집하고, 워커 서비스가 SQLite·Chroma·웹 UI·검색 API를 운영하는 구조다.</li>
+<li><code>search → timeline → get_observations</code>의 3단계 검색 패턴은 메모리를 처음부터 전부 주입하지 않는 progressive disclosure 철학을 보여 준다.</li>
+<li><code>&lt;private&gt;</code> 태그, 관찰 ID 인용, 웹 뷰어 같은 기능은 이 프로젝트가 단순 해킹보다 <strong>운영 가능한 기억 인프라</strong> 로 가고 있음을 보여 준다.</li>
+<li>멀티 플랫폼 지원은 메모리를 특정 도구 내부가 아니라 <strong>에이전트 공통 계층</strong> 으로 두려는 방향성이다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p><code>claude-mem</code>이 커진 이유는 &ldquo;AI가 과거를 기억한다&quot;는 문장만으로는 설명이 부족하다. 더 정확히 말하면, 이 프로젝트는 <strong>에이전트 세션의 작업 흔적을 압축된 기억으로 바꾸고, 미래 세션에 토큰 효율적으로 다시 연결하는 메모리 하네스</strong> 를 제공한다. 에이전트가 많아질수록 문제는 더 큰 모델보다도, 세션이 바뀌어도 맥락이 이어지느냐에 가까워진다. 그런 점에서 <code>claude-mem</code>은 하나의 플러그인이 아니라, <strong>에이전트 시대의 공통 메모리 계층을 실험하는 대표 사례</strong> 로 볼 수 있다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 05월 25일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-25-clean-architecture-on-frontend-domain-usecase-adapters/" rel="prev">
+        <span>프런트엔드에 클린 아키텍처를 적용한다는 말의 뜻: React 컴포넌트 분리가 아니라 도메인·유스케이스·어댑터를 나누는 것</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-26-caveman-output-vs-full-token-compression/" rel="next">
+        <span>Caveman이 진짜 줄이는 것은 무엇인가: 출력만 짧게 만드는 스킬과 전체 토큰 파이프라인 압축의 차이</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#이-프로젝트가-푸는-문제는-세션이-끊길-때마다-ai가-다시-초보자가-되는-것이다">이 프로젝트가 푸는 문제는 &ldquo;세션이 끊길 때마다 AI가 다시 초보자가 되는 것&quot;이다</a></li>
+    <li><a href="#readme가-강조하는-핵심은-캡처--압축--재주입의-자동-루프다">README가 강조하는 핵심은 &ldquo;캡처 → 압축 → 재주입&quot;의 자동 루프다</a></li>
+    <li><a href="#설치-방식이-npm-라이브러리가-아니라-작동하는-시스템인-이유">설치 방식이 &ldquo;npm 라이브러리&quot;가 아니라 &ldquo;작동하는 시스템&quot;인 이유</a></li>
+    <li><a href="#아키텍처의-중심은-훅과-워커-서비스다">아키텍처의 중심은 훅과 워커 서비스다</a></li>
+    <li><a href="#검색-설계가-흥미로운-이유는-처음부터-전체를-주지-않는다는-점이다">검색 설계가 흥미로운 이유는 &ldquo;처음부터 전체를 주지 않는다&quot;는 점이다</a></li>
+    <li><a href="#progressive-disclosure는-그냥-ux가-아니라-메모리-철학이다">Progressive Disclosure는 그냥 UX가 아니라 메모리 철학이다</a></li>
+    <li><a href="#개인정보-제어와-인용-기능까지-넣은-건-운영-툴로-가고-있다는-신호다">개인정보 제어와 인용 기능까지 넣은 건 &ldquo;운영 툴&quot;로 가고 있다는 신호다</a></li>
+    <li><a href="#openclaw-gemini-codex까지-지원한다는-건-claude-전용-해킹을-넘어섰다는-뜻이다">OpenClaw, Gemini, Codex까지 지원한다는 건 &ldquo;Claude 전용 해킹&quot;을 넘어섰다는 뜻이다</a></li>
+    <li><a href="#한계도-분명하다-메모리를-잘-저장하는-것과-잘-판단하는-것은-다르다">한계도 분명하다. 메모리를 잘 저장하는 것과 잘 판단하는 것은 다르다</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

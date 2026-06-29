@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude Code로 내 목소리와 모션 그래픽 영상을 함께 자동화하기: VoiceBox &#43; HyperFrames 워크플로우'" />
+  <title>Claude Code로 내 목소리와 모션 그래픽 영상을 함께 자동화하기: VoiceBox &#43; HyperFrames 워크플로우  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude Code로 내 목소리와 모션 그래픽 영상을 함께 자동화하기: VoiceBox &#43; HyperFrames 워크플로우" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-05-15"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/05/2026-05-15-voicebox-hyperframes-claude-code-video-automation/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+  <meta property="og:tags" content="automation" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/05/2026-05-15-voicebox-hyperframes-claude-code-video-automation/">
+          <h1>
+            Claude Code로 내 목소리와 모션 그래픽 영상을 함께 자동화하기: VoiceBox &#43; HyperFrames 워크플로우
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/05/2026-05-15-voicebox-hyperframes-claude-code-video-automation/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>에딭초이의 영상은 요즘 AI 영상 자동화가 어디까지 내려왔는지 잘 보여줍니다. 한 마디도 직접 녹음하지 않고, 한 줄도 직접 코딩하지 않으면서, 내 목소리로 나레이션을 만들고 그 나레이션을 기반으로 모션 그래픽 영상까지 자동 생성합니다. 핵심 조합은 <code>VoiceBox</code>와 <code>HyperFrames</code>, 그리고 이를 설치하고 실행하게 만드는 <code>Claude Code</code>입니다. <a href="https://youtu.be/aaiEg5ZniyQ?t=0">0:00</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://youtu.be/aaiEg5ZniyQ?si=Amb93xX99RgDCTSk">https://youtu.be/aaiEg5ZniyQ?si=Amb93xX99RgDCTSk</a></li>
+<li>VoiceBox GitHub: <a href="https://github.com/jamiepine/voicebox">https://github.com/jamiepine/voicebox</a></li>
+<li>VoiceBox site: <a href="https://voicebox.sh/">https://voicebox.sh/</a></li>
+<li>HyperFrames GitHub: <a href="https://github.com/heygen-com/hyperframes">https://github.com/heygen-com/hyperframes</a></li>
+<li>HyperFrames site: <a href="https://hyperframes.heygen.com/">https://hyperframes.heygen.com/</a></li>
+<li>Claude Code: <a href="https://claude.com/code">https://claude.com/code</a></li>
+</ul>
+<h2 id="전체-구조-두-단계면-영상-한-편이-나온다">전체 구조: 두 단계면 영상 한 편이 나온다</h2>
+<p>영상은 워크플로우를 두 단계로 설명합니다. 첫 번째는 VoiceBox로 내 목소리를 복제해 나레이션을 만드는 단계, 두 번째는 그 나레이션을 HyperFrames에 넘겨 모션 그래픽 영상을 만드는 단계입니다. <a href="https://youtu.be/aaiEg5ZniyQ?t=15">00:15</a></p>
+<pre class="mermaid">flowchart TD
+    A["참조 음성 30초~1분"] --> B["VoiceBox"]
+    B --> C["로컬 음성 복제"]
+    C --> D["나레이션 오디오"]
+    D --> E["HyperFrames"]
+    E --> F["HTML 기반 영상 장면 생성"]
+    F --> G["모션 그래픽 영상"]
+    H["Claude Code"] --> B
+    H --> E
+
+    classDef inputTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef toolTone fill:#fde8c0,stroke:#c59a45,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    class A,D inputTone
+    class B,E,H toolTone
+    class C,F,G outputTone</pre><p>즉 이 흐름은 &ldquo;TTS 도구 하나&quot;가 아니라, <strong>음성 계층</strong> 과 <strong>영상 계층</strong> 을 분리한 자동화 파이프라인입니다. VoiceBox는 목소리와 발화를 담당하고, HyperFrames는 시각 표현과 모션을 담당합니다.</p>
+<h2 id="voicebox-로컬-음성-복제의-의미">VoiceBox: 로컬 음성 복제의 의미</h2>
+<p>영상은 VoiceBox를 GitHub 별 25,000개 이상을 받은 로컬 음성 복제 도구로 소개합니다. <a href="https://youtu.be/aaiEg5ZniyQ?t=35">00:35</a> 공개 저장소 설명도 VoiceBox를 &ldquo;local-first AI voice studio&quot;라고 부르며, 짧은 오디오 샘플로 voice cloning을 하고, 여러 TTS 엔진으로 speech generation을 수행하며, 전체 stack을 로컬 머신에서 돌린다고 설명합니다. <a href="https://github.com/jamiepine/voicebox">VoiceBox GitHub</a></p>
+<p>이 로컬 실행의 의미는 큽니다.</p>
+<ul>
+<li>외부 서버에 내 음성 샘플을 보내지 않아도 됨</li>
+<li>클라우드 사용료 없이 실험 가능</li>
+<li>voice profile과 음성 데이터가 로컬에 남음</li>
+<li>Claude Code가 설치/실행을 자동화하기 쉬움</li>
+</ul>
+<pre class="mermaid">flowchart TD
+    A["클라우드 음성 복제"] --> B["외부 서버 업로드"]
+    B --> C["비용/프라이버시 부담"]
+
+    D["로컬 VoiceBox"] --> E["로컬 음성 샘플 처리"]
+    E --> F["무료 실험 가능"]
+    E --> G["개인정보 통제 쉬움"]
+    E --> H["Claude Code 자동화 적합"]
+
+    classDef cloudTone fill:#ffc8c4,stroke:#c96f68,color:#333
+    classDef localTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    class A,B,C cloudTone
+    class D,E,F,G,H localTone</pre><p>영상도 ElevenLabs 같은 유료 대안을 언급하지만, 이 워크플로우의 매력은 <strong>무료 + 로컬 + 자동화</strong> 라는 조합에 있습니다.</p>
+<h2 id="hyperframes-영상-만들어줘를-html로-바꾸는-계층">HyperFrames: “영상 만들어줘”를 HTML로 바꾸는 계층</h2>
+<p>영상은 HyperFrames를 &ldquo;이런 영상 만들어줘&quot;라고 요청하면 HTML 기반으로 짜 주는 도구라고 설명합니다. <a href="https://youtu.be/aaiEg5ZniyQ?t=35">00:35</a> HeyGen의 공개 저장소도 HyperFrames를 <code>Write HTML. Render video. Built for agents.</code>라고 설명합니다. 즉 프레임 기반 영상 생성 문제를 HTML/CSS/JS 렌더링 문제로 바꾸는 접근입니다. <a href="https://github.com/heygen-com/hyperframes">HyperFrames GitHub</a></p>
+<pre class="mermaid">flowchart TD
+    A["자연어 영상 요청"] --> B["Claude Code"]
+    B --> C["HTML/CSS/JS 장면 코드"]
+    C --> D["HyperFrames 렌더링"]
+    D --> E["MP4/영상 출력"]
+
+    classDef requestTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef codeTone fill:#fde8c0,stroke:#c59a45,color:#333
+    classDef renderTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    class A requestTone
+    class B,C codeTone
+    class D,E renderTone</pre><p>이 구조가 중요한 이유는 Claude Code가 잘하는 일이 &ldquo;코드 생성&quot;이기 때문입니다. 일반 video editor를 직접 조작하는 것보다, HTML 기반 장면으로 바꾸는 쪽이 에이전트에게 더 잘 맞습니다.</p>
+<h2 id="설치는-사람이-아니라-claude-code에게-맡긴다">설치는 사람이 아니라 Claude Code에게 맡긴다</h2>
+<p>영상은 둘 다 GitHub 오픈소스이고 설치부터 영상 제작까지 Claude Code에게 시켜서 만들었다고 설명합니다. <a href="https://youtu.be/aaiEg5ZniyQ?t=35">00:35</a> 실제 시연에서도 바탕화면에 테스트 폴더를 만든 뒤 VoiceBox GitHub 주소를 복사해 Claude에게 설치를 부탁합니다. <a href="https://youtu.be/aaiEg5ZniyQ?t=72">01:12</a></p>
+<p>이 지점이 중요합니다. AI 영상 자동화의 병목은 도구 성능만이 아니라 설치와 연결입니다. VoiceBox는 로컬 TTS/voice cloning 툴이고, HyperFrames는 Node.js 기반 렌더링 툴이므로, 각각 설치와 환경 구성이 필요합니다. Claude Code는 이 연결 작업을 대신 수행합니다.</p>
+<pre class="mermaid">flowchart TD
+    A["GitHub repo URL"] --> B["Claude Code"]
+    B --> C["환경 확인"]
+    C --> D["필요 의존성 설치"]
+    D --> E["도구 실행 검증"]
+    E --> F["워크플로우 조립"]
+
+    classDef inputTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef processTone fill:#fde8c0,stroke:#c59a45,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    class A inputTone
+    class B,C,D,E processTone
+    class F resultTone</pre><p>즉 Claude Code는 영상 자체를 만드는 메인 엔진이 아니라, 서로 다른 오픈소스 툴을 <strong>작업 가능한 파이프라인으로 엮는 자동화 관리자</strong> 역할을 합니다.</p>
+<h2 id="실제-입력-30초-음성-샘플-하나로-시작한다">실제 입력: 30초 음성 샘플 하나로 시작한다</h2>
+<p>자막을 보면 VoiceBox 설치 후 최대 30초 업로드를 요구하며, 제작자는 바로 자신의 목소리를 녹음해 샘플로 넣습니다. <a href="https://youtu.be/aaiEg5ZniyQ?t=111">01:51</a> 이것은 중요한 제약입니다. 워크플로우가 아주 간단해 보이지만, 최소한 참조 음성 샘플 품질은 결과를 크게 좌우합니다.</p>
+<p>좋은 샘플의 조건은 보통 다음과 같습니다.</p>
+<ul>
+<li>배경 소음이 적음</li>
+<li>말이 또렷함</li>
+<li>너무 짧지 않음</li>
+<li>지나친 감정 표현이나 효과음이 없음</li>
+</ul>
+<pre class="mermaid">flowchart TD
+    A["참조 음성 샘플"] --> B["깨끗한 환경"]
+    A --> C["또렷한 발음"]
+    A --> D["충분한 길이"]
+    A --> E["일관된 톤"]
+    B --> F["복제 품질 향상"]
+    C --> F
+    D --> F
+    E --> F
+
+    classDef sampleTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef qualityTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    class A,B,C,D,E sampleTone
+    class F qualityTone</pre><p>즉 &ldquo;5분 만에 복제&quot;는 가능하더라도, 실제 품질은 입력 음성의 품질에 크게 좌우됩니다.</p>
+<h2 id="결과는-빠르지만-한계도-분명하다">결과는 빠르지만 한계도 분명하다</h2>
+<p>영상은 1:20에서 결과를 보여주고, 1:28에서 한국어 한계와 윤리 문제를 솔직하게 짚습니다. <a href="https://youtu.be/aaiEg5ZniyQ?t=80">01:20</a> <a href="https://youtu.be/aaiEg5ZniyQ?t=88">01:28</a></p>
+<p>이 지점은 매우 중요합니다. 로컬 오픈소스 음성 복제는 무료이고 빠르지만, 한국어 발음 자연스러움, 감정 표현, prosody, 장문 안정성 면에서 유료 상용 서비스보다 약할 수 있습니다. 또한 목소리 복제는 기술적으로 가능하더라도, 타인의 목소리를 무단으로 쓰는 것은 윤리적·법적 문제가 큽니다.</p>
+<pre class="mermaid">flowchart TD
+    A["무료 로컬 음성 복제"] --> B["비용 장점"]
+    A --> C["프라이버시 장점"]
+    A --> D["품질 한계 가능성"]
+    A --> E["윤리/동의 문제"]
+    D --> F["언어별 품질 편차"]
+    E --> G["본인 음성·명시적 동의 필요"]
+
+    classDef benefitTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    classDef cautionTone fill:#ffc8c4,stroke:#c96f68,color:#333
+    class A benefitTone
+    class B,C benefitTone
+    class D,E,F,G cautionTone</pre><p>이 워크플로우는 &ldquo;클론이 가능하다&quot;는 데서 끝나지 않습니다. 어디까지 쓸 것인지, 누구의 음성을 쓸 것인지, 상업 이용 시 어떤 고지를 할 것인지도 설계해야 합니다.</p>
+<h2 id="결국-중요한-건-디렉터의-안목이다">결국 중요한 건 디렉터의 안목이다</h2>
+<p>영상 마지막 메시지는 도구보다 디렉터의 안목이 더 중요하다는 점입니다. <a href="https://youtu.be/aaiEg5ZniyQ?t=111">01:51</a> 이 말은 AI 영상 자동화 전체를 관통합니다.</p>
+<p>AI가 대신하는 것은 녹음과 장면 렌더링입니다. 하지만 다음은 여전히 사람이 결정해야 합니다.</p>
+<ul>
+<li>어떤 톤으로 말할 것인가</li>
+<li>어떤 메시지를 몇 초 안에 전달할 것인가</li>
+<li>어떤 장면 흐름이 적절한가</li>
+<li>어떤 브랜드 감성을 유지할 것인가</li>
+<li>어디까지 자동화하고 어디서 수동 검수할 것인가</li>
+</ul>
+<pre class="mermaid">flowchart TD
+    A["사람의 역할"] --> B["콘텐츠 기획"]
+    A --> C["톤/브랜드 결정"]
+    A --> D["장면 흐름 설계"]
+    A --> E["윤리/공개 범위 결정"]
+    F["AI의 역할"] --> G["음성 합성"]
+    F --> H["HTML 기반 영상 생성"]
+    F --> I["반복 작업 자동화"]
+    B --> F
+    C --> F
+    D --> F
+    E --> F
+
+    classDef humanTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef aiTone fill:#fde8c0,stroke:#c59a45,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    class A,B,C,D,E humanTone
+    class F,G,H,I aiTone</pre><p>좋은 영상 자동화는 AI가 전부 대신하는 것이 아니라, 사람이 방향을 정하고 AI가 반복 제작을 담당하는 구조에서 나옵니다.</p>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<p>첫째, 처음에는 10~20초짜리 짧은 영상으로 테스트하는 편이 좋습니다. 음성 복제와 장면 생성의 품질을 한 번에 긴 분량에서 검증하려 하면 수정 비용이 커집니다.</p>
+<p>둘째, VoiceBox는 로컬 툴이므로 장비 성능 영향을 받습니다. 영상도 너무 저사양이면 잘 안 될 수 있다고 언급합니다. 반면 HyperFrames는 Node.js 설치만으로 시작 가능하다고 설명합니다. <a href="https://youtu.be/aaiEg5ZniyQ?t=72">01:12</a></p>
+<p>셋째, 나레이션 스크립트는 짧고 장면 단위로 나눠야 HyperFrames에서 시각 흐름을 설계하기 쉽습니다. 하나의 긴 문단보다 장면별 메시지가 더 잘 맞습니다.</p>
+<p>넷째, 한국어 품질은 반드시 직접 확인해야 합니다. 음성은 사람에게 가장 민감한 출력이므로, 아주 작은 억양 이상도 전체 퀄리티를 떨어뜨릴 수 있습니다.</p>
+<p>다섯째, 본인 음성 또는 명시적 허락을 받은 음성만 사용해야 합니다. 무료 오픈소스라고 해서 윤리 기준까지 무료가 되는 것은 아닙니다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>이 워크플로우는 <code>VoiceBox</code>로 로컬 음성 복제를 하고 <code>HyperFrames</code>로 HTML 기반 모션 그래픽 영상을 만드는 2단계 구조입니다. <a href="https://youtu.be/aaiEg5ZniyQ?t=15">00:15</a></li>
+<li>둘 다 GitHub 오픈소스이며, Claude Code가 설치와 연결을 자동화하는 역할을 맡습니다. <a href="https://youtu.be/aaiEg5ZniyQ?t=35">00:35</a></li>
+<li>VoiceBox의 장점은 무료, 로컬 실행, 프라이버시 통제이고, HyperFrames의 장점은 에이전트가 잘 다룰 수 있는 HTML 기반 영상 생성입니다.</li>
+<li>결과는 빠르게 나오지만, 한국어 자연스러움과 윤리 문제는 반드시 검토해야 합니다. <a href="https://youtu.be/aaiEg5ZniyQ?t=88">01:28</a></li>
+<li>결국 차이는 도구가 아니라 디렉터의 안목에서 나온다는 것이 영상의 결론입니다. <a href="https://youtu.be/aaiEg5ZniyQ?t=111">01:51</a></li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>이 워크플로우가 보여주는 가장 큰 변화는 &ldquo;영상 제작의 기술 장벽&quot;이 아니라 &ldquo;영상 제작의 구조&quot;가 바뀌고 있다는 점입니다. 목소리는 VoiceBox가, 장면은 HyperFrames가, 설치와 연결은 Claude Code가 맡습니다. 사람은 점점 손을 덜 대지만, 대신 더 정확하게 기획하고 판단해야 합니다.</p>
+<p>그래서 앞으로 중요한 능력은 더 좋은 TTS 버튼을 찾는 것이 아니라, 어떤 톤의 나레이션과 어떤 장면 흐름이 맞는지 판단하는 능력입니다. 도구는 계속 쉬워지고 무료화되겠지만, 결과물의 차이는 결국 <strong>디렉터로서의 감각과 설계 능력</strong> 에서 갈리게 됩니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 05월 15일 07시 08분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/automation">Automation</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-14-ai-skill-selection-criteria-six/" rel="prev">
+        <span>AI 스킬 절반은 안 써도 된다: 진짜 쓸 만한 스킬을 고르는 기준 6가지</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-15-karpathy-claude-md-korean-customization/" rel="next">
+        <span>Karpathy의 65줄 CLAUDE.md를 그대로 쓰면 부족한 이유: 한국어 실무 환경에서 추가할 5가지 규칙</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#전체-구조-두-단계면-영상-한-편이-나온다">전체 구조: 두 단계면 영상 한 편이 나온다</a></li>
+    <li><a href="#voicebox-로컬-음성-복제의-의미">VoiceBox: 로컬 음성 복제의 의미</a></li>
+    <li><a href="#hyperframes-영상-만들어줘를-html로-바꾸는-계층">HyperFrames: “영상 만들어줘”를 HTML로 바꾸는 계층</a></li>
+    <li><a href="#설치는-사람이-아니라-claude-code에게-맡긴다">설치는 사람이 아니라 Claude Code에게 맡긴다</a></li>
+    <li><a href="#실제-입력-30초-음성-샘플-하나로-시작한다">실제 입력: 30초 음성 샘플 하나로 시작한다</a></li>
+    <li><a href="#결과는-빠르지만-한계도-분명하다">결과는 빠르지만 한계도 분명하다</a></li>
+    <li><a href="#결국-중요한-건-디렉터의-안목이다">결국 중요한 건 디렉터의 안목이다</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+    <a href="/tags/automation/" class="badge badge-secondary">Automation</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

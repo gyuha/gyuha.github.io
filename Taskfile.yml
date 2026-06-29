@@ -40,5 +40,6 @@ tasks:
       - 'git clean -fd docs'
       - 'git pull origin master --no-rebase'
       - "{{.HUGO}} -D"
+      - 'bash scripts/mirror-docs-to-root.sh'
       - 'git add . && git diff --staged --quiet || git commit -m "build: rebuild site $(date +%Y-%m-%d\ %H:%M:%S)"'
       - 'git push'

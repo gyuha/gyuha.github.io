@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Semble이 흥미로운 이유: grep 대신 에이전트에게 &#39;의미 기반 코드 검색기&#39;를 붙이는 방식'" />
+  <title>Semble이 흥미로운 이유: grep 대신 에이전트에게 &#39;의미 기반 코드 검색기&#39;를 붙이는 방식  | 신규하 블로그</title>
+  <meta property="og:title" content="Semble이 흥미로운 이유: grep 대신 에이전트에게 &#39;의미 기반 코드 검색기&#39;를 붙이는 방식" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-05-19"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/05/2026-05-19-semble-code-search-for-agents/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="agents" />
+  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="mcp" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/05/2026-05-19-semble-code-search-for-agents/">
+          <h1>
+            Semble이 흥미로운 이유: grep 대신 에이전트에게 &#39;의미 기반 코드 검색기&#39;를 붙이는 방식
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/05/2026-05-19-semble-code-search-for-agents/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Semble을 한 문장으로 줄이면, <strong>코딩 에이전트가 매번 grep으로 파일을 뒤지고 긴 파일을 통째로 읽는 대신, 필요한 코드 조각만 바로 찾게 만드는 검색 계층</strong> 이다. 저장소 첫 문장도 같은 포지션을 잡고 있다. &ldquo;Fast and Accurate Code Search for Agents&rdquo;, 그리고 &ldquo;grep+read보다 약 98% 적은 토큰&quot;이 핵심 메시지다.<a href="https://github.com/MinishLab/semble">GitHub README</a></p>
+<p>이 프로젝트가 흥미로운 이유는 단순히 &ldquo;검색이 빠르다&quot;가 아니다. Claude Code, Codex, Cursor, OpenCode 같은 에이전트형 개발 도구가 실제로 낭비하는 비용이 무엇인지 정확히 찌르기 때문이다. 많은 경우 병목은 모델 추론 그 자체보다, <strong>어떤 파일을 읽어야 하는지 찾는 과정</strong> 과 <strong>관련 없는 파일까지 통째로 읽는 컨텍스트 낭비</strong> 에 있다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>원본 저장소: <a href="https://github.com/MinishLab/semble">https://github.com/MinishLab/semble</a></li>
+</ul>
+<h2 id="semble이-겨냥하는-병목은-코드-생성이-아니라-코드-탐색이다">Semble이 겨냥하는 병목은 &ldquo;코드 생성&quot;이 아니라 &ldquo;코드 탐색&quot;이다</h2>
+<p>공식 README는 Semble을 &ldquo;code search library built for agents&quot;라고 정의한다. 중요한 건 built for agents라는 표현이다. 사람을 위한 검색기라기보다, <strong>에이전트가 다음 행동을 결정하기 전에 최소한의 코드 컨텍스트를 회수하도록 설계된 도구</strong> 라는 뜻이다.<a href="https://github.com/MinishLab/semble">GitHub README</a></p>
+<p>README가 제시하는 기본 문제 구조는 이렇다.</p>
+<ul>
+<li>에이전트는 먼저 무엇을 읽어야 할지 찾는다</li>
+<li>일반적으로는 grep이나 문자열 검색으로 후보를 넓힌다</li>
+<li>그 다음 관련 파일을 통째로 읽는다</li>
+<li>이 과정에서 많은 토큰과 시간이 낭비된다</li>
+</ul>
+<p>Semble은 여기서 &ldquo;파일 전체 읽기&quot;가 아니라 <strong>관련 청크만 반환</strong> 하도록 설계됐다. README의 표현을 그대로 옮기면, 자연어 질문이나 심볼 이름으로 검색해도 &ldquo;relevant code snippets&quot;만 돌려준다.<a href="https://github.com/MinishLab/semble">GitHub README</a></p>
+<pre class="mermaid">flowchart TD
+    A["기존 에이전트 탐색"] --> B["grep / 문자열 검색"]
+    B --> C["관련 파일 전체 읽기"]
+    C --> D["토큰 낭비"]
+    C --> E["지연 증가"]
+
+    F["Semble 탐색"] --> G["자연어/심볼 질의"]
+    G --> H["관련 코드 청크만 반환"]
+    H --> I["토큰 절감"]
+    H --> J["빠른 다음 행동"]
+
+    classDef oldTone fill:#ffc8c4,stroke:#c97f7a,color:#333;
+    classDef newTone fill:#c0ecd3,stroke:#69a97d,color:#333;
+
+    class A,B,C,D,E oldTone
+    class F,G,H,I,J newTone</pre><p>즉 Semble은 &ldquo;더 좋은 코드 생성 모델&quot;이 아니라, <strong>모델 앞단에 붙는 검색 최적화 레이어</strong> 로 봐야 정확하다.</p>
+<h2 id="설치-방식이-보여-주는-핵심-포지셔닝">설치 방식이 보여 주는 핵심 포지셔닝</h2>
+<p>Semble은 두 가지 경로로 붙일 수 있다.</p>
+<ul>
+<li>MCP 서버로 붙이기</li>
+<li>Bash / <code>AGENTS.md</code> 또는 <code>CLAUDE.md</code>로 붙이기</li>
+</ul>
+<p>README는 Claude Code에서 <code>claude mcp add semble -s user -- uvx --from &quot;semble[mcp]&quot; semble</code> 명령으로 MCP 서버를 추가하는 방식을 먼저 보여 준다.<a href="https://github.com/MinishLab/semble">GitHub README</a></p>
+<p>하지만 더 흥미로운 건 Bash / <code>AGENTS.md</code> 경로다. README는 Claude Code와 Codex CLI의 <strong>sub-agent는 MCP 도구를 직접 못 부르는 경우가 있어서</strong>, 서브에이전트 지원에는 Bash 통합이 사실상 필요하다고 설명한다.<a href="https://github.com/MinishLab/semble">GitHub README</a></p>
+<p>이건 꽤 중요한 포인트다. Semble은 단순히 MCP 호환 도구가 아니라, <strong>에이전트 하네스의 실제 제약까지 고려한 코드 검색 레이어</strong> 다.</p>
+<pre class="mermaid">flowchart TD
+    A["Semble 통합"] --> B["MCP 서버"]
+    A --> C["Bash / AGENTS.md"]
+    B --> D["Claude Code 상위 에이전트"]
+    B --> E["Codex / Cursor / OpenCode"]
+    C --> F["서브에이전트에서도 사용 가능"]
+
+    classDef rootTone fill:#c5dcef,stroke:#5b8db8,color:#333;
+    classDef pathTone fill:#c0ecd3,stroke:#69a97d,color:#333;
+    classDef targetTone fill:#e0c8ef,stroke:#9b78b5,color:#333;
+
+    class A rootTone
+    class B,C pathTone
+    class D,E,F targetTone</pre><h2 id="실제-사용-흐름은-검색--필요한-경우만-원문-열기다">실제 사용 흐름은 &ldquo;검색 → 필요한 경우만 원문 열기&quot;다</h2>
+<p>README가 제시하는 워크플로는 매우 실용적이다.</p>
+<ol>
+<li><code>semble search</code>로 관련 청크를 먼저 찾는다</li>
+<li>반환된 청크만으로 부족할 때만 전체 파일을 연다</li>
+<li>유망한 결과가 있으면 <code>find-related</code>로 연관 구현을 찾는다</li>
+<li>grep은 정확한 문자열 확인이 필요할 때만 쓴다</li>
+</ol>
+<p>이 순서는 그냥 사용팁이 아니라, Semble이 전제하는 <strong>컨텍스트 절약 전략</strong> 그 자체다.<a href="https://github.com/MinishLab/semble">GitHub README</a></p>
+<p>예를 들어:</p>
+<ul>
+<li><code>semble search &quot;authentication flow&quot; ./my-project</code></li>
+<li><code>semble search &quot;save_pretrained&quot; ./my-project</code></li>
+<li><code>semble find-related src/auth.py 42 ./my-project</code></li>
+</ul>
+<p>이런 식으로, 먼저 문제를 의미 단위로 물어보고, 그다음 그 결과를 중심으로만 더 읽는 구조다.<a href="https://github.com/MinishLab/semble">GitHub README</a></p>
+<h2 id="semble의-핵심은-의미-검색-하나가-아니라-하이브리드-검색이다">Semble의 핵심은 의미 검색 하나가 아니라 하이브리드 검색이다</h2>
+<p>README의 &ldquo;How it works&rdquo; 섹션이 이 프로젝트의 기술적 중심이다. Semble은 각 파일을 tree-sitter 기반으로 <strong>code-aware chunks</strong> 로 나눈 뒤, 두 개의 검색기를 함께 쓴다.<a href="https://github.com/MinishLab/semble">GitHub README</a></p>
+<ul>
+<li>Model2Vec 기반 정적 임베딩 검색</li>
+<li>BM25 기반 어휘 검색</li>
+</ul>
+<p>즉 자연어 의미 검색만 하는 것도 아니고, 식별자 매칭만 하는 것도 아니다. 둘을 함께 돌린 다음 Reciprocal Rank Fusion, 즉 RRF로 결과를 합친다.<a href="https://github.com/MinishLab/semble">GitHub README</a></p>
+<pre class="mermaid">flowchart TD
+    A["파일 입력"] --> B["tree-sitter 기반 청크 분할"]
+    B --> C["Model2Vec 의미 검색"]
+    B --> D["BM25 어휘 검색"]
+    C --> E["RRF 결합"]
+    D --> E
+    E --> F["코드 인식 재랭킹"]
+    F --> G["최종 코드 청크 반환"]
+
+    classDef inputTone fill:#c5dcef,stroke:#5b8db8,color:#333;
+    classDef retrTone fill:#c0ecd3,stroke:#69a97d,color:#333;
+    classDef rankTone fill:#fde8c0,stroke:#c9a647,color:#333;
+    classDef outTone fill:#e0c8ef,stroke:#9b78b5,color:#333;
+
+    class A,B inputTone
+    class C,D retrTone
+    class E,F rankTone
+    class G outTone</pre><p>이 설계가 중요한 이유는 코드 검색 질의가 두 종류로 갈라지기 때문이다.</p>
+<ul>
+<li><code>&quot;How is authentication handled?&quot;</code> 같은 설명형 질의</li>
+<li><code>save_pretrained</code>, <code>Foo::bar</code>, <code>getUserById</code> 같은 식별자/심볼 질의</li>
+</ul>
+<p>README도 이 차이를 직접 반영한다. 심볼처럼 보이는 질의에는 lexical weight를 더 주고, 자연어 질의에는 semantic과 lexical을 더 균형 있게 섞는 <strong>adaptive weighting</strong> 을 쓴다고 설명한다.<a href="https://github.com/MinishLab/semble">GitHub README</a></p>
+<h2 id="재랭킹-규칙이-생각보다-중요하다">재랭킹 규칙이 생각보다 중요하다</h2>
+<p>Semble의 차별점은 검색기 2개만 붙인 것이 아니다. README는 그 뒤 단계에서 꽤 공격적인 <strong>code-aware reranking</strong> 을 한다고 밝힌다.<a href="https://github.com/MinishLab/semble">GitHub README</a></p>
+<p>주요 신호는 다음과 같다.</p>
+<ul>
+<li>symbol-like query에는 lexical 가중치 강화</li>
+<li>queried symbol을 정의하는 청크에 boost</li>
+<li>identifier stem 매칭 강화</li>
+<li>같은 파일에서 여러 청크가 맞으면 file-level coherence boost</li>
+<li>test, compat, legacy, example, <code>.d.ts</code> 같은 노이즈 파일은 감점</li>
+</ul>
+<p>이 규칙들은 겉보기에 사소해 보여도 실전에서는 매우 크다. 코드 탐색에서 사용자가 원하는 것은 &ldquo;어디엔가 문자열이 있는 파일&quot;이 아니라, <strong>실제 canonical implementation</strong> 이기 때문이다.</p>
+<pre class="mermaid">flowchart TD
+    A["초기 검색 결과"] --> B["정의 위치 부스트"]
+    A --> C["identifier stem 반영"]
+    A --> D["파일 일관성 부스트"]
+    A --> E["테스트/레거시 노이즈 감점"]
+    B --> F["재랭킹 결과"]
+    C --> F
+    D --> F
+    E --> F
+
+    classDef srcTone fill:#c5dcef,stroke:#5b8db8,color:#333;
+    classDef ruleTone fill:#c0ecd3,stroke:#69a97d,color:#333;
+    classDef resultTone fill:#fde8c0,stroke:#c9a647,color:#333;
+
+    class A srcTone
+    class B,C,D,E ruleTone
+    class F resultTone</pre><p>결국 Semble이 잘 맞는 이유는 단순 검색 속도보다, <strong>에이전트가 틀린 파일을 먼저 읽는 확률을 줄이는 데 집중했다</strong> 는 데 있다.</p>
+<h2 id="성능-수치는-좋아-보이지만-읽는-법이-중요하다">성능 수치는 좋아 보이지만, 읽는 법이 중요하다</h2>
+<p>README 기준으로 Semble은 평균 저장소를 약 250ms에 인덱싱하고 약 1.5ms에 질의한다고 주장한다. 또 NDCG@10 0.854, CodeRankEmbed Hybrid 대비 99% 품질, 인덱싱 218배 빠름, 질의 11배 빠름을 내세운다.<a href="https://github.com/MinishLab/semble">GitHub README</a></p>
+<p>토큰 효율성 쪽에서는 평균 98% 적은 토큰을 쓰고, 2k 토큰 예산에서 94% recall에 도달하며, 반면 grep+read는 100k 컨텍스트에서도 85% recall 수준이라고 적고 있다.<a href="https://github.com/MinishLab/semble">GitHub README</a></p>
+<p>다만 이 수치는 <strong>공식 README에 실린 자체 벤치마크</strong> 다. 의미는 충분히 있지만, 절대값으로 읽기보다는 방향성으로 읽는 편이 좋다.</p>
+<ul>
+<li>비교 대상 쿼리 구성</li>
+<li>저장소 종류</li>
+<li>chunking 방식</li>
+<li>agent가 실제로 이 결과를 어떻게 소비하는지</li>
+</ul>
+<p>같은 조건에 따라 체감 성능은 달라질 수 있기 때문이다. 그래도 최소한 한 가지는 분명하다. Semble은 &ldquo;모델을 더 크게&quot;가 아니라 <strong>탐색 비용을 더 작게</strong> 쪽에서 최적화를 시도한다.</p>
+<h2 id="mcp보다-더-중요한-것은-에이전트-습관을-바꾸는-점이다">MCP보다 더 중요한 것은 &lsquo;에이전트 습관&rsquo;을 바꾸는 점이다</h2>
+<p>Semble이 좋은 이유를 저장소 설치 명령만으로 설명하면 절반만 본 셈이다. 더 중요한 건 README가 아예 <code>AGENTS.md / CLAUDE.md snippet</code>를 제공하면서, 에이전트에게 <strong>grep 대신 semble search를 먼저 쓰라</strong> 고 행동 규칙까지 심으려 한다는 점이다.<a href="https://github.com/MinishLab/semble">GitHub README</a></p>
+<p>이건 단순한 사용 예제가 아니다. 도구의 성능이 아니라 <strong>에이전트의 탐색 습관</strong> 을 바꾸는 설계다.</p>
+<p>즉 Semble의 진짜 가치는 아래 두 가지가 같이 갈 때 나온다.</p>
+<ul>
+<li>검색 품질이 높아야 하고</li>
+<li>에이전트가 그 검색기를 먼저 쓰도록 유도돼야 한다</li>
+</ul>
+<p>README가 서브에이전트용 <code>semble init</code>으로 <code>.claude/agents/semble-search.md</code>를 쓰게 하는 것도 같은 이유다.<a href="https://github.com/MinishLab/semble">GitHub README</a></p>
+<h2 id="언제-특히-잘-맞는가">언제 특히 잘 맞는가</h2>
+<p>Semble은 다음 같은 상황에서 특히 설득력이 크다.</p>
+<ul>
+<li>대형 저장소를 에이전트가 자주 탐색할 때</li>
+<li>자연어 질문과 심볼 검색이 섞여 있을 때</li>
+<li>Claude Code, Codex, Cursor 등 여러 에이전트 인터페이스를 병행할 때</li>
+<li>서브에이전트까지 포함해 검색 루틴을 일관되게 만들고 싶을 때</li>
+<li>grep 결과가 너무 많아 에이전트가 엉뚱한 파일을 자꾸 읽을 때</li>
+</ul>
+<p>반대로 파일 수가 매우 적고 구조가 단순한 프로젝트에서는, grep만으로도 충분할 수 있다. 즉 Semble은 모든 프로젝트에 무조건 필요한 도구라기보다, <strong>탐색 비용이 누적되는 환경에서 강한 도구</strong> 다.</p>
+<h2 id="2026년-5월-19일-기준으로-보이는-상태">2026년 5월 19일 기준으로 보이는 상태</h2>
+<p>GitHub 공개 페이지 기준으로, 제가 확인한 시점인 <strong>2026년 5월 19일</strong> 에 Semble 저장소는 대략 다음 상태였다.</p>
+<ul>
+<li>공개 저장소</li>
+<li>약 2.7k stars</li>
+<li>약 105 forks</li>
+<li>latest release <code>v0.1.8</code></li>
+<li>최근 업데이트 표기 <code>May 18, 2026</code></li>
+</ul>
+<p>이 숫자는 변할 수 있는 현재값이므로, 시점 정보를 붙여 읽는 편이 정확하다.<a href="https://github.com/MinishLab/semble">GitHub 저장소 페이지</a></p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<p>Semble의 핵심은 &ldquo;코드 검색도 AI답게 하자&quot;가 아니다.<br></p>
+<ul>
+<li>에이전트가 원본 파일을 마구 읽는 관성을 줄이고<br></li>
+<li>자연어 질의와 심볼 질의를 모두 처리하고<br></li>
+<li>검색 결과를 청크 단위로 좁혀서 반환하고<br></li>
+<li>정의 위치, 식별자 stem, 파일 일관성, 노이즈 감점으로 재랭킹하며<br></li>
+<li>MCP와 Bash 양쪽으로 에이전트 하네스에 깊게 붙는다.<br></li>
+</ul>
+<p>그래서 Semble은 검색 도구라기보다 <strong>에이전트용 코드 탐색 습관 교정 장치</strong> 에 가깝다.</p>
+<h2 id="결론">결론</h2>
+<p>Semble이 흥미로운 이유는 모델 성능 경쟁을 하지 않기 때문이다. 대신 &ldquo;에이전트가 코드를 이해하기 전에 낭비하는 시간과 토큰&quot;이라는 더 현실적인 병목을 겨냥한다. 공식 README만 봐도 이 프로젝트의 초점은 분명하다. 더 큰 컨텍스트 창을 전제로 버티는 대신, <strong>필요한 청크만 빠르게 건네는 검색 계층</strong> 을 추가해 에이전트의 작업 루프 자체를 바꾸려는 것이다. Claude Code나 Codex를 많이 쓸수록, 이런 종류의 도구는 부가 기능이 아니라 사실상 필수 인프라에 가까워질 가능성이 크다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 05월 19일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-18-claude-agents-agent-view-dashboard/" rel="prev">
+        <span>터미널 5개 대신 대시보드 1개: Claude Code Agent View가 병렬 세션 운영을 바꾸는 방식</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-19-graphify-knowledge-graph-codebase-research/" rel="next">
+        <span>Graphify가 Claude Code의 코드베이스 탐색을 바꾸는 방식: grep 대신 지식 그래프를 먼저 조회하는 구조</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#semble이-겨냥하는-병목은-코드-생성이-아니라-코드-탐색이다">Semble이 겨냥하는 병목은 &ldquo;코드 생성&quot;이 아니라 &ldquo;코드 탐색&quot;이다</a></li>
+    <li><a href="#설치-방식이-보여-주는-핵심-포지셔닝">설치 방식이 보여 주는 핵심 포지셔닝</a></li>
+    <li><a href="#실제-사용-흐름은-검색--필요한-경우만-원문-열기다">실제 사용 흐름은 &ldquo;검색 → 필요한 경우만 원문 열기&quot;다</a></li>
+    <li><a href="#semble의-핵심은-의미-검색-하나가-아니라-하이브리드-검색이다">Semble의 핵심은 의미 검색 하나가 아니라 하이브리드 검색이다</a></li>
+    <li><a href="#재랭킹-규칙이-생각보다-중요하다">재랭킹 규칙이 생각보다 중요하다</a></li>
+    <li><a href="#성능-수치는-좋아-보이지만-읽는-법이-중요하다">성능 수치는 좋아 보이지만, 읽는 법이 중요하다</a></li>
+    <li><a href="#mcp보다-더-중요한-것은-에이전트-습관을-바꾸는-점이다">MCP보다 더 중요한 것은 &lsquo;에이전트 습관&rsquo;을 바꾸는 점이다</a></li>
+    <li><a href="#언제-특히-잘-맞는가">언제 특히 잘 맞는가</a></li>
+    <li><a href="#2026년-5월-19일-기준으로-보이는-상태">2026년 5월 19일 기준으로 보이는 상태</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/mcp/" class="badge badge-secondary">Mcp</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

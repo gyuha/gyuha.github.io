@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'TradingAgents가 흥미로운 이유: &#39;주식 추천 봇&#39;이 아니라 증권사 조직도를 LLM 팀으로 옮긴 프레임워크'" />
+  <title>TradingAgents가 흥미로운 이유: &#39;주식 추천 봇&#39;이 아니라 증권사 조직도를 LLM 팀으로 옮긴 프레임워크  | 신규하 블로그</title>
+  <meta property="og:title" content="TradingAgents가 흥미로운 이유: &#39;주식 추천 봇&#39;이 아니라 증권사 조직도를 LLM 팀으로 옮긴 프레임워크" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-05-19"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/05/2026-05-19-tradingagents-multi-agent-financial-framework/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="agents" />
+  
+  <meta property="og:tags" content="llm" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/05/2026-05-19-tradingagents-multi-agent-financial-framework/">
+          <h1>
+            TradingAgents가 흥미로운 이유: &#39;주식 추천 봇&#39;이 아니라 증권사 조직도를 LLM 팀으로 옮긴 프레임워크
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/05/2026-05-19-tradingagents-multi-agent-financial-framework/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p><code>TradingAgents</code>를 처음 보면 흔한 AI 주식 분석 프로젝트처럼 보일 수 있습니다. 하지만 README를 자세히 보면 방향이 꽤 다릅니다. 이 프로젝트는 &ldquo;종목 하나를 예측하는 모델&quot;보다, <strong>실제 트레이딩 조직의 역할 분업을 LLM 팀으로 옮긴 멀티에이전트 프레임워크</strong> 에 가깝습니다. 펀더멘털 분석가, 뉴스 분석가, 센티먼트 분석가, 기술적 분석가가 먼저 각각 의견을 만들고, 그 위에서 강세·약세 리서처가 토론하고, 마지막으로 트레이더와 리스크 팀, 포트폴리오 매니저가 결정을 내리는 구조입니다. <a href="https://github.com/TauricResearch/TradingAgents">https://github.com/TauricResearch/TradingAgents</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://github.com/TauricResearch/TradingAgents">https://github.com/TauricResearch/TradingAgents</a></li>
+<li>논문 링크: <a href="https://arxiv.org/abs/2412.20138">https://arxiv.org/abs/2412.20138</a></li>
+</ul>
+<h2 id="핵심-아이디어는-모델-하나가-아니라-역할-분리다">핵심 아이디어는 모델 하나가 아니라 역할 분리다</h2>
+<p>README가 제일 먼저 강조하는 것은 이 프레임워크가 real-world trading firm의 dynamics를 모사한다는 점입니다. 즉 &ldquo;좋은 모델 하나&quot;보다, <strong>서로 다른 관점을 가진 역할을 나눠 놓고 그 결과를 종합하는 시스템</strong> 이 핵심입니다. <a href="https://github.com/TauricResearch/TradingAgents">TradingAgents README</a></p>
+<pre class="mermaid">flowchart TD
+    A["시장 데이터"] --> B["전문 분석가 팀"]
+    B --> C["강세 / 약세 연구 토론"]
+    C --> D["트레이더"]
+    D --> E["리스크 팀"]
+    E --> F["포트폴리오 매니저"]
+    F --> G["최종 거래 결정"]
+
+    classDef inputTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef teamTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    classDef debateTone fill:#fde8c0,stroke:#c59a45,color:#333
+    classDef outputTone fill:#e0c8ef,stroke:#9871b0,color:#333
+    class A inputTone
+    class B,D,E,F teamTone
+    class C debateTone
+    class G outputTone</pre><p>이 구조가 중요한 이유는, 금융 판단을 &ldquo;정답 맞히기&quot;보다 <strong>관점 충돌과 검토 과정이 있는 의사결정 파이프라인</strong> 으로 다루기 때문입니다.</p>
+<h2 id="analyst-team은-서로-다른-정보-소스를-병렬로-읽는다">Analyst Team은 서로 다른 정보 소스를 병렬로 읽는다</h2>
+<p>README 기준 Analyst Team은 네 역할로 나뉩니다.</p>
+<ul>
+<li>Fundamentals Analyst</li>
+<li>Sentiment Analyst</li>
+<li>News Analyst</li>
+<li>Technical Analyst</li>
+</ul>
+<p>각 역할은 보는 데이터가 다릅니다.</p>
+<ul>
+<li>펀더멘털: 기업 재무와 성과 지표</li>
+<li>센티먼트: 뉴스 헤드라인, StockTwits, Reddit 분위기</li>
+<li>뉴스: 글로벌 뉴스와 거시경제 이벤트</li>
+<li>기술적 분석: MACD, RSI 같은 차트 지표</li>
+</ul>
+<pre class="mermaid">flowchart TD
+    A["Analyst Team"] --> B["Fundamentals Analyst"]
+    A --> C["Sentiment Analyst"]
+    A --> D["News Analyst"]
+    A --> E["Technical Analyst"]
+
+    B --> F["재무 / 밸류 / 리스크"]
+    C --> G["시장 심리"]
+    D --> H["이벤트 / 거시 변수"]
+    E --> I["차트 / 패턴 / 모멘텀"]
+
+    classDef teamTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    classDef detailTone fill:#fde8c0,stroke:#c59a45,color:#333
+    class A,B,C,D,E teamTone
+    class F,G,H,I detailTone</pre><p>즉 시스템은 처음부터 하나의 신호를 신뢰하지 않고, <strong>서로 다른 데이터 축을 병렬로 읽게 설계</strong> 되어 있습니다.</p>
+<h2 id="researcher-team이-들어가면서-단순-합산이-아니라-토론-구조가-생긴다">Researcher Team이 들어가면서 단순 합산이 아니라 &lsquo;토론 구조&rsquo;가 생긴다</h2>
+<p>이 프로젝트가 흥미로운 진짜 이유는 Analyst Team 뒤에 Researcher Team이 따로 있다는 점입니다. README는 여기서 bullish / bearish researcher가 analyst들의 결과를 비판적으로 검토한다고 설명합니다. <a href="https://github.com/TauricResearch/TradingAgents">TradingAgents README</a></p>
+<p>이건 단순 ensemble과 다릅니다. 여러 신호를 평균 내는 것이 아니라, <strong>상반된 논리를 일부러 부딪치게 하는 구조</strong> 이기 때문입니다.</p>
+<pre class="mermaid">flowchart TD
+    A["Analyst Team 결과"] --> B["Bullish Researcher"]
+    A --> C["Bearish Researcher"]
+    B --> D["찬성 논리 강화"]
+    C --> E["위험 / 반론 제기"]
+    D --> F["구조화된 토론"]
+    E --> F
+
+    classDef analystTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef sideTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    classDef debateTone fill:#fde8c0,stroke:#c59a45,color:#333
+    class A analystTone
+    class B,C,D,E sideTone
+    class F debateTone</pre><p>이 단계가 들어가면 결과가 조금 느려질 수는 있지만, 대신 금융 도메인에서 중요한 <strong>반대 논리 검토</strong> 를 시스템 안에 넣을 수 있습니다.</p>
+<h2 id="trader는-누가-맞나가-아니라-지금-무엇을-할까를-결정한다">Trader는 &lsquo;누가 맞나&rsquo;가 아니라 &lsquo;지금 무엇을 할까&rsquo;를 결정한다</h2>
+<p>README는 Trader Agent를 analyst와 researcher의 결과를 종합해 실제 거래 결정을 내리는 역할로 설명합니다. 여기서 중요한 점은, Trader가 단순 복사기가 아니라:</p>
+<ul>
+<li>언제 들어갈지</li>
+<li>어느 정도 규모로 갈지</li>
+<li>어떤 논리를 우선시할지</li>
+</ul>
+<p>를 정한다는 것입니다.</p>
+<pre class="mermaid">flowchart TD
+    A["분석 리포트"] --> B["Trader Agent"]
+    B --> C["진입 시점 판단"]
+    B --> D["포지션 크기 판단"]
+    B --> E["전략 방향 결정"]
+
+    classDef reportTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef traderTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    classDef actionTone fill:#fde8c0,stroke:#c59a45,color:#333
+    class A reportTone
+    class B traderTone
+    class C,D,E actionTone</pre><p>즉 TradingAgents는 분석과 실행을 구분합니다. 이 구분은 실제 서비스 설계에서도 매우 중요합니다.</p>
+<h2 id="risk-team과-portfolio-manager가-마지막-안전장치-역할을-한다">Risk Team과 Portfolio Manager가 마지막 안전장치 역할을 한다</h2>
+<p>README의 마지막 구조에서 리스크 팀과 포트폴리오 매니저는 단순 장식이 아닙니다. 리스크 팀은 변동성, 유동성, 기타 위험 요인을 계속 평가하고, 포트폴리오 매니저는 최종 승인/거절 권한을 갖습니다. 승인되면 그때서야 simulated exchange로 주문이 실행됩니다. <a href="https://github.com/TauricResearch/TradingAgents">TradingAgents README</a></p>
+<pre class="mermaid">flowchart TD
+    A["Trader 제안"] --> B["Risk Team 평가"]
+    B --> C["Portfolio Manager"]
+    C --> D{"승인?"}
+    D -->|예| E["Simulated Exchange 실행"]
+    D -->|아니오| F["거절 / 전략 수정"]
+
+    classDef inputTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef reviewTone fill:#fde8c0,stroke:#c59a45,color:#333
+    classDef decisionTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    classDef stopTone fill:#ffc8c4,stroke:#c96f68,color:#333
+    class A inputTone
+    class B reviewTone
+    class C,D,E decisionTone
+    class F stopTone</pre><p>이 설계는 중요한 메시지를 담고 있습니다. 금융 AI에서 문제는 &ldquo;추천&quot;보다 <strong>실행 직전 통제</strong> 이기 때문입니다.</p>
+<h2 id="langgraph-위에-얹었다는-점이-구조적으로-잘-맞는다">LangGraph 위에 얹었다는 점이 구조적으로 잘 맞는다</h2>
+<p>README는 구현이 LangGraph 기반이라고 밝힙니다. 이 선택은 꽤 자연스럽습니다.</p>
+<ul>
+<li>역할이 많다</li>
+<li>중간 상태를 보존해야 한다</li>
+<li>토론 단계가 있다</li>
+<li>실패 시 재개가 필요하다</li>
+</ul>
+<p>실제로 최신 버전 changelog와 README를 보면 LangGraph checkpoint resume과 persistent decision log가 핵심 기능으로 들어가 있습니다. <a href="https://github.com/TauricResearch/TradingAgents">TradingAgents README</a></p>
+<pre class="mermaid">flowchart TD
+    A["LangGraph"] --> B["멀티에이전트 흐름 제어"]
+    A --> C["상태 저장"]
+    A --> D["체크포인트 재개"]
+    A --> E["모듈식 에이전트 구조"]
+
+    classDef graphTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    class A,B,C,D,E graphTone</pre><p>즉 이 프레임워크는 단순히 LangGraph를 썼다가 아니라, <strong>LangGraph가 잘 맞는 문제를 선택한 사례</strong> 라고 볼 수 있습니다.</p>
+<h2 id="체크포인트와-결정-로그가-붙으면서-연속성이-생긴다">체크포인트와 결정 로그가 붙으면서 &lsquo;연속성&rsquo;이 생긴다</h2>
+<p>README 후반의 Persistence and Recovery 섹션이 실무적으로 좋습니다. 여기서는 두 가지 상태 유지 기능을 소개합니다.</p>
+<ul>
+<li>Decision log</li>
+<li>Checkpoint resume</li>
+</ul>
+<p>Decision log는 <code>~/.tradingagents/memory/trading_memory.md</code>에 누적되고, 다음번 같은 티커 분석 때 최근 의사결정과 반성(reflection)을 포트폴리오 매니저 프롬프트에 다시 넣습니다. Checkpoint resume은 중간 노드 이후부터 재개하게 해 줍니다. <a href="https://github.com/TauricResearch/TradingAgents">TradingAgents README</a></p>
+<pre class="mermaid">flowchart TD
+    A["거래 실행 / 분석 완료"] --> B["Decision Log 저장"]
+    B --> C["다음 동일 티커 분석"]
+    C --> D["이전 판단 / 성과 회고 주입"]
+
+    E["중간 실행 실패"] --> F["Checkpoint 저장 상태 확인"]
+    F --> G["마지막 성공 노드부터 재개"]
+
+    classDef memoryTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    classDef resumeTone fill:#fde8c0,stroke:#c59a45,color:#333
+    class A,B,C,D memoryTone
+    class E,F,G resumeTone</pre><p>이건 단순 편의 기능이 아닙니다. 금융 시뮬레이션에서 중요한 <strong>학습 루프와 복구 가능성</strong> 을 시스템 차원에 넣은 것입니다.</p>
+<h2 id="지원-모델과-공급자가-많다는-건-장점이자-변수다">지원 모델과 공급자가 많다는 건 장점이자 변수다</h2>
+<p>README 기준 최신 버전은 OpenAI, Google, Anthropic, xAI, DeepSeek, Qwen, GLM, MiniMax, OpenRouter, Ollama, Azure OpenAI 등 매우 많은 provider를 지원합니다. <a href="https://github.com/TauricResearch/TradingAgents">TradingAgents README</a></p>
+<p>이건 장점입니다.</p>
+<ul>
+<li>모델 비교 실험 가능</li>
+<li>지역별 provider 대응 가능</li>
+<li>로컬 Ollama까지 실험 가능</li>
+</ul>
+<p>하지만 동시에 성능 해석을 더 어렵게 만듭니다. README도 분명히 말하듯, trading performance는 backbone model, temperature, 기간, 데이터 품질 등 여러 비결정적 요인에 크게 영향을 받습니다.</p>
+<p>즉 이 프로젝트는 &ldquo;전략 그 자체&quot;보다 <strong>전략 실험 프레임워크</strong> 로 읽는 편이 안전합니다.</p>
+<h2 id="cli가-있다는-건-연구-코드에서-도구로-한-단계-올라왔다는-뜻이다">CLI가 있다는 건 연구 코드에서 도구로 한 단계 올라왔다는 뜻이다</h2>
+<p>README는 단순 Python import 예시만이 아니라:</p>
+<ul>
+<li>interactive CLI</li>
+<li>Docker 실행</li>
+<li>env 기반 provider 설정</li>
+<li>package import 사용</li>
+</ul>
+<p>까지 제공합니다. 이 점은 중요합니다. 프로젝트가 논문 부록 수준을 넘어서, <strong>실험 가능한 사용자 도구</strong> 로 진화하고 있다는 뜻이기 때문입니다.</p>
+<pre class="mermaid">flowchart TD
+    A["사용 경로"] --> B["CLI 실행"]
+    A --> C["Docker 실행"]
+    A --> D["Python 패키지 import"]
+
+    classDef usageTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    class A,B,C,D usageTone</pre><p>그래서 TradingAgents는 단순 아이디어 데모보다, <strong>실제로 만져 볼 수 있는 연구 프레임워크</strong> 라는 점에서 반응이 큰 것입니다.</p>
+<h2 id="이-프로젝트를-볼-때-가장-중요한-주의점">이 프로젝트를 볼 때 가장 중요한 주의점</h2>
+<p>README는 매우 분명하게 경고합니다. 이 프레임워크는 research purposes를 위해 설계되었고, financial / investment / trading advice가 아니라고 못 박습니다. <a href="https://github.com/TauricResearch/TradingAgents">TradingAgents README</a></p>
+<p>이건 형식적 면책이 아니라, 실제로 꼭 필요한 경계입니다.</p>
+<ul>
+<li>LLM 응답은 비결정적이다</li>
+<li>외부 데이터 품질에 따라 결과가 흔들린다</li>
+<li>모델 버전이 바뀌면 결과도 바뀐다</li>
+<li>백테스트나 데모 구조가 실제 운용 리스크를 대신하지 못한다</li>
+</ul>
+<p>따라서 이 프로젝트는 &ldquo;이걸로 돈 벌자&quot;보다, <strong>에이전트형 금융 의사결정 시스템을 어떻게 설계할 수 있는가</strong> 를 연구하는 재료로 보는 편이 맞습니다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>TradingAgents는 단일 모델 예측기가 아니라 실제 트레이딩 조직의 역할 분업을 LLM 팀 구조로 옮긴 프레임워크다</li>
+<li>Analyst Team, Researcher Team, Trader, Risk Team, Portfolio Manager로 이어지는 계층 구조가 핵심이다</li>
+<li>단순 ensemble이 아니라 bullish / bearish researcher의 토론 구조를 넣어 반대 논리를 시스템 안에 포함한다</li>
+<li>LangGraph 기반이라 멀티에이전트 흐름, 상태 저장, 체크포인트 재개 같은 구조와 잘 맞는다</li>
+<li>decision log와 reflection 주입 덕분에 과거 판단을 다음 분석에 연결하는 학습 루프가 있다</li>
+<li>이 프로젝트는 투자 조언 엔진보다 금융 AI 연구 프레임워크로 읽는 편이 더 정확하다</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>TradingAgents가 주목받는 이유는 &ldquo;주식 추천을 잘한다&quot;는 주장 때문이 아닙니다. 더 흥미로운 이유는, <strong>트레이딩 조직의 판단 구조를 그대로 에이전트 아키텍처로 번역했다</strong> 는 데 있습니다.</p>
+<p>이 프로젝트가 보여 주는 핵심은 금융 도메인에만 한정되지 않습니다. 복잡한 의사결정이 필요한 영역에서는 단일 모델의 정답률보다, <strong>역할 분리, 토론 구조, 리스크 검토, 최종 승인 계층</strong> 을 어떻게 설계하느냐가 더 중요할 수 있다는 점을 잘 보여 줍니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 05월 19일 07시 12분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-19-llm-wiki-obsidian-graphify-gold-data/" rel="prev">
+        <span>LLM Wiki가 뜨는 진짜 이유: 옵시디언에 저장하는 것보다 &#39;골드 데이터&#39;를 쌓는 구조가 중요하다</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-20-harness-over-model-agentic-coding/" rel="next">
+        <span>모델보다 하니스가 더 중요하다는 말의 뜻: 같은 Claude로도 결과가 달라지는 진짜 이유</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#핵심-아이디어는-모델-하나가-아니라-역할-분리다">핵심 아이디어는 모델 하나가 아니라 역할 분리다</a></li>
+    <li><a href="#analyst-team은-서로-다른-정보-소스를-병렬로-읽는다">Analyst Team은 서로 다른 정보 소스를 병렬로 읽는다</a></li>
+    <li><a href="#researcher-team이-들어가면서-단순-합산이-아니라-토론-구조가-생긴다">Researcher Team이 들어가면서 단순 합산이 아니라 &lsquo;토론 구조&rsquo;가 생긴다</a></li>
+    <li><a href="#trader는-누가-맞나가-아니라-지금-무엇을-할까를-결정한다">Trader는 &lsquo;누가 맞나&rsquo;가 아니라 &lsquo;지금 무엇을 할까&rsquo;를 결정한다</a></li>
+    <li><a href="#risk-team과-portfolio-manager가-마지막-안전장치-역할을-한다">Risk Team과 Portfolio Manager가 마지막 안전장치 역할을 한다</a></li>
+    <li><a href="#langgraph-위에-얹었다는-점이-구조적으로-잘-맞는다">LangGraph 위에 얹었다는 점이 구조적으로 잘 맞는다</a></li>
+    <li><a href="#체크포인트와-결정-로그가-붙으면서-연속성이-생긴다">체크포인트와 결정 로그가 붙으면서 &lsquo;연속성&rsquo;이 생긴다</a></li>
+    <li><a href="#지원-모델과-공급자가-많다는-건-장점이자-변수다">지원 모델과 공급자가 많다는 건 장점이자 변수다</a></li>
+    <li><a href="#cli가-있다는-건-연구-코드에서-도구로-한-단계-올라왔다는-뜻이다">CLI가 있다는 건 연구 코드에서 도구로 한 단계 올라왔다는 뜻이다</a></li>
+    <li><a href="#이-프로젝트를-볼-때-가장-중요한-주의점">이 프로젝트를 볼 때 가장 중요한 주의점</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+    <a href="/tags/llm/" class="badge badge-secondary">Llm</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

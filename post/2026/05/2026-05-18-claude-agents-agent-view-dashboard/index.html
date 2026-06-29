@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '터미널 5개 대신 대시보드 1개: Claude Code Agent View가 병렬 세션 운영을 바꾸는 방식'" />
+  <title>터미널 5개 대신 대시보드 1개: Claude Code Agent View가 병렬 세션 운영을 바꾸는 방식  | 신규하 블로그</title>
+  <meta property="og:title" content="터미널 5개 대신 대시보드 1개: Claude Code Agent View가 병렬 세션 운영을 바꾸는 방식" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-05-18"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/05/2026-05-18-claude-agents-agent-view-dashboard/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+  <meta property="og:tags" content="git" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/05/2026-05-18-claude-agents-agent-view-dashboard/">
+          <h1>
+            터미널 5개 대신 대시보드 1개: Claude Code Agent View가 병렬 세션 운영을 바꾸는 방식
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/05/2026-05-18-claude-agents-agent-view-dashboard/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Claude Code에서 병렬 작업의 첫 단계는 여러 세션을 띄우는 것입니다. 하지만 실제 병목은 그다음에 옵니다. 터미널이 2개에서 5개로 늘어나면 어떤 세션이 입력을 기다리는지, 어느 PR이 열렸는지, 어느 작업부터 챙겨야 하는지가 금방 흐려집니다. Claude Hunt의 Agent View 문서는 바로 이 운영 문제를 다룹니다. <code>claude agents</code> 는 단순히 세션을 더 많이 여는 기능이 아니라, <strong>백그라운드 세션·자동 worktree 격리·PR 상태 표시를 한 화면에서 관리하는 대시보드</strong> 입니다. <a href="https://docs.claude-hunt.com/learn/completing-projects/parallel-work/agent-view">https://docs.claude-hunt.com/learn/completing-projects/parallel-work/agent-view</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://docs.claude-hunt.com/learn/completing-projects/parallel-work/agent-view">https://docs.claude-hunt.com/learn/completing-projects/parallel-work/agent-view</a></li>
+</ul>
+<h2 id="문제는-병렬-실행보다-병렬-운영이다">문제는 병렬 실행보다 병렬 운영이다</h2>
+<p>문서는 이전 레슨에서 이미 <code>worktree</code>와 <code>claude -w</code>로 두 개의 Claude 세션을 각자 다른 폴더에서 돌릴 수 있었다고 설명합니다. 문제는 작업 수가 늘어날 때입니다. 터미널 5개를 띄워 놓으면:</p>
+<ul>
+<li>어느 세션이 아직 작업 중인지</li>
+<li>어느 세션이 질문을 기다리는지</li>
+<li>어느 세션이 PR을 열었는지</li>
+<li>어느 세션이 끝났는지</li>
+</ul>
+<p>를 한눈에 보기 어려워집니다. <a href="https://docs.claude-hunt.com/learn/completing-projects/parallel-work/agent-view">Claude Hunt 문서</a></p>
+<pre class="mermaid">flowchart TD
+    A["터미널 1~2개"] --> B["눈으로 추적 가능"]
+    C["터미널 5개+"] --> D["세션 상태 파악 어려움"]
+    D --> E["입력 대기 세션 놓침"]
+    D --> F["완료 / PR 상태 놓침"]
+
+    classDef okTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    classDef warnTone fill:#ffc8c4,stroke:#c96f68,color:#333
+    class A,B okTone
+    class C,D,E,F warnTone</pre><p>즉 Agent View가 해결하려는 핵심은 &ldquo;더 많은 세션 실행&quot;이 아니라, <strong>여러 세션을 동시에 감시하고 개입하는 비용</strong> 입니다.</p>
+<h2 id="agent-view는-백그라운드-세션의-관제판이다">Agent View는 백그라운드 세션의 관제판이다</h2>
+<p>문서는 Agent View를 백그라운드 세션 대시보드로 정의합니다. 여기서 백그라운드 세션은 터미널이 닫혀도 계속 돌아가는 Claude Code 세션이고, supervisor라는 별도 프로세스가 수명을 관리한다고 설명합니다. <a href="https://docs.claude-hunt.com/learn/completing-projects/parallel-work/agent-view">Claude Hunt 문서</a></p>
+<pre class="mermaid">flowchart TD
+    A["사용자 요청"] --> B["백그라운드 Claude 세션"]
+    B --> C["supervisor가 수명 관리"]
+    C --> D["Agent View 대시보드에 표시"]
+
+    classDef userTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef sessionTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    classDef dashboardTone fill:#fde8c0,stroke:#c59a45,color:#333
+    class A userTone
+    class B,C sessionTone
+    class D dashboardTone</pre><p>이 정의가 중요한 이유는, Agent View를 단순 TUI 목록으로 보면 기능이 축소되기 때문입니다. 실제로는 <strong>세션 운영 레이어</strong> 를 제공하는 도구입니다.</p>
+<h2 id="진입점은-claude-agents-하나지만-세션-생성-경로는-세-가지다">진입점은 <code>claude agents</code> 하나지만, 세션 생성 경로는 세 가지다</h2>
+<p>문서가 설명하는 세션 생성 경로는 세 가지입니다.</p>
+<ul>
+<li>Agent View 입력창에서 직접 띄우기</li>
+<li>이미 열린 세션을 <code>/bg</code>로 백그라운드로 보내기</li>
+<li>터미널에서 <code>claude --bg</code>로 시작하기</li>
+</ul>
+<p>흥미로운 점은 어느 경로로 시작하든, <strong>결국 같은 대시보드의 한 행</strong> 으로 수렴한다는 점입니다. <a href="https://docs.claude-hunt.com/learn/completing-projects/parallel-work/agent-view">Claude Hunt 문서</a></p>
+<pre class="mermaid">flowchart TD
+    A["입력창에서 시작"] --> D["백그라운드 세션"]
+    B["세션 안에서 /bg"] --> D
+    C["터미널에서 --bg"] --> D
+    D --> E["Agent View 한 행으로 표시"]
+
+    classDef entryTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef sessionTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    classDef viewTone fill:#fde8c0,stroke:#c59a45,color:#333
+    class A,B,C entryTone
+    class D sessionTone
+    class E viewTone</pre><p>즉 이 기능의 핵심은 진입 방법 다양성이 아니라, <strong>모든 비동기 세션을 같은 운영면으로 모아 준다</strong> 는 데 있습니다.</p>
+<h2 id="자동-worktree-격리가-생각보다-중요하다">자동 worktree 격리가 생각보다 중요하다</h2>
+<p>문서에서 가장 실용적인 부분 중 하나는 Agent View가 <code>claude -w</code>처럼 매번 플래그를 직접 붙이지 않아도 된다고 설명하는 대목입니다. 백그라운드 세션은 파일을 편집해야 할 때 자기만의 worktree를 새로 만들고 그 안에서 작업합니다. <a href="https://docs.claude-hunt.com/learn/completing-projects/parallel-work/agent-view">Claude Hunt 문서</a></p>
+<pre class="mermaid">flowchart TD
+    A["백그라운드 세션 시작"] --> B["편집 필요 감지"]
+    B --> C["전용 worktree 자동 생성"]
+    C --> D["자기 폴더에서 작업"]
+    D --> E["다른 세션과 충돌 감소"]
+
+    classDef startTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef worktreeTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    classDef resultTone fill:#fde8c0,stroke:#c59a45,color:#333
+    class A,B startTone
+    class C,D worktreeTone
+    class E resultTone</pre><p>이건 단순 편의 기능이 아닙니다. 병렬 작업에서 가장 무서운 것은 <strong>세션끼리 같은 파일을 건드리며 충돌하는 것</strong> 인데, Agent View는 그 비용을 기본값에서 줄입니다.</p>
+<h2 id="화면의-본질은-세션-행이다">화면의 본질은 &lsquo;세션 행&rsquo;이다</h2>
+<p>문서가 설명하는 기본 UI는 단순합니다.</p>
+<ul>
+<li>상단 헤더</li>
+<li>가운데 세션 목록</li>
+<li>하단 입력창</li>
+</ul>
+<p>하지만 실무적으로 중요한 건 세션 행이 담는 정보입니다.</p>
+<ul>
+<li>세션 상태</li>
+<li>세션 이름</li>
+<li>최근 출력 혹은 질문</li>
+<li>PR 링크와 표시등</li>
+<li>경과 시간</li>
+</ul>
+<p>즉 행 하나가 하나의 병렬 작업에 대한 <strong>운영 단위 카드</strong> 역할을 합니다.</p>
+<h2 id="핵심-인터랙션은-붙기보다-들여다보기다">핵심 인터랙션은 &lsquo;붙기&rsquo;보다 &lsquo;들여다보기&rsquo;다</h2>
+<p>문서는 <code>Space</code> 키로 여는 peek panel을 강조합니다. 세션에 완전히 붙지 않고도, 최근 출력이나 질문을 짧게 보고 답을 입력해 세션을 이어갈 수 있다는 뜻입니다. <a href="https://docs.claude-hunt.com/learn/completing-projects/parallel-work/agent-view">Claude Hunt 문서</a></p>
+<pre class="mermaid">flowchart TD
+    A["세션 목록"] --> B["Space"]
+    B --> C["Peek Panel"]
+    C --> D["최근 출력 확인"]
+    C --> E["질문 확인"]
+    E --> F["짧은 답변 입력"]
+    F --> G["세션 계속 진행"]
+
+    classDef listTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef peekTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    classDef actionTone fill:#fde8c0,stroke:#c59a45,color:#333
+    class A,B listTone
+    class C,D,E peekTone
+    class F,G actionTone</pre><p>이 차이는 꽤 큽니다. 완전히 attach해서 문맥을 깊게 읽는 것보다, 먼저 <strong>운영자 시점에서 짧게 살펴보고 개입하는 흐름</strong> 이 가능해집니다.</p>
+<h2 id="상태-그룹과-아이콘은-우선순위-판단-도구다">상태 그룹과 아이콘은 우선순위 판단 도구다</h2>
+<p>문서는 세션 목록이 다섯 그룹으로 묶이고, 입력 대기 세션이 위로 올라온다고 설명합니다. 예시 그룹은 다음과 같습니다.</p>
+<ul>
+<li>Needs input</li>
+<li>Working</li>
+<li>Completed</li>
+<li>Idle</li>
+<li>Failed / Stopped</li>
+</ul>
+<p>그리고 아이콘은 두 축을 동시에 보여 줍니다.</p>
+<ul>
+<li>색 / 애니메이션 → 현재 상태</li>
+<li>모양 → 프로세스 생존 여부</li>
+</ul>
+<p><a href="https://docs.claude-hunt.com/learn/completing-projects/parallel-work/agent-view">Claude Hunt 문서</a></p>
+<pre class="mermaid">flowchart TD
+    A["세션 목록"] --> B["Needs input"]
+    A --> C["Working"]
+    A --> D["Completed"]
+    A --> E["Idle / Failed / Stopped"]
+
+    B --> F["먼저 챙길 대상"]
+    C --> G["진행 중"]
+    D --> H["검토 / 정리 대상"]
+    E --> I["개입 필요 여부 판단"]
+
+    classDef groupTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef priorityTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    classDef warnTone fill:#ffc8c4,stroke:#c96f68,color:#333
+    class A,B,C,D,E groupTone
+    class F,G,H priorityTone
+    class I warnTone</pre><p>즉 Agent View는 &ldquo;보기 좋은 목록&quot;이 아니라, <strong>어디부터 개입해야 하는지 정렬해 주는 운영 큐</strong> 라고 볼 수 있습니다.</p>
+<h2 id="pr-표시등이-붙으면서-세션은-코드-작업에서-배포-후보로-바뀐다">PR 표시등이 붙으면서 세션은 &lsquo;코드 작업&rsquo;에서 &lsquo;배포 후보&rsquo;로 바뀐다</h2>
+<p>문서의 또 다른 중요한 포인트는 행 오른쪽 끝의 PR 표시등입니다. 세션이 PR을 열면 해당 링크와 상태등이 같이 표시됩니다.</p>
+<ul>
+<li>노랑: 리뷰/체크 대기 또는 실패</li>
+<li>초록: 체크 통과, 리뷰 차단 없음</li>
+<li>보라: 머지 완료</li>
+<li>회색: Draft 또는 닫힘</li>
+</ul>
+<p><a href="https://docs.claude-hunt.com/learn/completing-projects/parallel-work/agent-view">Claude Hunt 문서</a></p>
+<pre class="mermaid">flowchart TD
+    A["세션 작업 완료"] --> B["PR 생성"]
+    B --> C["노랑 표시등"]
+    C --> D["체크 / 리뷰 진행"]
+    D --> E["초록 표시등"]
+    E --> F["머지"]
+    F --> G["보라 표시등"]
+
+    classDef workTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef pendingTone fill:#fde8c0,stroke:#c59a45,color:#333
+    classDef passTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    classDef doneTone fill:#e0c8ef,stroke:#9871b0,color:#333
+    class A,B workTone
+    class C,D pendingTone
+    class E passTone
+    class F,G doneTone</pre><p>이건 작지만 결정적인 기능입니다. 세션이 단순 텍스트 응답을 내놓는 것이 아니라, <strong>PR 생애주기와 직접 연결된 병렬 작업 단위</strong> 로 관리되기 때문입니다.</p>
+<h2 id="문서의-예제는-세-개의-작은-pr을-동시에-굴리는-법을-가르친다">문서의 예제는 &lsquo;세 개의 작은 PR을 동시에 굴리는 법&rsquo;을 가르친다</h2>
+<p>실습 예제는 Todo 앱에서 세 작업을 동시에 띄우는 흐름입니다.</p>
+<ul>
+<li>헤더 카운터 추가</li>
+<li>카드 설명 문구 톤 수정</li>
+<li><code>app/layout.tsx</code>에 metadata 추가</li>
+</ul>
+<p>중요한 건 작업 내용 자체보다, 이 셋을 한 번에 하나씩 입력창에서 띄우고, 각 세션이 자동 worktree에서 안전하게 파일을 고치며, PR을 열고, 이후 머지된 세션을 정리하는 전체 흐름입니다. <a href="https://docs.claude-hunt.com/learn/completing-projects/parallel-work/agent-view">Claude Hunt 문서</a></p>
+<pre class="mermaid">flowchart TD
+    A["Agent View 진입"] --> B["작업 1 입력"]
+    B --> C["작업 2 입력"]
+    C --> D["작업 3 입력"]
+    D --> E["세 세션 병렬 실행"]
+    E --> F["각자 PR 생성"]
+    F --> G["PR 머지"]
+    G --> H["세션 / worktree 정리"]
+
+    classDef stepTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    class A,B,C,D,E,F,G,H stepTone</pre><p>즉 Agent View는 &ldquo;많이 띄우는 법&quot;보다, <strong>작은 작업들을 안전하게 병렬화하고 마무리하는 리듬</strong> 을 제공하는 도구입니다.</p>
+<h2 id="faq가-드러내는-현실적인-한계도-있다">FAQ가 드러내는 현실적인 한계도 있다</h2>
+<p>문서 후반 FAQ는 꽤 현실적입니다.</p>
+<ul>
+<li>슬립 / 종료 상태는 견디지 못함</li>
+<li>토큰 비용은 세션 수만큼 빨라짐</li>
+<li>여러 레포도 가능하지만 경로 지정이 필요함</li>
+<li>subagent는 별도 행으로 보이지 않음</li>
+</ul>
+<p>이건 중요합니다. Agent View를 &ldquo;마법 같은 무한 병렬화&quot;로 보면 곤란합니다. 여전히:</p>
+<ul>
+<li>시스템 리소스</li>
+<li>구독 사용량</li>
+<li>세션 수 관리</li>
+<li>repo 단위 조직화</li>
+</ul>
+<p>를 운영자가 감당해야 합니다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>Agent View는 여러 Claude 세션을 띄우는 기능이 아니라, 여러 백그라운드 세션을 운영하는 대시보드다</li>
+<li>핵심 개념은 백그라운드 세션, 자동 worktree 격리, 세션 상태 그룹, PR 표시등이다</li>
+<li>세션 생성은 입력창, <code>/bg</code>, <code>claude --bg</code> 세 경로로 시작할 수 있지만 같은 대시보드에 모인다</li>
+<li><code>Space</code>로 여는 peek panel 덕분에 세션에 완전히 붙지 않고도 질문에 답하고 진행시킬 수 있다</li>
+<li>상태 그룹과 PR 표시등은 &ldquo;어느 세션부터 챙길지&quot;를 판단하는 운영 신호 역할을 한다</li>
+<li>병렬화는 공짜가 아니며, 슬립/종료, 토큰 비용, 세션 수 관리 같은 현실적 한계가 있다</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>Agent View의 진짜 가치는 &ldquo;Claude를 여러 개 띄운다&quot;는 데 있지 않습니다. 더 중요한 것은, 그 여러 개를 <strong>한 명의 운영자가 통제 가능한 형태로 본다</strong> 는 데 있습니다.</p>
+<p>병렬 작업의 병목은 실행보다 관제에서 생깁니다. <code>claude agents</code> 는 바로 그 병목을 겨냥합니다. 그래서 이 기능은 단순 TUI가 아니라, Claude Code가 개인 도구에서 <strong>작은 작업군을 동시에 굴리는 운영 환경</strong> 으로 넘어가는 징후라고 볼 수 있습니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 05월 18일 09시 36분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-18-cloakbrowser-source-level-stealth-browser/" rel="prev">
+        <span>Playwright보다 더 아래층으로 내려간 브라우저 자동화: CloakBrowser가 &#39;설정&#39;이 아니라 &#39;바이너리&#39;를 건드리는 이유</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-19-semble-code-search-for-agents/" rel="next">
+        <span>Semble이 흥미로운 이유: grep 대신 에이전트에게 &#39;의미 기반 코드 검색기&#39;를 붙이는 방식</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#문제는-병렬-실행보다-병렬-운영이다">문제는 병렬 실행보다 병렬 운영이다</a></li>
+    <li><a href="#agent-view는-백그라운드-세션의-관제판이다">Agent View는 백그라운드 세션의 관제판이다</a></li>
+    <li><a href="#진입점은-claude-agents-하나지만-세션-생성-경로는-세-가지다">진입점은 <code>claude agents</code> 하나지만, 세션 생성 경로는 세 가지다</a></li>
+    <li><a href="#자동-worktree-격리가-생각보다-중요하다">자동 worktree 격리가 생각보다 중요하다</a></li>
+    <li><a href="#화면의-본질은-세션-행이다">화면의 본질은 &lsquo;세션 행&rsquo;이다</a></li>
+    <li><a href="#핵심-인터랙션은-붙기보다-들여다보기다">핵심 인터랙션은 &lsquo;붙기&rsquo;보다 &lsquo;들여다보기&rsquo;다</a></li>
+    <li><a href="#상태-그룹과-아이콘은-우선순위-판단-도구다">상태 그룹과 아이콘은 우선순위 판단 도구다</a></li>
+    <li><a href="#pr-표시등이-붙으면서-세션은-코드-작업에서-배포-후보로-바뀐다">PR 표시등이 붙으면서 세션은 &lsquo;코드 작업&rsquo;에서 &lsquo;배포 후보&rsquo;로 바뀐다</a></li>
+    <li><a href="#문서의-예제는-세-개의-작은-pr을-동시에-굴리는-법을-가르친다">문서의 예제는 &lsquo;세 개의 작은 PR을 동시에 굴리는 법&rsquo;을 가르친다</a></li>
+    <li><a href="#faq가-드러내는-현실적인-한계도-있다">FAQ가 드러내는 현실적인 한계도 있다</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+    <a href="/tags/git/" class="badge badge-secondary">Git</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

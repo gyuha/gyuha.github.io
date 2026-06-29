@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'GSD &#43; Superpowers &#43; Hookify 조합으로 AI 개발 워크플로우 구축하기'" />
+  <title>GSD &#43; Superpowers &#43; Hookify 조합으로 AI 개발 워크플로우 구축하기  | 신규하 블로그</title>
+  <meta property="og:title" content="GSD &#43; Superpowers &#43; Hookify 조합으로 AI 개발 워크플로우 구축하기" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-05-14"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/05/2026-05-14-gsd-superpowers-hookify-workflow/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+  <meta property="og:tags" content="superpowers" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/05/2026-05-14-gsd-superpowers-hookify-workflow/">
+          <h1>
+            GSD &#43; Superpowers &#43; Hookify 조합으로 AI 개발 워크플로우 구축하기
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/05/2026-05-14-gsd-superpowers-hookify-workflow/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>AI 코딩 도구를 오래 써 보면 결국 같은 문제를 만나게 됩니다.</p>
+<ul>
+<li>계획은 잘 나오는데 실행이 불안정하다</li>
+<li>구현은 빨리 되는데 방향이 흔들린다</li>
+<li>같은 실수를 반복한다</li>
+<li>AI가 점점 프로젝트 컨텍스트를 잃는다</li>
+<li>프롬프트가 길어질수록 품질이 무너진다</li>
+</ul>
+<p>특히 Claude Code, Codex, Cursor 같은 AI 에이전트 기반 개발을 하다 보면 &ldquo;계획&rdquo;, &ldquo;실행&rdquo;, &ldquo;회고&quot;를 하나의 도구에게 모두 맡기는 순간 품질이 급격히 흔들리기 시작합니다.</p>
+<p>그래서 최근에는 역할을 명확하게 분리한 워크플로우를 사용하고 있습니다.</p>
+<pre class="mermaid">flowchart TD
+    GSD["🗺️ GSD<br/>계획"] --> SP["⚙️ Superpowers<br/>실행"]
+    SP --> HF["🔄 Hookify<br/>회고"]
+    HF -->|"다음 계획"| GSD
+
+    classDef planNode fill:#c5dcef,stroke:#5a8fc8,color:#333
+    classDef execNode fill:#c0ecd3,stroke:#4aad6e,color:#333
+    classDef retroNode fill:#fde8c0,stroke:#d4a035,color:#333
+
+    class GSD planNode
+    class SP execNode
+    class HF retroNode</pre><p>이 구조가 장기 프로젝트에서 반복 실수를 크게 줄여줬습니다.</p>
+<h2 id="왜-역할-분리가-중요한가">왜 역할 분리가 중요한가?</h2>
+<p>AI 개발 도구는 각각 강점이 다릅니다.</p>
+<p>GSD는 프로젝트 구조화와 phase 설계에 강합니다. 반면 실제 구현 단계에서는 테스트, verification, incremental commit, task execution discipline 같은 부분이 더 중요해집니다. 여기서는 Superpowers가 훨씬 안정적입니다.</p>
+<p>그리고 대부분 사람들이 놓치는 부분이 있습니다. 바로 <strong>회고(retrospective)</strong> 입니다.</p>
+<p>AI 워크플로우에서 가장 중요한 건 사실 <strong>같은 실패를 반복하지 않는 것</strong> 입니다. 이걸 담당하는 게 Hookify입니다.</p>
+<pre class="mermaid">flowchart TD
+    PROB["❌ 하나의 AI에게<br/>모든 역할 부여"] --> FAIL
+
+    subgraph FAIL ["발생하는 문제들"]
+        F1["컨텍스트 오염"]
+        F2["로드맵 이탈"]
+        F3["verification 약화"]
+        F4["반복 실수"]
+    end
+
+    SOL["✅ 역할 분리"] --> STABLE
+
+    subgraph STABLE ["안정화 효과"]
+        S1["전략가 = GSD"]
+        S2["엔지니어 = Superpowers"]
+        S3["학습자 = Hookify"]
+    end
+
+    classDef problemNode fill:#ffc8c4,stroke:#e05a4e,color:#333
+    classDef solNode fill:#c0ecd3,stroke:#4aad6e,color:#333
+    classDef failNode fill:#fde8c0,stroke:#d4a035,color:#333
+    classDef stableNode fill:#c5dcef,stroke:#5a8fc8,color:#333
+
+    class PROB problemNode
+    class FAIL,F1,F2,F3,F4 failNode
+    class SOL solNode
+    class STABLE,S1,S2,S3 stableNode</pre><hr>
+<h2 id="각-도구의-역할">각 도구의 역할</h2>
+<h3 id="1-gsd--프로젝트-설계-담당">1. GSD — 프로젝트 설계 담당</h3>
+<p>GSD는 아래 역할만 맡깁니다.</p>
+<ul>
+<li>requirements</li>
+<li>architecture</li>
+<li>roadmap</li>
+<li>phase decomposition</li>
+</ul>
+<p>즉 무엇을 만들지, 어떤 순서로 만들지, phase를 어떻게 나눌지까지만 담당합니다.</p>
+<p>중요한 건 <strong>실행권을 오래 주지 않는 것</strong> 입니다.</p>
+<h3 id="2-superpowers--구현-및-검증-담당">2. Superpowers — 구현 및 검증 담당</h3>
+<p>Superpowers는 실행 discipline이 강합니다.</p>
+<ul>
+<li>계획 비판 검토</li>
+<li>task 단위 실행</li>
+<li>verification</li>
+<li>incremental changes</li>
+<li>debugging discipline</li>
+</ul>
+<p><strong>어떻게 안전하게 구현할 것인가</strong> 를 담당합니다.</p>
+<h3 id="3-hookify--회고-및-메타-학습-담당">3. Hookify — 회고 및 메타 학습 담당</h3>
+<p>역할은:</p>
+<ul>
+<li>retrospective</li>
+<li>pattern extraction</li>
+<li>workflow optimization</li>
+<li>prompt improvement</li>
+<li>failure analysis</li>
+</ul>
+<p><strong>이번 작업에서 무엇을 배웠는가</strong> 를 담당합니다.</p>
+<hr>
+<h2 id="전체-워크플로우">전체 워크플로우</h2>
+<p>핵심은 <strong>계획 → 실행 → 학습 → 다음 계획</strong> 루프를 만드는 것입니다.</p>
+<pre class="mermaid">flowchart TD
+    A["📋 1단계<br/>GSD plan-phase"] --> B["⚙️ 2단계<br/>Superpowers execute"]
+    B --> C["🔄 3단계<br/>Hookify retrospective"]
+    C --> D["📋 4단계<br/>GSD next phase"]
+    D --> E["⚙️ 반복<br/>Superpowers execute"]
+    E -.->|"계속 반복"| C
+
+    classDef planNode fill:#c5dcef,stroke:#5a8fc8,color:#333
+    classDef execNode fill:#c0ecd3,stroke:#4aad6e,color:#333
+    classDef retroNode fill:#fde8c0,stroke:#d4a035,color:#333
+
+    class A,D planNode
+    class B,E execNode
+    class C retroNode</pre><hr>
+<h2 id="실제-사용-흐름">실제 사용 흐름</h2>
+<h3 id="1단계--gsd로-계획-생성">1단계 — GSD로 계획 생성</h3>
+<p>먼저 코드베이스를 분석합니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/gsd-map-codebase
+</span></span></code></pre></div><p>그 다음 프로젝트 생성:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/gsd-new-project
+</span></span></code></pre></div><p>이후 phase별 논의:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/gsd-discuss-phase <span style="color:#0550ae">1</span>
+</span></span></code></pre></div><p>그리고 실행 계획 생성:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/gsd-plan-phase <span style="color:#0550ae">1</span>
+</span></span></code></pre></div><p>여기서 가장 중요합니다.</p>
+
+  <blockquote>
+    <p><strong>반드시 여기서 멈춥니다.</strong><br>
+<code>plan-phase</code> 완료 직후가 가장 좋은 절단점입니다.</p>
+
+  </blockquote>
+
+<p>많은 사람들이 여기서 실수합니다. <code>new-project</code> 이후 계속 진행하도록 놔두면 GSD가 실행까지 관여하면서:</p>
+<ul>
+<li>컨텍스트가 길어지고</li>
+<li>실행 품질이 흔들리고</li>
+<li>verification discipline이 약해지고</li>
+<li>구조보다 구현 디테일에 빨려 들어가기 시작합니다.</li>
+</ul>
+<pre class="mermaid">flowchart TD
+    NP["gsd-new-project"] --> DP["gsd-discuss-phase"]
+    DP --> PP["gsd-plan-phase"]
+    PP --> STOP["🛑 여기서 멈춤<br/>GSD 역할 종료"]
+    STOP --> HAND["Superpowers에게 인계"]
+
+    classDef gsdNode fill:#c5dcef,stroke:#5a8fc8,color:#333
+    classDef stopNode fill:#ffc8c4,stroke:#e05a4e,color:#333
+    classDef handNode fill:#c0ecd3,stroke:#4aad6e,color:#333
+
+    class NP,DP,PP gsdNode
+    class STOP stopNode
+    class HAND handNode</pre><h3 id="2단계--superpowers로-실행">2단계 — Superpowers로 실행</h3>
+<p>이제 GSD가 만든 phase plan을 기반으로 Superpowers에게 실행을 맡깁니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Use superpowers:executing-plans.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Read the GSD phase 1 plan.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Before coding:
+</span></span><span style="display:flex;"><span>- critique the plan
+</span></span><span style="display:flex;"><span>- identify ambiguities
+</span></span><span style="display:flex;"><span>- identify architectural risks
+</span></span><span style="display:flex;"><span>- improve task ordering if necessary
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Then:
+</span></span><span style="display:flex;"><span>- execute task-by-task
+</span></span><span style="display:flex;"><span>- verify each task
+</span></span><span style="display:flex;"><span>- run tests after every meaningful change
+</span></span><span style="display:flex;"><span>- commit incrementally
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Do not use GSD execute-phase.
+</span></span></code></pre></div><p>이 흐름의 장점은 GSD는 방향 유지, Superpowers는 실행 안정성 유지를 각각 담당하게 된다는 점입니다.</p>
+<h3 id="왜-gsd-execute를-쓰지-않는가">왜 GSD Execute를 쓰지 않는가?</h3>
+<p>물론 써도 됩니다. 하지만 장기 프로젝트에서는 보통 아래 문제가 생깁니다.</p>
+<pre class="mermaid">flowchart TD
+    GEX["GSD execute-phase 사용"] --> P1["계획과 실행이 섞임"]
+    P1 --> P2["context pollution 발생"]
+    P2 --> P3["roadmap drift"]
+    P3 --> P4["verification 약화"]
+    P4 --> P5["구현 디테일 과몰입"]
+
+    classDef problemNode fill:#ffc8c4,stroke:#e05a4e,color:#333
+    class GEX,P1,P2,P3,P4,P5 problemNode</pre><p>반면 역할을 분리하면 GSD는 전략가, Superpowers는 엔지니어 구조가 되면서 훨씬 안정적입니다.</p>
+<h3 id="3단계--hookify로-회고">3단계 — Hookify로 회고</h3>
+<p>Superpowers 실행이 끝나면 바로 Hookify 회고를 진행합니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Use Hookify retrospective mode.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Analyze the completed implementation session.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Identify:
+</span></span><span style="display:flex;"><span>- what worked well
+</span></span><span style="display:flex;"><span>- what caused friction
+</span></span><span style="display:flex;"><span>- architectural mistakes
+</span></span><span style="display:flex;"><span>- unnecessary complexity
+</span></span><span style="display:flex;"><span>- repeated prompting patterns
+</span></span><span style="display:flex;"><span>- missing requirements from GSD
+</span></span><span style="display:flex;"><span>- verification gaps
+</span></span><span style="display:flex;"><span>- debugging bottlenecks
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Then produce:
+</span></span><span style="display:flex;"><span>1. lessons learned
+</span></span><span style="display:flex;"><span>2. reusable workflow improvements
+</span></span><span style="display:flex;"><span>3. prompt improvements
+</span></span><span style="display:flex;"><span>4. coding standards updates
+</span></span><span style="display:flex;"><span>5. recommendations for the next phase
+</span></span></code></pre></div><hr>
+<h2 id="hookify에서-꼭-추출해야-하는-것">Hookify에서 꼭 추출해야 하는 것</h2>
+<p>회고에서 특히 중요한 3가지입니다.</p>
+<pre class="mermaid">flowchart TD
+    HF["🔄 Hookify 회고"] --> R1["반복 실패 패턴<br/>API boundary confusion<br/>missing type validation<br/>context drift"]
+    HF --> R2["프롬프트 개선점<br/>task size too large<br/>insufficient verification<br/>ambiguous wording"]
+    HF --> R3["다음 phase 개선점<br/>split phase smaller<br/>stronger testing gates<br/>earlier schema validation"]
+
+    classDef retroNode fill:#fde8c0,stroke:#d4a035,color:#333
+    classDef r1Node fill:#ffc8c4,stroke:#e05a4e,color:#333
+    classDef r2Node fill:#c5dcef,stroke:#5a8fc8,color:#333
+    classDef r3Node fill:#c0ecd3,stroke:#4aad6e,color:#333
+
+    class HF retroNode
+    class R1 r1Node
+    class R2 r2Node
+    class R3 r3Node</pre><hr>
+<h2 id="추천-디렉토리-구조">추천 디렉토리 구조</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>.ai/
+</span></span><span style="display:flex;"><span>  gsd/
+</span></span><span style="display:flex;"><span>    roadmap.md
+</span></span><span style="display:flex;"><span>    phases/
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  superpowers/
+</span></span><span style="display:flex;"><span>    execution-logs/
+</span></span><span style="display:flex;"><span>    verification/
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  hookify/
+</span></span><span style="display:flex;"><span>    retrospectives/
+</span></span><span style="display:flex;"><span>    lessons/
+</span></span><span style="display:flex;"><span>    prompt-patterns/
+</span></span></code></pre></div><p>이렇게 분리하면 컨텍스트 관리가 쉬워지고, 실패 패턴 재사용이 가능하며, 다음 프로젝트 품질도 계속 올라갑니다.</p>
+<hr>
+<h2 id="정리">정리</h2>
+<p>이 워크플로우의 핵심은 <strong>하나의 AI에게 모든 역할을 맡기지 않는 것</strong> 입니다.</p>
+<pre class="mermaid">flowchart TD
+    subgraph GSDRole ["🗺️ GSD — 전략가"]
+        G1["roadmap"]
+        G2["architecture"]
+        G3["planning"]
+    end
+
+    subgraph SPRole ["⚙️ Superpowers — 엔지니어"]
+        S1["implementation"]
+        S2["verification"]
+        S3["debugging"]
+    end
+
+    subgraph HFRole ["🔄 Hookify — 학습자"]
+        H1["learning"]
+        H2["retrospectives"]
+        H3["optimization"]
+    end
+
+    GSDRole --> SPRole
+    SPRole --> HFRole
+    HFRole -->|"개선된 계획"| GSDRole
+
+    classDef gsdNode fill:#c5dcef,stroke:#5a8fc8,color:#333
+    classDef spNode fill:#c0ecd3,stroke:#4aad6e,color:#333
+    classDef hfNode fill:#fde8c0,stroke:#d4a035,color:#333
+
+    class GSDRole,G1,G2,G3 gsdNode
+    class SPRole,S1,S2,S3 spNode
+    class HFRole,H1,H2,H3 hfNode</pre><p>AI 개발 도구를 오래 쓰다 보면 결국 중요한 건 더 강한 모델이 아니라 <strong>더 좋은 workflow</strong> 라는 걸 느끼게 됩니다.</p>
+<p>특히 장기 프로젝트에서는 계획, 실행, 회고를 분리하는 순간 품질이 급격히 안정되기 시작합니다.</p>
+<p>만약 지금 AI가 점점 산으로 가고, 같은 버그를 반복하고, phase가 길어질수록 품질이 무너지는 문제를 겪고 있다면 한 번쯤 <code>GSD + Superpowers + Hookify</code> 구조를 시도해 보는 걸 추천합니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 05월 14일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-13-ai-infinite-brain-knowledge-graph-for-claude/" rel="prev">
+        <span>Karpathy식 Second Brain을 그대로 쓰지 말아야 하는 이유: Claude가 읽기 좋은 Infinite Brain 지식 그래프</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-14-claude-code-hookify-harness-repeated-mistakes/" rel="next">
+        <span>Claude Code가 같은 실수를 반복한다면 Hookify로 하네스를 만들어라: 토큰 낭비를 막는 사전 차단 규칙</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#왜-역할-분리가-중요한가">왜 역할 분리가 중요한가?</a></li>
+    <li><a href="#각-도구의-역할">각 도구의 역할</a>
+      <ul>
+        <li><a href="#1-gsd--프로젝트-설계-담당">1. GSD — 프로젝트 설계 담당</a></li>
+        <li><a href="#2-superpowers--구현-및-검증-담당">2. Superpowers — 구현 및 검증 담당</a></li>
+        <li><a href="#3-hookify--회고-및-메타-학습-담당">3. Hookify — 회고 및 메타 학습 담당</a></li>
+      </ul>
+    </li>
+    <li><a href="#전체-워크플로우">전체 워크플로우</a></li>
+    <li><a href="#실제-사용-흐름">실제 사용 흐름</a>
+      <ul>
+        <li><a href="#1단계--gsd로-계획-생성">1단계 — GSD로 계획 생성</a></li>
+        <li><a href="#2단계--superpowers로-실행">2단계 — Superpowers로 실행</a></li>
+        <li><a href="#왜-gsd-execute를-쓰지-않는가">왜 GSD Execute를 쓰지 않는가?</a></li>
+        <li><a href="#3단계--hookify로-회고">3단계 — Hookify로 회고</a></li>
+      </ul>
+    </li>
+    <li><a href="#hookify에서-꼭-추출해야-하는-것">Hookify에서 꼭 추출해야 하는 것</a></li>
+    <li><a href="#추천-디렉토리-구조">추천 디렉토리 구조</a></li>
+    <li><a href="#정리">정리</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+    <a href="/tags/superpowers/" class="badge badge-secondary">Superpowers</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

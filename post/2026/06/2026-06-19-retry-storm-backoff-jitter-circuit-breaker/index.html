@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '장애는 30초 만에 끝났는데 왜 우리 서버는 10분 더 죽었을까: 재시도 폭풍, 백오프, 지터, 서킷 브레이커'" />
+  <title>장애는 30초 만에 끝났는데 왜 우리 서버는 10분 더 죽었을까: 재시도 폭풍, 백오프, 지터, 서킷 브레이커  | 신규하 블로그</title>
+  <meta property="og:title" content="장애는 30초 만에 끝났는데 왜 우리 서버는 10분 더 죽었을까: 재시도 폭풍, 백오프, 지터, 서킷 브레이커" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-06-19"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/06/2026-06-19-retry-storm-backoff-jitter-circuit-breaker/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="testing" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/06/2026-06-19-retry-storm-backoff-jitter-circuit-breaker/">
+          <h1>
+            장애는 30초 만에 끝났는데 왜 우리 서버는 10분 더 죽었을까: 재시도 폭풍, 백오프, 지터, 서킷 브레이커
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/06/2026-06-19-retry-storm-backoff-jitter-circuit-breaker/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <blockquote>
+    <p>소스: <a href="https://youtube.com/shorts/yVBvCO0RT0M?si=yMn12x9guE_DBZD5">https://youtube.com/shorts/yVBvCO0RT0M?si=yMn12x9guE_DBZD5</a><br>
+참고: <a href="https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/">https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/</a>, <a href="https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/">https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/</a>, <a href="https://sre.google/sre-book/addressing-cascading-failures/">https://sre.google/sre-book/addressing-cascading-failures/</a>, <a href="https://sre.google/sre-book/handling-overload/">https://sre.google/sre-book/handling-overload/</a>, <a href="https://martinfowler.com/bliki/CircuitBreaker.html">https://martinfowler.com/bliki/CircuitBreaker.html</a></p>
+
+  </blockquote>
+
+<p>외부 결제사가 30초 만에 살아났는데, 우리 서버는 10분을 더 죽어 있었다면 문제는 외부가 아니라 <strong>우리 재시도 설계</strong> 일 가능성이 큽니다.<br>
+이번 Shorts의 핵심은 이것입니다.</p>
+
+  <blockquote>
+    <p>재시도는 장애를 복구하는 도구이지만, 잘못 쓰면 장애를 증폭시키는 도구가 된다</p>
+
+  </blockquote>
+
+<h2 id="문제는-실패가-아니라-동시-재시도다">문제는 실패가 아니라 &ldquo;동시 재시도&quot;다</h2>
+<p>평소에는 재시도가 좋은 패턴처럼 보입니다.</p>
+<ul>
+<li>한두 건 실패한다</li>
+<li>몇 번 다시 시도한다</li>
+<li>조용히 복구된다</li>
+</ul>
+<p>하지만 외부 의존성이 통째로 잠깐 죽는 순간에는 상황이 바뀝니다.</p>
+<ul>
+<li>모든 요청이 동시에 실패한다</li>
+<li>모든 요청이 동시에 재시도한다</li>
+<li>살아나던 상대 시스템에 다시 부하가 몰린다</li>
+<li>복구 직후 다시 무너진다</li>
+</ul>
+<p>이게 바로 <strong>retry storm</strong> 입니다.</p>
+<pre class="mermaid">flowchart TD
+    A["외부 서비스 장애<br>30초"] --> B["모든 요청 실패"]
+    B --> C["모든 클라이언트가 즉시 재시도"]
+    C --> D["복구 직후 트래픽 급증"]
+    D --> E["상대 서비스 재과부하"]
+    E --> F["장애 지속 / 확대"]
+
+    classDef fail fill:#ffc8c4,stroke:#c26a6a,color:#333,stroke-width:1px;
+    classDef load fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+
+    class A,B,E,F fail
+    class C,D load</pre><h2 id="왜-단순-재시도는-위험한가">왜 단순 재시도는 위험한가</h2>
+<p>가장 흔한 문제는 <strong>모든 클라이언트가 같은 타이밍으로 움직인다</strong> 는 점입니다.</p>
+<p>예를 들어 요청 1만 개가 동시에 실패하고, 모두가:</p>
+<ul>
+<li>1초 뒤 재시도</li>
+<li>다시 실패하면 1초 뒤 재시도</li>
+<li>총 3회 반복</li>
+</ul>
+<p>을 하면 장애는 1번이지만 부하는 3배, 4배로 튈 수 있습니다.<br>
+Google SRE는 이런 패턴이 <strong>cascading failure</strong> 로 이어질 수 있으므로, 재시도를 무한히 허용하지 말고 <strong>retry budget</strong> 같은 상한을 두라고 설명합니다. <a href="https://sre.google/sre-book/addressing-cascading-failures/">https://sre.google/sre-book/addressing-cascading-failures/</a></p>
+<h2 id="지수-백오프는-왜-필요한가">지수 백오프는 왜 필요한가</h2>
+<p>영상에서 말한 첫 번째 보완책은 <strong>지수 백오프(exponential backoff)</strong> 입니다.</p>
+<p>이건 재시도 간격을 점점 늘리는 방식입니다.</p>
+<ul>
+<li>1차 실패 후 100ms</li>
+<li>2차 실패 후 200ms</li>
+<li>3차 실패 후 400ms</li>
+<li>4차 실패 후 800ms</li>
+</ul>
+<p>AWS도 재시도에서 가장 흔한 패턴으로 지수 백오프를 설명합니다. <a href="https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/">https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/</a></p>
+<p>문제는 이것만으로는 부족하다는 점입니다.<br>
+모든 클라이언트가 똑같이 100ms, 200ms, 400ms로 움직이면 <strong>여전히 같은 순간에 몰립니다</strong>.</p>
+<pre class="mermaid">flowchart TD
+    A["실패"] --> B["100ms 후 재시도"]
+    B --> C["200ms 후 재시도"]
+    C --> D["400ms 후 재시도"]
+    D --> E["800ms 후 재시도"]
+
+    classDef retry fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+
+    class A,B,C,D,E retry</pre><h2 id="지터는-왜-붙여야-하나">지터는 왜 붙여야 하나</h2>
+<p>그래서 필요한 게 <strong>지터(jitter)</strong> 입니다.<br>
+지터는 재시도 시간에 무작위 흔들림을 섞는 방식입니다.</p>
+<p>예를 들면:</p>
+<ul>
+<li>어떤 클라이언트는 180ms</li>
+<li>어떤 클라이언트는 240ms</li>
+<li>어떤 클라이언트는 320ms</li>
+</ul>
+<p>처럼 서로 다른 시점에 다시 때리게 됩니다.</p>
+<p>AWS Architecture Blog는 백오프만 쓰는 것보다 <strong>jitter를 함께 써야 충돌과 낭비를 줄일 수 있다</strong> 고 설명합니다. <a href="https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/">https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/</a></p>
+<p>즉, 백오프는 <strong>간격을 늘리는 장치</strong> 고, 지터는 <strong>타이밍을 흩는 장치</strong> 입니다.</p>
+<pre class="mermaid">flowchart TD
+    A["동시 실패"] --> B["백오프만 사용"]
+    B --> C["비슷한 시점에 재집중"]
+
+    A --> D["백오프 + 지터 사용"]
+    D --> E["재시도 시점 분산"]
+
+    classDef bad fill:#ffc8c4,stroke:#c26a6a,color:#333,stroke-width:1px;
+    classDef good fill:#c0ecd3,stroke:#63a37b,color:#333,stroke-width:1px;
+    classDef mid fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+
+    class A,B,C bad
+    class D mid
+    class E good</pre><h2 id="그래도-총량은-못-줄인다">그래도 총량은 못 줄인다</h2>
+<p>여기서 중요한 포인트가 하나 더 있습니다.<br>
+영상도 정확히 짚었듯이 <strong>백오프와 지터는 재시도 타이밍을 분산할 뿐, 총 재시도 수 자체는 줄이지 못합니다.</strong></p>
+<p>즉:</p>
+<ul>
+<li>1만 요청이 3번씩 재시도하면</li>
+<li>총량은 여전히 3만 번입니다</li>
+</ul>
+<p>그래서 진짜 중요한 질문은:</p>
+
+  <blockquote>
+    <p>언제 다시 시도할 것인가<br>
+가 아니라<br>
+언제 재시도를 멈출 것인가</p>
+
+  </blockquote>
+
+<p>입니다.</p>
+<h2 id="서킷-브레이커는-일단-멈추는-장치다">서킷 브레이커는 &ldquo;일단 멈추는 장치&quot;다</h2>
+<p>영상의 다음 해법은 <strong>circuit breaker</strong> 입니다.</p>
+<p>Martin Fowler의 설명대로, 서킷 브레이커는 실패를 감시하다가 임계치를 넘으면 회로를 열고, 이후 호출을 실제 대상에게 보내지 않고 즉시 실패시킵니다. <a href="https://martinfowler.com/bliki/CircuitBreaker.html">https://martinfowler.com/bliki/CircuitBreaker.html</a></p>
+<p>즉:</p>
+<ul>
+<li>상대가 계속 죽어 있으면</li>
+<li>더 때리지 말고</li>
+<li>일정 시간 동안 호출을 막는다</li>
+</ul>
+<p>는 뜻입니다.</p>
+<pre class="mermaid">flowchart TD
+    A["연속 실패 증가"] --> B["임계치 초과"]
+    B --> C["Circuit Open"]
+    C --> D["호출 차단 / 즉시 실패"]
+    D --> E["일정 시간 후 일부만 시험 호출"]
+    E --> F["정상 복구되면 다시 닫힘"]
+
+    classDef detect fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+    classDef stop fill:#ffc8c4,stroke:#c26a6a,color:#333,stroke-width:1px;
+    classDef recover fill:#c0ecd3,stroke:#63a37b,color:#333,stroke-width:1px;
+
+    class A,B detect
+    class C,D stop
+    class E,F recover</pre><p>서킷 브레이커의 핵심은 <strong>상대가 회복할 시간을 벌어 주는 것</strong> 입니다.<br>
+재시도를 잘하는 시스템보다, <strong>잘 멈추는 시스템</strong> 이 더 안정적일 수 있습니다.</p>
+<h2 id="재시도-예산은-비율-상한을-두는-발상이다">재시도 예산은 &ldquo;비율 상한&quot;을 두는 발상이다</h2>
+<p>영상에서 나온 또 하나의 좋은 표현이 <strong>retry budget</strong> 입니다.</p>
+<p>Google SRE는 과부하 상황에서 <strong>클라이언트별 재시도 비율에 상한을 두는 방식</strong> 을 설명합니다. 예시로 재시도 비율이 10%를 넘지 않게 제한하는 개념이 나옵니다. <a href="https://sre.google/sre-book/handling-overload/">https://sre.google/sre-book/handling-overload/</a></p>
+<p>이게 중요한 이유는:</p>
+<ul>
+<li>평소에는 소량 재시도를 허용하되</li>
+<li>장애 중에는 재시도가 시스템 전체를 압도하지 못하게</li>
+<li>비율 차원에서 막을 수 있기 때문입니다</li>
+</ul>
+<p>즉, retry budget은 &ldquo;최대 3번 재시도&rdquo; 같은 고정 규칙보다 더 운영 친화적입니다.</p>
+<h2 id="실무에서는-네-가지를-같이-봐야-한다">실무에서는 네 가지를 같이 봐야 한다</h2>
+<p>이번 영상은 짧지만 설계 포인트를 꽤 정확하게 짚습니다.<br>
+실무적으로는 아래 네 개를 같이 가져가는 편이 안전합니다.</p>
+<ol>
+<li><strong>timeout</strong><br>
+너무 오래 기다리지 않는다</li>
+<li><strong>backoff</strong><br>
+재시도 간격을 늘린다</li>
+<li><strong>jitter</strong><br>
+재시도 시점을 흩는다</li>
+<li><strong>circuit breaker / retry budget</strong><br>
+총량을 통제하고 멈출 줄 안다</li>
+</ol>
+<pre class="mermaid">flowchart TD
+    A["실패 발생"] --> B["Timeout 확인"]
+    B --> C["Backoff 적용"]
+    C --> D["Jitter로 분산"]
+    D --> E["Retry Budget 확인"]
+    E --> F["허용 시 재시도"]
+    E --> G["초과 시 즉시 실패"]
+    F --> H["연속 실패 임계치 확인"]
+    H --> I["Circuit Open"]
+
+    classDef process fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef guard fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+    classDef stop fill:#ffc8c4,stroke:#c26a6a,color:#333,stroke-width:1px;
+
+    class A,B,C,D,F,H process
+    class E guard
+    class G,I stop</pre><h2 id="이-영상의-핵심-문장을-다시-쓰면">이 영상의 핵심 문장을 다시 쓰면</h2>
+<p>영상은 &ldquo;안정성은 재시도 횟수가 아니라 재시도를 멈출 줄 아는 설계에서 나온다&quot;고 말합니다.<br>
+이걸 조금 더 실무적으로 바꾸면 이렇게 말할 수 있습니다.</p>
+
+  <blockquote>
+    <p>재시도는 복구 전략이 아니라 부하 증폭기일 수도 있다<br>
+그래서 좋은 복원력은 많이 다시 시도하는 데서가 아니라<br>
+언제, 얼마나, 누구에게, 어떤 속도로 다시 시도할지 제한하는 데서 나온다</p>
+
+  </blockquote>
+
+<h2 id="마무리">마무리</h2>
+<p>외부 장애가 30초였는데 우리 장애가 10분이었던 이유는 종종 간단합니다.<br>
+우리가 <strong>살아나는 시스템을 도와준 게 아니라, 재시도로 다시 눌러버렸기 때문</strong> 입니다.</p>
+<p>그래서 재시도 설계에서 꼭 기억할 건 네 가지입니다.</p>
+<ul>
+<li>백오프 없이 재시도하지 말 것</li>
+<li>지터 없이 백오프하지 말 것</li>
+<li>예산 없이 재시도 총량을 풀어두지 말 것</li>
+<li>서킷 브레이커 없이 상대를 무한정 두드리지 말 것</li>
+</ul>
+<p>짧은 장애를 긴 장애로 바꾸는 건 외부 장애가 아니라, 대개 우리 쪽의 <strong>무제한 친절함</strong> 입니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 06월 19일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/infrastructure">Infrastructure</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/06/2026-06-19-five-ways-to-make-claude-smarter-in-real-work/" rel="prev">
+        <span>클로드를 &#39;천재처럼&#39; 쓰는 다섯 가지 방법: 인터뷰, 다중 시점 검토, 단계적 빌드, 뼈대 분해, 프로젝트 맥락</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/06/2026-06-19-karpathy-rules-harness-multi-agent-shared-wiki/" rel="next">
+        <span>안드레 카파시 원칙에 하네스 멀티 에이전트를 붙이면 뭐가 달라지나: 브레이크와 공유 기억을 동시에 넣는 구조</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#문제는-실패가-아니라-동시-재시도다">문제는 실패가 아니라 &ldquo;동시 재시도&quot;다</a></li>
+    <li><a href="#왜-단순-재시도는-위험한가">왜 단순 재시도는 위험한가</a></li>
+    <li><a href="#지수-백오프는-왜-필요한가">지수 백오프는 왜 필요한가</a></li>
+    <li><a href="#지터는-왜-붙여야-하나">지터는 왜 붙여야 하나</a></li>
+    <li><a href="#그래도-총량은-못-줄인다">그래도 총량은 못 줄인다</a></li>
+    <li><a href="#서킷-브레이커는-일단-멈추는-장치다">서킷 브레이커는 &ldquo;일단 멈추는 장치&quot;다</a></li>
+    <li><a href="#재시도-예산은-비율-상한을-두는-발상이다">재시도 예산은 &ldquo;비율 상한&quot;을 두는 발상이다</a></li>
+    <li><a href="#실무에서는-네-가지를-같이-봐야-한다">실무에서는 네 가지를 같이 봐야 한다</a></li>
+    <li><a href="#이-영상의-핵심-문장을-다시-쓰면">이 영상의 핵심 문장을 다시 쓰면</a></li>
+    <li><a href="#마무리">마무리</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/testing/" class="badge badge-secondary">Testing</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

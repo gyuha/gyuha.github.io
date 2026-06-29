@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Ethernet이 아니라 Thunderbolt RDMA가 병목을 깼다: 4대의 Mac Studio로 2TB 로컬 AI 클러스터 만들기'" />
+  <title>Ethernet이 아니라 Thunderbolt RDMA가 병목을 깼다: 4대의 Mac Studio로 2TB 로컬 AI 클러스터 만들기  | 신규하 블로그</title>
+  <meta property="og:title" content="Ethernet이 아니라 Thunderbolt RDMA가 병목을 깼다: 4대의 Mac Studio로 2TB 로컬 AI 클러스터 만들기" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-05-13"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/05/2026-05-13-mac-studio-cluster-thunderbolt-rdma-local-ai/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="llm" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/05/2026-05-13-mac-studio-cluster-thunderbolt-rdma-local-ai/">
+          <h1>
+            Ethernet이 아니라 Thunderbolt RDMA가 병목을 깼다: 4대의 Mac Studio로 2TB 로컬 AI 클러스터 만들기
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/05/2026-05-13-mac-studio-cluster-thunderbolt-rdma-local-ai/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>NetworkChuck는 4대의 Mac Studio M4 Ultra를 묶어 총 2TB unified memory, 320 GPU cores, 32TB storage를 가진 로컬 AI 클러스터를 만들었습니다. 이전 시도에서는 5대의 Mac Studio를 묶고도 오히려 91% 느려졌지만, 이번에는 Apple의 RDMA over Thunderbolt 5 업데이트와 Exo Labs 조합으로 1T급 모델을 현실적인 속도로 실행합니다. <a href="https://youtu.be/bFgTxr5yst0?t=0">0:00</a> <a href="https://youtu.be/bFgTxr5yst0?t=53">0:53</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://youtu.be/bFgTxr5yst0?si=z3-VWdFbeLWFuuEl">https://youtu.be/bFgTxr5yst0?si=z3-VWdFbeLWFuuEl</a></li>
+<li>NetworkChuck companion repo: <a href="https://github.com/theNetworkChuck/mac-studio-cluster">https://github.com/theNetworkChuck/mac-studio-cluster</a></li>
+<li>Exo Labs: <a href="https://github.com/exo-explore/exo">https://github.com/exo-explore/exo</a></li>
+<li>MLX: <a href="https://github.com/ml-explore/mlx">https://github.com/ml-explore/mlx</a></li>
+</ul>
+<h2 id="핵심은-mac-studio-4대가-아니라-interconnect다">핵심은 Mac Studio 4대가 아니라 interconnect다</h2>
+<p>영상 초반의 하드웨어 스펙은 화려합니다. 4대의 Mac Studio, 각 512GB RAM, 총 2TB unified memory입니다. <a href="https://youtu.be/bFgTxr5yst0?t=0">0:00</a> companion repo도 같은 구성을 <code>4x Mac Studio M4 Ultra</code>, <code>2TB GPU-accessible unified memory</code>, <code>320 GPU cores</code>, <code>32TB storage</code>로 정리합니다. <a href="https://github.com/theNetworkChuck/mac-studio-cluster">NetworkChuck repo</a></p>
+<p>하지만 이 프로젝트의 핵심은 RAM 총량보다 노드 사이의 지연 시간입니다. 이전 방식처럼 각 노드가 순서대로 layer를 처리하면, 한 노드가 끝날 때까지 다음 노드가 기다립니다. 노드를 많이 붙여도 통신 지연이 크면 GPU가 놀게 됩니다. 영상은 Apple이 RDMA over Thunderbolt 5를 가능하게 하면서 latency가 300 microseconds에서 3 microseconds로 내려갔다고 설명합니다. <a href="https://youtu.be/bFgTxr5yst0?t=472">7:52</a></p>
+<pre class="mermaid">flowchart TD
+    A["4x Mac Studio M4 Ultra"] --> B["총 2TB unified memory"]
+    A --> C["Thunderbolt 5 mesh"]
+    C --> D["RDMA enabled"]
+    D --> E["노드 간 latency 감소<br>300μs → 3μs"]
+    E --> F["Tensor parallelism 가능"]
+    F --> G["대형 LLM 로컬 실행"]
+
+    classDef hardwareTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef networkTone fill:#fde8c0,stroke:#c59a45,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    class A,B hardwareTone
+    class C,D,E networkTone
+    class F,G resultTone</pre><p>즉 &ldquo;Ethernet is dead?&ldquo;라는 제목은 과장된 표현이지만, AI inference 클러스터 관점에서는 메시지가 분명합니다. 노드 discovery, 모델 다운로드, API 접근에는 Ethernet이 여전히 필요합니다. 그러나 대형 모델을 여러 Mac에 나눠 돌리는 핵심 경로에서는 Thunderbolt 5 + RDMA가 병목을 깬 것입니다.</p>
+<h2 id="구성-thunderbolt-mesh--ethernet-보조망">구성: Thunderbolt mesh + Ethernet 보조망</h2>
+<p>영상은 4대의 Mac Studio를 연결하는 장면을 보여줍니다. <a href="https://youtu.be/bFgTxr5yst0?t=185">3:05</a> companion repo 기준으로 4대 full mesh에는 Thunderbolt 5 케이블 6개가 필요합니다. Mac 1은 Mac 2, 3, 4와 연결되고, 나머지 Mac들도 서로 연결됩니다. Ethernet은 모든 노드를 같은 switch에 연결해 discovery, 모델 다운로드, API access에 사용합니다. <a href="https://github.com/theNetworkChuck/mac-studio-cluster">NetworkChuck repo</a></p>
+<pre class="mermaid">flowchart TD
+    M1["Mac 1"] --- M2["Mac 2"]
+    M1 --- M3["Mac 3"]
+    M1 --- M4["Mac 4"]
+    M2 --- M3
+    M2 --- M4
+    M3 --- M4
+    M1 -. Ethernet .- SW["Ethernet Switch"]
+    M2 -. Ethernet .- SW
+    M3 -. Ethernet .- SW
+    M4 -. Ethernet .- SW
+
+    classDef macTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef switchTone fill:#fde8c0,stroke:#c59a45,color:#333
+    class M1,M2,M3,M4 macTone
+    class SW switchTone</pre><p>이 구조는 일반적인 &ldquo;네트워크로 묶은 여러 컴퓨터&quot;와 다릅니다. Ethernet만으로는 대형 텐서 연산 중간값을 자주 주고받기 어렵습니다. Thunderbolt mesh는 inference 중 노드 간 직접 통신 경로를 줄이고, RDMA는 TCP/IP stack을 우회해 메모리 접근 지연을 낮춥니다. companion repo도 RDMA가 latency를 300μs에서 3μs로 줄이며, Thunderbolt를 통한 direct GPU-to-GPU memory access를 가능하게 한다고 설명합니다. <a href="https://github.com/theNetworkChuck/mac-studio-cluster">NetworkChuck repo</a></p>
+<h2 id="pipeline-parallelism-vs-tensor-parallelism">Pipeline parallelism vs tensor parallelism</h2>
+<p>영상의 중요한 설명은 pipeline parallelism과 tensor parallelism 차이입니다. <a href="https://youtu.be/bFgTxr5yst0?t=257">4:17</a></p>
+<p>pipeline 방식에서는 모델 layer를 여러 Mac에 나눕니다. 예를 들어 Mac 1이 앞쪽 layer를 처리하고, Mac 2가 다음 layer를 처리하는 식입니다. 이 방식은 이해하기 쉽지만 순차 대기가 생깁니다. 한 노드가 끝나야 다음 노드가 시작하므로, 클러스터 전체가 동시에 바쁘게 일하지 못합니다.</p>
+<p>tensor 방식에서는 모든 Mac이 같은 layer의 일부를 함께 계산합니다. 각 노드가 25%씩 계산하고 결과를 합친 뒤 다음 layer로 넘어갑니다. 이 방식은 진짜 병렬화에 가깝지만, 노드 간 통신이 훨씬 자주 발생합니다. 그래서 RDMA 없이 tensor parallelism을 켜면 오히려 느려질 수 있습니다.</p>
+<pre class="mermaid">flowchart TD
+    A["Pipeline Parallelism"] --> B["Mac 1: Layers 1-20"]
+    B --> C["Mac 2: Layers 21-40"]
+    C --> D["Mac 3: Layers 41-60"]
+    D --> E["Mac 4: Layers 61-80"]
+    E --> F["응답"]
+
+    classDef pipelineTone fill:#ffc8c4,stroke:#c96f68,color:#333
+    class A,B,C,D,E,F pipelineTone</pre><pre class="mermaid">flowchart TD
+    A["Tensor Parallelism + RDMA"] --> B["Layer 1"]
+    B --> C["Mac 1: 25%"]
+    B --> D["Mac 2: 25%"]
+    B --> E["Mac 3: 25%"]
+    B --> F["Mac 4: 25%"]
+    C --> G["combine"]
+    D --> G
+    E --> G
+    F --> G
+    G --> H["Layer 2 반복"]
+
+    classDef tensorTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    classDef mergeTone fill:#fde8c0,stroke:#c59a45,color:#333
+    class A,B,C,D,E,F,H tensorTone
+    class G mergeTone</pre><p>companion repo의 benchmark도 이 차이를 보여줍니다. Llama 70B 기준 pipeline은 5 tok/s, tensor만 켰을 때는 3 tok/s로 더 느렸지만, tensor + RDMA에서는 16 tok/s로 올라갑니다. <a href="https://github.com/theNetworkChuck/mac-studio-cluster">NetworkChuck repo</a></p>
+<h2 id="exo-labs와-mlx가-하는-일">Exo Labs와 MLX가 하는 일</h2>
+<p>영상은 Exo Labs가 돌아왔다고 말하며, 이 클러스터가 실제로 동작하는 데 Exo가 중요한 역할을 한다고 설명합니다. <a href="https://youtu.be/bFgTxr5yst0?t=699">11:39</a> Exo Labs repository는 자신들을 &ldquo;Run frontier AI locally&quot;라는 문구로 소개합니다. 즉 여러 장치를 묶어 로컬 AI 실행 환경을 만드는 쪽에 초점이 있습니다. <a href="https://github.com/exo-explore/exo">Exo Labs</a></p>
+<p>MLX는 Apple silicon에서 machine learning을 위한 array framework입니다. MLX README는 Python API가 NumPy와 유사하고, C++/C/Swift API도 제공하며, multi-device와 unified memory model을 지원한다고 설명합니다. 특히 MLX arrays는 shared memory에 존재하고, CPU/GPU 같은 지원 device에서 데이터 전송 없이 연산할 수 있다는 점을 강조합니다. <a href="https://github.com/ml-explore/mlx">MLX README</a></p>
+<pre class="mermaid">flowchart TD
+    A["MLX"] --> B["Apple silicon용 array framework"]
+    B --> C["Unified memory model"]
+    B --> D["CPU/GPU multi-device"]
+    E["Exo Labs"] --> F["노드 discovery"]
+    E --> G["모델 분산 실행"]
+    E --> H["OpenAI-compatible endpoint"]
+    C --> I["Mac cluster inference 기반"]
+    D --> I
+    F --> I
+    G --> I
+    H --> J["Open WebUI / IDE / coding tools 연동"]
+
+    classDef mlxTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef exoTone fill:#fde8c0,stroke:#c59a45,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    class A,B,C,D mlxTone
+    class E,F,G,H exoTone
+    class I,J resultTone</pre><p>결국 이 프로젝트는 하드웨어만으로 되는 것이 아닙니다. Apple silicon의 unified memory, MLX의 framework, Exo의 distributed runtime, Thunderbolt RDMA가 함께 맞물려야 합니다.</p>
+<h2 id="성능-결과-1t-모델을-로컬에서-돌린다는-의미">성능 결과: 1T 모델을 로컬에서 돌린다는 의미</h2>
+<p>영상 설명란의 결과는 인상적입니다.</p>
+<ul>
+<li>Llama 3.3 70B: 16 tok/s</li>
+<li>Kimi K2 1T: 28 tok/s</li>
+<li>DeepSeek V3.1 671B: 27 tok/s</li>
+<li>Qwen 3 Coder 480B: 40 tok/s</li>
+</ul>
+<p>영상은 Qwen 3 Coder 480B 테스트를 17:58부터, Kimi K2 1T 테스트를 19:03부터 보여줍니다. <a href="https://youtu.be/bFgTxr5yst0?t=1078">17:58</a> <a href="https://youtu.be/bFgTxr5yst0?t=1143">19:03</a> companion repo도 4-node RDMA cluster benchmark로 Qwen 3 Coder 480B 40 tok/s, Kimi K2 28<del>30 tok/s, DeepSeek V3.1 26</del>27 tok/s를 기록합니다. <a href="https://github.com/theNetworkChuck/mac-studio-cluster">NetworkChuck repo</a></p>
+<pre class="mermaid">flowchart TD
+    A["4-node Mac Studio RDMA cluster"] --> B["Llama 3.3 70B<br>16 tok/s"]
+    A --> C["Qwen 3 Coder 480B<br>40 tok/s"]
+    A --> D["Kimi K2 1T<br>28~30 tok/s"]
+    A --> E["DeepSeek V3.1 671B<br>26~27 tok/s"]
+
+    classDef clusterTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef modelTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    class A clusterTone
+    class B,C,D,E modelTone</pre><p>여기서 중요한 것은 &ldquo;클라우드 GPU를 완전히 대체한다&quot;가 아닙니다. fine-tuning, multi-user serving, SLA, 운영 자동화까지 고려하면 클라우드 GPU와 직접 비교하기 어렵습니다. 그러나 거대한 모델을 로컬에서 interactive하게 실행할 수 있다는 점은 분명히 의미가 있습니다. 특히 보안상 데이터를 외부로 보내기 어렵거나, 실험 비용을 예측 가능하게 만들고 싶은 조직에는 매력적입니다.</p>
+<h2 id="여러-모델을-동시에-올리는-로컬-ai-서버">여러 모델을 동시에 올리는 로컬 AI 서버</h2>
+<p>영상 후반에는 여러 모델을 동시에 올리는 장면이 나옵니다. <a href="https://youtu.be/bFgTxr5yst0?t=1269">21:09</a> companion repo도 Kimi K2, DeepSeek V3.1, Llama 3.3 70B FP16, Llama 3.3 70B 4-bit, Llama 3.2 3B 등 5개 모델을 동시에 로드하고 responsive하게 유지한 예시를 보여줍니다. <a href="https://github.com/theNetworkChuck/mac-studio-cluster">NetworkChuck repo</a></p>
+<p>이것이 가능한 이유는 총 2TB unified memory 때문입니다. GPU VRAM이 별도로 고정된 전통적인 구조와 달리 Apple silicon unified memory는 CPU/GPU가 같은 메모리 풀을 공유합니다. MLX도 unified memory model을 핵심 차별점으로 설명합니다. <a href="https://github.com/ml-explore/mlx">MLX README</a></p>
+<pre class="mermaid">flowchart TD
+    A["2TB unified memory pool"] --> B["Kimi K2"]
+    A --> C["DeepSeek V3.1"]
+    A --> D["Llama 70B FP16"]
+    A --> E["Llama 70B 4-bit"]
+    A --> F["Llama 3B"]
+    B --> G["OpenAI-compatible API"]
+    C --> G
+    D --> G
+    E --> G
+    F --> G
+    G --> H["Open WebUI / Xcode / local apps"]
+
+    classDef memoryTone fill:#e0c8ef,stroke:#9871b0,color:#333
+    classDef modelTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef apiTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    class A memoryTone
+    class B,C,D,E,F modelTone
+    class G,H apiTone</pre><p>실전에서는 이 클러스터를 단순한 benchmark 장비가 아니라 사내 로컬 모델 endpoint처럼 사용할 수 있습니다. companion repo도 Exo Labs가 OpenAI-compatible API를 노출하며 Open WebUI, Xcode, Claude Code, Cursor, Continue 같은 도구가 endpoint를 바라보게 할 수 있다고 설명합니다. <a href="https://github.com/theNetworkChuck/mac-studio-cluster">NetworkChuck repo</a></p>
+<h2 id="비용-비교-50k-vs-h100-780k는-어떻게-읽어야-하나">비용 비교: $50K vs H100 $780K+는 어떻게 읽어야 하나</h2>
+<p>영상 설명란과 companion repo는 이 Mac cluster를 약 5만 달러, 같은 2TB memory를 NVIDIA H100으로 맞추면 78만 달러 이상으로 비교합니다. <a href="https://github.com/theNetworkChuck/mac-studio-cluster">NetworkChuck repo</a></p>
+<p>이 비교는 memory capacity 관점에서는 강력합니다. 2TB급 GPU-accessible memory를 단일 로컬 장비 묶음으로 확보할 수 있기 때문입니다. 그러나 H100 cluster와 Mac Studio cluster는 목적이 다릅니다. H100은 training, high-throughput serving, mature datacenter networking, multi-tenant 운영에 강합니다. Mac Studio cluster는 로컬 inference, private lab, predictable capex, Apple ecosystem integration에 강합니다.</p>
+<pre class="mermaid">flowchart TD
+    A["비용 비교"] --> B["Mac Studio cluster<br>약 $50K"]
+    A --> C["H100 memory equivalent<br>$780K+"]
+    B --> D["로컬 inference<br>낮은 전력/소음<br>개인·팀 실험"]
+    C --> E["datacenter serving<br>training<br>운영 생태계"]
+
+    classDef compareTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef macTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    classDef gpuTone fill:#fde8c0,stroke:#c59a45,color:#333
+    class A compareTone
+    class B,D macTone
+    class C,E gpuTone</pre><p>따라서 이 구성은 &ldquo;H100을 이겼다&quot;보다 &ldquo;대형 모델 로컬 inference를 현실적인 가격대로 끌어내렸다&quot;에 가깝습니다.</p>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<p>첫째, 이 구성은 네트워크가 핵심입니다. Mac을 여러 대 샀다고 자동으로 빠른 클러스터가 되지 않습니다. Thunderbolt mesh, RDMA enable, Exo discovery, parallelism mode가 모두 맞아야 합니다. <a href="https://youtu.be/bFgTxr5yst0?t=185">3:05</a></p>
+<p>둘째, pipeline parallelism이 아니라 tensor + RDMA 구성이 성능의 핵심입니다. companion repo benchmark에서도 tensor만 켜면 느려지고, RDMA가 붙어야 70B 모델에서 16 tok/s로 올라갑니다. <a href="https://github.com/theNetworkChuck/mac-studio-cluster">NetworkChuck repo</a></p>
+<p>셋째, 이 구성은 inference 중심으로 봐야 합니다. companion repo FAQ도 fine-tuning workflow는 아직 evolving 단계라고 설명합니다. <a href="https://github.com/theNetworkChuck/mac-studio-cluster">NetworkChuck repo</a></p>
+<p>넷째, 운영 난이도를 과소평가하면 안 됩니다. beta macOS, RDMA 설정, mesh cable, node discovery, 모델 배포, cluster restart script까지 관리해야 합니다. 개인 프로젝트로는 멋지지만, 팀 운영에는 관측·재시작·업데이트 절차가 필요합니다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>4대의 Mac Studio M4 Ultra를 묶어 총 2TB unified memory 로컬 AI 클러스터를 구성합니다. <a href="https://youtu.be/bFgTxr5yst0?t=0">0:00</a></li>
+<li>이전 Mac cluster 시도는 느렸지만, 이번에는 Apple의 RDMA over Thunderbolt 5와 Exo Labs로 병목을 크게 줄였습니다. <a href="https://youtu.be/bFgTxr5yst0?t=53">0:53</a></li>
+<li>RDMA는 latency를 300μs에서 3μs로 줄여 tensor parallelism이 현실적으로 작동하게 합니다. <a href="https://youtu.be/bFgTxr5yst0?t=472">7:52</a></li>
+<li>Qwen 3 Coder 480B, Kimi K2 1T, DeepSeek V3.1 671B 같은 대형 모델을 로컬에서 실행한 결과가 제시됩니다. <a href="https://youtu.be/bFgTxr5yst0?t=1078">17:58</a> <a href="https://youtu.be/bFgTxr5yst0?t=1143">19:03</a></li>
+<li>Exo Labs는 distributed local AI runtime 역할을 하고, MLX는 Apple silicon의 unified memory와 multi-device 연산 기반을 제공합니다.</li>
+<li>이 구성은 H100 cluster를 모든 면에서 대체한다기보다, private local inference lab을 현실적인 비용으로 만드는 선택지입니다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>이 영상의 핵심은 &ldquo;Ethernet이 죽었다&quot;가 아닙니다. Ethernet은 여전히 discovery, 다운로드, API 접근에 필요합니다. 다만 대형 모델 inference에서 병목이 되는 노드 간 텐서 통신은 Ethernet이 아니라 Thunderbolt 5 + RDMA가 맡아야 한다는 점을 보여줍니다.</p>
+<p>4대의 Mac Studio가 가진 2TB unified memory는 대형 모델을 로컬에 올릴 수 있는 물리적 기반을 제공합니다. 그러나 그것만으로는 충분하지 않습니다. MLX, Exo, tensor parallelism, RDMA, mesh topology가 함께 맞물릴 때 비로소 1T급 모델을 interactive하게 돌리는 로컬 AI 클러스터가 됩니다. 이 조합은 로컬 AI의 방향을 &ldquo;작은 모델을 노트북에서 돌리기&quot;에서 &ldquo;대형 모델을 개인/팀 클러스터에서 운영하기&quot;로 확장합니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 05월 13일 08시 01분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/infrastructure">Infrastructure</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-13-claude-md-management-plugin-memory-hygiene/" rel="prev">
+        <span>CLAUDE.md가 커질수록 Claude Code는 느려진다: 공식 claude-md-management 플러그인으로 프로젝트 메모리 관리하기</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-13-claude-code-six-real-tools-after-400-hours/" rel="next">
+        <span>Claude Code 400시간 후 남은 핵심 도구 6개: 많이 설치하는 것보다 실제 일이 되는 스킬만 남기는 법</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#핵심은-mac-studio-4대가-아니라-interconnect다">핵심은 Mac Studio 4대가 아니라 interconnect다</a></li>
+    <li><a href="#구성-thunderbolt-mesh--ethernet-보조망">구성: Thunderbolt mesh + Ethernet 보조망</a></li>
+    <li><a href="#pipeline-parallelism-vs-tensor-parallelism">Pipeline parallelism vs tensor parallelism</a></li>
+    <li><a href="#exo-labs와-mlx가-하는-일">Exo Labs와 MLX가 하는 일</a></li>
+    <li><a href="#성능-결과-1t-모델을-로컬에서-돌린다는-의미">성능 결과: 1T 모델을 로컬에서 돌린다는 의미</a></li>
+    <li><a href="#여러-모델을-동시에-올리는-로컬-ai-서버">여러 모델을 동시에 올리는 로컬 AI 서버</a></li>
+    <li><a href="#비용-비교-50k-vs-h100-780k는-어떻게-읽어야-하나">비용 비교: $50K vs H100 $780K+는 어떻게 읽어야 하나</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/llm/" class="badge badge-secondary">Llm</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

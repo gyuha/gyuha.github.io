@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude Loop Engineering을 잘한다는 말의 뜻: open-loop, closed-loop, inner loop, outer loop를 구분해야 한다'" />
+  <title>Claude Loop Engineering을 잘한다는 말의 뜻: open-loop, closed-loop, inner loop, outer loop를 구분해야 한다  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude Loop Engineering을 잘한다는 말의 뜻: open-loop, closed-loop, inner loop, outer loop를 구분해야 한다" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-06-18"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/06/2026-06-18-claude-loop-engineering-open-closed-inner-outer/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="agents" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/06/2026-06-18-claude-loop-engineering-open-closed-inner-outer/">
+          <h1>
+            Claude Loop Engineering을 잘한다는 말의 뜻: open-loop, closed-loop, inner loop, outer loop를 구분해야 한다
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/06/2026-06-18-claude-loop-engineering-open-closed-inner-outer/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>“이제는 Claude에게 프롬프트를 치는 사람이 아니라, Claude가 프롬프트를 스스로 반복하도록 루프를 짜는 사람이 된다”는 말은 자극적으로 들리지만 꽤 정확합니다. Gao Dalie의 글은 이 변화를 <code>loop engineering</code>이라는 이름으로 설명하면서, 인간이 매번 프롬프트를 넣고 결과를 읽고 다음 프롬프트를 넣는 역할에서 빠져나와야 한다고 주장합니다. <a href="https://gaodalie.substack.com/p/how-to-build-a-claude-loop-engineering">원문</a></p>
+<p>하지만 이 글의 가치가 단순한 선언에 있는 건 아닙니다. 진짜 중요한 부분은 <strong>루프도 종류가 다르고, 실패 지점도 다르며, 따라서 설계 방식도 달라야 한다</strong> 는 점을 구조적으로 풀어낸다는 데 있습니다. 특히 <code>open-loop</code>와 <code>closed-loop</code>, 그리고 <code>inner loop</code>와 <code>outer loop</code>를 구분해 설명한 부분은, 막연한 자동화를 실무 설계 언어로 바꾸는 데 꽤 도움이 됩니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://gaodalie.substack.com/p/how-to-build-a-claude-loop-engineering">How To Build a Claude Loop Engineering Better Than 99% of People</a></li>
+<li><a href="https://code.claude.com/docs/en/goal">Claude Code /goal Docs</a></li>
+<li><a href="https://code.claude.com/docs/en/workflows">Claude Code Dynamic Workflows Docs</a></li>
+<li><a href="https://code.claude.com/docs/en/commands">Claude Code Commands Docs</a></li>
+<li><a href="https://docs.anthropic.com/en/docs/claude-code/overview">Claude Code Overview</a></li>
+</ul>
+<h2 id="1-루프-엔지니어링은-프롬프트를-더-잘-쓰는-법이-아니라-프롬프팅-자체를-시스템-밖으로-빼내는-일이다">1. 루프 엔지니어링은 “프롬프트를 더 잘 쓰는 법”이 아니라 프롬프팅 자체를 시스템 밖으로 빼내는 일이다</h2>
+<p>원문은 loop engineering을 이렇게 설명합니다. 인간이 매번 프롬프트를 넣고 결과를 읽고 다시 지시하는 반복을 직접 수행하던 구조에서, <strong>그 반복 자체를 시스템으로 설계한다</strong> 는 것입니다. <a href="https://gaodalie.substack.com/p/how-to-build-a-claude-loop-engineering">원문</a></p>
+<p>즉 AI가 worker였다면 인간은 director, supervisor, inspector를 동시에 맡고 있었는데, loop engineering은 이 역할 일부를 시스템 설계로 이동시킵니다.</p>
+<pre class="mermaid">flowchart TD
+    A["기존 방식"] --> B["인간이 프롬프트 입력"]
+    B --> C["결과 읽기"]
+    C --> D["다음 프롬프트 결정"]
+    D --> B
+
+    classDef oldTone fill:#fde8c0,color:#333,stroke:#c89d42,stroke-width:1px;
+    class A,B,C,D oldTone;</pre><pre class="mermaid">flowchart TD
+    A["루프 엔지니어링"] --> B["목표와 조건 설계"]
+    B --> C["에이전트 실행"]
+    C --> D["자동 검증"]
+    D -->|미달| E["자동 재시도"]
+    E --> C
+    D -->|충족| F["종료 또는 사람에게 핸드오프"]
+
+    classDef root fill:#c5dcef,color:#333,stroke:#5b8db8,stroke-width:1px;
+    classDef flow fill:#c0ecd3,color:#333,stroke:#5ca379,stroke-width:1px;
+
+    class A,B root;
+    class C,D,E,F flow;</pre><p>이 차이는 엄청 큽니다. 전자는 사람이 루프를 몸으로 돌리는 구조이고, 후자는 사람이 <strong>루프의 규칙을 설계하는 구조</strong> 입니다.</p>
+<h2 id="2-single-agent-loop와-fleet-loop는-규모-차이가-아니라-책임-분산-방식이-다르다">2. Single agent loop와 fleet loop는 규모 차이가 아니라 책임 분산 방식이 다르다</h2>
+<p>원문은 가장 단순한 루프를 single agent loop로 설명합니다. 하나의 에이전트가 조사하고, 초안을 만들고, 목표와 비교하고, 약한 부분을 고치고, 기준을 넘을 때까지 반복하는 구조입니다. <a href="https://gaodalie.substack.com/p/how-to-build-a-claude-loop-engineering">원문</a></p>
+<p>반면 fleet loop는 여러 에이전트가 나무처럼 분기되는 구조입니다. 오케스트레이터가 목표를 쪼개고, specialist가 영역별 작업을 맡고, sub-agent가 세부 작업을 수행하며 discovery → planning → execution → verification을 반복합니다. <a href="https://gaodalie.substack.com/p/how-to-build-a-claude-loop-engineering">원문</a></p>
+<pre class="mermaid">flowchart TD
+    A["Single agent loop"] --> B["조사"]
+    B --> C["초안 작성"]
+    C --> D["목표 대비 검증"]
+    D -->|미달| E["보완"]
+    E --> C
+    D -->|충족| F["종료"]
+
+    classDef loopTone fill:#c0ecd3,color:#333,stroke:#5ca379,stroke-width:1px;
+    class A,B,C,D,E,F loopTone;</pre><pre class="mermaid">flowchart TD
+    A["Fleet loop"] --> B["Orchestrator"]
+    B --> C["Specialist A"]
+    B --> D["Specialist B"]
+    C --> E["Sub-agent A1"]
+    C --> F["Sub-agent A2"]
+    D --> G["Sub-agent B1"]
+    E --> H["검증 결과 회수"]
+    F --> H
+    G --> H
+    H --> B
+
+    classDef root fill:#c5dcef,color:#333,stroke:#5b8db8,stroke-width:1px;
+    classDef nodeTone fill:#c0ecd3,color:#333,stroke:#5ca379,stroke-width:1px;
+
+    class A,B root;
+    class C,D,E,F,G,H nodeTone;</pre><p>이 차이는 단순히 “에이전트가 많다”가 아닙니다. single agent loop는 한 사람이 원고를 혼자 반복해서 고쳐 쓰는 구조라면, fleet loop는 <strong>조직 전체가 역할을 나눠 하나의 프로젝트를 밀어붙이는 구조</strong> 입니다.</p>
+<h2 id="3-실무에서는-open-loop보다-closed-loop가-먼저다">3. 실무에서는 open-loop보다 closed-loop가 먼저다</h2>
+<p>원문이 특히 좋은 점은 루프를 <code>open-loop</code>와 <code>closed-loop</code>로 나눈다는 것입니다.</p>
+<p><code>open-loop</code>는 넓은 탐색 공간을 줍니다. 에이전트가 여러 경로를 시도하고, 애초에 명세되지 않은 결과도 만들어 낼 수 있습니다. 대신 비용이 큽니다. 원문은 진짜 open-loop는 토큰을 많이 잡아먹고, 느슨한 기준의 프로젝트에 쓰면 <code>slop machine</code>이 되기 쉽다고 경고합니다. <a href="https://gaodalie.substack.com/p/how-to-build-a-claude-loop-engineering">원문</a></p>
+<p>반면 <code>closed-loop</code>는 사람이 end-to-end pass를 미리 설계해 둔 구조입니다.</p>
+<ul>
+<li>명확한 목표</li>
+<li>정의된 단계</li>
+<li>각 단계별 평가</li>
+<li>정지 조건 또는 인간 핸드오프</li>
+</ul>
+<p><a href="https://gaodalie.substack.com/p/how-to-build-a-claude-loop-engineering">원문</a></p>
+<pre class="mermaid">flowchart TD
+    A["Open-loop"] --> B["탐색 자유도 높음"]
+    A --> C["창의적 결과 가능"]
+    A --> D["비용 급증"]
+    A --> E["기준 느슨하면 slop 위험"]
+
+    classDef openTone fill:#fde8c0,color:#333,stroke:#c89d42,stroke-width:1px;
+    class A,B,C,D,E openTone;</pre><pre class="mermaid">flowchart TD
+    A["Closed-loop"] --> B["명확한 목표"]
+    B --> C["정의된 단계"]
+    C --> D["단계별 평가"]
+    D --> E["정지 조건 / 인간 핸드오프"]
+
+    classDef closedTone fill:#c0ecd3,color:#333,stroke:#5ca379,stroke-width:1px;
+    class A,B,C,D,E closedTone;</pre><p>원문은 “오늘날 실제 성과를 내는 대부분은 closed-loop”라고 봅니다. 이건 꽤 현실적인 주장입니다. 현재 많은 팀은 예산이 무한하지 않고, 실패 비용도 크기 때문에, 탐색보다 <strong>제약된 실행 루프</strong> 를 먼저 구축하는 편이 훨씬 실용적입니다.</p>
+<h2 id="4-claude-code의-goal과-dynamic-workflows는-루프를-제품-안으로-끌어들인-사례다">4. Claude Code의 <code>/goal</code>과 dynamic workflows는 루프를 제품 안으로 끌어들인 사례다</h2>
+<p>원문은 loop 개념이 이제 코딩 에이전트 도구 안으로 공식 기능으로 들어왔다고 설명하며, Claude Code 예시로 <code>/loop</code>, <code>/goal</code>, Dynamic Workflows를 듭니다. <a href="https://gaodalie.substack.com/p/how-to-build-a-claude-loop-engineering">원문</a></p>
+<p>이 중 <code>/goal</code>은 공식 문서로도 확인됩니다. <code>/goal</code>은 완료 조건을 설정하고, 각 턴 뒤에 작은 빠른 모델이 조건 충족 여부를 검사합니다. 조건이 아직 충족되지 않으면 Claude는 사용자에게 제어를 넘기지 않고 다음 턴을 시작합니다. <a href="https://code.claude.com/docs/en/goal">Claude Code /goal</a></p>
+<p>Dynamic Workflows 문서는 <code>ultracode</code> 설정이 Claude로 하여금 substantive task마다 워크플로를 계획하고, 많은 subagent에 걸쳐 오케스트레이션하게 만든다고 설명합니다. <a href="https://code.claude.com/docs/en/workflows">Dynamic Workflows</a> <a href="https://code.claude.com/docs/en/model-config">Model config</a></p>
+<p>즉 “루프를 설계한다”는 말이 이제는 추상적 개념이 아니라, 실제 제품 기능과 맞물려 돌아가기 시작한 것입니다.</p>
+<h2 id="5-react와-reflexion은-루프-엔지니어링의-안쪽-엔진이다">5. ReAct와 Reflexion은 루프 엔지니어링의 안쪽 엔진이다</h2>
+<p>원문은 loop engineering이 허공에서 떨어진 개념이 아니라 <code>ReAct</code>와 <code>Reflexion</code> 패턴 위에 서 있다고 설명합니다. <a href="https://gaodalie.substack.com/p/how-to-build-a-claude-loop-engineering">원문</a></p>
+<p>ReAct는 생각 → 행동 → 관찰 → 다시 생각의 구조입니다. 코딩에서는:</p>
+<ol>
+<li>목표 이해</li>
+<li>코드 작성</li>
+<li>실행/에러 관찰</li>
+<li>실패 원인 추론</li>
+<li>수정 및 재실행</li>
+<li>테스트 통과까지 반복</li>
+</ol>
+<p>이 됩니다. <a href="https://gaodalie.substack.com/p/how-to-build-a-claude-loop-engineering">원문</a></p>
+<p>Reflexion은 여기에 “왜 실패했는지 자연어로 반성하고, 그 반성을 메모리에 저장해 다음 시도에 반영한다”는 층을 추가합니다. <a href="https://gaodalie.substack.com/p/how-to-build-a-claude-loop-engineering">원문</a></p>
+<pre class="mermaid">flowchart TD
+    A["Thought"] --> B["Action"]
+    B --> C["Observation"]
+    C --> D["Thought"]
+    D --> B
+
+    classDef reactTone fill:#c0ecd3,color:#333,stroke:#5ca379,stroke-width:1px;
+    class A,B,C,D reactTone;</pre><pre class="mermaid">flowchart TD
+    A["작업 실행"] --> B["실패"]
+    B --> C["실패 원인 언어화"]
+    C --> D["메모리에 저장"]
+    D --> E["다음 시도에 반영"]
+
+    classDef reflexTone fill:#e0c8ef,color:#333,stroke:#8b6fb3,stroke-width:1px;
+    class A,B,C,D,E reflexTone;</pre><p>즉 loop engineering은 단지 자동 반복이 아니라, <strong>행동 루프 + 반성 루프</strong> 를 함께 설계하는 일입니다.</p>
+<h2 id="6-진짜-핵심은-inner-loop와-outer-loop를-구분하는-것이다">6. 진짜 핵심은 inner loop와 outer loop를 구분하는 것이다</h2>
+<p>원문이 가장 유용한 대목은 inner loop와 outer loop를 나누는 부분입니다.</p>
+<p><code>inner loop</code>는 단일 작업 안에서의 검증 루프입니다. 예를 들어 auth.ts의 failing test를 고치는 경우, 약한 에이전트는 파일만 수정하고 “done”이라고 하지만, 강한 에이전트는 테스트를 만들고, 실행하고, 실패를 보고, edge case를 고치고, 다시 실행해 통과한 뒤에야 완료를 선언합니다. <a href="https://gaodalie.substack.com/p/how-to-build-a-claude-loop-engineering">원문</a></p>
+<p><code>outer loop</code>는 세션 간 학습 루프입니다. 예를 들어 1회차 세션에서 pagination 처리에 실패하면, 그 교훈을 <code>SKILL.md</code> 같은 곳에 저장하고, 다음 세션에서 비슷한 과제가 나오면 처음부터 그 지식을 불러와 더 잘 처리하게 만드는 구조입니다. <a href="https://gaodalie.substack.com/p/how-to-build-a-claude-loop-engineering">원문</a></p>
+<pre class="mermaid">flowchart TD
+    A["Inner loop"] --> B["단일 작업 안의 검증"]
+    B --> C["수정 → 테스트 → 실패 확인 → 재수정"]
+    C --> D["통과 후 종료"]
+
+    classDef innerTone fill:#c0ecd3,color:#333,stroke:#5ca379,stroke-width:1px;
+    class A,B,C,D innerTone;</pre><pre class="mermaid">flowchart TD
+    A["Outer loop"] --> B["세션 1 실패"]
+    B --> C["교훈 기록"]
+    C --> D["지속 메모리 저장"]
+    D --> E["세션 2에서 재사용"]
+
+    classDef outerTone fill:#e0c8ef,color:#333,stroke:#8b6fb3,stroke-width:1px;
+    class A,B,C,D,E outerTone;</pre><p>이 구분이 중요한 이유는, 많은 팀이 inner loop만 갖고도 “우리는 루프 있다”고 생각하기 쉽기 때문입니다. 하지만 진짜 생산성 차이는 시간이 갈수록 <code>outer loop</code>에서 더 크게 벌어집니다.</p>
+<h2 id="7-addy-osmani의-51은-루프를-시스템-부품으로-보게-만든다">7. Addy Osmani의 “5+1”은 루프를 시스템 부품으로 보게 만든다</h2>
+<p>원문은 Addy Osmani를 인용해, 동작하는 루프는 다섯 가지 구성 요소와 메모리 하나로 이루어진다고 정리합니다. <a href="https://gaodalie.substack.com/p/how-to-build-a-claude-loop-engineering">원문</a></p>
+<ul>
+<li>Automations</li>
+<li>Worktrees</li>
+<li>Skills</li>
+<li>Plugins / Connectors</li>
+<li>Sub-agents</li>
+<li>Memory</li>
+</ul>
+<pre class="mermaid">flowchart TD
+    A["Loop Engineering 5+1"] --> B["Automations"]
+    A --> C["Worktrees"]
+    A --> D["Skills"]
+    A --> E["Plugins / Connectors"]
+    A --> F["Sub-agents"]
+    A --> G["Memory"]
+
+    classDef root fill:#c5dcef,color:#333,stroke:#5b8db8,stroke-width:1px;
+    classDef nodeTone fill:#c0ecd3,color:#333,stroke:#5ca379,stroke-width:1px;
+
+    class A root;
+    class B,C,D,E,F,G nodeTone;</pre><p>이 구분이 좋은 이유는 loop engineering을 “대단한 프롬프트”가 아니라 <strong>운영 부품 조합</strong> 으로 보게 해 주기 때문입니다.</p>
+<ul>
+<li>Automations: 일정하게 작업을 발견하고 실행</li>
+<li>Worktrees: 병렬 에이전트 충돌 방지</li>
+<li>Skills: 프로젝트 지식의 압축 저장</li>
+<li>Connectors: GitHub, Slack, DB 같은 외부 시스템 연동</li>
+<li>Sub-agents: 생성자와 검증자 분리</li>
+<li>Memory: 컨텍스트 윈도우를 넘어서는 지속 상태</li>
+</ul>
+<p>이 구조는 실제 팀 설계에 바로 옮기기 쉽습니다.</p>
+<h2 id="8-결국-좋은-루프는-자유를-주는-것이-아니라-좋은-제약을-설계하는-것이다">8. 결국 좋은 루프는 “자유를 주는 것”이 아니라 “좋은 제약을 설계하는 것”이다</h2>
+<p>원문 마지막은 loop engineering이 AI 개발만의 이야기가 아니라고 말합니다. 본질적으로는 <strong>유능한 개인에게 자유를 주는 것보다, 결과가 나오게 만드는 환경을 설계하는 것</strong> 에 더 가깝다는 것입니다. <a href="https://gaodalie.substack.com/p/how-to-build-a-claude-loop-engineering">원문</a></p>
+<p>이건 인간 팀 운영과도 비슷합니다. 사람을 잘 뽑는 것만으로는 부족하고, 맥락, 규칙, 피드백, 평가 기준, 진행 관리가 필요합니다. AI 시대의 관리도 세부 지시를 늘리는 쪽이 아니라, <strong>좋은 제약을 설계하는 쪽</strong> 으로 이동하고 있다는 것이 이 글의 결론입니다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>loop engineering은 프롬프트를 더 잘 쓰는 법이 아니라 <strong>프롬프팅 자체를 시스템으로 외부화하는 일</strong> 입니다.<br></li>
+<li>실무에서는 탐색형 <code>open-loop</code>보다 제약형 <code>closed-loop</code>가 먼저 성과를 냅니다.<br></li>
+<li>ReAct는 행동-관찰 루프, Reflexion은 실패 반영 루프를 설명하며, 둘이 합쳐져 loop engineering의 안쪽 엔진이 됩니다.<br></li>
+<li><code>inner loop</code>는 단일 작업 안의 검증이고, <code>outer loop</code>는 세션 간 학습입니다.<br></li>
+<li>실제로 동작하는 루프는 <code>Automations</code>, <code>Worktrees</code>, <code>Skills</code>, <code>Plugins/Connectors</code>, <code>Sub-agents</code>, <code>Memory</code>의 5+1 구성 요소로 보는 편이 실용적입니다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>이 글이 좋은 이유는 loop engineering을 과장된 유행어가 아니라, <strong>어떤 루프를 닫아야 하고 어떤 루프를 나중에 열어야 하는지</strong> 로 나눠 설명하기 때문입니다. 지금 대부분의 팀에게 필요한 건 무한 탐색을 허용하는 open-loop가 아니라, 종료 조건과 검증 기준이 분명한 closed-loop입니다.</p>
+<p>그리고 그 위에 inner loop로 작업 신뢰성을 올리고, outer loop로 세션 간 학습을 누적하면, 비로소 “AI가 한 번 잘한 것”이 아니라 <strong>시간이 갈수록 더 잘하는 시스템</strong> 에 가까워집니다. 결국 핵심은 프롬프트가 아니라 구조입니다. 설계할 것은 문장이 아니라 루프입니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 06월 18일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/06/2026-06-18-planning-loop-supervisor-proof-based-done-gate/" rel="prev">
+        <span>왜 AI는 절반만 만들다 멈출까: Planning Loop Supervisor와 &#39;증거 기반 완료 게이트&#39;가 필요한 이유</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/06/2026-06-18-ai-business-idea-validation-rrt-avatar-brand-landing/" rel="next">
+        <span>AI로 돈 버는 핵심이 글쓰기보다 검증인 이유: RRT 테스트, 고객 아바타, 브랜딩, 랜딩페이지까지</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-루프-엔지니어링은-프롬프트를-더-잘-쓰는-법이-아니라-프롬프팅-자체를-시스템-밖으로-빼내는-일이다">1. 루프 엔지니어링은 “프롬프트를 더 잘 쓰는 법”이 아니라 프롬프팅 자체를 시스템 밖으로 빼내는 일이다</a></li>
+    <li><a href="#2-single-agent-loop와-fleet-loop는-규모-차이가-아니라-책임-분산-방식이-다르다">2. Single agent loop와 fleet loop는 규모 차이가 아니라 책임 분산 방식이 다르다</a></li>
+    <li><a href="#3-실무에서는-open-loop보다-closed-loop가-먼저다">3. 실무에서는 open-loop보다 closed-loop가 먼저다</a></li>
+    <li><a href="#4-claude-code의-goal과-dynamic-workflows는-루프를-제품-안으로-끌어들인-사례다">4. Claude Code의 <code>/goal</code>과 dynamic workflows는 루프를 제품 안으로 끌어들인 사례다</a></li>
+    <li><a href="#5-react와-reflexion은-루프-엔지니어링의-안쪽-엔진이다">5. ReAct와 Reflexion은 루프 엔지니어링의 안쪽 엔진이다</a></li>
+    <li><a href="#6-진짜-핵심은-inner-loop와-outer-loop를-구분하는-것이다">6. 진짜 핵심은 inner loop와 outer loop를 구분하는 것이다</a></li>
+    <li><a href="#7-addy-osmani의-51은-루프를-시스템-부품으로-보게-만든다">7. Addy Osmani의 “5+1”은 루프를 시스템 부품으로 보게 만든다</a></li>
+    <li><a href="#8-결국-좋은-루프는-자유를-주는-것이-아니라-좋은-제약을-설계하는-것이다">8. 결국 좋은 루프는 “자유를 주는 것”이 아니라 “좋은 제약을 설계하는 것”이다</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

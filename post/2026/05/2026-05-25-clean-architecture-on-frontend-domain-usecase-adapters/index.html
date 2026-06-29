@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '프런트엔드에 클린 아키텍처를 적용한다는 말의 뜻: React 컴포넌트 분리가 아니라 도메인·유스케이스·어댑터를 나누는 것'" />
+  <title>프런트엔드에 클린 아키텍처를 적용한다는 말의 뜻: React 컴포넌트 분리가 아니라 도메인·유스케이스·어댑터를 나누는 것  | 신규하 블로그</title>
+  <meta property="og:title" content="프런트엔드에 클린 아키텍처를 적용한다는 말의 뜻: React 컴포넌트 분리가 아니라 도메인·유스케이스·어댑터를 나누는 것" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-05-25"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/05/2026-05-25-clean-architecture-on-frontend-domain-usecase-adapters/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="architecture" />
+  
+  <meta property="og:tags" content="typescript" />
+  
+  <meta property="og:tags" content="react" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/05/2026-05-25-clean-architecture-on-frontend-domain-usecase-adapters/">
+          <h1>
+            프런트엔드에 클린 아키텍처를 적용한다는 말의 뜻: React 컴포넌트 분리가 아니라 도메인·유스케이스·어댑터를 나누는 것
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/05/2026-05-25-clean-architecture-on-frontend-domain-usecase-adapters/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p><code>Clean Architecture on Frontend</code>라는 제목만 보면 흔히 &ldquo;React 컴포넌트를 예쁘게 나누는 법&rdquo; 정도를 떠올리기 쉽다. 하지만 Alex Bespoyasov의 원문이 실제로 말하는 것은 훨씬 더 아래층이다. 이 글이 말하는 클린 아키텍처는 컴포넌트 구조가 아니라, <strong>프런트엔드 코드 안에서 무엇이 도메인 지식이고, 무엇이 유스케이스이며, 무엇이 외부 서비스 적응 코드인지 분리하는 일</strong> 이다.<a href="https://dev.to/bespoyasov/clean-architecture-on-frontend-4311">원문</a></p>
+<p>저자는 이를 쿠키 스토어 예제로 설명한다. 상품, 장바구니, 주문, 사용자 같은 도메인 개념을 중심에 두고, 체크아웃 같은 시나리오는 그 주위의 애플리케이션 계층으로 분리한다. 그리고 React UI, API 요청, 로컬 스토리지, 결제 시스템 연동은 바깥쪽 어댑터로 밀어낸다. 즉 핵심 메시지는 &ldquo;프런트엔드도 결국 복잡한 비즈니스 프로그램이므로, UI 프레임워크를 중심에 두지 말고 <strong>업무 개념과 시나리오를 중심에 두라</strong>&ldquo;는 것이다.<a href="https://dev.to/bespoyasov/clean-architecture-on-frontend-4311">원문</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>원문: <a href="https://dev.to/bespoyasov/clean-architecture-on-frontend-4311">Clean Architecture on Frontend - Alex Bespoyasov</a></li>
+<li>발표 영상: <a href="https://youtu.be/ThgqBecaq_w">The Public Talk</a></li>
+<li>예제 코드: <a href="https://github.com/bespoyasov/frontend-clean-architecture">bespoyasov/frontend-clean-architecture</a></li>
+</ul>
+<h2 id="이-글이-말하는-클린-아키텍처의-핵심은-도메인과의-거리다">이 글이 말하는 클린 아키텍처의 핵심은 &ldquo;도메인과의 거리&quot;다</h2>
+<p>원문은 클린 아키텍처를 &ldquo;애플리케이션 도메인과의 가까움에 따라 책임과 기능을 분리하는 방식&quot;으로 설명한다. 여기서 도메인은 현실 세계의 일부를 프로그램으로 모델링한 것이고, 데이터와 그 데이터의 변환 규칙을 뜻한다. 예를 들어 상품 이름을 바꾸는 일, 장바구니에 항목을 담는 일, 총액을 계산하는 일은 도메인 변환이다.<a href="https://dev.to/bespoyasov/clean-architecture-on-frontend-4311">원문</a></p>
+<p>저자가 강조하는 구조는 크게 세 층이다.</p>
+<ul>
+<li>도메인 계층</li>
+<li>애플리케이션 계층</li>
+<li>어댑터 계층</li>
+</ul>
+<p>그리고 가장 중요한 규칙은 <strong>바깥층만 안쪽층에 의존할 수 있다</strong> 는 점이다. 즉 도메인은 독립적이어야 하고, 애플리케이션은 도메인에 의존할 수 있지만, 도메인이 React나 API 라이브러리 같은 바깥 서비스에 의존하면 안 된다.<a href="https://dev.to/bespoyasov/clean-architecture-on-frontend-4311">원문</a></p>
+<pre class="mermaid">flowchart TD
+    A["도메인"] --> B["애플리케이션"]
+    B --> C["어댑터"]
+
+    classDef domainTone fill:#c0ecd3,stroke:#69a97d,color:#333;
+    classDef appTone fill:#fde8c0,stroke:#c9a647,color:#333;
+    classDef adapterTone fill:#c5dcef,stroke:#5b8db8,color:#333;
+
+    class A domainTone
+    class B appTone
+    class C adapterTone</pre><p>이 다이어그램을 읽을 때 중요한 건 화살표 방향보다 <strong>책임 중심</strong> 이다. 안쪽으로 갈수록 도메인 지식이 많고, 바깥으로 갈수록 서비스 적응 코드가 많아진다.</p>
+<h2 id="도메인-계층은-프레임워크를-바꿔도-남는-것이다">도메인 계층은 &ldquo;프레임워크를 바꿔도 남는 것&quot;이다</h2>
+<p>원문에서 도메인 계층은 애플리케이션의 핵심을 정의한다. 쿠키 스토어 예제에서는 상품, 주문, 장바구니, 사용자와 이들의 상태를 바꾸는 함수들이 도메인이다. 저자는 &ldquo;React에서 Angular로 옮기더라도 바뀌지 않는 것&quot;으로 도메인을 생각하라고 제안한다.<a href="https://dev.to/bespoyasov/clean-architecture-on-frontend-4311">원문</a></p>
+<p>예를 들어 장바구니에 상품을 추가하는 함수는:</p>
+<ul>
+<li>버튼 클릭으로 추가되든</li>
+<li>프로모션 코드로 자동 추가되든</li>
+</ul>
+<p>상관하지 않는다. 그냥 상품을 받아, 갱신된 장바구니를 돌려준다. 외부 이벤트는 도메인 변환을 <strong>촉발</strong> 할 뿐이지, 변환 규칙 자체를 결정하지는 않는다는 설명이다.<a href="https://dev.to/bespoyasov/clean-architecture-on-frontend-4311">원문</a></p>
+<p>이 관점이 중요한 이유는 많은 프런트엔드 코드가 UI 이벤트와 비즈니스 규칙을 한 함수 안에 섞어 놓기 때문이다. 그러면 나중에 장바구니 정책을 바꾸고 싶을 때, React 상태 업데이트 코드와 API 응답 처리, UI 알림 로직까지 다 건드리게 된다.</p>
+<pre class="mermaid">flowchart TD
+    A["외부 이벤트<br>버튼 클릭 / 프로모션 적용"] --> B["도메인 변환 호출"]
+    B --> C["장바구니 / 주문 / 사용자 상태 변화"]
+
+    classDef extTone fill:#c5dcef,stroke:#5b8db8,color:#333;
+    classDef domainTone fill:#c0ecd3,stroke:#69a97d,color:#333;
+
+    class A extTone
+    class B,C domainTone</pre><p>즉 도메인은 &ldquo;누가 호출했는지&quot;보다 <strong>무슨 규칙으로 바뀌는지</strong> 만 알아야 한다.</p>
+<h2 id="애플리케이션-계층은-유스케이스-오케스트레이터다">애플리케이션 계층은 &ldquo;유스케이스 오케스트레이터&quot;다</h2>
+<p>원문에서 애플리케이션 계층은 유스케이스를 담는 층이다. 여기서 유스케이스란 사용자 시나리오, 즉 어떤 이벤트가 발생한 뒤 무엇을 어떤 순서로 해야 하는지를 기술한 코드다. 저자는 체크아웃을 예로 들며:</p>
+<ul>
+<li>장바구니에서 항목을 꺼내 주문을 만들고</li>
+<li>주문 결제를 시도하고</li>
+<li>실패 시 사용자에게 알리고</li>
+<li>성공 시 장바구니를 비우고 주문을 보여 주는</li>
+</ul>
+<p>흐름을 하나의 유스케이스로 설명한다.<a href="https://dev.to/bespoyasov/clean-architecture-on-frontend-4311">원문</a></p>
+<p>이 층은 흔히 &ldquo;오케스트레이터&quot;로 이해하면 편하다. 직접 UI를 렌더링하지도 않고, 직접 도메인 규칙을 정의하지도 않는다. 대신:</p>
+<ul>
+<li>서버에 요청 보내기</li>
+<li>도메인 변환 실행하기</li>
+<li>필요한 후속 동작 호출하기</li>
+</ul>
+<p>를 순서대로 조율한다.</p>
+<pre class="mermaid">flowchart TD
+    A["체크아웃 유스케이스"] --> B["장바구니에서 주문 생성"]
+    A --> C["결제 서비스 호출"]
+    A --> D["실패 시 알림"]
+    A --> E["성공 시 장바구니 비우기"]
+    A --> F["주문 화면 갱신"]
+
+    classDef usecaseTone fill:#fde8c0,stroke:#c9a647,color:#333;
+    classDef stepTone fill:#c0ecd3,stroke:#69a97d,color:#333;
+
+    class A usecaseTone
+    class B,C,D,E,F stepTone</pre><p>이렇게 보면 유스케이스는 비즈니스 흐름의 &ldquo;서사&quot;를 담고, 도메인은 그 서사를 구성하는 &ldquo;규칙&quot;을 담는다.</p>
+<h2 id="포트와-어댑터는-우리가-원하는-계약과-현실-세계-api를-분리한다">포트와 어댑터는 &ldquo;우리가 원하는 계약&quot;과 &ldquo;현실 세계 API&quot;를 분리한다</h2>
+<p>원문은 애플리케이션 계층 안에 포트도 둔다고 설명한다. 포트는 애플리케이션이 외부 세계와 소통하고 싶어 하는 <strong>계약</strong> 이다. 보통 인터페이스 형태로 나타나며, 입력 포트는 바깥이 우리를 어떻게 호출할지, 출력 포트는 우리가 바깥을 어떻게 호출할지를 정의한다.<a href="https://dev.to/bespoyasov/clean-architecture-on-frontend-4311">원문</a></p>
+<p>어댑터는 그 계약을 실제 외부 서비스 API에 맞춰 주는 층이다. 저자는 어댑터를 두 종류로 나눈다.</p>
+<ul>
+<li>driving adapters: 바깥 이벤트를 우리 시스템 신호로 바꿔 넣는 쪽</li>
+<li>driven adapters: 우리 시스템 신호를 외부 인프라 호출로 바꾸는 쪽</li>
+</ul>
+<p>프런트엔드에서는 React UI의 이벤트 처리, 브라우저 API, 서버 요청 모듈, 로컬 스토리지 접근 등이 여기에 속한다.<a href="https://dev.to/bespoyasov/clean-architecture-on-frontend-4311">원문</a></p>
+<pre class="mermaid">flowchart TD
+    A["사용자 / 브라우저 이벤트"] --> B["Driving Adapter<br>UI / 이벤트 핸들러"]
+    B --> C["입력 포트 / 유스케이스"]
+    C --> D["출력 포트"]
+    D --> E["Driven Adapter<br>API / Storage / Payment"]
+    E --> F["외부 서비스"]
+
+    classDef extTone fill:#c5dcef,stroke:#5b8db8,color:#333;
+    classDef adapterTone fill:#fde8c0,stroke:#c9a647,color:#333;
+    classDef appTone fill:#c0ecd3,stroke:#69a97d,color:#333;
+
+    class A,F extTone
+    class B,E adapterTone
+    class C,D appTone</pre><p>이 구조를 쓰면 결제 시스템이 바뀌거나, 로컬 스토리지 대신 IndexedDB를 쓰게 되더라도 유스케이스와 도메인을 직접 뜯어고칠 필요가 줄어든다.</p>
+<h2 id="저자가-말하는-가장-중요한-규칙은-도메인-추출과-의존성-방향-유지다">저자가 말하는 가장 중요한 규칙은 &ldquo;도메인 추출&quot;과 &ldquo;의존성 방향 유지&quot;다</h2>
+<p>원문은 클린 아키텍처의 장점을 길게 설명하지만, 동시에 비용도 솔직하게 말한다. 시간이 더 들고, 구현이 장황해질 수 있고, 온보딩이 어려워질 수 있고, 프런트엔드에서는 번들 크기까지 늘 수 있다는 것이다. 그래서 저자는 모든 규칙을 완벽하게 지키라고 하지 않는다. 오히려 <strong>최소한 두 가지는 꼭 지키라</strong> 고 정리한다.<a href="https://dev.to/bespoyasov/clean-architecture-on-frontend-4311">원문</a></p>
+<p>그 두 가지는:</p>
+<ul>
+<li>도메인을 분리할 것</li>
+<li>의존성 방향을 지킬 것</li>
+</ul>
+<p>이다.</p>
+<p>이 두 규칙만 지켜도:</p>
+<ul>
+<li>비즈니스 규칙이 코드베이스 곳곳에 흩어지지 않고</li>
+<li>외부 서비스 요구사항이 애플리케이션 내부 구조를 끌고 다니지 않게 된다</li>
+</ul>
+<p>저자는 심지어 다른 층은 나중에 추가해도 되지만, 도메인과 의존성 방향은 초반부터 신경 쓸 가치가 있다고 본다.<a href="https://dev.to/bespoyasov/clean-architecture-on-frontend-4311">원문</a></p>
+<h2 id="프런트엔드에서-이-구조가-특히-유용한-이유는-ui가-비즈니스-로직을-빨아들이기-쉽기-때문이다">프런트엔드에서 이 구조가 특히 유용한 이유는 &ldquo;UI가 비즈니스 로직을 빨아들이기 쉽기 때문&quot;이다</h2>
+<p>저자가 굳이 프런트엔드에서 이 구조를 말하는 이유는 명확하다. 프런트엔드는 UI 프레임워크, 상태 관리, 서버 요청, 브라우저 저장소, 결제 모듈 등이 한 화면 로직으로 쉽게 뭉쳐 버린다. 그러면 React 훅 하나 안에:</p>
+<ul>
+<li>버튼 이벤트 처리</li>
+<li>서버 요청</li>
+<li>예외 처리</li>
+<li>장바구니 계산</li>
+<li>사용자 메시지</li>
+</ul>
+<p>가 모두 들어가게 된다.</p>
+<p>원문은 이런 구조를 피하기 위해, 도메인 코드는 <code>src/domain</code>, 유스케이스는 <code>src/application</code>, 서비스 적응 코드는 <code>src/services</code>로 나누는 예시 폴더 구조를 보여 준다. <code>ui/</code>와 <code>lib/</code>는 바깥에 둔다.<a href="https://dev.to/bespoyasov/clean-architecture-on-frontend-4311">원문</a></p>
+<pre class="mermaid">flowchart TD
+    A["src/"] --> B["domain/"]
+    A --> C["application/"]
+    A --> D["services/"]
+    A --> E["ui/"]
+    A --> F["lib/"]
+
+    B --> B1["user.ts"]
+    B --> B2["product.ts"]
+    B --> B3["order.ts"]
+    B --> B4["cart.ts"]
+
+    C --> C1["addToCart.ts"]
+    C --> C2["authenticate.ts"]
+    C --> C3["orderProducts.ts"]
+    C --> C4["ports.ts"]
+
+    D --> D1["authAdapter.ts"]
+    D --> D2["paymentAdapter.ts"]
+    D --> D3["storageAdapter.ts"]
+    D --> D4["api.ts"]
+
+    classDef rootTone fill:#c5dcef,stroke:#5b8db8,color:#333;
+    classDef domainTone fill:#c0ecd3,stroke:#69a97d,color:#333;
+    classDef appTone fill:#fde8c0,stroke:#c9a647,color:#333;
+    classDef serviceTone fill:#e0c8ef,stroke:#9b78b5,color:#333;
+
+    class A rootTone
+    class B,B1,B2,B3,B4 domainTone
+    class C,C1,C2,C3,C4 appTone
+    class D,D1,D2,D3,D4 serviceTone</pre><p>이 구조는 UI를 얇게 만들고, 비즈니스 로직을 재사용·테스트하기 쉽게 만드는 데 목적이 있다.</p>
+<h2 id="하지만-저자도-정석-구현이-항상-정답은-아니다라고-말한다">하지만 저자도 &ldquo;정석 구현이 항상 정답은 아니다&quot;라고 말한다</h2>
+<p>이 글이 좋은 이유는 클린 아키텍처를 만능 해법처럼 포장하지 않는다는 점이다. 저자는 정석 구현이 작은 프로젝트에는 과할 수 있고, 너무 일찍 과설계하면 신규 개발자의 진입 장벽을 높일 수 있다고 말한다. 프런트엔드에서는 코드량이 늘어 브라우저가 다운로드·파싱·해석해야 하는 비용도 커질 수 있다고 지적한다.<a href="https://dev.to/bespoyasov/clean-architecture-on-frontend-4311">원문</a></p>
+<p>그래서 현실적 타협점도 제안한다.</p>
+<ul>
+<li>유스케이스를 조금 단순하게 만들기</li>
+<li>어떤 경우엔 어댑터가 도메인을 바로 호출하게 하기</li>
+<li>코드 스플리팅을 조정하기</li>
+</ul>
+<p>즉 저자의 메시지는 &ldquo;교과서대로 다 하라&quot;가 아니라, <strong>도메인과 의존성 방향만 지키고 나머지는 예산과 팀 역량에 맞춰 절충하라</strong> 는 쪽에 가깝다.</p>
+<h2 id="이-글을-프런트엔드-실무에-적용하면-무엇이-달라질까">이 글을 프런트엔드 실무에 적용하면 무엇이 달라질까</h2>
+<p>이 글을 오늘날 프런트엔드 실무 문맥으로 옮기면 다음과 같이 읽을 수 있다.</p>
+<h3 id="1-react-훅-안에-비즈니스-규칙을-넣지-않는다">1. React 훅 안에 비즈니스 규칙을 넣지 않는다</h3>
+<p>훅은 이벤트 연결과 상태 동기화에 집중하고, 총액 계산이나 할인 규칙 같은 것은 도메인 함수로 뺀다.</p>
+<h3 id="2-화면-동작-서사는-유스케이스-함수로-뺀다">2. 화면 동작 서사는 유스케이스 함수로 뺀다</h3>
+<p>체크아웃, 로그인, 결제 완료 같은 시나리오는 컴포넌트 바깥의 애플리케이션 함수로 옮긴다.</p>
+<h3 id="3-api-응답-형태를-그대로-내부에-퍼뜨리지-않는다">3. API 응답 형태를 그대로 내부에 퍼뜨리지 않는다</h3>
+<p>서버 응답은 어댑터에서 내부 모델로 변환하고, 도메인과 유스케이스는 그 내부 모델만 본다.</p>
+<h3 id="4-외부-서비스-교체-가능성을-이론이-아니라-비용-제어-장치로-본다">4. 외부 서비스 교체 가능성을 &ldquo;이론&quot;이 아니라 비용 제어 장치로 본다</h3>
+<p>결제 모듈, 저장소 구현, 알림 방식이 바뀔 수 있는 프로젝트일수록 포트와 어댑터의 가치가 커진다.</p>
+<p>즉 이 글은 프런트엔드 아키텍처를 컴포넌트 레벨에서만 보지 말고, <strong>업무 규칙과 화면 연결을 분리하는 방향으로 보라</strong> 는 제안이다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>이 글에서 말하는 클린 아키텍처는 컴포넌트 분리보다 <strong>도메인·유스케이스·어댑터 분리</strong> 에 가깝다.</li>
+<li>도메인은 프레임워크를 바꿔도 남는 업무 규칙이고, 애플리케이션 계층은 유스케이스 오케스트레이션이며, 어댑터는 외부 서비스 API를 내부 계약에 맞춘다.</li>
+<li>가장 중요한 규칙은 <strong>도메인 추출</strong> 과 <strong>의존성 방향 유지</strong> 다.</li>
+<li>프런트엔드에서는 이 구조가 UI에 비즈니스 로직이 흡수되는 문제를 줄이는 데 특히 유용하다.</li>
+<li>다만 저자도 작은 프로젝트에서는 과설계가 될 수 있다고 인정하며, 실무에서는 현실적인 타협이 필요하다고 본다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>프런트엔드에 클린 아키텍처를 적용한다는 말은 React 폴더 구조를 멋지게 짜는 일이 아니다. 더 본질적으로는 <strong>UI 프레임워크를 중심에 두지 않고, 도메인과 유스케이스를 중심에 두는 사고방식</strong> 이다. 이 글이 오래됐어도 여전히 유효한 이유는, 오늘날에도 많은 프런트엔드 코드가 화면 이벤트와 비즈니스 규칙, 외부 서비스 연동을 한곳에 섞기 때문이다. 그래서 이 글의 실전적 메시지는 아주 단순하게 요약된다. <strong>도메인을 먼저 뽑고, 외부 세계는 나중에 붙여라.</strong></p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 05월 25일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/engineering">Engineering</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-24-sunote-suno-style-tag-workflow-productization/" rel="prev">
+        <span>Suno에서 진짜 느린 건 생성이 아니라 태그 탐색이다: &#39;SuNote&#39;가 해결하려는 병목은 프롬프트 작성 이전에 있다</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-25-claude-mem-persistent-context-across-agent-sessions/" rel="next">
+        <span>claude-mem이 왜 이렇게 커졌나: 세션 로그를 저장하는 게 아니라 컨텍스트를 압축해 다음 에이전트 세션에 다시 주입하는 구조</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#이-글이-말하는-클린-아키텍처의-핵심은-도메인과의-거리다">이 글이 말하는 클린 아키텍처의 핵심은 &ldquo;도메인과의 거리&quot;다</a></li>
+    <li><a href="#도메인-계층은-프레임워크를-바꿔도-남는-것이다">도메인 계층은 &ldquo;프레임워크를 바꿔도 남는 것&quot;이다</a></li>
+    <li><a href="#애플리케이션-계층은-유스케이스-오케스트레이터다">애플리케이션 계층은 &ldquo;유스케이스 오케스트레이터&quot;다</a></li>
+    <li><a href="#포트와-어댑터는-우리가-원하는-계약과-현실-세계-api를-분리한다">포트와 어댑터는 &ldquo;우리가 원하는 계약&quot;과 &ldquo;현실 세계 API&quot;를 분리한다</a></li>
+    <li><a href="#저자가-말하는-가장-중요한-규칙은-도메인-추출과-의존성-방향-유지다">저자가 말하는 가장 중요한 규칙은 &ldquo;도메인 추출&quot;과 &ldquo;의존성 방향 유지&quot;다</a></li>
+    <li><a href="#프런트엔드에서-이-구조가-특히-유용한-이유는-ui가-비즈니스-로직을-빨아들이기-쉽기-때문이다">프런트엔드에서 이 구조가 특히 유용한 이유는 &ldquo;UI가 비즈니스 로직을 빨아들이기 쉽기 때문&quot;이다</a></li>
+    <li><a href="#하지만-저자도-정석-구현이-항상-정답은-아니다라고-말한다">하지만 저자도 &ldquo;정석 구현이 항상 정답은 아니다&quot;라고 말한다</a></li>
+    <li><a href="#이-글을-프런트엔드-실무에-적용하면-무엇이-달라질까">이 글을 프런트엔드 실무에 적용하면 무엇이 달라질까</a>
+      <ul>
+        <li><a href="#1-react-훅-안에-비즈니스-규칙을-넣지-않는다">1. React 훅 안에 비즈니스 규칙을 넣지 않는다</a></li>
+        <li><a href="#2-화면-동작-서사는-유스케이스-함수로-뺀다">2. 화면 동작 서사는 유스케이스 함수로 뺀다</a></li>
+        <li><a href="#3-api-응답-형태를-그대로-내부에-퍼뜨리지-않는다">3. API 응답 형태를 그대로 내부에 퍼뜨리지 않는다</a></li>
+        <li><a href="#4-외부-서비스-교체-가능성을-이론이-아니라-비용-제어-장치로-본다">4. 외부 서비스 교체 가능성을 &ldquo;이론&quot;이 아니라 비용 제어 장치로 본다</a></li>
+      </ul>
+    </li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/architecture/" class="badge badge-secondary">Architecture</a>
+    <a href="/tags/typescript/" class="badge badge-secondary">Typescript</a>
+    <a href="/tags/react/" class="badge badge-secondary">React</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '이번 주 GitHub 급상승 리포지토리에서 눈에 띈 공통점: AI 앱보다 코드 그래프와 하네스가 더 앞에 나온다'" />
+  <title>이번 주 GitHub 급상승 리포지토리에서 눈에 띈 공통점: AI 앱보다 코드 그래프와 하네스가 더 앞에 나온다  | 신규하 블로그</title>
+  <meta property="og:title" content="이번 주 GitHub 급상승 리포지토리에서 눈에 띈 공통점: AI 앱보다 코드 그래프와 하네스가 더 앞에 나온다" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-06-01"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/06/2026-06-01-github-rising-repos-knowledge-graph-harness-pattern/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="ai" />
+  
+  <meta property="og:tags" content="agents" />
+  
+  <meta property="og:tags" content="claude-code" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/06/2026-06-01-github-rising-repos-knowledge-graph-harness-pattern/">
+          <h1>
+            이번 주 GitHub 급상승 리포지토리에서 눈에 띈 공통점: AI 앱보다 코드 그래프와 하네스가 더 앞에 나온다
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/06/2026-06-01-github-rising-repos-knowledge-graph-harness-pattern/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>X에 올라온 <code>&quot;이번 주 GitHub에서 급상승한 AI 관련 리포지토리 10선&quot;</code> 포스트를 보면, 표면적으로는 단순한 주간 랭킹처럼 보입니다. 그런데 원문에서 직접 확인 가능한 카드들과 GitHub 원본 저장소를 같이 보면, 이번 주 흐름은 꽤 선명합니다. <strong>사람들이 지금 뜨겁게 반응하는 것은 단순 AI 앱보다, 에이전트가 더 잘 이해하고 더 적은 토큰으로 더 안정적으로 일하게 만드는 기반층</strong> 이라는 점입니다. <a href="https://x.com/i/status/2060921724443791580">X 원문</a></p>
+<p>이번 포스트는 X 원문에서 직접 확인 가능한 저장소 카드 4개와, 같은 시점의 보조 트렌드 스냅샷을 함께 읽어 왜 이런 패턴이 반복되는지 해설합니다. 특히 <code>Understand-Anything</code>, <code>codegraph</code>, <code>ECC</code>, <code>MoneyPrinterTurbo</code> 네 개를 같이 놓고 보면, <strong>코드 이해 레이어 + 하네스 레이어 + 생산 파이프라인 레이어</strong> 가 한꺼번에 떠오르는 이유가 보입니다. <a href="https://github.com/Lum1104/Understand-Anything">Understand Anything</a> <a href="https://github.com/colbymchenry/codegraph">CodeGraph</a> <a href="https://github.com/affaan-m/ECC">ECC</a> <a href="https://github.com/harry0703/MoneyPrinterTurbo">MoneyPrinterTurbo</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://x.com/i/status/2060921724443791580">https://x.com/i/status/2060921724443791580</a></li>
+<li><a href="https://github.com/Lum1104/Understand-Anything">https://github.com/Lum1104/Understand-Anything</a></li>
+<li><a href="https://github.com/colbymchenry/codegraph">https://github.com/colbymchenry/codegraph</a></li>
+<li><a href="https://github.com/affaan-m/ECC">https://github.com/affaan-m/ECC</a></li>
+<li><a href="https://github.com/harry0703/MoneyPrinterTurbo">https://github.com/harry0703/MoneyPrinterTurbo</a></li>
+<li><a href="https://risingrepo.org/">https://risingrepo.org/</a></li>
+<li><a href="https://allhot.top/">https://allhot.top/</a></li>
+</ul>
+<h2 id="1-이번-x-포스트에서-직접-확인되는-1차-신호는-4개였다">1. 이번 X 포스트에서 직접 확인되는 1차 신호는 4개였다</h2>
+<p>X 원문은 일본어로 <code>&quot;이번 주 GitHub에서 급상승한 AI 관련 리포지토리 10선&quot;</code> 이라고 소개하지만, 공개 임베드와 첨부 이미지에서 텍스트로 직접 확인 가능한 카드는 우선 4개였습니다. 첫 카드의 본문 텍스트는 <code>Understand-Anything</code>을 &ldquo;<code>코드베이스 전체를 대화형 knowledge graph로 바꾸는 도구</code>&rdquo; 라고 설명하고, 첨부 카드들에는 <code>Understand-Anything</code>, <code>codegraph</code>, <code>MoneyPrinterTurbo</code>, <code>ECC</code>가 각각 표시됩니다. <a href="https://x.com/i/status/2060921724443791580">X 원문 임베드 확인</a></p>
+<p>이 4개를 그대로 나열해 보면 얼핏 분야가 제각각처럼 보입니다.</p>
+<ul>
+<li><code>Understand-Anything</code>: 코드/문서/지식 그래프</li>
+<li><code>codegraph</code>: 로컬 코드 지식 그래프</li>
+<li><code>ECC</code>: 에이전트 하네스 성능 최적화 시스템</li>
+<li><code>MoneyPrinterTurbo</code>: AI 기반 쇼트폼 영상 생성 파이프라인</li>
+</ul>
+<p>하지만 실제로는 네 프로젝트 모두 <strong>“모델이 똑똑해지는 것” 자체보다, 모델이 일하는 외부 구조를 어떻게 바꾸는가</strong> 에 더 가까운 도구들입니다.</p>
+<pre class="mermaid">flowchart TD
+    A["주간 급상승 저장소"] --> B["코드 이해 레이어"]
+    A --> C["하네스/운영 레이어"]
+    A --> D["콘텐츠 생산 레이어"]
+
+    B --> E["Understand-Anything"]
+    B --> F["codegraph"]
+    C --> G["ECC"]
+    D --> H["MoneyPrinterTurbo"]
+
+    classDef root fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef group fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+    classDef item fill:#c0ecd3,stroke:#5ca379,color:#333,stroke-width:1px;
+
+    class A root;
+    class B,C,D group;
+    class E,F,G,H item;</pre><p>즉 이 랭킹은 “어떤 모델이 떴는가” 보다, <strong>어떤 병목을 외부 시스템으로 해결하는 프로젝트가 주목받고 있는가</strong> 를 보여 주는 신호에 더 가깝습니다.</p>
+<h2 id="2-첫-번째-축은-확실하다-코드베이스를-읽기-좋은-구조로-바꾸는-지식-그래프-레이어">2. 첫 번째 축은 확실하다: 코드베이스를 읽기 좋은 구조로 바꾸는 지식 그래프 레이어</h2>
+<p>가장 눈에 띄는 공통점은 <code>Understand-Anything</code>과 <code>codegraph</code>가 모두 상위 주목 프로젝트로 보인다는 점입니다. 두 저장소 모두 설명 문구에서 공통적으로 “코드를 그래프로 바꾸고 탐색·검색·질문할 수 있게 한다”는 방향을 강하게 내세웁니다. <code>Understand-Anything</code>은 README 첫 문장에서 &ldquo;<code>Turn any codebase, knowledge base, or docs into an interactive knowledge graph you can explore, search, and ask questions about.</code>&rdquo; 라고 설명합니다. <code>codegraph</code>는 &ldquo;<code>Pre-indexed code knowledge graph ... fewer tokens, fewer tool calls, 100% local</code>&rdquo; 을 전면에 둡니다. <a href="https://github.com/Lum1104/Understand-Anything">Understand Anything README</a> <a href="https://github.com/colbymchenry/codegraph">CodeGraph README</a></p>
+<p>이 둘의 공통 문제의식은 명확합니다. 오늘날 AI 코딩에서 진짜 병목은 “코드를 쓰는 속도”보다 <strong>이미 존재하는 코드베이스를 이해하는 속도</strong> 라는 것입니다. 새 기능을 만드는 것보다, 어디를 건드려야 하는지 찾고, 영향 범위를 파악하고, 용어와 구조를 익히는 시간이 더 길어지는 경우가 많습니다.</p>
+<p>그래서 코드 지식 그래프 계열 도구들은 단순 시각화 툴이 아닙니다. 핵심은:</p>
+<ul>
+<li>소스 파일을 의미 단위로 구조화하고</li>
+<li>심볼/관계/문맥을 추출하고</li>
+<li>검색 가능한 인덱스로 만들고</li>
+<li>에이전트가 매번 전체 파일을 훑지 않게 하는 것</li>
+</ul>
+<p>입니다.</p>
+<pre class="mermaid">flowchart TD
+    A["원시 코드베이스"] --> B["구조 추출"]
+    B --> C["심볼/관계 인덱스"]
+    C --> D["검색/질문 가능한 그래프"]
+    D --> E["에이전트 탐색 비용 감소"]
+    D --> F["토큰 사용량 감소"]
+    D --> G["온보딩/리뷰 속도 향상"]
+
+    classDef source fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef process fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+    classDef result fill:#c0ecd3,stroke:#5ca379,color:#333,stroke-width:1px;
+
+    class A source;
+    class B,C,D process;
+    class E,F,G result;</pre><p>이 패턴은 우연이 아닙니다. X 원문에서 1번 카드가 바로 <code>Understand-Anything</code>이고, 별도 트렌드 스냅샷들에서도 <code>Understand-Anything</code>과 <code>codegraph</code>가 같은 주간 맥락에서 함께 반복 등장합니다. 따라서 이번 급상승 리스트의 가장 강한 신호 중 하나는, <strong>AI 코딩의 중심축이 “생성”에서 “이해 가능한 컨텍스트 레이어”로 이동하고 있다</strong> 는 점입니다. <a href="https://risingrepo.org/">Rising Repo</a> <a href="https://allhot.top/">Allhot</a></p>
+<h2 id="3-두-번째-축은-ecc가-보여-준다-모델보다-바깥쪽-하네스를-최적화하는-흐름">3. 두 번째 축은 ECC가 보여 준다: 모델보다 바깥쪽 하네스를 최적화하는 흐름</h2>
+<p>세 번째로 중요한 프로젝트는 <code>ECC</code> 입니다. 이 저장소는 README에서 자신을 &ldquo;<code>The agent harness performance optimization system</code>&rdquo; 이라고 부릅니다. 이어서 <code>skills, instincts, memory, security, and research-first development</code> 라는 표현까지 붙입니다. 즉 ECC가 다루는 대상은 모델 그 자체가 아니라, <strong>에이전트가 일하는 전체 운영 껍질</strong> 입니다. <a href="https://github.com/affaan-m/ECC">ECC README</a></p>
+<p>이게 왜 중요하냐면, 요즘 급상승 프로젝트들의 많은 공통점이 바로 여기에 있기 때문입니다. 생성 품질을 더 높이는 모델 튜닝보다:</p>
+<ul>
+<li>어떤 규칙을 먼저 읽게 할지</li>
+<li>어떤 메모리를 어디서 꺼내 쓸지</li>
+<li>어떤 보안 장치를 기본값으로 둘지</li>
+<li>어떤 작업 순서를 강제할지</li>
+<li>어떤 조사 루프를 먼저 돌릴지</li>
+</ul>
+<p>같은 <strong>하네스 설계 문제</strong> 가 훨씬 더 큰 차이를 만들기 시작했기 때문입니다.</p>
+<pre class="mermaid">flowchart TD
+    A["기본 모델"] --> B["하네스 계층"]
+    B --> C["skills"]
+    B --> D["memory"]
+    B --> E["security"]
+    B --> F["research-first workflow"]
+    B --> G["operator rules"]
+    C --> H["실제 작업 품질"]
+    D --> H
+    E --> H
+    F --> H
+    G --> H
+
+    classDef model fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef harness fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+    classDef outcome fill:#c0ecd3,stroke:#5ca379,color:#333,stroke-width:1px;
+
+    class A model;
+    class B,C,D,E,F,G harness;
+    class H outcome;</pre><p>이 흐름은 지난 몇 주 동안 계속 반복해서 나타나던 패턴과도 맞닿습니다. 코드 그래프, 메모리, 훅, 스킬, 하네스 프로젝트가 함께 뜨는 이유는, AI 코딩 실무에서 차이를 만드는 것이 점점 <strong>모델 선택 자체보다 모델을 둘러싼 운영 장치</strong> 로 이동하고 있기 때문입니다.</p>
+<h2 id="4-그런데-왜-moneyprinterturbo도-같이-뜨는가-생산-파이프라인형-앱이-여전히-강하다">4. 그런데 왜 MoneyPrinterTurbo도 같이 뜨는가: 생산 파이프라인형 앱이 여전히 강하다</h2>
+<p>여기서 <code>MoneyPrinterTurbo</code>는 약간 다른 결의 프로젝트처럼 보입니다. 실제로 이 저장소는 README에서 &ldquo;<code>주제나 키워드만 주면 영상 문안, 영상 소스, 자막, 배경음악을 자동 생성하고 HD 쇼트폼 영상을 합성한다</code>&ldquo;는 식의 end-to-end 워크플로를 전면에 둡니다. <a href="https://github.com/harry0703/MoneyPrinterTurbo">MoneyPrinterTurbo README</a></p>
+<p>하지만 이 프로젝트도 자세히 보면 단순 “AI 앱” 하나라기보다 <strong>생산 공정 전체를 조립한 파이프라인형 시스템</strong> 입니다.</p>
+<ul>
+<li>입력: 주제/키워드</li>
+<li>스크립트 생성</li>
+<li>영상 소스 수집</li>
+<li>음성/자막/배경음악 합성</li>
+<li>최종 렌더링</li>
+</ul>
+<p>즉 이 저장소가 뜨는 이유도 “모델이 멋진 결과를 냈다” 보다는, <strong>AI를 실제 산출물 공장에 꽂아 넣는 운영 자동화</strong> 에 있습니다.</p>
+<pre class="mermaid">flowchart TD
+    A["주제 / 키워드"] --> B["문안 생성"]
+    B --> C["소스 영상 수집"]
+    C --> D["음성/자막/배경음악 생성"]
+    D --> E["최종 쇼트폼 렌더링"]
+
+    classDef input fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef process fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+    classDef output fill:#c0ecd3,stroke:#5ca379,color:#333,stroke-width:1px;
+
+    class A input;
+    class B,C,D process;
+    class E output;</pre><p>그래서 <code>MoneyPrinterTurbo</code>는 오히려 이번 리스트의 예외라기보다, 다른 저장소들과 나란히 놓였을 때 더 흥미롭습니다. 코드 이해 계층과 하네스 계층이 <strong>에이전트를 더 잘 일하게 만드는 내부 인프라</strong> 라면, <code>MoneyPrinterTurbo</code>는 그 위에서 <strong>즉시 돈이 되는 생산 라인을 보여 주는 외부 응용</strong> 에 가깝기 때문입니다.</p>
+<h2 id="5-이-네-개를-같이-놓고-보면-이번-주-패턴은-모델-경쟁이-아니라-외부-구조-경쟁이다">5. 이 네 개를 같이 놓고 보면, 이번 주 패턴은 “모델 경쟁”이 아니라 “외부 구조 경쟁”이다</h2>
+<p>이번 포스트에서 확인한 네 저장소를 한 줄로 요약하면 이렇습니다.</p>
+<ul>
+<li><code>Understand-Anything</code>: 코드를 가르치는 그래프</li>
+<li><code>codegraph</code>: 토큰과 도구 호출을 줄이는 로컬 그래프</li>
+<li><code>ECC</code>: 에이전트 하네스 운영체계</li>
+<li><code>MoneyPrinterTurbo</code>: AI 기반 콘텐츠 생산 공장</li>
+</ul>
+<p>겉보기에는 다른 카테고리처럼 보이지만, 실제로는 전부 <strong>AI 모델 바깥에서 작동하는 구조물</strong> 입니다. 그리고 이것이 바로 요즘 GitHub 트렌드에서 가장 중요한 변화일 가능성이 큽니다.</p>
+<pre class="mermaid">flowchart TD
+    A["기본 LLM"] --> B["이해 레이어"]
+    A --> C["운영 하네스"]
+    A --> D["생산 파이프라인"]
+
+    B --> E["Understand-Anything / codegraph"]
+    C --> F["ECC"]
+    D --> G["MoneyPrinterTurbo"]
+
+    E --> H["더 적은 탐색 비용"]
+    F --> I["더 안정적인 작업 방식"]
+    G --> J["더 빠른 산출물 생산"]
+
+    classDef base fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef layer fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+    classDef repo fill:#e0c8ef,stroke:#9b6fb3,color:#333,stroke-width:1px;
+    classDef result fill:#c0ecd3,stroke:#5ca379,color:#333,stroke-width:1px;
+
+    class A base;
+    class B,C,D layer;
+    class E,F,G repo;
+    class H,I,J result;</pre><p>즉 트렌드의 초점이 “더 똑똑한 모델 하나”에서 끝나지 않고:</p>
+<ul>
+<li>컨텍스트를 구조화하고</li>
+<li>에이전트를 통제하고</li>
+<li>결과 생산 라인을 자동화하는</li>
+</ul>
+<p>방향으로 이동하고 있다는 뜻입니다.</p>
+<h2 id="6-이번-x-포스트를-읽을-때-주의할-점도-있다">6. 이번 X 포스트를 읽을 때 주의할 점도 있다</h2>
+<p>한 가지는 분명히 선을 그어야 합니다. X 원문은 <code>&quot;10선&quot;</code> 이라고 소개하지만, 공개 임베드와 첨부 이미지에서 접근 가능한 텍스트는 일부에 한정되어 있습니다. 따라서 이번 글은 <strong>원문에서 직접 확인 가능한 카드 4개와 보조 트렌드 스냅샷을 바탕으로 패턴을 읽는 방식</strong> 을 택했습니다. <a href="https://x.com/i/status/2060921724443791580">X 원문</a></p>
+<p>또한 GitHub 스타 수치는 계속 변합니다. 2026년 6월 1일 확인 시점 기준으로:</p>
+<ul>
+<li><code>Understand-Anything</code>은 약 4.7만 스타</li>
+<li><code>MoneyPrinterTurbo</code>는 약 7.4만 스타</li>
+<li><code>codegraph</code>는 약 3.5만 스타</li>
+<li><code>ECC</code>는 약 20만 스타</li>
+</ul>
+<p>였습니다. 따라서 숫자는 “대략적인 현재 규모”를 보여 주는 용도로만 읽는 것이 맞고, 원문 게시 시점의 순위와 완전히 동일하다고 단정하면 안 됩니다. <a href="https://github.com/Lum1104/Understand-Anything">GitHub API 확인, 2026-06-01</a> <a href="https://github.com/harry0703/MoneyPrinterTurbo">GitHub API 확인, 2026-06-01</a> <a href="https://github.com/colbymchenry/codegraph">GitHub API 확인, 2026-06-01</a> <a href="https://github.com/affaan-m/ECC">GitHub API 확인, 2026-06-01</a></p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<p>이번 X 포스트에서 직접 확인 가능한 급상승 저장소들을 보면, 중심축은 분명합니다.</p>
+<ul>
+<li><code>Understand-Anything</code>과 <code>codegraph</code>는 코드 이해와 컨텍스트 구조화 문제를 겨냥합니다</li>
+<li><code>ECC</code>는 에이전트 자체보다 에이전트가 일하는 하네스를 최적화합니다</li>
+<li><code>MoneyPrinterTurbo</code>는 AI를 실제 콘텐츠 생산 파이프라인에 꽂아 넣습니다</li>
+</ul>
+<p>즉 이번 주 트렌드는 <strong>AI 앱 자체보다, AI가 더 잘 이해하고 더 안정적으로 일하고 더 빠르게 산출물을 만드는 외부 구조</strong> 에 더 큰 관심이 몰리고 있다는 신호로 읽는 편이 정확합니다.</p>
+<h2 id="결론">결론</h2>
+<p>이번 주 GitHub 급상승 흐름은 꽤 상징적입니다. 사람들은 이제 단순히 “뭘 생성할 수 있나” 보다, <strong>어떻게 이해시키고, 어떻게 통제하고, 어떻게 생산 라인으로 엮을 수 있나</strong> 에 더 많이 반응하고 있습니다. 그 점에서 이번 X 포스트는 단순한 저장소 추천 목록이 아니라, <strong>AI 실무의 무게중심이 모델 경쟁에서 컨텍스트·하네스·파이프라인 경쟁으로 옮겨가고 있다는 짧은 스냅샷</strong> 으로 읽을 만합니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 06월 01일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/insights">Insights</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-31-software-fundamentals-matter-more-than-ever-ai-era/" rel="prev">
+        <span>AI가 코드를 싸게 만들었다는 착각: Matt Pocock이 ‘소프트웨어 기본기’를 다시 꺼낸 이유</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/06/2026-06-01-airflow-and-eagle-two-different-automation-layers/" rel="next">
+        <span>수동 배치와 VLM 신모델을 한 포스트에 묶은 이유: Airflow와 NVIDIA Eagle이 각각 자동화의 다른 층을 담당한다</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-이번-x-포스트에서-직접-확인되는-1차-신호는-4개였다">1. 이번 X 포스트에서 직접 확인되는 1차 신호는 4개였다</a></li>
+    <li><a href="#2-첫-번째-축은-확실하다-코드베이스를-읽기-좋은-구조로-바꾸는-지식-그래프-레이어">2. 첫 번째 축은 확실하다: 코드베이스를 읽기 좋은 구조로 바꾸는 지식 그래프 레이어</a></li>
+    <li><a href="#3-두-번째-축은-ecc가-보여-준다-모델보다-바깥쪽-하네스를-최적화하는-흐름">3. 두 번째 축은 ECC가 보여 준다: 모델보다 바깥쪽 하네스를 최적화하는 흐름</a></li>
+    <li><a href="#4-그런데-왜-moneyprinterturbo도-같이-뜨는가-생산-파이프라인형-앱이-여전히-강하다">4. 그런데 왜 MoneyPrinterTurbo도 같이 뜨는가: 생산 파이프라인형 앱이 여전히 강하다</a></li>
+    <li><a href="#5-이-네-개를-같이-놓고-보면-이번-주-패턴은-모델-경쟁이-아니라-외부-구조-경쟁이다">5. 이 네 개를 같이 놓고 보면, 이번 주 패턴은 “모델 경쟁”이 아니라 “외부 구조 경쟁”이다</a></li>
+    <li><a href="#6-이번-x-포스트를-읽을-때-주의할-점도-있다">6. 이번 X 포스트를 읽을 때 주의할 점도 있다</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/ai/" class="badge badge-secondary">Ai</a>
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

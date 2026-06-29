@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'CLAUDE.md가 커질수록 Claude Code는 느려진다: 공식 claude-md-management 플러그인으로 프로젝트 메모리 관리하기'" />
+  <title>CLAUDE.md가 커질수록 Claude Code는 느려진다: 공식 claude-md-management 플러그인으로 프로젝트 메모리 관리하기  | 신규하 블로그</title>
+  <meta property="og:title" content="CLAUDE.md가 커질수록 Claude Code는 느려진다: 공식 claude-md-management 플러그인으로 프로젝트 메모리 관리하기" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-05-13"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/05/2026-05-13-claude-md-management-plugin-memory-hygiene/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="claude" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/05/2026-05-13-claude-md-management-plugin-memory-hygiene/">
+          <h1>
+            CLAUDE.md가 커질수록 Claude Code는 느려진다: 공식 claude-md-management 플러그인으로 프로젝트 메모리 관리하기
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/05/2026-05-13-claude-md-management-plugin-memory-hygiene/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p><code>CLAUDE.md</code>는 Claude Code가 프로젝트에서 지켜야 할 규칙, 실행 명령, 작업 패턴, 주의사항을 기억하게 만드는 핵심 파일입니다. 문제는 프로젝트가 진행될수록 이 파일이 점점 커진다는 점입니다. 짐코딩 Shorts는 이 문제를 해결하는 공식 플러그인으로 <code>claude-md-management</code>를 소개합니다. <a href="https://youtu.be/EKTSrPTEgn0?t=0">0:00</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://youtube.com/shorts/EKTSrPTEgn0?si=QT71jxDLsVTrSa5A">https://youtube.com/shorts/EKTSrPTEgn0?si=QT71jxDLsVTrSa5A</a></li>
+<li>Anthropic plugin page: <a href="https://claude.com/plugins/claude-md-management">https://claude.com/plugins/claude-md-management</a></li>
+<li>Claude Code debug context docs: <a href="https://code.claude.com/docs/en/debug-your-config">https://code.claude.com/docs/en/debug-your-config</a></li>
+<li>Claude Code slash commands docs: <a href="https://docs.anthropic.com/en/docs/claude-code/slash-commands">https://docs.anthropic.com/en/docs/claude-code/slash-commands</a></li>
+</ul>
+<h2 id="왜-claudemd-관리는-중요한가">왜 CLAUDE.md 관리는 중요한가</h2>
+<p>영상은 먼저 <code>CLAUDE.md</code>를 &ldquo;프로젝트에서 Claude Code가 알아야 할 규칙을 작성하는 파일&quot;이라고 설명합니다. 그리고 이 파일은 사용자가 프롬프트를 요청할 때마다 자동으로 따라붙습니다. <a href="https://youtu.be/EKTSrPTEgn0?t=4">0:04</a> <a href="https://youtu.be/EKTSrPTEgn0?t=8">0:08</a></p>
+<p>이 말은 곧 <code>CLAUDE.md</code>가 커질수록 매 세션의 기본 컨텍스트 비용도 커진다는 뜻입니다. 규칙이 많아지면 Claude가 참고할 정보는 늘어나지만, 오래된 명령, 더 이상 맞지 않는 환경 설정, 반복되는 규칙까지 함께 들어갈 수 있습니다. 그래서 <code>CLAUDE.md</code>는 &ldquo;많이 쌓는 파일&quot;이 아니라 <strong>계속 다듬어야 하는 프로젝트 메모리</strong> 로 봐야 합니다.</p>
+<pre class="mermaid">flowchart TD
+    A["프로젝트 진행"] --> B["새 명령·패턴·주의점 발견"]
+    B --> C["CLAUDE.md에 추가"]
+    C --> D["매 요청마다 컨텍스트로 포함"]
+    D --> E{"관리 안 됨"}
+    E --> F["중복·오래된 규칙 증가"]
+    E --> G["컨텍스트 비용 증가"]
+    F --> H["Claude 지시 충돌"]
+    G --> H
+
+    classDef startTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef memoryTone fill:#fde8c0,stroke:#c59a45,color:#333
+    classDef riskTone fill:#ffc8c4,stroke:#c96f68,color:#333
+    classDef resultTone fill:#e0c8ef,stroke:#9871b0,color:#333
+    class A,B startTone
+    class C,D memoryTone
+    class E,F,G riskTone
+    class H resultTone</pre><p>Claude Code의 <code>/context</code> 문서도 현재 세션의 컨텍스트 창을 system prompt, memory files, skills, MCP tools, conversation messages 같은 범주로 나눠 보여준다고 설명합니다. 여기서 <code>CLAUDE.md</code>는 memory files 쪽에 들어가는 중요한 고정 비용입니다. <a href="https://code.claude.com/docs/en/debug-your-config">Claude Code debug context docs</a></p>
+<h2 id="claude-md-management의-역할-메모리를-최신-상태로-유지한다">claude-md-management의 역할: 메모리를 최신 상태로 유지한다</h2>
+<p>영상은 <code>claude-md-management</code>를 &ldquo;CLAUDE.md 파일을 깔끔하게 유지해 주는 플러그인&quot;이라고 설명합니다. <a href="https://youtu.be/EKTSrPTEgn0?t=18">0:18</a> 공식 플러그인 페이지도 이 플러그인을 CLAUDE.md 품질을 감사하고, 세션에서 배운 내용을 포착해 프로젝트 메모리를 최신 상태로 유지하는 도구라고 소개합니다. <a href="https://claude.com/plugins/claude-md-management">Anthropic plugin page</a></p>
+<p>핵심 기능은 두 가지입니다.</p>
+<ul>
+<li><code>/revise-claude-md</code>: 작업 세션이 끝난 뒤 새로 배운 명령, 코드 패턴, 환경 특이점, 주의사항을 CLAUDE.md 업데이트 후보로 정리</li>
+<li><code>claude-md-improver</code>: 저장소의 CLAUDE.md 파일을 찾아 품질 기준으로 평가하고, 누락/오래됨/개선 지점을 제안</li>
+</ul>
+<pre class="mermaid">flowchart TD
+    A["claude-md-management"] --> B["/revise-claude-md"]
+    A --> C["claude-md-improver"]
+    B --> D["세션 회고"]
+    D --> E["새 명령·패턴·함정 추출"]
+    E --> F["CLAUDE.md 업데이트 후보"]
+    C --> G["CLAUDE.md 파일 감사"]
+    G --> H["품질 점수·누락·오래된 규칙 진단"]
+    H --> I["개선 제안"]
+
+    classDef pluginTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef commandTone fill:#fde8c0,stroke:#c59a45,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    class A pluginTone
+    class B,C commandTone
+    class D,E,F,G,H,I outputTone</pre><p>공식 페이지는 플러그인이 변경사항을 diff로 보여주고, 사용자의 승인 후 적용한다고 설명합니다. 이는 중요합니다. <code>CLAUDE.md</code>는 Claude Code의 행동을 바꾸는 파일이므로, 자동 수정은 편리하더라도 사용자가 반드시 어떤 규칙이 추가되는지 확인해야 합니다.</p>
+<h2 id="revise-claude-md-세션-끝의-회의록">/revise-claude-md: 세션 끝의 회의록</h2>
+<p>영상은 <code>/revise-claude-md</code>를 &ldquo;회의 끝나고 작성하는 회의록&quot;에 비유합니다. 작업이 끝난 뒤 실행하면 현재 대화를 분석해 새롭게 알게 된 명령어, 작업 패턴, 함정 같은 것을 한 줄씩 추출하고, CLAUDE.md에 추가할 후보를 보여줍니다. <a href="https://youtu.be/EKTSrPTEgn0?t=24">0:24</a> <a href="https://youtu.be/EKTSrPTEgn0?t=52">0:52</a></p>
+<p>이 기능은 특히 반복 작업에서 유용합니다. 예를 들어 어떤 프로젝트에서 테스트는 <code>npm test</code>가 아니라 <code>pnpm test:unit</code>이어야 한다는 사실을 이번 세션에서 알게 되었다면, 다음 세션에 같은 실수를 반복하지 않도록 기록할 수 있습니다. 또는 특정 API mock을 먼저 띄워야 빌드가 통과한다는 환경 특이점도 좋은 후보입니다.</p>
+<pre class="mermaid">sequenceDiagram
+    participant User as 사용자
+    participant Claude as Claude Code
+    participant Cmd as "/revise-claude-md"
+    participant File as "CLAUDE.md"
+
+    User->>Claude: 기능 구현/디버깅 작업
+    Claude-->>User: 작업 완료
+    User->>Cmd: 세션 종료 전 실행
+    Cmd->>Claude: 대화에서 배운 점 분석
+    Claude-->>User: 추가 후보 diff 제안
+    User->>File: 승인한 항목만 반영</pre><p>좋은 업데이트 후보는 짧고 재사용 가능해야 합니다. &ldquo;오늘 버튼 색을 바꿨다&quot;처럼 일회성 사실은 적합하지 않습니다. 반대로 &ldquo;이 저장소의 빌드는 반드시 <code>task build</code>로 검증한다&quot;처럼 앞으로도 반복될 규칙은 좋은 메모리입니다.</p>
+<h2 id="claude-md-improver-주기적인-품질-감사">claude-md-improver: 주기적인 품질 감사</h2>
+<p>두 번째 도구는 <code>claude-md-improver</code>입니다. 영상은 이 도구가 주기적으로 CLAUDE.md 파일을 검사하고, 프로젝트에 있는 모든 CLAUDE.md 파일을 여섯 개 기준으로 평가해 등급을 매긴다고 설명합니다. 또한 더 이상 작동하지 않는 명령, 빠진 의존성, 누락된 환경 설정 같은 이슈를 파악한다고 말합니다. <a href="https://youtu.be/EKTSrPTEgn0?t=60">1:00</a> <a href="https://youtu.be/EKTSrPTEgn0?t=67">1:07</a></p>
+<p>공식 플러그인 페이지도 <code>claude-md-improver</code>가 저장소의 CLAUDE.md 파일을 스캔하고, commands, architecture, gotchas, conciseness 같은 품질 기준으로 평가하며, 발견한 gap을 바탕으로 targeted additions를 제안한다고 설명합니다. <a href="https://claude.com/plugins/claude-md-management">Anthropic plugin page</a></p>
+<pre class="mermaid">flowchart TD
+    A["CLAUDE.md 감사"] --> B["명령어가 최신인가"]
+    A --> C["아키텍처 설명이 충분한가"]
+    A --> D["반복 함정이 기록되어 있는가"]
+    A --> E["너무 길거나 중복되지는 않는가"]
+    B --> F["품질 리포트"]
+    C --> F
+    D --> F
+    E --> F
+    F --> G["개선 후보 diff"]
+
+    classDef auditTone fill:#c5dcef,stroke:#5b7fa6,color:#333
+    classDef checkTone fill:#fde8c0,stroke:#c59a45,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    class A auditTone
+    class B,C,D,E checkTone
+    class F,G resultTone</pre><p>이 기능은 &ldquo;무엇을 더 넣을까&quot;보다 &ldquo;무엇을 빼야 할까&quot;에 더 가치가 있습니다. CLAUDE.md가 길어질수록 오래된 규칙과 중복 지침이 생기기 쉽고, 이는 Claude의 지시 충돌로 이어질 수 있습니다. 개선 도구는 파일을 더 똑똑하게 키우는 도구이기도 하지만, 동시에 불필요한 기억을 정리하는 도구입니다.</p>
+<h2 id="언제-사용하면-좋은가">언제 사용하면 좋은가</h2>
+<p><code>/revise-claude-md</code>는 생산적인 세션이 끝난 직후에 쓰는 것이 좋습니다. 예를 들어 새로운 빌드 명령을 알아냈거나, 특정 테스트가 실패하는 원인을 찾았거나, 이 저장소만의 배포 절차를 확인했을 때 실행합니다. 영상도 작업 끝나고 세션이 끝나기 전에 실행하는 도구로 설명합니다. <a href="https://youtu.be/EKTSrPTEgn0?t=31">0:31</a></p>
+<p><code>claude-md-improver</code>는 주기적인 점검에 맞습니다. 프로젝트 구조가 바뀌었거나, 의존성이 바뀌었거나, 팀 규칙이 많이 추가된 뒤에 실행하면 좋습니다. 단, 자동 제안은 항상 diff로 검토해야 합니다. Claude Code slash commands 문서가 보여주듯 명령은 프로젝트 로컬 파일로도 정의될 수 있으므로, 메모리 파일과 명령 파일의 역할을 섞지 않는 것도 중요합니다. <a href="https://docs.anthropic.com/en/docs/claude-code/slash-commands">Claude Code slash commands docs</a></p>
+<pre class="mermaid">flowchart TD
+    A["작업 완료"] --> B{"재사용 가능한 배움이 있었나?"}
+    B -->|예| C["/revise-claude-md"]
+    B -->|아니오| D["기록하지 않음"]
+    C --> E["짧은 후보만 승인"]
+
+    F["프로젝트 구조/명령 변경"] --> G["claude-md-improver"]
+    G --> H["오래된 명령·누락 설정 점검"]
+    H --> I["diff 검토 후 적용"]
+
+    classDef decisionTone fill:#fde8c0,stroke:#c59a45,color:#333
+    classDef actionTone fill:#c0ecd3,stroke:#5aa978,color:#333
+    classDef skipTone fill:#ffc8c4,stroke:#c96f68,color:#333
+    class A,F decisionTone
+    class B decisionTone
+    class C,E,G,H,I actionTone
+    class D skipTone</pre><h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<p>첫째, CLAUDE.md에는 &ldquo;앞으로 반복될 정보&quot;만 넣어야 합니다. 한 번만 쓴 임시 명령이나 현재 세션의 잡담은 넣지 않는 편이 좋습니다.</p>
+<p>둘째, <code>/revise-claude-md</code>는 세션 끝에서 쓰는 회고 도구로 두는 것이 좋습니다. 작업 중간마다 실행하면 아직 확정되지 않은 패턴이 메모리에 들어갈 수 있습니다.</p>
+<p>셋째, <code>claude-md-improver</code>는 정기 점검 도구로 사용합니다. 새 의존성, 새 실행 명령, 새 배포 방식이 생겼을 때 CLAUDE.md가 그 변화를 반영하고 있는지 확인합니다.</p>
+<p>넷째, 제안된 diff는 반드시 사람이 승인해야 합니다. CLAUDE.md는 Claude Code의 행동을 바꾸는 파일이므로, 잘못된 규칙 하나가 이후 작업 전체를 흔들 수 있습니다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li><code>CLAUDE.md</code>는 Claude Code가 프로젝트 규칙을 이해하게 만드는 memory file입니다. <a href="https://youtu.be/EKTSrPTEgn0?t=4">0:04</a></li>
+<li>파일은 매 요청에 따라붙으므로 커질수록 컨텍스트 비용과 지시 충돌 위험이 늘어납니다. <a href="https://youtu.be/EKTSrPTEgn0?t=8">0:08</a></li>
+<li><code>claude-md-management</code>는 CLAUDE.md를 깔끔하게 유지하기 위한 Anthropic verified 플러그인입니다. <a href="https://claude.com/plugins/claude-md-management">Anthropic plugin page</a></li>
+<li><code>/revise-claude-md</code>는 세션 끝에서 배운 명령, 패턴, 함정을 업데이트 후보로 정리합니다. <a href="https://youtu.be/EKTSrPTEgn0?t=24">0:24</a></li>
+<li><code>claude-md-improver</code>는 CLAUDE.md 파일을 품질 기준으로 감사하고 오래된 명령, 빠진 의존성, 누락 환경 설정 같은 문제를 찾습니다. <a href="https://youtu.be/EKTSrPTEgn0?t=60">1:00</a></li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>CLAUDE.md 관리는 &ldquo;Claude에게 더 많이 알려주기&quot;가 아닙니다. 오히려 필요한 규칙만 짧고 최신 상태로 유지하는 작업입니다. <code>claude-md-management</code> 플러그인은 이 과정을 세션 회고와 정기 감사라는 두 루프로 나눕니다.</p>
+<p>좋은 프로젝트 메모리는 길지 않습니다. 자주 쓰는 명령, 반복되는 작업 패턴, 팀이 합의한 규칙, 자주 밟는 함정만 남깁니다. <code>CLAUDE.md</code>가 커지는 속도를 그대로 방치하지 말고, <code>/revise-claude-md</code>와 <code>claude-md-improver</code>로 계속 정리하면 Claude Code는 다음 세션에서 더 적은 설명으로 더 정확하게 출발할 수 있습니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 05월 13일 07시 41분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-13-ai-interactive-website-claude-code-higgsfield-skills/" rel="prev">
+        <span>Claude Code와 Higgsfield로 인터랙티브 웹사이트를 만드는 세 단계: Antigravity, VS Code 스킬, 32개 프롬프트 팩</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-13-mac-studio-cluster-thunderbolt-rdma-local-ai/" rel="next">
+        <span>Ethernet이 아니라 Thunderbolt RDMA가 병목을 깼다: 4대의 Mac Studio로 2TB 로컬 AI 클러스터 만들기</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#왜-claudemd-관리는-중요한가">왜 CLAUDE.md 관리는 중요한가</a></li>
+    <li><a href="#claude-md-management의-역할-메모리를-최신-상태로-유지한다">claude-md-management의 역할: 메모리를 최신 상태로 유지한다</a></li>
+    <li><a href="#revise-claude-md-세션-끝의-회의록">/revise-claude-md: 세션 끝의 회의록</a></li>
+    <li><a href="#claude-md-improver-주기적인-품질-감사">claude-md-improver: 주기적인 품질 감사</a></li>
+    <li><a href="#언제-사용하면-좋은가">언제 사용하면 좋은가</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/claude/" class="badge badge-secondary">Claude</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

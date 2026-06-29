@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '마케팅 팀이 왜 오픈소스 스택으로 눈을 돌리나: X 스레드가 보여 준 Matomo·PostHog 중심의 대체 흐름'" />
+  <title>마케팅 팀이 왜 오픈소스 스택으로 눈을 돌리나: X 스레드가 보여 준 Matomo·PostHog 중심의 대체 흐름  | 신규하 블로그</title>
+  <meta property="og:title" content="마케팅 팀이 왜 오픈소스 스택으로 눈을 돌리나: X 스레드가 보여 준 Matomo·PostHog 중심의 대체 흐름" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-06-11"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/06/2026-06-11-open-source-marketing-stack-matomo-posthog/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="analytics" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/06/2026-06-11-open-source-marketing-stack-matomo-posthog/">
+          <h1>
+            마케팅 팀이 왜 오픈소스 스택으로 눈을 돌리나: X 스레드가 보여 준 Matomo·PostHog 중심의 대체 흐름
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/06/2026-06-11-open-source-marketing-stack-matomo-posthog/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>이 X 포스트는 자극적인 문장으로 시작합니다. “마케팅 팀을 위한 GitHub 저장소 10개, 유료 소프트웨어를 대체한다.” 공개 메타데이터로 직접 확인되는 첫 항목은 <code>Matomo</code>이고, 카드 이미지 OCR과 검색 스니펫을 통해 <code>PostHog</code>도 포함된다는 점까지는 확인할 수 있습니다. 원문은 10개 전부를 나열하지만, 공개 접근 가능한 메타데이터만으로는 전체 목록을 완전하게 복원하기 어렵습니다. 그래서 이 글은 <strong>직접 검증 가능한 항목만 중심으로</strong>, 왜 이런 스택이 마케팅 팀에게 점점 매력적으로 보이는지 해석하는 방식으로 정리합니다. <a href="https://publish.x.com/oembed?url=https://x.com/i/status/2064769930252165432">X oEmbed</a></p>
+<p>이 두 도구만 봐도 흐름은 꽤 선명합니다. <code>Matomo</code>는 스스로 호스팅 가능한 오픈 웹 애널리틱스 플랫폼으로, Google Analytics의 대안이자 <code>you own your data</code>를 핵심 차별점으로 내세웁니다. <code>PostHog</code>는 더 넓게 갑니다. product analytics, web analytics, session replay, feature flags, experiments, surveys, data warehouse, CDP, AI observability까지 한 스택 안에 넣으려 합니다. 둘 다 말은 다르지만, 공통적으로 <strong>데이터 소유권과 도구 통합, 그리고 유료 SaaS 종속성 완화</strong> 를 강하게 밀고 있습니다. <a href="https://github.com/matomo-org/matomo">Matomo</a> <a href="https://github.com/PostHog/posthog">PostHog</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://x.com/i/status/2064769930252165432">https://x.com/i/status/2064769930252165432</a></li>
+<li><a href="https://github.com/matomo-org/matomo">https://github.com/matomo-org/matomo</a></li>
+<li><a href="https://github.com/PostHog/posthog">https://github.com/PostHog/posthog</a></li>
+</ul>
+<h2 id="1-이-스레드가-흥미로운-이유는-툴-추천보다-소유권-회복의-신호를-보여-주기-때문이다">1. 이 스레드가 흥미로운 이유는 &lsquo;툴 추천&rsquo;보다 &lsquo;소유권 회복&rsquo;의 신호를 보여 주기 때문이다</h2>
+<p>X 원문 메타데이터에서 직접 확인되는 첫 항목은 <code>Matomo</code>입니다. 설명도 명확합니다. self-hosted analytics, Google Analytics 대체, 데이터 100% yours. 이 문장 하나만으로도 이 스레드의 방향이 드러납니다. 핵심은 비용 절감 자체보다 <strong>데이터 통제권을 다시 가져오는 것</strong> 입니다. <a href="https://publish.x.com/oembed?url=https://x.com/i/status/2064769930252165432">X oEmbed</a></p>
+<p>Matomo README도 거의 같은 메시지를 반복합니다. <code>Matomo is the leading Free/Libre open analytics platform</code>, <code>you own your web analytics data</code>, <code>privacy is built-in</code> 같은 표현이 핵심입니다. 즉 Matomo가 매력적인 이유는 단순히 무료여서가 아니라, 분석 데이터가 타 SaaS 안에 잠기는 대신 <strong>자기 서버, 자기 DB, 자기 API</strong> 위에 남는다는 데 있습니다. <a href="https://github.com/matomo-org/matomo">Matomo</a></p>
+<pre class="mermaid">flowchart TD
+    A["유료 SaaS 분석 도구"] --> B["벤더 내부 데이터 저장"]
+    B --> C["소유권 / 이동성 제약"]
+
+    D["Self-hosted 오픈소스 도구"] --> E["자기 서버 / 자기 DB"]
+    E --> F["소유권 / 이동성 강화"]
+
+    classDef paidTone fill:#ffc8c4,stroke:#d9736a,color:#333,stroke-width:1px;
+    classDef ownTone fill:#c0ecd3,stroke:#5ca379,color:#333,stroke-width:1px;
+
+    class A,B,C paidTone;
+    class D,E,F ownTone;</pre><p>그래서 이 스레드는 단순히 “무료 대체재 10선”이 아니라, <strong>마케팅·그로스 툴의 데이터 주권을 다시 가져오려는 흐름</strong> 으로 읽는 편이 더 정확합니다.</p>
+<h2 id="2-matomo가-상징하는-건-google-analytics-대체보다-프라이버시-내장형-소유-분석이다">2. Matomo가 상징하는 건 &lsquo;Google Analytics 대체&rsquo;보다 &lsquo;프라이버시 내장형 소유 분석&rsquo;이다</h2>
+<p>Matomo README는 자신을 <code>leading open-source alternative to Google Analytics</code>라고 소개합니다. 하지만 단순 대체재라는 표현보다 더 중요한 건 그 뒤에 붙는 설명입니다. own database, own API, privacy-respecting setup, self-hosting. 즉 Matomo는 단순히 “비슷한 리포트 화면을 공짜로 보여 주는 도구”가 아니라, <strong>분석 데이터의 저장 위치와 접근 권한을 다시 사용자 쪽으로 돌리는 플랫폼</strong> 입니다. <a href="https://github.com/matomo-org/matomo">Matomo</a></p>
+<p>또 README를 보면 Matomo는 대시보드 UI만 제공하는 게 아니라, 플러그인 기반 확장성과 API 접근, goal tracking, campaign tracking, geo location, real-time visits 등 고전적 웹 애널리틱스의 핵심 기능을 모두 스스로 갖추려 합니다. 즉 “무료인데 기능이 빈약한 대체재”가 아니라, <strong>기존 웹 애널리틱스 범주를 self-hosted 방식으로 거의 통째로 다시 제공</strong> 하는 쪽입니다. <a href="https://github.com/matomo-org/matomo">Matomo</a></p>
+<pre class="mermaid">flowchart TD
+    A["Matomo"] --> B["Self-hosted analytics"]
+    A --> C["Built-in privacy"]
+    A --> D["Own database / API"]
+    A --> E["Plugin extensibility"]
+
+    classDef toolTone fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef featTone fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+
+    class A toolTone;
+    class B,C,D,E featTone;</pre><p>이 점에서 Matomo는 “무료판 Google Analytics”보다, <strong>프라이버시와 소유권을 핵심으로 다시 설계한 웹 분석 플랫폼</strong> 이라고 보는 편이 맞습니다.</p>
+<h2 id="3-posthog가-상징하는-건-대체재가-아니라-통합-스택이다">3. PostHog가 상징하는 건 대체재가 아니라 &lsquo;통합 스택&rsquo;이다</h2>
+<p>공개 카드 OCR과 검색 스니펫으로 직접 확인 가능한 두 번째 항목은 <code>PostHog</code>입니다. 그리고 README를 읽어 보면, PostHog는 Matomo와는 다른 축에서 흥미롭습니다. 스스로를 <code>all-in-one, open source platform for building successful products</code>라고 부르며, product analytics, web analytics, session replay, feature flags, experiments, error tracking, surveys, data warehouse, data pipelines, AI observability, workflows까지 한꺼번에 제시합니다. <a href="https://github.com/PostHog/posthog">PostHog</a></p>
+<p>즉 PostHog의 야심은 단순 대체가 아닙니다. GA 같은 분석 도구 하나의 대체재가 아니라, <strong>제품 팀과 그로스 팀이 여러 SaaS를 따로 구독하면서 쓰던 기능 묶음을 한 플랫폼으로 압축</strong> 하려는 쪽입니다.</p>
+<pre class="mermaid">flowchart TD
+    A["PostHog"] --> B["Product analytics"]
+    A --> C["Web analytics"]
+    A --> D["Session replay"]
+    A --> E["Feature flags"]
+    A --> F["Experiments"]
+    A --> G["Data warehouse / CDP"]
+    A --> H["AI observability"]
+
+    classDef toolTone fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef featTone fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+
+    class A toolTone;
+    class B,C,D,E,F,G,H featTone;</pre><p>이 점이 중요합니다. 마케팅 팀에게 오픈소스가 매력적으로 보이는 이유가 단지 라이선스 비용 때문만은 아니라는 뜻입니다. 오히려 더 큰 매력은, <strong>분산된 툴 체인을 한 데이터 모델 위로 줄이는 것</strong> 일 수 있습니다.</p>
+<h2 id="4-결국-이-흐름은-포인트-솔루션-대체와-스택-통합이라는-두-방향으로-나뉜다">4. 결국 이 흐름은 &lsquo;포인트 솔루션 대체&rsquo;와 &lsquo;스택 통합&rsquo;이라는 두 방향으로 나뉜다</h2>
+<p>Matomo와 PostHog는 같은 “오픈소스 대체재” 범주 안에 들어가지만, 겨냥하는 방향은 다릅니다.</p>
+<ul>
+<li><code>Matomo</code>는 특정 카테고리, 즉 web analytics를 <strong>ownership-first</strong> 로 다시 제공하는 쪽</li>
+<li><code>PostHog</code>는 product / growth stack 전반을 <strong>all-in-one</strong> 으로 다시 묶는 쪽</li>
+</ul>
+<p>이 차이를 보면 X 스레드가 왜 마케팅 팀에게 먹히는지도 이해됩니다. 어떤 팀은 특정 SaaS 하나를 대체하고 싶고, 어떤 팀은 아예 분석/실험/리플레이/플래그/데이터 파이프라인을 한 덩어리로 줄이고 싶기 때문입니다.</p>
+<pre class="mermaid">flowchart TD
+    A["오픈소스 마케팅 스택 흐름"] --> B["포인트 솔루션 대체"]
+    A --> C["통합 스택 재구성"]
+    B --> D["예: Matomo"]
+    C --> E["예: PostHog"]
+
+    classDef rootTone fill:#c5dcef,stroke:#5b8db8,color:#333,stroke-width:1px;
+    classDef branchTone fill:#fde8c0,stroke:#c9a647,color:#333,stroke-width:1px;
+    classDef exTone fill:#c0ecd3,stroke:#5ca379,color:#333,stroke-width:1px;
+
+    class A rootTone;
+    class B,C branchTone;
+    class D,E exTone;</pre><p>즉 이 스레드가 흥미로운 건 단순히 “공짜 도구가 많다”가 아니라, <strong>오픈소스 진영이 이제 마케팅/그로스 운영 방식 자체를 재설계할 수 있을 만큼 넓어졌다는 신호</strong> 를 주기 때문입니다.</p>
+<h2 id="5-마케팅-팀이-이런-스택에-끌리는-진짜-이유는-가격보다-관측성-통합일-수-있다">5. 마케팅 팀이 이런 스택에 끌리는 진짜 이유는 가격보다 &lsquo;관측성 통합&rsquo;일 수 있다</h2>
+<p>유료 SaaS를 대체한다는 말은 보통 비용 절감으로 읽히지만, 실무에서는 다른 문제도 큽니다.</p>
+<ul>
+<li>사용자 행동 데이터는 A 툴에 있고<br></li>
+<li>세션 리플레이는 B 툴에 있고<br></li>
+<li>실험은 C 툴에서 하고<br></li>
+<li>feature flag는 D 툴에 있고<br></li>
+<li>warehouse 동기화는 또 다른 툴에서 일어납니다</li>
+</ul>
+<p>이렇게 되면 데이터 정합성, 이벤트 네이밍, 사용자 식별자 통합, 권한 관리가 전부 복잡해집니다. PostHog가 all-in-one을 강조하고, Matomo가 own database를 강조하는 이유도 결국 같은 곳을 찌릅니다. <strong>데이터를 쪼개서 보관하지 말고, 관측성의 중심을 다시 한 곳으로 가져오자</strong> 는 것입니다. <a href="https://github.com/matomo-org/matomo">Matomo</a> <a href="https://github.com/PostHog/posthog">PostHog</a></p>
+<p>그래서 이런 오픈소스 스택은 “저렴한 대체재”보다도, <strong>관측성 통합 플랫폼</strong> 으로 읽는 편이 더 실전적입니다.</p>
+<h2 id="6-다만-원문-스레드의-10개-전부를-검증할-수-없다는-점은-분명히-봐야-한다">6. 다만 원문 스레드의 10개 전부를 검증할 수 없다는 점은 분명히 봐야 한다</h2>
+<p>중요한 한계도 있습니다. 이번 글의 근거로 직접 확인 가능한 것은:</p>
+<ul>
+<li>X 원문 메타데이터의 첫 항목 <code>Matomo</code><br></li>
+<li>카드 OCR과 검색 스니펫으로 드러난 <code>PostHog</code></li>
+</ul>
+<p>정도입니다. 원문은 10개 저장소를 주장하지만, 공개 접근 가능한 메타데이터만으로는 전체 목록을 확정할 수 없습니다. 따라서 이 글은 스레드 전체를 복원하기보다, <strong>직접 검증 가능한 두 축만 기반으로 트렌드를 읽는 방식</strong> 을 취했습니다. 이 점은 정확성을 위해 분명히 남겨 두는 편이 좋습니다.</p>
+<p>그럼에도 불구하고, 확인 가능한 두 항목만으로도 충분히 보이는 흐름이 있습니다. 마케팅 팀이 찾는 오픈소스 대체재는 더 이상 “싸고 못생긴 무료판”이 아니라, <strong>소유권과 통합성을 전면에 둔 분석/그로스 운영 스택</strong> 이라는 점입니다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>X 스레드는 마케팅 팀을 위한 오픈소스 대체재 10개를 주장하지만, 공개적으로 직접 확인 가능한 항목은 <code>Matomo</code>와 <code>PostHog</code>입니다.<br></li>
+<li><code>Matomo</code>는 ownership-first, privacy-built-in, self-hosted web analytics의 대표 사례입니다.<br></li>
+<li><code>PostHog</code>는 analytics 대체재를 넘어 product/growth stack 전체를 한 플랫폼으로 묶으려는 all-in-one 전략을 보여 줍니다.<br></li>
+<li>이 흐름은 포인트 솔루션 대체와 통합 스택 재구성이라는 두 갈래로 나눠 볼 수 있습니다.<br></li>
+<li>마케팅 팀이 이런 도구에 끌리는 이유는 가격보다도 <strong>데이터 소유권과 관측성 통합</strong> 일 가능성이 큽니다.<br></li>
+<li>따라서 오픈소스 마케팅 스택의 부상은 단순 비용 절감 트렌드보다 더 큰 구조 변화로 읽을 수 있습니다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>이 X 스레드가 흥미로운 이유는 “숨겨진 무료 도구 리스트”를 던져 줘서가 아닙니다. 더 중요한 건, 이제 마케팅과 그로스 영역에서도 <strong>도구를 사는 것</strong> 만큼이나 <strong>데이터와 운영을 다시 소유하는 것</strong> 이 중요한 화두가 되었음을 보여 주기 때문입니다.</p>
+<p>직접 확인 가능한 Matomo와 PostHog만 놓고 봐도 흐름은 충분히 선명합니다. 하나는 소유권 회복, 다른 하나는 스택 통합. 결국 오픈소스 마케팅 스택의 진짜 매력은 무료라는 사실보다, <strong>분산된 운영을 다시 자기 손 안으로 가져오는 것</strong> 에 있습니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 06월 11일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/product">Product</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/06/2026-06-11-why-loop-engineering-suddenly-spread/" rel="prev">
+        <span>왜 갑자기 &#39;코딩 에이전트에게 프롬프트 치지 마라&#39;는 말이 퍼졌나: 루프 엔지니어링 한 장 정리</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/06/2026-06-11-loop-engineering-golden-set-human-on-the-loop/" rel="next">
+        <span>루프 엔지니어링을 실제로 돌리려면 무엇이 필요할까: 골든셋, 한 번에 하나, 실패 로그, Human-on-the-loop</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-이-스레드가-흥미로운-이유는-툴-추천보다-소유권-회복의-신호를-보여-주기-때문이다">1. 이 스레드가 흥미로운 이유는 &lsquo;툴 추천&rsquo;보다 &lsquo;소유권 회복&rsquo;의 신호를 보여 주기 때문이다</a></li>
+    <li><a href="#2-matomo가-상징하는-건-google-analytics-대체보다-프라이버시-내장형-소유-분석이다">2. Matomo가 상징하는 건 &lsquo;Google Analytics 대체&rsquo;보다 &lsquo;프라이버시 내장형 소유 분석&rsquo;이다</a></li>
+    <li><a href="#3-posthog가-상징하는-건-대체재가-아니라-통합-스택이다">3. PostHog가 상징하는 건 대체재가 아니라 &lsquo;통합 스택&rsquo;이다</a></li>
+    <li><a href="#4-결국-이-흐름은-포인트-솔루션-대체와-스택-통합이라는-두-방향으로-나뉜다">4. 결국 이 흐름은 &lsquo;포인트 솔루션 대체&rsquo;와 &lsquo;스택 통합&rsquo;이라는 두 방향으로 나뉜다</a></li>
+    <li><a href="#5-마케팅-팀이-이런-스택에-끌리는-진짜-이유는-가격보다-관측성-통합일-수-있다">5. 마케팅 팀이 이런 스택에 끌리는 진짜 이유는 가격보다 &lsquo;관측성 통합&rsquo;일 수 있다</a></li>
+    <li><a href="#6-다만-원문-스레드의-10개-전부를-검증할-수-없다는-점은-분명히-봐야-한다">6. 다만 원문 스레드의 10개 전부를 검증할 수 없다는 점은 분명히 봐야 한다</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/analytics/" class="badge badge-secondary">Analytics</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

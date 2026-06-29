@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'StringTune이 흥미로운 이유: 스크롤 효과 모음집이 아니라 &#39;하나의 런타임 위에 모듈을 올리는 구조&#39;로 설계됐다'" />
+  <title>StringTune이 흥미로운 이유: 스크롤 효과 모음집이 아니라 &#39;하나의 런타임 위에 모듈을 올리는 구조&#39;로 설계됐다  | 신규하 블로그</title>
+  <meta property="og:title" content="StringTune이 흥미로운 이유: 스크롤 효과 모음집이 아니라 &#39;하나의 런타임 위에 모듈을 올리는 구조&#39;로 설계됐다" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-05-29"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/05/2026-05-29-stringtune-modular-runtime-scroll-motion-architecture/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="javascript" />
+  
+  <meta property="og:tags" content="typescript" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/05/2026-05-29-stringtune-modular-runtime-scroll-motion-architecture/">
+          <h1>
+            StringTune이 흥미로운 이유: 스크롤 효과 모음집이 아니라 &#39;하나의 런타임 위에 모듈을 올리는 구조&#39;로 설계됐다
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/05/2026-05-29-stringtune-modular-runtime-scroll-motion-architecture/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p><code>StringTune</code> 문서를 처음 보면 <code>StringProgress</code>, <code>StringCursor</code>, <code>StringParallax</code>, <code>StringLoading</code> 같은 모듈 이름이 먼저 눈에 들어온다. 그래서 얼핏 보면 스크롤 이펙트나 커서 효과를 여러 개 묶어 놓은 프런트엔드 라이브러리처럼 보이기 쉽다. 하지만 공식 <code>Overview</code> 문서가 가장 먼저 강조하는 건 정반대다. <strong>StringTune은 서로 unrelated한 효과 묶음이 아니라, 하나의 런타임 인스턴스 위에 모듈을 등록해서 DOM을 스캔하고 상태를 계산하고 다시 DOM에 출력하는 시스템</strong> 이라는 점이다.<a href="https://tune.fiddle.digital/docs/overview/">StringTune Docs</a></p>
+<p>이 관점은 중요하다. 효과 라이브러리로 보면 &ldquo;어떤 애니메이션을 쓸 수 있나&quot;가 중심이 되지만, 런타임으로 보면 &ldquo;상태를 어떻게 계산하고 어떤 계약으로 출력하나&quot;가 중심이 된다. 공식 문서도 바로 그 구조를 핵심으로 소개한다. StringTune은 scroll-driven motion, cursor interaction, responsive visibility, media helpers, diagnostics를 위한 <strong>modular runtime</strong> 이고, public surface는 package export가 유일한 진실원이라고 못 박는다.<a href="https://tune.fiddle.digital/docs/overview/">StringTune Docs</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>공식 문서: <a href="https://tune.fiddle.digital/docs/overview/">Overview | StringTune Docs</a></li>
+<li>npm: <a href="https://www.npmjs.com/package/@fiddle-digital/string-tune">@fiddle-digital/string-tune</a></li>
+<li>데모: <a href="https://tune-demo.fiddle.digital">tune-demo.fiddle.digital</a></li>
+</ul>
+<h2 id="공식-문서가-가장-먼저-선을-긋는-부분은-패키지가-진실원이라는-점이다">공식 문서가 가장 먼저 선을 긋는 부분은 &ldquo;패키지가 진실원&quot;이라는 점이다</h2>
+<p>개요 문서는 먼저 docs 정책부터 설명한다. 오래된 코드 조각, 복사된 예제, 내부 프로젝트 모듈과 현재 패키지 동작이 다르면 <strong>패키지 export가 이긴다</strong> 고 말한다. 이는 라이브러리 문서에서 꽤 중요한 선언이다. 왜냐하면 이 프로젝트는 내부 런타임, 커스텀 모듈, 공식 내장 모듈이 섞여 있기 때문에, 사용자는 &ldquo;어디까지가 공식 계약인지&quot;를 혼동하기 쉽기 때문이다.<a href="https://tune.fiddle.digital/docs/overview/">StringTune Docs</a></p>
+<p>그래서 문서는 처음부터 세 가지 경계를 나눈다.</p>
+<ul>
+<li>built-in modules</li>
+<li>custom modules</li>
+<li>internal runtime</li>
+</ul>
+<p>즉 이 문서는 &ldquo;이펙트 showcase&quot;보다 <strong>공식 통합 표면과 내부 구현의 경계를 분명히 하는 문서</strong> 쪽에 더 가깝다.</p>
+<pre class="mermaid">flowchart TD
+    A["StringTune 패키지"] --> B["Built-in Modules"]
+    A --> C["Custom Modules"]
+    A --> D["Internal Runtime"]
+
+    B --> E["공식 지원 통합 표면"]
+    C --> F["프로젝트별 확장"]
+    D --> G["개념 설명용 내부 구현"]
+
+    classDef rootTone fill:#c5dcef,stroke:#5b8db8,color:#333;
+    classDef builtTone fill:#c0ecd3,stroke:#69a97d,color:#333;
+    classDef customTone fill:#fde8c0,stroke:#c9a647,color:#333;
+    classDef internalTone fill:#ffc8c4,stroke:#c97f7a,color:#333;
+
+    class A rootTone
+    class B,E builtTone
+    class C,F customTone
+    class D,G internalTone</pre><p>이 구분이 있어야 사용자는 &ldquo;지금 내가 쓰는 것이 공식 API인지, 특정 제품 코드에만 있는 예시인지&quot;를 판단할 수 있다.</p>
+<h2 id="stringtune의-핵심은-모듈-등록--dom-스캔--상태-계산--출력이라는-런타임-루프다">StringTune의 핵심은 &ldquo;모듈 등록 → DOM 스캔 → 상태 계산 → 출력&quot;이라는 런타임 루프다</h2>
+<p>문서가 설명하는 런타임 모델은 아주 명확하다. StringTune은 하나의 런타임 인스턴스로서:</p>
+<ul>
+<li>모듈을 등록하고</li>
+<li>DOM에서 해당 모듈이 붙은 오브젝트를 스캔하고</li>
+<li>프레임 업데이트마다 geometry와 state를 계산하고</li>
+<li>결과를 다시 DOM으로 쓴다</li>
+</ul>
+<p>고 설명한다.<a href="https://tune.fiddle.digital/docs/overview/">StringTune Docs</a></p>
+<p>또 모듈 계약도 네 단계로 요약한다.</p>
+<ol>
+<li><code>stringTune.use(...)</code>로 모듈을 활성화한다</li>
+<li><code>string=&quot;...&quot;</code> 등의 속성으로 엘리먼트를 설정한다</li>
+<li>런타임이 scroll, cursor, viewport, form input으로부터 상태를 계산한다</li>
+<li>모듈이 CSS 변수, 클래스, inline transform, helper node, event로 상태를 출력한다</li>
+</ol>
+<p>이 설명만 보면 StringTune은 애니메이션 라이브러리라기보다, <strong>상태 계산 엔진 + 선언형 어댑터 + DOM 출력 시스템</strong> 에 더 가깝다.</p>
+<pre class="mermaid">flowchart TD
+    A["stringTune.use(...)"] --> B["모듈 등록"]
+    B --> C["DOM에서 string 속성 스캔"]
+    C --> D["scroll / cursor / viewport / form 상태 계산"]
+    D --> E["CSS 변수 / 클래스 / 인라인 스타일 / 이벤트 출력"]
+
+    classDef stepTone fill:#c0ecd3,stroke:#69a97d,color:#333;
+    classDef outTone fill:#c5dcef,stroke:#5b8db8,color:#333;
+
+    class A,B,C,D stepTone
+    class E outTone</pre><p>즉 사용자는 &ldquo;효과 함수를 직접 호출&quot;하기보다, 런타임에 모듈을 붙이고 마크업에 선언한 뒤, 결과를 CSS나 JS에서 소비하는 흐름을 따른다.</p>
+<h2 id="그래서-이-라이브러리의-public-surface는-네-가지로-요약된다">그래서 이 라이브러리의 public surface는 네 가지로 요약된다</h2>
+<p>문서는 사용자 관점에서 대부분의 동작이 아래 네 가지 중 하나라고 정리한다.</p>
+<ul>
+<li><code>StringTune</code> 인스턴스 API</li>
+<li><code>stringTune.use(...)</code>를 통한 모듈 등록</li>
+<li>HTML의 선언형 속성</li>
+<li>CSS 변수, 클래스, 인라인 스타일, 이벤트 형태의 출력</li>
+</ul>
+<p>이 네 가지는 StringTune의 설계 방향을 잘 보여 준다. 즉 이 라이브러리는:</p>
+<ul>
+<li>전부 JS에서 imperative하게 조작하는 방식도 아니고</li>
+<li>전부 마크업만으로 끝나는 no-code 스타일도 아니며</li>
+<li>런타임 API와 선언형 마크업을 함께 쓰는 혼합형 구조</li>
+</ul>
+<p>로 설계돼 있다.<a href="https://tune.fiddle.digital/docs/overview/">StringTune Docs</a></p>
+<pre class="mermaid">flowchart TD
+    A["StringTune Public Surface"] --> B["인스턴스 API"]
+    A --> C["모듈 등록"]
+    A --> D["HTML 선언형 속성"]
+    A --> E["DOM 출력 계약"]
+
+    E --> F["CSS Variables"]
+    E --> G["Classes"]
+    E --> H["Inline Styles"]
+    E --> I["Events"]
+
+    classDef rootTone fill:#c5dcef,stroke:#5b8db8,color:#333;
+    classDef apiTone fill:#c0ecd3,stroke:#69a97d,color:#333;
+    classDef outTone fill:#fde8c0,stroke:#c9a647,color:#333;
+
+    class A rootTone
+    class B,C,D apiTone
+    class E,F,G,H,I outTone</pre><p>이렇게 보면 StringTune의 핵심 UX는 &ldquo;JS에서 모든 걸 계산해 주는 black box&quot;가 아니라, <strong>런타임과 스타일 계층이 계약으로 연결된 구조</strong> 라고 이해하는 편이 맞다.</p>
+<h2 id="공식-문서가-모듈을-built-in-custom-internal로-나누는-이유">공식 문서가 모듈을 built-in, custom, internal로 나누는 이유</h2>
+<p>Overview 문서는 built-in module과 custom module을 일부러 분리해 문서화한다고 적는다. 이는 StringTune이 단순히 패키지 export만 있는 라이브러리가 아니라, 실제 프로젝트 코드베이스에서 <strong>공식 모듈 위에 사내/프로젝트 특화 모듈을 쌓는 방식</strong> 도 의도하고 있음을 보여 준다.<a href="https://tune.fiddle.digital/docs/overview/">StringTune Docs</a></p>
+<p>문서가 드는 built-in 예시는:</p>
+<ul>
+<li><code>StringProgress</code></li>
+<li><code>StringCursor</code></li>
+<li><code>StringResponsive</code></li>
+<li><code>StringLoading</code></li>
+</ul>
+<p>같은 것들이다.</p>
+<p>반면 custom module은 어떤 제품 코드베이스에서는 유효할 수 있지만, 패키지에서 export되지 않는 한 공식 계약은 아니라고 선을 긋는다. internal runtime 역시 동작 설명에는 등장할 수 있지만 public API는 아니다.</p>
+<p>이 구조를 뒤집어 말하면 StringTune은 <strong>라이브러리이면서 동시에 확장 프레임워크</strong> 처럼 설계된 셈이다.</p>
+<h2 id="통합-패턴이-매우-일관적이라는-점이-중요하다">통합 패턴이 매우 일관적이라는 점이 중요하다</h2>
+<p>문서에 실린 핵심 예시는 매우 짧다.</p>
+<ul>
+<li><code>StringTune.getInstance()</code>로 싱글 인스턴스를 가져오고</li>
+<li><code>StringProgress</code>, <code>StringCursor</code> 같은 모듈을 <code>use</code>로 등록하고</li>
+<li><code>start(60)</code>으로 런타임을 시작하고</li>
+<li>HTML에는 <code>&lt;div string=&quot;progress&quot; string-id=&quot;hero&quot;&gt;&lt;/div&gt;</code> 같은 속성을 붙인다</li>
+</ul>
+<p>즉 모듈이 무엇이든, 기본 통합 패턴은 거의 변하지 않는다. 문서도 이를 &ldquo;That pattern stays the same across the library&quot;라고 설명한다.<a href="https://tune.fiddle.digital/docs/overview/">StringTune Docs</a></p>
+<p>이 일관성은 실제로 중요하다. 스크롤, 커서, 미디어, 폼, 진단 도구가 전부 제각각 API를 갖고 있으면 프로젝트 규모가 커질수록 학습 비용이 커진다. StringTune은 이를 <strong>런타임 규약 하나로 통일</strong> 하려는 쪽에 가깝다.</p>
+<h2 id="이-문서가-최적화하는-것은-스토리텔링보다-빠른-조회다">이 문서가 최적화하는 것은 &ldquo;스토리텔링&quot;보다 &ldquo;빠른 조회&quot;다</h2>
+<p>개요 문서 마지막에는 이 docs 사이트가 무엇을 최적화하는지도 직접 적는다.</p>
+<ul>
+<li>빠른 조회</li>
+<li>정확한 API와 런타임 동작</li>
+<li>실제 코드와 맞는 예제</li>
+<li>공식/커스텀/내부 동작의 명시적 경계</li>
+</ul>
+<p>즉 이 문서는 장문의 튜토리얼보다 <strong>정확한 참조 문서와 운영 규약</strong> 을 우선시한다.<a href="https://tune.fiddle.digital/docs/overview/">StringTune Docs</a></p>
+<p>이 방향성은 StringTune이라는 제품 성격과도 잘 맞는다. 개별 애니메이션 하나를 만드는 장난감보다, 많은 모듈이 한 런타임 인스턴스 위에서 같이 돌아가는 시스템이라면 사용자는 &ldquo;멋진 데모&quot;보다 <strong>무엇이 공식 동작이고 무엇이 아닌지</strong> 를 더 자주 확인하게 되기 때문이다.</p>
+<h2 id="그래서-stringtune은-효과-라이브러리라기보다-브라우저-상태-출력-파이프라인으로-보는-편이-낫다">그래서 StringTune은 &ldquo;효과 라이브러리&quot;라기보다 &ldquo;브라우저 상태-출력 파이프라인&quot;으로 보는 편이 낫다</h2>
+<p>문서에 따르면 StringTune은 scroll-driven motion, cursor interaction, responsive visibility, media helper, diagnostics를 모두 같은 런타임 위에서 다룬다. 이걸 하나로 보면 결국 StringTune은:</p>
+<ul>
+<li>브라우저 입력 상태를 읽고</li>
+<li>공통 런타임에서 계산하고</li>
+<li>선언형으로 붙은 DOM 객체에</li>
+<li>일관된 계약으로 다시 출력하는</li>
+</ul>
+<p>시스템이다.</p>
+<pre class="mermaid">flowchart TD
+    A["브라우저 입력 상태"] --> B["StringTune Runtime"]
+    A --> A1["Scroll"]
+    A --> A2["Cursor"]
+    A --> A3["Viewport"]
+    A --> A4["Form / Media"]
+
+    B --> C["Built-in / Custom Modules"]
+    C --> D["DOM 출력"]
+    D --> D1["CSS Variables"]
+    D --> D2["Classes"]
+    D --> D3["Inline Styles"]
+    D --> D4["Events"]
+
+    classDef inputTone fill:#c5dcef,stroke:#5b8db8,color:#333;
+    classDef runtimeTone fill:#c0ecd3,stroke:#69a97d,color:#333;
+    classDef outputTone fill:#fde8c0,stroke:#c9a647,color:#333;
+
+    class A,A1,A2,A3,A4 inputTone
+    class B,C runtimeTone
+    class D,D1,D2,D3,D4 outputTone</pre><p>이렇게 보면 StringTune을 제대로 쓰는 핵심은 &ldquo;효과를 많이 아는 것&quot;보다, <strong>런타임 계약을 이해하고 모듈 출력이 CSS/JS와 어떻게 연결되는지 아는 것</strong> 에 더 가깝다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>공식 문서 기준으로 StringTune은 효과 모음집이 아니라 <strong>하나의 런타임 인스턴스 위에 모듈을 올리는 시스템</strong> 이다.</li>
+<li>핵심 루프는 모듈 등록 → DOM 스캔 → 상태 계산 → DOM 출력이다.</li>
+<li>public surface는 인스턴스 API, 모듈 등록, 선언형 속성, CSS 변수/클래스/스타일/이벤트 출력으로 정리된다.</li>
+<li>built-in, custom, internal 경계를 분리해 문서화하는 이유는 <strong>공식 계약과 프로젝트 확장 영역을 구분하기 위해서</strong> 다.</li>
+<li>통합 패턴이 라이브러리 전반에서 거의 동일하므로, StringTune은 단일 효과보다 <strong>공통 런타임 규약</strong> 을 이해하는 것이 더 중요하다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p><code>StringTune</code>을 제대로 이해하려면 스크롤 효과 라이브러리라는 시선에서 한 번 벗어날 필요가 있다. 공식 문서가 보여 주는 본질은, 이 라이브러리가 <strong>브라우저 입력 상태를 공통 런타임에서 계산하고, 선언형 속성이 붙은 DOM으로 다시 밀어 넣는 구조적 시스템</strong> 이라는 점이다. 그래서 이 도구의 진짜 가치는 &ldquo;예쁜 효과&rdquo; 자체보다, <strong>다양한 상호작용 모듈을 하나의 계약으로 운영할 수 있게 만든 아키텍처</strong> 에 있다고 보는 편이 더 정확하다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 05월 29일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/web">Web</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-28-notion-cli-workers-agent-builder-platform/" rel="prev">
+        <span>Notion CLI가 흥미로운 이유: API를 감싸는 도구가 아니라 사람과 에이전트가 함께 Worker를 만들고 배포하는 공통 인터페이스</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/05/2026-05-29-gemini-custom-instructions-hallucination-guardrails/" rel="next">
+        <span>Gemini 환각을 줄이는 &#39;비장의 치트키&#39;의 정체: 모델을 바꾸는 게 아니라 개인 맞춤 지침으로 답변 규칙을 강하게 거는 방법</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#공식-문서가-가장-먼저-선을-긋는-부분은-패키지가-진실원이라는-점이다">공식 문서가 가장 먼저 선을 긋는 부분은 &ldquo;패키지가 진실원&quot;이라는 점이다</a></li>
+    <li><a href="#stringtune의-핵심은-모듈-등록--dom-스캔--상태-계산--출력이라는-런타임-루프다">StringTune의 핵심은 &ldquo;모듈 등록 → DOM 스캔 → 상태 계산 → 출력&quot;이라는 런타임 루프다</a></li>
+    <li><a href="#그래서-이-라이브러리의-public-surface는-네-가지로-요약된다">그래서 이 라이브러리의 public surface는 네 가지로 요약된다</a></li>
+    <li><a href="#공식-문서가-모듈을-built-in-custom-internal로-나누는-이유">공식 문서가 모듈을 built-in, custom, internal로 나누는 이유</a></li>
+    <li><a href="#통합-패턴이-매우-일관적이라는-점이-중요하다">통합 패턴이 매우 일관적이라는 점이 중요하다</a></li>
+    <li><a href="#이-문서가-최적화하는-것은-스토리텔링보다-빠른-조회다">이 문서가 최적화하는 것은 &ldquo;스토리텔링&quot;보다 &ldquo;빠른 조회&quot;다</a></li>
+    <li><a href="#그래서-stringtune은-효과-라이브러리라기보다-브라우저-상태-출력-파이프라인으로-보는-편이-낫다">그래서 StringTune은 &ldquo;효과 라이브러리&quot;라기보다 &ldquo;브라우저 상태-출력 파이프라인&quot;으로 보는 편이 낫다</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/javascript/" class="badge badge-secondary">Javascript</a>
+    <a href="/tags/typescript/" class="badge badge-secondary">Typescript</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
