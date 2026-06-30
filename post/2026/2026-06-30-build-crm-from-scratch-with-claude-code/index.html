@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude Code로 CRM을 처음부터 만드는 흐름: 데모보다 중요한 것은 프롬프트, 배포, 자동화 경계'" />
+  <title>Claude Code로 CRM을 처음부터 만드는 흐름: 데모보다 중요한 것은 프롬프트, 배포, 자동화 경계  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude Code로 CRM을 처음부터 만드는 흐름: 데모보다 중요한 것은 프롬프트, 배포, 자동화 경계" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-06-30"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/2026-06-30-build-crm-from-scratch-with-claude-code/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+  <meta property="og:tags" content="automation" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/2026-06-30-build-crm-from-scratch-with-claude-code/">
+          <h1>
+            Claude Code로 CRM을 처음부터 만드는 흐름: 데모보다 중요한 것은 프롬프트, 배포, 자동화 경계
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/2026-06-30-build-crm-from-scratch-with-claude-code/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Claude Code로 SaaS형 업무 앱을 만드는 영상은 많지만, 실제로 도움이 되는 영상은 몇 가지 공통점이 있습니다.<br>
+무엇을 만들었는지 보여주는 데서 끝나지 않고, <strong>어떤 순서로 만들었는지</strong>, <strong>배포는 어떻게 처리했는지</strong>, 그리고 <strong>어디까지가 AI가 잘하는 일이고 어디부터 사람이 구조를 잡아야 하는지</strong> 를 보여줘야 합니다.<br>
+<a href="https://www.youtube.com/watch?v=nVLal5ihzbw">Brendan Jowett의 이 영상</a> 은 바로 그 점에서 실전성이 있습니다.</p>
+<p>영상 제목은 <em>&ldquo;Building a CRM From Scratch With Claude Code (Start to Finish)&rdquo;</em> 이고, 설명란에서는 이 영상이 <strong>Claude Code로 완전 커스텀 CRM을 만들고 Railway에 배포하는 흐름</strong> 을 단계별로 다룬다고 소개합니다.<br>
+또 설명란 타임스탬프를 보면 단순 CRUD 데모가 아니라, <strong>CRM 데모 → 프롬프트 설계 → 호스팅 → 기능 테스트 → 배포 → 외부 API/MCP 연결 → 이메일 알림 → 자동화 구축</strong> 이라는 순서로 진행됩니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=nVLal5ihzbw">https://www.youtube.com/watch?v=nVLal5ihzbw</a></li>
+</ul>
+<h2 id="이-영상이-다루는-범위-crm을-만든다가-아니라-작동하는-업무-앱을-끝까지-잇는다">이 영상이 다루는 범위: &ldquo;CRM을 만든다&quot;가 아니라 &ldquo;작동하는 업무 앱을 끝까지 잇는다&rdquo;</h2>
+<p>영상 메타데이터 기준 이 영상은 2026년 6월 22일 업로드됐고, 길이는 약 898초, 즉 15분 내외입니다.<br>
+설명란에는 이 영상이 <strong>HubSpot이나 Go High Level을 대체할 수 있는 커스텀 CRM 웹 애플리케이션</strong> 을 만드는 흐름을 보여준다고 적혀 있습니다.<br>
+또 직접 언급된 기능 범위는 다음과 같습니다.</p>
+<ul>
+<li>lead pipeline</li>
+<li>contact profile</li>
+<li>company profile</li>
+<li>analytics dashboard</li>
+<li>automated workflow</li>
+</ul>
+<p>즉 이것은 단순히 &ldquo;테이블 몇 개 만들기&quot;가 아니라, <strong>영업 파이프라인과 연락처/회사 엔터티, 시각화, 자동화까지 포함한 운영형 앱</strong> 을 만드는 예시입니다.<br>
+설명란과 챕터 정보를 합치면, 작성자는 이걸 &ldquo;Claude Code로 빠르게 조립 가능한 커스텀 비즈니스 앱&quot;의 사례로 보여주고 있다고 볼 수 있습니다.</p>
+<pre class="mermaid">flowchart TD
+    A["Claude Code"] --> B["CRM 기본 구조"]
+    B --> C["리드 파이프라인"]
+    B --> D["연락처 / 회사 프로필"]
+    B --> E["분석 대시보드"]
+    B --> F["자동화 워크플로"]
+    F --> G["이메일 알림"]
+    B --> H["Railway 배포"]
+
+    classDef core fill:#c5dcef,color:#333,stroke:#6b9ac4,stroke-width:1px;
+    classDef app fill:#c0ecd3,color:#333,stroke:#7dbb95,stroke-width:1px;
+    classDef ops fill:#fde8c0,color:#333,stroke:#d9b66b,stroke-width:1px;
+
+    class A core
+    class B,C,D,E,F,G app
+    class H ops</pre><p>영상 설명란에 나온 &ldquo;cancel HubSpot or Go High Level and replace them with your own custom built web application&quot;이라는 문장은 이 영상의 관점을 잘 보여줍니다.<br>
+핵심은 기존 SaaS를 그대로 재현하는 것이 아니라, <strong>자기 업무에 맞는 CRM을 필요한 수준만큼 직접 구성하는 것</strong> 입니다.</p>
+<h2 id="챕터-흐름이-말해주는-실제-제작-순서">챕터 흐름이 말해주는 실제 제작 순서</h2>
+<p>이 영상에서 가장 유용한 정보는 설명란에 공개된 챕터입니다.<br>
+챕터 순서는 다음과 같습니다.</p>
+<ul>
+<li>0:00 - 다룰 내용</li>
+<li>0:29 - CRM 데모</li>
+<li>3:19 - Claude 프롬프트 설정</li>
+<li>4:30 - 호스팅</li>
+<li>5:41 - CRM 첫인상</li>
+<li>7:07 - 리드, 연락처 및 파이프라인 테스트</li>
+<li>8:39 - Railway 배포 개요</li>
+<li>9:07 - 외부 시스템 통합 API/MCP</li>
+<li>9:59 - 재전송 기능이 있는 이메일 알림</li>
+<li>11:54 - 이메일 자동화 테스트</li>
+<li>12:27 - API와 MCP 비교</li>
+<li>12:40 - 자동화 구축</li>
+</ul>
+<p>이 순서를 보면, 작성자는 &ldquo;먼저 코드부터 치는 방식&quot;보다 <strong>작동 그림을 먼저 보여주고, 그 다음에 구조를 설명하는 방식</strong> 을 택하고 있습니다.<br>
+특히 중간 이후의 흐름이 중요합니다.</p>
+<ol>
+<li>CRM 화면/기능을 먼저 보여준다</li>
+<li>Claude에게 어떤 식으로 요청했는지 이야기한다</li>
+<li>호스팅/배포를 붙인다</li>
+<li>외부 연동을 API 또는 MCP로 연결한다</li>
+<li>이메일과 자동화까지 붙인다</li>
+</ol>
+<p>이건 실전 SaaS 앱 제작 흐름과 꽤 닮아 있습니다.<br>
+즉 &ldquo;앱이 돌아간다&quot;와 &ldquo;업무에 쓸 수 있다&rdquo; 사이의 차이를, <strong>배포와 자동화 연동</strong> 이 메운다는 뜻입니다.</p>
+<pre class="mermaid">flowchart TD
+    Demo["CRM 데모"] --> Prompt["프롬프트 설계"]
+    Prompt --> Build["기본 기능 생성"]
+    Build --> Test["리드 / 연락처 / 파이프라인 테스트"]
+    Test --> Deploy["Railway 배포"]
+    Deploy --> Integrate["외부 API / MCP 연결"]
+    Integrate --> Email["이메일 알림"]
+    Email --> Auto["자동화 구축"]
+
+    classDef step fill:#c5dcef,color:#333,stroke:#6b9ac4,stroke-width:1px;
+    classDef ship fill:#c0ecd3,color:#333,stroke:#7dbb95,stroke-width:1px;
+    classDef integrate fill:#e0c8ef,color:#333,stroke:#a37bbd,stroke-width:1px;
+
+    class Demo,Prompt,Build,Test step
+    class Deploy ship
+    class Integrate,Email,Auto integrate</pre><h2 id="이-영상에서-진짜-중요한-부분-프롬프트가-아니라-프롬프트의-구조">이 영상에서 진짜 중요한 부분: 프롬프트가 아니라 &ldquo;프롬프트의 구조&rdquo;</h2>
+<p>챕터 중 3:19에 <strong>&ldquo;Prompting Claude&rdquo;</strong> 가 따로 잡혀 있다는 것은 의미가 큽니다.<br>
+작성자는 이 영상을 단순히 &ldquo;Claude가 만들어줬다&quot;는 시연으로 처리하지 않고, <strong>Claude에게 무엇을 어떻게 요청해야 하는지</strong> 를 하나의 별도 단계로 다룹니다.</p>
+<p>이건 매우 중요합니다.<br>
+CRM처럼 엔터티가 많고 화면도 많고 워크플로도 있는 앱은, AI에게 &ldquo;CRM 만들어줘&quot;라고만 던졌을 때 금방 깨지기 쉽습니다.<br>
+반대로 다음처럼 구조를 나눠 주면 Claude Code가 상대적으로 강해집니다.</p>
+<ul>
+<li>어떤 데이터 모델이 필요한지</li>
+<li>어떤 화면이 필요한지</li>
+<li>어떤 흐름을 자동화할지</li>
+<li>어떤 외부 서비스와 연결할지</li>
+<li>배포는 어디로 할지</li>
+</ul>
+<p>즉 이 영상의 시사점은 &ldquo;Claude Code가 CRM을 만든다&quot;보다, <strong>Claude Code가 복잡한 비즈니스 앱을 만들려면 프롬프트도 기능 단위와 운영 단위로 분해해야 한다</strong> 는 쪽에 있습니다.</p>
+<p>여기서 한 가지 주의할 점은, 현재 작성 시점에 전체 세부 전사를 완전히 추출하지는 못했다는 것입니다.<br>
+유튜브 공개 페이지의 챕터와 설명란, 메타데이터는 확보했지만, 자막 API가 제한되어 <strong>세부 프롬프트 문장 하나하나까지는 이 글에서 직접 인용하지 않습니다.</strong><br>
+따라서 이 섹션의 해석은 <strong>영상이 공개한 구조와 설명란에 근거한 고신뢰 요약</strong> 이지만, 세부 문장 수준의 직인용은 아닙니다.</p>
+<h2 id="배포가-초반에-등장하는-이유-claude-code-앱-제작에서-로컬-완성은-절반짜리-성공이다">배포가 초반에 등장하는 이유: Claude Code 앱 제작에서 &ldquo;로컬 완성&quot;은 절반짜리 성공이다</h2>
+<p>챕터를 보면 4:30에 호스팅, 8:39에 Railway 배포 개요가 따로 등장합니다.<br>
+이 순서는 매우 실전적입니다.<br>
+많은 AI 코딩 데모가 로컬에서 화면이 뜨는 것까지는 보여주지만, <strong>실제 서비스로 노출하는 단계</strong> 에서는 금방 흐려집니다.</p>
+<p>이 영상은 그 점을 분리해서 다룹니다.</p>
+<ul>
+<li>앱 기능 생성</li>
+<li>로컬 동작 확인</li>
+<li>Railway 같은 호스팅 환경으로 배포</li>
+</ul>
+<p>이렇게 나누면 Claude Code로 만드는 앱이 단순 데모가 아니라 <strong>실제로 접근 가능한 운영형 앱</strong> 으로 바뀝니다.<br>
+Railway가 등장하는 이유도 여기에 있습니다.<br>
+프런트엔드/백엔드/DB 조합을 상대적으로 빠르게 올릴 수 있는 호스팅 경로를 붙이면, Claude가 만든 결과를 <strong>업무 맥락에서 검증</strong> 할 수 있게 됩니다.</p>
+<p>실무적으로 보면 이건 매우 중요합니다.<br>
+CRM은 혼자 보는 장난감이 아니라, 결국 팀원이 보거나 실제 리드 데이터가 들어오는 앱이기 때문입니다.<br>
+그래서 이 영상이 단순히 &ldquo;만드는 법&quot;보다 <strong>배포까지 이어지는 법</strong> 을 강조하는 점은 꽤 가치가 있습니다.</p>
+<h2 id="api와-mcp를-나눠서-보는-시각이-중요하다">API와 MCP를 나눠서 보는 시각이 중요하다</h2>
+<p>영상 후반에는 9:07의 &ldquo;Integrating external APIs/MCPs&rdquo; 와 12:27의 &ldquo;API vs MCP&quot;가 별도 챕터로 잡혀 있습니다.<br>
+이건 단순한 용어 비교가 아니라, <strong>Claude Code 기반 앱 개발에서 외부 연동을 어떤 계층으로 붙일지</strong> 와 연결됩니다.</p>
+<p>이 영상의 챕터만으로도 다음 정도는 확실히 읽을 수 있습니다.</p>
+<ul>
+<li>외부 시스템 연결이 중요한 앱 예시로 CRM을 사용한다</li>
+<li>이 연결은 API 또는 MCP 둘 다 후보가 될 수 있다</li>
+<li>둘의 차이를 따로 설명할 만큼, 연동 계층 선택이 실전적으로 중요하다</li>
+</ul>
+<p>여기서 일반화하면:</p>
+<ul>
+<li><strong>API</strong> 는 앱 런타임에서 직접 비즈니스 기능을 호출하기 좋습니다</li>
+<li><strong>MCP</strong> 는 Claude 같은 에이전트가 외부 기능을 도구처럼 다루게 하는 데 유리합니다</li>
+</ul>
+<p>따라서 CRM 구축 맥락에서는 보통 두 층을 구분해서 생각하는 편이 좋습니다.</p>
+<pre class="mermaid">flowchart TD
+    App["CRM 앱 런타임"] --> API["직접 API 호출"]
+    Agent["Claude Code 에이전트 작업"] --> MCP["MCP 도구 호출"]
+    API --> Services["이메일 / 데이터 / 외부 SaaS"]
+    MCP --> Tools["검색 / 조작 / 통합 도구"]
+
+    classDef runtime fill:#c0ecd3,color:#333,stroke:#7dbb95,stroke-width:1px;
+    classDef agent fill:#c5dcef,color:#333,stroke:#6b9ac4,stroke-width:1px;
+    classDef ext fill:#fde8c0,color:#333,stroke:#d9b66b,stroke-width:1px;
+
+    class App runtime
+    class Agent agent
+    class API,MCP,Services,Tools ext</pre><p>물론 이 해석은 영상 챕터 공개 정보와 설명란에 근거한 구조적 요약입니다.<br>
+전문 전체가 확보되지 않았기 때문에, 발표자가 API와 MCP를 어떤 철학으로 더 강하게 구분했는지까지는 이 글에서 과도하게 단정하지 않겠습니다.<br>
+다만 최소한 <strong>외부 연동 계층을 독립된 설계 문제로 본다</strong> 는 점은 분명합니다.</p>
+<h2 id="이메일-알림과-자동화가-붙는-순간-이건-단순-crud-튜토리얼이-아니다">이메일 알림과 자동화가 붙는 순간, 이건 단순 CRUD 튜토리얼이 아니다</h2>
+<p>9:59의 <strong>이메일 알림</strong>, 11:54의 <strong>이메일 자동화 테스트</strong>, 12:40의 <strong>자동화 구축</strong> 챕터는 이 영상의 성격을 바꿉니다.<br>
+여기서부터는 단순 데이터 관리 UI가 아니라, <strong>이벤트가 발생했을 때 후속 액션이 나가는 운영 워크플로</strong> 로 넘어갑니다.</p>
+<p>CRM에서 이건 결정적입니다.<br>
+리드를 저장하는 것보다 중요한 건:</p>
+<ul>
+<li>특정 상태 변화가 생겼을 때</li>
+<li>누가 무엇을 받는지</li>
+<li>어떤 타이밍에 어떤 작업이 자동으로 이어지는지</li>
+</ul>
+<p>를 앱 안에 심는 일입니다.<br>
+설명란에 Resend 기반 이메일 알림이 언급된 점을 보면, 작성자는 최소한 <strong>실제 알림 채널 하나를 붙여 자동화까지 검증</strong> 하는 흐름을 보여주려는 것입니다.</p>
+<p>즉 이 영상의 실전성은 여기서 더 커집니다.<br>
+Claude Code가 강한 부분은 단순 페이지 생성보다, <strong>명시된 규칙과 이벤트를 코드와 연동 로직으로 빠르게 조립하는 것</strong> 이기 때문입니다.</p>
+<h2 id="이-영상을-어떻게-봐야-하나-claude가-다-만든-crm이-아니라-에이전트-조립식-업무-앱-파이프라인">이 영상을 어떻게 봐야 하나: &ldquo;Claude가 다 만든 CRM&quot;이 아니라 &ldquo;에이전트 조립식 업무 앱 파이프라인&rdquo;</h2>
+<p>이 영상을 너무 낙관적으로 보면 &ldquo;이제 CRM은 다 AI가 대신 만들 수 있다&quot;는 결론으로 흐르기 쉽습니다.<br>
+하지만 더 정확한 해석은 이렇습니다.</p>
+<ol>
+<li>Claude Code는 <strong>정형화된 비즈니스 앱 조립</strong> 에 강하다</li>
+<li>특히 CRUD + 파이프라인 + 알림 + 자동화처럼 패턴이 있는 문제에 강하다</li>
+<li>그러나 좋은 결과를 위해서는
+<ul>
+<li>데이터 구조</li>
+<li>기능 범위</li>
+<li>배포 경로</li>
+<li>외부 연동 방식</li>
+<li>자동화 이벤트
+를 사람이 먼저 나눠서 제시해야 한다</li>
+</ul>
+</li>
+</ol>
+<p>즉 이 영상은 &ldquo;프롬프트 한 줄로 SaaS를 끝낸다&quot;가 아니라, <strong>Claude Code를 업무 앱 생성기처럼 쓰되, 사람이 제품 구조를 감독하는 흐름</strong> 에 가깝습니다.</p>
+<p>이 점에서 CRM은 좋은 예시입니다.<br>
+왜냐하면 CRM은:</p>
+<ul>
+<li>도메인이 익숙하고</li>
+<li>필요한 기능이 비교적 반복 가능하며</li>
+<li>자동화 가치가 크고</li>
+<li>결과를 데모하기 쉽기 때문입니다.</li>
+</ul>
+<p>그래서 Claude Code 데모용으로도 좋고, 실제 소규모 운영툴 대체 사례로도 설득력이 있습니다.</p>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<p>이 영상을 실무 관점에서 가져오면 다음 포인트가 남습니다.</p>
+<ol>
+<li>
+<p><strong>앱 종류를 잘 고를 것</strong><br>
+Claude Code는 CRM처럼 구조가 익숙하고 반복 가능한 업무 앱에서 특히 강합니다.</p>
+</li>
+<li>
+<p><strong>프롬프트를 기능 묶음으로 나눌 것</strong><br>
+리드 관리, 연락처, 회사 프로필, 대시보드, 알림, 자동화를 한 번에 던지기보다 단계적으로 분해하는 편이 낫습니다.</p>
+</li>
+<li>
+<p><strong>배포를 초반부터 설계할 것</strong><br>
+로컬 데모가 아니라 Railway 같은 실제 호스팅 경로까지 함께 생각해야 실전 도구가 됩니다.</p>
+</li>
+<li>
+<p><strong>API와 MCP의 자리를 구분할 것</strong><br>
+앱 자체의 런타임 통합과, 에이전트의 도구 통합은 같은 문제가 아닙니다.</p>
+</li>
+<li>
+<p><strong>자동화를 꼭 마지막까지 검증할 것</strong><br>
+이메일 알림 같은 실제 후속 액션이 붙어야 CRM은 비로소 운영도구가 됩니다.</p>
+</li>
+<li>
+<p><strong>근거가 빈약한 구간은 과신하지 말 것</strong><br>
+이번 글처럼 자막이 완전 확보되지 않은 경우, 챕터와 설명란 기반 구조 요약은 가능하지만 세부 구현 디테일은 과장하지 않는 편이 안전합니다.</p>
+</li>
+</ol>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>이 영상은 Claude Code로 <strong>커스텀 CRM을 만들고 Railway에 배포하며 자동화까지 붙이는 흐름</strong> 을 보여준다.</li>
+<li>핵심 기능 범위는 리드 파이프라인, 연락처/회사 프로필, 분석 대시보드, 자동화 워크플로다.</li>
+<li>챕터 구성을 보면 진짜 포인트는 코드 작성보다 <strong>프롬프트 구조, 배포, 외부 연동, 이메일 자동화</strong> 에 있다.</li>
+<li>API와 MCP를 별도 연동 계층으로 보는 시각은, Claude Code 기반 업무 앱 설계에서 꽤 중요하다.</li>
+<li>이 영상은 &ldquo;AI가 다 만든다&quot;보다, <strong>사람이 구조를 잡고 Claude가 반복적인 앱 조립을 가속하는 방식</strong> 을 보여주는 데 의미가 있다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>이 영상의 가치는 CRM을 하나 더 만드는 데 있지 않습니다.<br>
+오히려 Claude Code를 사용해 <strong>반복 가능한 업무 앱을 어떤 순서로 조립하고, 언제 배포하고, 어느 지점에서 자동화를 붙여야 하는지</strong> 를 짧은 시간 안에 보여준다는 데 있습니다.<br>
+특히 비즈니스 앱을 만드는 사람에게 중요한 건 &ldquo;생성&rdquo; 자체보다 <strong>운영 가능한 구조로 끝까지 연결하는 것</strong> 인데, 이 영상은 그 흐름을 비교적 선명하게 드러냅니다.<br>
+결국 핵심은 Claude Code가 모든 걸 대신한다는 환상이 아니라, <strong>명확한 구조와 경계를 가진 문제에서 매우 빠른 조립자 역할을 할 수 있다</strong> 는 점입니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 06월 30일 00시 25분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-06-29-claude-code-unreal-engine-free-mcp-workflow/" rel="prev">
+        <span>Claude Code와 Unreal Engine 5를 붙이는 가장 실전적인 무료 조합: UnrealClaude &#43; VibeUE</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/2026-06-30-obscura-rust-browser-for-ai-agents/" rel="next">
+        <span>X에서 화제가 된 Rust 브라우저 Obscura: AI 에이전트와 웹 스크래핑을 위한 headless Chrome 대안</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#이-영상이-다루는-범위-crm을-만든다가-아니라-작동하는-업무-앱을-끝까지-잇는다">이 영상이 다루는 범위: &ldquo;CRM을 만든다&quot;가 아니라 &ldquo;작동하는 업무 앱을 끝까지 잇는다&rdquo;</a></li>
+    <li><a href="#챕터-흐름이-말해주는-실제-제작-순서">챕터 흐름이 말해주는 실제 제작 순서</a></li>
+    <li><a href="#이-영상에서-진짜-중요한-부분-프롬프트가-아니라-프롬프트의-구조">이 영상에서 진짜 중요한 부분: 프롬프트가 아니라 &ldquo;프롬프트의 구조&rdquo;</a></li>
+    <li><a href="#배포가-초반에-등장하는-이유-claude-code-앱-제작에서-로컬-완성은-절반짜리-성공이다">배포가 초반에 등장하는 이유: Claude Code 앱 제작에서 &ldquo;로컬 완성&quot;은 절반짜리 성공이다</a></li>
+    <li><a href="#api와-mcp를-나눠서-보는-시각이-중요하다">API와 MCP를 나눠서 보는 시각이 중요하다</a></li>
+    <li><a href="#이메일-알림과-자동화가-붙는-순간-이건-단순-crud-튜토리얼이-아니다">이메일 알림과 자동화가 붙는 순간, 이건 단순 CRUD 튜토리얼이 아니다</a></li>
+    <li><a href="#이-영상을-어떻게-봐야-하나-claude가-다-만든-crm이-아니라-에이전트-조립식-업무-앱-파이프라인">이 영상을 어떻게 봐야 하나: &ldquo;Claude가 다 만든 CRM&quot;이 아니라 &ldquo;에이전트 조립식 업무 앱 파이프라인&rdquo;</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude Code</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+    <a href="/tags/automation/" class="badge badge-secondary">Automation</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
