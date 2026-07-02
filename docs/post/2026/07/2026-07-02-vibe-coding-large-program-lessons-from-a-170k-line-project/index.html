@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '바이브 코딩으로 17만 줄 프로그램을 만들며 배운 것: MVP 다음에는 하네스, 테스트, 로그가 필요하다'" />
+  <title>바이브 코딩으로 17만 줄 프로그램을 만들며 배운 것: MVP 다음에는 하네스, 테스트, 로그가 필요하다  | 신규하 블로그</title>
+  <meta property="og:title" content="바이브 코딩으로 17만 줄 프로그램을 만들며 배운 것: MVP 다음에는 하네스, 테스트, 로그가 필요하다" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-07-02"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/07/2026-07-02-vibe-coding-large-program-lessons-from-a-170k-line-project/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="ai" />
+  
+  <meta property="og:tags" content="vibe-coding" />
+  
+  <meta property="og:tags" content="testing" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/07/2026-07-02-vibe-coding-large-program-lessons-from-a-170k-line-project/">
+          <h1>
+            바이브 코딩으로 17만 줄 프로그램을 만들며 배운 것: MVP 다음에는 하네스, 테스트, 로그가 필요하다
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/07/2026-07-02-vibe-coding-large-program-lessons-from-a-170k-line-project/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>요즘 AI 코딩으로 <strong>돌아가는 첫 버전</strong>, 즉 MVP를 만드는 일은 정말 쉬워졌습니다.<br>
+하지만 이 영상이 강조하는 것은 그 다음입니다.<br>
+기능이 계속 붙고, 로그인과 파일 처리와 업데이트와 보안과 테스트가 들어오기 시작하면 난이도가 완전히 달라진다는 것입니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=0">https://youtu.be/3Ba6dllQ3lE?t=0</a><br>
+발표자는 이 구간을 직접 겪었고, 결국 혼자서 17만 줄 규모까지 프로젝트를 키우며 &ldquo;AI가 코드를 잘 짜느냐&quot;보다 <strong>AI가 실수해도 프로젝트가 무너지지 않게 만드는 구조</strong> 가 더 중요하다는 결론에 도달합니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=51">https://youtu.be/3Ba6dllQ3lE?t=51</a></p>
+<p>이 글은 그 경험담을 바탕으로, 왜 대형 AI 코딩 프로젝트에서는 하네스 엔지니어링, 테스트 케이스, 서브에이전트 검증, 업데이트 시스템, 로그 체계가 핵심이 되는지를 정리한 내용입니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://youtu.be/3Ba6dllQ3lE?si=hZ41mzRXYWT3T-ll">https://youtu.be/3Ba6dllQ3lE?si=hZ41mzRXYWT3T-ll</a></li>
+</ul>
+<h2 id="mvp-다음에-완전히-다른-문제가-시작된다">MVP 다음에 완전히 다른 문제가 시작된다</h2>
+<p>영상은 초반부터 아주 선명한 문제 정의를 던집니다.<br>
+MVP를 만드는 것 자체는 쉬워졌지만, 그 다음 단계에서 프로젝트 성격이 완전히 바뀐다는 것입니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=4">https://youtu.be/3Ba6dllQ3lE?t=4</a><br>
+로그인, 파일 처리, 업데이트, 보안, 테스트가 붙는 순간부터는 더 이상 &ldquo;기능 몇 개 추가하기&quot;의 문제가 아니라 <strong>운영 가능한 시스템을 유지하는 문제</strong> 로 바뀝니다.</p>
+<p>발표자는 사람들이 흔히 &ldquo;AI로 데모 앱은 만들 수 있어도 큰 프로그램은 유지보수에서 무너진다&quot;고 말하는 이유를 직접 겪었다고 설명합니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=39">https://youtu.be/3Ba6dllQ3lE?t=39</a><br>
+그런데도 본인은 그 구간을 넘어 17만 줄 규모까지 키웠다고 말합니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=51">https://youtu.be/3Ba6dllQ3lE?t=51</a></p>
+<p>중요한 점은, 여기서의 벽이 &ldquo;AI가 코드를 못 써서&rdquo; 생긴 것이 아니라는 것입니다.<br>
+오히려 AI가 너무 빨리 만들고, 그 과정에서 <strong>건드리면 안 되는 곳까지 건드리는 것</strong> 이 더 큰 문제였다고 말합니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=134">https://youtu.be/3Ba6dllQ3lE?t=134</a></p>
+<pre class="mermaid">flowchart TD
+    A["MVP 단계"] --> B["기능 추가"]
+    B --> C["로그인 / 파일 처리 / 보안 / 테스트"]
+    C --> D["운영 단계 문제 폭발"]
+    D --> E["단순 코드 생성만으로는 부족"]
+
+    classDef earlyTone fill:#c5dcef,color:#333,stroke:#6b9ac4,stroke-width:1px;
+    classDef growthTone fill:#fde8c0,color:#333,stroke:#d9b66b,stroke-width:1px;
+    classDef riskTone fill:#ffc8c4,color:#333,stroke:#c77b7b,stroke-width:1px;
+
+    class A,B earlyTone
+    class C growthTone
+    class D,E riskTone</pre><p>즉 이 영상의 첫 번째 핵심은 간단합니다.<br>
+<strong>AI 코딩의 진짜 난이도는 첫 구현이 아니라, 프로젝트가 커진 뒤에도 계속 굴러가게 만드는 것</strong> 입니다.</p>
+<h2 id="핵심-전환점은-코드를-더-시키는-것이-아니라-울타리를-치는-것">핵심 전환점은 &ldquo;코드를 더 시키는 것&quot;이 아니라 &ldquo;울타리를 치는 것&rdquo;</h2>
+<p>발표자는 프로젝트가 커지면서 가장 먼저 한 일이, AI에게 코드를 더 많이 맡기는 것이 아니라 <strong>울타리를 쳐 주는 것</strong> 이었다고 설명합니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=146">https://youtu.be/3Ba6dllQ3lE?t=146</a><br>
+어디까지는 고쳐도 되고, 어디는 절대 건드리면 안 되는지 명확하게 규정했다는 뜻입니다.</p>
+<p>이걸 영상에서는 하네스 엔지니어링에 가깝게 설명합니다.<br>
+쉽게 말해 AI가 마음대로 날뛰지 않고, 정해진 작업장 안에서 일하게 만드는 안전 장치라는 것입니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=160">https://youtu.be/3Ba6dllQ3lE?t=160</a></p>
+<p>이를 위해 발표자는 다음과 같은 장치를 만들었다고 설명합니다.</p>
+<ul>
+<li>AI가 건드려도 되는 영역과 금지 영역을 문서화</li>
+<li>자주 실수하는 부분은 모범 코드 예시를 남김</li>
+<li>AI가 새 코드를 만들 때 그 예시를 계속 참고하게 함</li>
+<li>작업을 크게 던지지 않고 작은 단위로 쪼갬</li>
+</ul>
+<p>여기서 중요한 포인트는, AI에게 프롬프트만 주는 것이 아니라 <strong>기억 장치와 작업 규칙을 같이 준다</strong> 는 것입니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=188">https://youtu.be/3Ba6dllQ3lE?t=188</a></p>
+<pre class="mermaid">flowchart TD
+    A["AI에게 기능 요청"] --> B["무제한 수정 허용"]
+    A --> C["작업 규칙 / 금지 구역 / 모범 코드 제공"]
+
+    B --> D["예상 밖 영역 수정"]
+    D --> E["프로젝트 불안정"]
+
+    C --> F["작업 범위 제한"]
+    F --> G["참조 가능한 패턴 제공"]
+    G --> H["예측 가능한 변경"]
+
+    classDef startTone fill:#c5dcef,color:#333,stroke:#6b9ac4,stroke-width:1px;
+    classDef badTone fill:#ffc8c4,color:#333,stroke:#c77b7b,stroke-width:1px;
+    classDef goodTone fill:#c0ecd3,color:#333,stroke:#7dbb95,stroke-width:1px;
+
+    class A startTone
+    class B,D,E badTone
+    class C,F,G,H goodTone</pre><p>즉 대형 프로젝트에서 중요한 것은 AI의 자유도를 높이는 것이 아니라, <strong>AI가 망가뜨릴 수 있는 범위를 줄이는 것</strong> 입니다.</p>
+<h2 id="코드가-길어질수록-테스트-케이스는-옵션이-아니라-생존-장치가-된다">코드가 길어질수록 테스트 케이스는 옵션이 아니라 생존 장치가 된다</h2>
+<p>영상에서 다음으로 강조되는 것은 테스트입니다.<br>
+코드가 길어질수록 작은 수정 하나에도 실수가 많아졌고, 그래서 새 기능을 넣을 때마다 기존 기능이 그대로 잘 작동하는지 확인할 수 있도록 테스트 케이스를 계속 쌓아 갔다고 설명합니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=204">https://youtu.be/3Ba6dllQ3lE?t=204</a></p>
+<p>여기서 테스트는 단순 품질 향상 수단이 아니라, <strong>AI가 선을 넘었는지 알려 주는 점검표</strong> 로 묘사됩니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=217">https://youtu.be/3Ba6dllQ3lE?t=217</a></p>
+<p>이 설명이 중요한 이유는, AI 코딩에서는 수정 속도가 빠른 만큼 회귀 버그도 빠르게 늘어날 수 있기 때문입니다.<br>
+특히 한 번의 수정이 다른 모듈까지 건드릴 수 있는 상황에서는, 사람이 매번 눈으로만 검수하는 방식은 곧 한계에 부딪힙니다.</p>
+<p>테스트가 쌓이면 얻는 이점은 분명합니다.</p>
+<ul>
+<li>새 코드가 기존 기능을 깨뜨렸는지 빠르게 확인 가능</li>
+<li>AI가 낸 수정안의 위험도를 자동으로 가늠 가능</li>
+<li>작은 단위 작업을 더 자주 맡길 수 있음</li>
+</ul>
+<p>즉 테스트는 대형 AI 프로젝트에서 <strong>속도를 늦추는 비용</strong> 이 아니라, 오히려 <strong>안전하게 속도를 내기 위한 기반</strong> 입니다.</p>
+<h2 id="서브에이전트는-두-번째-눈-역할을-한다">서브에이전트는 &ldquo;두 번째 눈&rdquo; 역할을 한다</h2>
+<p>발표자는 서브에이전트를 적극적으로 활용했다고 말합니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=229">https://youtu.be/3Ba6dllQ3lE?t=229</a><br>
+복잡한 코드를 수정한 뒤, 다른 AI에게 다시 검토를 맡겼다는 것입니다.</p>
+<p>그 이유 설명이 흥미롭습니다.<br>
+현재 작업 중인 AI는 앞선 대화와 수정 맥락에 영향을 많이 받을 수 있지만, 서브에이전트는 상대적으로 깨끗한 상태에서 코드를 본다고 말합니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=239">https://youtu.be/3Ba6dllQ3lE?t=239</a><br>
+그래서 수정 방향이 정말 맞는지, 놓친 문제가 없는지 다시 확인하는 데 유리했다는 것입니다.</p>
+<p>쉽게 말하면 구조는 이렇습니다.</p>
+<ul>
+<li>AI 1: 구현 담당</li>
+<li>AI 2: 검토 담당</li>
+</ul>
+<p>이건 사람 팀에서 작성자와 리뷰어를 분리하는 것과 비슷합니다.<br>
+특히 대화 누적에 따라 편향될 수 있는 AI 특성을 생각하면, <strong>컨텍스트가 덜 오염된 두 번째 검토자</strong> 를 두는 전략은 꽤 합리적입니다.</p>
+<pre class="mermaid">flowchart TD
+    A["작업 요청"] --> B["주 작업 AI가 코드 수정"]
+    B --> C["서브에이전트가 재검토"]
+    C --> D["문제 발견 시 수정"]
+    D --> E["더 높은 품질로 반영"]
+
+    classDef inputTone fill:#c5dcef,color:#333,stroke:#6b9ac4,stroke-width:1px;
+    classDef workTone fill:#fde8c0,color:#333,stroke:#d9b66b,stroke-width:1px;
+    classDef checkTone fill:#e0c8ef,color:#333,stroke:#9b7fc0,stroke-width:1px;
+    classDef outTone fill:#c0ecd3,color:#333,stroke:#7dbb95,stroke-width:1px;
+
+    class A inputTone
+    class B,D workTone
+    class C checkTone
+    class E outTone</pre><p>영상에서도 서브에이전트를 거치고 안 거치고 간에 코드 품질 차이가 꽤 컸다고 설명합니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=256">https://youtu.be/3Ba6dllQ3lE?t=256</a></p>
+<h2 id="서비스-단계에서는-업데이트-시스템과-배포-비용까지-설계해야-한다">서비스 단계에서는 업데이트 시스템과 배포 비용까지 설계해야 한다</h2>
+<p>프로젝트가 실제 서비스 단계로 넘어가면서, 발표자는 또 다른 현실적 문제를 만났다고 말합니다.<br>
+바로 업데이트 시스템입니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=263">https://youtu.be/3Ba6dllQ3lE?t=263</a></p>
+<p>초기에는 새 버전이 나올 때마다 다시 설치하라고 안내하면 될 줄 알았지만, 사용자가 늘어나면서 그 방식이 더 이상 통하지 않았다고 설명합니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=269">https://youtu.be/3Ba6dllQ3lE?t=269</a><br>
+그래서 현재 버전을 확인하고, 새 버전이 있으면 자동으로 내려받아 업데이트할 수 있는 버전 기반 업데이트 시스템을 만들었다고 합니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=287">https://youtu.be/3Ba6dllQ3lE?t=287</a></p>
+<p>그런데 여기서 끝나지 않습니다.<br>
+업데이트 파일을 운영 서버에서 그대로 배포하면 다운로드 트래픽 때문에 서버 비용이 빠르게 늘 수 있다는 문제를 만났다고 말합니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=302">https://youtu.be/3Ba6dllQ3lE?t=302</a><br>
+그래서 큰 파일 다운로드는 별도 클라우드 플레이어 쪽으로 분리해 비용과 안정성을 함께 개선했다고 설명합니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=322">https://youtu.be/3Ba6dllQ3lE?t=322</a></p>
+<p>이 구간이 중요한 이유는 분명합니다.<br>
+실제 서비스는 기능만 잘 만들면 끝나는 것이 아니라, <strong>업데이트, 배포 비용, 다운로드 속도, 실패 처리까지 같이 설계해야 운영 가능</strong> 하다는 점을 잘 보여 주기 때문입니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=339">https://youtu.be/3Ba6dllQ3lE?t=339</a></p>
+<h2 id="에러-로그가-없으면-수정은-거의-추측이-된다">에러 로그가 없으면 수정은 거의 추측이 된다</h2>
+<p>발표자는 사용자가 &ldquo;오류가 난다&quot;고만 알려 주는 상황에서는 정확한 원인을 알기 어려웠다고 말합니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=350">https://youtu.be/3Ba6dllQ3lE?t=350</a><br>
+그래서 에러 로그 전송 기능을 만들었고, 그 뒤에는 어떤 상황에서 어떤 부분이 실패했는지 훨씬 빠르게 파악할 수 있게 되었다고 설명합니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=363">https://youtu.be/3Ba6dllQ3lE?t=363</a></p>
+<p>이 부분은 특히 운영형 AI 서비스에서 중요합니다.<br>
+문제를 재현하기 어려운 환경에서는 사람의 설명만으로는 원인 분석이 거의 불가능할 수 있습니다.<br>
+반면 로그는 실제 실패 지점과 실행 맥락을 남겨 주므로, 수정 속도 자체를 바꿔 줍니다.</p>
+<p>즉 로그는 단순 디버깅 보조가 아니라, <strong>운영 가능한 시스템으로 넘어가기 위한 최소 관측 장치</strong> 입니다.</p>
+<h2 id="속도-코드-유출-보안-문제는-서비스-단계에서-함께-터진다">속도, 코드 유출, 보안 문제는 서비스 단계에서 함께 터진다</h2>
+<p>영상 후반부는 &ldquo;실제로 운영하기 시작하면 신경 써야 할 일이 완전히 달라진다&quot;는 점을 강하게 보여 줍니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=439">https://youtu.be/3Ba6dllQ3lE?t=439</a></p>
+<p>발표자는 처음에는 Python으로 빠르게 만들었지만, 기능이 많아지고 코드가 쌓이면서 실행 속도가 답답해졌고, 속도가 중요한 핵심 부분은 Go로 옮겼다고 말합니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=386">https://youtu.be/3Ba6dllQ3lE?t=386</a><br>
+또 AI 코딩이 쉬워진 시대에는 구조를 보고 빠르게 유사 복제하는 것도 쉬워졌기 때문에, 핵심 로직을 사용자 PC에 두지 않고 서버에서 실행되도록 바꿨다고 설명합니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=411">https://youtu.be/3Ba6dllQ3lE?t=411</a></p>
+<p>그리고 서버 운영을 시작하자 해킹 시도가 계속 들어와, 기능 개발뿐 아니라 보안 점검도 반복적으로 해야 했다고 말합니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=428">https://youtu.be/3Ba6dllQ3lE?t=428</a></p>
+<p>여기서 보이는 것은 우선순위의 이동입니다.</p>
+<ul>
+<li>초기: 빨리 만들기</li>
+<li>중기: 안전하게 고치기</li>
+<li>후기: 빠르게 원인 찾기 + 안정적으로 운영하기</li>
+</ul>
+<p>즉 대형 프로젝트가 된다는 것은 코드 줄 수만 늘어난다는 뜻이 아니라, <strong>개발자가 책임져야 할 시스템적 범위가 넓어진다</strong> 는 뜻입니다.</p>
+<h2 id="컨텍스트-창을-잡아먹는-큰-파일은-ai-생산성을-직접-떨어뜨린다">컨텍스트 창을 잡아먹는 큰 파일은 AI 생산성을 직접 떨어뜨린다</h2>
+<p>영상에서 매우 실전적인 팁 하나가 더 나옵니다.<br>
+파일 하나가 400KB를 넘기기 시작하자 AI가 실수를 자주하기 시작했고, 나중에 보니 큰 파일 하나가 컨텍스트의 절반 이상을 써 버리고 있었다고 설명합니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=470">https://youtu.be/3Ba6dllQ3lE?t=470</a></p>
+<p>이 설명은 AI 코딩 시대에 매우 중요합니다.<br>
+컨텍스트 창은 결국 AI가 한 번에 펼쳐 놓고 볼 수 있는 작업 공간인데, 너무 큰 파일이 하나 들어오면 정작 고쳐야 할 주변 구조나 관련 모듈을 함께 보기가 어려워집니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=490">https://youtu.be/3Ba6dllQ3lE?t=490</a></p>
+<p>그래서 발표자는 큰 파일을 여러 개 작은 파일로 쪼개고, 역할별로 나눠 AI가 필요한 부분만 볼 수 있게 만들었다고 설명합니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=504">https://youtu.be/3Ba6dllQ3lE?t=504</a></p>
+<p>이건 단순한 리팩터링 미학이 아니라, <strong>AI 시대의 구조 설계 원칙</strong> 에 가깝습니다.<br>
+즉 큰 파일 분해는 사람 가독성만이 아니라, AI 작업 효율과 정확도를 함께 높이는 조치입니다.</p>
+<h2 id="결국-사람은-방향과-구조를-붙들고-있어야-한다">결국 사람은 방향과 구조를 붙들고 있어야 한다</h2>
+<p>영상 후반부의 가장 중요한 메시지 중 하나는, AI가 작업한 내용과 설계한 내용을 사람도 같이 이해하고 있어야 한다는 점입니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=542">https://youtu.be/3Ba6dllQ3lE?t=542</a><br>
+AI가 구조를 설명한다고 해서 그대로 믿고 넘기면 안 되고, 최소한 큰 흐름은 사람이 같이 알고 있어야 한다고 강조합니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=553">https://youtu.be/3Ba6dllQ3lE?t=553</a></p>
+<p>발표자는 이를 비유적으로 설명합니다.<br>
+AI는 복잡한 수학 문제는 잘 풀면서도, 전체 상황의 앞뒤 관계를 놓칠 때가 있다고 말합니다.<br>
+예를 들어 차에 기름을 넣으러 가야 하는데, 주유소가 가까우니 걸어가라는 식의 답을 내놓을 수 있다는 것입니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=569">https://youtu.be/3Ba6dllQ3lE?t=569</a></p>
+<p>즉 AI는 부분적으로는 맞는 말을 하더라도, 전체 맥락에서는 틀릴 수 있습니다.<br>
+그래서 큰 프로젝트일수록 사람의 역할은 줄어드는 것이 아니라 바뀝니다.</p>
+<ul>
+<li>AI: 빠르게 작성</li>
+<li>사람: 방향 결정</li>
+<li>사람: 구조 이해</li>
+<li>사람: 최종 판단</li>
+</ul>
+<p>이 메시지는 매우 중요합니다.<br>
+AI에게 맡긴다는 것은 손을 놓는 것이 아니라, <strong>사람이 더 상위 레벨의 통제와 검증을 맡는 것</strong> 이기 때문입니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=600">https://youtu.be/3Ba6dllQ3lE?t=600</a></p>
+<h2 id="텔레그램-기반-비동기-작업-흐름이-주는-장점">텔레그램 기반 비동기 작업 흐름이 주는 장점</h2>
+<p>영상 말미에는 발표자가 만든 시스템의 장점도 설명합니다.<br>
+텔레그램으로 작업을 던져 두고, 계속 화면을 보지 않아도 된다는 점이 크게 체감됐다고 말합니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=617">https://youtu.be/3Ba6dllQ3lE?t=617</a><br>
+일반적인 터미널 기반 AI 코딩은 중간에 멈췄는지, 질문이 생겼는지, 에러가 났는지를 계속 지켜봐야 하지만, 이 방식은 작업을 던져 둔 뒤 다른 일을 하고 나중에 결과를 확인할 수 있었다는 것입니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=624">https://youtu.be/3Ba6dllQ3lE?t=624</a></p>
+<p>이로 인해 AI 코딩이 &ldquo;내가 계속 붙잡고 있어야 하는 작업&quot;이 아니라 <strong>사이드 작업처럼 병렬로 굴릴 수 있는 작업</strong> 으로 바뀌었다고 설명합니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=654">https://youtu.be/3Ba6dllQ3lE?t=654</a></p>
+<p>즉 여기서의 진짜 가치 제안은 단순히 코드를 짜 주는 AI가 아니라, <strong>AI를 내 시간표가 아니라 내 뒤에서 계속 일하게 만드는 작업장</strong> 에 가깝습니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=681">https://youtu.be/3Ba6dllQ3lE?t=681</a></p>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<p>이 영상을 실무 원칙으로 바꾸면 다음처럼 정리할 수 있습니다.</p>
+<ol>
+<li>MVP를 넘는 순간부터는 기능 개발보다 운영 구조를 먼저 설계한다<br></li>
+<li>AI에게 자유를 더 주기보다, 문서와 규칙으로 작업 범위를 제한한다<br></li>
+<li>기능 추가와 함께 테스트 케이스를 계속 누적한다<br></li>
+<li>중요한 수정은 서브에이전트나 별도 리뷰 경로를 둔다<br></li>
+<li>업데이트 시스템, 배포 비용, 다운로드 구조를 초기에 함께 고려한다<br></li>
+<li>에러 로그 수집 체계를 만들고 추측 기반 디버깅을 줄인다<br></li>
+<li>큰 파일은 분해해 AI가 필요한 부분만 보도록 구조를 정리한다<br></li>
+<li>사람은 전체 구조와 방향 판단을 계속 붙들고 있어야 한다</li>
+</ol>
+<p>특히 이 영상은 AI 코딩에서 &ldquo;얼마나 빨리 만드느냐&quot;보다 <strong>얼마나 안전하게 계속 바꿀 수 있느냐</strong> 가 더 중요해지는 시점이 반드시 온다는 점을 잘 보여 줍니다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>이 영상은 AI 코딩으로 MVP를 만드는 일보다, 프로젝트가 커진 뒤 무너지지 않게 만드는 구조가 더 중요하다고 말합니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=700">https://youtu.be/3Ba6dllQ3lE?t=700</a><br></li>
+<li>발표자가 실제로 맞닥뜨린 핵심 문제는 AI의 코딩 실력 부족이 아니라, 빠른 수정 과정에서 금지 구역까지 건드리는 불안정성이었습니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=134">https://youtu.be/3Ba6dllQ3lE?t=134</a><br></li>
+<li>그래서 작업 범위를 제한하는 하네스 성격의 문서, 모범 코드, 작은 작업 단위 분해가 중요해졌습니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=146">https://youtu.be/3Ba6dllQ3lE?t=146</a><br></li>
+<li>테스트 케이스는 회귀를 막는 생존 장치였고, 서브에이전트는 오염이 덜 된 두 번째 검토자 역할을 했습니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=204">https://youtu.be/3Ba6dllQ3lE?t=204</a><br></li>
+<li>실제 서비스 단계에서는 업데이트 시스템, 배포 비용, 에러 로그, 속도, 보안, 코드 유출 대응까지 함께 설계해야 합니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=263">https://youtu.be/3Ba6dllQ3lE?t=263</a><br></li>
+<li>큰 파일은 AI의 컨텍스트를 과도하게 잡아먹기 때문에, 역할별 파일 분해가 다시 생산성을 높이는 전환점이 될 수 있습니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=470">https://youtu.be/3Ba6dllQ3lE?t=470</a></li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>이 영상의 결론은 아주 분명합니다.<br>
+AI 코딩으로 MVP를 만드는 시대는 이미 왔지만, 진짜 차이는 그 다음에 생깁니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=696">https://youtu.be/3Ba6dllQ3lE?t=696</a><br>
+프로젝트가 커지고 사용자가 생기고 운영 문제가 붙기 시작하면, 더 중요한 것은 코드 생성 속도가 아니라 <strong>AI가 실수해도 감당 가능한 구조를 만들었는가</strong> 입니다. <a href="https://youtu.be/3Ba6dllQ3lE?t=749">https://youtu.be/3Ba6dllQ3lE?t=749</a></p>
+<p>즉 바이브 코딩이 대형 프로젝트까지 갈 수 있느냐의 문제는, AI가 얼마나 영리한가보다 <strong>사람이 얼마나 좋은 작업장과 안전장치를 설계했는가</strong> 에 더 가깝습니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 07월 02일 00시 50분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/engineering">Engineering</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/07/2026-07-02-how-to-generate-consistent-game-assets-with-ai/" rel="prev">
+        <span>AI로 일관된 게임 에셋을 만드는 실전 워크플로: 앵커 프레임, 스프라이트시트, 정규화</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#mvp-다음에-완전히-다른-문제가-시작된다">MVP 다음에 완전히 다른 문제가 시작된다</a></li>
+    <li><a href="#핵심-전환점은-코드를-더-시키는-것이-아니라-울타리를-치는-것">핵심 전환점은 &ldquo;코드를 더 시키는 것&quot;이 아니라 &ldquo;울타리를 치는 것&rdquo;</a></li>
+    <li><a href="#코드가-길어질수록-테스트-케이스는-옵션이-아니라-생존-장치가-된다">코드가 길어질수록 테스트 케이스는 옵션이 아니라 생존 장치가 된다</a></li>
+    <li><a href="#서브에이전트는-두-번째-눈-역할을-한다">서브에이전트는 &ldquo;두 번째 눈&rdquo; 역할을 한다</a></li>
+    <li><a href="#서비스-단계에서는-업데이트-시스템과-배포-비용까지-설계해야-한다">서비스 단계에서는 업데이트 시스템과 배포 비용까지 설계해야 한다</a></li>
+    <li><a href="#에러-로그가-없으면-수정은-거의-추측이-된다">에러 로그가 없으면 수정은 거의 추측이 된다</a></li>
+    <li><a href="#속도-코드-유출-보안-문제는-서비스-단계에서-함께-터진다">속도, 코드 유출, 보안 문제는 서비스 단계에서 함께 터진다</a></li>
+    <li><a href="#컨텍스트-창을-잡아먹는-큰-파일은-ai-생산성을-직접-떨어뜨린다">컨텍스트 창을 잡아먹는 큰 파일은 AI 생산성을 직접 떨어뜨린다</a></li>
+    <li><a href="#결국-사람은-방향과-구조를-붙들고-있어야-한다">결국 사람은 방향과 구조를 붙들고 있어야 한다</a></li>
+    <li><a href="#텔레그램-기반-비동기-작업-흐름이-주는-장점">텔레그램 기반 비동기 작업 흐름이 주는 장점</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/ai/" class="badge badge-secondary">Ai</a>
+    <a href="/tags/vibe-coding/" class="badge badge-secondary">Vibe Coding</a>
+    <a href="/tags/testing/" class="badge badge-secondary">Testing</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
