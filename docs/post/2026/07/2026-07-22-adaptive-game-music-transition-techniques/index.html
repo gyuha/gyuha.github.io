@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '게임 음악은 왜 끊기지 않고 분위기를 바꿀까: 어댑티브 뮤직 전환 기법 정리'" />
+  <title>게임 음악은 왜 끊기지 않고 분위기를 바꿀까: 어댑티브 뮤직 전환 기법 정리  | 신규하 블로그</title>
+  <meta property="og:title" content="게임 음악은 왜 끊기지 않고 분위기를 바꿀까: 어댑티브 뮤직 전환 기법 정리" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-07-22"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/07/2026-07-22-adaptive-game-music-transition-techniques/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/07/2026-07-22-adaptive-game-music-transition-techniques/">
+          <h1>
+            게임 음악은 왜 끊기지 않고 분위기를 바꿀까: 어댑티브 뮤직 전환 기법 정리
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/07/2026-07-22-adaptive-game-music-transition-techniques/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>게임을 하다 보면 배경음악이 갑자기 뚝 끊기지 않고, 탐험에서 경계 상태로, 다시 전투 상태로 자연스럽게 넘어가는 순간이 있습니다.<br>
+이 짧은 쇼츠는 그 핵심을 <strong>어댑티브 뮤직</strong> 이라는 개념으로 설명합니다. 단순히 곡을 여러 개 준비하는 것이 아니라, 게임 상태 변화에 맞춰 레이어를 더하거나, 반복 구간과 전환 구간을 설계해 플레이어가 흐름을 끊김 없이 느끼게 만드는 방식입니다. <a href="https://youtu.be/WkvlFYUlvns?t=0">https://youtu.be/WkvlFYUlvns?t=0</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://youtube.com/shorts/WkvlFYUlvns?si=HwgKNl7DqjgEE39T">https://youtube.com/shorts/WkvlFYUlvns?si=HwgKNl7DqjgEE39T</a></li>
+</ul>
+<h2 id="1-어댑티브-뮤직은-배경음악-교체가-아니라-상태-기반-반응-시스템이다">1. 어댑티브 뮤직은 &ldquo;배경음악 교체&quot;가 아니라 상태 기반 반응 시스템이다</h2>
+<p>영상은 먼저, 플레이어가 게임 진행 상황을 직관적으로 느낄 수 있게 해 주는 음악 시스템을 <strong>어댑티브 뮤직</strong> 이라고 설명합니다. 상황에 따라 음악이 위화감 없이 전환되기 때문에, 플레이어는 화면을 보지 않아도 분위기 변화와 긴장도 상승을 감각적으로 받아들일 수 있다는 뜻입니다. <a href="https://youtu.be/WkvlFYUlvns?t=0">https://youtu.be/WkvlFYUlvns?t=0</a></p>
+<p>여기서 중요한 점은, 이 구조가 단순 재생 목록 전환과 다르다는 것입니다.<br>
+어댑티브 뮤직은 &ldquo;탐험 곡 하나, 전투 곡 하나&quot;를 딱 잘라 교체하는 방식이 아니라, 게임 내부 이벤트를 입력으로 받아 <strong>현재 상태에 맞는 음악 조합을 실시간으로 구성</strong>하는 시스템에 가깝습니다. 영상도 &ldquo;특정 이벤트가 발생하면 기본 테마 위에 새로운 악기가 추가된다&quot;는 식으로 설명합니다. <a href="https://youtu.be/WkvlFYUlvns?t=16">https://youtu.be/WkvlFYUlvns?t=16</a></p>
+<pre class="mermaid">flowchart TD
+    A["게임 상태"] --> B["탐험"]
+    A --> C["적 접근"]
+    A --> D["전투 시작"]
+    B --> E["기본 테마"]
+    C --> F["추가 악기 레이어"]
+    D --> G["긴장감 강화 레이어"]
+
+    classDef stateTone fill:#c5dcef,color:#333,stroke:#6b9ac4,stroke-width:1px;
+    classDef eventTone fill:#fde8c0,color:#333,stroke:#d4a85d,stroke-width:1px;
+    classDef musicTone fill:#c0ecd3,color:#333,stroke:#7dbb95,stroke-width:1px;
+
+    class A,B,C,D stateTone
+    class E,F,G musicTone</pre><p>즉 어댑티브 뮤직의 본질은 &ldquo;좋은 음악을 많이 준비하는 것&quot;보다, <strong>어떤 상태 변화에 어떤 음악적 반응을 연결할 것인가</strong> 를 설계하는 데 있습니다.</p>
+<h2 id="2-첫-번째-핵심-기법은-기본-테마-위에-악기를-층층이-쌓는-방식이다">2. 첫 번째 핵심 기법은 기본 테마 위에 악기를 층층이 쌓는 방식이다</h2>
+<p>영상이 가장 먼저 소개하는 방식은 매우 직관적입니다.<br>
+게임이 평온한 상태일 때는 단순한 기본 테마만 연주하고, 특정 이벤트가 발생하면 다른 음역대의 악기를 얹고, 또 다른 이벤트가 발생하면 추가 악기를 더해 음악을 점점 풍성하게 만든다는 설명입니다. <a href="https://youtu.be/WkvlFYUlvns?t=11">https://youtu.be/WkvlFYUlvns?t=11</a></p>
+<p>이 방식의 장점은 곡을 완전히 갈아끼우지 않아도 된다는 점입니다.<br>
+기본 테마를 유지한 채 악기만 추가하면:</p>
+<ul>
+<li>플레이어는 같은 곡의 연장선으로 느끼고</li>
+<li>음악적 정체성은 유지되며</li>
+<li>상황 변화에 따라 긴장도만 점진적으로 끌어올릴 수 있습니다</li>
+</ul>
+<p>영상은 자동 생성 자막 기준으로 &ldquo;피크민&quot;으로 들리는 예시를 들며, 동굴 탐험 중에는 메인 테마를 연주하고, 적이 가까워지면 악기가 추가되며, 전투가 시작되면 베이스 드럼과 심벌류가 더해져 긴장감을 자연스럽게 높인다고 설명합니다. 고유명 표기는 자동 자막 기준이라 약간 불확실할 수 있지만, 구조 자체는 분명합니다. <a href="https://youtu.be/WkvlFYUlvns?t=26">https://youtu.be/WkvlFYUlvns?t=26</a></p>
+<pre class="mermaid">flowchart TD
+    A["기본 탐험 테마"] --> B["적 접근"]
+    B --> C["중간 레이어 추가"]
+    C --> D["전투 시작"]
+    D --> E["리듬 / 타격감 레이어 추가"]
+
+    classDef baseTone fill:#c5dcef,color:#333,stroke:#6b9ac4,stroke-width:1px;
+    classDef changeTone fill:#fde8c0,color:#333,stroke:#d4a85d,stroke-width:1px;
+    classDef tensionTone fill:#ffc8c4,color:#333,stroke:#d98b8b,stroke-width:1px;
+
+    class A baseTone
+    class B,C changeTone
+    class D,E tensionTone</pre><p>실무적으로 보면 이건 Wwise나 FMOD 같은 오디오 미들웨어에서 흔히 다루는 <strong>vertical layering</strong> 사고방식과 닮아 있습니다.<br>
+즉 하나의 곡을 여러 줄기로 나눠 두고, 게임 이벤트에 맞춰 stem을 켜고 끄며 정서를 변화시키는 방식입니다. 영상이 짧아서 구현 도구까지 다루지는 않지만, 전달하는 원리는 분명합니다. <a href="https://youtu.be/WkvlFYUlvns?t=18">https://youtu.be/WkvlFYUlvns?t=18</a></p>
+<h2 id="3-두-번째-핵심-기법은-아예-다른-멜로디도-자연스럽게-이어붙이도록-미리-설계하는-것이다">3. 두 번째 핵심 기법은 아예 다른 멜로디도 자연스럽게 이어붙이도록 미리 설계하는 것이다</h2>
+<p>영상의 두 번째 설명은 더 흥미롭습니다.<br>
+이번에는 단순히 악기만 추가하는 것이 아니라, <strong>다른 멜로디로 자연스럽게 이어붙이는 방식</strong> 이 있다고 말합니다. 인트로가 끝난 뒤 특정 음악이 반복될 때 여러 개의 소절을 랜덤하게 연결해, 어느 부분에서든 다음 소절로 자연스럽게 넘어갈 수 있게 만든다는 설명입니다. <a href="https://youtu.be/WkvlFYUlvns?t=40">https://youtu.be/WkvlFYUlvns?t=40</a></p>
+<p>이 방식의 핵심은 &ldquo;언제 상태가 바뀔지 모른다&quot;는 게임의 특성에 대응하는 데 있습니다.<br>
+고정 길이 곡은 전투 개시나 이벤트 트리거가 애매한 박자에 걸리면 전환이 부자연스러워질 수 있습니다. 반면 반복절과 연결 가능한 구간을 미리 설계해 두면, 게임 로직은 음악 전체가 끝나길 기다리지 않고도 비교적 자연스러운 지점에서 다음 상태 음악으로 넘어갈 수 있습니다. <a href="https://youtu.be/WkvlFYUlvns?t=44">https://youtu.be/WkvlFYUlvns?t=44</a></p>
+<pre class="mermaid">flowchart TD
+    A["인트로"] --> B["반복 구간 A"]
+    B --> C["반복 구간 B"]
+    C --> D["반복 구간 C"]
+    B --> E["전환용 짧은 브리지"]
+    C --> E
+    D --> E
+    E --> F["전투 테마"]
+
+    classDef introTone fill:#c5dcef,color:#333,stroke:#6b9ac4,stroke-width:1px;
+    classDef loopTone fill:#e0c8ef,color:#333,stroke:#a987c5,stroke-width:1px;
+    classDef bridgeTone fill:#fde8c0,color:#333,stroke:#d4a85d,stroke-width:1px;
+    classDef battleTone fill:#ffc8c4,color:#333,stroke:#d98b8b,stroke-width:1px;
+
+    class A introTone
+    class B,C,D loopTone
+    class E bridgeTone
+    class F battleTone</pre><p>영상은 전투가 시작되면 짧은 전환용 음악을 재생한 뒤 전투 테마로 넘어간다고 설명합니다. 즉 음악 자체에 <strong>상태 경계면</strong> 을 따로 만들어 두는 셈입니다. 이건 단순 작곡이 아니라 시스템 설계와 매우 가깝습니다. <a href="https://youtu.be/WkvlFYUlvns?t=50">https://youtu.be/WkvlFYUlvns?t=50</a></p>
+<h2 id="4-반복절-설계가-중요한-이유-언제든-넘어갈-수-있음이-플레이-감각을-만든다">4. 반복절 설계가 중요한 이유: &ldquo;언제든 넘어갈 수 있음&quot;이 플레이 감각을 만든다</h2>
+<p>영상 후반에는 자동 생성 자막 기준으로 &ldquo;옥토패스 트래블러&quot;로 들리는 예시가 나옵니다.<br>
+여기서는 보스 전투 준비 음악을 반복절 중심으로 설계해, 언제 전투 음악으로 전환되어도 자연스럽게 들리도록 했다고 설명합니다. 고유명은 자동 자막 기반 추정이지만, 핵심 메시지는 명확합니다. <a href="https://youtu.be/WkvlFYUlvns?t=54">https://youtu.be/WkvlFYUlvns?t=54</a></p>
+<p>이 설명이 중요한 이유는, 게임 음악이 단지 &ldquo;좋은 루프&quot;만 만들어서는 충분하지 않다는 점을 보여 주기 때문입니다.<br>
+게임 시스템은 플레이어 행동, 적 감지, 컷신 진입 같은 변수 때문에 정확히 언제 전환이 일어날지 예측하기 어렵습니다. 따라서 작곡 단계에서부터:</p>
+<ul>
+<li>어디를 반복 구간으로 둘지</li>
+<li>어느 마디에서 다른 상태로 넘어가도 어색하지 않은지</li>
+<li>전환 전용 브리지를 따로 둘지</li>
+<li>전환 순간 에너지를 올릴지, 눌러 줄지</li>
+</ul>
+<p>같은 판단이 함께 들어가야 합니다. 영상의 요지는 바로 이 설계 감각을 압축해서 보여 주는 데 있습니다. <a href="https://youtu.be/WkvlFYUlvns?t=57">https://youtu.be/WkvlFYUlvns?t=57</a></p>
+<h2 id="5-실전-적용-포인트-개발자는-상태-모델을-작곡가는-연결-가능성을-먼저-생각해야-한다">5. 실전 적용 포인트: 개발자는 상태 모델을, 작곡가는 연결 가능성을 먼저 생각해야 한다</h2>
+<p>이 쇼츠를 실무적으로 풀어 보면, 어댑티브 뮤직은 곡 제작보다 <strong>게임 상태 모델링</strong> 과 더 강하게 연결됩니다.</p>
+<p>개발자 입장에서는:</p>
+<ul>
+<li>어떤 이벤트가 음악을 바꾸는지</li>
+<li>전환이 즉시 일어나는지, 다음 구간에서 일어나는지</li>
+<li>레이어 on/off인지, 완전 테마 전환인지</li>
+<li>전투 종료 후 원래 테마로 어떻게 복귀하는지</li>
+</ul>
+<p>를 명확히 정의해야 합니다.</p>
+<p>작곡가 입장에서는:</p>
+<ul>
+<li>같은 테마 위에 어떤 레이어를 얹을 수 있는지</li>
+<li>반복절을 어디까지 허용할지</li>
+<li>랜덤 연결이 가능한 마디 단위를 어떻게 맞출지</li>
+<li>전환 브리지 없이도 연결되는지, 아니면 짧은 전용 구간이 필요한지</li>
+</ul>
+<p>를 설계해야 합니다.</p>
+<p>즉 영상 마지막의 &ldquo;게임 작곡가들은 게임에 어울리도록 다양한 비법으로 작곡한다&quot;는 메시지는, 멋진 화성 기법을 숨겼다는 뜻이 아니라 <strong>시스템과 연결되는 구조를 작곡 단계부터 설계한다</strong> 는 뜻으로 읽는 편이 더 정확합니다. <a href="https://youtu.be/WkvlFYUlvns?t=63">https://youtu.be/WkvlFYUlvns?t=63</a></p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>어댑티브 뮤직은 배경음악을 교체하는 단순 재생 방식이 아니라 게임 상태 변화에 반응하는 시스템이다.</li>
+<li>첫 번째 핵심 기법은 기본 테마를 유지한 채 악기 레이어를 추가해 긴장도와 밀도를 단계적으로 높이는 것이다.</li>
+<li>두 번째 핵심 기법은 반복절과 전환 구간을 설계해, 다른 멜로디나 전투 테마로 넘어가도 부자연스럽지 않게 만드는 것이다.</li>
+<li>이 구조의 핵심은 작곡 실력만이 아니라 상태 전이 설계, 루프 설계, 전환 시점 설계가 함께 들어간다는 점이다.</li>
+<li>자동 생성 자막 기반이라 일부 게임명 표기는 불확실할 수 있지만, 영상이 전달하는 시스템 원리는 충분히 명확하다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>이 짧은 쇼츠가 좋은 이유는 &ldquo;게임 음악이 멋지다&rdquo; 수준에서 끝나지 않고, 왜 그 음악이 <strong>끊기지 않는 것처럼 느껴지는지</strong> 를 구조적으로 보여 주기 때문입니다.<br>
+결국 어댑티브 뮤직은 곡을 많이 만드는 기술이 아니라, <strong>상태 변화와 음악 반응을 설계하는 기술</strong> 에 더 가깝습니다.<br>
+그래서 게임 음악을 볼 때는 멜로디 자체만이 아니라, 전환이 언제 어떻게 일어나도록 설계됐는지 함께 보는 것이 훨씬 흥미롭습니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 07월 22일 12시 45분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/engineering">Engineering</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/07/2026-07-22-claude-freecad-mcp-workflow/" rel="prev">
+        <span>Claude를 FreeCAD에 연결하면 왜 엔지니어처럼 보일까: 영상보다 실전적인 셋업 가이드까지 정리</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-어댑티브-뮤직은-배경음악-교체가-아니라-상태-기반-반응-시스템이다">1. 어댑티브 뮤직은 &ldquo;배경음악 교체&quot;가 아니라 상태 기반 반응 시스템이다</a></li>
+    <li><a href="#2-첫-번째-핵심-기법은-기본-테마-위에-악기를-층층이-쌓는-방식이다">2. 첫 번째 핵심 기법은 기본 테마 위에 악기를 층층이 쌓는 방식이다</a></li>
+    <li><a href="#3-두-번째-핵심-기법은-아예-다른-멜로디도-자연스럽게-이어붙이도록-미리-설계하는-것이다">3. 두 번째 핵심 기법은 아예 다른 멜로디도 자연스럽게 이어붙이도록 미리 설계하는 것이다</a></li>
+    <li><a href="#4-반복절-설계가-중요한-이유-언제든-넘어갈-수-있음이-플레이-감각을-만든다">4. 반복절 설계가 중요한 이유: &ldquo;언제든 넘어갈 수 있음&quot;이 플레이 감각을 만든다</a></li>
+    <li><a href="#5-실전-적용-포인트-개발자는-상태-모델을-작곡가는-연결-가능성을-먼저-생각해야-한다">5. 실전 적용 포인트: 개발자는 상태 모델을, 작곡가는 연결 가능성을 먼저 생각해야 한다</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+    
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
