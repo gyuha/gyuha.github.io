@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '멀티스텝 에이전트가 왜 자꾸 &#39;직선&#39;으로 끝날까: Graph Engineering의 진짜 출발점'" />
+  <title>멀티스텝 에이전트가 왜 자꾸 &#39;직선&#39;으로 끝날까: Graph Engineering의 진짜 출발점  | 신규하 블로그</title>
+  <meta property="og:title" content="멀티스텝 에이전트가 왜 자꾸 &#39;직선&#39;으로 끝날까: Graph Engineering의 진짜 출발점" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-07-26"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/07/2026-07-26-from-linear-agent-to-graph/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="agents" />
+  
+  <meta property="og:tags" content="claude" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/07/2026-07-26-from-linear-agent-to-graph/">
+          <h1>
+            멀티스텝 에이전트가 왜 자꾸 &#39;직선&#39;으로 끝날까: Graph Engineering의 진짜 출발점
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/07/2026-07-26-from-linear-agent-to-graph/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>이번 X Article이 던지는 첫 문장은 아주 강합니다.<br>
+<strong>대부분의 멀티스텝 에이전트는 결국 직선으로 끝난다.</strong><br>
+즉 1단계, 2단계, 3단계가 순서대로 줄을 서서 차례를 기다릴 뿐이고, 실제로는 절반쯤은 기다릴 필요가 없는 작업인데도 전부 한 컨텍스트 안에서 직렬 처리된다는 것입니다. 공개 미러에 복구된 문장도 정확히 그렇게 말합니다. <a href="https://x.com/i/status/2079165300625330317">https://x.com/i/status/2079165300625330317</a> <a href="https://tool.lu/en_US/article/7WJ/preview?locale=zh_CN">https://tool.lu/en_US/article/7WJ/preview?locale=zh_CN</a></p>
+<p>이 문제의식은 단순한 성능 불만이 아닙니다.<br>
+글은 이런 직선형 구조가 결국 <strong>한 head, 한 context, 한 번에 한 작업</strong> 으로 이어지고, 컨텍스트 윈도우가 차면 에이전트가 자기가 뭘 하던 중이었는지 잊게 만든다고 지적합니다. 이때 필요한 전환이 바로 &ldquo;prompt에서 graph로&rdquo;, 또는 더 정확히는 <strong>single-file line에서 agent fleet graph로</strong> 의 전환입니다. <a href="https://tool.lu/en_US/article/7WJ/preview?locale=zh_CN">https://tool.lu/en_US/article/7WJ/preview?locale=zh_CN</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://x.com/i/status/2079165300625330317">https://x.com/i/status/2079165300625330317</a></li>
+<li><a href="https://tool.lu/en_US/article/7WJ/preview?locale=zh_CN">https://tool.lu/en_US/article/7WJ/preview?locale=zh_CN</a></li>
+<li><a href="https://code.claude.com/docs/en/workflows">https://code.claude.com/docs/en/workflows</a></li>
+<li><a href="https://code.claude.com/docs/en/sub-agents">https://code.claude.com/docs/en/sub-agents</a></li>
+<li><a href="https://code.claude.com/docs/en/overview">https://code.claude.com/docs/en/overview</a></li>
+</ul>
+<h2 id="1-멀티스텝이라고-다-그래프는-아니다-많은-에이전트가-사실상-큐에-머문다">1. 멀티스텝이라고 다 그래프는 아니다: 많은 에이전트가 사실상 &lsquo;큐&rsquo;에 머문다</h2>
+<p>공개 미러에서 가장 중요한 문장은 이 부분입니다.</p>
+<ul>
+<li>대부분의 멀티스텝 agent는 결국 직선이 된다</li>
+<li>절반은 사실 기다릴 필요가 없었다</li>
+<li>route도, branch도, parallelize도 없이 queue만 있다</li>
+</ul>
+<p><a href="https://tool.lu/en_US/article/7WJ/preview?locale=zh_CN">https://tool.lu/en_US/article/7WJ/preview?locale=zh_CN</a></p>
+<p>이 문장이 중요한 이유는, 많은 사람이 &ldquo;스텝이 여러 개면 agentic하다&quot;고 생각하기 때문입니다.<br>
+하지만 단계 수가 많다는 것과 <strong>그래프 구조를 갖고 있다</strong> 는 것은 전혀 다른 말입니다.</p>
+<p>예를 들어 아래 구조는 멀티스텝이기는 하지만 그래프라고 부르기엔 빈약합니다.</p>
+<ol>
+<li>문서 읽기</li>
+<li>코드 읽기</li>
+<li>수정하기</li>
+<li>테스트하기</li>
+</ol>
+<p>모든 단계가 이전 단계가 끝날 때까지 기다리고, 독립 작업을 병렬로 나누지 않고, 실패 시 어느 단계로 돌아갈지 구조적으로 표현하지 않는다면, 이건 사실상 <strong>긴 직선형 파이프라인</strong> 입니다.</p>
+<pre class="mermaid">flowchart TD
+    A["Step 1"] --> B["Step 2"]
+    B --> C["Step 3"]
+    C --> D["Step 4"]
+
+    classDef lineTone fill:#c5dcef,color:#333,stroke:#6b9ac4,stroke-width:1px;
+    class A,B,C,D lineTone</pre><p>이런 구조의 문제는 명확합니다.</p>
+<ul>
+<li>독립적인 작업도 순차 처리됨</li>
+<li>메인 컨텍스트에 모든 중간 산출물이 몰림</li>
+<li>병렬화 여지가 사라짐</li>
+<li>컨텍스트 윈도우가 빨리 오염됨</li>
+</ul>
+<p>즉 &ldquo;멀티스텝&quot;은 출발점일 뿐, <strong>그래프 엔지니어링의 본질은 아니다</strong> 는 것입니다.</p>
+<h2 id="2-그래프-엔지니어링의-핵심-일의-모양을-드러내는-것">2. 그래프 엔지니어링의 핵심: 일의 &lsquo;모양&rsquo;을 드러내는 것</h2>
+<p>공개 미러는 아주 좋은 표현 하나를 남깁니다.<br>
+Prompt는 문장이고, loop는 사이클이며, harness는 agent가 서 있는 바닥이다. 하지만 <strong>일 자체의 모양(shape of the work)</strong> — 무엇이 무엇보다 먼저 실행되는지, 무엇이 동시에 실행될 수 있는지, 무엇이 다른 모든 것을 기다려야 하는지 — 그 모양이 바로 graph라고 합니다. 노드는 생각하고, 엣지는 결과를 전달한다고도 설명합니다. <a href="https://tool.lu/en_US/article/7WJ/preview?locale=zh_CN">https://tool.lu/en_US/article/7WJ/preview?locale=zh_CN</a></p>
+<p>이 관점이 굉장히 중요합니다.<br>
+그래프 엔지니어링은 &ldquo;에이전트를 많이 띄우는 방법&quot;이 아니라, <strong>작업의 위상(topology)</strong> 을 설계하는 방법이기 때문입니다.</p>
+<p>그래프 관점에서 보는 질문은 대략 이렇습니다.</p>
+<ul>
+<li>어떤 작업은 선행조건이 필요한가</li>
+<li>어떤 작업은 동시에 실행 가능한가</li>
+<li>어떤 결과는 합쳐야 하는가</li>
+<li>실패했을 때 어디로 되돌릴 것인가</li>
+</ul>
+<p>즉 그래프는 실행 순서의 문제가 아니라, <strong>의존성과 동시성, 합류와 재시도의 문제</strong> 입니다.</p>
+<pre class="mermaid">flowchart TD
+    A["입력 목표"] --> B["분해"]
+    B --> C["경로 A"]
+    B --> D["경로 B"]
+    C --> E["결과 통합"]
+    D --> E
+    E --> F["후속 단계"]
+
+    classDef nodeTone fill:#fde8c0,color:#333,stroke:#d4a85d,stroke-width:1px;
+    classDef resultTone fill:#c0ecd3,color:#333,stroke:#7dbb95,stroke-width:1px;
+
+    class A,B,C,D,F nodeTone
+    class E resultTone</pre><p>그래서 그래프 엔지니어링은 결국 &ldquo;더 좋은 프롬프트&quot;보다, <strong>더 정확한 분해와 연결 규칙</strong> 을 요구합니다.</p>
+<h2 id="3-왜-claude-code의-dynamic-workflows가-여기서-중요해지는가">3. 왜 Claude Code의 dynamic workflows가 여기서 중요해지는가</h2>
+<p>공개 미러가 특히 강조하는 부분은 이겁니다.<br>
+Claude Code는 이런 그래프를 직접 만들 수 있는 도구로서 <strong>dynamic workflows</strong> 를 제공하고, Claude가 plain JavaScript orchestration script를 작성한 뒤 coordinated fleet of subagents를 실행한다고 설명합니다. 그리고 중요한 포인트 하나를 덧붙입니다.<br>
+<strong>조정(coordination) 자체는 대화가 아니라 코드이기 때문에 모델 토큰을 소모하지 않는다</strong> 는 것입니다. <a href="https://tool.lu/en_US/article/7WJ/preview?locale=zh_CN">https://tool.lu/en_US/article/7WJ/preview?locale=zh_CN</a></p>
+<p>공식 Claude Code workflow 문서도 방향은 같습니다.<br>
+문서는 dynamic workflow를 many subagents를 script로 orchestration하는 방식이라고 설명하고, script 안에 loops, branching, intermediate results가 들어 있다고 말합니다. <a href="https://code.claude.com/docs/en/workflows">https://code.claude.com/docs/en/workflows</a></p>
+<p>즉 여기서 핵심은:</p>
+<ul>
+<li>에이전트에게 모든 걸 대화로 설명하지 않고</li>
+<li>작업 분배와 연결을 코드 수준에서 고정하고</li>
+<li>필요한 subagent를 적절히 호출하며</li>
+<li>중간 결과와 제어 흐름을 명시적으로 관리하는 것</li>
+</ul>
+<p>입니다.</p>
+<p>이건 단순 loop engineering과는 다른 층위의 변화입니다.<br>
+루프가 &ldquo;다시 해봐&quot;라면, dynamic workflow는 <strong>누가, 언제, 어떤 경로로, 무엇을 들고 다시 할지</strong> 를 설계합니다.</p>
+<h2 id="4-subagent는-왜-중요하냐-그래프의-노드가-단순-단계가-아니라-역할이-되기-때문이다">4. subagent는 왜 중요하냐: 그래프의 노드가 단순 단계가 아니라 &lsquo;역할&rsquo;이 되기 때문이다</h2>
+<p>Claude Code sub-agents 문서를 보면, subagent는 자체 context window, custom system prompt, tool access를 가질 수 있습니다. <a href="https://code.claude.com/docs/en/sub-agents">https://code.claude.com/docs/en/sub-agents</a></p>
+<p>이게 왜 중요한가 하면, 그래프의 노드를 단순 &ldquo;Step 1, Step 2&quot;가 아니라 <strong>역할 기반 작업자</strong> 로 바꿀 수 있기 때문입니다.</p>
+<p>예를 들어:</p>
+<ul>
+<li>조사 전용 agent</li>
+<li>코드 읽기 전용 agent</li>
+<li>구현 전용 agent</li>
+<li>검증 전용 agent</li>
+</ul>
+<p>처럼 나누면, 노드는 단순 순서 번호가 아니라 <strong>책임이 있는 작업 단위</strong> 가 됩니다.</p>
+<p>이렇게 되면 그래프 설계는 곧 조직 설계와 비슷해집니다.</p>
+<ul>
+<li>누가 무엇을 맡는가</li>
+<li>누구는 병렬로 움직일 수 있는가</li>
+<li>누구의 결과를 누가 통합하는가</li>
+</ul>
+<p>이런 질문을 명시할 수 있기 때문입니다.</p>
+<pre class="mermaid">flowchart TD
+    A["Main agent"] --> B["Research agent"]
+    A --> C["Implementation agent"]
+    A --> D["Validation agent"]
+    B --> E["Merge findings"]
+    C --> E
+    D --> E
+
+    classDef mainTone fill:#c5dcef,color:#333,stroke:#6b9ac4,stroke-width:1px;
+    classDef subTone fill:#fde8c0,color:#333,stroke:#d4a85d,stroke-width:1px;
+    classDef mergeTone fill:#c0ecd3,color:#333,stroke:#7dbb95,stroke-width:1px;
+
+    class A mainTone
+    class B,C,D subTone
+    class E mergeTone</pre><p>그래프 엔지니어링이란 결국 노드 수를 늘리는 게 아니라, <strong>노드의 의미를 설계하는 것</strong> 입니다.</p>
+<h2 id="5-왜-single-file-line을-graph로-바꾼다는-표현이-중요한가">5. 왜 &lsquo;single-file line을 graph로 바꾼다&rsquo;는 표현이 중요한가</h2>
+<p>공개 미러는 이 14단계 로드맵이 <strong>single-file line을 graph로 바꾸는 과정</strong> 이라고 설명합니다. 그것도 여러 agent로 fan-out하고, 자기 결과를 검증하고, 단일 agent가 한 번에 들고 있기 어려운 결과로 다시 수렴하는 graph라고 합니다. <a href="https://tool.lu/en_US/article/7WJ/preview?locale=zh_CN">https://tool.lu/en_US/article/7WJ/preview?locale=zh_CN</a></p>
+<p>이 표현은 생각보다 중요합니다.<br>
+왜냐하면 많은 agent 설계가 실패하는 이유가, 모델을 더 큰 context로 밀어넣기만 하고 <strong>문제를 구조적으로 쪼개지 않기 때문</strong> 입니다.</p>
+<p>그래프가 필요한 이유는:</p>
+<ul>
+<li>하나의 context window가 모든 것을 안정적으로 들고 있기 어렵고</li>
+<li>하나의 agent가 모든 역할을 잘 수행하기 어렵고</li>
+<li>하나의 순차 흐름이 병렬 가능성을 다 죽여 버리기 때문입니다</li>
+</ul>
+<p>즉 graph는 성능을 더 높이는 장식이 아니라, <strong>context와 역할의 한계를 분산시키는 설계 방식</strong> 입니다.</p>
+<h2 id="6-그래서-이-글의-핵심은-14단계-자체보다-그래프가-필요한-이유에-있다">6. 그래서 이 글의 핵심은 14단계 자체보다 &lsquo;그래프가 필요한 이유&rsquo;에 있다</h2>
+<p>본문 전체는 X 로그인 제약 때문에 직접 읽히지 않지만, 공개 미러로 보이는 요약만으로도 핵심 논지는 충분히 잡힙니다.</p>
+<ul>
+<li>직선형 멀티스텝은 금방 병목이 생긴다</li>
+<li>실제로는 병렬 가능한 작업이 많다</li>
+<li>에이전트 설계는 prompt를 잘 쓰는 문제를 넘어선다</li>
+<li>orchestration을 코드로 고정하면 더 큰 구조를 설계할 수 있다</li>
+<li>subagent는 그래프의 실제 노드가 된다</li>
+</ul>
+<p>즉 이 글이 말하려는 것은 &ldquo;graph engineering이 요즘 유행이다&quot;가 아닙니다.<br>
+더 정확히는 <strong>에이전트 시스템이 커질수록, 직선형 대화 흐름을 그래프형 실행 구조로 바꾸지 않으면 한계가 빨리 온다</strong> 는 것입니다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>이 X Article은 대부분의 멀티스텝 에이전트가 사실상 직선형 큐에 머문다는 문제를 제기한다.</li>
+<li>그래프 엔지니어링의 핵심은 일을 더 많이 시키는 것이 아니라, 일의 모양과 의존성, 병렬성, 합류 구조를 설계하는 데 있다.</li>
+<li>공개 미러에 따르면 Claude Code의 dynamic workflows는 orchestration을 plain JavaScript script로 작성하고 coordinated subagents를 실행하는 구조를 제공한다.</li>
+<li>subagent는 그래프의 노드를 단순 단계가 아니라 역할 기반 작업 단위로 바꾸는 데 핵심적이다.</li>
+<li>따라서 그래프 엔지니어링은 프롬프트 확장이 아니라, context와 역할, 흐름 구조를 다시 설계하는 일에 가깝다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>멀티스텝 에이전트를 만들었다고 해서 자동으로 graph가 되는 것은 아닙니다.<br>
+많은 경우 그것은 여전히 길어진 직선일 뿐입니다.<br>
+이 X Article이 던지는 가장 중요한 메시지는 바로 여기 있습니다: <strong>단계를 늘리는 것과 구조를 바꾸는 것은 다르다</strong> 는 점입니다.</p>
+<p>그래서 agent 시스템이 커질수록 중요한 것은 prompt를 더 길게 쓰는 기술보다, <strong>무엇을 동시에 돌릴 수 있는지, 누가 무엇을 맡는지, 언제 결과를 합칠지</strong> 를 설계하는 능력입니다.<br>
+그 순간부터 에이전트 설계는 대화 기술이 아니라, 진짜 워크플로 아키텍처 문제가 됩니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 07월 26일 12시 05분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/engineering">Engineering</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/07/2026-07-26-five-layers-of-ai-engineering/" rel="prev">
+        <span>Prompt에서 Graph까지: AI 엔지니어링을 5개 층으로 보면 왜 덜 헷갈릴까</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/07/2026-07-26-when-to-use-graph-engineering/" rel="next">
+        <span>Graph Engineering은 언제 써야 하고 언제 쓰지 말아야 할까</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-멀티스텝이라고-다-그래프는-아니다-많은-에이전트가-사실상-큐에-머문다">1. 멀티스텝이라고 다 그래프는 아니다: 많은 에이전트가 사실상 &lsquo;큐&rsquo;에 머문다</a></li>
+    <li><a href="#2-그래프-엔지니어링의-핵심-일의-모양을-드러내는-것">2. 그래프 엔지니어링의 핵심: 일의 &lsquo;모양&rsquo;을 드러내는 것</a></li>
+    <li><a href="#3-왜-claude-code의-dynamic-workflows가-여기서-중요해지는가">3. 왜 Claude Code의 dynamic workflows가 여기서 중요해지는가</a></li>
+    <li><a href="#4-subagent는-왜-중요하냐-그래프의-노드가-단순-단계가-아니라-역할이-되기-때문이다">4. subagent는 왜 중요하냐: 그래프의 노드가 단순 단계가 아니라 &lsquo;역할&rsquo;이 되기 때문이다</a></li>
+    <li><a href="#5-왜-single-file-line을-graph로-바꾼다는-표현이-중요한가">5. 왜 &lsquo;single-file line을 graph로 바꾼다&rsquo;는 표현이 중요한가</a></li>
+    <li><a href="#6-그래서-이-글의-핵심은-14단계-자체보다-그래프가-필요한-이유에-있다">6. 그래서 이 글의 핵심은 14단계 자체보다 &lsquo;그래프가 필요한 이유&rsquo;에 있다</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+    <a href="/tags/claude/" class="badge badge-secondary">Claude</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

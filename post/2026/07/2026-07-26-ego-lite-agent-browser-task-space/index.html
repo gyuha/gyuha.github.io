@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'ego lite는 왜 Playwright 대체제가 아니라 &#39;에이전트용 브라우저&#39; 인가'" />
+  <title>ego lite는 왜 Playwright 대체제가 아니라 &#39;에이전트용 브라우저&#39; 인가  | 신규하 블로그</title>
+  <meta property="og:title" content="ego lite는 왜 Playwright 대체제가 아니라 &#39;에이전트용 브라우저&#39; 인가" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-07-26"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/07/2026-07-26-ego-lite-agent-browser-task-space/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="agents" />
+  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="automation" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/07/2026-07-26-ego-lite-agent-browser-task-space/">
+          <h1>
+            ego lite는 왜 Playwright 대체제가 아니라 &#39;에이전트용 브라우저&#39; 인가
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/07/2026-07-26-ego-lite-agent-browser-task-space/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>이 쇼츠가 던지는 메시지는 단순합니다.<br>
+<strong>웹 자동화의 병목은 &lsquo;에이전트가 브라우저를 조작하느냐&rsquo;가 아니라, &lsquo;누구의 브라우저에서 어떤 권한으로 일하느냐&rsquo;에 있다</strong> 는 것입니다. 영상은 ego lite를 Playwright 같은 자동화 라이브러리의 대체재라기보다, 사람과 에이전트가 같은 로그인 상태를 활용하면서도 서로 탭을 빼앗지 않도록 설계된 <strong>에이전트용 브라우저</strong> 로 소개합니다. <a href="https://youtu.be/RfIZGDYoDEw?t=0">https://youtu.be/RfIZGDYoDEw?t=0</a> <a href="https://github.com/citrolabs/ego-lite">https://github.com/citrolabs/ego-lite</a></p>
+<p>특히 영상에서 반복해서 강조하는 포인트는 세 가지입니다.<br>
+첫째, 기존 자동화 프레임워크는 별도 브라우저를 띄워야 해서 로그인 상태가 자연스럽게 이어지지 않습니다.<br>
+둘째, ego lite는 에이전트마다 격리된 <strong>Task Space</strong> 를 주되 로그인 상태는 상속합니다.<br>
+셋째, 에이전트가 브라우저를 독점하지 못하도록 <strong>hard stop</strong> 규칙과 코드 기반 실행 모델을 함께 둡니다. <a href="https://youtu.be/RfIZGDYoDEw?t=10">https://youtu.be/RfIZGDYoDEw?t=10</a> <a href="https://youtu.be/RfIZGDYoDEw?t=22">https://youtu.be/RfIZGDYoDEw?t=22</a> <a href="https://github.com/citrolabs/ego-lite">https://github.com/citrolabs/ego-lite</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>원본 영상: <a href="https://youtube.com/shorts/RfIZGDYoDEw?si=akrbT8cnfN2c3DI4">https://youtube.com/shorts/RfIZGDYoDEw?si=akrbT8cnfN2c3DI4</a></li>
+<li>추가 검증 자료:
+<ul>
+<li><a href="https://github.com/citrolabs/ego-lite">https://github.com/citrolabs/ego-lite</a></li>
+<li><a href="https://lite.ego.app/ko">https://lite.ego.app/ko</a></li>
+<li><a href="https://qjc.app/blog/ego-lite-ai-agent-browser">https://qjc.app/blog/ego-lite-ai-agent-browser</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="1-이-영상이-짚는-문제-브라우저-자동화는-왜-늘-같은-곳에서-막히는가">1. 이 영상이 짚는 문제: 브라우저 자동화는 왜 늘 같은 곳에서 막히는가</h2>
+<p>영상은 시작부터 문제를 아주 짧게 요약합니다.<br>
+&ldquo;AI 에이전트에게 브라우저를 맡기면 늘 같은 데서 막힌다&quot;는 것입니다. 자막 기준으로는 <strong>탭을 빼앗기거나, 로그인이 자연스럽게 안 넘어가는 문제</strong> 가 핵심 병목으로 제시됩니다. <a href="https://youtu.be/RfIZGDYoDEw?t=0">https://youtu.be/RfIZGDYoDEw?t=0</a></p>
+<p>이 지적은 꽤 정확합니다.<br>
+Playwright, browser-use, agent-browser 같은 도구는 강력하지만 기본적으로는 <strong>브라우저를 조종하는 프레임워크</strong> 입니다. 즉, 에이전트가 붙어서 조작할 대상을 따로 띄워야 합니다. 이 구조에서는:</p>
+<ul>
+<li>사용자가 평소 쓰는 브라우저와</li>
+<li>에이전트가 작업하는 브라우저가</li>
+<li>물리적으로 혹은 논리적으로 분리되기 쉽고</li>
+<li>로그인 세션, 쿠키, 탭 상태, 확장 환경이 깔끔하게 이어지지 않습니다.</li>
+</ul>
+<p>공식 저장소도 같은 문제를 정면으로 설명합니다. 기존 프레임워크는 &ldquo;별도 브라우저를 구동해야 하고, 로그인은 깔끔하게 이어지지 않으며, 사람과 에이전트가 같은 탭을 두고 싸우게 된다&quot;는 식으로 요약합니다. <a href="https://github.com/citrolabs/ego-lite">https://github.com/citrolabs/ego-lite</a></p>
+<p>공식 한국어 사이트도 같은 구도를 더 직설적으로 설명합니다. ego lite는 &ldquo;로그인된 브라우저 상태를 공유하며 당신을 방해하지 않으면서 Codex나 Claude Code 같은 AI 에이전트와 함께 쓰는 브라우저&quot;라고 자신을 소개합니다. 즉 설명의 출발점 자체가 자동화 API가 아니라 <strong>로그인된 일상 브라우저와 에이전트의 공존</strong> 입니다. <a href="https://lite.ego.app/ko">https://lite.ego.app/ko</a></p>
+<pre class="mermaid">flowchart TD
+    A["기존 자동화 프레임워크"] --> B["별도 브라우저 실행"]
+    B --> C["로그인 세션 불연속"]
+    B --> D["같은 탭/창 경합"]
+    C --> E["실서비스 작업에서 자주 막힘"]
+    D --> E
+
+    classDef toolTone fill:#c5dcef,color:#333,stroke:#6b9ac4,stroke-width:1px;
+    classDef issueTone fill:#ffc8c4,color:#333,stroke:#c97f7f,stroke-width:1px;
+    classDef resultTone fill:#fde8c0,color:#333,stroke:#d4a85d,stroke-width:1px;
+
+    class A,B toolTone
+    class C,D issueTone
+    class E resultTone</pre><p>중요한 점은, 이 문제는 단순히 &ldquo;자동화 도구가 약해서&rdquo; 생기는 게 아니라는 것입니다.<br>
+문제의 본질은 <strong>에이전트가 작업할 공간과 사용자가 일상적으로 쓰는 브라우저 공간이 서로 충돌하는 구조</strong> 에 있습니다.</p>
+<h2 id="2-ego-lite의-핵심-아이디어-task-space는-분리하고-로그인-상태는-상속한다">2. ego lite의 핵심 아이디어: Task Space는 분리하고 로그인 상태는 상속한다</h2>
+<p>영상이 ego lite를 설명하는 첫 번째 핵심은 이것입니다.<br>
+<strong>&ldquo;라이브러리가 아니라 브라우저 자체를 새로 만들었다.&rdquo;</strong> <a href="https://youtu.be/RfIZGDYoDEw?t=6">https://youtu.be/RfIZGDYoDEw?t=6</a></p>
+<p>공식 README도 ego lite를 &ldquo;you and your AI agents work in parallel&rdquo; 하는 브라우저라고 정의합니다. 즉, 브라우저 자동화 API가 먼저가 아니라 <strong>사람과 에이전트가 함께 쓰는 브라우저 환경</strong> 이 먼저입니다. <a href="https://github.com/citrolabs/ego-lite">https://github.com/citrolabs/ego-lite</a></p>
+<p>여기서 중심 개념이 <strong>Space</strong> 또는 영상 표현을 그대로 쓰면 <strong>Task Space</strong> 입니다.<br>
+영상 자막은 &ldquo;에이전트마다 격리된 공간을 하나씩 준다. 그런데 로그인 상태는 내 것을 그대로 물려받는다&quot;라고 설명합니다. <a href="https://youtu.be/RfIZGDYoDEw?t=26">https://youtu.be/RfIZGDYoDEw?t=26</a></p>
+<p>이 설계가 의미하는 바는 분명합니다.</p>
+<ul>
+<li>에이전트는 내 메인 탭을 직접 점유하지 않습니다.</li>
+<li>각 에이전트는 자기 작업 공간에서 일합니다.</li>
+<li>하지만 그 공간은 로그인 상태를 상속받아 인증이 필요한 서비스도 다룰 수 있습니다.</li>
+<li>그래서 사용자는 계속 자기 탭을 쓰고, 에이전트는 뒤에서 별도 작업을 수행합니다.</li>
+</ul>
+<p>QJC의 보조 설명 글도 같은 구조를 더 자세히 적고 있습니다. 첫 실행 시 Chrome 데이터 마이그레이션에 동의하면 로그인, 쿠키, 확장, 북마크를 이어받는 식입니다. 다만 이 대목은 <strong>보조 설명 자료 기준</strong> 이므로, 실제 운영 정책은 설치 시점 안내와 공식 문서를 다시 확인하는 것이 안전합니다. <a href="https://qjc.app/blog/ego-lite-ai-agent-browser">https://qjc.app/blog/ego-lite-ai-agent-browser</a></p>
+<p>공식 한국어 사이트의 FAQ는 이 부분을 더 넓게 적습니다. 한 번의 클릭으로 Chrome의 탭, 탭 그룹, 북마크, 저장된 비밀번호, 확장 프로그램, 쿠키, 로그인 세션, 브라우저 프로필까지 가져올 수 있다고 설명합니다. 이 설명이 그대로 동작한다면 ego lite의 핵심 가치는 단순 로그인 공유를 넘어, <strong>기존 Chrome 생활권 전체를 에이전트 친화적 브라우저로 이행시키는 것</strong> 에 있습니다. <a href="https://lite.ego.app/ko">https://lite.ego.app/ko</a></p>
+<pre class="mermaid">flowchart TD
+    A["사용자 브라우저 상태"] --> B["로그인 / 쿠키 / 북마크"]
+    B --> C["ego lite"]
+    C --> D["사용자 탭"]
+    C --> E["Agent Space 1"]
+    C --> F["Agent Space 2"]
+    C --> G["Agent Space N"]
+
+    classDef baseTone fill:#c5dcef,color:#333,stroke:#6b9ac4,stroke-width:1px;
+    classDef agentTone fill:#c0ecd3,color:#333,stroke:#75b798,stroke-width:1px;
+    classDef userTone fill:#fde8c0,color:#333,stroke:#d4a85d,stroke-width:1px;
+
+    class A,B,C baseTone
+    class D userTone
+    class E,F,G agentTone</pre><p>즉 ego lite가 해결하려는 문제는 &ldquo;브라우저를 더 잘 조작하자&quot;가 아닙니다.<br>
+오히려 <strong>브라우저를 공유 가능한 작업 환경으로 재설계하자</strong> 에 가깝습니다.</p>
+<h2 id="3-왜-playwright의-대체재가-아니라-다른-층의-도구인가">3. 왜 Playwright의 대체재가 아니라 다른 층의 도구인가</h2>
+<p>영상에서 &ldquo;플레이라이트 쓰면 되는 거 아니에요?&ldquo;라는 질문에 바로 &ldquo;아니요&quot;라고 답하는 부분이 핵심입니다. 이유는 Playwright가 나빠서가 아니라, <strong>문제를 푸는 층이 다르기 때문</strong> 입니다. <a href="https://youtu.be/RfIZGDYoDEw?t=10">https://youtu.be/RfIZGDYoDEw?t=10</a></p>
+<p>Playwright는:</p>
+<ul>
+<li>브라우저를 제어하기 위한 자동화 라이브러리이고</li>
+<li>테스트, 스크래핑, E2E 자동화 같은 작업에 강하며</li>
+<li>에이전트가 호출할 수 있는 실행 수단입니다.</li>
+</ul>
+<p>반면 ego lite는:</p>
+<ul>
+<li>브라우저 앱 자체를 제공하고</li>
+<li>사용자의 실제 로그인 상태를 물려받으며</li>
+<li>에이전트별 분리된 작업 공간을 만들고</li>
+<li>외부 에이전트가 <code>ego-browser</code> 스킬을 통해 그 공간을 조작하게 합니다.</li>
+</ul>
+<p>공식 README도 <code>ego-browser</code>를 연결층으로 설명합니다. Claude Code, Codex, Cursor 같은 외부 에이전트가 페이지 내부 JavaScript 도구 집합을 호출하고, 여러 단계를 한 번의 코드 실행으로 묶는 방식입니다. <a href="https://github.com/citrolabs/ego-lite">https://github.com/citrolabs/ego-lite</a></p>
+<p>공식 사이트는 이 연결층을 더 제품적으로 설명합니다. <code>ego-browser</code>는 &ldquo;한 번만 설치하면 Mac에 있는 모든 에이전트가 바로 제어할 수 있는 스킬&quot;이며, Claude Code, Codex, Cursor, Kiro, Hermes Agent, OpenClaw 등 코드 작성형 에이전트가 붙을 수 있다고 적습니다. 이 설명이 맞다면 ego lite의 강점은 특정 벤더 전용 브라우저가 아니라 <strong>외부 에이전트를 수용하는 범용 브라우저 런타임</strong> 이라는 데 있습니다. <a href="https://lite.ego.app/ko">https://lite.ego.app/ko</a></p>
+<pre class="mermaid">flowchart TD
+    A["Playwright"] --> B["브라우저 제어 라이브러리"]
+    A --> C["테스트 / 자동화 실행 계층"]
+
+    D["ego lite"] --> E["브라우저 자체"]
+    D --> F["로그인 상속"]
+    D --> G["에이전트별 작업 공간"]
+    D --> H["ego-browser 연결층"]
+
+    classDef libTone fill:#c5dcef,color:#333,stroke:#6b9ac4,stroke-width:1px;
+    classDef browserTone fill:#c0ecd3,color:#333,stroke:#75b798,stroke-width:1px;
+
+    class A,B,C libTone
+    class D,E,F,G,H browserTone</pre><p>그래서 더 정확한 비교는 &ldquo;ego lite vs Playwright&quot;가 아니라:</p>
+<ul>
+<li><strong>실브라우저 기반 에이전트 작업 환경</strong>
+vs</li>
+<li><strong>브라우저 자동화 프레임워크</strong></li>
+</ul>
+<p>입니다.</p>
+<p>이 차이를 이해하지 못하면 ego lite를 단순 브라우저 자동화 툴처럼 보게 되지만, 실제 포지셔닝은 <strong>에이전트 실행 환경 + 브라우저 + 연결층</strong> 에 가깝습니다.</p>
+<h2 id="4-hard-stop-규칙이-중요한-이유-사람-우선-제어권을-포기하지-않는-설계">4. hard stop 규칙이 중요한 이유: 사람 우선 제어권을 포기하지 않는 설계</h2>
+<p>영상에서 개인적으로 가장 중요한 대목은 이 부분입니다.<br>
+<strong>&ldquo;사람이 잡고 있으면 에이전트 조작이 실패한다. 우회하지 말고 멈추라.&rdquo;</strong> <a href="https://youtu.be/RfIZGDYoDEw?t=37">https://youtu.be/RfIZGDYoDEw?t=37</a></p>
+<p>이건 단순 UX 디테일이 아닙니다.<br>
+에이전트 브라우저가 실서비스 계정과 로그인 상태를 상속받는 순간, 가장 위험한 시나리오는:</p>
+<ul>
+<li>사람이 보고 있는 화면을 에이전트가 덮어쓰거나</li>
+<li>예기치 않은 클릭/입력으로 사용자 의도를 침범하거나</li>
+<li>자동화가 인간의 개입을 우회해 계속 진행하는 경우</li>
+</ul>
+<p>입니다.</p>
+<p>QJC의 보조 글은 이 부분을 <strong>소유권 상태 전환</strong> 으로 설명합니다. 에이전트 소유, 사용자 위임, 사용자 소유가 나뉘고, 사람이 공간을 잡고 있는 동안에는 에이전트 조작이 실패해야 하며 이를 우회하지 않는다는 것입니다. <a href="https://qjc.app/blog/ego-lite-ai-agent-browser">https://qjc.app/blog/ego-lite-ai-agent-browser</a></p>
+<pre class="mermaid">flowchart TD
+    A["에이전트 작업 중"] --> B{"사람 개입 필요?"}
+    B -->|예| C["사용자에게 제어권 위임"]
+    B -->|아니오| D["에이전트 계속 실행"]
+    C --> E{"사용자가 공간 점유 중?"}
+    E -->|예| F["에이전트 조작 실패 = Hard Stop"]
+    E -->|아니오| G["사용자 확인 후 재개"]
+    G --> D
+
+    classDef processTone fill:#c5dcef,color:#333,stroke:#6b9ac4,stroke-width:1px;
+    classDef decisionTone fill:#fde8c0,color:#333,stroke:#d4a85d,stroke-width:1px;
+    classDef stopTone fill:#ffc8c4,color:#333,stroke:#c97f7f,stroke-width:1px;
+    classDef okTone fill:#c0ecd3,color:#333,stroke:#75b798,stroke-width:1px;
+
+    class A,C,D,G processTone
+    class B,E decisionTone
+    class F stopTone
+    class G,D okTone</pre><p>이 설계는 에이전트에게 더 많은 권한을 주는 대신, <strong>사람 우선 제어권을 프로토콜 차원에서 다시 명시한다</strong> 는 점에서 중요합니다.<br>
+에이전트 시스템이 성숙할수록, &ldquo;얼마나 많이 자동화하느냐&rdquo; 못지않게 <strong>어디서 반드시 멈춰야 하느냐</strong> 가 중요해지기 때문입니다.</p>
+<h2 id="5-코드-기반-실행-모델은-왜-속도와-토큰을-줄인다고-주장하는가">5. 코드 기반 실행 모델은 왜 속도와 토큰을 줄인다고 주장하는가</h2>
+<p>영상 마지막 부분은 성능 모델을 짧게 설명합니다.<br>
+명령 하나를 실행하고 결과를 보고 다시 다음 명령을 보내는 왕복을 줄이고, <strong>여러 단계를 한 번의 JavaScript 코드 덩어리로 실행한다</strong> 는 것입니다. 자막에는 &ldquo;스냅샷, 클릭, 입력, 대기 함수가 미리 올라와 있다&quot;는 식으로 나옵니다. <a href="https://youtu.be/RfIZGDYoDEw?t=47">https://youtu.be/RfIZGDYoDEw?t=47</a></p>
+<p>공식 README도 같은 논리를 사용합니다. CLI 기반으로 &ldquo;명령 두 개 호출 → 결과 보기 → 다시 호출&quot;을 반복하기보다, 에이전트가 코드를 작성해 멀티스텝 작업을 한 번에 구성하도록 하는 것이 더 적은 tool call과 더 적은 토큰으로 이어진다는 주장입니다. <a href="https://github.com/citrolabs/ego-lite">https://github.com/citrolabs/ego-lite</a></p>
+<p>공식 한국어 사이트는 이 모델을 두 가지 추가 근거로 보강합니다. 하나는 <strong>몇 줄의 JavaScript로 페이지 안에서 여러 동작을 한 번에 실행한다</strong> 는 것이고, 다른 하나는 <strong>시맨틱 Snapshot을 일반 Chrome 위 JavaScript shim이 아니라 자체 Chromium 엔진 내부에서 직접 생성한다</strong> 는 주장입니다. 후자의 설명이 사실이라면, ego lite는 단순 도구 래퍼가 아니라 브라우저 엔진 계층까지 손대서 에이전트가 읽는 입력 품질을 높이려는 접근이라고 볼 수 있습니다. <a href="https://lite.ego.app/ko">https://lite.ego.app/ko</a></p>
+<pre class="mermaid">flowchart TD
+    A["기존 CLI 왕복"] --> B["명령 실행"]
+    B --> C["결과 확인"]
+    C --> D["다음 명령 결정"]
+    D --> E["반복"]
+
+    F["ego lite 코드 실행"] --> G["JS 함수 조합"]
+    G --> H["멀티스텝 한 번에 실행"]
+    H --> I["왕복 감소"]
+
+    classDef oldTone fill:#ffc8c4,color:#333,stroke:#c97f7f,stroke-width:1px;
+    classDef newTone fill:#c0ecd3,color:#333,stroke:#75b798,stroke-width:1px;
+
+    class A,B,C,D,E oldTone
+    class F,G,H,I newTone</pre><p>이 주장은 구조적으로는 충분히 설득력 있습니다.<br>
+왜냐하면 LLM 에이전트의 브라우저 작업 비용은 실제 클릭보다도:</p>
+<ul>
+<li>현재 상태를 읽고</li>
+<li>다음 행동을 결정하고</li>
+<li>다시 결과를 읽는</li>
+</ul>
+<p><strong>상호작용 왕복 횟수</strong> 에 크게 좌우되기 때문입니다.</p>
+<p>다만 성능 수치는 출처별로 조금 다르게 표현됩니다. GitHub README는 <strong>최대 2.5배</strong>, 공식 한국어 사이트는 <strong>agent-browser보다 최대 3.45배</strong> 라고 적고 있습니다. 둘 다 제작자 측 측정치이므로, 방향성은 참고할 수 있지만 외부 재현 전에는 절대값으로 받아들이기보다 <strong>자체 벤치마크 주장</strong> 으로 해석하는 편이 안전합니다. <a href="https://github.com/citrolabs/ego-lite">https://github.com/citrolabs/ego-lite</a> <a href="https://lite.ego.app/ko">https://lite.ego.app/ko</a> <a href="https://qjc.app/blog/ego-lite-ai-agent-browser">https://qjc.app/blog/ego-lite-ai-agent-browser</a></p>
+<h2 id="6-지금-당장-도입-판단을-할-때-봐야-할-현실적인-제약">6. 지금 당장 도입 판단을 할 때 봐야 할 현실적인 제약</h2>
+<p>영상은 주로 장점을 설명하지만, 실제 도입 판단에서는 제약도 같이 봐야 합니다.</p>
+<p>현재 공개 자료 기준으로 확인되는 현실 조건은 다음과 같습니다.</p>
+<ul>
+<li>macOS 중심 배포이며, Windows와 Linux는 로드맵 단계입니다. <a href="https://github.com/citrolabs/ego-lite">https://github.com/citrolabs/ego-lite</a></li>
+<li>저장소는 MIT 라이선스지만, README는 브라우저 본체가 별도 무료 다운로드라고 설명합니다. 즉 저장소 전체와 실행 앱의 공개 범위는 구분해서 이해해야 합니다. <a href="https://github.com/citrolabs/ego-lite">https://github.com/citrolabs/ego-lite</a></li>
+<li>공식 한국어 사이트는 브라우징 데이터가 업로드되지 않으며 방문 기록, 쿠키, 로그인 세션, 읽은 내용이 내 컴퓨터에만 남는다고 설명합니다. 로그인 상속형 제품인 만큼, 이 <strong>로컬 저장 전제</strong> 는 도입 판단에서 중요한 체크포인트입니다. <a href="https://lite.ego.app/ko">https://lite.ego.app/ko</a></li>
+<li>로그인 상태를 상속하는 구조는 강력하지만, 그만큼 보안·권한 모델 검토가 더 중요합니다. QJC 글은 2026년 7월 26일 기준 미해결 보안 이슈를 별도로 짚고 있습니다. 이 부분은 <strong>보조 설명 자료 기준</strong> 이며, 실제 최신 상태는 도입 시점에 저장소 이슈와 릴리스 노트를 다시 확인해야 합니다. <a href="https://qjc.app/blog/ego-lite-ai-agent-browser">https://qjc.app/blog/ego-lite-ai-agent-browser</a></li>
+</ul>
+<p>즉 ego lite는 &ldquo;브라우저 자동화가 더 쉬워진다&rdquo; 수준의 도구라기보다,<br>
+<strong>로그인된 실제 브라우저를 에이전트 실행 환경으로 바꾸는 실험적인 운영 모델</strong> 로 보는 편이 맞습니다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>이 영상은 웹 자동화의 진짜 병목을 브라우저 제어 자체보다 <strong>탭 경합과 로그인 상태 단절</strong> 에서 찾는다.</li>
+<li>ego lite의 핵심은 에이전트마다 격리된 <strong>Task Space</strong> 를 주면서도 사용자 로그인 상태를 상속하게 하는 구조다.</li>
+<li>그래서 ego lite는 Playwright 같은 라이브러리의 단순 대체재가 아니라, <strong>브라우저 자체 + 에이전트 연결층</strong> 에 가까운 제품이다.</li>
+<li>hard stop 규칙은 사람이 공간을 잡고 있는 동안 에이전트가 우회 실행하지 못하게 해, 인간 우선 제어권을 보존한다.</li>
+<li>코드 기반 멀티스텝 실행은 왕복 호출을 줄여 속도와 토큰 사용량을 낮추려는 설계이며, 수치형 성능 주장은 제작자 벤치마크로 받아들이는 것이 안전하다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>ego lite를 이해할 때 가장 중요한 건 &ldquo;브라우저 자동화 툴&quot;이라는 프레임을 잠시 내려놓는 것입니다.<br>
+이 제품이 풀려는 문제는 자동화 API가 아니라, <strong>사람과 에이전트가 로그인된 브라우저를 어떻게 안전하게 공존하며 쓸 것인가</strong> 입니다.</p>
+<p>그래서 이 영상의 요지는 &ldquo;Playwright보다 더 센 도구가 나왔다&quot;가 아닙니다.<br>
+오히려 <strong>브라우저를 에이전트 작업 공간으로 다시 설계하는 흐름이 시작됐다</strong> 는 신호에 가깝습니다.<br>
+실무적으로는 아직 제약이 있지만, 에이전트가 실서비스 웹 작업을 다루는 시대에는 꽤 중요한 방향 전환으로 볼 만합니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 07월 26일 15시 20분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/07/2026-07-26-new-kind-of-ai-engineer/" rel="prev">
+        <span>새로운 엔지니어는 프롬프트를 쓰지 않는다: AI가 &#39;어떻게 일하는지&#39;를 설계한다</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/07/2026-07-27-trim-claudemd-context-engineering/" rel="next">
+        <span>Anthropic은 왜 이제 CLAUDE.md를 줄이라고 말하나</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-이-영상이-짚는-문제-브라우저-자동화는-왜-늘-같은-곳에서-막히는가">1. 이 영상이 짚는 문제: 브라우저 자동화는 왜 늘 같은 곳에서 막히는가</a></li>
+    <li><a href="#2-ego-lite의-핵심-아이디어-task-space는-분리하고-로그인-상태는-상속한다">2. ego lite의 핵심 아이디어: Task Space는 분리하고 로그인 상태는 상속한다</a></li>
+    <li><a href="#3-왜-playwright의-대체재가-아니라-다른-층의-도구인가">3. 왜 Playwright의 대체재가 아니라 다른 층의 도구인가</a></li>
+    <li><a href="#4-hard-stop-규칙이-중요한-이유-사람-우선-제어권을-포기하지-않는-설계">4. hard stop 규칙이 중요한 이유: 사람 우선 제어권을 포기하지 않는 설계</a></li>
+    <li><a href="#5-코드-기반-실행-모델은-왜-속도와-토큰을-줄인다고-주장하는가">5. 코드 기반 실행 모델은 왜 속도와 토큰을 줄인다고 주장하는가</a></li>
+    <li><a href="#6-지금-당장-도입-판단을-할-때-봐야-할-현실적인-제약">6. 지금 당장 도입 판단을 할 때 봐야 할 현실적인 제약</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude Code</a>
+    <a href="/tags/automation/" class="badge badge-secondary">Automation</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
