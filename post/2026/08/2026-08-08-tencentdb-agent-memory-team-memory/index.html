@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'TencentDB Agent Memory: 텐센트가 공개한 AI 에이전트팀 전용 4대 공유 메모리 허브 분석'" />
+  <title>TencentDB Agent Memory: 텐센트가 공개한 AI 에이전트팀 전용 4대 공유 메모리 허브 분석  | 신규하 블로그</title>
+  <meta property="og:title" content="TencentDB Agent Memory: 텐센트가 공개한 AI 에이전트팀 전용 4대 공유 메모리 허브 분석" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-08-08"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/08/2026-08-08-tencentdb-agent-memory-team-memory/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="open-source" />
+  
+  <meta property="og:tags" content="memory" />
+  
+  <meta property="og:tags" content="agents" />
+  
+  <meta property="og:tags" content="multi-agent" />
+  
+  <meta property="og:tags" content="tencent" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/08/2026-08-08-tencentdb-agent-memory-team-memory/">
+          <h1>
+            TencentDB Agent Memory: 텐센트가 공개한 AI 에이전트팀 전용 4대 공유 메모리 허브 분석
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/08/2026-08-08-tencentdb-agent-memory-team-memory/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>단일 AI 에이전트 세션의 한계를 극복하기 위해 다중 에이전트(Multi-Agent) 시스템을 구축할 때 가장 빈번하게 직면하는 장애물은 **&ldquo;기억의 파편화&rdquo;**입니다. 에이전트들이 개별적으로 대화를 수행하면서 똑같은 문서를 중복 분석하거나, 동일한 코드 구조와 가이드를 매번 처음부터 다시 학습하는 문제가 대표적입니다.</p>
+<p>텐센트(Tencent)가 오픈소스로 공개한 **TencentDB-Agent-Memory (Team Memory 2.0)**는 대화, 문서, 코드를 4가지 재사용 가능한 팀 수준의 메모리 자산으로 정제하여 여러 에이전트가 공유할 수 있도록 해주는 데이터베이스 기반 메모리 허브입니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://github.com/TencentCloud/TencentDB-Agent-Memory">TencentDB-Agent-Memory GitHub 저장소</a></li>
+<li><a href="https://www.threads.net/share/MdzwoJ75h/">원본 Threads 게시물 (choi.openai)</a></li>
+</ul>
+<h2 id="1-개별-에이전트-기억의-한계와-team-memory-20">1. 개별 에이전트 기억의 한계와 Team Memory 2.0</h2>
+<p>기존 에이전트 기억 구조는 개별 챗 세션(Single Session)에 갇혀 있었습니다. 에이전트가 획득한 프로젝트 지식이나 실패 레슨이 다른 에이전트에게 전파되지 않아, 에이전트 수가 늘어날수록 유효 토큰 비용이 급증하고 작업 일관성이 저하되었습니다.</p>
+<p>TencentDB-Agent-Memory는 데이터베이스 기술 노하우를 바탕으로 <strong>팀 단위 중앙 메모리 허브</strong>를 구현하여 에이전트들이 실시간으로 이전 작업의 맥락과 학습된 역량을 공유할 수 있게 지원합니다.</p>
+<h2 id="2-4대-핵심-재사용-메모리-자산-4-memory-assets">2. 4대 핵심 재사용 메모리 자산 (4 Memory Assets)</h2>
+<p>TencentDB-Agent-Memory는 파편화된 정보를 다음 4가지 구조화된 자산으로 분류 및 인덱싱합니다:</p>
+<ol>
+<li><strong>Chat Memory (대화 메모리)</strong>
+<ul>
+<li>세션 간 대화 이력과 상태를 실시간 저장 및 인덱싱하여 멀티턴 맥락을 유지합니다.</li>
+</ul>
+</li>
+<li><strong>Skill (학습된 스킬)</strong>
+<ul>
+<li>에이전트가 성공적으로 수행한 업무 절차, 툴 사용 방식 및 문제 해결 패턴을 정형화된 스킬 자산으로 축적합니다.</li>
+</ul>
+</li>
+<li><strong>LLM-Wiki (도메인 지식 베이스)</strong>
+<ul>
+<li>비구조화된 문서, 사내 위키, 도메인 가이드를 통합 정리하여 모든 에이전트가 즉각 참조할 수 있도록 쿼리 가능한 형태로 제공합니다.</li>
+</ul>
+</li>
+<li><strong>Code-Graph (코드 구조 그래프)</strong>
+<ul>
+<li>코드베이스의 모듈 간 의존성과 클래스/함수 그래프 구조를 추출·저장하여 코딩 에이전트들이 코드맥락을 정확히 파악하도록 지원합니다.</li>
+</ul>
+</li>
+</ol>
+<h2 id="3-3561-토큰-절감-효과">3. 35%~61% 토큰 절감 효과</h2>
+<p>긴 대화나 대규모 프로젝트 진행 시 오래된 컨텍스트와 불필요한 반복 데이터를 인텔리전트 압축 알고리즘으로 정제하여 <strong>토큰 사용량을 최대 61%까지 감소</strong>시킵니다.</p>
+<p>컨텍스트 윈도우 한도 초과 문제를 해결하면서도 답변 및 코드 작성 정확도는 높게 유지합니다.</p>
+<h2 id="4-다양한-에이전트-및-프레임워크-연동">4. 다양한 에이전트 및 프레임워크 연동</h2>
+<ul>
+<li><strong>지원 에이전트</strong>: Claude Code, OpenClaw, Hermes, CodeBuddy 등 주요 자율 코딩 및 보조 에이전트 툴 지원</li>
+<li><strong>확장성</strong>: 1인 개발자의 개인 데이터베이스 메모리 스토리지부터 대기업 단위 에이전트 클러스터 데이터베이스 인프라까지 스케일아웃 지원</li>
+</ul>
+<p>에이전트가 독립적인 단순 호출 단계를 넘어 팀 단위로 지식과 기억을 공유하며 일하기 위한 필수 인프라 툴로서의 가치가 높습니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 08월 08일 07시 40분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/08/2026-08-08-loopx-agent-control-plane-kernel/" rel="prev">
+        <span>LoopX: 자율 에이전트를 위한 로컬 퍼스트 상태 제어 커널(Control Plane) 구조 분석</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/08/2026-08-08-ai-image-generation-realism-prompts/" rel="next">
+        <span>ChatGPT·Gemini AI 이미지 냄새를 확 줄이는 리얼 프롬프트 8가지 팩트체크</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-개별-에이전트-기억의-한계와-team-memory-20">1. 개별 에이전트 기억의 한계와 Team Memory 2.0</a></li>
+    <li><a href="#2-4대-핵심-재사용-메모리-자산-4-memory-assets">2. 4대 핵심 재사용 메모리 자산 (4 Memory Assets)</a></li>
+    <li><a href="#3-3561-토큰-절감-효과">3. 35%~61% 토큰 절감 효과</a></li>
+    <li><a href="#4-다양한-에이전트-및-프레임워크-연동">4. 다양한 에이전트 및 프레임워크 연동</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/open-source/" class="badge badge-secondary">Open-Source</a>
+    <a href="/tags/memory/" class="badge badge-secondary">Memory</a>
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+    <a href="/tags/multi-agent/" class="badge badge-secondary">Multi-Agent</a>
+    <a href="/tags/tencent/" class="badge badge-secondary">Tencent</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
