@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Floci: 유료 제한 없는 오픈소스 로컬 AWS 에뮬레이터 구조 분석'" />
+  <title>Floci: 유료 제한 없는 오픈소스 로컬 AWS 에뮬레이터 구조 분석  | 신규하 블로그</title>
+  <meta property="og:title" content="Floci: 유료 제한 없는 오픈소스 로컬 AWS 에뮬레이터 구조 분석" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-08-09"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/08/2026-08-09-floci-open-source-aws-emulator/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="open-source" />
+  
+  <meta property="og:tags" content="aws" />
+  
+  <meta property="og:tags" content="devops" />
+  
+  <meta property="og:tags" content="testing" />
+  
+  <meta property="og:tags" content="docker" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/08/2026-08-09-floci-open-source-aws-emulator/">
+          <h1>
+            Floci: 유료 제한 없는 오픈소스 로컬 AWS 에뮬레이터 구조 분석
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/08/2026-08-09-floci-open-source-aws-emulator/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>클라우드 기반 애플리케이션을 개발하고 CI/CD 테스트 파이프라인을 구축할 때, 실제 AWS 환경에 매번 리소스를 배포하거나 유료 에뮬레이터 플랜에 의존하는 것은 비용과 속도 측면에서 부담이 됩니다.</p>
+<p><strong>Floci</strong>(<code>floci-io/floci</code>)는 AWS 계정, 인증 토큰, 유료 라이선스 제약 없이 단일 로컬 엔드포인트에서 AWS 인프라 서비스를 에뮬레이트해 주는 오픈소스 로컬 AWS 환경 제공 도구(LocalStack 대안)입니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://github.com/floci-io/floci">Floci GitHub 저장소</a></li>
+<li><a href="https://floci.io/floci/">Floci 공식 문서</a></li>
+<li><a href="https://github.com/floci-io/floci-cli">Floci CLI 저장소</a></li>
+</ul>
+<h2 id="1-floci의-등장-배경">1. Floci의 등장 배경</h2>
+<p>기존 로컬 AWS 에뮬레이터 환경에서는 일부 고도화된 기능(예: 고급 서버리스, 복잡한 인프라 서비스)을 사용하기 위해 유료 티어 가입이 필요하거나, 단순 껍데기 흉내(Shallow Mock)만 제공하여 테스트 신뢰도가 떨어지는 문제점이 존재했습니다.</p>
+<p>Floci는 이러한 결제 및 라이선스 장벽을 제거하고, <code>docker compose up</code> 또는 단순 CLI 명령어만으로 팀 내 모든 개발자가 완전한 로컬 AWS 인프라 환경을 구축할 수 있도록 지원합니다.</p>
+<h2 id="2-주요-핵심-특징-및-장점">2. 주요 핵심 특징 및 장점</h2>
+<h3 id="유료-기능-제약-없는-완전-오픈소스-always-free">유료 기능 제약 없는 완전 오픈소스 (Always Free)</h3>
+<ul>
+<li>별도의 AWS 클라우드 계정 생성이나 인증 토큰 등록 없이 실행됩니다.</li>
+<li>특정 기능에 유료 락(Feature Gate)을 걸지 않고 모든 호환 서비스를 오픈소스로 제공합니다.</li>
+</ul>
+<h3 id="실제-docker-기반-정밀-재현-high-fidelity">실제 Docker 기반 정밀 재현 (High-Fidelity)</h3>
+<ul>
+<li>단순 텍스트 흉내를 넘어 <strong>Lambda, RDS, ElastiCache, MSK, ECS, EC2, EKS, OpenSearch, CodeBuild</strong> 등 정밀도가 중요한 서비스들을 실제 Docker 컨테이너 기반으로 독립 실행합니다.</li>
+</ul>
+<h3 id="기존-aws-도구-100-드롭인-호환">기존 AWS 도구 100% 드롭인 호환</h3>
+<ul>
+<li>표준 엔드포인트 <code>http://localhost:4566</code>를 기본으로 제공합니다.</li>
+<li>기존에 사용하던 <strong>AWS CLI, AWS SDK, Terraform, AWS CDK, OpenTofu, Testcontainers</strong> 코드를 변경 없이 환경 변수 및 엔드포인트 지정만으로 사용할 수 있습니다.</li>
+</ul>
+<h3 id="cicd에-최적화된-경량화">CI/CD에 최적화된 경량화</h3>
+<ul>
+<li>네이티브 이미지를 기반으로 밀리초(ms) 단위의 빠른 시작 속도를 제공하며 유휴 메모리 점유율을 대폭 줄여 파이프라인 실행 시간을 단축합니다.</li>
+</ul>
+<h2 id="3-빠른-시작-가이드">3. 빠른 시작 가이드</h2>
+<p><strong>전용 CLI 사용 시:</strong></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># Floci 시작 및 환경 변수 자동 설정</span>
+</span></span><span style="display:flex;"><span>floci start
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">eval</span> <span style="color:#cf222e">$(</span>floci env<span style="color:#cf222e">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 표준 AWS CLI 사용</span>
+</span></span><span style="display:flex;"><span>aws s3 mb s3://my-bucket
+</span></span><span style="display:flex;"><span>aws dynamodb list-tables
+</span></span></code></pre></div><p><strong>Docker Compose 설정 (<code>compose.yaml</code>):</strong></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#0550ae">services</span><span style="color:#1f2328">:</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#0550ae">floci</span><span style="color:#1f2328">:</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span><span style="color:#0550ae">image</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>floci/floci:latest<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span><span style="color:#0550ae">ports</span><span style="color:#1f2328">:</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">      </span>- <span style="color:#0a3069">&#34;4566:4566&#34;</span><span style="color:#fff">
+</span></span></span></code></pre></div><p>AWS 기반 애플리케이션 개발 시 클라우드 비용을 절감하고 독립적인 로컬 integration 테스트 환경을 구축하려는 팀에게 매우 유용한 최신 오픈소스 프로젝트입니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 08월 09일 08시 37분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/infrastructure">Infrastructure</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/08/2026-08-09-buollstory1-volume-accumulation-shakeout-distribution-fact-check/" rel="prev">
+        <span>거래량은 속이지 못한다: 제주반도체·HLB·휴림로봇 차트로 읽는 매집·개미털기·설거지 팩트체크</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-floci의-등장-배경">1. Floci의 등장 배경</a></li>
+    <li><a href="#2-주요-핵심-특징-및-장점">2. 주요 핵심 특징 및 장점</a>
+      <ul>
+        <li><a href="#유료-기능-제약-없는-완전-오픈소스-always-free">유료 기능 제약 없는 완전 오픈소스 (Always Free)</a></li>
+        <li><a href="#실제-docker-기반-정밀-재현-high-fidelity">실제 Docker 기반 정밀 재현 (High-Fidelity)</a></li>
+        <li><a href="#기존-aws-도구-100-드롭인-호환">기존 AWS 도구 100% 드롭인 호환</a></li>
+        <li><a href="#cicd에-최적화된-경량화">CI/CD에 최적화된 경량화</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-빠른-시작-가이드">3. 빠른 시작 가이드</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/open-source/" class="badge badge-secondary">Open-Source</a>
+    <a href="/tags/aws/" class="badge badge-secondary">Aws</a>
+    <a href="/tags/devops/" class="badge badge-secondary">Devops</a>
+    <a href="/tags/testing/" class="badge badge-secondary">Testing</a>
+    <a href="/tags/docker/" class="badge badge-secondary">Docker</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
