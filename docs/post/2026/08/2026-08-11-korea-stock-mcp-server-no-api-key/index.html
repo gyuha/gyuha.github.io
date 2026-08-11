@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '한국 주식 MCP 서버: API 키 없는 무료 KOSPI·KOSDAQ 데이터 커넥터 분석'" />
+  <title>한국 주식 MCP 서버: API 키 없는 무료 KOSPI·KOSDAQ 데이터 커넥터 분석  | 신규하 블로그</title>
+  <meta property="og:title" content="한국 주식 MCP 서버: API 키 없는 무료 KOSPI·KOSDAQ 데이터 커넥터 분석" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-08-11"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/08/2026-08-11-korea-stock-mcp-server-no-api-key/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="mcp" />
+  
+  <meta property="og:tags" content="open-source" />
+  
+  <meta property="og:tags" content="llm" />
+  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="stocks" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/08/2026-08-11-korea-stock-mcp-server-no-api-key/">
+          <h1>
+            한국 주식 MCP 서버: API 키 없는 무료 KOSPI·KOSDAQ 데이터 커넥터 분석
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/08/2026-08-11-korea-stock-mcp-server-no-api-key/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Claude 및 ChatGPT와 같은 대형 언어 모델(LLM)에 Model Context Protocol(MCP) 커넥터를 붙여 실시간 인공지능 주식 분석 환경을 만드는 개발 사례가 크게 늘고 있습니다. 하지만 기존 한국 주식 MCP 구현체들은 대다수 한국투자증권 Open API나 금융감독원 OpenDART 사용자 발급 키를 필수로 요구하여 최초 설정 장벽이 높았습니다.</p>
+<p>공개 서비스인 <strong>한국주식데이터 MCP 서버</strong>(<code>com.aikstockdata/mcp</code>)는 별도의 API 키, 회원가입, 복잡한 인증 헤더 없이 단 하나의 엔드포인트 URL 등록으로 국내 KOSPI·KOSDAQ 1,463개 종목의 데이터 조회를 지원하는 무료 커넥터입니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://aikstockdata.com/ai">한국주식데이터 AI / MCP 공식 안내페이지</a></li>
+<li><a href="https://mcp.aikstockdata.com/mcp">공식 MCP 레지스트리 Entry</a></li>
+</ul>
+<h2 id="1-주요-핵심-차별점">1. 주요 핵심 차별점</h2>
+<h3 id="회원가입-및-api-키-제로-zero-credentials">회원가입 및 API 키 제로 (Zero Credentials)</h3>
+<p>한국투자증권이나 OpenDART API 키를 개별적으로 발급받을 필요가 없으며, CORS가 오픈된 Streamable HTTP 백엔드로 서빙되어 URL 한 줄 등록만으로 즉시 작동합니다.</p>
+<h3 id="dart-공시의-접수-시각hhmm-자체-수집-및-분리">DART 공시의 접수 시각(HH:MM) 자체 수집 및 분리</h3>
+<p>OpenDART 표준 API가 제공하는 공시 정보는 날짜(<code>YYYYMMDD</code>)까지만 포함되어 있어 장중에 나온 공시인지 장 마감 후에 나온 공시인지 구별이 불가능했습니다. 한국주식데이터 MCP는 최근공시 타임라인을 매 거래일 자체 수집하여 **장중 공시(즉시 반영)**와 **장후 공시(다음 날 반영)**를 명확히 구분합니다.</p>
+<h3 id="빠른-잠정-실적-캡처">빠른 잠정 실적 캡처</h3>
+<p>정기 보고서(분기·반기·사업보고서) 제출보다 약 2주 빠르게 공개되는 <strong>기업 잠정 실적</strong> 데이터를 우선 반영하여 실적 모멘텀 조회의 즉시성을 높였습니다.</p>
+<h2 id="2-제공되는-12개-주요-mcp-도구-tools">2. 제공되는 12개 주요 MCP 도구 (Tools)</h2>
+<table>
+  <thead>
+      <tr>
+          <th>도구 이름</th>
+          <th>제공 기능 설명</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>get_today</code></td>
+          <td>오늘의 시장 지수, 등락 폭, 주요 공시 및 성장 랭킹 종합 요약</td>
+      </tr>
+      <tr>
+          <td><code>search_stock</code></td>
+          <td>종목명 한글 부분일치 검색</td>
+      </tr>
+      <tr>
+          <td><code>get_stock</code></td>
+          <td>특정 종목의 시세, 분기/잠정 실적, 랭킹 신호 상세 조회</td>
+      </tr>
+      <tr>
+          <td><code>list_stocks</code></td>
+          <td>흑자전환, 52주 신고/신저가, 시총/영업이익 배수 등 조건 검색</td>
+      </tr>
+      <tr>
+          <td><code>get_earnings</code></td>
+          <td>잠정 실적 포함 신속 실적 데이터 조회</td>
+      </tr>
+      <tr>
+          <td><code>get_history</code></td>
+          <td>250거래일 일별 시세 + 고점 대비 낙폭 + 거래량 배수 조회</td>
+      </tr>
+      <tr>
+          <td><code>get_disclosure_impact</code></td>
+          <td>공시 유형별 발표 이후 주가 반응 통계 제공</td>
+      </tr>
+      <tr>
+          <td><code>get_disclosures</code></td>
+          <td>HH:MM 접수 시각 및 장 구분이 들어간 공시 타임라인 조회</td>
+      </tr>
+      <tr>
+          <td><code>get_earnings_calendar</code></td>
+          <td>기업 실적 발표 캘린더 및 마감 D-day 정보</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="3-원클릭-연결-및-설정-방법">3. 원클릭 연결 및 설정 방법</h2>
+<p><strong>Claude Code / CLI 연동:</strong></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>claude mcp add --transport http aikstockdata https://mcp.aikstockdata.com/mcp
+</span></span></code></pre></div><p><strong>MCP JSON 설정 파일 방식:</strong></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;mcpServers&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;aikstockdata&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0550ae">&#34;type&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;http&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0550ae">&#34;url&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;https://mcp.aikstockdata.com/mcp&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><p><strong>Claude &amp; ChatGPT GUI 설정:</strong></p>
+<ul>
+<li><strong>Claude 웹/앱</strong>: 설정 → 커넥터 → 커스텀 커넥터 추가 → URL 등록 (<code>https://mcp.aikstockdata.com/mcp</code>)</li>
+<li><strong>ChatGPT</strong>: 설정 → 커넥터 → 개발자 모드 → 커넥터 만들기 → URL 등록 (인증 &lsquo;없음&rsquo; 선택)</li>
+</ul>
+<p>개인 개발자 및 AI 파이낸스 에이전트 구축 시 신속하고 유용한 오픈소스 주식 데이터 커넥터로 활용도가 높습니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 08월 11일 08시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/08/2026-08-10-voicebox-open-source-local-tts-voice-cloning/" rel="prev">
+        <span>Voicebox: 구독료 없이 로컬 PC에서 내 목소리 AI 클로닝하는 오픈소스 TTS 분석</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/08/2026-08-11-tencentdb-agent-memory-star-fact-check/" rel="next">
+        <span>TencentDB Agent Memory 팩트체크: Star 1.9만 개 대비 실사용 반응의 디커플링 분석</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-주요-핵심-차별점">1. 주요 핵심 차별점</a>
+      <ul>
+        <li><a href="#회원가입-및-api-키-제로-zero-credentials">회원가입 및 API 키 제로 (Zero Credentials)</a></li>
+        <li><a href="#dart-공시의-접수-시각hhmm-자체-수집-및-분리">DART 공시의 접수 시각(HH:MM) 자체 수집 및 분리</a></li>
+        <li><a href="#빠른-잠정-실적-캡처">빠른 잠정 실적 캡처</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-제공되는-12개-주요-mcp-도구-tools">2. 제공되는 12개 주요 MCP 도구 (Tools)</a></li>
+    <li><a href="#3-원클릭-연결-및-설정-방법">3. 원클릭 연결 및 설정 방법</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/mcp/" class="badge badge-secondary">Mcp</a>
+    <a href="/tags/open-source/" class="badge badge-secondary">Open Source</a>
+    <a href="/tags/llm/" class="badge badge-secondary">Llm</a>
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/stocks/" class="badge badge-secondary">Stocks</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
