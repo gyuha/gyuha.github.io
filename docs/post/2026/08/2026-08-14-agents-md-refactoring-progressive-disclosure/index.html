@@ -3,9 +3,9 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="description" content="Gyuha blog 'AGENTS.md 슬림화 가이드: 점진적 공개(Progressive Disclosure)와 Instruction Budget 관리'" />
-  <title>AGENTS.md 슬림화 가이드: 점진적 공개(Progressive Disclosure)와 Instruction Budget 관리  | 신규하 블로그</title>
-  <meta property="og:title" content="AGENTS.md 슬림화 가이드: 점진적 공개(Progressive Disclosure)와 Instruction Budget 관리" />
+  <meta name="description" content="Gyuha blog 'AGENTS.md 완벽 가이드: 점진적 공개(Progressive Disclosure)와 Instruction Budget 관리'" />
+  <title>AGENTS.md 완벽 가이드: 점진적 공개(Progressive Disclosure)와 Instruction Budget 관리  | 신규하 블로그</title>
+  <meta property="og:title" content="AGENTS.md 완벽 가이드: 점진적 공개(Progressive Disclosure)와 Instruction Budget 관리" />
   
   <meta property="og:type" content="article" />
   <meta property="article:published_time" content="2026-08-14"> 
@@ -21,6 +21,8 @@
   <meta property="og:tags" content="claude-code" />
   
   <meta property="og:tags" content="context-engineering" />
+  
+  <meta property="og:tags" content="testing" />
   
 
   
@@ -79,7 +81,7 @@
         
         <a href="https://gyuha.com/post/2026/08/2026-08-14-agents-md-refactoring-progressive-disclosure/">
           <h1>
-            AGENTS.md 슬림화 가이드: 점진적 공개(Progressive Disclosure)와 Instruction Budget 관리
+            AGENTS.md 완벽 가이드: 점진적 공개(Progressive Disclosure)와 Instruction Budget 관리
           </h1>
         </a>
         
@@ -100,36 +102,135 @@
 </div>
 <section class="post-content">
   
-  <p>Claude Code, Cursor, Codex 등 코딩 에이전트 생태계에서 <code>AGENTS.md</code> 파일은 에이전트에게 프로젝트의 지침을 전달하는 핵심 관문으로 자리 잡았습니다. 하지만 많은 개발자들이 <code>/init</code> 커맨드로 자동 생성된 파일이나 프로젝트 전체 설명서를 <code>AGENTS.md</code>에 무비판적으로 채워 넣으면서, 에이전트의 성능이 오히려 저하되는 현상을 겪곤 합니다.</p>
-<p>Matt Pocock(<code>@mattpocockuk</code>)의 리팩토링 가이드와 최신 코딩 에이전트 노하우를 바탕으로, <strong>AGENTS.md를 슬림하게 다이어트하고 점진적 공개(Progressive Disclosure) 구조를 도입해야 하는 이유와 작성 규칙</strong>을 정리합니다.</p>
+  <p>Claude Code, Cursor, Codex, OpenCode 등 다양한 AI 코딩 에이전트 생태계에서 <code>AGENTS.md</code> 파일은 에이전트에게 프로젝트의 지침을 전달하는 핵심 표준 관문으로 자리 잡았습니다. 하지만 많은 팀들이 <code>/init</code> 커맨드로 자동 생성된 파일이나 프로젝트 전체 매뉴얼을 <code>AGENTS.md</code>에 무비판적으로 채워 넣으면서, 에이전트가 지시를 혼동하고 성능이 급격히 저하되는 <strong>&lsquo;진흙 뭉치(Ball of Mud)&rsquo;</strong> 문제를 겪고 있습니다.</p>
+<p>TypeScript 및 AI 엔지니어링 전문가 <strong>Matt Pocock</strong>의 심층 가이드(<a href="https://www.aihero.dev/a-complete-guide-to-agents-md">A Complete Guide to AGENTS.md</a>)를 바탕으로, <strong>AGENTS.md의 올바른 정체성, 명령어 예산(Instruction Budget) 관리법, 점진적 공개(Progressive Disclosure) 트리 구조, 모노레포 운용법, 그리고 즉시 적용 가능한 5단계 리팩토링 프롬프트</strong>를 체계적으로 정리합니다.</p>
 <h2 id="sources">Sources</h2>
 <ul>
-<li><a href="https://x.com/i/status/2087820511099203769">원문 트윗 및 리팩토링 프롬프트</a></li>
-<li><a href="https://t.co/WvAD4AOlvW">Matt Pocock: Refactoring AGENTS.md</a></li>
+<li><a href="https://www.aihero.dev/a-complete-guide-to-agents-md">Matt Pocock: A Complete Guide to AGENTS.md (AI Hero)</a></li>
+<li><a href="https://x.com/i/status/2087820511099203769">원문 X 게시물 및 리팩토링 프롬프트 공유</a></li>
+<li><a href="https://www.humanlayer.io">Humanlayer: The Instruction Budget Concept</a></li>
 </ul>
-<h2 id="1-agentsmd의-새로운-정체성-고비용-작업-컨텍스트">1. AGENTS.md의 새로운 정체성: &ldquo;고비용 작업 컨텍스트&rdquo;</h2>
-<p><code>AGENTS.md</code>를 프로젝트의 모든 내용이 담긴 &lsquo;완벽한 설명서&rsquo;로 생각하고 접근하면 안 됩니다.</p>
-<p><code>AGENTS.md</code>는 **&ldquo;에이전트가 매 미션(Task)을 시작할 때마다 주의력(Instruction Budget)과 컨텍스트 한도를 필연적으로 점유하는 고비용 작업 컨텍스트&rdquo;**로 재정의해야 합니다. 모든 미션에 불필요한 정보가 들어가면 에이전트의 오케스트레이션 성능이 떨어지고 지시 충돌이 발생하기 쉽습니다.</p>
-<h2 id="2-agentsmd-슬림화를-위한-3대-핵심-규칙">2. AGENTS.md 슬림화를 위한 3대 핵심 규칙</h2>
-<h3 id="1-init-자동-생성-기능으로-무분별하게-채우지-말-것">1) <code>/init</code> 자동 생성 기능으로 무분별하게 채우지 말 것</h3>
-<p>자동 생성 툴은 포괄성을 추구하느라 프로젝트 구조, 패키지 목록, 파일 경로, 기술 스택 등을 과도하게 집어넣습니다. 이러한 정보 중 상당수는 에이전트가 코드와 <code>package.json</code> 등 설정 파일에서 스스로 발견할 수 있는 내용이며, 코드베이스가 변경되면 금방 구식(Outdated) 정보가 되어 매 미션마다 에이전트의 판단을 교란시킵니다.</p>
-<h3 id="2-코드를-통해-쉽게-알-수-있는-구현-세부사항-제거">2) 코드를 통해 쉽게 알 수 있는 구현 세부사항 제거</h3>
-<p>특정 모듈이 어느 폴더에 있는지, 현재 어떤 서비스 클래스가 기능을 맡고 있는지 등 자주 바뀌는 실체 정보는 작성하지 않습니다. 대신 <strong>프로젝트의 최종 목표, 비가역적 제약조건, 커스텀 툴체인 규칙, 절대 어기면 안 되는 가버넌스</strong> 등 코드 텍스트만으로는 추론하기 어려운 정보만 정제하여 담아야 합니다.</p>
-<h3 id="3-점진적-공개-progressive-disclosure-아키텍처-도입">3) 점진적 공개 (Progressive Disclosure) 아키텍처 도입</h3>
-<p>모든 세부 규칙(테스트 규격, TypeScript 컨벤션, API 스키마, DB 마이그레이션 등)을 루트 <code>AGENTS.md</code>에 몰아 넣지 않습니다.</p>
+<hr>
+<h2 id="1-agentsmd의-본질-고비용-작업-컨텍스트">1. AGENTS.md의 본질: &ldquo;고비용 작업 컨텍스트&rdquo;</h2>
+<p><code>AGENTS.md</code>는 Git 저장소에 커밋되어 AI 코딩 에이전트의 행동 방식을 커스터마이징하는 마크다운 파일입니다. 에이전트가 실행될 때 <strong>시스템 프롬프트(System Prompt) 바로 아래, 대화 히스토리 최상단</strong>에 자동으로 주입되는 구성 계층(Configuration Layer)입니다.</p>
+<p>이 파일은 크게 두 가지 영역의 지침을 다룹니다:</p>
 <ul>
-<li>루트 <code>AGENTS.md</code>는 <strong>&ldquo;매우 얇은 라우터(Router) 및 입구&rdquo;</strong> 역할만 수행합니다.</li>
-<li>세부 규칙은 독립 문서, <strong>Skills</strong>, 또는 <strong>Rules</strong>로 분리하여, 에이전트가 해당 과제를 실제 수행하는 시점에만 필요한 스킬을 불러오도록 설계합니다.</li>
+<li><strong>개인 스코프 (Personal Scope)</strong>: 개발자의 커밋 메시지 작성 스타일, 선호하는 코딩 패턴.</li>
+<li><strong>프로젝트 스코프 (Project Scope)</strong>: 프로젝트의 핵심 목적, 패키지 매니저, 핵심 아키텍처 결정.</li>
 </ul>
-<h2 id="3-핵심-질문-주의력instruction-budget-점유-가치가-있는가">3. 핵심 질문: &ldquo;주의력(Instruction Budget) 점유 가치가 있는가?&rdquo;</h2>
-<p><code>AGENTS.md</code>에 문장을 하나 추가할 때마다 스스로 물어야 합니다:</p>
 
   <blockquote>
-    <p><strong>&ldquo;이 항목이 매번 에이전트의 주의력(Instruction Budget)과 컨텍스트 한도를 점유할 가치가 있는가?&rdquo;</strong></p>
+    <p><strong>💡 도구 간 호환 팁 (CLAUDE.md):</strong><br>
+Claude Code는 <code>AGENTS.md</code> 대신 <code>CLAUDE.md</code>를 기본으로 인식합니다. 심볼릭 링크를 걸어두면 단일 파일로 모든 도구를 통일할 수 있습니다:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ln -s AGENTS.md CLAUDE.md
+</span></span></code></pre></div>
+  </blockquote>
+
+<hr>
+<h2 id="2-거대한-agentsmd가-초래하는-치명적-문제">2. 거대한 AGENTS.md가 초래하는 치명적 문제</h2>
+<h3 id="1-진흙-뭉치ball-of-mud의-악순환-루프">1) &lsquo;진흙 뭉치(Ball of Mud)&lsquo;의 악순환 루프</h3>
+<p><code>AGENTS.md</code>가 위험할 정도로 비대해지는 전형적인 패턴이 있습니다:</p>
+<ol>
+<li>에이전트가 마음에 들지 않는 동작을 수행함.</li>
+<li>개발자가 이를 방지하기 위해 <code>AGENTS.md</code>에 새로운 규칙을 한 줄 추가함.</li>
+<li>수개월에 걸쳐 수백 번 반복됨.</li>
+<li>여러 개발자의 상충되는 지시가 엉키고 누구도 전체 스타일을 정리하지 않아 거대한 &lsquo;진흙 뭉치&rsquo;가 됨.</li>
+</ol>
+<h3 id="2-init-자동-생성-스크립트의-함정">2) <code>/init</code> 자동 생성 스크립트의 함정</h3>
+<p><code>/init</code> 같은 명령어로 <code>AGENTS.md</code>를 자동 생성하면, 프로젝트 구조, 모든 종속성, 명령어, 세부 경로 등 &lsquo;대부분의 시나리오에 유용할 법한&rsquo; 정보가 한꺼번에 쏟아져 들어옵니다. 자동 생성 도구는 **절제(Restraint)보다 포괄성(Comprehensiveness)**을 우선시하므로 에이전트의 컨텍스트를 불필요한 소음으로 오염시킵니다.</p>
+<h3 id="3-명령어-예산-the-instruction-budget">3) 명령어 예산 (The Instruction Budget)</h3>
+<p>Humanlayer의 분석에 따르면, 최신 프론티어 Thinking LLM(Claude 3.7 Sonnet, Opus 등)이라 하더라도 일관되게 준수할 수 있는 지시사항의 한도는 <strong>약 150~200개</strong> 내외입니다. 비Thinking 모델이나 소형 모델은 이보다 훨씬 적은 지시만 처리할 수 있습니다.</p>
+<p><code>AGENTS.md</code>에 포함된 모든 토큰은 <strong>현재 작업과의 관련성 여부와 상관없이 매 단일 요청(Request)마다 로드</strong>됩니다:</p>
+<ul>
+<li><strong>작고 집중된 AGENTS.md</strong>: 현재 태스크 수행에 필요한 토큰과 주의력이 온전히 확보됨.</li>
+<li><strong>비대하고 장황한 AGENTS.md</strong>: 에이전트가 핵심 작업에 집중하지 못하고 주의력이 분산되어 성능 저하.</li>
+<li><strong>불필요한 세부 규칙</strong>: 토큰 낭비와 지시 충돌을 유발.</li>
+</ul>
+<h3 id="4-오래된-문서의-컨텍스트-독성-stale-documentation-poisons-context">4) 오래된 문서의 컨텍스트 독성 (Stale Documentation Poisons Context)</h3>
+<p>인간 개발자는 오래된 문서를 보면 비판적으로 의심하지만, AI 에이전트는 문서에 적힌 내용을 사실로 신뢰합니다.</p>
+<ul>
+<li><strong>파일 경로 직접 명시의 위험</strong>: <code>AGENTS.md</code>에 *&ldquo;인증 로직은 src/auth/handlers.ts에 있다&rdquo;*라고 적어두었는데 파일이 리팩토링되어 이동하면, 에이전트는 엉뚱한 곳을 끝없이 헤매게 됩니다.</li>
+<li><strong>해법</strong>: 파일 경로 대신 **시스템의 역량(Capabilities)과 전체적인 프로젝트 형태(Shape)**를 설명하고, 에이전트가 탐색 도구(<code>grep</code>, <code>ls</code> 등)를 사용해 필요한 문맥을 스스로 찾게 해야 합니다.</li>
+</ul>
+<hr>
+<h2 id="3-agentsmd의-절대적-최소-구성-the-absolute-minimum">3. AGENTS.md의 절대적 최소 구성 (The Absolute Minimum)</h2>
+<p>루트 <code>AGENTS.md</code>에 들어가야 할 필수 요소는 단 세 가지뿐입니다:</p>
+<ol>
+<li><strong>한 문장 프로젝트 설명 (One-Sentence Project Description)</strong>:<br>
+에이전트에게 이 저장소에서 일하는 근본적인 목적(Why)을 정박(Anchor)시킵니다.<br>
+<em>(예: &ldquo;This is a React component library for accessible data visualization.&rdquo;)</em></li>
+<li><strong>패키지 매니저 명시 (Package Manager)</strong>:<br>
+npm이 아닌 도구를 사용할 경우 명확히 지정하여 잘못된 명령 생성을 방지합니다.<br>
+<em>(예: &ldquo;This project uses pnpm workspaces.&rdquo;)</em></li>
+<li><strong>비표준 빌드 및 검증 명령어 (Build / Typecheck Commands)</strong>:<br>
+표준과 다른 특수한 빌드, 테스트, 타입체크 커맨드만 간결하게 기술합니다.</li>
+</ol>
+<p>그 외의 모든 세부 규칙은 별도 위치로 분리해야 합니다.</p>
+<hr>
+<h2 id="4-점진적-공개-progressive-disclosure-아키텍처">4. 점진적 공개 (Progressive Disclosure) 아키텍처</h2>
+<p>점진적 공개의 핵심은 <strong>에이전트에게 지금 당장 필요한 것만 제공하고, 세부 지침은 필요할 때 찾아갈 수 있는 이정표(Breadcrumbs)만 남기는 것</strong>입니다.</p>
+<h3 id="1-언어-및-영역별-규칙-분리">1) 언어 및 영역별 규칙 분리</h3>
+<p>기존 <code>AGENTS.md</code>에 들어있던 상세 코딩 규칙(예: <code>const</code>만 사용, <code>interface</code> 선언 규칙 등)을 <code>docs/TYPESCRIPT.md</code>로 분리합니다:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span># 루트 AGENTS.md 예시
+</span></span><span style="display:flex;"><span>This is a high-performance analytics dashboard.
+</span></span><span style="display:flex;"><span>This project uses pnpm workspaces.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>For TypeScript conventions, see docs/TYPESCRIPT.md
+</span></span><span style="display:flex;"><span>For testing workflows, see docs/TESTING.md
+</span></span></code></pre></div>
+  <blockquote>
+    <p><strong>작성 톤의 차이:</strong> &lsquo;ALWAYS&rsquo;, &lsquo;NEVER&rsquo; 같은 대문자 강제 표현 대신, 가볍고 자연스러운 링크 참조(Conversational Reference)를 사용하는 것이 모델의 유연성을 높입니다.</p>
 
   </blockquote>
 
-<p>그렇지 않다면 코드 자체, 독립된 문서, 스킬, 혹(Hook) 등 필요할 때 불러오는(On-demand) 구조로 이관해야 합니다. <code>AGENTS.md</code>를 다이어트하는 것은 단순 토큰 절감을 넘어 <strong>에이전트의 한정된 인지 한도를 핵심 작업에 집중시키는 필수 엔지니어링</strong>입니다.</p>
+<h3 id="2-중첩된-문서-트리-nested-documentation-tree">2) 중첩된 문서 트리 (Nested Documentation Tree)</h3>
+<p>문서 간에 계층형 참조를 구축하여 에이전트가 필요에 따라 자연스럽게 깊이를 탐색하도록 만듭니다:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>docs/
+</span></span><span style="display:flex;"><span>├── TYPESCRIPT.md    ──▶ (필요 시 TESTING.md 참조)
+</span></span><span style="display:flex;"><span>├── TESTING.md       ──▶ (테스트 러너 세부 명세 참조)
+</span></span><span style="display:flex;"><span>└── BUILD.md         ──▶ (esbuild / 번들러 설정 참조)
+</span></span></code></pre></div><h3 id="3-agent-skills-연계">3) Agent Skills 연계</h3>
+<p>반복적인 워크플로우나 복잡한 도메인 지식은 <code>SKILL.md</code> 형태의 에이전트 스킬로 패키징하여, 에이전트가 특정 작업을 시작할 때만 온디맨드(On-demand)로 지식을 불러오게 설계합니다.</p>
+<hr>
+<h2 id="5-monorepo에서의-다단계-agentsmd-운용">5. Monorepo에서의 다단계 AGENTS.md 운용</h2>
+<p>모노레포 환경에서는 루트와 서브 디렉토리에 각각 <code>AGENTS.md</code>를 배치할 수 있으며, 이들은 실행 시 **상위 스코프와 자연스럽게 병합(Merge)**됩니다:</p>
+<ul>
+<li><strong>루트 레벨 (<code>/AGENTS.md</code>)</strong>:<br>
+모노레포의 전체 목적, 패키지 간 이동 방법, 공통 도구(<code>pnpm workspaces</code>).</li>
+<li><strong>패키지 레벨 (<code>packages/api/AGENTS.md</code>)</strong>:<br>
+해당 패키지의 목적, 기술 스택(Node.js GraphQL, Prisma), 로컬 API 설계 규격(<code>docs/API_CONVENTIONS.md</code>).</li>
+</ul>
+<p>각 레벨이 자신의 스코프에만 집중함으로써 컨텍스트 낭비를 원천 차단할 수 있습니다.</p>
+<hr>
+<h2 id="6-망가진-agentsmd를-즉시-고치는-5단계-리팩토링-프롬프트">6. 망가진 AGENTS.md를 즉시 고치는 5단계 리팩토링 프롬프트</h2>
+<p>현재 저장소의 비대해진 <code>AGENTS.md</code>를 점진적 공개 구조로 다이어트하고 싶다면, 코딩 에이전트에 다음 프롬프트를 입력하여 즉시 리팩토링을 수행할 수 있습니다:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>I want you to refactor my AGENTS.md file to follow progressive disclosure principles.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Follow these steps:
+</span></span><span style="display:flex;"><span>1. **Find contradictions**: Identify any instructions that conflict with each other. For each contradiction, ask me which version I want to keep.
+</span></span><span style="display:flex;"><span>2. **Identify the essentials**: Extract only what belongs in the root AGENTS.md:
+</span></span><span style="display:flex;"><span>   - One-sentence project description
+</span></span><span style="display:flex;"><span>   - Package manager (if not npm)
+</span></span><span style="display:flex;"><span>   - Non-standard build/typecheck commands
+</span></span><span style="display:flex;"><span>   - Anything truly relevant to every single task
+</span></span><span style="display:flex;"><span>3. **Group the rest**: Organize remaining instructions into logical categories (e.g., TypeScript conventions, testing patterns, API design, Git workflow). For each group, create a separate markdown file.
+</span></span><span style="display:flex;"><span>4. **Create the file structure**: Output:
+</span></span><span style="display:flex;"><span>   - A minimal root AGENTS.md with markdown links to the separate files
+</span></span><span style="display:flex;"><span>   - Each separate file with its relevant instructions
+</span></span><span style="display:flex;"><span>   - A suggested docs/ folder structure
+</span></span><span style="display:flex;"><span>5. **Flag for deletion**: Identify any instructions that are:
+</span></span><span style="display:flex;"><span>   - Redundant (the agent already knows this)
+</span></span><span style="display:flex;"><span>   - Too vague to be actionable
+</span></span><span style="display:flex;"><span>   - Overly obvious (like &#34;write clean code&#34;)
+</span></span></code></pre></div><hr>
+<h2 id="7-결론-less-is-more">7. 결론: &ldquo;Less is More&rdquo;</h2>
+<p>새로운 지침을 <code>AGENTS.md</code>에 추가하려 할 때마다 스스로에게 물어야 합니다:</p>
+<ul>
+<li><strong>이 정보가 모든 단일 작업에서 에이전트의 주의력 예산을 점유할 만큼 중요한가?</strong><br>
+→ <strong>YES</strong>: 루트 <code>AGENTS.md</code>에 추가.<br>
+→ <strong>NO</strong>: 특정 도메인 문서(<code>docs/</code>), 스킬(<code>SKILL.md</code>), 또는 에이전트가 스스로 탐색할 코드베이스로 이관.</li>
+</ul>
+<p><code>AGENTS.md</code>를 슬림하게 유지하는 것은 단순한 파일 정리가 아니라 <strong>에이전트의 인지 용량을 통제하고 작업 성공률을 극대화하는 핵심 프롬프트 하네스 엔지니어링</strong>입니다.</p>
 </section>
 <time>
   <i class="far fa-clock"></i>
@@ -192,15 +293,26 @@
     <nav id="TableOfContents">
   <ul>
     <li><a href="#sources">Sources</a></li>
-    <li><a href="#1-agentsmd의-새로운-정체성-고비용-작업-컨텍스트">1. AGENTS.md의 새로운 정체성: &ldquo;고비용 작업 컨텍스트&rdquo;</a></li>
-    <li><a href="#2-agentsmd-슬림화를-위한-3대-핵심-규칙">2. AGENTS.md 슬림화를 위한 3대 핵심 규칙</a>
+    <li><a href="#1-agentsmd의-본질-고비용-작업-컨텍스트">1. AGENTS.md의 본질: &ldquo;고비용 작업 컨텍스트&rdquo;</a></li>
+    <li><a href="#2-거대한-agentsmd가-초래하는-치명적-문제">2. 거대한 AGENTS.md가 초래하는 치명적 문제</a>
       <ul>
-        <li><a href="#1-init-자동-생성-기능으로-무분별하게-채우지-말-것">1) <code>/init</code> 자동 생성 기능으로 무분별하게 채우지 말 것</a></li>
-        <li><a href="#2-코드를-통해-쉽게-알-수-있는-구현-세부사항-제거">2) 코드를 통해 쉽게 알 수 있는 구현 세부사항 제거</a></li>
-        <li><a href="#3-점진적-공개-progressive-disclosure-아키텍처-도입">3) 점진적 공개 (Progressive Disclosure) 아키텍처 도입</a></li>
+        <li><a href="#1-진흙-뭉치ball-of-mud의-악순환-루프">1) &lsquo;진흙 뭉치(Ball of Mud)&lsquo;의 악순환 루프</a></li>
+        <li><a href="#2-init-자동-생성-스크립트의-함정">2) <code>/init</code> 자동 생성 스크립트의 함정</a></li>
+        <li><a href="#3-명령어-예산-the-instruction-budget">3) 명령어 예산 (The Instruction Budget)</a></li>
+        <li><a href="#4-오래된-문서의-컨텍스트-독성-stale-documentation-poisons-context">4) 오래된 문서의 컨텍스트 독성 (Stale Documentation Poisons Context)</a></li>
       </ul>
     </li>
-    <li><a href="#3-핵심-질문-주의력instruction-budget-점유-가치가-있는가">3. 핵심 질문: &ldquo;주의력(Instruction Budget) 점유 가치가 있는가?&rdquo;</a></li>
+    <li><a href="#3-agentsmd의-절대적-최소-구성-the-absolute-minimum">3. AGENTS.md의 절대적 최소 구성 (The Absolute Minimum)</a></li>
+    <li><a href="#4-점진적-공개-progressive-disclosure-아키텍처">4. 점진적 공개 (Progressive Disclosure) 아키텍처</a>
+      <ul>
+        <li><a href="#1-언어-및-영역별-규칙-분리">1) 언어 및 영역별 규칙 분리</a></li>
+        <li><a href="#2-중첩된-문서-트리-nested-documentation-tree">2) 중첩된 문서 트리 (Nested Documentation Tree)</a></li>
+        <li><a href="#3-agent-skills-연계">3) Agent Skills 연계</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-monorepo에서의-다단계-agentsmd-운용">5. Monorepo에서의 다단계 AGENTS.md 운용</a></li>
+    <li><a href="#6-망가진-agentsmd를-즉시-고치는-5단계-리팩토링-프롬프트">6. 망가진 AGENTS.md를 즉시 고치는 5단계 리팩토링 프롬프트</a></li>
+    <li><a href="#7-결론-less-is-more">7. 결론: &ldquo;Less is More&rdquo;</a></li>
   </ul>
 </nav>
   </div>
@@ -215,8 +327,9 @@
     <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
     <a href="/tags/prompt-engineering/" class="badge badge-secondary">Prompt-Engineering</a>
     <a href="/tags/architecture/" class="badge badge-secondary">Architecture</a>
-    <a href="/tags/claude-code/" class="badge badge-secondary">Claude Code</a>
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
     <a href="/tags/context-engineering/" class="badge badge-secondary">Context-Engineering</a>
+    <a href="/tags/testing/" class="badge badge-secondary">Testing</a>
   </div>
 </div>
 
