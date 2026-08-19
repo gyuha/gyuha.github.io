@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'ScrapeGraphAI: LLM과 유향 그래프(Graph) 기반 차세대 Python 웹 스크래핑 라이브러리 분석'" />
+  <title>ScrapeGraphAI: LLM과 유향 그래프(Graph) 기반 차세대 Python 웹 스크래핑 라이브러리 분석  | 신규하 블로그</title>
+  <meta property="og:title" content="ScrapeGraphAI: LLM과 유향 그래프(Graph) 기반 차세대 Python 웹 스크래핑 라이브러리 분석" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-08-19"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/08/2026-08-19-scrapegraphai-python-ai-web-scraping/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="open-source" />
+  
+  <meta property="og:tags" content="python" />
+  
+  <meta property="og:tags" content="web-scraping" />
+  
+  <meta property="og:tags" content="llm" />
+  
+  <meta property="og:tags" content="graph-engineering" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/08/2026-08-19-scrapegraphai-python-ai-web-scraping/">
+          <h1>
+            ScrapeGraphAI: LLM과 유향 그래프(Graph) 기반 차세대 Python 웹 스크래핑 라이브러리 분석
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/08/2026-08-19-scrapegraphai-python-ai-web-scraping/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>웹 스크래핑과 데이터 파이프라인 구축에서 개발자들을 가장 괴롭히는 문제는 **&ldquo;웹사이트 UI와 DOM 구조의 빈번한 변경&rdquo;**입니다. 아무리 정교하게 작성한 BeautifulSoup이나 Selenium 코드라도 클래스명이나 레이아웃이 조금만 바뀌면 CSS/XPath 셀렉터가 깨져 전체 파이프라인이 중단되곤 합니다.</p>
+<p><strong>ScrapeGraphAI</strong>(<code>Scrapegraph-ai</code>)는 대형 언어 모델(LLM)의 문맥 이해 능력과 유향 비순환 그래프(DAG) 기반의 **직접 그래프 논리(Direct Graph Logic)**를 결합하여, <strong>자연어 프롬프트 지시만으로 웹페이지 및 로컬 문서에서 구조화된 데이터를 무설정(Zero-Config)으로 추출</strong>하는 오픈소스 Python 라이브러리입니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://github.com/ScrapeGraphAI/Scrapegraph-ai">ScrapeGraphAI GitHub 공식 저장소</a></li>
+<li><a href="https://docs.scrapegraphai.com/">ScrapeGraphAI 공식 기술 문서</a></li>
+</ul>
+<hr>
+<h2 id="1-scrapegraphai의-핵심-차별점">1. ScrapeGraphAI의 핵심 차별점</h2>
+<ul>
+<li><strong>CSS/XPath 셀렉터 없는 자연어 추출</strong>:<br>
+복잡한 태그 경로를 파싱할 필요 없이 *&ldquo;이 페이지에서 제품명, 가격, 할인율, 재고 여부를 JSON으로 뽑아줘&rdquo;*라고 프롬프트를 주면 LLM이 페이지 전체 맥락을 분석해 정확한 데이터를 추출합니다.</li>
+<li><strong>레이아웃 변화에 대한 자가 적응(Self-Adapting)</strong>:<br>
+웹사이트의 HTML 구조나 클래스명이 바뀌어도 LLM이 의미론적으로 내용을 파악하므로 스크래퍼 코드를 수정할 필요가 없습니다.</li>
+<li><strong>로컬 LLM (Ollama) 완벽 지원</strong>:<br>
+OpenAI, Gemini, Claude, Groq 등 상용 API뿐만 아니라, <strong>Ollama</strong>를 통해 Llama 3, Qwen, DeepSeek 등 로컬 오픈소스 모델을 무료 및 완벽한 보안 환경에서 가동할 수 있습니다.</li>
+</ul>
+<hr>
+<h2 id="2-모듈형-그래프graph-아키텍처">2. 모듈형 그래프(Graph) 아키텍처</h2>
+<p>ScrapeGraphAI는 스크래핑 요구사항에 맞춘 4가지 사전 정의된 그래프 파이프라인을 제공합니다:</p>
+<ol>
+<li><strong><code>SmartScraperGraph</code></strong>: 단일 웹페이지 URL에서 프롬프트에 맞춰 정확한 JSON 스키마를 추출하는 기본 그래프.</li>
+<li><strong><code>SearchGraph</code></strong>: 구글/덕덕고 등 검색 엔진에서 키워드를 검색하고 상위 N개 페이지를 자동으로 탐색하여 취합하는 멀티 페이지 그래프.</li>
+<li><strong><code>OmniScraperGraph</code></strong>: 복잡한 조건 분기와 다단계 뎁스(Depth) 크롤링을 처리하는 고급 그래프.</li>
+<li><strong><code>SpeechGraph</code></strong>: 스크랩한 웹 데이터를 요약하여 즉시 음성(TTS) 오디오 파일로 생성해 주는 파이프라인.</li>
+</ol>
+<hr>
+<h2 id="3-실전-사용-코드-예시">3. 실전 사용 코드 예시</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#cf222e">from</span> <span style="color:#24292e">scrapegraphai.graphs</span> <span style="color:#cf222e">import</span> SmartScraperGraph
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 그래프 설정 (OpenAI, Gemini 또는 Ollama 로컬 모델 지정)</span>
+</span></span><span style="display:flex;"><span>graph_config <span style="color:#0550ae">=</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0a3069">&#34;llm&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#0a3069">&#34;model&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;openai/gpt-4o-mini&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#0a3069">&#34;api_key&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;YOUR_API_KEY&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">},</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0a3069">&#34;verbose&#34;</span><span style="color:#1f2328">:</span> <span style="color:#cf222e">True</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0a3069">&#34;headless&#34;</span><span style="color:#1f2328">:</span> <span style="color:#cf222e">True</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 스마트 스크래퍼 생성 및 실행</span>
+</span></span><span style="display:flex;"><span>smart_scraper <span style="color:#0550ae">=</span> SmartScraperGraph<span style="color:#1f2328">(</span>
+</span></span><span style="display:flex;"><span>    prompt<span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;모든 프로젝트의 이름과 설명을 JSON 배열 형태로 추출해 줘.&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    source<span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;https://example.com/projects&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    config<span style="color:#0550ae">=</span>graph_config
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>result <span style="color:#0550ae">=</span> smart_scraper<span style="color:#0550ae">.</span>run<span style="color:#1f2328">()</span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">print</span><span style="color:#1f2328">(</span>result<span style="color:#1f2328">)</span>
+</span></span></code></pre></div><p>Playwright 기반의 동적 JavaScript(SPA) 렌더링과 프록시 로테이션까지 지원하여, 복잡한 웹 데이터 수집 파이프라인을 단 몇 줄의 코드로 구축할 수 있습니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 08월 19일 22시 05분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/08/2026-08-19-korean-law-mcp-claude-contract-review/" rel="prev">
+        <span>Korean Law MCP: Claude와 국가법령 Open API를 결합한 계약서 독소 조항 검토 및 내용증명 자동화</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-scrapegraphai의-핵심-차별점">1. ScrapeGraphAI의 핵심 차별점</a></li>
+    <li><a href="#2-모듈형-그래프graph-아키텍처">2. 모듈형 그래프(Graph) 아키텍처</a></li>
+    <li><a href="#3-실전-사용-코드-예시">3. 실전 사용 코드 예시</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/open-source/" class="badge badge-secondary">Open Source</a>
+    <a href="/tags/python/" class="badge badge-secondary">Python</a>
+    <a href="/tags/web-scraping/" class="badge badge-secondary">Web-Scraping</a>
+    <a href="/tags/llm/" class="badge badge-secondary">LLM</a>
+    <a href="/tags/graph-engineering/" class="badge badge-secondary">Graph-Engineering</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
