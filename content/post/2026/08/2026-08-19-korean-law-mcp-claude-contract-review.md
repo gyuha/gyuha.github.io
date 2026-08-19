@@ -31,17 +31,12 @@ description: "국가법령정보센터 Open API와 연동된 Korean Law MCP를 �
 
 Korean Law MCP는 Model Context Protocol(MCP) 표준을 준수하여 Claude Desktop 및 Claude Code와 국가법령정보센터의 공공 데이터를 직접 연결합니다:
 
-```text
-[사용자 계약서 / 프롬프트]
-         │
-         ▼
-    [Claude]
-         │  (MCP Tool Call)
-         ▼
-[Korean Law MCP] ──▶ [국가법령정보센터 Open API] (법령 / 판례 / 시행령)
-         │
-         ▼
-[실시간 법령 기반 정확한 분석 보고서 및 내용증명 출력]
+```mermaid
+flowchart TD
+    User["사용자 계약서 / 프롬프트"] --> Claude["Claude (Desktop / Code)"]
+    Claude -->|"MCP Tool Call"| LawMCP["Korean Law MCP"]
+    LawMCP <-->|"실시간 법령·판례 조회"| LawAPI["국가법령정보센터 Open API\n(법령 / 판례 / 시행령)"]
+    LawMCP --> Output["실시간 법령 기반 정확한 분석 보고서 및 내용증명 출력"]
 ```
 
 * **환각 차단**: 모델 내부 지식에만 의존하지 않고, 실제 현행 법조문과 대법원 판례 데이터를 실시간 파싱하여 근거로 제시합니다.

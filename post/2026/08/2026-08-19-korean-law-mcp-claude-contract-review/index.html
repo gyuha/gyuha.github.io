@@ -111,17 +111,11 @@
 <hr>
 <h2 id="1-korean-law-mcp-연동-아키텍처">1. Korean Law MCP 연동 아키텍처</h2>
 <p>Korean Law MCP는 Model Context Protocol(MCP) 표준을 준수하여 Claude Desktop 및 Claude Code와 국가법령정보센터의 공공 데이터를 직접 연결합니다:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[사용자 계약서 / 프롬프트]
-</span></span><span style="display:flex;"><span>         │
-</span></span><span style="display:flex;"><span>         ▼
-</span></span><span style="display:flex;"><span>    [Claude]
-</span></span><span style="display:flex;"><span>         │  (MCP Tool Call)
-</span></span><span style="display:flex;"><span>         ▼
-</span></span><span style="display:flex;"><span>[Korean Law MCP] ──▶ [국가법령정보센터 Open API] (법령 / 판례 / 시행령)
-</span></span><span style="display:flex;"><span>         │
-</span></span><span style="display:flex;"><span>         ▼
-</span></span><span style="display:flex;"><span>[실시간 법령 기반 정확한 분석 보고서 및 내용증명 출력]
-</span></span></code></pre></div><ul>
+<pre class="mermaid">flowchart TD
+    User["사용자 계약서 / 프롬프트"] --> Claude["Claude (Desktop / Code)"]
+    Claude -->|"MCP Tool Call"| LawMCP["Korean Law MCP"]
+    LawMCP <-->|"실시간 법령·판례 조회"| LawAPI["국가법령정보센터 Open API\n(법령 / 판례 / 시행령)"]
+    LawMCP --> Output["실시간 법령 기반 정확한 분석 보고서 및 내용증명 출력"]</pre><ul>
 <li><strong>환각 차단</strong>: 모델 내부 지식에만 의존하지 않고, 실제 현행 법조문과 대법원 판례 데이터를 실시간 파싱하여 근거로 제시합니다.</li>
 </ul>
 <hr>
@@ -235,7 +229,7 @@
   </div>
   <div class="widget-content">
      
-    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude Code</a>
     <a href="/tags/mcp/" class="badge badge-secondary">MCP</a>
     <a href="/tags/legal-tech/" class="badge badge-secondary">Legal-Tech</a>
     <a href="/tags/korean-law/" class="badge badge-secondary">Korean-Law</a>
@@ -401,6 +395,11 @@
 
 
 
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
 
 
 

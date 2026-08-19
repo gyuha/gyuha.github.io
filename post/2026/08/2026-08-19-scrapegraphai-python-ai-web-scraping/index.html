@@ -119,7 +119,12 @@ OpenAI, Gemini, Claude, Groq 등 상용 API뿐만 아니라, <strong>Ollama</str
 </ul>
 <hr>
 <h2 id="2-모듈형-그래프graph-아키텍처">2. 모듈형 그래프(Graph) 아키텍처</h2>
-<p>ScrapeGraphAI는 스크래핑 요구사항에 맞춘 4가지 사전 정의된 그래프 파이프라인을 제공합니다:</p>
+<pre class="mermaid">flowchart LR
+    Input["웹 URL / 로컬 문서 (HTML, XML, JSON)"] --> Graph{"Graph Pipeline\n(유향 그래프 노드)"}
+    Prompt["자연어 프롬프트\n(추출할 필드 지시)"] --> Graph
+    Graph --> LLM["LLM (GPT-4o, Gemini, Claude, Ollama)"]
+    LLM --> Parse["구조화 파서 & 검증"]
+    Parse --> Output["최종 구조화 데이터 (JSON / Pydantic)"]</pre><p>ScrapeGraphAI는 스크래핑 요구사항에 맞춘 4가지 사전 정의된 그래프 파이프라인을 제공합니다:</p>
 <ol>
 <li><strong><code>SmartScraperGraph</code></strong>: 단일 웹페이지 URL에서 프롬프트에 맞춰 정확한 JSON 스키마를 추출하는 기본 그래프.</li>
 <li><strong><code>SearchGraph</code></strong>: 구글/덕덕고 등 검색 엔진에서 키워드를 검색하고 상위 N개 페이지를 자동으로 탐색하여 취합하는 멀티 페이지 그래프.</li>
@@ -226,7 +231,7 @@ OpenAI, Gemini, Claude, Groq 등 상용 API뿐만 아니라, <strong>Ollama</str
   </div>
   <div class="widget-content">
      
-    <a href="/tags/open-source/" class="badge badge-secondary">Open Source</a>
+    <a href="/tags/open-source/" class="badge badge-secondary">Open-Source</a>
     <a href="/tags/python/" class="badge badge-secondary">Python</a>
     <a href="/tags/web-scraping/" class="badge badge-secondary">Web-Scraping</a>
     <a href="/tags/llm/" class="badge badge-secondary">LLM</a>
@@ -392,6 +397,11 @@ OpenAI, Gemini, Claude, Groq 등 상용 API뿐만 아니라, <strong>Ollama</str
 
 
 
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
 
 
 

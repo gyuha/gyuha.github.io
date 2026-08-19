@@ -39,6 +39,15 @@ description: "CSS/XPath 셀렉터 작성 없이 자연어 프롬프트와 유향
 
 ## 2. 모듈형 그래프(Graph) 아키텍처
 
+```mermaid
+flowchart LR
+    Input["웹 URL / 로컬 문서 (HTML, XML, JSON)"] --> Graph{"Graph Pipeline\n(유향 그래프 노드)"}
+    Prompt["자연어 프롬프트\n(추출할 필드 지시)"] --> Graph
+    Graph --> LLM["LLM (GPT-4o, Gemini, Claude, Ollama)"]
+    LLM --> Parse["구조화 파서 & 검증"]
+    Parse --> Output["최종 구조화 데이터 (JSON / Pydantic)"]
+```
+
 ScrapeGraphAI는 스크래핑 요구사항에 맞춘 4가지 사전 정의된 그래프 파이프라인을 제공합니다:
 
 1. **`SmartScraperGraph`**: 단일 웹페이지 URL에서 프롬프트에 맞춰 정확한 JSON 스키마를 추출하는 기본 그래프.
