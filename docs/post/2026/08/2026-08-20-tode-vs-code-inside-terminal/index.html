@@ -110,14 +110,24 @@
 <hr>
 <h2 id="1-tode-내부-작동-아키텍처">1. tode 내부 작동 아키텍처</h2>
 <pre class="mermaid">flowchart TD
-    User["개발자 터미널 세션\n(로컬 / SSH 원격 접속)"] --> TermWindow["터미널 디스플레이 창\n(Kitty Graphics Protocol 지원)"]
+    classDef clientNode fill:#c5dcef,stroke:#2b6cb0,stroke-width:1.5px,color:#333;
+    classDef termNode fill:#e0c8ef,stroke:#6b46c1,stroke-width:1.5px,color:#333;
+    classDef coreNode fill:#fde8c0,stroke:#d69e2e,stroke-width:1.5px,color:#333;
+    classDef syncNode fill:#c0ecd3,stroke:#38a169,stroke-width:1.5px,color:#333;
+
+    User["개발자 터미널 세션<br>(로컬 / SSH 원격 접속)"] --> TermWindow["터미널 디스플레이 창<br>(Kitty Graphics Protocol 지원)"]
     subgraph TodeCore["tode 내부 엔진"]
-        TermBrowser["terminal-browser\n(터미널 내 그래픽/웹 렌더러)"]
-        CodeServer["code-server\n(웹 기반 정식 VS Code 코어)"]
+        TermBrowser["terminal-browser<br>(터미널 내 그래픽/웹 렌더러)"]
+        CodeServer["code-server<br>(웹 기반 정식 VS Code 코어)"]
         TermBrowser <--> CodeServer
     end
     TermWindow <--> TodeCore
-    TodeCore --> Sync["기존 VS Code 설정·단축키·확장 마이그레이션\n& 터미널 테마 자동 동기화"]</pre><hr>
+    TodeCore --> Sync["기존 VS Code 설정·단축키·확장 마이그레이션<br>& 터미널 테마 자동 동기화"]
+
+    class User clientNode;
+    class TermWindow termNode;
+    class TermBrowser,CodeServer coreNode;
+    class Sync syncNode;</pre><hr>
 <h2 id="2-tode의-핵심-원리와-차별점">2. tode의 핵심 원리와 차별점</h2>
 <ul>
 <li><strong>에디터를 터미널용으로 재작성하지 않음</strong>:

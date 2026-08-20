@@ -30,12 +30,22 @@ description: "클로드 코드 사용 시 토큰 한도 초과(Rate Limit)와 �
 
 ```mermaid
 flowchart TD
+    classDef inputNode fill:#c5dcef,stroke:#2b6cb0,stroke-width:1.5px,color:#333;
+    classDef coreNode fill:#e0c8ef,stroke:#6b46c1,stroke-width:1.5px,color:#333;
+    classDef optNode fill:#fde8c0,stroke:#d69e2e,stroke-width:1.5px,color:#333;
+    classDef memNode fill:#c0ecd3,stroke:#38a169,stroke-width:1.5px,color:#333;
+
     User["사용자 / 개발자"] --> Claude["Claude Code CLI"]
-    Claude --> Omni["OmniRoute\n(자동 Failover & 모델 라우팅)"]
-    Claude --> Head["Headroom\n(스마트 사전 컨텍스트 압축)"]
-    Claude --> Mem["Claude-mem\n(영속 메모리 계층)"]
-    Claude --> Setup["Claude Code Setup\n(스킬 & MCP 자동 분석 초기화)"]
-    Claude --> Obs["Task Observer\n(작업 루프 모니터링 & 최적화)"]
+    Claude --> Omni["OmniRoute<br>(자동 Failover & 모델 라우팅)"]
+    Claude --> Head["Headroom<br>(스마트 사전 컨텍스트 압축)"]
+    Claude --> Mem["Claude-mem<br>(영속 메모리 계층)"]
+    Claude --> Setup["Claude Code Setup<br>(스킬 & MCP 자동 분석 초기화)"]
+    Claude --> Obs["Task Observer<br>(작업 루프 모니터링 & 최적화)"]
+
+    class User inputNode;
+    class Claude coreNode;
+    class Omni,Head optNode;
+    class Mem,Setup,Obs memNode;
 ```
 
 ---

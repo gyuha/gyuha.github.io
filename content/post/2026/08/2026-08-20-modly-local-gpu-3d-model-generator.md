@@ -29,16 +29,28 @@ description: "클라우드 구독과 API 키 없이 이미지나 프롬프트에
 ## 1. Modly 로컬 3D 생성 아키텍처
 
 ```mermaid
-flowchart LR
-    Input["입력 소스\n(이미지 드래그 / 텍스트 프롬프트)"] --> Engine["Modly 로컬 GPU 엔진\n(완전 오프라인 구동)"]
+flowchart TD
+    classDef inputNode fill:#c5dcef,stroke:#2b6cb0,stroke-width:1.5px,color:#333;
+    classDef coreNode fill:#e0c8ef,stroke:#6b46c1,stroke-width:1.5px,color:#333;
+    classDef modelNode fill:#fde8c0,stroke:#d69e2e,stroke-width:1.5px,color:#333;
+    classDef procNode fill:#ffc8c4,stroke:#e53e3e,stroke-width:1.5px,color:#333;
+    classDef outNode fill:#c0ecd3,stroke:#38a169,stroke-width:1.5px,color:#333;
+
+    Input["입력 소스<br>(이미지 드래그 / 텍스트 프롬프트)"] --> Engine["Modly 로컬 GPU 엔진<br>(완전 오프라인 구동)"]
     subgraph Models["확장 가능한 3D 생성 AI 모델"]
         Hunyuan["Hunyuan3D 2.0 / Mini / Turbo"]
         Trellis["Trellis / Trellis 2"]
         Tripo["TripoSR / TripoSG"]
     end
     Engine <--> Models
-    Engine --> NodeProcess["노드 기반 내장 후가공\n(Smoothing, Decimation, Remesh)"]
-    NodeProcess --> Export["다양한 3D 포맷 익스포트\n(STL, GLB/GLTF, OBJ, PLY)"]
+    Engine --> NodeProcess["노드 기반 내장 후가공<br>(Smoothing, Decimation, Remesh)"]
+    NodeProcess --> Export["다양한 3D 포맷 익스포트<br>(STL, GLB/GLTF, OBJ, PLY)"]
+
+    class Input inputNode;
+    class Engine coreNode;
+    class Hunyuan,Trellis,Tripo modelNode;
+    class NodeProcess procNode;
+    class Export outNode;
 ```
 
 ---

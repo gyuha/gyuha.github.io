@@ -109,12 +109,26 @@
 </ul>
 <hr>
 <h2 id="1-5단계-ai-쇼츠-제작-파이프라인">1. 5단계 AI 쇼츠 제작 파이프라인</h2>
-<pre class="mermaid">flowchart LR
-    Step1["1. ChatGPT\n(대본 & 프롬프트 기획)"] --> Step2["2. Topview / Midjourney\n(3D 건축 단면 이미지 생성)"]
-    Step2 --> Step3["3. Seedance 2.0\n(Image-to-Video 3D 모션 변환)"]
-    Step3 --> Step4["4. AI TTS\n(보이스오버 나레이션 생성)"]
-    Step4 --> Step5["5. CapCut\n(자동 자막 / SFX / 컷 편집)"]
-    Step5 --> Output["최종 3D 지식 쇼츠 영상 완성"]</pre><hr>
+<pre class="mermaid">flowchart TD
+    classDef step1 fill:#c5dcef,stroke:#2b6cb0,stroke-width:1.5px,color:#333;
+    classDef step2 fill:#e0c8ef,stroke:#6b46c1,stroke-width:1.5px,color:#333;
+    classDef step3 fill:#fde8c0,stroke:#d69e2e,stroke-width:1.5px,color:#333;
+    classDef step4 fill:#ffc8c4,stroke:#e53e3e,stroke-width:1.5px,color:#333;
+    classDef step5 fill:#c0ecd3,stroke:#38a169,stroke-width:1.5px,color:#333;
+    classDef outNode fill:#c0ecd3,stroke:#276749,stroke-width:2px,color:#333;
+
+    Step1["1. ChatGPT<br>(대본 & 프롬프트 기획)"] --> Step2["2. Topview / Midjourney<br>(3D 건축 단면 이미지 생성)"]
+    Step2 --> Step3["3. Seedance 2.0<br>(Image-to-Video 3D 모션 변환)"]
+    Step3 --> Step4["4. AI TTS<br>(보이스오버 나레이션 생성)"]
+    Step4 --> Step5["5. CapCut<br>(자동 자막 / SFX / 컷 편집)"]
+    Step5 --> Output["최종 3D 지식 쇼츠 영상 완성"]
+
+    class Step1 step1;
+    class Step2 step2;
+    class Step3 step3;
+    class Step4 step4;
+    class Step5 step5;
+    class Output outNode;</pre><hr>
 <h2 id="2-단계별-상세-제작-워크플로우">2. 단계별 상세 제작 워크플로우</h2>
 <ol>
 <li><strong>기획 및 프롬프트 생성 (ChatGPT)</strong>:

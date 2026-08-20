@@ -40,12 +40,22 @@ description: "CSS/XPath 셀렉터 작성 없이 자연어 프롬프트와 유향
 ## 2. 모듈형 그래프(Graph) 아키텍처
 
 ```mermaid
-flowchart LR
-    Input["웹 URL / 로컬 문서 (HTML, XML, JSON)"] --> Graph{"Graph Pipeline\n(유향 그래프 노드)"}
-    Prompt["자연어 프롬프트\n(추출할 필드 지시)"] --> Graph
-    Graph --> LLM["LLM (GPT-4o, Gemini, Claude, Ollama)"]
+flowchart TD
+    classDef inputNode fill:#c5dcef,stroke:#2b6cb0,stroke-width:1.5px,color:#333;
+    classDef graphNode fill:#e0c8ef,stroke:#6b46c1,stroke-width:1.5px,color:#333;
+    classDef llmNode fill:#fde8c0,stroke:#d69e2e,stroke-width:1.5px,color:#333;
+    classDef outNode fill:#c0ecd3,stroke:#38a169,stroke-width:1.5px,color:#333;
+
+    Input["웹 URL / 로컬 문서<br>(HTML, XML, JSON)"] --> Graph{"Graph Pipeline<br>(유향 그래프 노드)"}
+    Prompt["자연어 프롬프트<br>(추출할 필드 지시)"] --> Graph
+    Graph --> LLM["LLM 엔진<br>(GPT-4o, Gemini, Claude, Ollama)"]
     LLM --> Parse["구조화 파서 & 검증"]
-    Parse --> Output["최종 구조화 데이터 (JSON / Pydantic)"]
+    Parse --> Output["최종 구조화 데이터<br>(JSON / Pydantic)"]
+
+    class Input,Prompt inputNode;
+    class Graph,Parse graphNode;
+    class LLM llmNode;
+    class Output outNode;
 ```
 
 ScrapeGraphAI는 스크래핑 요구사항에 맞춘 4가지 사전 정의된 그래프 파이프라인을 제공합니다:

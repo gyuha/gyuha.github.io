@@ -109,16 +109,28 @@
 </ul>
 <hr>
 <h2 id="1-modly-로컬-3d-생성-아키텍처">1. Modly 로컬 3D 생성 아키텍처</h2>
-<pre class="mermaid">flowchart LR
-    Input["입력 소스\n(이미지 드래그 / 텍스트 프롬프트)"] --> Engine["Modly 로컬 GPU 엔진\n(완전 오프라인 구동)"]
+<pre class="mermaid">flowchart TD
+    classDef inputNode fill:#c5dcef,stroke:#2b6cb0,stroke-width:1.5px,color:#333;
+    classDef coreNode fill:#e0c8ef,stroke:#6b46c1,stroke-width:1.5px,color:#333;
+    classDef modelNode fill:#fde8c0,stroke:#d69e2e,stroke-width:1.5px,color:#333;
+    classDef procNode fill:#ffc8c4,stroke:#e53e3e,stroke-width:1.5px,color:#333;
+    classDef outNode fill:#c0ecd3,stroke:#38a169,stroke-width:1.5px,color:#333;
+
+    Input["입력 소스<br>(이미지 드래그 / 텍스트 프롬프트)"] --> Engine["Modly 로컬 GPU 엔진<br>(완전 오프라인 구동)"]
     subgraph Models["확장 가능한 3D 생성 AI 모델"]
         Hunyuan["Hunyuan3D 2.0 / Mini / Turbo"]
         Trellis["Trellis / Trellis 2"]
         Tripo["TripoSR / TripoSG"]
     end
     Engine <--> Models
-    Engine --> NodeProcess["노드 기반 내장 후가공\n(Smoothing, Decimation, Remesh)"]
-    NodeProcess --> Export["다양한 3D 포맷 익스포트\n(STL, GLB/GLTF, OBJ, PLY)"]</pre><hr>
+    Engine --> NodeProcess["노드 기반 내장 후가공<br>(Smoothing, Decimation, Remesh)"]
+    NodeProcess --> Export["다양한 3D 포맷 익스포트<br>(STL, GLB/GLTF, OBJ, PLY)"]
+
+    class Input inputNode;
+    class Engine coreNode;
+    class Hunyuan,Trellis,Tripo modelNode;
+    class NodeProcess procNode;
+    class Export outNode;</pre><hr>
 <h2 id="2-주요-핵심-기능-및-차별점">2. 주요 핵심 기능 및 차별점</h2>
 <ol>
 <li><strong>100% 로컬 오프라인 실행 &amp; 프라이버시 보호</strong>:
@@ -229,9 +241,9 @@
   </div>
   <div class="widget-content">
      
-    <a href="/tags/open-source/" class="badge badge-secondary">Open Source</a>
+    <a href="/tags/open-source/" class="badge badge-secondary">Open-Source</a>
     <a href="/tags/3d-modeling/" class="badge badge-secondary">3d-Modeling</a>
-    <a href="/tags/local-ai/" class="badge badge-secondary">Local AI</a>
+    <a href="/tags/local-ai/" class="badge badge-secondary">Local-Ai</a>
     <a href="/tags/gpu/" class="badge badge-secondary">Gpu</a>
     <a href="/tags/hunyuan3d/" class="badge badge-secondary">Hunyuan3d</a>
   </div>

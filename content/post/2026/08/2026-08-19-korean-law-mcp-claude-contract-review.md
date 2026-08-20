@@ -33,10 +33,20 @@ Korean Law MCP는 Model Context Protocol(MCP) 표준을 준수하여 Claude Desk
 
 ```mermaid
 flowchart TD
+    classDef inputNode fill:#c5dcef,stroke:#2b6cb0,stroke-width:1.5px,color:#333;
+    classDef procNode fill:#e0c8ef,stroke:#6b46c1,stroke-width:1.5px,color:#333;
+    classDef apiNode fill:#fde8c0,stroke:#d69e2e,stroke-width:1.5px,color:#333;
+    classDef outNode fill:#c0ecd3,stroke:#38a169,stroke-width:1.5px,color:#333;
+
     User["사용자 계약서 / 프롬프트"] --> Claude["Claude (Desktop / Code)"]
     Claude -->|"MCP Tool Call"| LawMCP["Korean Law MCP"]
-    LawMCP <-->|"실시간 법령·판례 조회"| LawAPI["국가법령정보센터 Open API\n(법령 / 판례 / 시행령)"]
+    LawMCP <-->|"실시간 법령·판례 조회"| LawAPI["국가법령정보센터 Open API<br>(법령 / 판례 / 시행령)"]
     LawMCP --> Output["실시간 법령 기반 정확한 분석 보고서 및 내용증명 출력"]
+
+    class User inputNode;
+    class Claude,LawMCP procNode;
+    class LawAPI apiNode;
+    class Output outNode;
 ```
 
 * **환각 차단**: 모델 내부 지식에만 의존하지 않고, 실제 현행 법조문과 대법원 판례 데이터를 실시간 파싱하여 근거로 제시합니다.

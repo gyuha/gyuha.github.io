@@ -30,14 +30,24 @@ Next.js 팀 출신 엔지니어 Rob Pruzan이 공개한 **`tode` (terminal-code)
 
 ```mermaid
 flowchart TD
-    User["개발자 터미널 세션\n(로컬 / SSH 원격 접속)"] --> TermWindow["터미널 디스플레이 창\n(Kitty Graphics Protocol 지원)"]
+    classDef clientNode fill:#c5dcef,stroke:#2b6cb0,stroke-width:1.5px,color:#333;
+    classDef termNode fill:#e0c8ef,stroke:#6b46c1,stroke-width:1.5px,color:#333;
+    classDef coreNode fill:#fde8c0,stroke:#d69e2e,stroke-width:1.5px,color:#333;
+    classDef syncNode fill:#c0ecd3,stroke:#38a169,stroke-width:1.5px,color:#333;
+
+    User["개발자 터미널 세션<br>(로컬 / SSH 원격 접속)"] --> TermWindow["터미널 디스플레이 창<br>(Kitty Graphics Protocol 지원)"]
     subgraph TodeCore["tode 내부 엔진"]
-        TermBrowser["terminal-browser\n(터미널 내 그래픽/웹 렌더러)"]
-        CodeServer["code-server\n(웹 기반 정식 VS Code 코어)"]
+        TermBrowser["terminal-browser<br>(터미널 내 그래픽/웹 렌더러)"]
+        CodeServer["code-server<br>(웹 기반 정식 VS Code 코어)"]
         TermBrowser <--> CodeServer
     end
     TermWindow <--> TodeCore
-    TodeCore --> Sync["기존 VS Code 설정·단축키·확장 마이그레이션\n& 터미널 테마 자동 동기화"]
+    TodeCore --> Sync["기존 VS Code 설정·단축키·확장 마이그레이션<br>& 터미널 테마 자동 동기화"]
+
+    class User clientNode;
+    class TermWindow termNode;
+    class TermBrowser,CodeServer coreNode;
+    class Sync syncNode;
 ```
 
 ---
