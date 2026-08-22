@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'llmfit: 내 PC 사양(VRAM·RAM)을 자동 분석하여 최적의 로컬 LLM을 추천하는 Rust 오픈소스 도구'" />
+  <title>llmfit: 내 PC 사양(VRAM·RAM)을 자동 분석하여 최적의 로컬 LLM을 추천하는 Rust 오픈소스 도구  | 신규하 블로그</title>
+  <meta property="og:title" content="llmfit: 내 PC 사양(VRAM·RAM)을 자동 분석하여 최적의 로컬 LLM을 추천하는 Rust 오픈소스 도구" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-08-22"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/08/2026-08-22-llmfit-hardware-aware-local-llm-ranking/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="llm" />
+  
+  <meta property="og:tags" content="terminal" />
+  
+  <meta property="og:tags" content="productivity" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/08/2026-08-22-llmfit-hardware-aware-local-llm-ranking/">
+          <h1>
+            llmfit: 내 PC 사양(VRAM·RAM)을 자동 분석하여 최적의 로컬 LLM을 추천하는 Rust 오픈소스 도구
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/08/2026-08-22-llmfit-hardware-aware-local-llm-ranking/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Llama 3, Qwen, DeepSeek 등 다양한 오픈소스 LLM이 쏟아져 나오면서 내 PC에서 직접 로컬 AI를 구동하려는 개발자가 늘고 있습니다. 하지만 특정 모델이 내 컴퓨터에서 원활하게 돌아갈지, VRAM이 부족해 OOM(Out of Memory)이 발생하진 않을지 일일이 다운로드받아 테스트하는 것은 상당한 시간과 저장 공간을 낭비하게 만듭니다.</p>
+<p><strong><code>llmfit</code></strong>(<code>AlexsJones/llmfit</code>)은 터미널 실행 즉시 <strong>시스템 하드웨어를 스캔하여 내 PC 환경에서 가장 완벽하게 구동되는 최적의 로컬 모델과 양자화(Quantization) 버전을 랭킹으로 제안하는 Rust 기반 오픈소스 CLI/TUI 도구</strong>입니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://x.com/MoureDev/status/2090068954299371994">원문 X 게시물: Brais Moure</a></li>
+<li><a href="https://www.llmfit.org/">llmfit 공식 웹사이트</a></li>
+<li><a href="https://github.com/AlexsJones/llmfit">llmfit GitHub 공식 저장소</a></li>
+</ul>
+<hr>
+<h2 id="1-llmfit-하드웨어-평가-아키텍처">1. llmfit 하드웨어 평가 아키텍처</h2>
+<pre class="mermaid">flowchart TD
+    classDef hwNode fill:#c5dcef,stroke:#2b6cb0,stroke-width:1.5px,color:#333;
+    classDef engineNode fill:#e0c8ef,stroke:#6b46c1,stroke-width:1.5px,color:#333;
+    classDef quantNode fill:#fde8c0,stroke:#d69e2e,stroke-width:1.5px,color:#333;
+    classDef outNode fill:#c0ecd3,stroke:#38a169,stroke-width:1.5px,color:#333;
+
+    System["시스템 하드웨어 자동 스캔<br>(RAM, CPU, GPU VRAM, Apple Silicon)"] --> Engine["llmfit 평가 엔진 (Rust)"]
+    Engine --> Quant["양자화 최적화 계산<br>(Q4_K_M, Q8_0, FP16)"]
+    Quant --> Bench["로컬 실전 벤치마크<br>(Ollama, llama.cpp, MLX)"]
+    Bench --> Output["내 PC 맞춤형 모델 랭킹 & TUI 대시보드"]
+
+    class System hwNode;
+    class Engine engineNode;
+    class Quant,Bench quantNode;
+    class Output outNode;</pre><hr>
+<h2 id="2-주요-핵심-기능">2. 주요 핵심 기능</h2>
+<ol>
+<li><strong>초고속 하드웨어 자동 감지</strong>:
+<ul>
+<li>Apple Silicon(통합 메모리), NVIDIA(CUDA VRAM), AMD, Intel Arc, NPU를 즉각 인식하여 가용 메모리와 대역폭을 파악합니다.</li>
+</ul>
+</li>
+<li><strong>다차원 모델 스코어링 &amp; 추천 랭킹</strong>:
+<ul>
+<li>모델별 출력 품질(Quality), 예상 추론 속도(tokens/sec), 메모리 적합도, 컨텍스트 윈도우 지원 크기를 종합 점수화하여 최적의 추천 리스트를 제공합니다.</li>
+</ul>
+</li>
+<li><strong>최적 양자화(Quantization) 레벨 자동 제안</strong>:
+<ul>
+<li>메모리 부족 오류 없이 최상의 추론 품질을 얻을 수 있는 정밀한 양자화 포맷(Q4_K_M, Q8_0, FP16 등)을 알아서 계산합니다.</li>
+</ul>
+</li>
+<li><strong>로컬 실측 벤치마크 지원</strong>:
+<ul>
+<li>Ollama, llama.cpp, MLX 런타임과 직접 연동하여 내 하드웨어에서의 실제 토큰 생성 속도를 측정하고 결과를 커뮤니티와 공유할 수 있습니다.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="3-설치-및-사용법">3. 설치 및 사용법</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># macOS / Linux (Homebrew)</span>
+</span></span><span style="display:flex;"><span>brew install AlexsJones/llmfit/llmfit
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Windows (Scoop)</span>
+</span></span><span style="display:flex;"><span>scoop install llmfit
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Rust Cargo</span>
+</span></span><span style="display:flex;"><span>cargo install llmfit
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 실행 (인터랙티브 TUI 대시보드)</span>
+</span></span><span style="display:flex;"><span>llmfit
+</span></span></code></pre></div>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 08월 22일 08시 14분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/08/2026-08-22-rag-vs-cag-lmcache-hybrid-architecture/" rel="prev">
+        <span>RAG vs CAG: KV 캐시 기반 Cache-Augmented Generation과 LMCache 하이브리드 아키텍처</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-llmfit-하드웨어-평가-아키텍처">1. llmfit 하드웨어 평가 아키텍처</a></li>
+    <li><a href="#2-주요-핵심-기능">2. 주요 핵심 기능</a></li>
+    <li><a href="#3-설치-및-사용법">3. 설치 및 사용법</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/llm/" class="badge badge-secondary">Llm</a>
+    <a href="/tags/terminal/" class="badge badge-secondary">Terminal</a>
+    <a href="/tags/productivity/" class="badge badge-secondary">Productivity</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

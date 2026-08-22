@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'RAG vs CAG: KV 캐시 기반 Cache-Augmented Generation과 LMCache 하이브리드 아키텍처'" />
+  <title>RAG vs CAG: KV 캐시 기반 Cache-Augmented Generation과 LMCache 하이브리드 아키텍처  | 신규하 블로그</title>
+  <meta property="og:title" content="RAG vs CAG: KV 캐시 기반 Cache-Augmented Generation과 LMCache 하이브리드 아키텍처" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-08-22"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/08/2026-08-22-rag-vs-cag-lmcache-hybrid-architecture/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="rag" />
+  
+  <meta property="og:tags" content="llm" />
+  
+  <meta property="og:tags" content="data-engineering" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/08/2026-08-22-rag-vs-cag-lmcache-hybrid-architecture/">
+          <h1>
+            RAG vs CAG: KV 캐시 기반 Cache-Augmented Generation과 LMCache 하이브리드 아키텍처
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/08/2026-08-22-rag-vs-cag-lmcache-hybrid-architecture/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>전통적인 검색 증강 생성(RAG)은 최신 데이터를 LLM에 주입하는 표준 기술로 자리 잡았지만, **&ldquo;수개월 동안 전혀 변하지 않는 정적 데이터(사내 규정, API 문서, 고정 지침)조차 매 쿼리마다 벡터 DB 검색과 임베딩 연산을 반복해야 하는 비효율&rdquo;**이 존재합니다.</p>
+<p>**CAG (Cache-Augmented Generation, 캐시 증강 생성)**는 모델이 읽은 토큰을 내부 <strong>KV (Key-Value) 캐시 메모리</strong>에 영구 보관해 두고 즉각 재사용하는 방식으로, RAG와 결합했을 때 <strong>추론 속도를 2~4배 향상시키고 토큰 비용을 획기적으로 절감</strong>할 수 있습니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://x.com/akshay_pachaar/status/2090427358964830612">원문 X 게시물: Akshay Pachaar</a></li>
+<li><a href="https://github.com/LMCache/LMCache">LMCache GitHub 공식 오픈소스 저장소</a></li>
+</ul>
+<hr>
+<h2 id="1-rag--cag-하이브리드-아키텍처">1. RAG + CAG 하이브리드 아키텍처</h2>
+<pre class="mermaid">flowchart TD
+    classDef queryNode fill:#c5dcef,stroke:#2b6cb0,stroke-width:1.5px,color:#333;
+    classDef routerNode fill:#e0c8ef,stroke:#6b46c1,stroke-width:1.5px,color:#333;
+    classDef coldNode fill:#fde8c0,stroke:#d69e2e,stroke-width:1.5px,color:#333;
+    classDef hotNode fill:#ffc8c4,stroke:#e53e3e,stroke-width:1.5px,color:#333;
+    classDef outNode fill:#c0ecd3,stroke:#38a169,stroke-width:1.5px,color:#333;
+
+    Query["사용자 쿼리"] --> Router{"지식 분류 라우터"}
+    Router -->|"정적 지식 (Cold Data)"| CAG["CAG: KV 캐시 메모리 적재<br>(LMCache / CacheBlend)"]
+    Router -->|"동적 지식 (Hot Data)"| RAG["RAG: 실시간 벡터 DB 검색<br>(최신 데이터 추출)"]
+    CAG --> Blend["컨텍스트 결합 및 추론"]
+    RAG --> Blend
+    Blend --> Output["2~4배 빠른 고품질 답변 생성"]
+
+    class Query queryNode;
+    class Router routerNode;
+    class CAG coldNode;
+    class RAG hotNode;
+    class Blend,Output outNode;</pre><hr>
+<h2 id="2-2계층-지식-분할-전략">2. 2계층 지식 분할 전략</h2>
+<ul>
+<li><strong>Cold Data (정적 지식 계층 - CAG)</strong>:
+<ul>
+<li>사내 규정집, 제품 카탈로그, 프레임워크 공식 문서 등 거의 바뀌지 않는 데이터는 모델의 KV 캐시(Prompt Cache)에 1회 적재하여 영구 재사용합니다.</li>
+</ul>
+</li>
+<li><strong>Hot Data (동적 지식 계층 - RAG)</strong>:
+<ul>
+<li>당일 뉴스, 실시간 주가, 최근 대화 세션 로그 등 실시간 변동 데이터만 벡터 DB 검색을 통해 동적으로 가져옵니다.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="3-prefix-caching의-맹점과-lmcache의-해결책">3. Prefix Caching의 맹점과 LMCache의 해결책</h2>
+<ul>
+<li><strong>기존 Prompt Caching의 한계</strong>:
+<ul>
+<li>상용 API(OpenAI, Anthropic)의 프롬프트 캐싱은 <strong>바이트 단위의 정확한 접두사(Exact Prefix) 일치</strong>에만 작동합니다.</li>
+<li>두 개 이상의 캐시된 문서를 결합하거나 순서가 바뀌면 즉시 캐시 미스(Cache Miss)가 발생하여 캐시 활용률이 급감합니다.</li>
+</ul>
+</li>
+<li><strong>CacheBlend (LMCache)의 혁신</strong>:
+<ul>
+<li>트랜스포머의 어텐션은 대부분 문서 내부 로컬 토큰끼리 참조하고, 문서 경계를 넘는 어텐션은 극소수라는 점에 착안.</li>
+<li><strong>CacheBlend</strong>는 문서 경계의 극소수 토큰만 빠르게 재계산하고 개별 캐시된 KV 블록들을 동적으로 병합하여, <strong>문서 결합 순서와 무관하게 2~4배 빠른 속도로 다중 문서를 쿼리</strong>할 수 있도록 지원합니다.</li>
+</ul>
+</li>
+</ul>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 08월 22일 08시 07분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/08/2026-08-22-fluent-korean-claude-code-plugin/" rel="prev">
+        <span>fluent-korean: 국어학 관점에서 클로드 코드의 한국어 어투와 조사를 교정하는 스킬 플러그인</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/08/2026-08-22-llmfit-hardware-aware-local-llm-ranking/" rel="next">
+        <span>llmfit: 내 PC 사양(VRAM·RAM)을 자동 분석하여 최적의 로컬 LLM을 추천하는 Rust 오픈소스 도구</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-rag--cag-하이브리드-아키텍처">1. RAG + CAG 하이브리드 아키텍처</a></li>
+    <li><a href="#2-2계층-지식-분할-전략">2. 2계층 지식 분할 전략</a></li>
+    <li><a href="#3-prefix-caching의-맹점과-lmcache의-해결책">3. Prefix Caching의 맹점과 LMCache의 해결책</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/rag/" class="badge badge-secondary">Rag</a>
+    <a href="/tags/llm/" class="badge badge-secondary">Llm</a>
+    <a href="/tags/data-engineering/" class="badge badge-secondary">Data-Engineering</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
