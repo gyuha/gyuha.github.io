@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'design-extract: URL 입력 1커맨드로 웹사이트 전체 디자인 시스템과 토큰을 역추출하는 오픈소스'" />
+  <title>design-extract: URL 입력 1커맨드로 웹사이트 전체 디자인 시스템과 토큰을 역추출하는 오픈소스  | 신규하 블로그</title>
+  <meta property="og:title" content="design-extract: URL 입력 1커맨드로 웹사이트 전체 디자인 시스템과 토큰을 역추출하는 오픈소스" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-08-28"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/08/2026-08-28-design-extract-website-design-system-tokens/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="skills" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+  <meta property="og:tags" content="productivity" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/08/2026-08-28-design-extract-website-design-system-tokens/">
+          <h1>
+            design-extract: URL 입력 1커맨드로 웹사이트 전체 디자인 시스템과 토큰을 역추출하는 오픈소스
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/08/2026-08-28-design-extract-website-design-system-tokens/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>레퍼런스 삼고 싶은 세련된 웹사이트를 발견했을 때, 브라우저 개발자 도구(F12)를 열고 일일이 색상 코드와 폰트 크기, 마진/패딩 여백을 복사해 오는 작업은 상당한 시간과 노력을 소모합니다.</p>
+<p><strong><code>design-extract</code></strong>(<code>Manavarya09/design-extract</code>)는 URL 입력 한 줄로 <strong>웹사이트의 색상, 타이포그래피, 반응형 브레이크포인트, 상태 스타일(Hover/Focus)을 분석하여 Tailwind CSS 설정, Figma Variables, shadcn/ui 테마 코드로 즉시 변환해 주는 오픈소스 도구</strong>입니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://x.com/trendtech33566/status/2092915126336909701">원문 X 게시물: GitHub AI Projects Community 🇯🇵 (@trendtech33566)</a></li>
+<li><a href="https://github.com/Manavarya09/design-extract">design-extract GitHub 공식 저장소 (Manavarya09/design-extract)</a></li>
+</ul>
+<hr>
+<h2 id="1-design-extract-추출-및-변환-파이프라인">1. design-extract 추출 및 변환 파이프라인</h2>
+<pre class="mermaid">flowchart TD
+    classDef urlNode fill:#c5dcef,stroke:#2b6cb0,stroke-width:1.5px,color:#333;
+    classDef parseNode fill:#e0c8ef,stroke:#6b46c1,stroke-width:1.5px,color:#333;
+    classDef exportNode fill:#fde8c0,stroke:#d69e2e,stroke-width:1.5px,color:#333;
+    classDef auditNode fill:#c0ecd3,stroke:#38a169,stroke-width:1.5px,color:#333;
+
+    URL["레퍼런스 웹사이트 URL 입력"] --> Engine["design-extract 1커맨드 분석"]
+    Engine --> Tokens["디자인 토큰 & Tailwind 설정 생성<br>(색상 팔레트 / 폰트 스택 / 간격)"]
+    Engine --> Exports["Figma Variables & shadcn/ui 테마 변환"]
+    Engine --> Audits["상태 인터랙션 & WCAG 접근성 감사"]
+
+    class URL urlNode;
+    class Engine,Tokens parseNode;
+    class Exports exportNode;
+    class Audits auditNode;</pre><hr>
+<h2 id="2-주요-핵심-기능-및-차별점">2. 주요 핵심 기능 및 차별점</h2>
+<ol>
+<li><strong>원클릭 디자인 토큰 &amp; Tailwind 설정 생성</strong>:
+<ul>
+<li>웹페이지 전반에서 쓰인 프라이머리/세컨더리 컬러 팔레트, 폰트 패밀리, 스페이싱, 둥근 모서리(Border Radius) 값을 추출해 <code>tailwind.config.js</code> 및 CSS 변수로 패키징합니다.</li>
+</ul>
+</li>
+<li><strong>Figma Variables &amp; shadcn/ui 테마 호환</strong>:
+<ul>
+<li>UI 디자이너가 쓰는 Figma의 Variables JSON 포맷 및 React 프론트엔드 생태계 표준인 shadcn/ui 테마 형식으로 원클릭 변환을 지원합니다.</li>
+</ul>
+</li>
+<li><strong>인터랙션 상태(State) &amp; 반응형 뷰포트 정밀 분석</strong>:
+<ul>
+<li>정적인 화면 요소뿐만 아니라 hover, focus, active 시 변화하는 스타일과 모바일/태블릿 반응형 레이아웃 룰을 추출합니다.</li>
+</ul>
+</li>
+<li><strong>WCAG 웹 접근성 &amp; 디자인 일관성(Drift) 감사</strong>:
+<ul>
+<li>텍스트와 배경의 명도 대비율을 자동으로 검사해 웹 접근성 준수 여부를 확인하고, 시스템 표준에서 벗어난 변칙 스타일을 감지합니다.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="3-시사점">3. 시사점</h2>
+<p>UI 리서치와 프론트엔드 초기 세팅 시간을 대폭 단축하여, <strong>훌륭한 웹 디자인 레퍼런스를 내 프로젝트와 디자인 시스템에 즉시 이식하고 재활용</strong>할 수 있는 실전 생산성 도구입니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 08월 28일 17시 51분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/web">Web</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/08/2026-08-28-warp-skill-doctor-agent-skill-evaluation/" rel="prev">
+        <span>Warp Skill-doctor: AI 에이전트 대화 로그를 채점하고 스킬 품질을 진단하는 리포트 도구</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/08/2026-08-29-shorts-repurposing-secrets-higher-views/" rel="next">
+        <span>같은 영상도 조회수를 극대화하는 4대 숏폼 최적화 및 리퍼포징 비결</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-design-extract-추출-및-변환-파이프라인">1. design-extract 추출 및 변환 파이프라인</a></li>
+    <li><a href="#2-주요-핵심-기능-및-차별점">2. 주요 핵심 기능 및 차별점</a></li>
+    <li><a href="#3-시사점">3. 시사점</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/skills/" class="badge badge-secondary">Skills</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+    <a href="/tags/productivity/" class="badge badge-secondary">Productivity</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
