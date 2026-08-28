@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Qwen3.8-Flash-Next 무검열판 공개: 어블리터레이션 기법으로 지능 손실 없이 거절만 제거한 원리'" />
+  <title>Qwen3.8-Flash-Next 무검열판 공개: 어블리터레이션 기법으로 지능 손실 없이 거절만 제거한 원리  | 신규하 블로그</title>
+  <meta property="og:title" content="Qwen3.8-Flash-Next 무검열판 공개: 어블리터레이션 기법으로 지능 손실 없이 거절만 제거한 원리" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-08-28"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/08/2026-08-28-qwen3-8-flash-next-uncensored-abliteration/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="llm" />
+  
+  <meta property="og:tags" content="security" />
+  
+  <meta property="og:tags" content="testing" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/08/2026-08-28-qwen3-8-flash-next-uncensored-abliteration/">
+          <h1>
+            Qwen3.8-Flash-Next 무검열판 공개: 어블리터레이션 기법으로 지능 손실 없이 거절만 제거한 원리
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/08/2026-08-28-qwen3-8-flash-next-uncensored-abliteration/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>알리바바가 고성능 오픈소스 모델 <code>Qwen3.8-Flash-Next</code>를 발표한 지 불과 하루 만에, AI 게이트웨이 및 에이전트 보안 기업 OrcaRouter가 <strong>모델의 거절(Refusal) 메커니즘만 선택적으로 도려낸 무검열(Uncensored) 버전</strong>을 공개했습니다.</p>
+<p>안전성 평가 8종에서 유해 프롬프트 거부율은 0.0%로 완전 제거되었으나, 종합 지능 벤치마크(MMLU)는 90.0에서 87.7로 단 2.3%p 하락하는 데 그쳤습니다. 모델 재학습 없이 가중치 수술만으로 검열을 무력화한 <strong><code>어블리터레이션(Abliteration)</code></strong> 기법을 분석합니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.threads.com/@choi.openai/post/Dcjz6btj2Ga">원문 Threads 게시물 (choi.openai)</a></li>
+<li><a href="https://huggingface.co/orcarouter/Qwen3.8-Flash-Next-Uncensored-GGUF">Qwen3.8-Flash-Next-Uncensored Hugging Face 저장소</a></li>
+</ul>
+<hr>
+<h2 id="1-어블리터레이션-가중치-수술-메커니즘">1. 어블리터레이션 가중치 수술 메커니즘</h2>
+<pre class="mermaid">flowchart TD
+    classDef origNode fill:#c5dcef,stroke:#2b6cb0,stroke-width:1.5px,color:#333;
+    classDef mathNode fill:#e0c8ef,stroke:#6b46c1,stroke-width:1.5px,color:#333;
+    classDef testNode fill:#fde8c0,stroke:#d69e2e,stroke-width:1.5px,color:#333;
+    classDef outNode fill:#c0ecd3,stroke:#38a169,stroke-width:1.5px,color:#333;
+
+    Model["Qwen3.8-Flash-Next 원본 모델<br>(MMLU 90.0)"] --> Vectors["거절(Refusal) 유발 활성화 방향 벡터 분리"]
+    Vectors --> Math["어블리터레이션 (Abliteration)<br>(가중치 행렬에서 거절 성분만 직교 사영 제거)"]
+    Math --> Benchmark["안전성 평가 & 지능 벤치마크 검증"]
+    Benchmark --> Result["유해 프롬프트 거부율 0.0%<br>+ MMLU 87.7로 높은 지능 유지 (재학습 불필요)"]
+
+    class Model origNode;
+    class Vectors,Math mathNode;
+    class Benchmark testNode;
+    class Result outNode;</pre><hr>
+<h2 id="2-핵심-원리-어블리터레이션abliteration이란">2. 핵심 원리: 어블리터레이션(Abliteration)이란?</h2>
+<ol>
+<li><strong>거절 활성화 방향(Refusal Direction) 분리</strong>:
+<ul>
+<li>모델이 질문에 대해 *&ldquo;죄송하지만 해당 요청은 처리할 수 없습니다&rdquo;*라고 응답하는 과정은 신경망 내부의 특정 활성화 방향(Direction) 신호에 집중되어 있습니다.</li>
+</ul>
+</li>
+<li><strong>선택적 가중치 제거 (직교 사영)</strong>:
+<ul>
+<li>수많은 GPU 자원이 들어가는 파인튜닝이나 재학습 없이, 모델 가중치 행렬에서 거절 방향의 벡터 성분만 수학적으로 직교 사영(Orthogonal Projection)하여 지워냅니다.</li>
+</ul>
+</li>
+<li><strong>지능 보존과 부작용 최소화</strong>:
+<ul>
+<li>일반 지식, 논리 추론, 코딩 관련 가중치는 그대로 유지되므로 MMLU 87.7의 강력한 지능을 유지하면서 과도한 가드레일 거부 반응만 깔끔하게 제거됩니다.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="3-ai-보안-및-거버넌스-시사점">3. AI 보안 및 거버넌스 시사점</h2>
+<ul>
+<li><strong>가중치 공개와 안전 가드레일의 분리</strong>: 오픈소스 모델의 가중치가 공개되는 순간, 모델 내부 가중치에 심어둔 안전장치는 언제든 분리될 수 있음이 증명되었습니다.</li>
+<li><strong>런타임 방화벽의 중요성</strong>: 안전한 AI 활용을 위해서는 모델 내부 가중치 검열에 의존하기보다, <strong>외부 API 게이트웨이 및 에이전트 런타임 방화벽</strong> 단계에서 보안 정책을 강제하는 체계로 진화해야 합니다.</li>
+</ul>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 08월 28일 08시 03분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/08/2026-08-28-shuohao-skills-novel-to-video-production-docs/" rel="prev">
+        <span>shuohao-skills: 원작 소설을 5종 영상 제작 기획 문서로 자동 분해하는 AI 스킬 팩</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/08/2026-08-28-audio8-tts-lightweight-multilingual-voice-cloning/" rel="next">
+        <span>Audio8 TTS: 0.6B 크기로 11개 언어와 제로샷 음성 복제를 지원하는 초경량 CPU 구동 오픈소스</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-어블리터레이션-가중치-수술-메커니즘">1. 어블리터레이션 가중치 수술 메커니즘</a></li>
+    <li><a href="#2-핵심-원리-어블리터레이션abliteration이란">2. 핵심 원리: 어블리터레이션(Abliteration)이란?</a></li>
+    <li><a href="#3-ai-보안-및-거버넌스-시사점">3. AI 보안 및 거버넌스 시사점</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/llm/" class="badge badge-secondary">Llm</a>
+    <a href="/tags/security/" class="badge badge-secondary">Security</a>
+    <a href="/tags/testing/" class="badge badge-secondary">Testing</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
