@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'AI 에이전트를 깊이 이해하기: 설계 원리와 엔지니어링 실전 (AI Agents in Depth 오픈소스 도서)'" />
+  <title>AI 에이전트를 깊이 이해하기: 설계 원리와 엔지니어링 실전 (AI Agents in Depth 오픈소스 도서)  | 신규하 블로그</title>
+  <meta property="og:title" content="AI 에이전트를 깊이 이해하기: 설계 원리와 엔지니어링 실전 (AI Agents in Depth 오픈소스 도서)" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-08-28"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/08/2026-08-28-ai-agents-in-depth-engineering-book/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="agents" />
+  
+  <meta property="og:tags" content="context-engineering" />
+  
+  <meta property="og:tags" content="mcp" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/08/2026-08-28-ai-agents-in-depth-engineering-book/">
+          <h1>
+            AI 에이전트를 깊이 이해하기: 설계 원리와 엔지니어링 실전 (AI Agents in Depth 오픈소스 도서)
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/08/2026-08-28-ai-agents-in-depth-engineering-book/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>단순히 프롬프트로 챗봇과 대화하는 수준을 넘어 복잡한 비즈니스 로직과 개발 업무를 자율적으로 완수하는 AI 에이전트를 구축하려면, **&ldquo;에이전트 = LLM + 컨텍스트 + 도구&rdquo;**라는 핵심 공식을 기반으로 정밀한 하네스(Harness) 엔지니어링을 설계해야 합니다.</p>
+<p>Bojie Li가 집필하고 전 세계 커뮤니티가 14개 언어로 번역에 참여한 오픈소스 도서 **<code>AI Agents in Depth (AI 에이전트를 깊이 이해하기)</code>**는 기초 설계부터 프로덕션 배포까지 총 10개 장과 94개의 연계 실습 코드를 통해 엔지니어링 실전을 다루는 완성형 가이드북입니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://github.com/bojieli/ai-agent-book">GitHub 공식 저장소 (bojieli/ai-agent-book)</a></li>
+<li><a href="https://bojieli.github.io/ai-agent-book/">온라인 웹북 (AI Agents in Depth)</a></li>
+<li><a href="https://github.com/bojieli/ai-agent-book/releases/download/latest/AI-Agents-in-Depth-ko.pdf">한국어 PDF 다운로드</a></li>
+</ul>
+<hr>
+<h2 id="1-ai-에이전트-핵심-엔지니어링-아키텍처">1. AI 에이전트 핵심 엔지니어링 아키텍처</h2>
+<pre class="mermaid">flowchart TD
+    classDef coreNode fill:#c5dcef,stroke:#2b6cb0,stroke-width:1.5px,color:#333;
+    classDef pillarNode fill:#e0c8ef,stroke:#6b46c1,stroke-width:1.5px,color:#333;
+    classDef engNode fill:#fde8c0,stroke:#d69e2e,stroke-width:1.5px,color:#333;
+    classDef outNode fill:#c0ecd3,stroke:#38a169,stroke-width:1.5px,color:#333;
+
+    Core["AI 에이전트 핵심 공식<br>에이전트 = LLM + 컨텍스트 + 도구"] --> Pillars["3대 핵심 엔지니어링 기둥"]
+    subgraph Components["핵심 구성 요소"]
+        C1["1. 컨텍스트 엔지니어링 (KV Cache / Skills / 점진적 압축)"]
+        C2["2. 사용자 메모리 & 지식 베이스 (RAG / 지식 그래프)"]
+        C3["3. 도구 생태계 (MCP 표준 / 비동기 상호작용 / Computer Use)"]
+    end
+    Pillars --> Components
+    Components --> Evolution["자가 평가 & 지속적 진화 루프<br>(SFT / DPO 사후 학습 & 멀티 에이전트 오케스트레이션)"]
+
+    class Core coreNode;
+    class Pillars,Components,C1,C2,C3 pillarNode;
+    class Evolution engNode;
+    class Core,Evolution outNode;</pre><hr>
+<h2 id="2-도서-10개-장-핵심-구성-및-주제">2. 도서 10개 장 핵심 구성 및 주제</h2>
+<ol>
+<li><strong>AI 에이전트 기초</strong>:
+<ul>
+<li>에이전트 = LLM + 컨텍스트 + 도구. 경쟁력의 핵심인 하네스(Harness) 엔지니어링 원리.</li>
+</ul>
+</li>
+<li><strong>컨텍스트 엔지니어링 (Context Engineering)</strong>:
+<ul>
+<li>KV Cache 최적화, 프롬프트 엔지니어링, Agent Skills 구조화 및 점진적 컨텍스트 압축(LOD).</li>
+</ul>
+</li>
+<li><strong>사용자 메모리와 지식 베이스</strong>:
+<ul>
+<li>세션 간 장기 메모리(Long-term Memory), 지능형 RAG, 구조화 색인 및 지식 그래프(Knowledge Graph).</li>
+</ul>
+</li>
+<li><strong>도구 (Tools &amp; MCP)</strong>:
+<ul>
+<li>MCP(Model Context Protocol) 표준, 인식·실행·협업 도구 연동, 이벤트 기반 비동기 도구 탐색.</li>
+</ul>
+</li>
+<li><strong>코딩 에이전트와 코드 생성</strong>:
+<ul>
+<li>새로운 도구를 실시간으로 스스로 제작하는 메타 도구로서의 코드와 프로덕션 코딩 에이전트 아키텍처.</li>
+</ul>
+</li>
+<li><strong>상호작용 (관찰 공간과 행동 공간의 확장)</strong>:
+<ul>
+<li>멀티모달 확장, 비동기 이벤트 시스템, 음성(Voice), 컴퓨터 유즈(Computer Use), 로보틱스 연동.</li>
+</ul>
+</li>
+<li><strong>에이전트 평가 (Agent Evaluation)</strong>:
+<ul>
+<li>에이전트 성능을 비교 가능한 정량적 신호로 변환하는 평가 환경, 벤치마크 지표, 통계적 유의성 검증.</li>
+</ul>
+</li>
+<li><strong>모델 사후 학습 (Post-training)</strong>:
+<ul>
+<li>에이전트 특화 SFT(지도 미세조정), DPO, RLHF 및 파라미터 효율적 튜닝 기법.</li>
+</ul>
+</li>
+<li><strong>에이전트의 지속적 진화 (Self-Evolution)</strong>:
+<ul>
+<li>자가 반성(Self-Reflection), 실패 사례 기반 피드백 루프, 자가 진화 메모리 구축.</li>
+</ul>
+</li>
+<li><strong>프로덕션 배포와 멀티 에이전트 오케스트레이션</strong>:
+<ul>
+<li>복수 에이전트 협업 체계, 보안 가드레일, 안정적인 서비스 운영 아키텍처.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="3-시사점">3. 시사점</h2>
+<p>단순한 챗봇 프롬프팅 단계를 넘어, <strong>컨텍스트 설계, 장기 메모리 구조화, MCP 도구 확장, 자가 평가 및 진화 루프</strong>까지 AI 에이전트 엔지니어링 전반을 체계적으로 마스터할 수 있는 최고의 오픈소스 교과서입니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 08월 28일 17시 05분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/08/2026-08-28-mochi-diffusion-apple-silicon-local-flux-sd/" rel="prev">
+        <span>Mochi Diffusion: Mac Apple Silicon에서 Stable Diffusion과 FLUX.2를 100% 로컬 실행하는 오픈소스 앱</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-ai-에이전트-핵심-엔지니어링-아키텍처">1. AI 에이전트 핵심 엔지니어링 아키텍처</a></li>
+    <li><a href="#2-도서-10개-장-핵심-구성-및-주제">2. 도서 10개 장 핵심 구성 및 주제</a></li>
+    <li><a href="#3-시사점">3. 시사점</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+    <a href="/tags/context-engineering/" class="badge badge-secondary">Context-Engineering</a>
+    <a href="/tags/mcp/" class="badge badge-secondary">MCP</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
