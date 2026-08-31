@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Aside 브라우저가 일반 Playwright/CDP 하네스와 다른 7가지 기술적 이유: 크로미움 엔진 수정의 힘'" />
+  <title>Aside 브라우저가 일반 Playwright/CDP 하네스와 다른 7가지 기술적 이유: 크로미움 엔진 수정의 힘  | 신규하 블로그</title>
+  <meta property="og:title" content="Aside 브라우저가 일반 Playwright/CDP 하네스와 다른 7가지 기술적 이유: 크로미움 엔진 수정의 힘" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-08-29"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/08/2026-08-29-aside-chromium-engine-modifications-vs-playwright-cdp/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="automation" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+  <meta property="og:tags" content="productivity" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/08/2026-08-29-aside-chromium-engine-modifications-vs-playwright-cdp/">
+          <h1>
+            Aside 브라우저가 일반 Playwright/CDP 하네스와 다른 7가지 기술적 이유: 크로미움 엔진 수정의 힘
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/08/2026-08-29-aside-chromium-engine-modifications-vs-playwright-cdp/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>브라우저 밖에서 스크립트를 주입하는 일반적인 브라우저 자동화 도구(Playwright, Puppeteer, Chrome DevTools Protocol/CDP)는 봇 탐지 회피, 백그라운드 포커스 간섭 방지, 캔버스 렌더링 인식 등에서 구조적 한계에 부딪힙니다.</p>
+<p>차세대 AI 브라우저 **<code>Aside</code>**는 크로미움(Chromium)과 Blink 렌더링 엔진을 포크하여 직접 수정함으로써, **기존 하네스 방식으로는 절대 도달할 수 없는 7가지 핵심 기술적 해자(Moat)**를 구축했습니다. (Aside 개발사 공동창업자도 직접 공인한 분석입니다)</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.threads.com/@lilmgenius/post/DcleGk7iVgW">원문 Threads 심층 기술 분석 (lilmgenius)</a></li>
+<li>[Aside 공식 기술 아키텍처 가이드]</li>
+</ul>
+<hr>
+<h2 id="1-하네스-방식-vs-aside-엔진-포크-아키텍처">1. 하네스 방식 vs Aside 엔진 포크 아키텍처</h2>
+<pre class="mermaid">flowchart TD
+    classDef cdpNode fill:#c5dcef,stroke:#2b6cb0,stroke-width:1.5px,color:#333;
+    classDef asideNode fill:#e0c8ef,stroke:#6b46c1,stroke-width:1.5px,color:#333;
+    classDef moatNode fill:#fde8c0,stroke:#d69e2e,stroke-width:1.5px,color:#333;
+    classDef outNode fill:#c0ecd3,stroke:#38a169,stroke-width:1.5px,color:#333;
+
+    CDP["기존 하네스 (Playwright/CDP)<br>(브라우저 외부 스크립트 주입)"] --> Limits["봇 탐지 누수 / IPC 지연 / Canvas 접근 불가 / 토큰 낭비"]
+    Aside["Aside Chromium 포크<br>(Blink 렌더링 코어 레벨 직접 제어)"] --> Moats["7대 기술적 해자 (Moat)"]
+    subgraph KeyMoats["주요 기술 혁신"]
+        M1["1. 봇 탐지 & 캡챠 완전 무력화"]
+        M2["2. 합성 전 가로채기 (Pre-composite)"]
+        M3["3. Blink Dirty 스트리밍 & 토큰 70% 절감"]
+        M4["4. Canvas/Figma/애니메이션 실시간 좌표 추출"]
+    end
+    Moats --> KeyMoats
+    KeyMoats --> Future["사람과 동일한 AI 브라우저 에이전트 경험 완성"]
+
+    class CDP,Limits cdpNode;
+    class Aside,Moats asideNode;
+    class KeyMoats,M1,M2,M3,M4 moatNode;
+    class Future outNode;</pre><hr>
+<h2 id="2-aside가-chromium-엔진-수정으로-확보한-7대-기술적-해자">2. Aside가 Chromium 엔진 수정으로 확보한 7대 기술적 해자</h2>
+<ol>
+<li><strong>봇 탐지(Bot Detection) 및 캡챠(CAPTCHA) 완전 무력화</strong>:
+<ul>
+<li><code>navigator.webdriver</code>, <code>Runtime.enable</code>, 콘솔 누수 신호는 CDP가 연결되는 순간 브라우저가 스스로 내보내는 고유 신호입니다. Aside는 Blink 내부에서 이를 수정하여 캡챠나 Cloudflare 봇 탐지에 걸리지 않습니다.</li>
+</ul>
+</li>
+<li><strong>합성 전 가로채기 (Pre-composite Interception)</strong>:
+<ul>
+<li>Playwright는 페이지에 JS를 주입해 요소를 확인하므로 IPC 왕복 지연으로 인해 빠른 호버(Hover) 효과나 마이크로 인터랙션을 놓치기 쉽습니다. Aside는 브라우저가 화면을 그리는 렌더링 파이프라인(레이아웃, 페인트 순서, 히트테스트)에서 즉시 요소를 읽고 같은 메인 스레드 태스크에서 입력을 디스패치합니다.</li>
+</ul>
+</li>
+<li><strong>Blink Dirty 트래킹 기반 증분 스트리밍</strong>:
+<ul>
+<li>전체 DOM 스냅샷을 통째로 다시 찍는 대신, Blink 엔진이 이미 추적하는 &lsquo;변경된 부분(Dirty UI)&lsquo;만 에이전트에게 스트리밍합니다. 팝업, 다운로드, 탭 닫힘도 폴링 없이 조향 메시지로 즉시 푸시됩니다.</li>
+</ul>
+</li>
+<li><strong>비-DOM UI(Canvas, Figma, Flutter Web) 및 CSS 애니메이션 좌표 추출</strong>:
+<ul>
+<li>메인 스레드 밖에서 도는 CSS 애니메이션의 실시간 좌표와 DOM 트리가 없는 Canvas 기반 웹 앱(Figma, Flutter Web)도 페인트 단계에서 텍스트와 좌표를 직접 추출합니다.</li>
+</ul>
+</li>
+<li><strong>백그라운드 에이전트의 사용자 방해 원천 차단</strong>:
+<ul>
+<li>에이전트가 백그라운드 탭에서 작업할 때 팝업이 뜨거나 포커스를 빼앗아 사용자의 작업을 방해하지 않도록 Blink 레벨에서 포커스와 뷰포트(1440x900)를 고정 격리합니다.</li>
+</ul>
+</li>
+<li><strong>비밀번호·패스키(Passkey/FIDO2/TOTP)의 LLM 유출 차단</strong>:
+<ul>
+<li>프롬프트나 LLM에 비밀번호 raw 텍스트를 전달하지 않고, 브라우저 자체 보안 금고(Vault)가 로그인 액션을 직접 수행합니다.</li>
+</ul>
+</li>
+<li><strong>페이지 스냅샷 토큰 70% 절감</strong>:
+<ul>
+<li>불필요한 DOM 노이즈를 걷어내고 포커스, iframe, 클릭 가능 여부 등 정작 필요한 정보만 압축 전달하여 토큰 소모를 70% 줄였습니다.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="3-시사점">3. 시사점</h2>
+<p>브라우저 밖에서 스크립트를 얹는 하네스 방식으로는 봇 차단, 포커스 탈취, 보안 문제를 완벽히 해결할 수 없으며, <strong>브라우저 엔진 내부(Chromium/Blink)를 직접 제어하는 아키텍처가 차세대 AI 브라우저 에이전트의 진정한 경쟁력</strong>임을 증명합니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 08월 29일 15시 42분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/08/2026-08-29-3d-print-smoothing-and-finishing-ultimate-guide/" rel="prev">
+        <span>3D 프린팅 출력물 표면 후가공(Smoothing &amp; Finishing) 완벽 가이드: 적층선 제거부터 웨더링까지</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/08/2026-08-29-why-use-react-frontend-interview-insights/" rel="next">
+        <span>프론트엔드 면접 &#34;왜 리액트(React)를 사용하는가?&#34;에 대한 실전 인사이트와 AI 시대의 이유</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-하네스-방식-vs-aside-엔진-포크-아키텍처">1. 하네스 방식 vs Aside 엔진 포크 아키텍처</a></li>
+    <li><a href="#2-aside가-chromium-엔진-수정으로-확보한-7대-기술적-해자">2. Aside가 Chromium 엔진 수정으로 확보한 7대 기술적 해자</a></li>
+    <li><a href="#3-시사점">3. 시사점</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/automation/" class="badge badge-secondary">Automation</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+    <a href="/tags/productivity/" class="badge badge-secondary">Productivity</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
