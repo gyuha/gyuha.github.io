@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '3D 프린터로 플라스틱 사출 성형(Injection Molding) 구현하기: CNC Kitchen의 DIY 하이브리드 실험'" />
+  <title>3D 프린터로 플라스틱 사출 성형(Injection Molding) 구현하기: CNC Kitchen의 DIY 하이브리드 실험  | 신규하 블로그</title>
+  <meta property="og:title" content="3D 프린터로 플라스틱 사출 성형(Injection Molding) 구현하기: CNC Kitchen의 DIY 하이브리드 실험" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-09-01"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/09/2026-09-01-3d-printer-diy-injection-molding-cnc-kitchen/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="productivity" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/09/2026-09-01-3d-printer-diy-injection-molding-cnc-kitchen/">
+          <h1>
+            3D 프린터로 플라스틱 사출 성형(Injection Molding) 구현하기: CNC Kitchen의 DIY 하이브리드 실험
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/09/2026-09-01-3d-printer-diy-injection-molding-cnc-kitchen/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>FDM 3D 프린터 출력물은 제작이 간편하지만 레이어 간 결합력(z축 강도)이 약하고 표면에 거친 적층선이 남습니다. 반면 플라스틱 사출 성형(Injection Molding)은 100% 솔리드 밀도와 매끄러운 표면을 보장하지만 금속 금형 가공비가 수백~수천만 원에 달해 소량 생산에 적합하지 않습니다.</p>
+<p>하드웨어/3D 프린팅 엔지니어링 채널 CNC Kitchen(Stefan Hermann)이 공개한 **<code>3D 프린터를 이용한 DIY 사출 성형 실험</code>**은 <strong>SLA 레진 프린터로 고강도·고내열 금형을 출력하고, FDM 3D 프린터의 고유량 핫엔드를 개조해 용융 플라스틱을 주입함으로써 FDM과 사출 성형의 장점을 결합한 혁신적인 하이브리드 제작 방식</strong>을 증명했습니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://youtu.be/4xXs9go-Ieg">원문 유튜브 영상: I tried Injection Molding using a 3D Printer! (CNC Kitchen)</a></li>
+<li><a href="https://www.cnckitchen.com">CNC Kitchen 공식 웹사이트 및 연구 자료</a></li>
+</ul>
+<hr>
+<h2 id="1-3d-프린터-기반-diy-사출-성형-파이프라인">1. 3D 프린터 기반 DIY 사출 성형 파이프라인</h2>
+<pre class="mermaid">flowchart TD
+    classDef moldNode fill:#c5dcef,stroke:#2b6cb0,stroke-width:1.5px,color:#333;
+    classDef heatNode fill:#e0c8ef,stroke:#6b46c1,stroke-width:1.5px,color:#333;
+    classDef injectNode fill:#fde8c0,stroke:#d69e2e,stroke-width:1.5px,color:#333;
+    classDef outNode fill:#c0ecd3,stroke:#38a169,stroke-width:1.5px,color:#333;
+
+    Mold["1. 고내열 SLA 레진 금형 출력<br>(Formlabs Form 4 & Rigid 10k)"] --> Heat["2. 금형 예열 & 재료 최적화<br>(80~100℃ 가열 + High-Speed PLA/TPU)"]
+    Heat --> Inject["3. 초고유량 핫엔드 순간 사출<br>(Über-Extruder & 고압 주입)"]
+    Inject --> Result["4. 100% 솔리드 밀도 사출 부품 완성<br>(적층선 없는 매끄러운 표면 & 고강도)"]
+
+    class Mold moldNode;
+    class Heat heatNode;
+    class Inject injectNode;
+    class Result outNode;</pre><hr>
+<h2 id="2-주요-핵심-엔지니어링-기술">2. 주요 핵심 엔지니어링 기술</h2>
+<ol>
+<li><strong>초정밀 고내열 레진 금형 제작</strong>:
+<ul>
+<li>Formlabs Form 4와 유리 세라믹이 함유된 <strong>Rigid 10k Resin</strong>을 사용하여 고온 용융 플라스틱의 열과 사출 압력을 견디는 정밀 금형을 직접 출력합니다.</li>
+</ul>
+</li>
+<li><strong>미성형(Short Shot) 극복을 위한 금형 예열 (Mold Pre-Heating)</strong>:
+<ul>
+<li>차가운 금형에 얇은 플라스틱이 들어가면 캐비티를 채우기 전에 굳어버리므로, 금형을 80~100℃로 사전 가열하여 용융 수지의 유동 시간을 확보합니다.</li>
+</ul>
+</li>
+<li><strong>고유동성 재료(High-Speed PLA / TPU) 활용</strong>:
+<ul>
+<li>점도가 낮고 빠르게 흐르는 고속 PLA 및 탄성체 TPU 소재를 적용하여 복잡한 금형 형상까지 기포 없이 완벽하게 충진합니다.</li>
+</ul>
+</li>
+<li><strong>초고유량 압출 시스템 (Über-Extruder)</strong>:
+<ul>
+<li>일반 핫엔드 대신 대용량 멜팅존을 갖춘 고유량 핫엔드(Takoto He50, Volcano 어댑터)와 고토크 익스트루더를 구성해 강력한 순간 주입 압력을 생성합니다.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="3-시사점-및-장단점">3. 시사점 및 장단점</h2>
+<ul>
+<li><strong>장점</strong>:
+<ul>
+<li>비싼 금속 금형 없이 몇 시간 만에 금형을 재설계·출력하여 <strong>소량 다품종 맞춤형 사출 부품을 하루 만에 제작 가능</strong>.</li>
+<li>FDM 특유의 적층선과 박리 현상 없이 <strong>100% 밀도를 가진 고강도 부품</strong> 획득.</li>
+</ul>
+</li>
+<li><strong>적용 분야</strong>:
+<ul>
+<li>소량 프로토타입 기능 검증, 커스텀 방수 가스켓(TPU), 복잡한 기계 부품의 빠른 현장 양산.</li>
+</ul>
+</li>
+</ul>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 09월 01일 23시 34분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/engineering">Engineering</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-01-ai-stock-auto-trading-codex-nhplug/" rel="prev">
+        <span>AI에게 맡기는 주식 자동매매: Codex와 NH투자증권 Namuh PLUG API로 투자 에이전트 만들기</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-3d-프린터-기반-diy-사출-성형-파이프라인">1. 3D 프린터 기반 DIY 사출 성형 파이프라인</a></li>
+    <li><a href="#2-주요-핵심-엔지니어링-기술">2. 주요 핵심 엔지니어링 기술</a></li>
+    <li><a href="#3-시사점-및-장단점">3. 시사점 및 장단점</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/productivity/" class="badge badge-secondary">Productivity</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
