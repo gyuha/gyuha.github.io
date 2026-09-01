@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'codex-chatgpt-web: Codex 사용량 차감 없이 ChatGPT 웹 구독으로 터미널에서 코딩하는 오픈소스'" />
+  <title>codex-chatgpt-web: Codex 사용량 차감 없이 ChatGPT 웹 구독으로 터미널에서 코딩하는 오픈소스  | 신규하 블로그</title>
+  <meta property="og:title" content="codex-chatgpt-web: Codex 사용량 차감 없이 ChatGPT 웹 구독으로 터미널에서 코딩하는 오픈소스" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-09-01"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/09/2026-09-01-codex-chatgpt-web-free-coding-bridge/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="productivity" />
+  
+  <meta property="og:tags" content="open-source" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/09/2026-09-01-codex-chatgpt-web-free-coding-bridge/">
+          <h1>
+            codex-chatgpt-web: Codex 사용량 차감 없이 ChatGPT 웹 구독으로 터미널에서 코딩하는 오픈소스
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/09/2026-09-01-codex-chatgpt-web-free-coding-bridge/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Codex CLI는 터미널에서 로컬 파일과 셸을 직접 제어할 수 있어 매우 편리하지만, 전용 사용량(API 쿼터)이 빠르게 차감되어 비용 부담이 큽니다. 반면 일반 ChatGPT 웹은 넉넉한 대화 쿼터를 제공하지만 로컬 파일과의 유기적인 연동이 어렵습니다.</p>
+<p><strong><code>codex-chatgpt-web</code></strong>(<code>miuuyy/codex-chatgpt-web</code>)은 Codex 터미널 작업 환경은 그대로 유지하면서, <strong>답변 생성만 백그라운드 브라우저의 로그인된 ChatGPT 웹 세션으로 넘겨 처리함으로써 Codex 쿼터 차감 없이 무제한급으로 코딩을 수행하는 오픈소스 브릿지 도구</strong>입니다. (공개 5주 만에 GitHub 2,700+ Stars)</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.threads.com/@ckdgus99/post/DcsSNCsCBWy">원문 Threads 게시물 (ckdgus99)</a></li>
+<li><a href="https://github.com/miuuyy/codex-chatgpt-web">codex-chatgpt-web GitHub 공식 저장소</a></li>
+<li><a href="https://github.com/XiaoDuoYa/codex-with-chatgpt">유사 프로젝트 (XiaoDuoYa/codex-with-chatgpt)</a></li>
+</ul>
+<hr>
+<h2 id="1-codex-chatgpt-web-연동-아키텍처">1. codex-chatgpt-web 연동 아키텍처</h2>
+<pre class="mermaid">flowchart TD
+    classDef termNode fill:#c5dcef,stroke:#2b6cb0,stroke-width:1.5px,color:#333;
+    classDef bridgeNode fill:#e0c8ef,stroke:#6b46c1,stroke-width:1.5px,color:#333;
+    classDef webNode fill:#fde8c0,stroke:#d69e2e,stroke-width:1.5px,color:#333;
+    classDef outNode fill:#c0ecd3,stroke:#38a169,stroke-width:1.5px,color:#333;
+
+    Term["Codex CLI 터미널 환경<br>(로컬 파일·셸 실행 및 작업 맥락)"] --> Bridge["codex-chatgpt-web 브릿지"]
+    Bridge --> WebAuth["ChatGPT 웹 로그인 세션<br>(Codex 쿼터 소모 $0 / Plus·Pro 풀 활용)"]
+    WebAuth --> Inference["웹 대화 엔진 답변 생성 (Pro 모델 지원)"]
+    Inference --> Term
+
+    class Term termNode;
+    class Bridge bridgeNode;
+    class WebAuth,Inference webNode;
+    class Term,Inference outNode;</pre><hr>
+<h2 id="2-주요-핵심-기능-및-차별점">2. 주요 핵심 기능 및 차별점</h2>
+<ol>
+<li><strong>Codex API 쿼터 소모 $0 (ChatGPT 웹 쿼터 활용)</strong>:
+<ul>
+<li>OpenAI 정책상 Codex 사용량 풀과 일반 ChatGPT 웹 대화 사용량은 완전히 분리되어 있습니다.</li>
+<li>이미 결제 중인 ChatGPT Plus/Pro 구독 계정의 웹 대화 세션을 사용하므로 Codex 크레딧이 깎이지 않습니다. (Pro 구독 시 Pro 모델 선택 가능)</li>
+</ul>
+</li>
+<li><strong>컨텍스트 및 이미지 전달 완벽 유지</strong>:
+<ul>
+<li>현재 작업 중인 코드 맥락과 첨부된 이미지가 ChatGPT 웹으로 누락 없이 전달되며, 생성된 답변과 수정 코드는 다시 Codex CLI 화면으로 깔끔하게 반환됩니다.</li>
+</ul>
+</li>
+<li><strong>풀 모드(Full Mode)를 통한 로컬 자동화</strong>:
+<ul>
+<li>풀 모드를 켜면 ChatGPT가 터미널의 파일 읽기/쓰기, 셸 명령어 실행, 작업 승인까지 자율적으로 제어합니다.</li>
+</ul>
+</li>
+<li><strong>간단한 설치 및 크로스 플랫폼 지원</strong>:
+<ul>
+<li>유료 API 키나 복잡한 크롬 드라이버 설정 없이 스크립트 한 줄로 설치 가능하며, Mac, Windows, Linux를 모두 지원합니다. (MIT 라이선스)</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="3-시사점">3. 시사점</h2>
+<p>터미널 기반 코딩 도구의 높은 편의성과 ChatGPT 웹 구독의 넉넉한 쿼터 혜택을 결합하여, <strong>추가 비용 부담 없이 로컬 AI 코딩 생산성을 극대화할 수 있는 실전 가성비 솔루션</strong>입니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 09월 01일 08시 17분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-01-ai-game-dev-auto-loop-engineering/" rel="prev">
+        <span>AI가 혼자 게임을 만들고 수정하는 자율 루프(Auto-loop) 엔지니어링 실전 세팅</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-01-korean-traditional-painting-gpt-image-prompt/" rel="next">
+        <span>사진 속 얼굴과 포즈를 그대로 살려 조선시대 진채화 화보로 변환하는 GPT 이미지 프롬프트</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-codex-chatgpt-web-연동-아키텍처">1. codex-chatgpt-web 연동 아키텍처</a></li>
+    <li><a href="#2-주요-핵심-기능-및-차별점">2. 주요 핵심 기능 및 차별점</a></li>
+    <li><a href="#3-시사점">3. 시사점</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude Code</a>
+    <a href="/tags/productivity/" class="badge badge-secondary">Productivity</a>
+    <a href="/tags/open-source/" class="badge badge-secondary">Open Source</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
