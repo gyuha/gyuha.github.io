@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '클로드 코드 한도, 이거 모르면 계속 낭비하게 됩니다: 프롬프트 캐싱과 컨텍스트 최적화 가이드'" />
+  <title>클로드 코드 한도, 이거 모르면 계속 낭비하게 됩니다: 프롬프트 캐싱과 컨텍스트 최적화 가이드  | 신규하 블로그</title>
+  <meta property="og:title" content="클로드 코드 한도, 이거 모르면 계속 낭비하게 됩니다: 프롬프트 캐싱과 컨텍스트 최적화 가이드" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-09-03"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/09/2026-09-03-claude-code-token-limits-prompt-caching-cost-guide/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="productivity" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/09/2026-09-03-claude-code-token-limits-prompt-caching-cost-guide/">
+          <h1>
+            클로드 코드 한도, 이거 모르면 계속 낭비하게 됩니다: 프롬프트 캐싱과 컨텍스트 최적화 가이드
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/09/2026-09-03-claude-code-token-limits-prompt-caching-cost-guide/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Claude Code를 사용하다 보면 동일한 작업을 수행했는데도 어떤 날은 사용 한도가 여유롭고, 어떤 날은 몇 번의 질문만으로 일일/시간당 한도가 바닥나는 현상을 겪게 됩니다.</p>
+<p>Anthropic이 공식 기술 블로그(<a href="https://claude.com/blog/maximizing-the-value-of-your-claude-code-sessions">Maximizing the value of your Claude Code sessions</a>)에 공개한 원리에 따르면, 이는 운이 아니라 **&ldquo;토큰 청구의 본질(GPU 점유 시간), 입력 토큰 비용을 10분의 1(90% 할인)로 낮춰주는 프롬프트 캐싱(Prompt Caching), 그리고 세션과 컨텍스트를 다루는 사용자 습관의 차이&rdquo;**에서 비롯됩니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://youtu.be/cWd2Vy9OHV0">원문 유튜브 영상: 클로드 코드 한도, 이거 모르면 계속 낭비하게됩니다 (Aiden의 친절한 AI)</a></li>
+<li><a href="https://claude.com/blog/maximizing-the-value-of-your-claude-code-sessions">Anthropic 공식 기술 블로그: Maximizing the value of your Claude Code sessions</a></li>
+</ul>
+<hr>
+<h2 id="1-클로드-코드-비용-최적화-파이프라인">1. 클로드 코드 비용 최적화 파이프라인</h2>
+<pre class="mermaid">flowchart TD
+    classDef costNode fill:#c5dcef,stroke:#2b6cb0,stroke-width:1.5px,color:#333;
+    classDef cacheNode fill:#e0c8ef,stroke:#6b46c1,stroke-width:1.5px,color:#333;
+    classDef cmdNode fill:#fde8c0,stroke:#d69e2e,stroke-width:1.5px,color:#333;
+    classDef outNode fill:#c0ecd3,stroke:#38a169,stroke-width:1.5px,color:#333;
+
+    TokenCost["토큰 비용의 본질 (GPU 연산 시간)<br>(출력 토큰이 5배 비싼 이유)"] --> Cache["프롬프트 캐싱 (Prompt Caching)<br>(기차 앞 칸 재사용 ➔ 10분의 1 비용 할인)"]
+    Cache --> Miss["캐시 무효화 주의 행동<br>(대화 중 모델/effort 변경, 1시간 만료)"]
+    TokenCost --> Cmds["4대 실전 컨텍스트 최적화 기법"]
+    subgraph PracticalOps["최적화 도구"]
+        C1["/rewind: 0원 롤백 복구"]
+        C2["멘션(@파일명): 도구 호출 0회 주입"]
+        C3["/clear: 새 작업 시 세션 비우기"]
+        C4["서브에이전트: 무거운 탐색 격리"]
+    end
+    Cmds --> PracticalOps
+    PracticalOps --> Result["한도 소진 없이 5~10배 많은 개발 작업 달성"]
+    Miss --> Result
+
+    class TokenCost costNode;
+    class Cache,Miss cacheNode;
+    class Cmds,PracticalOps,C1,C2,C3,C4 cmdNode;
+    class Result outNode;</pre><hr>
+<h2 id="2-토큰-비용의-본질과-프롬프트-캐싱-원리">2. 토큰 비용의 본질과 프롬프트 캐싱 원리</h2>
+<ol>
+<li><strong>청구는 토큰, 실제 비용은 GPU 점유 시간</strong>:
+<ul>
+<li><strong>출력(Output) 토큰이 입력(Input) 토큰보다 5배 비싼 이유</strong>: 입력(Prefill)은 GPU에서 수천 토큰을 병렬로 연산할 수 있지만, 출력(Decode)은 모델이 다음 단어를 순차적으로 한 글자씩 예측하며 GPU 메모리를 계속 점유하기 때문입니다.</li>
+<li><strong><code>effort</code>(Thinking 토큰) 설정 주의</strong>: 사고 깊이를 조절하는 effort 설정값은 다음 세션까지 유지되므로, 단순 작업 시 낮추지 않으면 토큰이 빠르게 소모됩니다.</li>
+</ul>
+</li>
+<li><strong>프롬프트 캐싱 (Prompt Caching) — 10분의 1 비용의 핵심</strong>:
+<ul>
+<li>대화 히스토리의 앞부분(기차의 앞 칸)이 유지되면 캐시가 적중(Cache Hit)하여 **입력 토큰 비용이 10분의 1(90% 할인)**로 줄어듭니다.</li>
+<li><strong>캐시를 깨뜨리는 행동들</strong>:
+<ul>
+<li>대화 도중 모델(Model) 변경 또는 effort 값 변경.</li>
+<li>대화 사이 1시간 경과 (TTL 만료).</li>
+<li>무분별한 <code>/compact</code> 남발 (히스토리가 재작성되며 기존 캐시 무효화).</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="3-한도를-극대화하는-4대-실전-명령어-팁">3. 한도를 극대화하는 4대 실전 명령어 팁</h2>
+<ol>
+<li><strong><code>/rewind</code> (비용 0원 롤백)</strong>:
+<ul>
+<li>AI가 엉뚱한 답변을 하거나 잘못된 코드를 작성했을 때 새 대화로 설득하려 하지 말고, <code>/rewind</code>로 이전 체크포인트로 되돌리면 <strong>토큰 낭비 0원으로 즉시 롤백</strong>됩니다.</li>
+</ul>
+</li>
+<li><strong>멘션(<code>@파일명</code>) 활용</strong>:
+<ul>
+<li>*&ldquo;그 파일 읽어봐&rdquo;*라고 지시하면 에이전트가 파일 검색 및 읽기 도구 호출 턴을 소비합니다. <code>@파일명</code>으로 직접 지정하면 도구 호출 0회로 컨텍스트에 즉시 주입됩니다.</li>
+</ul>
+</li>
+<li><strong><code>/clear</code> vs <code>/compact</code>의 명확한 구분</strong>:
+<ul>
+<li><strong>새로운 작업이나 다른 기능 개발</strong>: 반드시 **<code>/clear</code>**로 이전 세션을 완전히 비워 백지상태로 시작해야 기존 파일 누적 전송을 막을 수 있습니다.</li>
+<li><strong>동일한 작업을 길게 이어갈 때만</strong>: **<code>/compact</code>**로 요약 압축을 진행합니다.</li>
+</ul>
+</li>
+<li><strong>서브에이전트(Subagents) 위임</strong>:
+<ul>
+<li>대규모 파일 탐색이나 방대한 로그 분석 등 무거운 조사 작업은 서브에이전트에게 맡겨 <strong>최종 결론만 메인 컨텍스트로 수신</strong>함으로써 메인 대화창의 컨텍스트 오염을 원천 차단합니다.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="4-시사점">4. 시사점</h2>
+<p>*&ldquo;대화창의 모든 컨텍스트는 매 턴마다 다시 전송된다&rdquo;*는 구조를 이해하고, <strong>[세션 비우기(<code>/clear</code>) + 파일 멘션(@) + 서브에이전트 탐색 + 캐시 유지]</strong> 습관을 들이면 동일한 구독 요금제로 5~10배 많은 개발 작업을 수행할 수 있습니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 09월 03일 07시 24분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-02-claude-code-intent-md-ai-native-sdlc-playbook/" rel="prev">
+        <span>Claude Code의 새로운 핵심 문서 INTENT.MD와 Anthropic의 AI-Native SDLC 플레이북</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-클로드-코드-비용-최적화-파이프라인">1. 클로드 코드 비용 최적화 파이프라인</a></li>
+    <li><a href="#2-토큰-비용의-본질과-프롬프트-캐싱-원리">2. 토큰 비용의 본질과 프롬프트 캐싱 원리</a></li>
+    <li><a href="#3-한도를-극대화하는-4대-실전-명령어-팁">3. 한도를 극대화하는 4대 실전 명령어 팁</a></li>
+    <li><a href="#4-시사점">4. 시사점</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude Code</a>
+    <a href="/tags/productivity/" class="badge badge-secondary">Productivity</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
