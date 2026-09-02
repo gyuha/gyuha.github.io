@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '앤트로픽이 공개한 AI 말투(상투적 문장) 줄이는 4대 프롬프트 원칙'" />
+  <title>앤트로픽이 공개한 AI 말투(상투적 문장) 줄이는 4대 프롬프트 원칙  | 신규하 블로그</title>
+  <meta property="og:title" content="앤트로픽이 공개한 AI 말투(상투적 문장) 줄이는 4대 프롬프트 원칙" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-09-02"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/09/2026-09-02-anthropic-prompt-guide-avoid-cliches-ai-slop/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="prompt-engineering" />
+  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="productivity" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/09/2026-09-02-anthropic-prompt-guide-avoid-cliches-ai-slop/">
+          <h1>
+            앤트로픽이 공개한 AI 말투(상투적 문장) 줄이는 4대 프롬프트 원칙
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/09/2026-09-02-anthropic-prompt-guide-avoid-cliches-ai-slop/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>LLM에게 글 작성을 요청하면 <em>&ldquo;오늘날 빠르게 변화하는 디지털 환경에서&rdquo;</em>, <em>&ldquo;결론적으로&rdquo;</em>, <em>&quot;~의 잠재력을 발휘하다(Unlock the power of)&quot;</em> 같은 진부한 상투어(Clichés)와 천편일률적인 서론-본론-결론 3단 논법이 반복되어 글의 품질을 떨어뜨립니다.</p>
+<p>Claude 개발사 앤트로픽(Anthropic)이 제시하는 **<code>탈(脫) 상투어 프롬프트 엔지니어링 가이드</code>**는 단순한 구두 지시를 넘어, <strong>명시적 금지어 리스트, 구체적인 문체 제약, Few-shot 모범 예시, 단계별 체인 지시(CoT)의 4대 원칙을 통해 살아있는 인간다운 문장과 호흡을 이끌어내는 실전 방법론</strong>을 제공합니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.threads.com/@aicoffeechat/post/Dcx4JEdk7jd">원문 Threads 게시물: aicoffeechat (@aicoffeechat)</a></li>
+<li><a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview">Anthropic Prompt Engineering Official Documentation</a></li>
+</ul>
+<hr>
+<h2 id="1-앤트로픽-4대-탈脫-상투어-프롬프트-아키텍처">1. 앤트로픽 4대 탈(脫) 상투어 프롬프트 아키텍처</h2>
+<pre class="mermaid">flowchart TD
+    classDef slopNode fill:#c5dcef,stroke:#2b6cb0,stroke-width:1.5px,color:#333;
+    classDef ruleNode fill:#e0c8ef,stroke:#6b46c1,stroke-width:1.5px,color:#333;
+    classDef fewNode fill:#fde8c0,stroke:#d69e2e,stroke-width:1.5px,color:#333;
+    classDef outNode fill:#c0ecd3,stroke:#38a169,stroke-width:1.5px,color:#333;
+
+    Slop["AI 특유의 상투적 어투 (Clichés & Fluff)<br>('오늘날 빠르게 변화하는', '결론적으로')"] --> Engine["앤트로픽 4대 탈(脫) 상투어 프롬프트 원칙"]
+    Engine --> R1["1. 명시적 금지어 리스트 지정<br>(단골 수식어·접속사·느낌표 차단)"]
+    Engine --> R2["2. 구체적 문체 제약 부여<br>(동사 중심·담백한 구어체 서술)"]
+    Engine --> R3["3. Few-shot 모범 예시 제공<br>(지향하는 문체·호흡의 실제 글 주입)"]
+    Engine --> R4["4. 단계별 체인 지시 (CoT)<br>(개요 ➔ 문단별 작성 ➔ 퇴고)"]
+    R1 & R2 & R3 & R4 --> Human["자연스럽고 생생한 휴먼라이크 텍스트 완성"]
+
+    class Slop slopNode;
+    class Engine,R1,R2 ruleNode;
+    class R3,R4 fewNode;
+    class Human outNode;</pre><hr>
+<h2 id="2-상투적-문장을-없애는-4대-핵심-원칙">2. 상투적 문장을 없애는 4대 핵심 원칙</h2>
+<ol>
+<li><strong>명시적인 금지어 목록(Negative Constraints) 지정</strong>:
+<ul>
+<li><em>&ldquo;오늘날 빠르게 변화하는&rdquo;</em>, <em>&ldquo;주목할 점은&rdquo;</em>, <em>&ldquo;결론적으로&rdquo;</em>, <em>&ldquo;게임 체인저&rdquo;</em>, <em>&ldquo;빙산의 일각&rdquo;</em> 등 AI가 습관적으로 쓰는 클리셰 단어와 느낌표/이모지 남발을 프롬프트에 직접 금지어로 명시합니다.</li>
+</ul>
+</li>
+<li><strong>구체적인 문체 제약(Style Constraints) 부여</strong>:
+<ul>
+<li>모호한 <em>&ldquo;자연스럽게 써줘&rdquo;</em> 대신 <em>&ldquo;비즈니스 어투를 피하고 동료에게 설명하듯 구어체로&rdquo;</em>, *&ldquo;형용사·부사를 최소화하고 구체적인 행동 동사와 명사 위주로 서술&rdquo;*하도록 구체화합니다.</li>
+</ul>
+</li>
+<li><strong>Few-shot 모범 예시 제공</strong>:
+<ul>
+<li>내가 지향하는 문장 길이와 리듬감을 담은 실제 예시 글 1~2개를 프롬프트에 직접 포함하여 모델이 문체를 모방하도록 유도합니다.</li>
+</ul>
+</li>
+<li><strong>단계별 체인 지시 (Chain-of-Thought)</strong>:
+<ul>
+<li>한 번에 긴 글을 완성하게 하지 않고 <strong>&ldquo;3가지 관점 아이디어 제안 ➔ 개요 승인 ➔ 문단별 작성 ➔ 마무리 퇴고&rdquo;</strong> 순서로 작업을 쪼개어 지시합니다.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="3-실전-적용-템플릿">3. 실전 적용 템플릿</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span>[역할] 너는 간결하고 위트 있는 테크 에세이스트야.
+</span></span><span style="display:flex;"><span>[주제] [글의 주제]에 대해 글을 작성해줘.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[제약 조건]
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">1.</span> 절대 금지 표현: &#34;오늘날 빠르게 변화하는&#34;, &#34;결론적으로&#34;, &#34;주목할 점은&#34;, 느낌표 남발.
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">2.</span> 부사와 형용사를 최대한 빼고 담백한 단문 위주로 서술해줘.
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">3.</span> 뻔한 비유 대신 독자가 머릿속에 바로 그릴 수 있는 생생한 장면으로 설명해줘.
+</span></span></code></pre></div><hr>
+<h2 id="4-시사점">4. 시사점</h2>
+<p>추상적인 지시 대신 <strong>명확한 네거티브 제약(Negative Constraints)과 문체 가이드라인을 시스템 프롬프트에 고정</strong>하는 것이 AI 특유의 진부함을 걷어내고 완성도 높은 콘텐츠를 얻는 가장 효과적인 접근법입니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 09월 02일 18시 20분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-02-voice-studio-open-source-elevenlabs-alternative/" rel="prev">
+        <span>VoiceStudio: 오픈소스 ElevenLabs를 지향하는 올인원 AI 음성 및 오디오 제작 도구</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-02-claude-code-intent-md-ai-native-sdlc-playbook/" rel="next">
+        <span>Claude Code의 새로운 핵심 문서 INTENT.MD와 Anthropic의 AI-Native SDLC 플레이북</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-앤트로픽-4대-탈脫-상투어-프롬프트-아키텍처">1. 앤트로픽 4대 탈(脫) 상투어 프롬프트 아키텍처</a></li>
+    <li><a href="#2-상투적-문장을-없애는-4대-핵심-원칙">2. 상투적 문장을 없애는 4대 핵심 원칙</a></li>
+    <li><a href="#3-실전-적용-템플릿">3. 실전 적용 템플릿</a></li>
+    <li><a href="#4-시사점">4. 시사점</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/prompt-engineering/" class="badge badge-secondary">Prompt-Engineering</a>
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/productivity/" class="badge badge-secondary">Productivity</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
