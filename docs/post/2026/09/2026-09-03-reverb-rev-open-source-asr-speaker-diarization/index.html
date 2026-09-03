@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Reverb: Rev 사가 공개한 WeNet ASR &#43; Pyannote 화자 분리 통합 오픈소스'" />
+  <title>Reverb: Rev 사가 공개한 WeNet ASR &#43; Pyannote 화자 분리 통합 오픈소스  | 신규하 블로그</title>
+  <meta property="og:title" content="Reverb: Rev 사가 공개한 WeNet ASR &#43; Pyannote 화자 분리 통합 오픈소스" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-09-03"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/09/2026-09-03-reverb-rev-open-source-asr-speaker-diarization/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="open-source" />
+  
+  <meta property="og:tags" content="productivity" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/09/2026-09-03-reverb-rev-open-source-asr-speaker-diarization/">
+          <h1>
+            Reverb: Rev 사가 공개한 WeNet ASR &#43; Pyannote 화자 분리 통합 오픈소스
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/09/2026-09-03-reverb-rev-open-source-asr-speaker-diarization/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>회의록이나 인터뷰 음성을 텍스트로 변환할 때 가장 까다로운 문제는 단순 음성 인식이 아니라 **&ldquo;여러 참석자 중 누가 무슨 말을 했는가(Speaker Diarization, 화자 분리)&rdquo;**를 정확하게 판별하는 것입니다.</p>
+<p>미국 대표 전사 서비스 기업 Rev가 공개한 <strong><code>Reverb</code></strong>(<code>revdotcom/reverb</code>)는 <strong>WeNet 기반 고정밀 ASR 모델과 Pyannote 기반 화자 분리 모델을 단일 파이프라인으로 통합하여, 실제 다자간 비즈니스 회의 및 실적 발표 녹음 벤치마크에서 Whisper Large-v3 및 Canary-1B보다 우수한 전사 정확도를 기록한 오픈소스 프로젝트</strong>입니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.threads.com/@aiwire_kr/post/DczGvGbk7W8">원문 Threads 게시물: aiwire_kr (@aiwire_kr)</a></li>
+<li><a href="https://github.com/revdotcom/reverb">Reverb GitHub 공식 저장소 (revdotcom/reverb)</a></li>
+</ul>
+<hr>
+<h2 id="1-reverb-음성인식--화자-분리-파이프라인">1. Reverb 음성인식 &amp; 화자 분리 파이프라인</h2>
+<pre class="mermaid">flowchart TD
+    classDef audioNode fill:#c5dcef,stroke:#2b6cb0,stroke-width:1.5px,color:#333;
+    classDef auiNode fill:#e0c8ef,stroke:#6b46c1,stroke-width:1.5px,color:#333;
+    classDef optNode fill:#fde8c0,stroke:#d69e2e,stroke-width:1.5px,color:#333;
+    classDef outNode fill:#c0ecd3,stroke:#38a169,stroke-width:1.5px,color:#333;
+
+    Audio["다자간 회의 / 실적 발표 오디오"] --> Reverb["Reverb 통합 엔진"]
+    subgraph EngineCore["통합 파이프라인"]
+        E1["WeNet 고정밀 음성인식 (ASR)"]
+        E2["Pyannote 고속 화자 분리 (Diarization)"]
+        E3["verbatimicity 비유창성 제어 옵션"]
+    end
+    Reverb --> EngineCore
+    EngineCore --> Bench["Whisper Large-v3 대비 더 높은 회의 전사 정확도"]
+
+    class Audio audioNode;
+    class Reverb,EngineCore,E1,E2 auiNode;
+    class E3 optNode;
+    class Bench outNode;</pre><hr>
+<h2 id="2-주요-핵심-기능-및-차별점">2. 주요 핵심 기능 및 차별점</h2>
+<ol>
+<li><strong>ASR + Diarization 단일 리포지토리 통합</strong>:
+<ul>
+<li>음성 인식 모델(WeNet)과 화자 분리 모델(Pyannote)을 별도로 세팅하고 파이프라인을 연결해야 했던 번거로움을 없애고, 단일 패키지에서 화자별 발화 구간과 텍스트를 즉시 반환합니다.</li>
+</ul>
+</li>
+<li><strong>실제 비즈니스 환경에서의 압도적 벤치마크</strong>:
+<ul>
+<li>기업 실적 발표 및 다자간 회의 데이터셋(Earnings21, Earnings22, Rev16) 벤치마크에서 OpenAI의 **Whisper Large-v3 및 Nvidia Canary-1B 대비 더 낮은 단어 에러율(WER)**을 달성했습니다.</li>
+</ul>
+</li>
+<li><strong><code>verbatimicity</code> (비유창성 표현 제어) 옵션</strong>:
+<ul>
+<li>회의 중 발생하는 <em>&ldquo;음&hellip;&rdquo;</em>, <em>&ldquo;어&hellip;&rdquo;</em> 같은 간투사(Filler words)나 말더듬을 전사 결과에 포함할지 여부를 조절하여, 정제된 문어체 요약본이나 사실 그대로의 녹취록 중 선택 생성할 수 있습니다.</li>
+</ul>
+</li>
+<li><strong>유연한 배포 지원 (CLI / Python / Docker)</strong>:
+<ul>
+<li>CLI 명령어, 파이썬 라이브러리 API, 도커 컨테이너를 모두 지원하여 로컬 PC 및 온프레미스 서버 환경에 쉽게 배포할 수 있습니다. (추론 코드 Apache 2.0 라이선스)</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="3-시사점">3. 시사점</h2>
+<p>단순 텍스트 전사를 넘어 <strong>다자간 회의록 자동화, 콜센터 통화 분석, 법률/의료 녹취 등 화자 식별이 필수적인 엔터프라이즈 오디오 인텔리전스 구축</strong>에 최적화된 오픈소스 솔루션입니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 09월 03일 07시 54분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-03-qwen3-tts-free-voice-cloning-remotion-workflow/" rel="prev">
+        <span>Qwen3-TTS와 Remotion으로 10분 만에 무료 목소리 복제 나레이션 영상 만들기</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-03-genoffice-open-source-ms-office-pdf-alternative/" rel="next">
+        <span>GenOffice: MS 오피스 파일 호환과 PDF 폰트 유지 편집을 지원하는 오픈소스 오피스</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-reverb-음성인식--화자-분리-파이프라인">1. Reverb 음성인식 &amp; 화자 분리 파이프라인</a></li>
+    <li><a href="#2-주요-핵심-기능-및-차별점">2. 주요 핵심 기능 및 차별점</a></li>
+    <li><a href="#3-시사점">3. 시사점</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/open-source/" class="badge badge-secondary">Open-Source</a>
+    <a href="/tags/productivity/" class="badge badge-secondary">Productivity</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

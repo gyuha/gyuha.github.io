@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'TurboFieldfare: 26B 대형 LLM을 RAM 2GB로 구동하는 Swift/Metal 온디바이스 오픈소스'" />
+  <title>TurboFieldfare: 26B 대형 LLM을 RAM 2GB로 구동하는 Swift/Metal 온디바이스 오픈소스  | 신규하 블로그</title>
+  <meta property="og:title" content="TurboFieldfare: 26B 대형 LLM을 RAM 2GB로 구동하는 Swift/Metal 온디바이스 오픈소스" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-09-03"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/09/2026-09-03-turbofieldfare-26b-llm-2gb-ram-mac/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="llm" />
+  
+  <meta property="og:tags" content="open-source" />
+  
+  <meta property="og:tags" content="productivity" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/09/2026-09-03-turbofieldfare-26b-llm-2gb-ram-mac/">
+          <h1>
+            TurboFieldfare: 26B 대형 LLM을 RAM 2GB로 구동하는 Swift/Metal 온디바이스 오픈소스
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/09/2026-09-03-turbofieldfare-26b-llm-2gb-ram-mac/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>20B 이상의 대형 언어 모델(LLM)을 로컬 Mac에서 구동하려면 최소 16GB~24GB 이상의 통합 메모리가 필요하여, 8GB RAM을 탑재한 기본형 맥북 사용자는 대형 모델 구동을 포기해야 했습니다.</p>
+<p><strong><code>TurboFieldfare</code></strong>(<code>drumih/turbo-fieldfare</code>)는 파일 크기만 14.3GB에 달하는 Google Gemma 4 26B 모델을 <strong>RAM에 통째로 로드하지 않고, 필수 컨텍스트 1.35GB만 상주시킨 뒤 토큰을 생성할 때마다 필요한 가중치 조각만 고속 SSD에서 실시간으로 읽어와 단 2GB RAM으로 구동하는 혁신적인 Swift/Metal 기반 오픈소스</strong>입니다. (GitHub 6,500+ Stars / Apache 2.0)</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.threads.com/@k1utch_ai/post/Dcx-dOjkd6O">원문 Threads 게시물: k1utch_ai (@k1utch_ai)</a></li>
+<li><a href="https://github.com/drumih/turbo-fieldfare">TurboFieldfare GitHub 공식 저장소</a></li>
+</ul>
+<hr>
+<h2 id="1-turbofieldfare-온디맨드-ssd-스트리밍-아키텍처">1. TurboFieldfare 온디맨드 SSD 스트리밍 아키텍처</h2>
+<pre class="mermaid">flowchart TD
+    classDef modelNode fill:#c5dcef,stroke:#2b6cb0,stroke-width:1.5px,color:#333;
+    classDef pageNode fill:#e0c8ef,stroke:#6b46c1,stroke-width:1.5px,color:#333;
+    classDef benchNode fill:#fde8c0,stroke:#d69e2e,stroke-width:1.5px,color:#333;
+    classDef outNode fill:#c0ecd3,stroke:#38a169,stroke-width:1.5px,color:#333;
+
+    Gemma["Gemma 4 26B 가중치 (14.3GB)"] --> Engine["TurboFieldfare (Swift & Metal)"]
+    Engine --> Paging["온디맨드 SSD 페이징 (RAM 1.35GB 상주)"]
+    Paging --> Gen["토큰 생성 시 필요한 조각만 SSD 실시간 스트리밍"]
+    Gen --> Bench["8GB M2 맥북 에어 (5~6 tps / RAM 2GB)<br>24GB M5 Pro (31~35 tps)"]
+
+    class Gemma modelNode;
+    class Engine,Paging pageNode;
+    class Gen,Bench benchNode;
+    class Bench outNode;</pre><hr>
+<h2 id="2-주요-핵심-기술-및-실측-벤치마크">2. 주요 핵심 기술 및 실측 벤치마크</h2>
+<ol>
+<li><strong>온디맨드 가중치 스트리밍 (SSD Paging)</strong>:
+<ul>
+<li>14.3GB 가중치 전체를 RAM에 올리는 전통적 방식 대신, 핵심 런타임 약 1.35GB만 유지하고 다음 토큰 생성 연산에 필요한 블록만 SSD에서 순간적으로 페이징합니다.</li>
+</ul>
+</li>
+<li><strong>8GB M2 맥북 에어 실측 성능</strong>:
+<ul>
+<li><strong>생성 속도</strong>: 초당 5.1 ~ 6.3 토큰 (tps)</li>
+<li><strong>실사용 메모리 점유</strong>: <strong>1.9 ~ 2.1 GB</strong></li>
+<li>기본형 M2 맥북 에어에서도 메모리 스왑 압박 없이 대형 26B 모델을 오프라인에서 구동할 수 있습니다.</li>
+</ul>
+</li>
+<li><strong>24GB M5 Pro 비교 성능</strong>:
+<ul>
+<li>TurboFieldfare는 초당 31 ~ 35 토큰을 기록하며 메모리를 단 2GB만 소모합니다. (참고: <code>mlx-lm</code>은 초당 76~82 토큰으로 더 빠르지만 8.3GB 이상의 RAM을 상시 점유)</li>
+</ul>
+</li>
+<li><strong>Swift &amp; Metal 순수 최적화</strong>:
+<ul>
+<li>외부 프레임워크 의존성 없이 Swift와 Metal로 Apple Silicon GPU/NPU 구조에 최적화되어 있습니다. (macOS 26 이상 요구)</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="3-시사점">3. 시사점</h2>
+<p>속도를 일부 타협하는 대신 **극단적인 메모리 절감(RAM 2GB)**을 달성하여, 보급형 저사양 Mac에서도 멀티태스킹 부담 없이 고지능 오픈소스 LLM을 상시 띄워둘 수 있는 획기적인 온디바이스 아키텍처입니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 09월 03일 07시 48분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-03-claude-code-token-limits-prompt-caching-cost-guide/" rel="prev">
+        <span>클로드 코드 한도, 이거 모르면 계속 낭비하게 됩니다: 프롬프트 캐싱과 컨텍스트 최적화 가이드</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-03-qwen3-tts-free-voice-cloning-remotion-workflow/" rel="next">
+        <span>Qwen3-TTS와 Remotion으로 10분 만에 무료 목소리 복제 나레이션 영상 만들기</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-turbofieldfare-온디맨드-ssd-스트리밍-아키텍처">1. TurboFieldfare 온디맨드 SSD 스트리밍 아키텍처</a></li>
+    <li><a href="#2-주요-핵심-기술-및-실측-벤치마크">2. 주요 핵심 기술 및 실측 벤치마크</a></li>
+    <li><a href="#3-시사점">3. 시사점</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/llm/" class="badge badge-secondary">LLM</a>
+    <a href="/tags/open-source/" class="badge badge-secondary">Open-Source</a>
+    <a href="/tags/productivity/" class="badge badge-secondary">Productivity</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
