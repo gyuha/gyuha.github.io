@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Freqtrade vs CCXT: 국내 거래소(업비트·빗썸·코인원) 암호화폐 자동매매 봇 구축 가이드'" />
+  <title>Freqtrade vs CCXT: 국내 거래소(업비트·빗썸·코인원) 암호화폐 자동매매 봇 구축 가이드  | 신규하 블로그</title>
+  <meta property="og:title" content="Freqtrade vs CCXT: 국내 거래소(업비트·빗썸·코인원) 암호화폐 자동매매 봇 구축 가이드" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-09-05"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/09/2026-09-05-freqtrade-vs-ccxt-korea-crypto-bot-guide/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="open-source" />
+  
+  <meta property="og:tags" content="productivity" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/09/2026-09-05-freqtrade-vs-ccxt-korea-crypto-bot-guide/">
+          <h1>
+            Freqtrade vs CCXT: 국내 거래소(업비트·빗썸·코인원) 암호화폐 자동매매 봇 구축 가이드
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/09/2026-09-05-freqtrade-vs-ccxt-korea-crypto-bot-guide/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>비트코인 및 알트코인 자동매매(Trading Bot)를 시작하려는 개발자나 트레이더가 오픈소스를 검색하면 가장 먼저 접하는 도구가 GitHub Star 54,000개에 달하는 <strong>Freqtrade</strong>입니다. 백테스팅, 전략 최적화, 머신러닝 연동까지 갖춘 사실상 암호화폐 트레이딩 봇의 글로벌 표준입니다.</p>
+<p>하지만 크리에이터 weekly100month 님이 지적한 것처럼, <strong>업비트, 빗썸, 코인원 등 국내 원화 마켓 거래소를 주력으로 사용하는 한국 트레이더에게는 치명적인 호환성 문제</strong>가 발생합니다. Freqtrade와 CCXT의 아키텍처 차이를 분석하고, 국내 환경에서 안정적인 자동매매를 구축하는 최적의 경로를 살펴봅니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.threads.com/@weekly100month/post/Dc28NmEnyOi">원문 Threads 게시물: weekly100month (@weekly100month)</a></li>
+<li><a href="https://github.com/freqtrade/freqtrade">Freqtrade GitHub 공식 저장소</a></li>
+<li><a href="https://github.com/ccxt/ccxt">CCXT GitHub 공식 저장소</a></li>
+</ul>
+<hr>
+<h2 id="1-freqtrade-vs-ccxt-선택-아키텍처">1. Freqtrade vs CCXT 선택 아키텍처</h2>
+<pre class="mermaid">flowchart TD
+    classDef botNode fill:#c5dcef,stroke:#2b6cb0,stroke-width:1.5px,color:#333;
+    classDef freqNode fill:#e0c8ef,stroke:#6b46c1,stroke-width:1.5px,color:#333;
+    classDef ccxtNode fill:#fde8c0,stroke:#d69e2e,stroke-width:1.5px,color:#333;
+    classDef outNode fill:#c0ecd3,stroke:#38a169,stroke-width:1.5px,color:#333;
+
+    Target["암호화폐 자동매매 봇 구축 목표"] --> Fork{"거래소 타겟 선택"}
+    Fork -->|해외 선물/마진<br>Binance / Bybit / OKX| Freq["Freqtrade (★ 5.4만 / GPL-3.0)<br>완성형 전략 프레임워크 활용"]
+    Fork -->|국내 원화 마켓<br>업비트 / 빗썸 / 코인원| CCXT["CCXT (★ 4.3만 / MIT)<br>공식 국내 거래소 API 기반 직접 개발"]
+    Freq --> Out1["해외 전략 백테스팅 & 자동 매매"]
+    CCXT --> Out2["국내 원화 안정적 체결 & 슬리피지 방지"]
+
+    class Target botNode;
+    class Fork,Freq freqNode;
+    class CCXT ccxtNode;
+    class Out1,Out2 outNode;</pre><hr>
+<h2 id="2-freqtrade와-국내-거래소의-결정적-괴리">2. Freqtrade와 국내 거래소의 결정적 괴리</h2>
+<ol>
+<li><strong>공식 지원 거래소의 해외 편중</strong>:
+<ul>
+<li>Freqtrade의 공식 지원 거래소는 바이낸스(Binance), 바이비트(Bybit), OKX, 게이트아이오(Gate.io), 크라켄(Kraken) 등 글로벌 거래소 위주입니다.</li>
+<li>공식 문서 및 README에 한국(Korea) 거래소 언급이 전무하며, *&ldquo;ccxt에 지원되는 다른 거래소도 쓸 수는 있지만 동작을 보장하지 않는다&rdquo;*고 명시되어 있습니다.</li>
+</ul>
+</li>
+<li><strong>원화(KRW) 마켓과 특화 주문 로직 부재</strong>:
+<ul>
+<li>업비트와 빗썸의 독자적인 호가 단위 규격, 원화 마켓 제한, 주문 취소/정정 메커니즘을 Freqtrade 기본 코어에서 보장해주지 않아 체결 누락이나 런타임 크래시 위험이 상존합니다.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="3-ccxt가-국내-자동매매의-정답인-이유">3. CCXT가 국내 자동매매의 정답인 이유</h2>
+<ol>
+<li><strong>국내 주요 거래소 공식 및 1급 지원</strong>:
+<ul>
+<li><strong><code>CCXT</code></strong>(CryptoCurrency eXchange Trading Library, ★ 43,000+ / MIT)는 업비트(<code>upbit</code>), 빗썸(<code>bithumb</code>), 코인원(<code>coinone</code>)의 REST 및 WebSocket API를 표준화된 인터페이스로 공식 지원합니다.</li>
+</ul>
+</li>
+<li><strong>가볍고 유연한 커스텀 파이프라인</strong>:
+<ul>
+<li>Freqtrade의 방대한 프레임워크 제약에 얽매이지 않고, 원하는 지표(TA-Lib, Pandas-TA)와 주문 로직, 슬랙/텔레그램 알림을 몇십 줄의 파이썬 코드로 깔끔하게 직접 작성할 수 있습니다.</li>
+</ul>
+</li>
+<li><strong>상업적 자유도 (MIT 라이선스)</strong>:
+<ul>
+<li>Freqtrade는 엄격한 GPL-3.0 라이선스라 코드 공개 의무가 따르지만, CCXT는 MIT 라이선스로 독자 전략의 기밀성을 완벽히 보호할 수 있습니다.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="4-실전-가이드라인">4. 실전 가이드라인</h2>
+<ul>
+<li><strong>바이낸스/바이비트 등 해외 선물 마진 전략</strong>: 검증된 오픈소스 백테스팅과 포트폴리오 관리가 지원되는 <strong><code>Freqtrade</code></strong> 활용 권장.</li>
+<li><strong>업비트/빗썸 원화 현물 자동매매</strong>: Freqtrade에 무리하게 어댑터를 붙이지 말고, <strong><code>CCXT</code></strong> 라이브러리를 기반으로 자체 파이썬 봇을 작성하는 것이 유지보수와 안정성 측면에서 가장 확실한 선택입니다.</li>
+</ul>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 09월 05일 11시 33분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-04-ai-ppt-design-system-guide-oppadu/" rel="prev">
+        <span>AI PPT가 촌스러운 진짜 이유와 디자인 시스템 가이드 활용법 (오빠두엑셀)</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-05-aside-skill-claude-code-browser-agent/" rel="next">
+        <span>aside-skill: 클로드범의 로그인 세션 기반 브라우저 에이전트 CLI 제어 스킬</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-freqtrade-vs-ccxt-선택-아키텍처">1. Freqtrade vs CCXT 선택 아키텍처</a></li>
+    <li><a href="#2-freqtrade와-국내-거래소의-결정적-괴리">2. Freqtrade와 국내 거래소의 결정적 괴리</a></li>
+    <li><a href="#3-ccxt가-국내-자동매매의-정답인-이유">3. CCXT가 국내 자동매매의 정답인 이유</a></li>
+    <li><a href="#4-실전-가이드라인">4. 실전 가이드라인</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/open-source/" class="badge badge-secondary">Open-Source</a>
+    <a href="/tags/productivity/" class="badge badge-secondary">Productivity</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
