@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '솔라나 기반 자율 AI 헤지펀드 AutoHedge: 4인 전문 에이전트 협업 시스템 분석'" />
+  <title>솔라나 기반 자율 AI 헤지펀드 AutoHedge: 4인 전문 에이전트 협업 시스템 분석  | 신규하 블로그</title>
+  <meta property="og:title" content="솔라나 기반 자율 AI 헤지펀드 AutoHedge: 4인 전문 에이전트 협업 시스템 분석" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-09-08"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/09/2026-09-08-autohedge-solana-ai-agent-hedge-fund/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="agents" />
+  
+  <meta property="og:tags" content="ai" />
+  
+  <meta property="og:tags" content="automation" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/09/2026-09-08-autohedge-solana-ai-agent-hedge-fund/">
+          <h1>
+            솔라나 기반 자율 AI 헤지펀드 AutoHedge: 4인 전문 에이전트 협업 시스템 분석
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/09/2026-09-08-autohedge-solana-ai-agent-hedge-fund/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>탈중앙화 금융(DeFi)과 인공지능 에이전트의 융합이 급물살을 타는 가운데, The Swarm Corporation이 공개한 오픈소스 프로젝트 <strong>AutoHedge</strong> 가 큰 주목을 받고 있습니다.</p>
+<p>단순히 지표를 보고 매수·매도 신호를 발생시키는 기존 봇과 달리, AutoHedge는 <strong>실제 인간 헤지펀드의 4대 핵심 직군(전략가, 퀀트, 리스크 매니저, 실행 트레이더)을 분리된 AI 에이전트로 구현하고, 상호 견제와 합의를 통해 솔라나(Solana) 온체인 트레이딩을 자율 집행</strong> 합니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.threads.com/share/BCLrufpOmg/">Threads 원문 포스트: h2smusic</a></li>
+<li><a href="https://github.com/The-Swarm-Corporation/AutoHedge">GitHub 저장소: The-Swarm-Corporation/AutoHedge</a></li>
+</ul>
+<hr>
+<h2 id="1-autohedge-4인-에이전트-협업-및-합의-아키텍처">1. AutoHedge 4인 에이전트 협업 및 합의 아키텍처</h2>
+<pre class="mermaid">flowchart TD
+    classDef mktNode fill:#c5dcef,stroke:#2b6cb0,stroke-width:1.5px,color:#333;
+    classDef agentNode fill:#e0c8ef,stroke:#6b46c1,stroke-width:1.5px,color:#333;
+    classDef riskNode fill:#ffc8c4,stroke:#e53e3e,stroke-width:1.5px,color:#333;
+    classDef chainNode fill:#c0ecd3,stroke:#38a169,stroke-width:1.5px,color:#333;
+
+    Market["온체인 덱스(DEX) & 소셜 센티먼트 데이터"] --> Strategist["1. 전략가 (Strategist Agent)<br>거시 트렌드 및 유망 토큰 포트폴리오 기획"]
+    Strategist --> Quant["2. 퀀트 (Quant Analyst Agent)<br>수학적 백테스팅 & 변동성/진입가 산출"]
+    Quant --> Risk["3. 리스크 매니저 (Risk Manager Agent)<br>최대 낙폭(MDD), 포지션 크기, 손절선 검증"]
+
+    Risk -->|리스크 승인 거부| Strategist
+    Risk -->|승인 및 서명| Trader["4. 실행 트레이더 (Execution Trader Agent)<br>슬리피지 최적화 분할 주문 실행"]
+    Trader --> Solana["솔라나 온체인 트랜잭션 (Jupiter DEX 등)"]
+
+    class Market mktNode;
+    class Strategist,Quant,Trader agentNode;
+    class Risk riskNode;
+    class Solana chainNode;</pre><hr>
+<h2 id="2-전문-에이전트별-역할-및-상호-견제-구조">2. 전문 에이전트별 역할 및 상호 견제 구조</h2>
+<ol>
+<li><strong>전략가 (Strategist Agent)</strong>:
+<ul>
+<li>소셜 미디어 트렌드, 유동성 풀 규모, 거시 경제 지표를 종합 분석하여 시장의 테마를 식별하고 전체 포트폴리오 자산 배분 비중을 결정합니다.</li>
+</ul>
+</li>
+<li><strong>퀀트 분석가 (Quant Analyst Agent)</strong>:
+<ul>
+<li>전략가가 선정한 자산의 과거 가격 데이터, 변동성, 호가창 깊이를 시뮬레이션하여 최적의 진입 시점과 목표 기대 수익률을 통계적으로 계산합니다.</li>
+</ul>
+</li>
+<li><strong>리스크 매니저 (Risk Manager Agent - 핵심 견제 장치)</strong>:
+<ul>
+<li><strong>AutoHedge 안정성의 핵심</strong>. 퀀트의 제안이 아무리 유망하더라도, 전체 포트폴리오의 최대 허용 낙폭(MDD), 일일 손실 한도, 단일 토큰 노출 상한을 초과하면 <strong>즉각 거래를 반려(Veto)</strong> 합니다.</li>
+</ul>
+</li>
+<li><strong>실행 트레이더 (Execution Trader Agent)</strong>:
+<ul>
+<li>리스크 검증을 최종 통과한 주문에 한해, Jupiter DEX 애그리게이터 등을 통해 MEV 봇 공격을 방어하고 슬리피지를 최소화하는 분할 스왑을 실행합니다.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="3-솔라나solana를-선택한-이유">3. 솔라나(Solana)를 선택한 이유</h2>
+<p>AutoHedge가 이더리움이나 타 L2 대신 솔라나를 기반으로 구축된 이유는 <strong>서브세컨드(0.4초) 수준의 블록 확정 시간과 저렴한 가스비</strong> 덕분입니다. 복수의 AI 에이전트가 실시간으로 포지션을 재조정하고 분할 주문을 집행할 때 발생하는 트랜잭션 비용 부담을 최소화할 수 있습니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 09월 08일 18시 15분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-08-gpt6-astra-nc-ai-varco-3d-game-dev/" rel="prev">
+        <span>GPT-6 아스트라와 NC AI의 결합: 프롬프트 하나로 완성하는 3D 게임 개발 워크플로우</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-08-bufatechno-webgamedev-threejs-babylonjs-skill/" rel="next">
+        <span>Bufatechno WebGameDev: ZCode &amp; Claude를 위한 3D 웹 게임 개발 전문 스킬</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-autohedge-4인-에이전트-협업-및-합의-아키텍처">1. AutoHedge 4인 에이전트 협업 및 합의 아키텍처</a></li>
+    <li><a href="#2-전문-에이전트별-역할-및-상호-견제-구조">2. 전문 에이전트별 역할 및 상호 견제 구조</a></li>
+    <li><a href="#3-솔라나solana를-선택한-이유">3. 솔라나(Solana)를 선택한 이유</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+    <a href="/tags/ai/" class="badge badge-secondary">Ai</a>
+    <a href="/tags/automation/" class="badge badge-secondary">Automation</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

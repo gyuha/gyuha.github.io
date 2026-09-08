@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Bufatechno WebGameDev: ZCode &amp; Claude를 위한 3D 웹 게임 개발 전문 스킬'" />
+  <title>Bufatechno WebGameDev: ZCode &amp; Claude를 위한 3D 웹 게임 개발 전문 스킬  | 신규하 블로그</title>
+  <meta property="og:title" content="Bufatechno WebGameDev: ZCode &amp; Claude를 위한 3D 웹 게임 개발 전문 스킬" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-09-08"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/09/2026-09-08-bufatechno-webgamedev-threejs-babylonjs-skill/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="skills" />
+  
+  <meta property="og:tags" content="javascript" />
+  
+  <meta property="og:tags" content="claude-code" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/09/2026-09-08-bufatechno-webgamedev-threejs-babylonjs-skill/">
+          <h1>
+            Bufatechno WebGameDev: ZCode &amp; Claude를 위한 3D 웹 게임 개발 전문 스킬
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/09/2026-09-08-bufatechno-webgamedev-threejs-babylonjs-skill/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>AI 코딩 어시스턴트로 웹 게임을 만들어 본 개발자라면 누구나 겪는 골칫거리가 있습니다. 모델이 작성해 준 코드는 그럴듯하지만, 외부 3D 모델(.glb)이나 텍스처 이미지, 효과음 파일 경로가 깨져 있거나 구식 코드를 생성해 브라우저 콘솔에 오류가 쏟아지는 현상입니다.</p>
+<p><code>@jakepansta</code> 가 추천하여 화제가 된 <strong>Bufatechno WebGameDev</strong> 저장소는 ZCode와 Claude Code Desktop 환경에 최적화된 전문 게임 개발 스킬(Skill)로, <strong>외부 파일 의존성을 0%로 만들고 최신 2026 그래픽 스택을 준수하도록 강제</strong> 합니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.threads.com/share/_6hlu0PQ1/">Threads 원문 포스트: jakepansta</a></li>
+<li><a href="https://github.com/bufatechno/bufatechno-webgamedev">GitHub 저장소: bufatechno/bufatechno-webgamedev</a></li>
+<li><a href="https://balik-kampung.vercel.app/">쇼케이스 데모: Balik Kampung 3D</a></li>
+</ul>
+<hr>
+<h2 id="1-bufatechno-webgamedev-아키텍처-구조">1. Bufatechno WebGameDev 아키텍처 구조</h2>
+<pre class="mermaid">flowchart TD
+    classDef cliNode fill:#c5dcef,stroke:#2b6cb0,stroke-width:1.5px,color:#333;
+    classDef skillNode fill:#e0c8ef,stroke:#6b46c1,stroke-width:1.5px,color:#333;
+    classDef assetNode fill:#fde8c0,stroke:#d69e2e,stroke-width:1.5px,color:#333;
+    classDef outNode fill:#c0ecd3,stroke:#38a169,stroke-width:1.5px,color:#333;
+
+    Dev["개발자 프롬프트 (게임 아이디어)"] --> Agent["ZCode / Claude Code (Skill 탑재)"]
+    Agent --> Rule["Anti-Slop 게임 아키텍처 강제<br>(고정 1/60s 타임스텝, ECS, FSM, 풀링)"]
+
+    Rule --> Pack3D["3D 지오메트리 & PBR 셰이더 (TSL)"]
+    Rule --> Pack2D["절차적 캔버스 텍스처 (Zero 이미지 파일)"]
+    Rule --> PackAudio["오실레이터 기반 절차적 사운드 & HRTF 3D 음향"]
+
+    Pack3D --> Bundle["Vite 7 + Three.js r175 / Babylon.js v8.15"]
+    Pack2D --> Bundle
+    PackAudio --> Bundle
+
+    Bundle --> Out["즉시 브라우저에서 실행 가능한 완결형 3D 게임"]
+
+    class Dev cliNode;
+    class Agent,Rule skillNode;
+    class Pack3D,Pack2D,PackAudio assetNode;
+    class Bundle,Out outNode;</pre><hr>
+<h2 id="2-주요-기술-혁신">2. 주요 기술 혁신</h2>
+<h3 id="1-제로-외부-에셋-all-in-js-packaging">1) 제로 외부 에셋 (All-in-JS Packaging)</h3>
+<ul>
+<li><strong>절차적 텍스처</strong>: 나무, 벽돌, 금속, 잔디 등의 텍스처를 외부 PNG 파일 없이 HTML5 캔버스를 통해 코드로 직접 렌더링하여 매핑합니다.</li>
+<li><strong>절차적 Web Audio &amp; HRTF</strong>: 점프, 슈팅, 피격 효과음을 브라우저의 기본 오실레이터(Oscillator) 합성으로 구현하고 3D 공간 음향(HRTF Panner)을 적용합니다.</li>
+</ul>
+<h3 id="2-2026-최신-웹-그래픽-스택-준수">2) 2026 최신 웹 그래픽 스택 준수</h3>
+<ul>
+<li><strong>Three.js r175+</strong>: 최신 WebGPURenderer와 TSL(Three Shading Language) NodeMaterial을 적극 활용.</li>
+<li><strong>Babylon.js v8.15+</strong>: Havok 물리 엔진, Clustered Lighting(1000개 광원 실시간 처리), Frame Graph 최적화(메모리 40% 절감) 기본 탑재.</li>
+</ul>
+<h3 id="3-anti-slop-저품질-코드-원천-차단">3) Anti-Slop (저품질 코드 원천 차단)</h3>
+<ul>
+<li>LLM이 무성의하게 작성하는 비동기 렌더링 루프를 금지하고, 60fps 고정 타임스텝, 엔티티 컴포넌트 시스템(ECS), 메모리 누수를 방지하는 오브젝트 풀링(Object Pool), IndexedDB 로컬 저장소를 필수로 강제합니다.</li>
+<li>경량 모델인 Nemotron 3 Ultra나 DeepSeek 무료 모델을 사용해도 프로급의 정교한 게임 아키텍처가 도출됩니다.</li>
+</ul>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 09월 08일 18시 20분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-08-autohedge-solana-ai-agent-hedge-fund/" rel="prev">
+        <span>솔라나 기반 자율 AI 헤지펀드 AutoHedge: 4인 전문 에이전트 협업 시스템 분석</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-08-bytedance-deerflow-long-horizon-superagent/" rel="next">
+        <span>ByteDance DeerFlow 2.0: 장시간 지치지 않고 일하는 AI 직원을 위한 슈퍼 에이전트 프레임워크</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-bufatechno-webgamedev-아키텍처-구조">1. Bufatechno WebGameDev 아키텍처 구조</a></li>
+    <li><a href="#2-주요-기술-혁신">2. 주요 기술 혁신</a>
+      <ul>
+        <li><a href="#1-제로-외부-에셋-all-in-js-packaging">1) 제로 외부 에셋 (All-in-JS Packaging)</a></li>
+        <li><a href="#2-2026-최신-웹-그래픽-스택-준수">2) 2026 최신 웹 그래픽 스택 준수</a></li>
+        <li><a href="#3-anti-slop-저품질-코드-원천-차단">3) Anti-Slop (저품질 코드 원천 차단)</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/skills/" class="badge badge-secondary">Skills</a>
+    <a href="/tags/javascript/" class="badge badge-secondary">Javascript</a>
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
