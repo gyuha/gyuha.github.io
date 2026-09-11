@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '클로드의 &#39;학습의 신 모드&#39;: 어떤 기술이든 4시간 만에 정복하는 프롬프트 6종'" />
+  <title>클로드의 &#39;학습의 신 모드&#39;: 어떤 기술이든 4시간 만에 정복하는 프롬프트 6종  | 신규하 블로그</title>
+  <meta property="og:title" content="클로드의 &#39;학습의 신 모드&#39;: 어떤 기술이든 4시간 만에 정복하는 프롬프트 6종" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-09-11"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/09/2026-09-11-claude-learning-god-mode-prompts/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude" />
+  
+  <meta property="og:tags" content="prompt-engineering" />
+  
+  <meta property="og:tags" content="productivity" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/09/2026-09-11-claude-learning-god-mode-prompts/">
+          <h1>
+            클로드의 &#39;학습의 신 모드&#39;: 어떤 기술이든 4시간 만에 정복하는 프롬프트 6종
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/09/2026-09-11-claude-learning-god-mode-prompts/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>새로운 기술이나 지식을 배울 때 생성형 AI를 단순한 &lsquo;요약기&rsquo;로만 사용하면, 방대한 이론 목록에 압도되어 실제 업무에 적용하기도 전에 지치기 쉽습니다. AI의 진정한 가치는 단순히 정답을 읊어주는 백과사전이 아니라, <strong>나를 극한으로 몰아붙여 메타인지를 깨우는 1:1 개인 튜터</strong> 로 활용할 때 발휘됩니다.</p>
+<p>스레드에서 화제가 된 <strong>클로드의 &lsquo;학습의 신 모드&rsquo;</strong> 는 AI에게 시간 제약과 역할극, 오답 유도, 비유적 설명, 블라인드 스팟 공격을 강제하여 <strong>어떤 기술이든 4시간 만에 실전에 써먹을 수 있는 수준으로 압축 학습</strong> 시키는 6대 실전 프롬프트 세트입니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.threads.com/share/BAC7tmBWPc/">Threads 원문 포스트: aialnam</a></li>
+<li><a href="https://docs.anthropic.com/">Anthropic Claude 공식 프롬프트 엔지니어링 가이드</a></li>
+</ul>
+<hr>
+<h2 id="1-6대-프롬프트의-학습-인지-파이프라인">1. 6대 프롬프트의 학습 인지 파이프라인</h2>
+<p>단순 암기식 학습에서 벗어나, 압축 ➔ 오답 시뮬레이션 ➔ 메타인지 검증으로 이어지는 정교한 인지 학습 사이클을 구현합니다.</p>
+<pre class="mermaid">flowchart TD
+    classDef compressNode fill:#c5dcef,stroke:#2b6cb0,stroke-width:1.5px,color:#333;
+    classDef simNode fill:#fde8c0,stroke:#d69e2e,stroke-width:1.5px,color:#333;
+    classDef testNode fill:#e0c8ef,stroke:#6b46c1,stroke-width:1.5px,color:#333;
+    classDef masteryNode fill:#c0ecd3,stroke:#38a169,stroke-width:1.5px,color:#333;
+
+    Start["학습 시작 (새로운 기술/개념)"] --> P1["1. 학습 곡선 깨부수기<br>(4시간 타임어택 & 버릴 것 분리)"]
+    P1 --> P2["2. 실전 실수 시뮬레이터<br>(소크라테스식 오답 훈련)"]
+    P2 --> P3["3. 어려운 말 번역기<br>(핵심 1문장 비유 & 이해도 락)"]
+
+    P3 --> P4["4. 나만의 학습 경로 설계<br>(45분 과제 & Not-To-Do List)"]
+    P4 --> P5["5. 숨은 빈틈 찾기<br>(피상적 이해 파괴 면접관)"]
+    P5 --> P6["6. 강제 파인만 학습법<br>(10세 아동 설명 & 전문용어 감지)"]
+
+    P6 --> Done["완전한 실전 적용 역량 체득"]
+
+    class Start,P1 compressNode;
+    class P2,P3 simNode;
+    class P4,P5 testNode;
+    class P6,Done masteryNode;</pre><hr>
+<h2 id="2-실전-프롬프트-6선-상세-복사본">2. 실전 프롬프트 6선 상세 복사본</h2>
+<h3 id="1-학습-곡선-깨부수기-실전-4시간-압축-모드">1) 학습 곡선 깨부수기 (실전 4시간 압축 모드)</h3>
+
+  <blockquote>
+    <p><em>&ldquo;너는 나와 딱 4시간만 함께할 수 있는 선생님이야. 그 이후에는 다시 만나지 못해. 네 유일한 목표는 시간이 끝나기 전에 내가 [기술]을 실제로 써먹을 수 있게 만드는 거야. 실전에 쓸 수 없는 이론은 설명하지 마. 목록만 던져주지도 마. 무엇부터 배워야 하는지, 무엇은 완전히 무시해도 되는지 알려줘. 그리고 딱 한 번만 해봐도 몇 달째 배우는 사람들의 70%보다 앞설 수 있는 연습이 무엇인지 알려줘.&rdquo;</em></p>
+
+  </blockquote>
+
+<h3 id="2-실전-실수-시뮬레이터-소크라테스식-오답-훈련">2) 실전 실수 시뮬레이터 (소크라테스식 오답 훈련)</h3>
+
+  <blockquote>
+    <p><em>&quot;[개념]을 설명하지 마. 그 개념을 실제로 써야 하고, 내가 실수할 가능성이 높은 상황에 바로 놓이게 해줘. 내가 틀리면 정답을 알려주지 마. 내 논리가 어디서 잘못됐는지 스스로 발견할 수 있는 질문을 해줘. 최소 두 번은 시도한 뒤에 정답을 알려줘. 망설이지 않고 제대로 해낼 수 있을 때까지 이 과정을 반복해줘.&quot;</em></p>
+
+  </blockquote>
+
+<h3 id="3-어려운-말-번역기-핵심-1문장-비유--이해도-락">3) 어려운 말 번역기 (핵심 1문장 비유 &amp; 이해도 락)</h3>
+
+  <blockquote>
+    <p><em>&ldquo;아래 글이 이해가 안 돼. 설명하기 전에 먼저 알려줘. 이 글에서 어떤 한 문장만 이해하면 나머지도 자연스럽게 이해할 수 있을까? 먼저 그 문장만 설명해줘. 전문 용어 없이 일상적인 비유를 사용해줘. 그다음 정말 이해한 사람만 답할 수 있는 질문 3개를 해줘. 내가 세 질문에 모두 제대로 답하기 전에는 다음으로 넘어가지 마.<br><br>[여기에 글 붙여넣기]&rdquo;</em></p>
+
+  </blockquote>
+
+<h3 id="4-나만의-학습-경로-설계-45분-과제--not-to-do-list">4) 나만의 학습 경로 설계 (45분 과제 &amp; Not-To-Do List)</h3>
+
+  <blockquote>
+    <p><em>&ldquo;내 진짜 목표는 [목표]야. 막연히 [기술]을 배우려는 게 아니야. [기간] 안에 [구체적인 결과]를 달성하려는 거야. 나는 이미 [배운 내용]을 알고 있어. 나를 위한 7일 학습 계획을 만들어줘. 매일 45분 안에 끝낼 수 있는 과제 하나, 제대로 해냈는지 판단할 수 있는 명확한 기준, 시간을 낭비하지 않도록 그날 하지 말아야 할 일을 포함해줘. 계획을 전부 따라도 목표에 도달할 수 없다면, 도달할 수 있을 때까지 계획을 다시 짜줘.&rdquo;</em></p>
+
+  </blockquote>
+
+<h3 id="5-숨은-빈틈-찾기-피상적-앎-파괴-면접관">5) 숨은 빈틈 찾기 (피상적 앎 파괴 면접관)</h3>
+
+  <blockquote>
+    <p><em>&ldquo;나는 [기술]을 이미 익혔다고 생각해. 네가 그 생각이 틀렸다는 걸 증명해줬으면 해. 겉보기에는 간단하지만, 깊이 이해하지 못한 사람의 빈틈을 드러내는 질문 5개를 해줘. 내가 답할 때마다 그 답변을 통해 내 기초 지식에 무엇이 부족한지 짚어줘. 봐주지 마. 내 이해가 피상적이라면 그렇다고 직접 말해줘.&rdquo;</em></p>
+
+  </blockquote>
+
+<h3 id="6-강제-파인만-학습법-10세-아동-설명--전문용어-감지">6) 강제 파인만 학습법 (10세 아동 설명 &amp; 전문용어 감지)</h3>
+
+  <blockquote>
+    <p><em>&ldquo;방금 [주제]를 공부했어. 이제 네가 열 살짜리 아이라고 생각하고 내가 이해한 내용을 설명할게. 내가 뜻도 제대로 모르는 전문 용어를 쓰거나, 논리의 중간 단계를 건너뛰거나, 너무 단순하게 설명해서 내용이 틀려질 때마다 멈춰줘. 설명이 끝나면 이런 실수들이 내가 아직 어떤 부분을 확실히 이해하지 못했다는 뜻인지 정확하게 알려줘.&rdquo;</em></p>
+
+  </blockquote>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 09월 11일 22시 30분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/productivity">Productivity</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-11-agent-reach-claude-web-research-guide/" rel="prev">
+        <span>클로드가 유튜브·레딧·깃허브를 무료로 긁어오게 만드는 도구: Agent Reach 입문 가이드</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-11-tripo3d-333-prompts-library/" rel="next">
+        <span>Tripo3D 3D 생성 프롬프트 라이브러리: 실전 프로젝트 프롬프트 333선</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-6대-프롬프트의-학습-인지-파이프라인">1. 6대 프롬프트의 학습 인지 파이프라인</a></li>
+    <li><a href="#2-실전-프롬프트-6선-상세-복사본">2. 실전 프롬프트 6선 상세 복사본</a>
+      <ul>
+        <li><a href="#1-학습-곡선-깨부수기-실전-4시간-압축-모드">1) 학습 곡선 깨부수기 (실전 4시간 압축 모드)</a></li>
+        <li><a href="#2-실전-실수-시뮬레이터-소크라테스식-오답-훈련">2) 실전 실수 시뮬레이터 (소크라테스식 오답 훈련)</a></li>
+        <li><a href="#3-어려운-말-번역기-핵심-1문장-비유--이해도-락">3) 어려운 말 번역기 (핵심 1문장 비유 &amp; 이해도 락)</a></li>
+        <li><a href="#4-나만의-학습-경로-설계-45분-과제--not-to-do-list">4) 나만의 학습 경로 설계 (45분 과제 &amp; Not-To-Do List)</a></li>
+        <li><a href="#5-숨은-빈틈-찾기-피상적-앎-파괴-면접관">5) 숨은 빈틈 찾기 (피상적 앎 파괴 면접관)</a></li>
+        <li><a href="#6-강제-파인만-학습법-10세-아동-설명--전문용어-감지">6) 강제 파인만 학습법 (10세 아동 설명 &amp; 전문용어 감지)</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude/" class="badge badge-secondary">Claude</a>
+    <a href="/tags/prompt-engineering/" class="badge badge-secondary">Prompt-Engineering</a>
+    <a href="/tags/productivity/" class="badge badge-secondary">Productivity</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
