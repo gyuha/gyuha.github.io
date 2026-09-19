@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'AI 에이전트가 느려지는 진짜 이유: 전체 문서를 던지지 않고 범위 좁히기와 Code-Mode로 50배 단축하는 방법'" />
+  <title>AI 에이전트가 느려지는 진짜 이유: 전체 문서를 던지지 않고 범위 좁히기와 Code-Mode로 50배 단축하는 방법  | 신규하 블로그</title>
+  <meta property="og:title" content="AI 에이전트가 느려지는 진짜 이유: 전체 문서를 던지지 않고 범위 좁히기와 Code-Mode로 50배 단축하는 방법" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-09-17"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/09/2026-09-17-accelerating-ai-agents-code-mode-scope-reduction/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="context-engineering" />
+  
+  <meta property="og:tags" content="agents" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/09/2026-09-17-accelerating-ai-agents-code-mode-scope-reduction/">
+          <h1>
+            AI 에이전트가 느려지는 진짜 이유: 전체 문서를 던지지 않고 범위 좁히기와 Code-Mode로 50배 단축하는 방법
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/09/2026-09-17-accelerating-ai-agents-code-mode-scope-reduction/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Claude Code, Cursor, ChatGPT 등 고성능 AI 도구를 업무에 도입한 뒤 &ldquo;AI가 생각보다 너무 느리고 엉뚱한 답변을 낸다&quot;고 토로하는 사용자들을 흔히 보게 됩니다. 수십 초에서 수 분 동안 로딩 스피너만 돌다가 결국 내가 원치 않는 엉뚱한 맥락을 인용해 답변을 내놓는 현상입니다.</p>
+<p>하지만 이 병목의 원인을 파고들어 보면, 모델 자체의 지능이나 API 서버의 레이턴시 문제라기보다는 <strong>&ldquo;AI에게 불필요한 전체 문서를 통째로 읽게 만드는 잘못된 프롬프트와 툴 호출 구조&rdquo;</strong> 때문인 경우가 대부분입니다.</p>
+<p>최근 오픈소스 프로젝트 <strong>aside-codemode</strong> 는 5개 웹페이지 검색에 7.19초 걸리던 작업을 단 0.19초로, 50개 파일 탐색에 55초 걸리던 작업을 단 1초로 단축하며 이 문제의 해법을 증명했습니다. AI 에이전트의 지연을 극적으로 없애는 기술적 접근법(Code-Mode)과 일상 업무에서 누구나 즉시 적용할 수 있는 4대 프롬프트 원칙을 정리합니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://github.com/lidge-jun/aside-codemode">GitHub 저장소: lidge-jun/aside-codemode</a></li>
+<li><a href="https://www.threads.com/share/BAYOiFQtfT/">Threads 인사이트 큐레이션: @an_kl_ko</a></li>
+</ul>
+<hr>
+<h2 id="1-기존-에이전트-탐색-vs-code-mode-아키텍처-비교">1. 기존 에이전트 탐색 vs Code-Mode 아키텍처 비교</h2>
+<p>기존의 나이브(Naive)한 에이전트는 거대한 원시 텍스트를 LLM 컨텍스트에 쏟아붓고 여러 번 왕복 통신을 거치지만, Code-Mode는 격리된 샌드박스 내부에서 데이터를 사전 필터링하여 최소한의 정제된 데이터만 모델에 전달합니다.</p>
+<pre class="mermaid">flowchart TD
+    classDef slowNode fill:#ffc8c4,stroke:#c53030,stroke-width:1.5px,color:#333;
+    classDef fastNode fill:#c0ecd3,stroke:#38a169,stroke-width:1.5px,color:#333;
+    classDef coreNode fill:#c5dcef,stroke:#2b6cb0,stroke-width:1.5px,color:#333;
+    classDef outNode fill:#fde8c0,stroke:#d69e2e,stroke-width:1.5px,color:#333;
+
+    Task["사용자 작업 요청<br>(예: 5개 페이지 정보 수집 & 요약)"] --> Method{실행 방식 선택}
+
+    Method -->|기존 나이브 방식| Slow["전체 원시 HTML/파일 주입 (1.87 MB)<br>+ 5회 이상의 개별 툴 콜 왕복 통신"]
+    Slow --> Lag["컨텍스트 팽창 & 지연 누적 (55초 소요)<br>환각 및 에이전트 표류 발생"]
+
+    Method -->|Code-Mode 방식| Fast["단일 샌드박스 JS 블록 일괄 실행<br>(ripgrep 검색 + 타깃 셀렉터 추출)"]
+    Fast --> Direct["정제된 4.4 KB 구조화 데이터만 1회 반환<br>(421배 컨텍스트 압축, 1초 단축)"]
+
+    Lag --> Out["최종 답변 도출"]
+    Direct --> Out
+
+    class Slow,Lag slowNode;
+    class Fast,Direct fastNode;
+    class Task,Method coreNode;
+    class Out outNode;</pre><hr>
+<h2 id="2-aside-codemode가-증명한-50배-단축-메커니즘">2. aside-codemode가 증명한 50배 단축 메커니즘</h2>
+<p><code>lidge-jun/aside-codemode</code>의 핵심 설계 철학은 <strong>&ldquo;50장의 카드를 넘기는 대신 단 한 장의 시트에 요약본을 담아 모델에 건네는 것&rdquo;</strong> 입니다.</p>
+<h3 id="1-브라우징-압축-187-mb-유입--44-kb-반환">1) 브라우징 압축: 1.87 MB 유입 ➔ 4.4 KB 반환</h3>
+<ul>
+<li>일반적인 브라우저 에이전트는 웹페이지 5개를 방문할 때마다 약 1,865,043 바이트의 거대한 HTML 돔 트리를 모델의 컨텍스트 창에 그대로 밀어 넣습니다. 5번의 네트워크 라운드트립과 모델의 읽기 연산이 반복됩니다.</li>
+<li><code>aside-codemode</code>는 브라우저 내부에서 단일 <code>browse.exec</code> 스크립트를 실행해 타이틀과 첫 번째 링크 등 꼭 필요한 데이터만 추출합니다. 모델에는 단 4,430 바이트의 정제된 행(Row)만 전달되므로, 통신 횟수는 5회에서 1회로 줄고 총 소요 시간은 <strong>2.5초</strong> 로 단축됩니다 (421배 압축).</li>
+</ul>
+<h3 id="2-파일-검색-혁신-55초--1초">2) 파일 검색 혁신: 55초 ➔ 1초</h3>
+<ul>
+<li>50개 파일에서 <code>TODO</code> 주석을 찾을 때, 파일마다 <code>read_file</code>을 수십 번 호출하는 대신 고성능 <code>ripgrep(rg)</code> 기반의 단일 자바스크립트 블록 안에서 일괄 매칭을 완료하여 반환합니다.</li>
+</ul>
+<hr>
+<h2 id="3-일상-업무와-프롬프트에서-즉시-쓰는-4대-원칙">3. 일상 업무와 프롬프트에서 즉시 쓰는 4대 원칙</h2>
+<p>코딩을 하지 않는 일반 사용자라도 엑셀, 노션, 고객 문의 등 일상 업무에서 AI에게 일을 맡길 때 아래 4가지 원칙만 지키면 응답 속도와 정확도를 즉각 3배 이상 끌어올릴 수 있습니다.</p>
+<h3 id="1-전체-문서-대신-필요한-범위만-좁혀주기-scope-reduction">1) 전체 문서 대신 필요한 &lsquo;범위&rsquo;만 좁혀주기 (Scope Reduction)</h3>
+<ul>
+<li><strong>흔한 실수</strong>: 수천 행짜리 엑셀 시트 전체를 복사해서 &ldquo;이번 달 지출 내역만 정리해줘&quot;라고 던지는 경우. AI는 무관한 과거 수년 치 행까지 다 읽느라 속도가 처지고 엉뚱한 행을 오독합니다.</li>
+<li><strong>개선 방법</strong>: 필요한 기간(예: 9월 1일~15일)의 열과 행만 잘라서 전달하거나, &ldquo;B열(날짜)과 E열(금액)만 참고하라&quot;고 범위를 사전 한정합니다.</li>
+</ul>
+<h3 id="2-반복-작업의-판정-규칙을-첫-문장에-명시하기-rule-definition">2) 반복 작업의 판정 규칙을 첫 문장에 명시하기 (Rule Definition)</h3>
+<ul>
+<li><em>&ldquo;취소된 건이나 환불 영수증은 집계에서 제외할 것&rdquo;</em> 처럼 모호성을 없애는 핵심 필터링 규칙을 프롬프트 최상단에 1문장으로 선언합니다. AI가 고민하는 탐색 경로를 차단할 수 있습니다.</li>
+</ul>
+<h3 id="3-원하는-결과-형식을-사전에-고정하기-output-formatting">3) 원하는 결과 형식을 사전에 고정하기 (Output Formatting)</h3>
+<ul>
+<li><em>&ldquo;불릿 포인트 3개로 요약할 것&rdquo;</em>, <em>&ldquo;날짜, 항목, 금액으로 이루어진 마크다운 목록으로 출력할 것&rdquo;</em> 처럼 형식을 강제하면, AI가 서두와 결론에 쏟아내는 불필요한 장황한 생성 토큰을 없애 지연 시간을 절반으로 줄입니다.</li>
+</ul>
+<h3 id="4-대형-작업은-한-번에-몰지-말고-단계별로-확인하기-step-by-step">4) 대형 작업은 한 번에 몰지 말고 단계별로 확인하기 (Step-by-step)</h3>
+<ul>
+<li>수십 페이지 분량의 번역이나 정리를 한 번에 지시하면 중간에 컨텍스트가 꼬입니다. &ldquo;1단계: 목차 및 항목 분류 ➔ 확인 후 2단계: 본문 상세 분석&quot;으로 쪼개어 피드백을 주는 것이 최종 소요 시간을 훨씬 단축합니다.</li>
+</ul>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 09월 17일 21시 45분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-17-voicebox-open-source-ai-voice-studio-mcp/" rel="prev">
+        <span>Voicebox: ElevenLabs와 Wispr Flow를 하나로 합친 로컬 우선 오픈소스 AI 보이스 스튜디오와 MCP 연동</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-18-small-programming-tricks-that-matter/" rel="next">
+        <span>엔지니어의 생산성을 바꾸는 작은 프로그래밍 요령들과 AI 관찰 학습법</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-기존-에이전트-탐색-vs-code-mode-아키텍처-비교">1. 기존 에이전트 탐색 vs Code-Mode 아키텍처 비교</a></li>
+    <li><a href="#2-aside-codemode가-증명한-50배-단축-메커니즘">2. aside-codemode가 증명한 50배 단축 메커니즘</a>
+      <ul>
+        <li><a href="#1-브라우징-압축-187-mb-유입--44-kb-반환">1) 브라우징 압축: 1.87 MB 유입 ➔ 4.4 KB 반환</a></li>
+        <li><a href="#2-파일-검색-혁신-55초--1초">2) 파일 검색 혁신: 55초 ➔ 1초</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-일상-업무와-프롬프트에서-즉시-쓰는-4대-원칙">3. 일상 업무와 프롬프트에서 즉시 쓰는 4대 원칙</a>
+      <ul>
+        <li><a href="#1-전체-문서-대신-필요한-범위만-좁혀주기-scope-reduction">1) 전체 문서 대신 필요한 &lsquo;범위&rsquo;만 좁혀주기 (Scope Reduction)</a></li>
+        <li><a href="#2-반복-작업의-판정-규칙을-첫-문장에-명시하기-rule-definition">2) 반복 작업의 판정 규칙을 첫 문장에 명시하기 (Rule Definition)</a></li>
+        <li><a href="#3-원하는-결과-형식을-사전에-고정하기-output-formatting">3) 원하는 결과 형식을 사전에 고정하기 (Output Formatting)</a></li>
+        <li><a href="#4-대형-작업은-한-번에-몰지-말고-단계별로-확인하기-step-by-step">4) 대형 작업은 한 번에 몰지 말고 단계별로 확인하기 (Step-by-step)</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/context-engineering/" class="badge badge-secondary">Context-Engineering</a>
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
