@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'TypeSafe Jev: 판단과 글쓰기를 분리하여 0.1초 만에 확률 결정을 내리는 System 1 의사결정 모델'" />
+  <title>TypeSafe Jev: 판단과 글쓰기를 분리하여 0.1초 만에 확률 결정을 내리는 System 1 의사결정 모델  | 신규하 블로그</title>
+  <meta property="og:title" content="TypeSafe Jev: 판단과 글쓰기를 분리하여 0.1초 만에 확률 결정을 내리는 System 1 의사결정 모델" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-09-19"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/09/2026-09-19-typesafe-jev-system-one-decision-model/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="ai" />
+  
+  <meta property="og:tags" content="agents" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/09/2026-09-19-typesafe-jev-system-one-decision-model/">
+          <h1>
+            TypeSafe Jev: 판단과 글쓰기를 분리하여 0.1초 만에 확률 결정을 내리는 System 1 의사결정 모델
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/09/2026-09-19-typesafe-jev-system-one-decision-model/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>GPT-4o, Claude 3.5 Sonnet, OpenAI o1 같은 대형 언어 모델(LLM)을 사용할 때 우리는 종종 모델이 사람처럼 &lsquo;생각하고 판단&rsquo;한다고 착각합니다. 하지만 본질적으로 이들은 앞서 입력된 텍스트를 보고 다음 토큰(단어 조각)을 확률적으로 이어 붙이는 오토리그레시브(Autoregressive) 기반의 <strong>&lsquo;문장 생성 기계&rsquo;</strong> 에 불과합니다.</p>
+<p>단순히 &ldquo;이 질문에 대해 A안과 B안 중 무엇이 옳은가?&rdquo;, &ldquo;이 요청이 사내 캐시 데이터로 처리가 가능한가?&rdquo; 같은 예/아니오 판정을 내릴 때조차, LLM은 수십 줄의 장황한 설명을 줄줄이 써 내려가느라 수 초의 지연 시간과 불필요한 토큰 비용을 소모합니다.</p>
+<p>TypeSafe AI가 공개한 <strong>Jev (typesafe.ai)</strong> 는 이러한 고정관념을 정면으로 뒤집고, <strong>&ldquo;판단(Decision)과 문장 생성(Generation)을 완전히 분리&rdquo;</strong> 한 초고속 의사결정 특화 <strong>&lsquo;System 1&rsquo; 비-오토리그레시브 모델</strong> 입니다. 글을 단 한 줄도 쓰지 않고 0.1초 만에 수학적 확률만을 반환하는 Jev의 아키텍처와 실무 라우팅 활용법을 정리합니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://typesafe.ai/">공식 웹사이트: TypeSafe AI</a></li>
+<li><a href="https://awesomejev.com/">커뮤니티 쇼케이스: awesomejev.com</a></li>
+<li><a href="https://www.threads.com/share/BAZMQ9CX6m/">Threads 기술 인사이트: @dante.labs.pro</a></li>
+</ul>
+<hr>
+<h2 id="1-jev-기반-지능형-모델-라우터-jev-router-아키텍처">1. Jev 기반 지능형 모델 라우터 (jev-router) 아키텍처</h2>
+<p>Jev는 무거운 프론티어 LLM을 직접 호출하기 전, 앞단에서 요청의 복잡도와 필요한 자원을 0.1초 만에 감별하는 <strong>초고속 게이트웨이(Gateway)</strong> 로 동작합니다.</p>
+<pre class="mermaid">flowchart TD
+    classDef clientNode fill:#c5dcef,stroke:#2b6cb0,stroke-width:1.5px,color:#333;
+    classDef routerNode fill:#e0c8ef,stroke:#6b46c1,stroke-width:1.5px,color:#333;
+    classDef fastNode fill:#c0ecd3,stroke:#38a169,stroke-width:1.5px,color:#333;
+    classDef cheapNode fill:#fde8c0,stroke:#d69e2e,stroke-width:1.5px,color:#333;
+    classDef heavyNode fill:#ffc8c4,stroke:#c53030,stroke-width:1.5px,color:#333;
+
+    User["사용자 질의 유입"] --> Jev["1. Jev 게이트웨이 판정 (0.1초, $0.042/1M 토큰)<br>사전 정의된 선택지 확률 분석"]
+    
+    Jev -->|캐시 답변 충분 확률 > 80%| Local["2. 로컬 캐시 / 문서 직접 반환<br>(비용 0원, LLM 호출 생략)"]
+    
+    Jev -->|단순 질의 / 가벼운 작업| Cheap["3. 경량 LLM 위임<br>(Kimi, GLM, 로컬 sLLM)"]
+    
+    Jev -->|심층 복합 추론 필수 확률 높음| Heavy["4. 프론티어 추론 모델 라우팅<br>(Claude 3.5 Sonnet, GPT o1)"]
+
+    class User clientNode;
+    class Jev routerNode;
+    class Local fastNode;
+    class Cheap cheapNode;
+    class Heavy heavyNode;</pre><hr>
+<h2 id="2-jev의-핵심-기술적-차별점">2. Jev의 핵심 기술적 차별점</h2>
+<h3 id="1-문장을-쓰지-않는-구조적-무환각-zero-hallucination">1) 문장을 쓰지 않는 구조적 무환각 (Zero Hallucination)</h3>
+<ul>
+<li>Jev는 자연어 문장을 생성하지 않습니다. &ldquo;예/아니오&rdquo;, &ldquo;A·B·C 중 선택&rdquo;, &ldquo;1~5점 점수&quot;처럼 사전에 타입이 정의된(Typed Output) 정형화된 선택지 안에서만 작동합니다.</li>
+<li>&ldquo;선택지 A일 확률 91%&ldquo;와 같이 정밀하게 보정된 확률값(Calibrated Confidence Score)만을 숫자로 반환하므로, 언어 모델 특유의 문장 환각이나 JSON 파싱 에러가 물리적으로 발생하지 않습니다.</li>
+</ul>
+<h3 id="2-압도적인-지연-시간과-비용-절감">2) 압도적인 지연 시간과 비용 절감</h3>
+<ul>
+<li><strong>응답 속도</strong>: 평균 <strong>0.1초대</strong> (기존 프론티어 모델 대비 40~200배 고속).</li>
+<li><strong>호출 비용</strong>: 입력 100만 토큰당 <strong>$0.042</strong> (출력 텍스트가 없으므로 출력 토큰 비용은 <strong>$0</strong>). 기존 대형 모델 대비 최대 400배 저렴합니다.</li>
+</ul>
+<h3 id="3-llm과의-분업division-of-labor">3) LLM과의 분업(Division of Labor)</h3>
+<ul>
+<li>Jev와 대형 LLM은 경쟁 관계가 아닙니다. <strong>&ldquo;판단은 Jev가 0.1초 만에 저비용으로 끝내고, 복잡한 글쓰기와 깊은 서술은 LLM이 맡는 분업 구조&rdquo;</strong> 를 형성합니다.</li>
+</ul>
+<hr>
+<h2 id="3-실무-응용-사례-awesome-jev">3. 실무 응용 사례 (Awesome Jev)</h2>
+<ol>
+<li><strong>지능형 비용 절감 라우터 (<code>jev-router</code>)</strong>:
+<ul>
+<li>모든 사용자 요청을 무조건 비싼 최상위 모델로 보내지 않고, Jev를 통해 질문 난이도와 로컬 데이터 적합성을 먼저 판별함으로써 전체 AI 인프라 API 비용을 <strong>80% 이상 절감</strong>.</li>
+</ul>
+</li>
+<li><strong>브라우저 및 데스크톱 GUI 자동화 (<code>browser-use/jev-ultrafast</code>)</strong>:
+<ul>
+<li>화면 스크린샷과 UI 요소를 분석해 &ldquo;지금 클릭해야 할 버튼이 로그인인가, 취소인가&quot;를 0.1초 만에 분기 결정.</li>
+</ul>
+</li>
+<li><strong>고속 AI 평가 및 모더레이션 (LLM-as-a-Judge)</strong>:
+<ul>
+<li>생성된 텍스트가 가이드라인에 부합하는지 여부를 실시간으로 판정 및 채점.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="4-실전-호출-및-이용-방법">4. 실전 호출 및 이용 방법</h2>
+<p>TypeSafe 공식 대기 명단 외에도 아래 두 가지 우회 경로를 통해 즉시 프로덕션에 적용할 수 있습니다:</p>
+<ul>
+<li><strong>Vercel AI Gateway</strong>: 모델명 <code>typesafe-ai/jev</code>로 등록되어 Gateway 키만으로 대기 없이 즉시 호출 가능.</li>
+<li><strong>Cloudflare Workers AI</strong>: <code>env.AI.run('typesafe/jev', ...)</code> 형태로 서버리스 엣지 환경에서 선불 크레딧으로 구동 가능 (32k 컨텍스트 지원).</li>
+<li>브라우저 상에서 기능을 직접 시험해 보려면 공식 웹 플레이그라운드(<code>console.typesafe.ai</code>)를 활용할 수 있습니다.</li>
+</ul>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 09월 19일 13시 10분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-18-claude-blender-previz-ai-video-generation-workflow/" rel="prev">
+        <span>크레딧 낭비 없이 완벽한 카메라 연출을 만드는 법: Claude와 Blender 3D 프리비즈 연동 AI 영상 파이프라인</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-20-gpt-6-astra-video-directing-one-person-studio/" rel="next">
+        <span>GPT-6 Astra 영상 디렉팅: 광고부터 애니, 영화 트레일러까지 1인 AI 프로덕션 스튜디오 구축기</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-jev-기반-지능형-모델-라우터-jev-router-아키텍처">1. Jev 기반 지능형 모델 라우터 (jev-router) 아키텍처</a></li>
+    <li><a href="#2-jev의-핵심-기술적-차별점">2. Jev의 핵심 기술적 차별점</a>
+      <ul>
+        <li><a href="#1-문장을-쓰지-않는-구조적-무환각-zero-hallucination">1) 문장을 쓰지 않는 구조적 무환각 (Zero Hallucination)</a></li>
+        <li><a href="#2-압도적인-지연-시간과-비용-절감">2) 압도적인 지연 시간과 비용 절감</a></li>
+        <li><a href="#3-llm과의-분업division-of-labor">3) LLM과의 분업(Division of Labor)</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-실무-응용-사례-awesome-jev">3. 실무 응용 사례 (Awesome Jev)</a></li>
+    <li><a href="#4-실전-호출-및-이용-방법">4. 실전 호출 및 이용 방법</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/ai/" class="badge badge-secondary">Ai</a>
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
