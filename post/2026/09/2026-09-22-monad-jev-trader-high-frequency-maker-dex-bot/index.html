@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'AI 트레이딩의 핵심은 예측이 아닌 실행 인프라: Monad 300ms 블록마다 주문을 교체하는 jev-trader 분석'" />
+  <title>AI 트레이딩의 핵심은 예측이 아닌 실행 인프라: Monad 300ms 블록마다 주문을 교체하는 jev-trader 분석  | 신규하 블로그</title>
+  <meta property="og:title" content="AI 트레이딩의 핵심은 예측이 아닌 실행 인프라: Monad 300ms 블록마다 주문을 교체하는 jev-trader 분석" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-09-22"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/09/2026-09-22-monad-jev-trader-high-frequency-maker-dex-bot/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="ai" />
+  
+  <meta property="og:tags" content="agents" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/09/2026-09-22-monad-jev-trader-high-frequency-maker-dex-bot/">
+          <h1>
+            AI 트레이딩의 핵심은 예측이 아닌 실행 인프라: Monad 300ms 블록마다 주문을 교체하는 jev-trader 분석
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/09/2026-09-22-monad-jev-trader-high-frequency-maker-dex-bot/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>많은 사람들이 AI 트레이딩 봇이라고 하면 복잡한 딥러닝 모델이 미래 가격을 신들린 듯 예측하여 막대한 시세 차익을 남기는 모습을 떠올립니다. 하지만 실전 정량 거래(Quantitative Trading)의 세계, 특히 탈중앙화 거래소(DEX)의 온체인 마켓 메이킹 환경에서는 완전히 다른 현실이 펼쳐집니다.</p>
+<p>수수료가 높고 지연 시간이 긴 환경에서는 아무리 훌륭한 예측 모델이 있어도 가스비와 슬리피지 때문에 계좌가 서서히 녹아내립니다. 반면 300ms 블록 타임과 10,000 TPS를 지원하는 초고속 EVM 레이어1 <strong>Monad</strong> 환경에서는 <strong>&ldquo;예측 정확도&rdquo;</strong> 보다 <strong>&ldquo;300ms마다 안정적으로 주문을 취소하고 다시 까는 인프라 파이프라인&rdquo;</strong> 이 트레이딩 수익률의 9할 이상을 결정합니다.</p>
+<p>Jarrod Watts가 공개한 오픈소스 <strong>jev-trader (jarrodwatts/jev-trader)</strong> 는 바로 이 철학을 극단적으로 증명하는 프로젝트입니다. Monad 생태계의 중앙화 오더북 DEX인 <strong>Kuru DEX</strong> 위에서, 초경량 경량화 의사결정 모델인 <strong>Jev</strong> 를 결합해 초 단위로 양방향 지정가 유동성을 공급하는 메이커 봇의 구조를 깊이 있게 살펴봅니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://github.com/jarrodwatts/jev-trader">GitHub 저장소: jarrodwatts/jev-trader</a></li>
+<li><a href="https://www.threads.com/share/_olVtLyGh/">Threads 원문: punk.ai2 공유 글</a></li>
+<li><a href="https://docs.kuru.io/">Kuru DEX 기술 문서</a></li>
+</ul>
+<hr>
+<h2 id="1-monad-300ms-블록-환경과-kuru-dex의-파이프라인">1. Monad 300ms 블록 환경과 Kuru DEX의 파이프라인</h2>
+<p>기존 이더리움 메인넷(12초)이나 L2(1~2초) 환경에서는 블록 확정 시간이 길어 온체인 오더북(CLOB)을 구현하기 어려웠고, 대부분 AMM(Uniswap 계열) 유동성 풀 방식을 채택했습니다. 하지만 Monad는 비동기 실행(Asynchronous Execution)과 모나드 BFT 합의 알고리즘을 통해 <strong>300ms 블록 타임</strong> 과 초당 1만 건 이상의 처리량을 제공합니다.</p>
+<p>Kuru DEX는 이 초고속 인프라를 활용해 오프체인 매칭 엔진 없이 <strong>100% 온체인 오더북</strong> 을 구현했습니다. <code>jev-trader</code>는 이 환경에서 유동성을 공급하고 스프레드를 획득하는 마켓 메이킹 전략을 수행합니다.</p>
+<pre class="mermaid">flowchart TD
+    classDef initNode fill:#c5dcef,stroke:#2b6cb0,stroke-width:1.5px,color:#333;
+    classDef modelNode fill:#e0c8ef,stroke:#6b46c1,stroke-width:1.5px,color:#333;
+    classDef alertNode fill:#ffc8c4,stroke:#c53030,stroke-width:1.5px,color:#333;
+    classDef execNode fill:#c0ecd3,stroke:#38a169,stroke-width:1.5px,color:#333;
+
+    Monad["1. Monad RPC 블록 이벤트 수신<br>(300ms 주기 Websocket 스트림)"] --> Read["2. Kuru 오더북 L2 깊이 및<br>미체결 주문 스캔"]
+    
+    Read --> Feature["3. 특성 벡터 생성<br>(Order Book Imbalance, 마이크로 변동성)"]
+    
+    Feature --> Jev["4. 경량 Jev 모델 단일 토큰 추론<br>(스프레드 틱 크기 및 수량 오프셋 결정)"]
+    
+    Jev --> Cancel["5. 기존 미체결 주문 일괄 취소 트랜잭션<br>(Cancel Orders)"]
+    
+    Cancel --> PostOnly["6. 신규 양방향 Post-Only 지정가 제출<br>(Maker 수수료 리베이트 확보)"]
+    
+    PostOnly --> NextBlock["7. 300ms 뒤 다음 블록 진입<br>(반복 루프 유지)"]
+
+    class Monad,Read initNode;
+    class Feature,Jev modelNode;
+    class Cancel alertNode;
+    class PostOnly,NextBlock execNode;</pre><hr>
+<h2 id="2-왜-거대-언어-모델llm이-아닌-경량-jev-모델인가">2. 왜 거대 언어 모델(LLM)이 아닌 경량 Jev 모델인가?</h2>
+<p>전통적인 LLM(Claude 3.5 Sonnet, GPT-4o 등)은 추론 지연 시간만 1,000ms~3,000ms에 달합니다. 300ms마다 새로운 블록이 확정되는 환경에서 2초 뒤에 나온 예측값은 이미 과거의 유물일 뿐이며, 그 사이에 가격이 튀어 주문이 불리한 가격에 체결(Adverse Selection)되어 손실을 입게 됩니다.</p>
+<p><code>jev-trader</code>는 다음과 같은 설계 원칙을 적용했습니다:</p>
+<ol>
+<li>
+<p><strong>초저지연 결정론적 의사결정</strong>:</p>
+<ul>
+<li>모델 추론 시간이 10~20ms 이내로 끝나야 합니다.</li>
+<li>불필요한 장문의 사고 과정(CoT)을 배제하고, 현재 오더북 불균형(Order Book Imbalance)과 최근 체결 틱을 인코딩한 뒤 매수·매도 오프셋만 즉시 출력합니다.</li>
+</ul>
+</li>
+<li>
+<p><strong>Post-Only 보장 메커니즘</strong>:</p>
+<ul>
+<li>시장가로 긁는 테이커(Taker) 주문을 일절 내지 않습니다.</li>
+<li>오직 유동성을 채워 넣는 <code>Post-Only</code> 옵션만 사용하여 항상 메이커 리베이트를 수취하거나 수수료를 0%로 유지합니다.</li>
+</ul>
+</li>
+<li>
+<p><strong>취소-배치 트랜잭션(Batch Replacement)</strong>:</p>
+<ul>
+<li>주문 취소와 신규 주문 생성을 별도의 RPC 호출로 쪼개지 않고 단일 원자적 배치 호출로 묶어 트랜잭션 오버헤드를 최소화합니다.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="3-핵심-아키텍처-및-코드-패턴">3. 핵심 아키텍처 및 코드 패턴</h2>
+<p>봇의 핵심 루프는 Node.js / TypeScript 환경에서 ethers.js 또는 viem을 통해 Monad RPC와 긴밀하게 연동됩니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#57606a">// jev-trader 핵심 오더북 리프레시 루프 예시
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">async</span> <span style="color:#cf222e">function</span> <span style="color:#1f2328">executeMarketMakingCycle</span><span style="color:#1f2328">(</span><span style="color:#1f2328">market</span>: <span style="color:#cf222e">KuruMarket</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">model</span>: <span style="color:#cf222e">JevDecisionEngine</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// 1. 현재 온체인 L2 오더북 스냅샷 확보
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">orderbook</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">await</span> <span style="color:#1f2328">market</span><span style="color:#1f2328">.</span><span style="color:#1f2328">getOrderBookSnapshot</span><span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">currentSpread</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">orderbook</span><span style="color:#1f2328">.</span><span style="color:#1f2328">bestAsk</span> <span style="color:#0550ae">-</span> <span style="color:#1f2328">orderbook</span><span style="color:#1f2328">.</span><span style="color:#1f2328">bestBid</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// 2. 모델에게 입력할 오더북 불균형(OBI) 지표 산출
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">obi</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">orderbook</span><span style="color:#1f2328">.</span><span style="color:#1f2328">bidVolume</span> <span style="color:#0550ae">-</span> <span style="color:#1f2328">orderbook</span><span style="color:#1f2328">.</span><span style="color:#1f2328">askVolume</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">/</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">orderbook</span><span style="color:#1f2328">.</span><span style="color:#1f2328">bidVolume</span> <span style="color:#0550ae">+</span> <span style="color:#1f2328">orderbook</span><span style="color:#1f2328">.</span><span style="color:#1f2328">askVolume</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// 3. Jev 모델의 실시간 오프셋 판독 (15ms 이내)
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">const</span> <span style="color:#1f2328">decision</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">await</span> <span style="color:#1f2328">model</span><span style="color:#1f2328">.</span><span style="color:#1f2328">evaluateSpread</span><span style="color:#1f2328">({</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">midPrice</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">orderbook</span><span style="color:#1f2328">.</span><span style="color:#1f2328">bestAsk</span> <span style="color:#0550ae">+</span> <span style="color:#1f2328">orderbook</span><span style="color:#1f2328">.</span><span style="color:#1f2328">bestBid</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">/</span> <span style="color:#0550ae">2</span><span style="color:#1f2328">n</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">imbalance</span>: <span style="color:#cf222e">obi</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">volatilityWindow</span>: <span style="color:#cf222e">market.getRecentTickDelta</span><span style="color:#1f2328">()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">});</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// 4. 안전 마진 검증 (스프레드가 역전되지 않도록 강제)
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#1f2328">decision</span><span style="color:#1f2328">.</span><span style="color:#1f2328">targetBid</span> <span style="color:#0550ae">&gt;=</span> <span style="color:#1f2328">decision</span><span style="color:#1f2328">.</span><span style="color:#1f2328">targetAsk</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">console</span><span style="color:#1f2328">.</span><span style="color:#1f2328">warn</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;스프레드 역전 감지: 주문 스킵&#34;</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">return</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// 5. 원자적 취소 및 신규 주문 제출 (Monad 300ms 블록 동기화)
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">await</span> <span style="color:#1f2328">market</span><span style="color:#1f2328">.</span><span style="color:#1f2328">replaceBatchOrders</span><span style="color:#1f2328">({</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">cancelOrderIds</span>: <span style="color:#cf222e">market.getActiveOrderIds</span><span style="color:#1f2328">(),</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">newOrders</span><span style="color:#0550ae">:</span> <span style="color:#1f2328">[</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">{</span> <span style="color:#1f2328">side</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;BUY&#39;</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">price</span>: <span style="color:#cf222e">decision.targetBid</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">size</span>: <span style="color:#cf222e">decision.bidSize</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">postOnly</span>: <span style="color:#cf222e">true</span> <span style="color:#1f2328">},</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">{</span> <span style="color:#1f2328">side</span><span style="color:#0550ae">:</span> <span style="color:#0a3069">&#39;SELL&#39;</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">price</span>: <span style="color:#cf222e">decision.targetAsk</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">size</span>: <span style="color:#cf222e">decision.askSize</span><span style="color:#1f2328">,</span> <span style="color:#1f2328">postOnly</span>: <span style="color:#cf222e">true</span> <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">]</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">});</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><hr>
+<h2 id="4-실전에서-배운-교훈-예측력보다-실행-인프라">4. 실전에서 배운 교훈: 예측력보다 실행 인프라</h2>
+<p><code>jev-trader</code> 프로젝트가 입증한 교훈은 명확합니다:</p>
+<ul>
+<li><strong>알고리즘의 천재성보다 네트워크와의 거리(Latency)가 우선한다</strong>: RPC 노드와의 레이턴시가 50ms 증가하면 모델의 예측력이 아무리 뛰어나도 프론트러닝(MEV) 봇들의 먹잇감이 됩니다.</li>
+<li><strong>예측과 실행의 분리</strong>: 머신러닝 모델은 어디까지나 &ldquo;스프레드를 평소보다 몇 틱 벌릴 것인가&quot;라는 거시적 위험 관리 파라미터만 조정하고, 실제 체결과 취소는 엄격한 규칙 기반 인프라 엔진이 전담해야 시스템이 폭주하지 않습니다.</li>
+<li><strong>차세대 EVM 생태계의 기회</strong>: Monad와 같이 처리 속도가 웹2 수준으로 올라간 체인에서는 기존 금융권의 HFT(고빈도 거래) 알고리즘과 초경량 온디바이스 AI의 결합이 새로운 격전지가 될 것입니다.</li>
+</ul>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 09월 22일 07시 10분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-21-nanonets-graft-ai-context-layer-benchmark/" rel="prev">
+        <span>토큰 42% 줄인다는 GitHub 트렌딩 Graft 실측 벤치마크: 개발동생의 96회 테스트와 Astra 결합 노하우</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-22-jev-model-router-claude-code-subagent-cache-preservation/" rel="next">
+        <span>Jev Model Router: Claude Code의 캐시를 보존하며 서브에이전트 모델과 추론량을 동적 배정하는 스마트 라우터</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-monad-300ms-블록-환경과-kuru-dex의-파이프라인">1. Monad 300ms 블록 환경과 Kuru DEX의 파이프라인</a></li>
+    <li><a href="#2-왜-거대-언어-모델llm이-아닌-경량-jev-모델인가">2. 왜 거대 언어 모델(LLM)이 아닌 경량 Jev 모델인가?</a></li>
+    <li><a href="#3-핵심-아키텍처-및-코드-패턴">3. 핵심 아키텍처 및 코드 패턴</a></li>
+    <li><a href="#4-실전에서-배운-교훈-예측력보다-실행-인프라">4. 실전에서 배운 교훈: 예측력보다 실행 인프라</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/ai/" class="badge badge-secondary">Ai</a>
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

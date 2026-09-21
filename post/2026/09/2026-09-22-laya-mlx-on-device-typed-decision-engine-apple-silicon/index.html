@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Laya-MLX: Jev보다 50배 빠른 Apple Silicon 전용 1GB 온디바이스 의사결정 AI'" />
+  <title>Laya-MLX: Jev보다 50배 빠른 Apple Silicon 전용 1GB 온디바이스 의사결정 AI  | 신규하 블로그</title>
+  <meta property="og:title" content="Laya-MLX: Jev보다 50배 빠른 Apple Silicon 전용 1GB 온디바이스 의사결정 AI" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-09-22"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/09/2026-09-22-laya-mlx-on-device-typed-decision-engine-apple-silicon/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="ai" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+  <meta property="og:tags" content="python" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/09/2026-09-22-laya-mlx-on-device-typed-decision-engine-apple-silicon/">
+          <h1>
+            Laya-MLX: Jev보다 50배 빠른 Apple Silicon 전용 1GB 온디바이스 의사결정 AI
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/09/2026-09-22-laya-mlx-on-device-typed-decision-engine-apple-silicon/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>에이전트 의사결정 엔진의 속도 한계는 어디까지 줄어들 수 있을까요? 클라우드 기반 LLM API를 호출하면 아무리 빨라도 왕복 네트워크 지연 시간(RTT)과 토큰 생성 시간 때문에 300~800ms 이상 소요됩니다. 이는 실시간 게임 조작, 로봇 제어, 초단타 매매 등 밀리초(ms) 단위의 반응 속도가 생명인 분야에서는 치명적인 걸림돌이 됩니다.</p>
+<p>AI 연구자 <strong>@mizorewww</strong> 가 공개한 <strong>Laya-MLX (mizorewww/laya-mlx)</strong> 는 Apple Silicon Mac의 통합 메모리(Unified Memory) 아키텍처와 <strong>Apple MLX</strong> 프레임워크를 극한까지 활용하여 이 병목을 단번에 뚫어냈습니다.</p>
+<p>단 <strong>1GB 미만의 RAM 점유율</strong> 만으로, M3 Max 칩셋에서 <strong>7~13ms</strong> 의 전광석화 같은 추론 지연 시간을 달성했습니다. 이는 기존 경량 Jev 모델 대비 최대 <strong>50배 빠른 속도</strong> 로, 초당 75회 이상의 엄격한 타입 세이프 의사결정을 실시간으로 쏟아냅니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://github.com/mizorewww/laya-mlx">GitHub 저장소: mizorewww/laya-mlx</a></li>
+<li><a href="https://x.com/mizorewww/status/2101473552956555427">X(Twitter) 원문: @mizorewww 트윗</a></li>
+</ul>
+<hr>
+<h2 id="1-apple-mlx-통합-메모리-파이프라인">1. Apple MLX 통합 메모리 파이프라인</h2>
+<p>Laya-MLX는 일반적인 PyTorch 모델을 Mac에서 돌릴 때 발생하는 CPU-GPU 간 데이터 복사 오버헤드를 완전히 제거했습니다. Apple 실리콘의 통합 메모리 구조에 직접 접근하는 MLX의 C++ 커널과 Metal 셰이더를 통해 zero-copy 텐서 연산을 수행합니다.</p>
+<pre class="mermaid">flowchart TD
+    classDef initNode fill:#c5dcef,stroke:#2b6cb0,stroke-width:1.5px,color:#333;
+    classDef memNode fill:#e0c8ef,stroke:#6b46c1,stroke-width:1.5px,color:#333;
+    classDef metalNode fill:#c0ecd3,stroke:#38a169,stroke-width:1.5px,color:#333;
+    classDef outNode fill:#fde8c0,stroke:#d69e2e,stroke-width:1.5px,color:#333;
+
+    Input["1. 실시간 센서/게임 상태 입력<br>(보드 매트릭스, 방향 벡터)"] --> ZeroCopy["2. Unified Memory Zero-Copy 바인딩<br>(메모리 복사 지연 0ms)"]
+    
+    ZeroCopy --> MetalKernel["3. Apple MLX 커스텀 Metal 셰이더<br>(양자화 INT4/FP16 가중치 연산)"]
+    
+    MetalKernel --> Softmax["4. 1-토큰 Typed Logits 투영<br>(Action Enum 확률 분포 산출)"]
+    
+    Softmax --> Decision["5. 7~13ms 초저지연 액션 출력<br>(UP, DOWN, LEFT, RIGHT 등)"]
+
+    class Input initNode;
+    class ZeroCopy memNode;
+    class MetalKernel metalNode;
+    class Softmax,Decision outNode;</pre><hr>
+<h2 id="2-스네이크-게임snake-game-완주-데모의-의미">2. 스네이크 게임(Snake Game) 완주 데모의 의미</h2>
+<p>제작진이 공개한 실시간 데모 영상에서 Laya-MLX는 고전 스네이크 게임의 보드 상황을 실시간으로 입력받아 뱀의 몸통통통이 화면 전체를 가득 채울 때까지 단 한 번의 충돌도 없이 완벽하게 게임을 완주합니다.</p>
+<ul>
+<li><strong>초당 75회 (75 FPS) 실시간 연산</strong>: 게임 루프의 매 프레임마다 AI가 보드 전체의 위상학적 경로(Hamiltonian Cycle 기반 근사 경로)를 계산하여 다음 방향을 지시합니다.</li>
+<li><strong>엄격한 타입 안전성(Typed Output)</strong>: 자유 서술형 텍스트를 출력한 뒤 정규식으로 파싱하는 대신, 모델의 마지막 선형 레이어(Logits)가 사전에 정의된 <code>Enum</code> 액션(상, 하, 좌, 우, 대기)으로 직접 제한됩니다. JSON 구문 오류나 환각(Hallucination)이 0%입니다.</li>
+<li><strong>클라우드 비용 0원 &amp; 완전한 오프라인</strong>: 인터넷 연결이 완전히 끊긴 비행기 모드나 에어갭 환경에서도 M2/M3/M4 Mac만 있다면 배터리 소모를 최소화하며 구동됩니다.</li>
+</ul>
+<hr>
+<h2 id="3-코드-레벨-사용-예시">3. 코드 레벨 사용 예시</h2>
+<p>Python과 MLX를 활용하여 단 몇 줄로 Laya 엔진을 초기화하고 루프를 돌릴 수 있습니다:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#24292e">mlx.core</span> <span style="color:#cf222e">as</span> <span style="color:#24292e">mx</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">from</span> <span style="color:#24292e">laya_mlx</span> <span style="color:#cf222e">import</span> LayaDecisionEngine<span style="color:#1f2328">,</span> ActionEnum
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 1. 1GB 미만의 오픈 가중치 로드 (Apple Metal 자동 바인딩)</span>
+</span></span><span style="display:flex;"><span>engine <span style="color:#0550ae">=</span> LayaDecisionEngine<span style="color:#0550ae">.</span>from_pretrained<span style="color:#1f2328">(</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0a3069">&#34;mizorewww/laya-mlx-base&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>    dtype<span style="color:#0550ae">=</span>mx<span style="color:#0550ae">.</span>float16
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 2. 실시간 상태 인코딩 및 초저지연 추론</span>
+</span></span><span style="display:flex;"><span>game_state <span style="color:#0550ae">=</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0a3069">&#34;grid_size&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">[</span><span style="color:#0550ae">20</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">20</span><span style="color:#1f2328">],</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0a3069">&#34;snake_head&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">[</span><span style="color:#0550ae">10</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">12</span><span style="color:#1f2328">],</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0a3069">&#34;food_coord&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">[</span><span style="color:#0550ae">15</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">8</span><span style="color:#1f2328">],</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0a3069">&#34;obstacles&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">[[</span><span style="color:#0550ae">10</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">11</span><span style="color:#1f2328">],</span> <span style="color:#1f2328">[</span><span style="color:#0550ae">9</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">11</span><span style="color:#1f2328">]]</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 3. 7~13ms 이내의 타입 세이프 액션 반환</span>
+</span></span><span style="display:flex;"><span>action<span style="color:#1f2328">:</span> ActionEnum <span style="color:#0550ae">=</span> engine<span style="color:#0550ae">.</span>predict_action<span style="color:#1f2328">(</span>game_state<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">print</span><span style="color:#1f2328">(</span><span style="color:#0a3069">f</span><span style="color:#0a3069">&#34;Next Action: </span><span style="color:#0a3069">{</span>action<span style="color:#0550ae">.</span>name<span style="color:#0a3069">}</span><span style="color:#0a3069">, Latency: </span><span style="color:#0a3069">{</span>engine<span style="color:#0550ae">.</span>last_latency_ms<span style="color:#0a3069">:</span><span style="color:#0a3069">.2f</span><span style="color:#0a3069">}</span><span style="color:#0a3069">ms&#34;</span><span style="color:#1f2328">)</span>
+</span></span></code></pre></div><hr>
+<h2 id="4-시사점-온디바이스-도메인-특화-엔진의-시대">4. 시사점: 온디바이스 도메인 특화 엔진의 시대</h2>
+<p>Laya-MLX는 모든 문제를 700억 파라미터(70B)급의 거대 모델로 풀 필요가 없음을 입증합니다.</p>
+<ul>
+<li><strong>도메인 특화 초경량 모델의 압승</strong>: 복잡한 인문학적 작문이 아닌, 정형화된 상태(State)에서 다음 동작(Action)을 결정하는 작업에서는 1B 이하의 파라미터를 극도로 최적화하는 것이 훨씬 경제적이고 민첩합니다.</li>
+<li><strong>Mac 하드웨어의 AI 워크스테이션화</strong>: 외장 고성능 GPU 서버 없이도 맥북 단독으로 실시간 로보틱스, 게임 AI 시뮬레이션, 로컬 제어 에이전트를 매끄럽게 구동할 수 있는 지평을 열었습니다.</li>
+</ul>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 09월 22일 07시 30분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-22-eight-essential-open-source-projects-built-with-jev/" rel="prev">
+        <span>실무에 당장 쓰는 8대 Jev 오픈소스 프로젝트: 컨텍스트 압축부터 브라우징·검색·오픈소스 재현까지</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-22-top-six-open-source-projects-for-ai-stock-quant-trading/" rel="next">
+        <span>AI 주식 퀀트 투자를 위한 6대 핵심 오픈소스: 데이터 수집부터 멀티 에이전트 리서치·백테스팅 워크스테이션까지</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-apple-mlx-통합-메모리-파이프라인">1. Apple MLX 통합 메모리 파이프라인</a></li>
+    <li><a href="#2-스네이크-게임snake-game-완주-데모의-의미">2. 스네이크 게임(Snake Game) 완주 데모의 의미</a></li>
+    <li><a href="#3-코드-레벨-사용-예시">3. 코드 레벨 사용 예시</a></li>
+    <li><a href="#4-시사점-온디바이스-도메인-특화-엔진의-시대">4. 시사점: 온디바이스 도메인 특화 엔진의 시대</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/ai/" class="badge badge-secondary">Ai</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+    <a href="/tags/python/" class="badge badge-secondary">Python</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
