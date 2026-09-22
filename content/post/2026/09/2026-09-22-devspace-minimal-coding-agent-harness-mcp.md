@@ -1,0 +1,109 @@
+---
+title: "DevSpace: ChatGPT와 Claude를 로컬 코딩 에이전트로 만드는 최소형 MCP 하네스"
+date: 2026-09-22T21:26:00+09:00
+draft: false
+categories:
+  - Developer Tools
+tags:
+  - mcp
+  - claude-code
+  - agents
+  - workflow
+description: "웹 브라우저의 ChatGPT와 Claude가 로컬 디렉터리를 직접 열고 파일 탐색, 코드 수정, 터미널 실행, Git 워크트리 분기를 수행할 수 있도록 연결하는 5,000스타 오픈소스 MCP 하네스 DevSpace를 분석합니다."
+---
+
+많은 개발자들이 터미널 기반의 Claude Code나 무거운 AI 특화 IDE(Cursor, Windsurf 등)를 도입하고 있지만, 여전히 가장 익숙하고 자주 사용하는 인터페이스는 웹 브라우저의 **ChatGPT** 와 **Claude** 입니다. 대화 인터페이스는 편리하지만, 코드를 복사해서 브라우저에 붙여넣고, 수정된 코드를 다시 에디터로 가져오는 수동 복사-붙여넣기(Copy & Paste)의 반복은 개발 생산성을 심각하게 떨어뜨립니다.
+
+"평소 쓰던 웹 ChatGPT 대화창에서 내 컴퓨터의 로컬 프로젝트를 직접 열어 파일을 고치고, 터미널 테스트까지 알아서 돌려줄 수는 없을까?"
+
+이 질문에 대한 가장 간결하고 강력한 해답으로 떠오른 오픈소스가 바로 **DevSpace (`Waishnav/devspace`, GitHub ⭐ 5,000+)** 입니다. 앤트로픽(Anthropic)이 제정한 표준 인터페이스인 **Model Context Protocol (MCP)** 를 기반으로, 웹의 대형 언어 모델을 안전하고 통제된 로컬 자율 코딩 에이전트로 변환해 주는 최소형 에이전트 하네스(Agent Harness)를 살펴봅니다.
+
+<!--more-->
+
+## Sources
+
+- [GitHub 저장소: Waishnav/devspace](https://github.com/Waishnav/devspace)
+- [개발자 개인 X(Twitter): @wshxnv](https://x.com/wshxnv)
+- [공식 셋업 가이드 및 보안 문서](https://github.com/Waishnav/devspace/tree/main/docs)
+
+---
+
+## 1. DevSpace의 MCP 원격 연결 및 보안 아키텍처
+
+DevSpace는 사용자가 사전에 허용한 디렉터리(`allowed roots`)에만 엄격한 접근 권한을 부여하며, 터널링과 로컬 비밀번호 인증을 통해 보안을 유지합니다.
+
+```mermaid
+flowchart TD
+    classDef initNode fill:#c5dcef,stroke:#2b6cb0,stroke-width:1.5px,color:#333;
+    classDef tunnelNode fill:#e0c8ef,stroke:#6b46c1,stroke-width:1.5px,color:#333;
+    classDef daemonNode fill:#fde8c0,stroke:#d69e2e,stroke-width:1.5px,color:#333;
+    classDef localNode fill:#c0ecd3,stroke:#38a169,stroke-width:1.5px,color:#333;
+    classDef alertNode fill:#ffc8c4,stroke:#c53030,stroke-width:1.5px,color:#333;
+
+    Host["1. 웹 호스트 질의<br>(ChatGPT Apps / Claude MCP 커넥터)"] --> Tunnel["2. 보안 역방향 터널<br>(Cloudflare Tunnel / ngrok / Tailscale)"]
+    
+    Tunnel --> Daemon["3. 로컬 DevSpace 데몬 (포트 7676)<br>(~/.devspace/auth.json 소유자 비밀번호 검증)"]
+    
+    Daemon --> Guard{"4. 디렉터리 접근 검증<br>(Allowed Roots 확인)"}
+    
+    Guard -->|비승인 경로 접근| Block["접근 거부 및 감사 로그 기록"]
+    
+    Guard -->|승인된 작업 공간| Tools["5. 로컬 도구 실행 엔진<br>(파일 읽기/수정, 쉘 명령, Git Worktree)"]
+    
+    Tools --> Context["6. AGENTS.md & CLAUDE.md 규칙 적용"]
+
+    class Host initNode;
+    class Tunnel tunnelNode;
+    class Daemon,Guard daemonNode;
+    class Block alertNode;
+    class Tools,Context localNode;
+```
+
+---
+
+## 2. DevSpace 핵심 기능과 실전 역량
+
+1. **승인된 작업 공간(Workspace) 관리**:
+   - 머신 전체를 노출하지 않고, `devspace init` 설정 단계에서 등록한 특정 프로젝트 폴더만 에이전트가 탐색하도록 제한합니다.
+   - ChatGPT가 "프로젝트 A 폴더 열어줘"라고 지시하면, 해당 폴더 내의 파일 구조와 Git 변경 사항을 즉시 브라우저에 표시합니다.
+
+2. **표준 프로젝트 지침 및 스킬 자동 로드**:
+   - 저장소 루트에 위치한 `AGENTS.md`나 `CLAUDE.md`를 자동으로 읽어 들여 사내 코딩 컨벤션, 린트 규칙, 빌드 명령어를 에이전트 프롬프트에 주입합니다.
+   - 로컬 `skills/` 디렉터리를 스캔하여 필요한 서브 스킬을 즉석에서 발견하고 호출할 수 있습니다.
+
+3. **안전한 Git 워크트리(Worktree) 분기**:
+   - 현재 개발자가 작업 중인 `main` 브랜치의 코드를 바로 건드려 충돌을 일으키지 않고, 별도의 격리된 임시 워크트리를 생성하여 코드를 변경하고 테스트를 수행합니다.
+   - 검증이 완료된 뒤에만 깔끔한 커밋이나 PR 형태로 변경 사항을 제안합니다.
+
+4. **단일 바이너리 수준의 간결성**:
+   - 무거운 파이썬 가상환경이나 도커 없이, Node.js 기반 CLI 도구 하나(`@waishnav/devspace`)로 모든 설정과 서빙이 완료됩니다.
+
+---
+
+## 3. 설치 및 3분 연동 가이드
+
+Node.js v22.19 이상이 설치된 환경에서 즉시 구동할 수 있습니다:
+
+```bash
+# 1. DevSpace CLI 설치 및 대화형 설정
+npm install -g @waishnav/devspace
+devspace init
+
+# 2. 로컬 MCP 서버 구동
+devspace serve
+
+# 3. Cloudflare Tunnel 등을 통해 공개 HTTPS 엔드포인트 생성
+# 예: https://my-agent.tunnel.example.com/mcp
+```
+
+- **ChatGPT 연결 방법**:
+  - ChatGPT 설정 ➔ 커넥터(Apps/Connectors) ➔ 새 MCP 커넥터 추가.
+  - 엔드포인트에 터널 URL(`https://.../mcp`) 입력 후 `~/.devspace/auth.json`에 저장된 Owner 비밀번호를 입력해 연동 완료.
+
+---
+
+## 4. 시사점: 대화형 인터페이스의 종착역
+
+DevSpace의 창작자 Waishnav는 **"미래에는 ChatGPT 자체가 수많은 서브에이전트를 지휘하는 최상위 운영체제(OS)가 될 것"** 이라는 철학을 강조합니다.
+
+개발자가 복잡한 단축키와 새로운 도구 인터페이스를 매번 학습할 필요 없이, 가장 자연스러운 웹 브라우저 대화창에서 내 컴퓨터의 리소스를 안전하게 오케스트레이션하는 DevSpace의 방식은 1인 개발자와 AI 페어 프로그래밍의 새로운 표준을 제시하고 있습니다.
