@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'PanWatch 분석: AI 애널리스트 4명이 토론하는 자가 호스팅 주식 대시보드'" />
+  <title>PanWatch 분석: AI 애널리스트 4명이 토론하는 자가 호스팅 주식 대시보드  | 신규하 블로그</title>
+  <meta property="og:title" content="PanWatch 분석: AI 애널리스트 4명이 토론하는 자가 호스팅 주식 대시보드" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-09-24"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/09/2026-09-24-panwatch-self-hosted-ai-stock-monitoring-tradingagents/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="agents" />
+  
+  <meta property="og:tags" content="docker" />
+  
+  <meta property="og:tags" content="automation" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/09/2026-09-24-panwatch-self-hosted-ai-stock-monitoring-tradingagents/">
+          <h1>
+            PanWatch 분석: AI 애널리스트 4명이 토론하는 자가 호스팅 주식 대시보드
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/09/2026-09-24-panwatch-self-hosted-ai-stock-monitoring-tradingagents/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p><a href="https://www.threads.com/share/BAUNmYZKhJ/">@think.5x의 Threads 글</a>은 주식 모니터링 도구 <strong>PanWatch</strong>를 네 가지 특징으로 소개한다. AI 애널리스트의 토론, Docker 배포, 조건식 알림, 다중 계좌·PWA다. 실제 프로젝트의 <a href="https://github.com/TNT-Likely/PanWatch">공식 저장소</a>를 확인하면 기능의 큰 줄기는 맞지만, “분석 한 번에 약 0.05달러”와 “데이터가 밖으로 나가지 않는다”는 말에는 중요한 전제가 붙는다. 이 글은 제품이 <strong>무엇을 자동화하는지</strong>, <strong>어디까지 검증됐는지</strong>, <strong>직접 운영할 때 무엇을 확인해야 하는지</strong>를 구분한다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.threads.com/share/BAUNmYZKhJ/">원문 Threads 공유 링크</a> · <a href="https://www.threads.com/@think.5x/post/DdqZ948n--C">원문 게시글</a></li>
+<li><a href="https://github.com/TNT-Likely/PanWatch">PanWatch GitHub 저장소와 README</a></li>
+<li><a href="https://github.com/TNT-Likely/PanWatch/blob/main/packages/marketdata/README.md">PanWatch 시장 데이터 모듈 문서</a> · <a href="https://github.com/TNT-Likely/PanWatch/blob/main/src/modules/automation/tradingagents/agent.py">TradingAgents 연동 코드</a></li>
+<li><a href="https://github.com/TauricResearch/TradingAgents">TradingAgents 원본 프레임워크</a></li>
+</ul>
+<h2 id="1-panwatch는-매매-봇보다-모니터링분석-작업대에-가깝다">1. PanWatch는 매매 봇보다 모니터링·분석 작업대에 가깝다</h2>
+<p>PanWatch는 중국 A주·홍콩주·미국주를 대상으로 시세 모니터링, 보유 종목 관리, 기술 지표, AI 분석, 알림을 한곳에 모으는 자가 호스팅 웹 앱이다. 공식 README는 여러 계좌를 구분해 자산을 합산하고, 모의투자 화면과 모바일 PWA도 제공한다고 설명한다. 이는 <strong>증권사 계좌를 자동 연결하거나 주문을 실제로 집행한다는 뜻은 아니다.</strong> 계좌별 보유 정보 입력·동기화 범위와 주문 실행 여부는 별도로 확인해야 한다. <a href="https://github.com/TNT-Likely/PanWatch/blob/main/README.md">PanWatch README</a></p>
+<pre class="mermaid">flowchart TD
+    A["시장 데이터·뉴스"] --> B["PanWatch 서버"]
+    C["보유 종목·계좌 설정"] --> B
+    B --> D["대시보드·PWA"]
+    B --> E["조건식 알림"]
+    B --> F["TradingAgents 심층 분석"]
+    F --> G["분석 결과·알림 채널"]
+    classDef sourceTone fill:#c5dcef,stroke:#54789e,color:#333;
+    classDef coreTone fill:#e0c8ef,stroke:#9275ac,color:#333;
+    classDef outputTone fill:#c0ecd3,stroke:#5a9d75,color:#333;
+    class A,C sourceTone;
+    class B,F coreTone;
+    class D,E,G outputTone;</pre><p>README가 언급하는 기술 지표에는 MA, MACD, RSI, KDJ 등이 있다. 이런 지표는 관측 값을 정리하는 도구이지 수익을 보장하는 예측기는 아니다. 시장·종목에 따라 데이터 제공 범위와 지연도 달라질 수 있으므로, 실제 의사결정 전 원천 시세와 거래소 시간을 대조하는 편이 안전하다. <a href="https://github.com/TNT-Likely/PanWatch/blob/main/README.md">PanWatch README</a>, <a href="https://github.com/TNT-Likely/PanWatch/blob/main/packages/marketdata/README.md">시장 데이터 모듈 문서</a></p>
+<h2 id="2-애널리스트-4명은-전체-의사결정-과정의-첫-단계다">2. “애널리스트 4명”은 전체 의사결정 과정의 첫 단계다</h2>
+<p>Threads의 첫 번째 포인트는 기술·심리·뉴스·펀더멘털 담당 AI 네 종류가 각자 분석하고 토론한다는 것이다. <a href="https://github.com/TNT-Likely/PanWatch/blob/main/README.md">PanWatch README</a>는 이 네 분석 결과가 <strong>강세·약세 토론, 위험 검토, 포트폴리오 매니저의 최종 판단</strong>으로 이어진다고 설명한다. 기반인 <a href="https://github.com/TauricResearch/TradingAgents">TradingAgents</a>도 애널리스트, 토론 담당 연구원, 트레이더, 위험 관리, 포트폴리오 매니저를 역할별로 구분한다. 따라서 “AI 네 명의 다수결”보다는 <strong>서로 다른 근거를 역할별로 검토하는 다단계 LLM 워크플로</strong>라고 이해하는 편이 정확하다.</p>
+<pre class="mermaid">flowchart TD
+    A["기술 분석"] --> E["분석 근거 취합"]
+    B["시장 심리"] --> E
+    C["뉴스"] --> E
+    D["펀더멘털"] --> E
+    E --> F["강세·약세 토론"]
+    F --> G["위험 검토"]
+    G --> H["최종 판단·보고서"]
+    classDef analystTone fill:#c5dcef,stroke:#54789e,color:#333;
+    classDef synthesisTone fill:#e0c8ef,stroke:#9275ac,color:#333;
+    classDef cautionTone fill:#fde8c0,stroke:#bd9454,color:#333;
+    classDef resultTone fill:#c0ecd3,stroke:#5a9d75,color:#333;
+    class A,B,C,D analystTone;
+    class E,F synthesisTone;
+    class G cautionTone;
+    class H resultTone;</pre><p>PanWatch의 <a href="https://github.com/TNT-Likely/PanWatch/blob/main/src/modules/automation/tradingagents/agent.py">연동 코드</a>는 선택할 분석가와 토론 라운드, LLM 시간 제한·토큰 제한 등을 구성하고, 결과와 추정 비용을 기록한다. 결과가 단계별로 나온다고 해서 시장의 불확실성이 사라지는 것은 아니다. 네 역할이 <strong>같은 부정확한 시세나 뉴스</strong>를 받으면 여러 에이전트가 같은 오류를 그럴듯하게 강화할 수 있다. TradingAgents 원본도 연구용 프레임워크이며 성과는 모델·기간·데이터 품질 등에 따라 달라지고 투자 조언이 아니라고 명시한다. <a href="https://github.com/TauricResearch/TradingAgents">TradingAgents README</a></p>
+<h2 id="3-배포는-짧지만-운영-설정까지-한-줄은-아니다">3. 배포는 짧지만, 운영 설정까지 한 줄은 아니다</h2>
+<p>Threads의 두 번째 포인트인 Docker 실행 명령은 공식 README에도 있다. 컨테이너를 띄우면 <code>http://localhost:8000</code>에서 첫 계정을 설정할 수 있다. 다만 <strong>AI 제공자, 알림 채널, 보유 종목·Agent 설정</strong>은 웹 화면에서 추가로 구성해야 한다. README는 첫 실행 시 Chromium 다운로드가 필요할 수 있고 몇 분 걸릴 수 있다고도 안내한다. <a href="https://github.com/TNT-Likely/PanWatch/blob/main/README.md">PanWatch 설치 안내</a></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker run -d <span style="color:#0a3069">\
+</span></span></span><span style="display:flex;"><span>  --name panwatch <span style="color:#0a3069">\
+</span></span></span><span style="display:flex;"><span>  -p 8000:8000 <span style="color:#0a3069">\
+</span></span></span><span style="display:flex;"><span>  -v panwatch_data:/app/data <span style="color:#0a3069">\
+</span></span></span><span style="display:flex;"><span>  sunxiao0721/panwatch:latest
+</span></span></code></pre></div><p>이 명령은 <strong>문서에 나온 예시</strong>이며 여기서 실행하거나 이미지를 검증하지는 않았다. <code>latest</code> 태그는 내용이 바뀔 수 있으므로 운영 환경에서는 검토한 버전 태그 또는 이미지 다이제스트를 고정하는 편이 재현성에 유리하다. 또한 예시의 <code>-p 8000:8000</code>은 호스트의 네트워크 인터페이스에 포트를 공개할 수 있으므로, 개인 테스트라면 접근 범위를 제한하고 외부 공개 시 인증·HTTPS·방화벽을 점검해야 한다. 이는 Docker 배포 방식에 대한 운영상 권고다.</p>
+<pre class="mermaid">flowchart TD
+    A["이미지 버전 검토"] --> B["Docker 기동·데이터 볼륨"]
+    B --> C["관리 계정 설정"]
+    C --> D["AI API·모델 설정"]
+    D --> E["알림 채널·종목 설정"]
+    E --> F["시세·분석·알림 시험"]
+    classDef prepTone fill:#c5dcef,stroke:#54789e,color:#333;
+    classDef configTone fill:#e0c8ef,stroke:#9275ac,color:#333;
+    classDef testTone fill:#c0ecd3,stroke:#5a9d75,color:#333;
+    class A,B prepTone;
+    class C,D,E configTone;
+    class F testTone;</pre><h2 id="4-조건식-알림과-여러-계좌-편의-기능의-검증-지점">4. 조건식 알림과 여러 계좌: 편의 기능의 검증 지점</h2>
+<p>세 번째 포인트인 알림은 가격·등락률·거래대금·거래량 비율 등의 조건을 <code>AND</code> 또는 <code>OR</code>로 묶는 방식이다. 공식 문서는 거래 시간 적용 여부, 알림 간격 제한, 하루 최대 발송 수, 반복 방식과 채널 선택도 설명한다. Telegram, 기업용 WeChat, DingTalk, Feishu, Bark, 사용자 정의 웹훅 등이 명시돼 있다. <strong>조건이 맞았다는 사실과 매매 적기라는 판단은 다르다.</strong> 또한 외부 알림 채널을 사용하면 메시지 내용이 해당 서비스로 전송된다. <a href="https://github.com/TNT-Likely/PanWatch/blob/main/README.md">PanWatch README</a></p>
+<p>네 번째 포인트인 다중 계좌 화면은 계좌별 보유 종목을 구분하면서 총자산을 함께 볼 수 있게 하는 기능이다. PWA는 브라우저 화면을 홈 화면에 설치해 앱처럼 접근하는 방식으로 소개된다. 여기서도 <strong>대시보드의 합산 값이 증권사 원장과 자동으로 일치한다는 보장은 없다.</strong> 통화 변환, 수수료, 갱신 시점, 입력 누락을 사용자가 확인해야 한다. 이는 원본 기능 설명에서 도출한 검증 항목이지 프로젝트가 특정 오류를 일으킨다는 뜻은 아니다. <a href="https://github.com/TNT-Likely/PanWatch/blob/main/README.md">PanWatch README</a></p>
+<pre class="mermaid">flowchart TD
+    A["시장 데이터 갱신"] --> B{"알림 조건 충족?"}
+    B -->|"아니오"| C["다음 평가 대기"]
+    B -->|"예"| D["간격·횟수 제한 확인"]
+    D --> E["선택 채널로 발송"]
+    E --> F["수신·시각·가격 확인"]
+    classDef dataTone fill:#c5dcef,stroke:#54789e,color:#333;
+    classDef decideTone fill:#fde8c0,stroke:#bd9454,color:#333;
+    classDef sendTone fill:#e0c8ef,stroke:#9275ac,color:#333;
+    classDef verifyTone fill:#c0ecd3,stroke:#5a9d75,color:#333;
+    class A dataTone;
+    class B,D decideTone;
+    class C,E sendTone;
+    class F verifyTone;</pre><h2 id="5-비용과-데이터-보안-홍보-문구의-조건을-분리한다">5. 비용과 데이터 보안: 홍보 문구의 조건을 분리한다</h2>
+<p>Threads와 README는 심층 분석 비용을 <strong>회당 약 0.05달러</strong>로 소개한다. README의 표현은 기본 <code>deepseek-chat</code> 설정을 전제로 한 예시다. 실제 비용은 사용하는 모델과 제공자의 요금, 입력 문맥·출력 길이, 토론 라운드, 실패 후 재시도에 따라 달라진다. <a href="https://github.com/TNT-Likely/PanWatch/blob/main/src/modules/automation/tradingagents/agent.py">연동 코드</a>에도 토론 라운드와 토큰 제한, 비용 기록 경로가 있다. 따라서 이 수치를 <strong>고정 가격이나 독립 검증된 평균</strong>으로 인용하지 말고 자신의 설정에서 사용량 기록과 청구서를 대조해야 한다. <a href="https://github.com/TNT-Likely/PanWatch/blob/main/README.md">PanWatch README</a></p>
+<p>“내 서버에 올리니 데이터가 밖으로 나가지 않는다”는 말도 그대로 받아들이기 어렵다. 보유 정보 저장소는 로컬 볼륨일 수 있지만, README는 OpenAI 호환 <strong>외부 AI API</strong> 설정과 Telegram 등의 <strong>외부 알림 채널</strong>을 안내한다. <a href="https://github.com/TNT-Likely/PanWatch/blob/main/packages/marketdata/README.md">시장 데이터 모듈</a> 역시 여러 공급자에게 시세를 요청한다. 이 문서들로부터 추론하면 실제 외부 전송 범위는 선택한 AI 제공자·데이터 공급자·알림 채널에 따라 달라진다. 로컬 Ollama 같은 모델을 선택하면 LLM 요청의 외부 전송은 줄일 수 있겠지만, 전체 시스템의 네트워크 통신이 사라지는 것은 아니다. <a href="https://github.com/TNT-Likely/PanWatch/blob/main/README.md">PanWatch README</a></p>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<ol>
+<li><strong>모의 데이터로 시작한다.</strong> 실제 계좌 정보와 API 키를 넣기 전에 테스트 종목으로 시세 갱신·알림 지연·중복 발송을 확인한다.</li>
+<li><strong>출처와 시각을 기록한다.</strong> 분석 시 사용한 시세·뉴스가 언제 수집됐는지 확인하고, 거래소 정보와 비교한다. 데이터 공급자 장애나 대체 경로도 점검한다.</li>
+<li><strong>모델 비용을 측정한다.</strong> 같은 종목을 여러 번 실행해 토큰 사용량·실제 청구액·실패율을 비교한다. README의 예시 금액을 예산으로 고정하지 않는다.</li>
+<li><strong>네트워크 경계를 그린다.</strong> AI API, 시장 데이터, Telegram·웹훅으로 어떤 정보가 나가는지 확인하고, 계정·볼륨 백업·포트 공개 범위를 관리한다.</li>
+<li><strong>투자 판단은 분리한다.</strong> AI의 토론 결과는 검토 자료로 취급하고, 손익과 위험 한도에 대한 결정은 사람이 한다.</li>
+</ol>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>PanWatch는 <strong>시장 모니터링·다중 계좌·조건식 알림·TradingAgents 분석</strong>을 한 화면에 묶는 자가 호스팅 프로젝트다.</li>
+<li>네 명의 분석가가 전부가 아니다. 분석 뒤 강세·약세 토론과 위험 검토, 최종 판단 단계가 이어진다.</li>
+<li>Docker 한 줄은 서버 시작 단계이며, AI 제공자와 알림 채널 등은 별도 설정이 필요하다.</li>
+<li><strong>회당 약 0.05달러와 완전한 데이터 비유출은 보장된 속성이 아니다.</strong> 모델·통신 설정을 직접 검증해야 한다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>PanWatch의 가치는 AI가 수익을 예측한다는 주장보다 <strong>흩어진 시장 관찰과 분석 근거를 한 작업 흐름에 모으는 데</strong> 있다. 직접 운영한다면 기능 목록보다 데이터의 시점, 외부 전송 경로, 실제 비용, 알림 신뢰성을 먼저 검증하자. 이 글은 도구 구조를 설명하는 기술 문서이며 투자 권유가 아니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 09월 24일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-24-pretty-mermaid-skills-svg-png-ascii-workflow/" rel="prev">
+        <span>Pretty Mermaid Skills: AI가 만든 다이어그램을 SVG·PNG·터미널 출력으로 마무리하기</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-24-jev-adoption-audit-evaluate-before-switching/" rel="next">
+        <span>Jev가 좋아도 도입하지 않은 이유: 모델 교체보다 먼저 재야 할 오탐과 커버리지</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-panwatch는-매매-봇보다-모니터링분석-작업대에-가깝다">1. PanWatch는 매매 봇보다 모니터링·분석 작업대에 가깝다</a></li>
+    <li><a href="#2-애널리스트-4명은-전체-의사결정-과정의-첫-단계다">2. “애널리스트 4명”은 전체 의사결정 과정의 첫 단계다</a></li>
+    <li><a href="#3-배포는-짧지만-운영-설정까지-한-줄은-아니다">3. 배포는 짧지만, 운영 설정까지 한 줄은 아니다</a></li>
+    <li><a href="#4-조건식-알림과-여러-계좌-편의-기능의-검증-지점">4. 조건식 알림과 여러 계좌: 편의 기능의 검증 지점</a></li>
+    <li><a href="#5-비용과-데이터-보안-홍보-문구의-조건을-분리한다">5. 비용과 데이터 보안: 홍보 문구의 조건을 분리한다</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+    <a href="/tags/docker/" class="badge badge-secondary">Docker</a>
+    <a href="/tags/automation/" class="badge badge-secondary">Automation</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
