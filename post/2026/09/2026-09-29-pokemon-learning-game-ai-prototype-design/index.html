@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'AI로 아이 학습 게임 만들기: 포켓몬 사례에서 먼저 설계할 것'" />
+  <title>AI로 아이 학습 게임 만들기: 포켓몬 사례에서 먼저 설계할 것  | 신규하 블로그</title>
+  <meta property="og:title" content="AI로 아이 학습 게임 만들기: 포켓몬 사례에서 먼저 설계할 것" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-09-29"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/09/2026-09-29-pokemon-learning-game-ai-prototype-design/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="ai" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+  <meta property="og:tags" content="claude" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/09/2026-09-29-pokemon-learning-game-ai-prototype-design/">
+          <h1>
+            AI로 아이 학습 게임 만들기: 포켓몬 사례에서 먼저 설계할 것
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/09/2026-09-29-pokemon-learning-game-ai-prototype-design/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>아이의 &ldquo;나도 만들어 줘&quot;라는 말에서 시작한 작은 학습 게임은 AI 코딩 도구의 흥미로운 활용 사례다. <a href="https://www.threads.com/share/BAfIdEWDlC/">Threads 작성자</a>는 Opus 5.5로 만든 포켓몬 테마 게임의 플레이 영상과 요청 문장을 공개했다. 아이가 <strong>문제를 풀고 캐릭터를 모아 도감을 완성하는 흐름</strong> 이 핵심이다. 다만 영상과 프롬프트만으로는 실제 코드 구조, 문제의 교육적 적합성, 데이터 보존 방식까지 확인할 수 없다. 이 글은 <strong>원문에서 확인되는 요구사항</strong> 과 <strong>직접 만들 때 권장하는 설계</strong> 를 분리해 정리한다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.threads.com/share/BAfIdEWDlC/">원문 Threads 게시글</a></li>
+<li><a href="https://www.threads.com/@rolandlitna/post/Dd1XSHzk0uN">작성자의 프롬프트 댓글</a></li>
+<li><a href="https://pokeapi.co/docs/v2">PokéAPI 공식 문서</a></li>
+<li><a href="https://github.com/PokeAPI/sprites/blob/master/LICENCE.txt">PokéAPI 이미지 저장소의 권리 고지</a></li>
+<li><a href="https://support.pokemon.com/hc/en-us/articles/360000634094-Can-I-use-Pok%C3%A9mon-images-or-materials">Pokémon 공식 이미지 사용 안내</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/Security/Defenses/Local_network_access">MDN의 로컬·루프백 네트워크 설명</a></li>
+</ul>
+<h2 id="원문-프롬프트가-이미-결정한-것과-아직-결정하지-않은-것">원문 프롬프트가 이미 결정한 것과 아직 결정하지 않은 것</h2>
+<p>작성자가 공개한 프롬프트는 <strong>대한민국 초등학교 3학년 2학기</strong>, <strong>수학·영어</strong>, <strong>문제를 풀어 캐릭터를 잡고 도감을 완성하는 게임</strong>, <strong>파트너와 플레이어의 이름·외형 설정</strong>, <strong>매일 진도에 맞춘 난이도 상승</strong>을 요구한다. 문제는 별도 데이터로 관리하되 DB는 필수가 아닐 수 있다고 했고, 집 PC에서 웹서버를 실행해 패드 브라우저로 접속하겠다고 적었다. 작성자는 AI가 포켓몬의 세대 범위 등을 되물었다고도 설명한다. <a href="https://www.threads.com/@rolandlitna/post/Dd1XSHzk0uN">프롬프트 댓글</a></p>
+<p>이는 완성된 사양서가 아니라 <strong>좋은 출발 질문</strong> 이다. 수학·영어에서 어떤 단원을 다룰지, 정답을 몇 번 맞혀야 포획되는지, 틀렸을 때 힌트를 줄지, 하루 학습량을 누가 바꿀지, 진도를 어느 기기에 저장할지는 원문에 명시되지 않았다. 이 빈칸을 AI가 임의로 채우면 게임은 작동해도 <strong>아이에게 맞는 학습 활동</strong> 이 아닐 수 있다. 아래의 구조와 예시는 원문 앱을 분석한 결과가 아니라, 이 요구사항을 구현할 때의 <strong>제안</strong> 이다.</p>
+<pre class="mermaid">flowchart TD
+    A["확인된 요청<br>학년·과목·도감·태블릿"] --> B["보호자와 결정할 규칙"]
+    B --> C["문제 범위와 정답 기준"]
+    B --> D["힌트·보상·하루 분량"]
+    B --> E["저장 위치와 접속 범위"]
+    C --> F["작은 플레이 가능한 시제품"]
+    D --> F
+    E --> F
+    classDef inputTone fill:#c5dcef,stroke:#7197b6,color:#333
+    classDef decisionTone fill:#fde8c0,stroke:#c9a45e,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#a37bb8,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#75ad8d,color:#333
+    class A inputTone
+    class B decisionTone
+    class C,D,E processTone
+    class F resultTone</pre><h2 id="문제-은행을-게임-코드와-분리한다">문제 은행을 게임 코드와 분리한다</h2>
+<p>원문의 &ldquo;문제를 별도 data로 관리&quot;한다는 요구는 중요하다. 문제를 버튼 이벤트와 화면 코드에 직접 넣으면 단원·정답·해설을 바꿀 때마다 게임 로직까지 수정해야 한다. 작은 가정용 시제품에서는 <strong>문제 파일(JSON 등)</strong> 과 <strong>게임 상태</strong>를 분리하는 편이 관리하기 쉽다. DB가 필수는 아니지만, 문제 파일이 정답인지 검증하는 과정은 필요하다.</p>
+<p>다음은 <strong>이 글에서 제안하는 예시 형식</strong> 이며, 원문 앱의 실제 데이터가 아니다. <code>unit</code>은 보호자가 선택한 교재의 단원에 맞춰 확인하고, AI가 만든 문제의 정답·표현·해설은 공개 전에 사람이 검토한다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;id&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;math-example-001&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;subject&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;math&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;unit&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;보호자가 확인한 단원&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;prompt&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;12 + 8은 얼마인가요?&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;choices&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">[</span><span style="color:#0a3069">&#34;18&#34;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#34;20&#34;</span><span style="color:#1f2328">,</span> <span style="color:#0a3069">&#34;22&#34;</span><span style="color:#1f2328">],</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;answer&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;20&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;explanation&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;12에 8을 더하면 20입니다.&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;difficulty&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;starter&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><p>게임 화면은 문제를 보여 주고 답을 받는 역할을 맡고, 문제 은행은 문항·정답·해설을 제공한다. 진도 기록은 <strong>문제를 보았는지</strong>, <strong>어떤 선택지를 골랐는지</strong>, <strong>힌트를 본 뒤 맞혔는지</strong>를 구분하면 보호자가 어려운 부분을 발견하기 쉽다. 이 기록은 아이의 평가표가 아니라 다음 문제를 고르는 피드백으로만 쓰는 편이 적절하다.</p>
+<pre class="mermaid">flowchart TD
+    A["검토된 문제 파일"] --> B["문항 선택"]
+    C["현재 학습 진도"] --> B
+    B --> D["문제 화면"]
+    D --> E["답·힌트 사용 여부"]
+    E --> F["정답 판정·해설"]
+    F --> G["진도 기록"]
+    F --> H["게임 보상"]
+    classDef dataTone fill:#c5dcef,stroke:#7197b6,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#a37bb8,color:#333
+    classDef feedbackTone fill:#fde8c0,stroke:#c9a45e,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#75ad8d,color:#333
+    class A,C dataTone
+    class B,D processTone
+    class E,F feedbackTone
+    class G,H outputTone</pre><h2 id="포획배틀은-학습을-가리는-장치가-아니라-피드백이어야-한다">포획·배틀은 학습을 가리는 장치가 아니라 피드백이어야 한다</h2>
+<p>원문 프롬프트는 문제를 풀어 캐릭터를 잡고 도감을 채우는 흐름을 요구한다. 원문에 인용된 다른 사용자의 영상에는 <strong>문제를 풀어야 공격하는 배틀</strong> 사례도 소개된다. 이것만으로 작성자의 게임에도 같은 배틀 시스템이 구현됐다고 볼 수는 없다. <a href="https://www.threads.com/share/BAfIdEWDlC/">원문 Threads</a></p>
+<p>게임 규칙을 설계할 때는 <strong>정답 → 작은 게임상 행동 → 이유 설명 → 다음 문제</strong> 순서를 분명히 하는 편이 좋다. 틀렸을 때 무조건 보상을 막거나 같은 문제만 되풀이시키면 아이가 정답을 이해하기보다 시행착오로 버튼을 누를 수 있다. 오답에는 짧은 힌트나 다른 표현의 유사 문항을 주고, 해설을 읽을 수 있게 한다. 이것은 학습 효과가 입증된 특정 게임 규칙이라는 주장이 아니라, <strong>정답만 외우는 플레이를 피하기 위한 설계 제안</strong>이다.</p>
+<pre class="mermaid">flowchart TD
+    A["문제 제시"] --> B{"답 확인"}
+    B -->|"정답"| C["이유 확인"]
+    C --> D["포획·도감 진행"]
+    B -->|"오답"| E["힌트 또는 해설"]
+    E --> F["다른 표현으로 재도전"]
+    F --> B
+    D --> G["다음 문항 선택"]
+    classDef inputTone fill:#c5dcef,stroke:#7197b6,color:#333
+    classDef decisionTone fill:#fde8c0,stroke:#c9a45e,color:#333
+    classDef successTone fill:#c0ecd3,stroke:#75ad8d,color:#333
+    classDef retryTone fill:#ffc8c4,stroke:#c98c87,color:#333
+    class A inputTone
+    class B decisionTone
+    class C,D,G successTone
+    class E,F retryTone</pre><p>&ldquo;매일 난이도를 높인다&quot;는 요구도 날짜가 바뀌었다는 이유만으로 어려운 문제를 자동 개방한다는 뜻으로 구현할 필요는 없다. <strong>단원별 이해 여부와 보호자가 조정한 진도</strong> 를 기준으로 다음 문제를 선택하는 방식을 먼저 검토해야 한다. 같은 날에도 어려운 문제를 풀었다면 더 쉬운 예제로 돌아갈 수 있어야 한다. 실제 교재와 아이의 학습 수준은 보호자가 확인해야 하며, 모델이 자동 생성한 문항을 교과 과정에 맞는다고 가정해서는 안 된다.</p>
+<h2 id="pc에서-실행하고-패드에서-접속할-때의-데이터-경계">PC에서 실행하고 패드에서 접속할 때의 데이터 경계</h2>
+<p>집 PC의 웹서버에 패드 브라우저로 접속한다는 요청은 <strong>같은 컴퓨터에서만 접속하는 <code>localhost</code> 화면</strong> 과 다르다. <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Defenses/Local_network_access">MDN</a>은 <code>127.0.0.1</code> 같은 루프백 주소를 <strong>해당 기기에서만 접근 가능한 주소</strong> 로, 가정용 사설 IP를 <strong>로컬 네트워크 주소</strong> 로 구분한다. 따라서 패드가 PC의 서버에 접속하려면 PC의 로컬 네트워크 주소, 서버가 듣는 인터페이스, 방화벽을 확인해야 한다. &ldquo;외부 공개하지 않는다&quot;는 의도만 적어 두는 것으로 접속 범위가 자동 제한되지는 않는다.</p>
+<pre class="mermaid">flowchart TD
+    A["집 PC의 웹서버"] --> B["가정용 로컬 네트워크"]
+    B --> C["패드 브라우저"]
+    A --> D["문제 파일"]
+    C --> E{"진도는 어디에 저장하나?"}
+    E -->|"패드만"| F["브라우저 저장소·백업 필요"]
+    E -->|"기기 간 공유"| G["PC 쪽 저장소·접근 제어 필요"]
+    classDef serverTone fill:#c5dcef,stroke:#7197b6,color:#333
+    classDef networkTone fill:#e0c8ef,stroke:#a37bb8,color:#333
+    classDef decisionTone fill:#fde8c0,stroke:#c9a45e,color:#333
+    classDef storageTone fill:#c0ecd3,stroke:#75ad8d,color:#333
+    class A,D serverTone
+    class B,C networkTone
+    class E decisionTone
+    class F,G storageTone</pre><p>문제 파일은 PC에서 내려주더라도, <strong>진도를 패드의 브라우저 저장소에만 기록하면 그 진도는 PC나 다른 패드로 자동 동기화되지 않는다</strong>. 한 기기만 쓸 시제품이라면 단순하지만 브라우저 데이터 삭제에 대비해 내보내기·백업이 필요하다. 여러 기기에서 계속 플레이하려면 PC 쪽에 진도를 저장하는 작은 API와 접근 제어가 필요해진다. 이름·외형·성적처럼 아이와 연결되는 정보는 <strong>필요한 만큼만 저장</strong>하고, 외부 분석 서비스나 모델 API에 보내는지 별도로 점검한다.</p>
+<h2 id="캐릭터-데이터와-이미지는-권리가-다르다">캐릭터 데이터와 이미지는 권리가 다르다</h2>
+<p>원문은 포켓몬 위키 이미지를 가져오고, 추가 이미지는 생성 도구로 만들자고 요청한다. 하지만 <strong>비공개·가정용</strong> 이라는 전제가 모든 이미지의 사용 권한을 자동으로 보장하지는 않는다. <a href="https://pokeapi.co/docs/v2">PokéAPI</a>는 포켓몬 정보에 접근할 수 있는 공개 API이며, 요청한 리소스를 <strong>로컬에 캐시</strong> 해 달라고 안내한다. 이는 데이터 접근 방식에 관한 설명이지 캐릭터 그림의 별도 사용 허락이 아니다.</p>
+<p><a href="https://github.com/PokeAPI/sprites/blob/master/LICENCE.txt">PokéAPI의 sprite 저장소</a>는 이미지 내용의 저작권이 <strong>The Pokémon Company</strong> 에 있다고 명시한다. <a href="https://support.pokemon.com/hc/en-us/articles/360000634094-Can-I-use-Pok%C3%A9mon-images-or-materials">Pokémon 공식 안내</a>도 캐릭터·이름·디자인 등의 지식재산 사용 요청을 일반적으로 검토해 줄 수 없다고 적는다. 따라서 위키나 API에서 이미지 URL을 얻을 수 있다는 사실을 <strong>앱 배포·재사용 허가</strong> 로 해석하지 말아야 한다. 외부 공유를 고려한다면 사용 권리가 분명한 자체 캐릭터와 자체 그림으로 바꾸는 편이 안전하다. 생성형 도구를 쓰더라도 기존 캐릭터를 그대로 재현하도록 요구하지 않는 것이 좋다.</p>
+<h2 id="실전-적용-포인트-한-번에-완성시키지-말고-세-번-나눈다">실전 적용 포인트: 한 번에 완성시키지 말고 세 번 나눈다</h2>
+<p>첫 번째 요청에서는 <strong>아이의 학년·과목·사용 기기·게임 목표</strong> 를 말하고, AI에게 빠진 결정을 질문하게 한다. 두 번째 요청에서는 <strong>문제 은행 형식과 정답 검증</strong> 을 만든다. 세 번째 요청에서는 <strong>게임 화면과 진도 저장</strong> 을 연결하고 PC·패드에서 실제 플레이를 확인한다. 이렇게 나누면 프롬프트 한 번으로 거대한 게임을 만들 때보다 무엇이 구현됐고 무엇이 미완성인지 확인하기 쉽다. 원문의 &ldquo;궁금한 것은 질문해 달라&quot;는 지시가 중요한 이유도 여기에 있다. <a href="https://www.threads.com/@rolandlitna/post/Dd1XSHzk0uN">프롬프트 댓글</a></p>
+<p>시작 전에는 적어도 다음을 정한다.</p>
+<ol>
+<li>한 번에 플레이할 시간과 하루 문제량을 <strong>보호자가 조정할 수 있는가</strong>?</li>
+<li>문제·정답·해설을 <strong>누가 검토하고 어떻게 수정하는가</strong>?</li>
+<li>오답과 힌트 사용 후에 <strong>보상과 진도가 어떻게 달라지는가</strong>?</li>
+<li>패드의 진도를 <strong>어디에 저장하고 어떻게 백업하는가</strong>?</li>
+<li>캐릭터 데이터와 이미지를 <strong>어디서 가져오며 공유할 권리가 있는가</strong>?</li>
+</ol>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>원문에서 확인되는 것은 <strong>가정용 포켓몬 테마 학습 게임의 목표와 프롬프트</strong> 다. 내부 구현·교육 효과는 확인되지 않았다.</li>
+<li>문제 은행, 게임 규칙, 진도 기록, 네트워크 접속을 <strong>서로 다른 설계 문제</strong> 로 나누어야 한다.</li>
+<li>비공개 사용과 공개 API 접근이 캐릭터 이미지의 권리를 자동으로 해결하지는 않는다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>AI가 짧은 요청으로 플레이 가능한 시제품을 빠르게 만들 수 있어도, <strong>좋은 학습 게임</strong> 은 문제의 정확성, 아이의 반응, 진도 조절, 데이터 보관, 이미지 사용 범위를 사람이 확인할 때 완성된다. 처음에는 한 단원과 작은 도감으로 시작하고, 아이와 보호자가 실제로 플레이하며 고치는 편이 낫다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 09월 29일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/product">Product</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-29-univer-ai-office-worktree-oss-boundaries/" rel="prev">
+        <span>Univer: AI 에이전트가 오피스 문서를 편집할 때 확인할 세 가지 경계</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-29-ai-frontend-design-references-six-tools/" rel="next">
+        <span>AI로 만든 웹사이트의 어색함 줄이기: 디자인 참고 자료 6곳의 쓰임새</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#원문-프롬프트가-이미-결정한-것과-아직-결정하지-않은-것">원문 프롬프트가 이미 결정한 것과 아직 결정하지 않은 것</a></li>
+    <li><a href="#문제-은행을-게임-코드와-분리한다">문제 은행을 게임 코드와 분리한다</a></li>
+    <li><a href="#포획배틀은-학습을-가리는-장치가-아니라-피드백이어야-한다">포획·배틀은 학습을 가리는 장치가 아니라 피드백이어야 한다</a></li>
+    <li><a href="#pc에서-실행하고-패드에서-접속할-때의-데이터-경계">PC에서 실행하고 패드에서 접속할 때의 데이터 경계</a></li>
+    <li><a href="#캐릭터-데이터와-이미지는-권리가-다르다">캐릭터 데이터와 이미지는 권리가 다르다</a></li>
+    <li><a href="#실전-적용-포인트-한-번에-완성시키지-말고-세-번-나눈다">실전 적용 포인트: 한 번에 완성시키지 말고 세 번 나눈다</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/ai/" class="badge badge-secondary">Ai</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+    <a href="/tags/claude/" class="badge badge-secondary">Claude</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
