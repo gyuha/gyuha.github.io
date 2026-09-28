@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Ollaya: 에이전트의 작은 판단을 로컬 결정 모델로 분리할 때 검증할 것'" />
+  <title>Ollaya: 에이전트의 작은 판단을 로컬 결정 모델로 분리할 때 검증할 것  | 신규하 블로그</title>
+  <meta property="og:title" content="Ollaya: 에이전트의 작은 판단을 로컬 결정 모델로 분리할 때 검증할 것" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-09-28"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/09/2026-09-28-ollaya-local-decision-model-agent-routing/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="ai" />
+  
+  <meta property="og:tags" content="agents" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/09/2026-09-28-ollaya-local-decision-model-agent-routing/">
+          <h1>
+            Ollaya: 에이전트의 작은 판단을 로컬 결정 모델로 분리할 때 검증할 것
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/09/2026-09-28-ollaya-local-decision-model-agent-routing/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>에이전트가 매번 큰 언어 모델에 묻는 질문이 모두 자유로운 문장 생성을 요구하지는 않는다. “이 요청은 환불인가?”, “긴급한가?”, “어느 작업 흐름으로 보낼까?”처럼 정해진 선택지에서 답을 고르는 일이라면, 로컬에서 실행하는 <strong>결정 모델(decision model)</strong> 이 대안이 될 수 있다. <a href="https://ollaya.dev/">Ollaya</a>는 이런 모델을 이름으로 받아 내려받고 실행하며 API로 제공하는 오픈소스 런타임이다.</p>
+<p>다만 <a href="https://x.com/Dontgiveup_26/status/2103972951121125505">소개 X 게시글</a>의 “LLM 호출 97% 삭감”, “속도 10배”, “몇 밀리초”는 <strong>게시글의 주장</strong> 이다. Ollaya 공식 자료에서 확인되는 수치와 측정 환경은 다르다. 이 글은 제품이 실제로 하는 일과 절감 효과를 검증하는 방법을 분리한다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://x.com/Dontgiveup_26/status/2103972951121125505">원문 X 게시글</a></li>
+<li><a href="https://ollaya.dev/">Ollaya 공식 사이트</a></li>
+<li><a href="https://github.com/ollaya-dev/ollaya">Ollaya GitHub 저장소</a></li>
+<li><a href="https://ollaya.dev/docs/quickstart">Ollaya 빠른 시작</a></li>
+<li><a href="https://ollaya.dev/docs/api">Ollaya API 문서</a></li>
+</ul>
+<h2 id="ollaya가-하는-일-문장-생성이-아닌-구조화된-판단">Ollaya가 하는 일: 문장 생성이 아닌 구조화된 판단</h2>
+<p>Ollaya의 입력은 처리할 <code>state</code>(문자열 또는 JSON)와 <code>questions</code>다. 질문은 선택지 하나를 고르는 <code>choice</code>, 단계별 점수를 구하는 <code>score</code>, 참일 가능성을 묻는 <code>noul</code> 등으로 정의한다. 출력은 생성된 답변 문장이 아니라 질문별 <strong>라벨·점수·확률</strong> 이다. 결정은 토큰을 한 개씩 생성하는 방식이 아니라 모델의 추론 결과에서 읽는다. 따라서 일반 LLM의 답변 작성, 계획 수립, 코드 생성까지 Ollaya로 대체한다는 뜻은 아니다. 실제로 <code>/api/generate</code>, <code>/api/chat</code>, <code>/api/embed</code> 같은 Ollama의 텍스트 엔드포인트는 404를 반환한다. <a href="https://ollaya.dev/docs/quickstart">빠른 시작</a>, <a href="https://ollaya.dev/docs/api">API 문서</a></p>
+<pre class="mermaid">flowchart TD
+    A["입력: 메시지 또는 JSON state"] --> B["질문: choice · score · noul"]
+    B --> C["Ollaya 로컬 추론"]
+    C --> D["출력: 라벨 · 점수 · 확률"]
+    D --> E["애플리케이션의 후속 작업"]
+    classDef inputTone fill:#c5dcef,stroke:#7197b6,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#a37bb8,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#75ad8d,color:#333
+    class A,B inputTone
+    class C processTone
+    class D,E outputTone</pre><p>예를 들어 고객 문의를 <code>billing</code>·<code>account</code>·<code>other</code> 중 하나로 분류하고, 별도의 질문으로 긴급도를 평가할 수 있다. <strong>어떤 답이 맞는지</strong> 와 <strong>그 답으로 실제 작업을 자동 실행할지</strong> 는 구분해야 한다. 후자는 애플리케이션이 임계값과 업무 규칙으로 결정한다. Ollaya는 TypeSafe 호환 <code>/v1/systemone</code>·<code>/v1/decisions</code>와 자체 <code>/api/decide</code>를 제공한다. 이름이 비슷해도 Ollaya는 Ollama 또는 TypeSafe와 제휴한 제품이 아니다. <a href="https://ollaya.dev/">공식 사이트</a>, <a href="https://ollaya.dev/docs/api">API 문서</a></p>
+<h2 id="로컬-에이전트에-연결하는-방법">로컬 에이전트에 연결하는 방법</h2>
+<p>공식 빠른 시작에 따르면 <code>ollaya run</code>은 서버가 꺼져 있으면 시작하고, 첫 실행에서는 모델을 내려받아 적재한다. 따라서 “명령어 한 줄”은 <strong>모델 파일을 이미 갖고 있고 하드웨어가 준비된 상태의 추론 시간</strong> 과 같지 않다. 공식 문서는 예시 모델 <code>winnow:e4b</code>의 다운로드 크기를 <strong>8GB</strong> 로 적고, NVIDIA GPU가 없다면 CPU에서도 실행하기 쉬운 <code>laya</code>로 시작하라고 안내한다. 설치 방식과 지원 플랫폼은 <a href="https://ollaya.dev/download">다운로드 안내</a>에서 확인할 수 있다. <a href="https://ollaya.dev/docs/quickstart">빠른 시작</a></p>
+<p>아래는 공식 문서의 요청 형태를 참고한 <strong>예시</strong> 이며, 이 글에서 직접 실행해 측정한 결과는 아니다. 설치와 <code>ollaya run laya</code>를 마친 뒤 로컬 서버의 <code>/api/decide</code>에 질문을 보낸다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ollaya run laya <span style="color:#0a3069">&#34;이번 달 요금이 두 번 청구됐습니다. 환불해주세요.&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>curl http://localhost:11435/api/decide -d <span style="color:#0a3069">&#39;{
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">  &#34;model&#34;: &#34;laya&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">  &#34;state&#34;: &#34;이번 달 요금이 두 번 청구됐습니다. 환불해주세요.&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">  &#34;questions&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">    &#34;intent&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">      &#34;type&#34;: &#34;choice&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">      &#34;instructions&#34;: &#34;요청의 종류는 무엇인가?&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">      &#34;criteria&#34;: {
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">        &#34;refund&#34;: &#34;중복 청구나 환불 요청&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">        &#34;account&#34;: &#34;계정 및 로그인 문제&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">        &#34;other&#34;: &#34;그 외 요청&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">      }
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">    }
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">  }
+</span></span></span><span style="display:flex;"><span><span style="color:#0a3069">}&#39;</span>
+</span></span></code></pre></div><p><code>laya</code>는 언어에 따라 대상 모델을 고르는 라우터이므로, 실제 응답의 <code>model</code> 필드는 <code>laya:en</code>이나 다국어 대상 모델처럼 요청을 처리한 모델을 가리킬 수 있다. 자체 API는 모델을 자동으로 다운로드하지 않으므로 애플리케이션 배포에서는 모델을 미리 준비하거나 <code>/api/pull</code>을 명시적으로 호출해야 한다. 서버 기본 주소는 <code>127.0.0.1:11435</code>이며, 외부에 공개할 계획이라면 인증과 노출 범위를 별도로 설계해야 한다. <a href="https://ollaya.dev/docs/quickstart">빠른 시작</a>, <a href="https://ollaya.dev/docs/api">API 문서</a></p>
+<pre class="mermaid">flowchart TD
+    A["설치와 모델 다운로드"] --> B["로컬 서버 준비"]
+    B --> C["state와 질문 묶음 전송"]
+    C --> D["모델 추론과 확률 반환"]
+    D --> E["업무 규칙으로 실행 또는 보류"]
+    classDef prepTone fill:#c5dcef,stroke:#7197b6,color:#333
+    classDef inferTone fill:#e0c8ef,stroke:#a37bb8,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#75ad8d,color:#333
+    class A,B prepTone
+    class C,D inferTone
+    class E resultTone</pre><h2 id="97-절감10배-속도는-무엇을-뜻해야-하나">“97% 절감·10배 속도”는 무엇을 뜻해야 하나</h2>
+<p>소개 게시글의 수치는 Ollaya의 모든 사용 사례에서 보장되는 성능으로 해석하면 안 된다. <a href="https://ollaya.dev/">공식 사이트의 공개 벤치마크</a>에는 <code>winnow:e4b</code>가 <strong>RTX 4090</strong>에서 질문 5개를 묶은 HTTP 요청을 중앙값 <strong>89ms</strong>에 처리하고, typed-decisions 정확도 <strong>0.722</strong>를 기록했다고 적혀 있다. 비교 대상으로 제시한 TypeSafe Jev는 정확도 <strong>0.738</strong>, 호스팅 API 요청 중앙값 <strong>236~276ms</strong>다. 이 공개값끼리의 지연 시간 비율은 약 <strong>2.7~3.1배</strong> 지만, Jev 수치에는 네트워크가 포함되고 실행 환경도 달라 공정한 동일 조건 비교가 아니다. 공식 사이트도 이 차이를 명시한다. 더 작은 <code>laya:en</code>의 <strong>10ms</strong> 역시 RTX 4090에서 잰 다른 모델의 수치이며, 같은 벤치마크 정확도는 <strong>0.361</strong>이다. 모델과 정확도를 바꿔가며 가장 빠른 수치만 가져와 “Ollaya가 10배 빠르다”고 결론 낼 수 없다. <a href="https://ollaya.dev/">공식 사이트</a></p>
+<pre class="mermaid">flowchart TD
+    A["게시글의 주장"] --> B["97% 호출 감소 · 10배 속도"]
+    B --> C["공식 자료의 측정값 확인"]
+    C --> D["GPU · 모델 · 질문 수 · 네트워크 구분"]
+    D --> E["자체 업무 데이터에서 재측정"]
+    classDef claimTone fill:#fde8c0,stroke:#c7a468,color:#333
+    classDef checkTone fill:#c5dcef,stroke:#7197b6,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#75ad8d,color:#333
+    class A,B claimTone
+    class C,D checkTone
+    class E resultTone</pre><p><strong>LLM 호출 97% 절감</strong> 은 결정 모델만 설치한다고 자동으로 성립하지 않는다. 이는 전체 요청 중 약 97%를 로컬 판단으로 종료하고 나머지 약 3%만 LLM으로 보내는 <strong>라우팅 정책의 결과</strong> 여야 한다. 이 비율을 높이려다 잘못된 자동 판단이 늘어날 수 있다. 또한 “클라우드 API 비용 0원”은 해당 경로에서 유료 API를 호출하지 않을 때의 과금 설명이지, 로컬 컴퓨팅·전력·운영 비용이 사라진다는 뜻은 아니다. 공개 벤치마크는 제품이 제시한 특정 테스트 분할의 결과이고, 게시글의 97% 감소율을 독립적으로 입증하지 않는다. <a href="https://x.com/Dontgiveup_26/status/2103972951121125505">원문 게시글</a>, <a href="https://ollaya.dev/">공식 사이트</a></p>
+<p>Mac 사용자라면 GPU 조건도 중요하다. 공식 플랫폼 설명상 Apple Silicon에서 <strong>laya와 nli는 MLX를 통해 Apple GPU</strong> 를 쓰지만, 그 밖의 모델은 Mac에서 CPU로 실행된다. 따라서 RTX 4090의 89ms를 MacBook에서 기대할 지연 시간으로 옮겨 적을 수 없다. <a href="https://ollaya.dev/">공식 사이트</a></p>
+<h2 id="실전-적용-포인트-확신이-낮을-때는-상위-경로로-넘긴다">실전 적용 포인트: 확신이 낮을 때는 상위 경로로 넘긴다</h2>
+<p>적합한 첫 대상은 반복량이 많고 선택지가 분명한 작업이다. 예를 들어 문의 유형 분류, 긴급도 판단, 안전성 검사, 어떤 도구나 모델을 호출할지의 라우팅이다. 모델의 답을 바로 실행하기보다 <strong>신뢰 기준을 통과한 경우에만 자동 처리</strong> 하고, 애매한 요청은 기존 LLM 또는 사람에게 넘기는 편이 안전하다. API의 <code>confidence</code>는 선택지 확률에서 계산한 정규화 값이며, 모델마다 보정 방식이 다르다. 따라서 <code>0.9</code>를 모든 모델에서 “정답 확률 90%”로 읽지 말고, <strong>자체 라벨 데이터로 모델별 임계값을 정해야 한다</strong>. <code>noul</code>은 별도의 <code>confidence</code> 필드 없이 참일 확률을 반환한다. <a href="https://ollaya.dev/docs/api">API 문서</a></p>
+<pre class="mermaid">flowchart TD
+    A["실제 요청"] --> B["Ollaya 로컬 판단"]
+    B --> C{"검증한 임계값 통과?"}
+    C -->|"예"| D["자동 분류 또는 라우팅"]
+    C -->|"아니요"| E["LLM 또는 사람에게 이관"]
+    D --> F["정답률 · 지연 · 비용 기록"]
+    E --> F
+    classDef inputTone fill:#c5dcef,stroke:#7197b6,color:#333
+    classDef decisionTone fill:#fde8c0,stroke:#c7a468,color:#333
+    classDef successTone fill:#c0ecd3,stroke:#75ad8d,color:#333
+    classDef fallbackTone fill:#ffc8c4,stroke:#c9847f,color:#333
+    class A,B inputTone
+    class C decisionTone
+    class D,F successTone
+    class E fallbackTone</pre><p>도입 평가에서는 같은 요청 집합에 기존 방식과 로컬 라우팅 방식을 모두 돌려 <strong>LLM 이관율, 오분류율, 위험한 오자동화율, p50·p95 지연 시간, 요청당 총비용</strong> 을 함께 비교해야 한다. 모델 첫 적재 시간과 대기열 시간도 별도로 기록한다. Ollaya API 문서에 따르면 <strong>동일하게 적재된 모델은 한 번에 요청 하나를 처리하고 후속 요청은 대기</strong> 하므로, 질문을 여러 HTTP 호출로 쪼개기보다 한 <code>state</code>에 대한 질문들을 한 요청으로 묶는 편이 낫다. 처리량이 많은 환경에서는 이 대기열이 “몇 밀리초”라는 단일 추론 시간보다 실제 사용자 지연을 좌우할 수 있다. <a href="https://ollaya.dev/docs/api">API 문서</a></p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>Ollaya는 로컬에서 구조화된 질문에 답하는 <strong>결정 모델 런타임</strong> 이다. 일반 LLM의 문장 생성기를 그대로 대체하지 않는다.</li>
+<li>공식 공개 수치는 특정 모델·데이터셋·하드웨어의 결과다. 게시글의 <strong>97%·10배를 보편적 성능으로 확인할 근거는 없다</strong>.</li>
+<li>비용 절감 여부는 모델 자체보다 <strong>자동 처리 임계값, LLM 이관율, 오류 비용</strong> 에 달려 있다.</li>
+<li>MacBook에서의 실제 속도는 모델별 CPU·GPU 실행 경로와 자체 워크로드로 다시 재야 한다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>Ollaya의 흥미로운 점은 모든 에이전트 판단을 거대한 LLM에 맡기지 않고, <strong>작고 반복적인 결정을 별도 로컬 경로로 분리</strong> 할 수 있다는 데 있다. 시작할 때는 한 가지 분류 업무만 골라 기존 답과 나란히 검증하자. 정확도와 위험을 유지하면서 LLM 이관율과 종단 간 지연이 줄어드는지 확인한 뒤에야 “몇 % 절감”이라는 숫자를 붙일 수 있다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 09월 28일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-28-opus-55-vibe-motion-graphics-showreel-reality-check/" rel="prev">
+        <span>Opus 5.5 모션그래픽 쇼릴: 영상에서 확인한 것과 제작 과정에서 검증할 것</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-28-obsidian-self-hosted-livesync-sync-guide/" rel="next">
+        <span>Obsidian Self-hosted LiveSync: 구독료 대신 직접 동기화를 운영할 때 알아야 할 것</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#ollaya가-하는-일-문장-생성이-아닌-구조화된-판단">Ollaya가 하는 일: 문장 생성이 아닌 구조화된 판단</a></li>
+    <li><a href="#로컬-에이전트에-연결하는-방법">로컬 에이전트에 연결하는 방법</a></li>
+    <li><a href="#97-절감10배-속도는-무엇을-뜻해야-하나">“97% 절감·10배 속도”는 무엇을 뜻해야 하나</a></li>
+    <li><a href="#실전-적용-포인트-확신이-낮을-때는-상위-경로로-넘긴다">실전 적용 포인트: 확신이 낮을 때는 상위 경로로 넘긴다</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/ai/" class="badge badge-secondary">Ai</a>
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
