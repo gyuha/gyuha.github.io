@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '단일 HTML로 만든 2D·3D 인테리어 편집기: Floorplan 3D의 구조와 한계'" />
+  <title>단일 HTML로 만든 2D·3D 인테리어 편집기: Floorplan 3D의 구조와 한계  | 신규하 블로그</title>
+  <meta property="og:title" content="단일 HTML로 만든 2D·3D 인테리어 편집기: Floorplan 3D의 구조와 한계" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-09-30"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/09/2026-09-30-floorplan-3d-single-html-2d-3d-interior-editor/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="javascript" />
+  
+  <meta property="og:tags" content="ai" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/09/2026-09-30-floorplan-3d-single-html-2d-3d-interior-editor/">
+          <h1>
+            단일 HTML로 만든 2D·3D 인테리어 편집기: Floorplan 3D의 구조와 한계
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/09/2026-09-30-floorplan-3d-single-html-2d-3d-interior-editor/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p><a href="https://x.com/akokoi1/status/2104771886236553568">작성자의 X 게시물</a>은 주택 평면도를 편집하고 3D로 둘러보는 도구 <a href="https://github.com/wy51ai/floorplan-3d">Floorplan 3D</a>를 공개했다. 작성자는 파일 하나로 이뤄진 프로젝트를 아이가 인테리어 시뮬레이션 게임처럼 사용해 iPad 조작을 보완했다고 설명한다. 저장소를 확인하면 핵심은 <strong>SVG 평면 편집과 Three.js 장면을 하나의 브라우저 앱으로 묶은 것</strong> 이다. 다만 “평면도 이미지 한 장으로 만들었다”는 제작 경험과, 앱 사용자가 임의의 이미지를 업로드해 자동 변환할 수 있다는 기능은 구별해야 한다. <a href="https://x.com/akokoi1/status/2104771886236553568">원본 게시물</a>, <a href="https://x.com/akokoi1/status/2104520072014508316">이전 시연 게시물</a>, <a href="https://github.com/wy51ai/floorplan-3d">저장소 README</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://x.com/akokoi1/status/2104771886236553568">원본 X 게시물</a></li>
+<li><a href="https://x.com/akokoi1/status/2104520072014508316">앞서 올린 제작·시연 게시물</a></li>
+<li><a href="https://github.com/wy51ai/floorplan-3d">Floorplan 3D 저장소와 README</a></li>
+<li><a href="https://github.com/wy51ai/floorplan-3d/blob/master/index.html">단일 HTML 소스</a></li>
+<li><a href="https://wy51ai.github.io/floorplan-3d/">온라인 데모</a></li>
+<li><a href="https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository">라이선스가 없는 공개 저장소에 관한 GitHub 문서</a></li>
+</ul>
+<p>원본 X 본문은 X의 공개 트윗 JSON 엔드포인트로 읽었다(<code>x-syndication</code>, HTTP 추출). 연결된 저장소의 README와 <code>index.html</code>을 별도로 확인했고, 온라인 데모는 데스크톱 브라우저에서 <strong>2D 화면을 열고 3D 장면으로 전환하는 범위</strong> 까지 직접 확인했다. iPad 실기기 조작이나 면적·견적 정확도를 검증한 것은 아니다.</p>
+<h2 id="한-파일이지만-2d와-3d는-같은-설계-데이터를-읽는다">한 파일이지만 2D와 3D는 같은 설계 데이터를 읽는다</h2>
+<p>저장소에는 중심 앱 파일인 <code>index.html</code>과 README가 있다. 별도 빌드 단계 없이 HTML을 열 수 있지만, 3D에 필요한 Three.js 모듈은 jsDelivr CDN의 <code>three@0.160.0</code>을 가져오므로 처음 3D 장면을 열 때 네트워크가 필요하다. 2D는 SVG, 3D는 Three.js를 쓰고, 가구·방·철거 벽·측정값 등을 담은 상태를 <code>localStorage</code>에 저장한다. 이는 <strong>서버 없이 실행되는 앱</strong> 이지, 모든 자산이 HTML 내부에 포함된 완전 오프라인 파일이라는 뜻은 아니다. <a href="https://github.com/wy51ai/floorplan-3d#%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B">README의 기술 스택과 실행 안내</a>, <a href="https://github.com/wy51ai/floorplan-3d/blob/master/index.html">HTML 소스</a></p>
+<pre class="mermaid">flowchart TD
+    A["HTML 내부 기본 데이터<br>방·벽·창·가구 목록"] --> B["편집 상태"]
+    B --> C["SVG 2D 평면"]
+    B --> D["Three.js 3D 장면"]
+    C --> E["가구·벽·재료 조작"]
+    D --> E
+    E --> B
+    B --> F["브라우저 localStorage"]
+    B --> G["JSON 내보내기·가져오기"]
+    classDef sourceTone fill:#c5dcef,stroke:#7197b6,color:#333
+    classDef stateTone fill:#e0c8ef,stroke:#a37bb8,color:#333
+    classDef viewTone fill:#fde8c0,stroke:#c9a45e,color:#333
+    classDef actionTone fill:#ffc8c4,stroke:#c98780,color:#333
+    classDef saveTone fill:#c0ecd3,stroke:#75ad8d,color:#333
+    class A sourceTone
+    class B stateTone
+    class C,D viewTone
+    class E actionTone
+    class F,G saveTone</pre><p>코드에서 <code>ROOMS</code>는 방의 다각형과 재료, <code>WALLS</code>와 <code>WINS</code>는 벽·창, <code>MATS</code>는 바닥 재료와 가격, <code>LIB</code>는 가구 카탈로그를 정의한다. 이 데이터를 바꾸면 다른 평면도에 맞게 조정할 수 있다. 3D 가구는 <code>buildFurniture()</code>가 Three.js 도형과 재질을 조합해 만든다. 즉, 앱이 실행 중 매번 AI로 가구 모델을 생성하는 방식은 아니다. <a href="https://github.com/wy51ai/floorplan-3d#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%88%B7%E5%9E%8B">README의 사용자 정의 항목</a>, <a href="https://github.com/wy51ai/floorplan-3d/blob/master/index.html">HTML 소스</a></p>
+<h2 id="편집-기능은-배치측정재료시점까지-이어진다">편집 기능은 배치·측정·재료·시점까지 이어진다</h2>
+<p>README에 따르면 2D에서는 60종이 넘는 가구·가전을 배치하고 이동·회전·크기 조정할 수 있다. 벽 가까이 자동 흡착하는 배치, 벽에 흡착하는 측정, 비내력벽 철거, 치수·방 이름·격자 등의 표시 전환도 제공한다. 3D에서는 조감·사선·상부 시점과 1인칭 이동을 고르고, 문을 열거나 가구를 선택·이동할 수 있다. 3D 조작은 2D 설계 상태와 동기화하도록 설명돼 있다. 실제 데모에서도 <strong>2D/3D 전환과 3D 시점·벽 표시·일조 조절 컨트롤</strong> 이 나타나는 것을 확인했다. <a href="https://github.com/wy51ai/floorplan-3d#%E5%8A%9F%E8%83%BD">README 기능 목록</a>, <a href="https://wy51ai.github.io/floorplan-3d/">온라인 데모</a></p>
+<pre class="mermaid">flowchart TD
+    A["2D 배치·측정·벽 편집"] --> B["공유 설계 상태 갱신"]
+    B --> C["3D 장면 재구성"]
+    C --> D["조감·상부·실내 이동"]
+    D --> E["3D에서 가구 선택·이동"]
+    E --> B
+    B --> F["면적·바닥재 견적 표시"]
+    classDef inputTone fill:#c5dcef,stroke:#7197b6,color:#333
+    classDef stateTone fill:#e0c8ef,stroke:#a37bb8,color:#333
+    classDef renderTone fill:#fde8c0,stroke:#c9a45e,color:#333
+    classDef interactTone fill:#ffc8c4,stroke:#c98780,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#75ad8d,color:#333
+    class A inputTone
+    class B stateTone
+    class C,D renderTone
+    class E interactTone
+    class F outputTone</pre><p>방 면적과 재료별 바닥 면적을 계산하고, 바닥재 가격에는 코드상 <strong>5% 손실분을 더한 추정식</strong> 을 적용한다. PNG 이미지와 설계안 JSON을 내보낼 수 있고, 설계안은 브라우저에도 자동 저장된다. 비용 표시는 입력된 재료 단가에 따른 예시 견적으로 이해해야 한다. 실제 시공비나 법적·구조적 적합성을 검증하는 시스템이라고 볼 근거는 없다. <a href="https://github.com/wy51ai/floorplan-3d#%E5%8A%9F%E8%83%BD">README의 통계·저장 기능</a>, <a href="https://github.com/wy51ai/floorplan-3d/blob/master/index.html">HTML 소스</a></p>
+<h2 id="ipad-적응의-의미와-이미지-자동-변환의-경계">iPad 적응의 의미와 이미지 자동 변환의 경계</h2>
+<p>작성자는 아이가 마우스로 조작하기 어렵다는 점을 발견해 iPad 화면을 보완했다고 말한다. 실제 소스에는 좁은 화면에서 사이드 패널을 바꾸는 CSS 분기, 포인터 이벤트, 3D 이동용 가상 조이스틱 코드가 있다. README도 터치 기기에서 가상 조이스틱을 사용한다고 설명한다. 다만 이는 <strong>터치 대응 코드가 존재한다</strong> 는 확인이다. 기기별 성능, Apple Pencil 동작, 모든 iPad 화면 방향에서의 편집 편의성까지 보장하는 검증 결과는 아니다. <a href="https://x.com/akokoi1/status/2104771886236553568">원본 게시물</a>, <a href="https://github.com/wy51ai/floorplan-3d#%E5%8A%9F%E8%83%BD">README의 3D 설명</a>, <a href="https://github.com/wy51ai/floorplan-3d/blob/master/index.html">HTML 소스</a></p>
+<p>앞선 게시물에서 작성자는 평면도 이미지 한 장을 제공하고 모델의 도움으로 프로젝트를 만들었다고 설명한다. 그러나 현재 HTML의 파일 입력은 <code>.json</code> 설계안만 받으며, 기본 방·벽 좌표는 코드에 직접 정의돼 있다. 따라서 <strong>AI를 이용해 앱을 제작한 과정</strong> 과 <strong>앱 자체에 내장된 이미지 인식 기능</strong> 을 혼동하면 안 된다. 사용자가 다른 평면도를 적용하려면 현재 안내대로 <code>ROOMS</code>·<code>WALLS</code> 등 데이터를 수정하거나 별도 변환 기능을 개발해야 한다. <a href="https://x.com/akokoi1/status/2104520072014508316">앞선 게시물</a>, <a href="https://github.com/wy51ai/floorplan-3d#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%88%B7%E5%9E%8B">README의 사용자 정의 방법</a>, <a href="https://github.com/wy51ai/floorplan-3d/blob/master/index.html">HTML 소스</a></p>
+<pre class="mermaid">flowchart TD
+    A["작성자의 제작 입력<br>원본 평면도 이미지"] --> B["제작 과정에서 좌표·구조 구현"]
+    B --> C["HTML 안의 고정 평면 데이터"]
+    C --> D["사용자의 2D·3D 편집"]
+    D --> E["설계안 JSON 저장·가져오기"]
+    classDef sourceTone fill:#c5dcef,stroke:#7197b6,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#a37bb8,color:#333
+    classDef dataTone fill:#fde8c0,stroke:#c9a45e,color:#333
+    classDef actionTone fill:#ffc8c4,stroke:#c98780,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#75ad8d,color:#333
+    class A sourceTone
+    class B processTone
+    class C dataTone
+    class D actionTone
+    class E resultTone</pre><h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<p>가볍게 살펴보려면 <a href="https://wy51ai.github.io/floorplan-3d/">온라인 데모</a>에서 2D 가구 배치, 3D 전환, 조감·실내 시점, JSON 내보내기를 순서대로 시험하면 된다. 자신의 평면도로 바꿀 계획이라면 먼저 실제 치수와 방 다각형·벽 위치를 준비하고, <code>index.html</code>의 기본 데이터 구조를 이해해야 한다. 코드를 한 파일로 유지하는 선택은 배포가 단순한 대신, 좌표 데이터·UI·렌더링 로직이 함께 커져 수정과 테스트가 어려워질 수 있다. 마지막 문장은 현재 구조에서의 유지보수상 <strong>추론</strong> 이다. <a href="https://github.com/wy51ai/floorplan-3d">README의 실행·사용자 정의 안내</a>, <a href="https://github.com/wy51ai/floorplan-3d/blob/master/index.html">HTML 소스</a></p>
+<p>재사용 전에는 라이선스도 확인해야 한다. 2026년 9월 30일 확인한 저장소에는 별도 <code>LICENSE</code> 파일이 보이지 않고 GitHub API에도 감지된 라이선스가 없다. 작성자가 X에서 “공개했다”고 한 사실만으로 자유로운 수정·재배포 허가가 명시된 것은 아니다. GitHub 문서는 공개 저장소라도 라이선스가 없으면 기본 저작권 규칙이 적용된다고 안내한다. 코드 일부를 제품에 가져가려면 권리 조건을 먼저 확인하는 편이 안전하다. <a href="https://github.com/wy51ai/floorplan-3d">저장소 파일 목록</a>, <a href="https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository">GitHub 라이선스 문서</a></p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>Floorplan 3D는 SVG 2D 편집과 Three.js 3D 시각화를 단일 HTML 앱에 담았다. 3D 모듈은 CDN에서 불러온다. <a href="https://github.com/wy51ai/floorplan-3d">README</a></li>
+<li>가구 배치·측정·벽 편집·바닥재 견적·브라우저 저장·JSON 교환을 제공한다. 데모에서는 2D에서 3D로의 화면 전환을 확인했다. <a href="https://github.com/wy51ai/floorplan-3d">README</a>, <a href="https://wy51ai.github.io/floorplan-3d/">온라인 데모</a></li>
+<li>작성자의 “이미지 한 장으로 제작” 경험을 앱의 이미지 자동 변환 기능으로 읽으면 안 된다. 현재 파일 입력은 설계안 JSON용이며, 기본 평면 좌표는 코드에 있다. <a href="https://x.com/akokoi1/status/2104520072014508316">이전 게시물</a>, <a href="https://github.com/wy51ai/floorplan-3d/blob/master/index.html">HTML 소스</a></li>
+<li>터치 대응은 구현돼 있지만 iPad 실기기 품질은 별도 확인이 필요하며, 코드 재사용 전 라이선스 조건을 확인해야 한다. <a href="https://x.com/akokoi1/status/2104771886236553568">원본 게시물</a>, <a href="https://github.com/wy51ai/floorplan-3d">저장소</a></li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>이 프로젝트는 한 장의 HTML로도 <strong>편집 상태를 중심에 둔 2D·3D 인테리어 시제품</strong> 을 만들 수 있음을 보여준다. 좋은 출발점은 데모를 직접 조작해 보고, 내 평면도의 좌표·치수와 사용 권한을 확인한 뒤 필요한 기능만 참고하는 것이다. 시각화와 비용 추정은 설계 탐색에 유용할 수 있지만, 실제 시공 도면이나 견적의 검증을 대신하지는 않는다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 09월 30일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/web">Web</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-29-ai-frontend-design-references-six-tools/" rel="prev">
+        <span>AI로 만든 웹사이트의 어색함 줄이기: 디자인 참고 자료 6곳의 쓰임새</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#한-파일이지만-2d와-3d는-같은-설계-데이터를-읽는다">한 파일이지만 2D와 3D는 같은 설계 데이터를 읽는다</a></li>
+    <li><a href="#편집-기능은-배치측정재료시점까지-이어진다">편집 기능은 배치·측정·재료·시점까지 이어진다</a></li>
+    <li><a href="#ipad-적응의-의미와-이미지-자동-변환의-경계">iPad 적응의 의미와 이미지 자동 변환의 경계</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/javascript/" class="badge badge-secondary">Javascript</a>
+    <a href="/tags/ai/" class="badge badge-secondary">Ai</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
