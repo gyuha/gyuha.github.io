@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Market Research Cockpit: 시장 데이터·AI 가격·MCP를 묶은 셀프호스팅 대시보드'" />
+  <title>Market Research Cockpit: 시장 데이터·AI 가격·MCP를 묶은 셀프호스팅 대시보드  | 신규하 블로그</title>
+  <meta property="og:title" content="Market Research Cockpit: 시장 데이터·AI 가격·MCP를 묶은 셀프호스팅 대시보드" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-09-30"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/09/2026-09-30-market-research-cockpit-self-hosted-dashboard/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="data-engineering" />
+  
+  <meta property="og:tags" content="mcp" />
+  
+  <meta property="og:tags" content="ai" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/09/2026-09-30-market-research-cockpit-self-hosted-dashboard/">
+          <h1>
+            Market Research Cockpit: 시장 데이터·AI 가격·MCP를 묶은 셀프호스팅 대시보드
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/09/2026-09-30-market-research-cockpit-self-hosted-dashboard/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p><a href="https://github.com/theBigGavin/marketingdashboard">theBigGavin/marketingdashboard</a>는 이름과 달리 광고 성과를 집계하는 마케팅 분석기가 아니다. README의 제품명은 <strong>Market Research Cockpit(mrd)</strong> 으로, 중국·홍콩·미국 시장 지수와 원자재, 미국 국채 수익률, 섹터 흐름, 뉴스, 산업 밸류체인, AI 모델 사용·가격 지표를 한 화면 계열에 묶은 금융·산업 연구용 대시보드다. 이 글은 기능 목록을 나열하는 데 그치지 않고, <strong>외부 데이터 → Node 프록시·캐시 → React 화면·MCP</strong> 흐름과 운용상 주의점을 살펴본다. <a href="https://github.com/theBigGavin/marketingdashboard">공식 README</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://github.com/theBigGavin/marketingdashboard">원본 GitHub 저장소: theBigGavin/marketingdashboard</a></li>
+<li><a href="https://github.com/theBigGavin/marketingdashboard/blob/main/README.md">영문 README</a></li>
+<li><a href="https://github.com/theBigGavin/marketingdashboard/blob/main/src/lib/market.ts">통합 시세 허브 코드</a></li>
+<li><a href="https://github.com/theBigGavin/marketingdashboard/blob/main/server/index.cjs">Node 서버 코드</a></li>
+<li><a href="https://github.com/theBigGavin/marketingdashboard/blob/main/server/mcp-server.cjs">MCP 서버 코드</a></li>
+<li><a href="https://mrd.hermes.cc.cd/">공개 데모</a></li>
+</ul>
+<p>2026년 9월 30일 기준 README를 HTTP로 확인하고(<code>scrapling-get</code>), 주요 구조는 공개 소스 파일과 대조했다. 이 글을 위해 서비스를 직접 배포하거나 각 시세의 정확도·지연을 측정하지는 않았다. README가 말하는 “실시간”은 <strong>시장 원천 데이터의 정확성 보증</strong> 이 아니라 대시보드의 반복 갱신과 데이터 집계 방식을 설명하는 표현으로 읽어야 한다. <a href="https://github.com/theBigGavin/marketingdashboard#%EF%B8%8F-disclaimer">README의 면책 조항</a></p>
+<h2 id="한-화면의-목적-시세-맥락-산업-연결을-같이-보기">한 화면의 목적: 시세, 맥락, 산업 연결을 같이 보기</h2>
+<p>기본 화면은 상하이·선전, 항셍, 다우·나스닥·S&amp;P 500 등 지수와 환율·변동성 지표를 나란히 놓고, 금·은·구리·원유·비트코인, 미국 2년·10년물 국채 수익률과 장단기 스프레드까지 확인하도록 구성됐다. 섹터 순위에서 구성 종목과 자금 흐름으로 들어가거나, 반도체·AI 컴퓨팅·전기차·로봇 등 산업 체인에 연결된 종목을 살펴보는 흐름도 README가 제시한다. 이 기능들은 <strong>투자 결정을 자동으로 내리는 엔진</strong> 이 아니라 여러 공개 자료를 조사 화면에 모으는 기능이다. <a href="https://github.com/theBigGavin/marketingdashboard#-features">README 기능 목록</a></p>
+<pre class="mermaid">flowchart TD
+    A["시장 지수·환율·원자재"] --> D["시장 연구 화면"]
+    B["섹터·종목·자금 흐름"] --> D
+    C["국채·뉴스·산업 체인"] --> D
+    D --> E["관심 섹터·종목 탐색"]
+    E --> F["원천 데이터와 시점 재확인"]
+    classDef marketTone fill:#c5dcef,stroke:#7197b6,color:#333
+    classDef contextTone fill:#e0c8ef,stroke:#a37bb8,color:#333
+    classDef screenTone fill:#fde8c0,stroke:#c9a45e,color:#333
+    classDef actionTone fill:#c0ecd3,stroke:#75ad8d,color:#333
+    class A marketTone
+    class B,C contextTone
+    class D screenTone
+    class E,F actionTone</pre><p>기본 시황 외에 <code>/fin</code>은 실적 발표 일정·예고·기업별 추세, <code>/goods</code>는 상품 선물·현물·베이시스, <code>/ai</code>는 AI 사업자 사용량과 모델 가격을 별도 화면으로 보여 준다. 따라서 “한 화면”은 모든 정보를 한 장에 무한히 밀어 넣는다는 뜻보다는, <strong>각 연구 과제에 필요한 패널을 동일 제품 안에서 빠르게 전환</strong> 하는 설계에 가깝다. 이 해석은 README의 화면 구성에서 도출한 것이다. <a href="https://github.com/theBigGavin/marketingdashboard#-project-structure">README의 기능과 프로젝트 구조</a></p>
+<h2 id="데이터-파이프라인-빠른-화면-뒤에-프록시와-여러-캐시가-있다">데이터 파이프라인: 빠른 화면 뒤에 프록시와 여러 캐시가 있다</h2>
+<p>프런트엔드는 React 19·Vite 7·TypeScript로 만들고, 백엔드는 프레임워크 없는 Node.js <code>http</code> 서버를 사용한다. 서버가 Tencent·Sina·Eastmoney 등 외부 시세·뉴스 제공처와 AI 지표 제공처를 집계하고 <code>/api/*</code>로 프런트엔드에 전달한다. 서버는 엔드포인트별 TTL 메모리 캐시와 동시 요청 합치기, 실패 시 백오프를 적용한다. README는 시세에 짧은 캐시를, 일부 목록성 데이터에는 더 긴 캐시를 둔다고 설명한다. <strong>브라우저 화면의 갱신 간격과 실제 거래소 데이터의 생성 시점은 같은 개념이 아니다.</strong> <a href="https://github.com/theBigGavin/marketingdashboard#%EF%B8%8F-architecture">README 아키텍처</a>, <a href="https://github.com/theBigGavin/marketingdashboard/blob/main/server/index.cjs">서버 코드</a></p>
+<pre class="mermaid">flowchart TD
+    A["외부 시세·뉴스·AI 데이터 제공처"] --> B["Node 데이터 프록시"]
+    B --> C["TTL 캐시·동시 요청 합치기"]
+    C --> D["/api 응답"]
+    D --> E["React 대시보드"]
+    E --> F["통합 시세 허브"]
+    F --> G["여러 패널에 같은 시세 스냅샷 전달"]
+    C --> H["실패 시 백오프·관측 지표"]
+    classDef sourceTone fill:#c5dcef,stroke:#7197b6,color:#333
+    classDef serverTone fill:#e0c8ef,stroke:#a37bb8,color:#333
+    classDef cacheTone fill:#fde8c0,stroke:#c9a45e,color:#333
+    classDef clientTone fill:#c0ecd3,stroke:#75ad8d,color:#333
+    classDef riskTone fill:#ffc8c4,stroke:#c98780,color:#333
+    class A sourceTone
+    class B,D serverTone
+    class C cacheTone
+    class E,F,G clientTone
+    class H riskTone</pre><p>특히 <code>src/lib/market.ts</code>의 통합 시세 허브는 여러 패널이 같은 종목을 각각 요청하는 대신, 묶어 가져온 스냅샷을 배포한다. 일반 화면은 5초, TV 모드는 10초 폴링 간격으로 정의돼 있다. 서버 쪽도 종목별 캐시와 진행 중 요청 공유로 상위 제공처 호출을 줄인다. 이는 <strong>화면마다 서로 다른 시점의 같은 종목 가격이 보이는 문제를 줄이려는 구조</strong> 다. 서버는 별도 DB 없이 메모리 캐시를 사용하지만, 일부 현물·AI 관련 이력은 로컬 파일에 누적하므로 “모든 데이터가 휘발된다”는 뜻은 아니다. <a href="https://github.com/theBigGavin/marketingdashboard#%EF%B8%8F-architecture">README의 시세 허브·캐시 설명</a>, <a href="https://github.com/theBigGavin/marketingdashboard/blob/main/src/lib/market.ts">시세 허브 코드</a></p>
+<h2 id="ai-화면은-개인-사용량-계기판이-아니라-시장-지표다">AI 화면은 개인 사용량 계기판이 아니라 시장 지표다</h2>
+<p>AI 관련 패널은 OpenRouter의 <strong>사업자별 일일 순위 데이터</strong> 로 토큰 사용 추세를 비교하고, Artificial Analysis의 모델 가격·지능 지표와 TrakToken TTSI의 가격 경쟁 관련 데이터를 표시한다. 즉 내 OpenRouter 계정의 청구서나 개인 토큰 소비를 추적하는 화면이라고 설명하면 부정확하다. README 기준 일부 장기 이력은 로컬 <code>ttsi.csv</code> 파일을 추가해야 넓게 볼 수 있고, 파일이 없으면 RSS의 제한된 최근 구간으로 폴백한다. 선택적 API 키가 필요한 패널도 있으므로, 데모에서 보이는 모든 AI 데이터가 키 없는 셀프호스팅 환경에서도 동일하게 나온다고 가정해서는 안 된다. <a href="https://github.com/theBigGavin/marketingdashboard#-features">README의 AI 기능과 프로덕션 설정</a>, <a href="https://github.com/theBigGavin/marketingdashboard#-quick-start">README의 실행 안내</a></p>
+<pre class="mermaid">flowchart TD
+    A["OpenRouter 일일 순위"] --> D["AI 사용 추세"]
+    B["Artificial Analysis 모델 지표"] --> E["모델 가격·가치 비교"]
+    C["TrakToken 이력·RSS"] --> F["가격 경쟁 추세"]
+    D --> G["AI 연구 화면"]
+    E --> G
+    F --> G
+    classDef sourceTone fill:#c5dcef,stroke:#7197b6,color:#333
+    classDef analysisTone fill:#e0c8ef,stroke:#a37bb8,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#75ad8d,color:#333
+    class A,B,C sourceTone
+    class D,E,F analysisTone
+    class G resultTone</pre><h2 id="mcp는-데이터를-읽는-별도-입구다">MCP는 데이터를 읽는 별도 입구다</h2>
+<p>같은 Node 프로세스에는 <code>/mcp</code> 엔드포인트도 들어 있다. README와 <code>server/mcp-server.cjs</code>에서 확인되는 공개 도구는 <code>get_quotes</code>, <code>get_boards</code>, <code>get_futures</code>, <code>get_money_flow</code>, <code>get_news</code> 다섯 가지다. 각각 시세, 섹터, 선물·상품, 자금 흐름, 뉴스를 조회한다. 이 도구 목록에는 주문 실행이나 포트폴리오 매매 기능이 없다. AI 에이전트가 화면을 스크래핑하지 않고 같은 서버의 캐시된 시장 데이터를 질의할 수 있다는 점이 구조적 특징이다. 다만 에이전트가 받은 시세도 데이터 원천의 지연·오류 가능성을 그대로 가진다. <a href="https://github.com/theBigGavin/marketingdashboard#-mcp-server-phase-15">README의 MCP 설명</a>, <a href="https://github.com/theBigGavin/marketingdashboard/blob/main/server/mcp-server.cjs">MCP 서버 코드</a></p>
+<pre class="mermaid">flowchart TD
+    A["외부 데이터 제공처"] --> B["Node 프록시·공유 캐시"]
+    B --> C["/api 화면 응답"]
+    B --> D["/mcp 조회 도구"]
+    C --> E["사람이 보는 대시보드"]
+    D --> F["에이전트의 시세·뉴스 질의"]
+    classDef sourceTone fill:#c5dcef,stroke:#7197b6,color:#333
+    classDef cacheTone fill:#fde8c0,stroke:#c9a45e,color:#333
+    classDef endpointTone fill:#e0c8ef,stroke:#a37bb8,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#75ad8d,color:#333
+    class A sourceTone
+    class B cacheTone
+    class C,D endpointTone
+    class E,F resultTone</pre><h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<p>개발 환경은 Node.js 18 이상과 일부 프록시 경로에 필요한 <code>curl</code>을 전제로 한다. README의 기본 절차는 <code>npm install</code> 뒤 <code>npm run dev</code>, 프로덕션은 <code>npm run build</code> 뒤 <code>npm start</code>다. 프로덕션에서는 한 Node 프로세스가 API와 빌드된 프런트엔드를 함께 제공하며 Docker 실행 예시도 있다. 공개 데모는 별도 로그인과 키 없이 열 수 있다고 README는 설명하지만, 관리형 호스팅 상품은 아직 준비 중이며 가격·출시일이 없다. 셀프호스팅 코드는 MIT 라이선스다. 아래 명령은 문서의 사용법을 요약한 <strong>미실행 예시</strong> 다. <a href="https://github.com/theBigGavin/marketingdashboard#-quick-start">README의 실행·호스팅 안내</a>, <a href="https://github.com/theBigGavin/marketingdashboard/blob/main/LICENSE">MIT 라이선스</a></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>npm install
+</span></span><span style="display:flex;"><span>npm run dev
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># 프로덕션 빌드·실행</span>
+</span></span><span style="display:flex;"><span>npm run build
+</span></span><span style="display:flex;"><span>npm start
+</span></span></code></pre></div><p>PWA 설치 외에 macOS WKWebView 셸, Android TV WebView 앱, iOS Scripting 스크립트도 제공한다. 이들은 별도의 시장 데이터 엔진이라기보다 같은 웹 화면을 기기별 조작 방식에 맞게 감싼 배포 형태다. 예를 들어 TV 모드는 리모컨 방향키 이동과 패널 확대, 느린 GPU를 고려한 렌더링·폴링 조정을 설명한다. 화면이 여러 기기에서 열린다고 해서 원천 데이터의 실시간성이나 시세 사용 권한 문제가 사라지지는 않는다. <a href="https://github.com/theBigGavin/marketingdashboard#-android-tv-app">README의 기기별 실행 안내</a></p>
+<p>실무에서 참고한다면 먼저 <strong>데이터 제공처의 지연·안정성, 키가 필요한 AI 패널, 캐시 갱신 기준, 장애 시 오래된 값 표시</strong> 를 구분해 점검하는 편이 좋다. 투자 판단에 쓰는 경우에는 거래소·공식 공시 등 원천 자료로 시간을 다시 확인해야 한다. 저장소도 공개 웹 데이터는 지연되거나 부정확할 수 있으며 투자 조언이 아니라고 명시한다. 이 글 역시 도구의 구조를 소개하는 글이지 종목·거래 추천이 아니다. <a href="https://github.com/theBigGavin/marketingdashboard">README 아키텍처·면책 조항</a></p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li><code>marketingdashboard</code>의 실제 제품은 광고 분석기가 아니라 시장·산업 연구용 <strong>Market Research Cockpit</strong> 이다. <a href="https://github.com/theBigGavin/marketingdashboard">README</a></li>
+<li>Node 프록시가 외부 자료를 집계·캐시하고 React 화면과 다섯 개의 공개 MCP 조회 도구에 제공한다. <a href="https://github.com/theBigGavin/marketingdashboard#%EF%B8%8F-architecture">README</a>, <a href="https://github.com/theBigGavin/marketingdashboard/blob/main/server/mcp-server.cjs">MCP 코드</a></li>
+<li>AI 화면은 사업자별 토큰 사용 추세·모델 가격 경쟁 지표이며, 개인 계정의 사용량 내역과는 다르다. 일부 데이터에는 키나 별도 이력 파일이 필요하다. <a href="https://github.com/theBigGavin/marketingdashboard#-features">README</a></li>
+<li>화면이 자주 갱신돼도 외부 공개 데이터의 지연·오류 가능성은 남는다. 연구 보조 도구로 사용하고 중요한 숫자는 원천 자료로 교차 확인해야 한다. <a href="https://github.com/theBigGavin/marketingdashboard#%EF%B8%8F-disclaimer">README 면책 조항</a></li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>이 프로젝트의 흥미로운 점은 많은 패널을 그렸다는 사실보다, <strong>시장 데이터의 수집·캐시를 한곳에 모아 사람의 화면과 에이전트의 MCP 질의에 재사용</strong> 한다는 구조다. 반면 외부 공개 엔드포인트에 기대는 제품인 만큼 “5초마다 바뀌는 화면”을 “검증된 초실시간 시세”로 받아들이면 안 된다. 기능을 평가할 때는 보기 좋은 한 화면뿐 아니라 데이터 출처와 갱신·장애 동작을 함께 확인해야 한다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 09월 30일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/data">Data</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/09/2026-09-30-understand-anything-graphs-that-teach-codebase-update/" rel="prev">
+        <span>Understand Anything 다시 보기: 코드를 가르치는 그래프와 팀 공유 워크플로</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#한-화면의-목적-시세-맥락-산업-연결을-같이-보기">한 화면의 목적: 시세, 맥락, 산업 연결을 같이 보기</a></li>
+    <li><a href="#데이터-파이프라인-빠른-화면-뒤에-프록시와-여러-캐시가-있다">데이터 파이프라인: 빠른 화면 뒤에 프록시와 여러 캐시가 있다</a></li>
+    <li><a href="#ai-화면은-개인-사용량-계기판이-아니라-시장-지표다">AI 화면은 개인 사용량 계기판이 아니라 시장 지표다</a></li>
+    <li><a href="#mcp는-데이터를-읽는-별도-입구다">MCP는 데이터를 읽는 별도 입구다</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/data-engineering/" class="badge badge-secondary">Data-Engineering</a>
+    <a href="/tags/mcp/" class="badge badge-secondary">Mcp</a>
+    <a href="/tags/ai/" class="badge badge-secondary">Ai</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
