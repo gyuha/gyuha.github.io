@@ -1,0 +1,123 @@
+---
+title: "AI 성우 블라인드 테스트 읽기: Eleven v4·Gemini 3.8·VoiceStudio의 차이"
+date: 2026-10-03T00:00:00+09:00
+draft: false
+categories:
+  - AI
+tags:
+  - ai
+  - gemini
+  - testing
+description: "2분짜리 AI 음성 비교 쇼츠의 A/B/C 정체와 평가 설계를 확인하고, Eleven v4·Gemini 3.8 TTS·VoiceStudio의 기능, 가격 예시, 모델 라이선스를 공식 자료와 대조한다."
+---
+
+[Solostack의 쇼츠](https://youtube.com/shorts/Lnmi6Dfdf-U?si=0D4myGXTNdcAvTb_)는 같은 한국어 대사를 세 음성 도구에 읽힌 뒤 A·B·C의 정체를 공개한다. 일상 대화, 부산 사투리, 뉴스 앵커 톤을 차례로 들려주고 발표자는 C가 가장 자연스럽다고 평가한다. 재미있는 시연이지만, **한 번 합성한 소수의 문장으로 모델 전체의 우열을 확정할 수는 없다.** 이 글은 듣기 결과뿐 아니라 어떤 모델을 어떻게 비교했는지, 가격과 상업적 사용 조건을 어떻게 읽어야 하는지 살펴본다. [영상 00:00](https://youtu.be/Lnmi6Dfdf-U?t=0), [00:52](https://youtu.be/Lnmi6Dfdf-U?t=52)
+
+<!--more-->
+
+## Sources
+
+- [원본 YouTube 쇼츠](https://youtube.com/shorts/Lnmi6Dfdf-U?si=0D4myGXTNdcAvTb_)
+- [ElevenLabs: Eleven v4 공식 발표](https://elevenlabs.io/blog/eleven-v4)
+- [Google: Gemini 3.8 TTS 공식 발표](https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-8-text-to-speech/)
+- [Google Gemini API의 TTS 문서](https://ai.google.dev/gemini-api/docs/speech-generation), [가격 문서](https://ai.google.dev/gemini-api/docs/pricing)
+- [VoiceStudio 원본 저장소](https://github.com/debpalash/VoiceStudio), [라이선스 설명](https://github.com/debpalash/VoiceStudio/blob/main/LICENSE-NOTICE.md)
+
+YouTube MCP가 제공되지 않아 공개 영상의 한국어 자막 58개 구간과 YouTube 설명란을 HTTP로 추출하고, 각 제작사의 공식 발표·문서를 대조했다. **음성 자체를 독립적으로 블라인드 청취·채점하지는 않았으므로** 품질 평가는 발표자의 주관적 판단으로만 소개한다. 가격은 영상 설명란이 제시한 2026년 10월 시점의 환율·요금 조건이며 현재 모든 계정의 실제 청구액을 뜻하지 않는다.
+
+## 1. A·B·C는 무엇이고, 무엇을 들려줬나
+
+영상의 정체 공개에 따르면 **A는 로컬 VoiceStudio, B는 ElevenLabs의 Eleven v4, C는 Google Gemini 3.8 TTS** 다. 동일한 문장으로 일상 대화, 부산 사투리, 뉴스 앵커 상황을 비교한다. 영상 설명란에는 일상 대화 8줄과 사투리·앵커 각 1개, 엔진당 1회 합성, 별도 수정 없음이라고 적혀 있다. 발표자는 A의 일상 대화가 무뚝뚝하고 사투리가 어색하며, B는 자연스러운 편, C는 자신의 귀에 가장 자연스럽고 표현력이 좋았다고 평한다. 이것은 **한 사람의 소규모 청취 인상** 이다. [영상 00:11](https://youtu.be/Lnmi6Dfdf-U?t=11), [00:28](https://youtu.be/Lnmi6Dfdf-U?t=28), [00:39](https://youtu.be/Lnmi6Dfdf-U?t=39), [00:52](https://youtu.be/Lnmi6Dfdf-U?t=52)
+
+비교 조건에는 중요한 비대칭이 있다. 영상 설명란에 따르면 **C의 일상 대화는 Gemini 3.8 Flash-Lite**, 사투리와 앵커는 **Gemini 3.8 Flash** 로 만들었다. 한 도구의 여러 모델을 묶어 C로 들려준 셈이므로 "세 단일 모델의 완전히 동일한 조건 비교"라고 부르기는 어렵다. 또한 Gemini에는 연기 지시를 넣지 않았다고 밝히지만, 각 서비스의 프리셋 보이스 특성과 기본 설정도 결과에 영향을 줄 수 있다. [영상 01:37](https://youtu.be/Lnmi6Dfdf-U?t=97), [원본 쇼츠의 모델별 설명](https://youtube.com/shorts/Lnmi6Dfdf-U?si=0D4myGXTNdcAvTb_)
+
+```mermaid
+flowchart TD
+    A["같은 한국어 대사"] --> B["일상·사투리·앵커 장면"]
+    B --> C["A·B·C로 이름을 가린 음성"]
+    C --> D["청취 후 정체 공개"]
+    D --> E["주관적 자연스러움 평가"]
+    E --> F["모델·설정·반복 횟수 확인"]
+    classDef inputTone fill:#c5dcef,stroke:#7197b6,color:#333
+    classDef setupTone fill:#e0c8ef,stroke:#a37bb8,color:#333
+    classDef listenTone fill:#fde8c0,stroke:#c9a45e,color:#333
+    classDef checkTone fill:#c0ecd3,stroke:#75ad8d,color:#333
+    class A inputTone
+    class B,C setupTone
+    class D,E listenTone
+    class F checkTone
+```
+
+## 2. 세 도구의 기능은 왜 다른가
+
+[ElevenLabs의 공식 발표](https://elevenlabs.io/blog/eleven-v4)에 따르면 Eleven v4는 문장 안의 오디오 태그와 자연어 지시로 말투·감정·효과음을 조정하도록 설계됐다. 90개 이상의 언어와 짧은 음성 샘플을 이용한 즉석 복제 기능도 안내한다. 영상이 소개한 "10초 샘플"은 제품이 지원하는 **최소 수준의 사용 사례** 로 읽어야 하며, 누구의 목소리든 동의 없이 복제해도 된다는 허가가 아니다. "외부 평가 1위"도 쇼츠 자체의 실험 결과가 아니라 ElevenLabs가 특정 시점의 외부 순위를 인용한 **회사 발표** 다. [영상 01:18](https://youtu.be/Lnmi6Dfdf-U?t=78), [Eleven v4 공식 발표](https://elevenlabs.io/blog/eleven-v4)
+
+[Google의 발표](https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-8-text-to-speech/)는 Gemini 3.8 Flash TTS의 자연어 기반 음성 설계, 2,000개 이상의 음성 라이브러리, 30초 참조 음성을 이용한 복제 기능을 설명한다. Flash-Lite는 대량 처리·비용 효율에 중점을 둔 별도 모델이다. 음성 복제에는 권리와 동의 확인 절차가 있으며, Google은 Gemini 오디오 모델의 생성 음성에 SynthID 워터마크가 삽입된다고 밝힌다. 영상의 "2,000개 목소리"와 "워터마크"는 **제품 발표 내용** 이며 이 쇼츠가 별도로 검증한 수치·기술은 아니다. [영상 01:28](https://youtu.be/Lnmi6Dfdf-U?t=88), [Google 공식 발표](https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-8-text-to-speech/)
+
+[VoiceStudio](https://github.com/debpalash/VoiceStudio)는 기본 OmniVoice 엔진을 포함해 여러 음성 엔진을 선택할 수 있는 로컬 중심 앱이다. 음성 생성 외에 복제, 영상 더빙, 받아쓰기, 전사, 오디오북 제작을 제공하며 프로젝트 README는 646개 언어를 표방한다. 이는 **앱과 여러 엔진을 아우르는 지원 범위** 로 읽어야 한다. 쇼츠의 A 음성은 설명란에 따르면 기본 OmniVoice 모델로 만든 것이므로, 이 한 클립이 VoiceStudio가 지원하는 다른 엔진 전체의 품질을 대표하지 않는다. 로컬 실행도 "컴퓨터 자원을 쓰지 않는다"는 의미는 아니다. [영상 01:39](https://youtu.be/Lnmi6Dfdf-U?t=99), [VoiceStudio README](https://github.com/debpalash/VoiceStudio)
+
+```mermaid
+flowchart TD
+    A["음성 제작 목적"] --> B{"우선순위 선택"}
+    B -->|"연기 지시"| C["Eleven v4의 오디오 태그 검토"]
+    B -->|"목소리 설계"| D["Gemini Flash의 음성 설계 검토"]
+    B -->|"로컬 작업"| E["VoiceStudio의 엔진·장치 조건 확인"]
+    C --> F["한국어 샘플 직접 평가"]
+    D --> F
+    E --> F
+    classDef inputTone fill:#c5dcef,stroke:#7197b6,color:#333
+    classDef choiceTone fill:#e0c8ef,stroke:#a37bb8,color:#333
+    classDef optionTone fill:#fde8c0,stroke:#c9a45e,color:#333
+    classDef checkTone fill:#c0ecd3,stroke:#75ad8d,color:#333
+    class A inputTone
+    class B choiceTone
+    class C,D,E optionTone
+    class F checkTone
+```
+
+## 3. 영상의 가격은 ‘같은 길이의 견적’이지 보편적 단가가 아니다
+
+영상 설명란은 **1,320자·약 152초 분량 한 편** 을 기준으로 Eleven v4 약 140원($0.106), Gemini 약 60원($0.044), VoiceStudio 0원이라고 제시한다. 여기서 152초는 **비용 계산에 사용한 합성 음성 분량** 으로, 쇼츠 재생 길이 약 131초와 다르다. 영상은 2026년 10월 1일의 원·달러 환율을 적용하고 ElevenLabs의 기간 한정 할인과 Gemini의 연말까지의 프로모션도 따로 언급한다. 그러므로 금액을 영구적인 "분당 가격"으로 옮겨 적으면 안 된다. [영상 01:03](https://youtu.be/Lnmi6Dfdf-U?t=63), [영상 설명란](https://youtube.com/shorts/Lnmi6Dfdf-U?si=0D4myGXTNdcAvTb_)
+
+가격 비교에서도 C의 세 장면이 Flash-Lite와 Flash를 섞어 사용한 점을 기억해야 한다. Google의 [공식 가격 문서](https://ai.google.dev/gemini-api/docs/pricing)는 모델마다 입력·출력 단가와 무료 등급 조건을 따로 제시한다. ElevenLabs 역시 계정 플랜·크레딧·시점별 프로모션에 따라 실효 비용이 달라진다. 영상의 "무료로 하루 10회"는 발표자가 사용한 당시 계정·모델에 대한 설명으로 읽고, 자신의 계정에도 그대로 적용된다고 단정하지 않는다. [영상 01:15](https://youtu.be/Lnmi6Dfdf-U?t=75), [Google Gemini API 가격](https://ai.google.dev/gemini-api/docs/pricing), [ElevenLabs 가격 안내](https://elevenlabs.io/pricing)
+
+로컬 VoiceStudio의 "0원"은 클라우드 TTS 제공자에게 **해당 합성 요청의 API 사용료를 내지 않는다** 는 관점에서의 표현이다. 앱 설치, 모델 다운로드, CPU·GPU 사용, 전력·시간 비용이 사라지는 것은 아니다. 더 중요한 것은 **앱 사용 비용과 생성 음성의 사용 권리가 서로 다른 문제** 라는 점이다. [영상 01:07](https://youtu.be/Lnmi6Dfdf-U?t=67), [VoiceStudio README의 로컬 실행 설명](https://github.com/debpalash/VoiceStudio)
+
+## 4. VoiceStudio의 ‘비상업’은 앱 전체가 아니라 기본 모델 가중치의 조건
+
+쇼츠는 VoiceStudio가 비상업 라이선스라 비교용 짧은 클립만 썼다고 말한다. 하지만 프로젝트의 [라이선스 설명](https://github.com/debpalash/VoiceStudio/blob/main/LICENSE-NOTICE.md)을 보면 구분이 더 정확하다. **VoiceStudio 애플리케이션 자체는 AGPL-3.0으로 상업적 사용도 가능** 하다. 반면 영상에서 사용한 기본 OmniVoice의 **사전학습 가중치는 CC-BY-NC** 로 표기되고, 오디오 토크나이저에도 별도 조건이 있다. 따라서 "앱 전체가 비상업용"이라는 말도, "앱이 오픈소스니 어떤 모델의 출력이든 상업적으로 자유롭다"는 말도 맞지 않는다. 실제 상업 프로젝트라면 선택한 엔진·모델 가중치·토크나이저의 최신 조건을 각각 확인해야 한다. [영상 01:10](https://youtu.be/Lnmi6Dfdf-U?t=70), [VoiceStudio 라이선스 설명](https://github.com/debpalash/VoiceStudio/blob/main/LICENSE-NOTICE.md)
+
+음성 복제는 라이선스와 별개로 **원 화자의 동의** 문제도 있다. Google은 복제 기능에 동의 확인을 포함한다고 설명하고, VoiceStudio 역시 README에서 허가받은 목소리만 복제하라고 안내한다. 짧은 샘플로 가능한 기술이라는 설명을 무단 복제가 허용된다는 뜻으로 해석해서는 안 된다. [Google 공식 발표의 동의 확인](https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-8-text-to-speech/), [VoiceStudio README의 responsible use](https://github.com/debpalash/VoiceStudio#license--responsible-use)
+
+```mermaid
+flowchart TD
+    A["로컬 음성 도구 선택"] --> B["앱 라이선스 확인"]
+    B --> C["사용할 모델 가중치 확인"]
+    C --> D["토크나이저·추가 자산 조건 확인"]
+    D --> E["화자 동의·사용 목적 확인"]
+    E --> F["합성·배포 결정"]
+    classDef startTone fill:#c5dcef,stroke:#7197b6,color:#333
+    classDef appTone fill:#e0c8ef,stroke:#a37bb8,color:#333
+    classDef rightsTone fill:#fde8c0,stroke:#c9a45e,color:#333
+    classDef doneTone fill:#c0ecd3,stroke:#75ad8d,color:#333
+    class A startTone
+    class B appTone
+    class C,D,E rightsTone
+    class F doneTone
+```
+
+## 실전 적용 포인트
+
+1. **같은 대본뿐 아니라 같은 평가 조건을 만든다.** 단일 생성 결과 대신 여러 번 합성하고, 모델 버전·보이스·감정 지시·출력 길이·후처리를 기록해야 비교가 재현된다. 이 쇼츠는 엔진당 한 번만 합성했고 Gemini C에 두 모델을 사용했다고 밝힌다. [영상 00:11](https://youtu.be/Lnmi6Dfdf-U?t=11), [영상 설명란](https://youtube.com/shorts/Lnmi6Dfdf-U?si=0D4myGXTNdcAvTb_)
+2. **한국어 사용 사례를 따로 평가한다.** 일상 대화, 사투리, 앵커 톤은 발음·억양·리듬에서 요구가 다르다. 영상의 짧은 세 장면은 아이디어를 주지만 장문, 여러 화자, 고유명사, 반복 생성의 안정성까지 증명하지는 않는다. [영상 00:14](https://youtu.be/Lnmi6Dfdf-U?t=14), [00:28](https://youtu.be/Lnmi6Dfdf-U?t=28), [00:39](https://youtu.be/Lnmi6Dfdf-U?t=39)
+3. **가격과 권리는 따로 계산한다.** 클라우드 요금은 모델·플랜·시점에 따라, 로컬 사용은 장비와 모델 사용 조건에 따라 달라진다. 복제 음성이라면 화자의 동의까지 확인한다. [영상 01:03](https://youtu.be/Lnmi6Dfdf-U?t=63), [VoiceStudio 라이선스 설명](https://github.com/debpalash/VoiceStudio/blob/main/LICENSE-NOTICE.md)
+
+## 핵심 요약
+
+- 쇼츠의 A는 VoiceStudio 기본 OmniVoice, B는 Eleven v4, C는 Gemini 3.8 TTS다. 발표자는 C를 선호하지만 이는 소수 문장·1회 생성에 대한 개인 평가다. [영상 00:52](https://youtu.be/Lnmi6Dfdf-U?t=52), [영상 설명란](https://youtube.com/shorts/Lnmi6Dfdf-U?si=0D4myGXTNdcAvTb_)
+- C에는 Flash-Lite와 Flash가 섞였고, 영상의 비용도 환율·프로모션·계정 조건이 반영된 사례다. [영상 01:03](https://youtu.be/Lnmi6Dfdf-U?t=63), [Google 가격 문서](https://ai.google.dev/gemini-api/docs/pricing)
+- VoiceStudio 앱은 AGPL-3.0이지만 기본 OmniVoice 가중치에는 CC-BY-NC 조건이 있으므로 상업적 재사용 여부를 모델 단위로 검토해야 한다. [VoiceStudio 라이선스 설명](https://github.com/debpalash/VoiceStudio/blob/main/LICENSE-NOTICE.md)
+
+## 결론
+
+이 쇼츠는 세 목소리를 빠르게 들어 보는 출발점으로 유용하다. 다만 **"가장 자연스럽다"는 청취 인상, "가장 싸다"는 특정 견적, "상업적으로 쓸 수 있다"는 권리 판단** 은 각각 다른 질문이다. 자신의 대본과 설정으로 반복 평가하고, 실제 요금과 모델별 사용 조건을 확인한 뒤 도구를 선택하는 편이 안전하다.

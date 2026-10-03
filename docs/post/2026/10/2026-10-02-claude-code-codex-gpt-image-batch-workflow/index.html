@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude Code에서 GPT 이미지 만들기: 도면 시각화와 병렬 생성 워크플로'" />
+  <title>Claude Code에서 GPT 이미지 만들기: 도면 시각화와 병렬 생성 워크플로  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude Code에서 GPT 이미지 만들기: 도면 시각화와 병렬 생성 워크플로" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-10-02"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/10/2026-10-02-claude-code-codex-gpt-image-batch-workflow/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="automation" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/10/2026-10-02-claude-code-codex-gpt-image-batch-workflow/">
+          <h1>
+            Claude Code에서 GPT 이미지 만들기: 도면 시각화와 병렬 생성 워크플로
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/10/2026-10-02-claude-code-codex-gpt-image-batch-workflow/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p><a href="https://youtu.be/MDO68K7ygUg?si=_u-UVh9YvvqNeMgH">레인 | AI 바이브코딩의 영상</a>은 발표·회의 자료에 쓸 이미지를 만드는 방법을 보여 준다. 흑백 특허 도면을 입체적인 인포그래픽으로 바꾸는 예시에서 출발해, ChatGPT 화면에서 한 장씩 수정하는 흐름과 터미널에서 여러 후보를 생성하는 흐름을 비교한다. 마지막에는 평소 쓰던 Claude Code 환경에서 Codex CLI를 연결해 이미지를 요청하는 개인 작업 사례를 시연한다. 핵심은 모델 이름보다 <strong>자료 수집→시각화 지시→후보 생성→검수·선택</strong> 의 제작 과정이다. <a href="https://youtu.be/MDO68K7ygUg?t=0">영상 00:00</a>, <a href="https://youtu.be/MDO68K7ygUg?t=232">03:52</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://youtu.be/MDO68K7ygUg?si=_u-UVh9YvvqNeMgH">원본 YouTube 영상</a></li>
+<li><a href="https://code.claude.com/docs/en/quickstart">영상 설명란의 Claude Code 설치 문서</a></li>
+<li><a href="https://code.claude.com/docs/en/mcp">Claude Code의 MCP 연결 공식 문서</a></li>
+<li><a href="https://developers.openai.com/api/docs/guides/image-generation">OpenAI 공식 이미지 생성 API 문서</a></li>
+<li><a href="https://developers.openai.com/cookbook/examples/codex/codex_mcp_agents_sdk/building_consistent_workflows_codex_cli_agents_sdk">OpenAI의 과거 Codex MCP 예제와 현재 지원 상태 안내</a></li>
+</ul>
+<p>영상의 한국어 자막 399개 구간과 YouTube 제목·설명란을 확인했다. 아래 시각적 결과에 대한 평가는 <strong>발표자의 시연과 설명</strong> 에 근거하며, 원본 특허의 도면과 생성 이미지가 기술적으로 일치하는지 별도 검증한 결과가 아니다. 영상 속 모델·연결 방식·요금은 촬영 시점과 개인 계정 설정의 사례이므로 현재 모든 계정에서 동일하게 동작한다고 가정하지 않는다.</p>
+<h2 id="1-한-장씩-생성하는-데스크톱-흐름의-병목">1. 한 장씩 생성하는 데스크톱 흐름의 병목</h2>
+<p>발표자는 흑백의 평면적인 특허 도면을 발표용 이미지로 바꾸고 싶어 ChatGPT 데스크톱 환경에서 &ldquo;이 페이지의 도면을 이미지 세 장으로 뽑아 달라&quot;고 요청했다. 영상에서는 이 작업에 약 8분 45초가 걸렸다고 말한다. 결과가 마음에 들지 않아 색상이나 상단 요소를 다시 지시하면 추가 대기 시간이 든다는 점을 문제로 꼽는다. <strong>8분 45초는 이 시연의 관찰값</strong> 이지 이미지 생성의 일반적인 소요 시간은 아니다. <a href="https://youtu.be/MDO68K7ygUg?t=129">영상 02:09</a>, <a href="https://youtu.be/MDO68K7ygUg?t=151">02:31</a>, <a href="https://youtu.be/MDO68K7ygUg?t=169">02:49</a></p>
+<p>영상은 여러 이미지 생성 제품을 언급하지만, 발표자가 GPT를 선택한 직접적인 이유는 자신이 원하는 도면 시각화 결과와 이미 사용 중인 구독 환경이다. 특정 모델이 모든 종류의 이미지에서 객관적으로 1위라는 근거를 영상 자체가 제시한 것은 아니다. 또한 &ldquo;Claude에서는 이런 화려한 이미지를 만들 수 없다&quot;는 표현은 발표자의 사용 환경에 관한 비교로 읽어야 한다. 연결된 도구나 계정 기능에 따라 실제 가능한 작업은 달라진다. <a href="https://youtu.be/MDO68K7ygUg?t=40">영상 00:40</a>, <a href="https://youtu.be/MDO68K7ygUg?t=69">01:09</a>, <a href="https://youtu.be/MDO68K7ygUg?t=98">01:38</a></p>
+<pre class="mermaid">flowchart TD
+    A["도면과 용도 전달"] --> B["이미지 생성 요청"]
+    B --> C["한 번의 결과 확인"]
+    C --> D{"발표 자료에 적합?"}
+    D -->|"아니요"| E["수정 지시 후 재생성"]
+    E --> C
+    D -->|"예"| F["자료에 배치"]
+    classDef inputTone fill:#c5dcef,stroke:#7197b6,color:#333
+    classDef workTone fill:#fde8c0,stroke:#c9a45e,color:#333
+    classDef choiceTone fill:#e0c8ef,stroke:#a37bb8,color:#333
+    classDef doneTone fill:#c0ecd3,stroke:#75ad8d,color:#333
+    class A inputTone
+    class B,C,E workTone
+    class D choiceTone
+    class F doneTone</pre><h2 id="2-터미널과-병렬-실행-기다리는-시간-대신-후보를-늘리다">2. 터미널과 병렬 실행: 기다리는 시간 대신 후보를 늘리다</h2>
+<p>발표자의 두 번째 접근은 터미널의 Claude Code 환경에서 같은 작업을 여러 요청으로 나누어 실행하는 것이다. 하나의 결과를 보고 마음에 들지 않으면 다시 요청하는 대신, 처음부터 <strong>여러 시각적 콘셉트의 후보를 생성하고 사람이 고른다</strong> 는 발상이다. 영상에서는 필요하면 여러 에이전트·작업을 동시에 띄워 수십 개 이상의 이미지를 만든다고 설명하고, 썸네일 자산도 여러 후보를 만든 뒤 조합해 쓴다고 말한다. 이는 작업 관리 방식의 변화이지, 이미지 한 장의 생성 비용이 저절로 줄어든다는 뜻은 아니다. <a href="https://youtu.be/MDO68K7ygUg?t=232">영상 03:52</a>, <a href="https://youtu.be/MDO68K7ygUg?t=249">04:09</a>, <a href="https://youtu.be/MDO68K7ygUg?t=770">12:50</a></p>
+<p>병렬 요청은 각 요청이 독립적으로 실행되고 서비스의 동시 실행 한도에 여유가 있을 때 <strong>전체 대기 시간</strong> 을 줄일 수 있다. 반면 요청 수가 늘면 총 사용량도 늘 수 있고, 제한에 걸리면 속도 이득이 줄어든다. 영상의 &ldquo;네 대를 동시에 돌린다&quot;는 설명은 개인 작업 예시다. OpenAI의 이미지 생성 API는 여러 결과를 요청하는 <code>n</code> 매개변수를 제공하지만, 이것과 Claude Code에서 여러 에이전트를 실행하는 것은 <strong>서로 다른 병렬화 계층</strong> 이다. 전자는 이미지 API 요청의 결과 개수이고, 후자는 여러 작업을 조정하는 워크플로다. <a href="https://youtu.be/MDO68K7ygUg?t=260">영상 04:20</a>, <a href="https://youtu.be/MDO68K7ygUg?t=271">04:31</a>, <a href="https://developers.openai.com/api/docs/guides/image-generation">OpenAI 이미지 생성 문서</a></p>
+<pre class="mermaid">flowchart TD
+    A["원본 도면·발표 목적"] --> B["콘셉트별 작업 분리"]
+    B --> C["클레이 스타일"]
+    B --> D["글래스 스타일"]
+    B --> E["아이소메트릭 스타일"]
+    C --> F["후보 비교·선택"]
+    D --> F
+    E --> F
+    F --> G["정확성 검수·최종 편집"]
+    classDef inputTone fill:#c5dcef,stroke:#7197b6,color:#333
+    classDef planTone fill:#e0c8ef,stroke:#a37bb8,color:#333
+    classDef optionTone fill:#fde8c0,stroke:#c9a45e,color:#333
+    classDef checkTone fill:#c0ecd3,stroke:#75ad8d,color:#333
+    class A inputTone
+    class B planTone
+    class C,D,E optionTone
+    class F,G checkTone</pre><h2 id="3-claude-code를-조정자로-codex를-이미지-작업-도구로">3. Claude Code를 조정자로, Codex를 이미지 작업 도구로</h2>
+<p>영상에서 발표자는 익숙한 Claude Code 환경의 맥락을 유지하면서 이미지를 만드는 역할을 Codex CLI에 맡기고 싶었다고 설명한다. 화면에서는 Claude Code에 Codex CLI 연결을 요청하고, MCP 서버 연결과 인증을 확인한 뒤 특허 페이지의 도면을 서로 다른 콘셉트로 만들어 달라고 지시한다. 이 사례의 구성은 <strong>Claude Code가 요청을 조정하고, 연결된 Codex 쪽 작업이 이미지를 생성하는 형태</strong> 로 이해하는 것이 안전하다. 단순히 두 제품을 설치하는 것만으로 두 모델의 대화 기록과 장기 기억이 자동으로 합쳐지는 것은 아니다. 실제로 도구에 전달되는 파일·대화 정보·권한은 연결 설정과 호출 방식에 달려 있다. <a href="https://youtu.be/MDO68K7ygUg?t=278">영상 04:38</a>, <a href="https://youtu.be/MDO68K7ygUg?t=310">05:10</a>, <a href="https://youtu.be/MDO68K7ygUg?t=439">07:19</a>, <a href="https://code.claude.com/docs/en/mcp">Claude Code MCP 문서</a></p>
+<p>영상은 Claude Code 설치와 Windows에서 Git Bash 사용을 안내한다. 현재 <a href="https://code.claude.com/docs/en/quickstart">Claude Code 공식 빠른 시작 문서</a>는 운영체제별 설치 방법과 인증을 설명하며, Windows의 Git for Windows는 Bash 도구 사용에 <strong>권장</strong> 되지만 설치하지 않으면 PowerShell을 사용할 수 있다고 적는다. 따라서 &ldquo;Windows에서는 Git Bash가 무조건 필수&quot;라는 일반화는 피해야 한다. 연결 전에는 Claude Code와 Codex의 인증, MCP 서버의 실행 가능 여부, 파일 접근 권한을 각각 확인해야 한다. <a href="https://youtu.be/MDO68K7ygUg?t=363">영상 06:03</a>, <a href="https://youtu.be/MDO68K7ygUg?t=409">06:49</a>, <a href="https://code.claude.com/docs/en/quickstart">Claude Code 빠른 시작</a></p>
+<p>또한 예전 OpenAI 예제에 등장하는 <code>codex mcp-server</code> 방식은 공식 페이지에서 <strong>보관된 예제·지원 종료된 서버 인터페이스</strong> 로 표시한다. 새 자동화를 그대로 복사해 구축하기보다 현재의 Codex SDK나 앱 서버 안내를 확인해야 한다. 반면 Claude Code의 MCP 연결 자체는 별도의 공식 문서가 있다. 영상의 시연이 가능하다는 사실과 그 연결 명령이 장기적으로 권장된다는 주장은 구분할 필요가 있다. <a href="https://developers.openai.com/cookbook/examples/codex/codex_mcp_agents_sdk/building_consistent_workflows_codex_cli_agents_sdk">OpenAI의 보관된 Codex MCP 예제</a>, <a href="https://code.claude.com/docs/en/mcp">Claude Code MCP 문서</a></p>
+<pre class="mermaid">flowchart TD
+    A["사용자: 도면 3개 콘셉트 요청"] --> B["Claude Code: 요청·자료 조정"]
+    B --> C["연결된 도구에 필요한 맥락 전달"]
+    C --> D["Codex 쪽 이미지 작업"]
+    D --> E["생성 파일을 Claude 환경에서 확인"]
+    E --> F["사람이 도면과 대조"]
+    classDef inputTone fill:#c5dcef,stroke:#7197b6,color:#333
+    classDef manageTone fill:#e0c8ef,stroke:#a37bb8,color:#333
+    classDef workTone fill:#fde8c0,stroke:#c9a45e,color:#333
+    classDef checkTone fill:#c0ecd3,stroke:#75ad8d,color:#333
+    class A inputTone
+    class B,C manageTone
+    class D,E workTone
+    class F checkTone</pre><h2 id="4-특허-도면-실습과-비용을-읽는-방법">4. 특허 도면 실습과 비용을 읽는 방법</h2>
+<p>실습에서 발표자는 Google Patents 페이지의 도면 링크를 전달하고 세 가지 다른 콘셉트로 시각화해 달라고 요청한다. 결과 예시로 레이어에 색을 입힌 공정도, 분리된 구조, 입체 조립 느낌의 이미지 등을 보여 준다. 이후 이미지에 쓰인 스타일을 역으로 설명해 달라고 묻고, 받은 긴 프롬프트를 다시 사용해 보는 과정도 소개한다. <strong>스타일 추출은 재현을 돕는 방법</strong> 이지만 같은 프롬프트가 같은 그림을 보장하지는 않는다. <a href="https://youtu.be/MDO68K7ygUg?t=477">영상 07:57</a>, <a href="https://youtu.be/MDO68K7ygUg?t=502">08:22</a>, <a href="https://youtu.be/MDO68K7ygUg?t=642">10:42</a>, <a href="https://youtu.be/MDO68K7ygUg?t=715">11:55</a></p>
+<p>특허·기술 도면에서는 보기 좋은 재구성보다 <strong>번호, 층 순서, 재료명, 두께 단위와 원본의 대응</strong> 이 중요하다. 발표자는 결과 이미지가 번호와 옹스트롬 단위의 두께까지 표현했다고 말하지만, 영상만으로 각 숫자가 원본과 일치하는지는 확인할 수 없다. 발표나 보고서에 쓰기 전에는 원본 문서의 도면 번호와 설명을 기준으로 사람이 검수해야 한다. 이것은 영상의 결과를 부정하는 것이 아니라, 시각화의 성공과 기술적 정확성을 다른 기준으로 평가하자는 뜻이다. <a href="https://youtu.be/MDO68K7ygUg?t=547">영상 09:07</a>, <a href="https://youtu.be/MDO68K7ygUg?t=557">09:17</a></p>
+<p>발표자는 자신의 작업 화면에서 약 33만 토큰 사용량과 API 비용으로 환산한 약 8달러를 언급하며, 당시에는 구독 환경에서 추가 청구가 없었다고 말한다. 이는 <strong>개인 세션의 추정·청구 경험</strong> 이다. 다른 사용자의 요금이나 무제한 사용을 보장하지 않는다. 직접 OpenAI 이미지 API를 호출한다면 이미지 입력·출력 토큰, 선택한 모델·품질·크기, 추가 모델 사용량에 따라 별도로 비용을 계산해야 한다. 현재 공식 문서는 API 이미지 생성에 별도 사용량과 가격 구조가 있음을 설명한다. <a href="https://youtu.be/MDO68K7ygUg?t=613">영상 10:13</a>, <a href="https://developers.openai.com/api/docs/guides/image-generation">OpenAI 이미지 생성 비용 설명</a></p>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<ol>
+<li><strong>원본과 목적을 함께 준다.</strong> &ldquo;예쁜 3D&quot;만 요청하지 말고 어떤 도면을 누구에게 설명할지, 보존해야 할 번호·라벨·층 순서를 명시한다. 영상은 특허 도면을 발표용으로 바꾸는 사례를 보여 준다. <a href="https://youtu.be/MDO68K7ygUg?t=134">영상 02:14</a>, <a href="https://youtu.be/MDO68K7ygUg?t=477">07:57</a></li>
+<li><strong>처음부터 소수의 다른 방향을 비교한다.</strong> 색만 바꾼 중복 이미지보다 구도와 표현 방식을 나눈 후보를 요청하고, 선택 후에 세부 수정을 한다. 발표자도 세 콘셉트와 썸네일 후보를 만든 뒤 고르는 방식을 사용한다. <a href="https://youtu.be/MDO68K7ygUg?t=702">영상 11:42</a>, <a href="https://youtu.be/MDO68K7ygUg?t=770">12:50</a></li>
+<li><strong>도구 연결은 현재 문서로 검증한다.</strong> Claude Code 설치·MCP 연결·Codex 인증·이미지 생성 경로를 각각 확인한다. 특히 영상 속 연결을 누구나 그대로 재현할 수 있는 공식 단일 명령으로 간주하지 않는다. <a href="https://code.claude.com/docs/en/quickstart">Claude Code 설치</a>, <a href="https://code.claude.com/docs/en/mcp">Claude Code MCP</a>, <a href="https://developers.openai.com/api/docs/guides/image-generation">OpenAI 이미지 생성</a></li>
+<li><strong>비용과 정확성을 마지막에 확인한다.</strong> 병렬 생성 수와 품질 설정을 제한하고, 선택한 이미지는 원본 수치·문구와 대조한다. 영상의 개인 비용 예시를 자신의 청구액으로 일반화하지 않는다. <a href="https://youtu.be/MDO68K7ygUg?t=613">영상 10:13</a>, <a href="https://developers.openai.com/api/docs/guides/image-generation">OpenAI 이미지 생성 문서</a></li>
+</ol>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>영상은 <strong>데스크톱에서 한 장씩 생성·수정하는 방식</strong> 에서 <strong>터미널에서 여러 후보를 만들고 선택하는 방식</strong> 으로 넘어가는 개인 워크플로를 보여 준다. <a href="https://youtu.be/MDO68K7ygUg?t=129">영상 02:09</a>, <a href="https://youtu.be/MDO68K7ygUg?t=232">03:52</a></li>
+<li>Claude Code–Codex 연결은 도구 호출과 맥락 전달을 구성한 사례이지, 두 서비스의 모든 기억이 자동 공유된다는 뜻은 아니다. <a href="https://youtu.be/MDO68K7ygUg?t=278">영상 04:38</a>, <a href="https://code.claude.com/docs/en/mcp">Claude Code MCP 문서</a></li>
+<li>이미지가 기술 도면처럼 보이더라도 번호·층 순서·단위는 원본과 대조해야 한다. 비용도 영상의 개인 사례와 현재 API 청구 구조를 구별해야 한다. <a href="https://youtu.be/MDO68K7ygUg?t=547">영상 09:07</a>, <a href="https://youtu.be/MDO68K7ygUg?t=613">10:13</a></li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>이 영상의 재현 가능한 아이디어는 특정 모델이 &ldquo;알아서 완벽한 3D 그림을 만든다&quot;는 약속이 아니다. <strong>기존 작업 맥락에서 자료를 모으고, 표현이 다른 후보를 병렬로 만들고, 최종 결과를 사람이 검수하는 제작 시스템</strong> 을 세우는 것이다. 도구 연결과 요금은 최신 공식 문서로 확인하고, 특히 기술 자료의 정확성은 원본을 기준으로 판단해야 한다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 10월 02일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/automation">Automation</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/10/2026-10-02-ten-ai-github-repos-memory-agent-tools-office-security/" rel="prev">
+        <span>GitHub AI 저장소 10선: 에이전트 메모리부터 도구 연결·보안까지</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/10/2026-10-02-ai-delegation-loop-playbook-process-toolbox-proof/" rel="next">
+        <span>AI 위임 루프: 에이전트를 늘리기보다 업무 매뉴얼을 고치는 방법</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-한-장씩-생성하는-데스크톱-흐름의-병목">1. 한 장씩 생성하는 데스크톱 흐름의 병목</a></li>
+    <li><a href="#2-터미널과-병렬-실행-기다리는-시간-대신-후보를-늘리다">2. 터미널과 병렬 실행: 기다리는 시간 대신 후보를 늘리다</a></li>
+    <li><a href="#3-claude-code를-조정자로-codex를-이미지-작업-도구로">3. Claude Code를 조정자로, Codex를 이미지 작업 도구로</a></li>
+    <li><a href="#4-특허-도면-실습과-비용을-읽는-방법">4. 특허 도면 실습과 비용을 읽는 방법</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/automation/" class="badge badge-secondary">Automation</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
