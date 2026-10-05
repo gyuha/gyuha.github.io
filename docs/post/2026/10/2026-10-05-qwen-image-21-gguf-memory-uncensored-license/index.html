@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Qwen-Image 2.1 GGUF 팩트체크: 4.6GB 파일, 6GB GPU, ‘무검열’의 의미'" />
+  <title>Qwen-Image 2.1 GGUF 팩트체크: 4.6GB 파일, 6GB GPU, ‘무검열’의 의미  | 신규하 블로그</title>
+  <meta property="og:title" content="Qwen-Image 2.1 GGUF 팩트체크: 4.6GB 파일, 6GB GPU, ‘무검열’의 의미" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-10-05"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/10/2026-10-05-qwen-image-21-gguf-memory-uncensored-license/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="ai" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/10/2026-10-05-qwen-image-21-gguf-memory-uncensored-license/">
+          <h1>
+            Qwen-Image 2.1 GGUF 팩트체크: 4.6GB 파일, 6GB GPU, ‘무검열’의 의미
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/10/2026-10-05-qwen-image-21-gguf-memory-uncensored-license/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p><a href="https://x.com/NFT_Chen/status/2106703506795295198">X 게시글</a>은 Qwen-Image 2.1의 커뮤니티 GGUF 변형을 소개하며, 4.6GB짜리 Q4_K_M 파일로 6GB GPU에서도 로컬 이미지 생성·편집을 시도할 수 있다고 말한다. 소개된 모델의 기능 자체는 매력적이지만, <strong>파일 크기와 전체 실행 메모리</strong>, <strong>공식 모델의 기능과 커뮤니티 변형의 검증 범위</strong>, <strong>로컬 실행과 사용 허가</strong>는 각각 다른 문제다. 이 글은 그 경계를 공식 저장소와 배포 모델 카드에 맞춰 구분한다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://x.com/NFT_Chen/status/2106703506795295198">원문 X 게시글</a> — GGUF 변형, Q4_K_M 용량, 6GB GPU 가능성, ComfyUI 절차와 라이선스에 대한 소개</li>
+<li><a href="https://github.com/QwenLM/Qwen-Image-2.1">Qwen-Image 2.1 공식 저장소</a> · <a href="https://github.com/QwenLM/Qwen-Image-2.1/blob/main/LICENSE">Qwen Research License</a> — 모델 구성, 기능, 사용 조건</li>
+<li><a href="https://huggingface.co/abenzerps/Qwen-Image-2.1-Uncensored-GGUF">abenzerps의 커뮤니티 GGUF 모델 카드</a> — 변환 파일, 보조 구성요소, ComfyUI 설정, 배포자의 설명</li>
+<li><a href="https://github.com/leejet/ComfyUI-GGUF">leejet/ComfyUI-GGUF</a> — 모델 카드가 권장하는 GGUF 로더 구현</li>
+</ul>
+<p><strong>검증 범위:</strong> 원문의 실행 결과를 같은 GPU에서 재현하거나 생성물의 안전성·품질을 독립 시험한 자료는 없다. 아래에서 &ldquo;가능하다&quot;와 &ldquo;보장된다&quot;를 구분하는 이유다. 커뮤니티 모델 카드의 설치 안내는 배포자 설명이며, 공식 Qwen 저장소의 보증으로 읽어서는 안 된다.</p>
+<h2 id="1-공식-qwen-image-21과-커뮤니티-gguf는-무엇이-다른가">1. 공식 Qwen-Image 2.1과 커뮤니티 GGUF는 무엇이 다른가</h2>
+<p>공식 Qwen 저장소는 Qwen-Image 2.1을 이미지 <strong>생성·편집 통합 모델</strong>로 소개한다. 여기서 <strong>7B는 시각 생성용 DiT 구성요소의 규모</strong>다. 전체 파이프라인에는 별도의 <strong>Qwen3-VL 8B 텍스트 인코더</strong>와 <strong>VAE</strong>도 필요하다. 따라서 &ldquo;7B 모델&quot;이라는 문구를 실행에 필요한 모든 가중치가 7B 규모라는 뜻으로 받아들이면 설치 용량과 메모리를 과소평가하게 된다. <a href="https://github.com/QwenLM/Qwen-Image-2.1">공식 저장소</a></p>
+<p>공식 문서가 설명하는 기능에는 <strong>RGBA 투명 채널</strong>, <strong>최대 10장의 참조 이미지</strong>, <strong>원·마스크 등을 사용한 국소 편집</strong>과 정체성 보존 지향 편집이 포함된다. 다만 이것은 원본 모델의 지원 범위다. 특정 GGUF 파일과 ComfyUI 워크플로가 해당 기능을 모두 노출하는지, 인물 얼굴을 얼마나 안정적으로 유지하는지는 <strong>그 조합으로 직접 확인해야 한다</strong>. &ldquo;얼굴 보존&quot;도 실패가 없는 보증이 아니라 모델이 지향하는 편집 특성이다. <a href="https://github.com/QwenLM/Qwen-Image-2.1">공식 저장소</a></p>
+<p><code>abenzerps</code>의 배포물은 Qwen 공식 릴리스가 아니라, 원본 가중치를 바탕으로 만든 <strong>커뮤니티 GGUF 양자화 파일 모음</strong>이다. 모델 카드에는 일반 양자화 파일과 이름에 <code>UC</code>가 붙은 파일이 함께 있다. 어떤 파일을 받았는지 구별하지 않고 저장소 전체를 하나의 &ldquo;무검열 모델&quot;로 부르는 것은 부정확하다. <a href="https://huggingface.co/abenzerps/Qwen-Image-2.1-Uncensored-GGUF">커뮤니티 모델 카드</a></p>
+<pre class="mermaid">flowchart TD
+    A["Qwen 공식 원본"] --> B["시각 생성 DiT: 7B"]
+    A --> C["텍스트 인코더: Qwen3-VL 8B"]
+    A --> D["VAE"]
+    B --> E["커뮤니티 GGUF 양자화"]
+    E --> F["ComfyUI의 GGUF 로더"]
+    C --> G["실행 파이프라인"]
+    D --> G
+    F --> G
+    classDef sourceTone fill:#c5dcef,stroke:#54789e,color:#333;
+    classDef componentTone fill:#e0c8ef,stroke:#9275ac,color:#333;
+    classDef communityTone fill:#fde8c0,stroke:#bd9454,color:#333;
+    classDef resultTone fill:#c0ecd3,stroke:#5a9d75,color:#333;
+    class A sourceTone;
+    class B,C,D componentTone;
+    class E,F communityTone;
+    class G resultTone;</pre><h2 id="2-q4_k_m-46gb는-왜-6gb-vram-보증이-아닌가">2. Q4_K_M 4.6GB는 왜 6GB VRAM 보증이 아닌가</h2>
+<p>커뮤니티 저장소의 <strong>Q4_K_M GGUF는 약 4.60GB</strong>다. 그러나 이는 <strong>양자화된 확산 모델 파일 하나의 디스크 크기</strong>이지, 전체 파이프라인의 피크 VRAM이 아니다. 같은 배포 페이지에는 <strong>INT8 텍스트 인코더 약 9.35GB</strong>, <strong>BF16 VAE 약 676MB</strong>도 별도로 제시돼 있다. 파일 크기를 단순 합산해 VRAM 사용량을 계산하는 것 역시 틀리다. 로딩 위치가 GPU인지 시스템 RAM인지, 중간 활성값·이미지 해상도·오프로딩·ComfyUI 설정이 무엇인지에 따라 달라지기 때문이다. <a href="https://huggingface.co/abenzerps/Qwen-Image-2.1-Uncensored-GGUF">커뮤니티 모델 카드</a></p>
+<p>배포자는 GGUF 확산 모델을 GPU VRAM에 두고, 텍스트 인코더는 시스템 RAM과 오프로딩을 활용하는 구성을 안내한다. 메모리 부족 시 <code>--lowvram</code>을 제안한다. 이로부터 <strong>6GB 카드로 시도할 여지는 있다</strong>고 해석할 수 있지만, <strong>6GB VRAM만 있으면 모든 작업이 돌아간다</strong>는 성능 보증은 아니다. RAM 용량, 해상도, 참조 이미지 수, 사용 노드에 따라 로드 실패·메모리 부족·느린 생성이 생길 수 있다. &ldquo;6GB 카드 가능&quot;은 이 게시글과 배포 안내에 근거한 <strong>조건부 주장</strong>이며, 재현 벤치마크로 검증된 보편적 최소 사양은 아니다. <a href="https://x.com/NFT_Chen/status/2106703506795295198">원문</a>, <a href="https://huggingface.co/abenzerps/Qwen-Image-2.1-Uncensored-GGUF">커뮤니티 모델 카드</a></p>
+<pre class="mermaid">flowchart TD
+    A["Q4_K_M 파일: 약 4.60GB"] --> D["실행 메모리 판단"]
+    B["INT8 인코더: 약 9.35GB"] --> D
+    C["VAE: 약 676MB"] --> D
+    D --> E["GPU·RAM 배치와 오프로딩"]
+    E --> F["해상도·참조 이미지·활성값"]
+    F --> G["피크 VRAM과 처리 시간 측정"]
+    classDef fileTone fill:#c5dcef,stroke:#54789e,color:#333;
+    classDef decisionTone fill:#fde8c0,stroke:#bd9454,color:#333;
+    classDef processTone fill:#e0c8ef,stroke:#9275ac,color:#333;
+    classDef outputTone fill:#c0ecd3,stroke:#5a9d75,color:#333;
+    class A,B,C fileTone;
+    class D decisionTone;
+    class E,F processTone;
+    class G outputTone;</pre><h2 id="3-comfyui에서-무엇을-바꾸고-검증해야-하나">3. ComfyUI에서 무엇을 바꾸고 검증해야 하나</h2>
+<p>원문은 ComfyUI를 업데이트하고 GGUF 노드를 설치한 뒤, Q4_K_M 확산 모델·INT8 텍스트 인코더·VAE를 각각 넣으라고 요약한다. 커뮤니티 모델 카드는 GGUF 파일을 <code>models/diffusion_models/</code>, 인코더를 <code>models/text_encoders/</code>, VAE를 <code>models/vae/</code>에 배치하고, 기본 <code>UNETLoader</code>를 **<code>Unet Loader (GGUF)</code>**로 바꾸도록 안내한다. 텍스트 인코더 로더의 유형은 <code>qwen_image</code>로 맞춘다. 모델 카드는 Qwen-Image 2.1 호환성을 위해 <a href="https://github.com/leejet/ComfyUI-GGUF">leejet의 ComfyUI-GGUF 포크</a>를 권하며, 오래된 다른 포크에서는 아키텍처 인식 오류가 날 수 있다고 경고한다. <a href="https://huggingface.co/abenzerps/Qwen-Image-2.1-Uncensored-GGUF">커뮤니티 모델 카드</a></p>
+<p>여기서 <strong>로더만 교체하면 모든 편집 기능이 자동 완성되는 것은 아니다</strong>. 먼저 공식 저장소가 안내하는 <a href="https://github.com/QwenLM/Qwen-Image-2.1">ComfyUI 호환 가중치·예제 워크플로</a>를 기준으로 문생성과 이미지 편집을 구분하고, 양자화 변형을 연결할 때 해당 워크플로가 요구하는 입력 노드와 모델 파일이 맞는지 확인해야 한다. 다운로드한 가중치의 출처와 체크섬도 확인한다. 커뮤니티 저장소는 <code>SHA256SUMS</code>를 제공한다. <a href="https://huggingface.co/abenzerps/Qwen-Image-2.1-Uncensored-GGUF">커뮤니티 모델 카드</a></p>
+<pre class="mermaid">flowchart TD
+    A["공식 예제 워크플로 선택"] --> B["파일 종류·체크섬 확인"]
+    B --> C["확산 모델·인코더·VAE 배치"]
+    C --> D["GGUF 로더로 교체"]
+    D --> E["작은 해상도로 문생성 시험"]
+    E --> F["편집·투명 채널·참조 기능 검증"]
+    F --> G["피크 VRAM·RAM·시간 기록"]
+    classDef sourceTone fill:#c5dcef,stroke:#54789e,color:#333;
+    classDef processTone fill:#e0c8ef,stroke:#9275ac,color:#333;
+    classDef checkTone fill:#fde8c0,stroke:#bd9454,color:#333;
+    classDef outputTone fill:#c0ecd3,stroke:#5a9d75,color:#333;
+    class A sourceTone;
+    class C,D processTone;
+    class B,E,F checkTone;
+    class G outputTone;</pre><h2 id="4-무검열과-데이터가-밖으로-나가지-않는다의-조건">4. &ldquo;무검열&quot;과 &ldquo;데이터가 밖으로 나가지 않는다&quot;의 조건</h2>
+<p>모델 카드에서 &ldquo;Uncensored&quot;는 <strong>이 로컬 배포 파이프라인에 내장 안전 검사기·콘텐츠 필터가 없다는 배포자의 설명</strong>이다. 이를 &ldquo;모델 내부의 모든 안전 관련 성향이 제거됐다&rdquo;, &ldquo;어떤 프롬프트든 반드시 그대로 나온다&quot;로 확장할 근거는 제시되지 않았다. 실제 출력은 가중치, 프롬프트, 워크플로와 샘플링 설정에 영향을 받는다. 안전 검사가 없다면 사용자는 입력·출력 검토, 초상권·동의, 공개 서비스의 악용 대응을 스스로 설계해야 한다. <a href="https://huggingface.co/abenzerps/Qwen-Image-2.1-Uncensored-GGUF">커뮤니티 모델 카드</a></p>
+<p>로컬 추론은 이미지를 외부 생성 API에 전송하지 않는 구성을 <strong>가능하게</strong> 한다. 하지만 &ldquo;로컬&quot;이라는 말만으로 데이터가 절대 밖으로 나가지 않는다고 단정할 수 없다. 연결한 ComfyUI 커스텀 노드, 원격 저장·공유 워크플로, 다운로드와 업데이트 경로가 네트워크를 사용하는지 확인해야 한다. 이는 특정 노드가 정보를 유출한다는 주장이 아니라, <strong>개인정보 보호 여부는 실행 환경까지 포함해 판단해야 한다</strong>는 운영상 추론이다.</p>
+<h2 id="5-연구-라이선스는-로컬-실행과-별개다">5. 연구 라이선스는 로컬 실행과 별개다</h2>
+<p>공식 가중치에는 <strong>Qwen Research License</strong>가 적용되고, 커뮤니티 모델 카드 역시 라이선스를 <code>qwen-research</code>로 표시한다. 공식 라이선스는 비상업적 연구·평가 사용을 허용하며, <strong>상업적 이용은 별도 라이선스가 필요하다</strong>고 명시한다. GGUF로 변환하거나 로컬에서 실행한다고 상업적 사용 허가가 새로 생기지 않는다. 팀 내부 평가, 제품 기능 탑재, 고객에게 생성 결과 제공처럼 목적이 달라질 때는 적용 조건을 원문으로 확인해야 한다. <a href="https://github.com/QwenLM/Qwen-Image-2.1/blob/main/LICENSE">공식 라이선스</a>, <a href="https://huggingface.co/abenzerps/Qwen-Image-2.1-Uncensored-GGUF">커뮤니티 모델 카드</a></p>
+<pre class="mermaid">flowchart TD
+    A["사용 목적 결정"] --> B{"연구·평가 용도인가?"}
+    B -->|예| C["라이선스 세부 조건 확인"]
+    B -->|아니요| D["별도 상업 라이선스 확인"]
+    C --> E["배포·출력물 운영 정책 검토"]
+    D --> E
+    classDef inputTone fill:#c5dcef,stroke:#54789e,color:#333;
+    classDef decisionTone fill:#fde8c0,stroke:#bd9454,color:#333;
+    classDef processTone fill:#e0c8ef,stroke:#9275ac,color:#333;
+    classDef outputTone fill:#c0ecd3,stroke:#5a9d75,color:#333;
+    class A inputTone;
+    class B decisionTone;
+    class C,D processTone;
+    class E outputTone;</pre><h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<ol>
+<li><strong>대상을 정확히 기록한다.</strong> 공식 원본인지, 커뮤니티 GGUF인지, 일반 파일인지 <code>UC</code> 파일인지와 리비전을 남긴다. 파일 체크섬도 대조한다.</li>
+<li><strong>메모리와 성능을 따로 잰다.</strong> 디스크 용량, GPU VRAM, 시스템 RAM, 첫 로딩 시간, 생성 시간을 구분한다. 6GB 카드라면 작은 해상도에서 시작하고 오프로딩·<code>--lowvram</code>의 속도 비용을 측정한다.</li>
+<li><strong>기능별로 성공을 확인한다.</strong> 문생성 한 장의 성공을 투명 채널·10장 참조·국소 편집까지 검증했다는 뜻으로 해석하지 않는다. 필요한 워크플로마다 결과를 확인한다.</li>
+<li><strong>배포 전 조건을 점검한다.</strong> 안전 필터 부재의 운영 책임, 연결 노드의 네트워크 동작, Qwen Research License의 상업 이용 제한을 각각 검토한다.</li>
+</ol>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li><strong>7B는 시각 생성 구성요소의 규모</strong>이며, 텍스트 인코더와 VAE가 별도로 필요하다.</li>
+<li><strong>Q4_K_M 약 4.60GB는 파일 크기</strong>다. 6GB VRAM에서의 성공 여부는 RAM·오프로딩·해상도·워크플로에 달렸다.</li>
+<li><strong>&ldquo;Uncensored&quot;는 배포자가 설명한 내장 필터 부재</strong>를 뜻하며, 모든 출력의 무제한 성공이나 안전성 보증이 아니다.</li>
+<li><strong>공식 Qwen 기능과 커뮤니티 GGUF의 실제 동작은 구분</strong>해야 한다. 연구 라이선스의 상업 이용 제한도 그대로 확인해야 한다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>이 GGUF 변형은 Qwen-Image 2.1을 더 작은 확산 모델 파일로 로컬에서 시험할 경로를 제공한다. 그러나 <strong>4.6GB 다운로드 파일을 전체 실행 비용으로, 로컬 실행을 무제한 사용 허가로 바꾸어 읽어서는 안 된다.</strong> 보조 모델·오프로딩·워크플로·라이선스를 분리해 검증하면 원문의 유용한 설치 힌트를 재현 가능한 선택으로 바꿀 수 있다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 10월 05일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/10/2026-10-03-github-trending-five-ai-tools-voice-memory-agent-operations/" rel="prev">
+        <span>10월 첫 주 오픈소스 5선: AI 학습부터 음성·금융·기억·에이전트 운영까지</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/10/2026-10-05-longcat-video-13b-avatar15-claims-fact-check/" rel="next">
+        <span>LongCat-Video 팩트체크: 13.6B 통합 영상 모델과 Avatar 1.5는 같은 모델인가</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-공식-qwen-image-21과-커뮤니티-gguf는-무엇이-다른가">1. 공식 Qwen-Image 2.1과 커뮤니티 GGUF는 무엇이 다른가</a></li>
+    <li><a href="#2-q4_k_m-46gb는-왜-6gb-vram-보증이-아닌가">2. Q4_K_M 4.6GB는 왜 6GB VRAM 보증이 아닌가</a></li>
+    <li><a href="#3-comfyui에서-무엇을-바꾸고-검증해야-하나">3. ComfyUI에서 무엇을 바꾸고 검증해야 하나</a></li>
+    <li><a href="#4-무검열과-데이터가-밖으로-나가지-않는다의-조건">4. &ldquo;무검열&quot;과 &ldquo;데이터가 밖으로 나가지 않는다&quot;의 조건</a></li>
+    <li><a href="#5-연구-라이선스는-로컬-실행과-별개다">5. 연구 라이선스는 로컬 실행과 별개다</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/ai/" class="badge badge-secondary">Ai</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
