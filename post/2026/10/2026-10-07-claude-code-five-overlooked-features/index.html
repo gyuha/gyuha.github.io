@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude Code에서 놓치기 쉬운 기능 5가지: 스킬 진단부터 실행 중 개입까지'" />
+  <title>Claude Code에서 놓치기 쉬운 기능 5가지: 스킬 진단부터 실행 중 개입까지  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude Code에서 놓치기 쉬운 기능 5가지: 스킬 진단부터 실행 중 개입까지" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-10-07"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/10/2026-10-07-claude-code-five-overlooked-features/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="skills" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/10/2026-10-07-claude-code-five-overlooked-features/">
+          <h1>
+            Claude Code에서 놓치기 쉬운 기능 5가지: 스킬 진단부터 실행 중 개입까지
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/10/2026-10-07-claude-code-five-overlooked-features/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Claude Code를 오래 써도 새 기능을 모두 발견하기는 어렵다. <a href="https://youtu.be/6g6srrlm_cg?t=0">Solostack의 짧은 영상</a>은 스킬 진단, 변경 사항 검토, 플러그인 평가, 간결한 응답, 실행 중 개입이라는 다섯 기능을 빠르게 소개한다. 이 글은 영상의 요점을 실제 명령과 사용 조건으로 풀어 쓴다. 영상에서 말하는 &ldquo;최근 한 달 20개 넘는 기능&quot;은 제작자의 언급이며, 이 글에서 별도로 집계한 수치는 아니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://youtube.com/shorts/6g6srrlm_cg?si=9tRxqMb4Q-y-dlbX">원본 YouTube Shorts</a></li>
+<li><a href="https://code.claude.com/docs/en/commands">Claude Code 명령어 공식 문서</a></li>
+<li><a href="https://code.claude.com/docs/en/interactive-mode">Claude Code 대화형 모드 공식 문서</a></li>
+<li><a href="https://code.claude.com/docs/en/plugin-evals">플러그인 평가 공식 문서</a></li>
+<li><a href="https://code.claude.com/docs/en/output-styles">출력 스타일 공식 문서</a></li>
+</ul>
+<h2 id="먼저-구분할-것-모델과-claude-code는-다른-버전이다">먼저 구분할 것: 모델과 Claude Code는 다른 버전이다</h2>
+<p>영상은 모델 버전과 이를 둘러싼 Claude Code 도구의 버전이 별도로 올라간다고 짚는다. <a href="https://youtu.be/6g6srrlm_cg?t=9">영상 9초</a>, <a href="https://youtu.be/6g6srrlm_cg?t=16">영상 16초</a>. 여기서 다루는 다섯 항목은 모델의 새 추론 능력보다는 <strong>CLI의 명령·화면·평가 도구·입력 동작</strong>에 관한 것이다. 따라서 모델 이름만 확인해서는 기능 사용 가능 여부를 알 수 없고, <code>claude --version</code>으로 설치된 Claude Code 버전을 확인해야 한다. 기능별 최소 버전은 아래에서 따로 적는다. <a href="https://code.claude.com/docs/en/plugin-evals">플러그인 평가 요구 사항</a>.</p>
+<pre class="mermaid">flowchart TD
+    model["모델 버전"] --> reasoning["응답과 추론"]
+    cli["Claude Code 버전"] --> feature["명령·화면·단축키"]
+    feature --> check["claude --version으로 확인"]
+    classDef modelTone fill:#c5dcef,stroke:#6e94b5,color:#333;
+    classDef cliTone fill:#e0c8ef,stroke:#a27db8,color:#333;
+    classDef resultTone fill:#c0ecd3,stroke:#79b293,color:#333;
+    class model,reasoning modelTone;
+    class cli,feature cliTone;
+    class check resultTone;</pre><h2 id="1-skill-doctor-스킬의-컨텍스트-비용을-보이게-하기">1. <code>/skill-doctor</code>: 스킬의 컨텍스트 비용을 보이게 하기</h2>
+<p>영상은 스킬이 많아질수록 숨은 토큰 비용을 파악하기 어렵고, <code>/skill-doctor</code>가 스킬별 컨텍스트 비용과 최근 사용 빈도를 보여준다고 설명한다. <a href="https://youtu.be/6g6srrlm_cg?t=20">영상 20초</a>, <a href="https://youtu.be/6g6srrlm_cg?t=26">영상 26초</a>. 공식 명령어 문서도 이 진단 목적을 확인하며, <strong>Claude Code v2.1.252 이상과 feature-flag fetching</strong>을 요구한다고 명시한다. <a href="https://code.claude.com/docs/en/commands">공식 명령어 문서</a>.</p>
+<p>다만 &ldquo;설치한 스킬 본문 전체가 매 턴마다 로드된다&quot;고 이해하면 과장이다. 공식 기능 개요에 따르면 스킬 <strong>설명</strong>은 세션에 로드되고, 전체 내용은 그 스킬을 사용할 때 로드된다. 따라서 절감 대상은 실제 진단 결과를 보고 판단해야 한다. 쓰지 않는 스킬의 설명 노출을 줄이는 설정도 있지만, 스킬을 무조건 삭제하는 것보다 필요한 워크플로를 남기는 편이 낫다. <a href="https://code.claude.com/docs/en/features-overview">공식 기능 개요</a>, <a href="https://youtu.be/6g6srrlm_cg?t=33">영상 33초</a>.</p>
+<pre class="mermaid">flowchart TD
+    listed["설치된 스킬의 설명"] --> session["세션 컨텍스트"]
+    session --> doctor["/skill-doctor로 비용·사용 확인"]
+    doctor --> decision{"자주 쓰는가?"}
+    decision -- "예" --> keep["유지"]
+    decision -- "아니요" --> trim["노출 설정 검토"]
+    classDef inputTone fill:#c5dcef,stroke:#6e94b5,color:#333;
+    classDef processTone fill:#e0c8ef,stroke:#a27db8,color:#333;
+    classDef checkTone fill:#fde8c0,stroke:#c9a85c,color:#333;
+    classDef outputTone fill:#c0ecd3,stroke:#79b293,color:#333;
+    classDef cautionTone fill:#ffc8c4,stroke:#cb8a86,color:#333;
+    class listed,session inputTone;
+    class doctor processTone;
+    class decision checkTone;
+    class keep outputTone;
+    class trim cautionTone;</pre><h2 id="2-diff-대화를-떠나지-않고-수정-결과-검토하기">2. <code>/diff</code>: 대화를 떠나지 않고 수정 결과 검토하기</h2>
+<p>영상의 두 번째 기능은 여러 파일을 수정할 때 변경 사항을 대화 옆에서 확인하는 diff 패널이다. <a href="https://youtu.be/6g6srrlm_cg?t=36">영상 36초</a>, <a href="https://youtu.be/6g6srrlm_cg?t=42">영상 42초</a>. <code>/diff</code>를 실행하면 작업 트리의 변경 사항을 Claude Code 안에서 검토할 수 있다. 풀스크린 렌더러에서는 패널이 대화 옆에 남아 수정 때마다 갱신되고, 클래식 렌더러에서는 닫을 수 있는 대화상자로 열린다. <a href="https://code.claude.com/docs/en/interactive-mode">공식 대화형 모드 문서</a>.</p>
+<p><strong>옆에 붙는 패널</strong>의 조건은 풀스크린 렌더링, Git 저장소, 터미널 너비 <strong>110열 이상</strong>, Claude Code <strong>v2.1.287 이상</strong>이다. 영상은 너비를 &ldquo;100칸 이상&quot;이라고 말하지만 <a href="https://youtu.be/6g6srrlm_cg?t=46">영상 46초</a>, 현재 공식 문서는 110열을 지정하므로 이 값을 기준으로 잡는 편이 안전하다. 조건을 만족하지 못해도 <code>/diff</code> 자체가 항상 사라지는 것은 아니다. 렌더러에 따라 대화상자 등 다른 표시 방식이 있다. <a href="https://code.claude.com/docs/en/interactive-mode">공식 diff 패널 조건</a>.</p>
+<pre class="mermaid">flowchart TD
+    command["/diff 실행"] --> mode{"풀스크린·Git·110열·지원 버전?"}
+    mode -- "충족" --> panel["대화 옆 갱신되는 패널"]
+    mode -- "미충족" --> alternative["렌더러별 대체 보기 확인"]
+    panel --> review["파일별 변경 검토"]
+    alternative --> review
+    classDef inputTone fill:#c5dcef,stroke:#6e94b5,color:#333;
+    classDef checkTone fill:#fde8c0,stroke:#c9a85c,color:#333;
+    classDef successTone fill:#c0ecd3,stroke:#79b293,color:#333;
+    classDef altTone fill:#ffc8c4,stroke:#cb8a86,color:#333;
+    class command inputTone;
+    class mode checkTone;
+    class panel,review successTone;
+    class alternative altTone;</pre><h2 id="3-claude-plugin-eval-플러그인이-실제로-도움이-되는지-평가하기">3. <code>claude plugin eval</code>: 플러그인이 실제로 도움이 되는지 평가하기</h2>
+<p>세 번째는 슬래시 명령이 아니라 <strong>터미널에서 실행하는 명령</strong>이다. 영상은 직접 만든 플러그인을 테스트 케이스에 적용하고, 플러그인이 없을 때와 비교해 기여를 수치로 보인다고 설명한다. <a href="https://youtu.be/6g6srrlm_cg?t=51">영상 51초</a>, <a href="https://youtu.be/6g6srrlm_cg?t=56">영상 56초</a>. 공식 문서의 <code>WITH</code>, <code>W/OUT</code>, <code>Δ</code>도 같은 취지다. <strong>플러그인을 넣은 점수만 높아도, 빼고 실행한 점수와 같다면 그 성공을 플러그인의 효과로 돌릴 수 없다.</strong> <a href="https://code.claude.com/docs/en/plugin-evals">공식 플러그인 평가 문서</a>.</p>
+<p>플러그인 루트에서 평가 케이스를 준비한 뒤 <code>claude plugin eval .</code>을 실행한다. 케이스는 사용자가 실제로 할 법한 요청과 결과를 판정하는 grader로 구성된다. 기본적으로 케이스마다 여러 번 실행하고 플러그인 없는 기준선과 비교한다. 이 기능은 <strong>Claude Code v2.1.269 이상</strong>이 필요하며, 평가와 판정에 실제 모델 호출이 쓰이므로 사용량 또는 비용이 발생한다. 단순 구문·스키마 검사는 별도의 <code>claude plugin validate</code> 대상이다. <a href="https://code.claude.com/docs/en/plugin-evals">공식 플러그인 평가 가이드</a>.</p>
+<pre class="mermaid">flowchart TD
+    case["실제 사용자 요청과 판정 기준"] --> withPlugin["플러그인 사용 실행"]
+    case --> withoutPlugin["플러그인 제외 실행"]
+    withPlugin --> compare["WITH와 W/OUT 비교"]
+    withoutPlugin --> compare
+    compare --> delta["차이 Δ로 기여 판단"]
+    classDef inputTone fill:#c5dcef,stroke:#6e94b5,color:#333;
+    classDef branchTone fill:#e0c8ef,stroke:#a27db8,color:#333;
+    classDef checkTone fill:#fde8c0,stroke:#c9a85c,color:#333;
+    classDef outputTone fill:#c0ecd3,stroke:#79b293,color:#333;
+    class case inputTone;
+    class withPlugin,withoutPlugin branchTone;
+    class compare checkTone;
+    class delta outputTone;</pre><h2 id="4-concise-출력-스타일-설명을-줄이고-결과를-먼저-보기">4. Concise 출력 스타일: 설명을 줄이고 결과를 먼저 보기</h2>
+<p>영상은 서론과 장황한 설명을 줄이는 &ldquo;Concise&rdquo; 스타일을 네 번째로 소개한다. <a href="https://youtu.be/6g6srrlm_cg?t=64">영상 64초</a>, <a href="https://youtu.be/6g6srrlm_cg?t=69">영상 69초</a>. 공식 문서도 작업 자체는 그대로 꼼꼼하게 하되, 응답의 도입·진행 서술·요약을 생략하는 내장 출력 스타일로 설명한다. <strong>추론 품질 향상이나 총 토큰 비용 절감을 보장하는 기능은 아니며, 주된 이점은 사람이 읽는 응답의 길이를 줄이는 데 있다.</strong> <a href="https://code.claude.com/docs/en/output-styles">공식 출력 스타일 문서</a>.</p>
+<p>현재 문서 기준 <code>Concise</code> 스타일은 <strong>v2.1.237 이상</strong>, 명령 <code>/output-style concise</code>의 직접 사용은 <strong>v2.1.269 이상</strong>에서 지원된다. 앞의 버전 구간에서는 <code>/config</code>에서 스타일을 선택한다. 영상에서 언급한 오픈소스 &ldquo;caveman&quot;과의 실제 비교는 다음 편에서 하겠다고만 했으므로, 이 글은 둘의 성능 차이를 단정하지 않는다. <a href="https://code.claude.com/docs/en/output-styles">공식 출력 스타일 문서</a>, <a href="https://youtu.be/6g6srrlm_cg?t=77">영상 77초</a>.</p>
+<pre class="mermaid">flowchart TD
+    choose["Concise 스타일 선택"] --> work["기존 작업 수행"]
+    work --> answer["서론·진행 서술을 줄인 답변"]
+    answer --> read["결과를 빠르게 확인"]
+    classDef inputTone fill:#c5dcef,stroke:#6e94b5,color:#333;
+    classDef processTone fill:#e0c8ef,stroke:#a27db8,color:#333;
+    classDef outputTone fill:#c0ecd3,stroke:#79b293,color:#333;
+    class choose inputTone;
+    class work processTone;
+    class answer,read outputTone;</pre><h2 id="5-작업-도중-끼어들기-큐에-쌓은-메시지를-지금-보내기">5. 작업 도중 끼어들기: 큐에 쌓은 메시지를 지금 보내기</h2>
+<p>마지막 기능은 Claude가 일하는 동안 입력한 메시지를 끝날 때까지 기다리지 않고 전달하는 것이다. <a href="https://youtu.be/6g6srrlm_cg?t=83">영상 83초</a>, <a href="https://youtu.be/6g6srrlm_cg?t=89">영상 89초</a>. 공식 문서에는 <code>Ctrl+Enter</code> 또는 터미널 호환성이 더 좋은 **<code>Ctrl+X</code> 다음 <code>Ctrl+S</code>**가 &ldquo;큐의 메시지를 지금 보내기&quot;로 명시돼 있다. <strong>v2.1.275 이상</strong>이 필요하다. <code>Esc</code>는 현재 작업을 중단하면서 큐의 메시지를 이어서 보내는 별도 동작이다. <a href="https://code.claude.com/docs/en/interactive-mode">공식 단축키 문서</a>.</p>
+<p>&ldquo;지금 보내기&quot;가 언제나 현재 작업을 강제 종료한다는 뜻은 아니다. <strong>v2.1.281 이상</strong>에서는 실행 중인 셸 명령이나 서브에이전트처럼 백그라운드로 옮길 수 있는 작업은 계속 진행하고, Claude가 같은 턴에서 새 메시지를 읽을 수 있다. 단순 응답 작성처럼 옮길 수 없는 작업이면 턴을 중단하고 새 메시지를 보낸다. <code>Ctrl+Enter</code>가 일반 <code>Enter</code>로 전달되는 터미널이라면 <code>Ctrl+X Ctrl+S</code>를 사용한다. <a href="https://code.claude.com/docs/en/interactive-mode">공식 큐 처리 설명</a>.</p>
+<pre class="mermaid">flowchart TD
+    work["Claude 작업 중"] --> queue["추가 지시를 입력해 큐에 저장"]
+    queue --> send["Ctrl+X 다음 Ctrl+S"]
+    send --> movable{"현재 작업을 백그라운드로 옮길 수 있나?"}
+    movable -- "가능" --> background["작업 지속·같은 턴에서 지시 읽기"]
+    movable -- "불가" --> interrupt["현재 턴 중단·새 지시 전달"]
+    classDef inputTone fill:#c5dcef,stroke:#6e94b5,color:#333;
+    classDef processTone fill:#e0c8ef,stroke:#a27db8,color:#333;
+    classDef checkTone fill:#fde8c0,stroke:#c9a85c,color:#333;
+    classDef successTone fill:#c0ecd3,stroke:#79b293,color:#333;
+    classDef cautionTone fill:#ffc8c4,stroke:#cb8a86,color:#333;
+    class work,queue inputTone;
+    class send processTone;
+    class movable checkTone;
+    class background successTone;
+    class interrupt cautionTone;</pre><h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<ol>
+<li><strong>먼저 버전을 확인한다.</strong> 다섯 기능은 서로 다른 Claude Code 최소 버전을 요구한다. 특히 <code>/diff</code>의 옆 패널은 <code>/diff</code> 명령 자체보다 조건이 까다롭다. <a href="https://code.claude.com/docs/en/commands">공식 명령어 문서</a>, <a href="https://code.claude.com/docs/en/interactive-mode">공식 대화형 모드 문서</a>.</li>
+<li><strong>스킬은 측정한 뒤 정리한다.</strong> <code>/skill-doctor</code>의 비용과 사용 빈도를 보고 노출을 조정한다. 스킬 설명과 전체 본문의 로딩 시점은 다르다. <a href="https://code.claude.com/docs/en/features-overview">공식 기능 개요</a>.</li>
+<li><strong>변경 검토와 품질 평가는 구분한다.</strong> <code>/diff</code>는 지금 수정된 파일을 검토하고, <code>claude plugin eval</code>은 반복 가능한 케이스로 플러그인의 기여를 평가한다. <a href="https://code.claude.com/docs/en/interactive-mode">공식 diff 설명</a>, <a href="https://code.claude.com/docs/en/plugin-evals">공식 평가 설명</a>.</li>
+<li><strong>응답 길이와 실행 제어는 별개다.</strong> Concise는 읽을 분량을 줄이고, 메시지 큐 단축키는 작업 중 지시를 전달하는 시점을 바꾼다. <a href="https://code.claude.com/docs/en/output-styles">공식 출력 스타일 문서</a>, <a href="https://code.claude.com/docs/en/interactive-mode">공식 단축키 문서</a>.</li>
+</ol>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li><code>/skill-doctor</code>: 스킬별 컨텍스트 비용과 사용 빈도를 보고 정리 대상을 찾는다. <a href="https://youtu.be/6g6srrlm_cg?t=20">영상 20초</a>.</li>
+<li><code>/diff</code>: 변경 사항을 Claude Code 안에서 확인한다. 옆 패널은 풀스크린·Git·110열 이상 등 조건을 확인한다. <a href="https://youtu.be/6g6srrlm_cg?t=36">영상 36초</a>, <a href="https://code.claude.com/docs/en/interactive-mode">공식 문서</a>.</li>
+<li><code>claude plugin eval</code>: 플러그인 적용·미적용 결과의 차이를 평가한다. <a href="https://youtu.be/6g6srrlm_cg?t=51">영상 51초</a>.</li>
+<li>Concise: 답변의 불필요한 서술을 줄인다. <a href="https://youtu.be/6g6srrlm_cg?t=64">영상 64초</a>.</li>
+<li><code>Ctrl+X Ctrl+S</code>: 대기 중인 메시지를 현재 작업이 끝나기 전에 전달한다. <a href="https://youtu.be/6g6srrlm_cg?t=83">영상 83초</a>, <a href="https://code.claude.com/docs/en/interactive-mode">공식 문서</a>.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>이 영상의 핵심은 새 모델을 기다리는 것보다 <strong>이미 쓰는 Claude Code의 진단·검토·평가·출력·개입 기능을 발견하는 것</strong>이다. 다만 기능이 보이지 않거나 영상과 화면이 다르면 먼저 Claude Code 버전, 렌더러, 터미널 폭 같은 사용 조건을 확인하자. <a href="https://youtu.be/6g6srrlm_cg?t=18">영상 18초</a>, <a href="https://code.claude.com/docs/en/interactive-mode">공식 대화형 모드 문서</a>.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 10월 07일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/10/2026-10-07-gpt-bridge-codex-astra-usage-fact-check/" rel="prev">
+        <span>Codex 한도 뒤에 Astra가 따로 남을까? GPT Bridge 사용법과 사용량 팩트체크</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/10/2026-10-07-agent-sprite-forge-master-still-to-game-sprites/" rel="next">
+        <span>Agent Sprite Forge 0.4: 기준 이미지 한 장에서 게임용 동작 세트까지</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#먼저-구분할-것-모델과-claude-code는-다른-버전이다">먼저 구분할 것: 모델과 Claude Code는 다른 버전이다</a></li>
+    <li><a href="#1-skill-doctor-스킬의-컨텍스트-비용을-보이게-하기">1. <code>/skill-doctor</code>: 스킬의 컨텍스트 비용을 보이게 하기</a></li>
+    <li><a href="#2-diff-대화를-떠나지-않고-수정-결과-검토하기">2. <code>/diff</code>: 대화를 떠나지 않고 수정 결과 검토하기</a></li>
+    <li><a href="#3-claude-plugin-eval-플러그인이-실제로-도움이-되는지-평가하기">3. <code>claude plugin eval</code>: 플러그인이 실제로 도움이 되는지 평가하기</a></li>
+    <li><a href="#4-concise-출력-스타일-설명을-줄이고-결과를-먼저-보기">4. Concise 출력 스타일: 설명을 줄이고 결과를 먼저 보기</a></li>
+    <li><a href="#5-작업-도중-끼어들기-큐에-쌓은-메시지를-지금-보내기">5. 작업 도중 끼어들기: 큐에 쌓은 메시지를 지금 보내기</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude Code</a>
+    <a href="/tags/skills/" class="badge badge-secondary">Skills</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

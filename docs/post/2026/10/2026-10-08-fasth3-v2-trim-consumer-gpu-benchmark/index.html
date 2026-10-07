@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'FastH3 V2와 Trim: RTX 5090의 15초 생성과 8GB VRAM 주장을 읽는 법'" />
+  <title>FastH3 V2와 Trim: RTX 5090의 15초 생성과 8GB VRAM 주장을 읽는 법  | 신규하 블로그</title>
+  <meta property="og:title" content="FastH3 V2와 Trim: RTX 5090의 15초 생성과 8GB VRAM 주장을 읽는 법" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-10-08"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/10/2026-10-08-fasth3-v2-trim-consumer-gpu-benchmark/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="ai" />
+  
+  <meta property="og:tags" content="python" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/10/2026-10-08-fasth3-v2-trim-consumer-gpu-benchmark/">
+          <h1>
+            FastH3 V2와 Trim: RTX 5090의 15초 생성과 8GB VRAM 주장을 읽는 법
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/10/2026-10-08-fasth3-v2-trim-consumer-gpu-benchmark/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p><a href="https://x.com/eternityspring/status/2107635413133447631">X 게시물</a>은 FastVideo의 FastH3가 소비자용 GPU 한 대에서 작동하며, <strong>RTX 5090에서 오디오가 포함된 5초·480p 영상을 약 15초에 만들고</strong>, 경량형 FastH3 Trim은 <strong>8GB VRAM에서도 실행된다</strong>고 소개한다. 핵심 숫자는 <a href="https://haoailab.com/blogs/fasth3-rtx/">개발팀의 공식 발표</a>와 맞지만, 두 문장의 <strong>모델·정밀도·측정 장비·메모리 제한 방식</strong>은 서로 다르다. 조건을 분리해야 자신의 PC에 적용할 수 있다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://x.com/eternityspring/status/2107635413133447631">원본 X 게시물</a></li>
+<li><a href="https://haoailab.com/blogs/fasth3-rtx/">FastVideo 공식 발표: 소비자용 하드웨어와 FastH3 Trim</a></li>
+<li><a href="https://github.com/hao-ai-lab/FastVideo">FastVideo GitHub 저장소</a></li>
+<li><a href="https://huggingface.co/FastVideo/FastVideo-FastH3-8-Step-V2">FastH3 V2 모델 카드</a></li>
+<li><a href="https://huggingface.co/FastVideo/FastVideo-FastH3-Trim-8-Step-FP8">FastH3 Trim FP8 모델 카드</a></li>
+</ul>
+<h2 id="무엇이-새로워졌나-원본-h3와-단일-장비-실행을-구분하기">무엇이 새로워졌나: 원본 H3와 단일 장비 실행을 구분하기</h2>
+<p>FastH3 V2는 MiniMax H3를 기반으로 한 <strong>8단계 증류 체크포인트</strong>다. 텍스트에서 영상과 동기화된 오디오를 생성한다. 공식 모델 카드는 80% 희소 비디오 어텐션과 DMD2 증류를 명시하며, 원래 테스트 기본값은 <strong>B200 GPU 4대</strong>였다고 안내한다. 이번 발표의 변화는 V2 모델 전체를 무작정 한 GPU에 올린 것이 아니라, 양자화·계층별 전송·경량 디코더 등을 조합해 <strong>단일 RTX, DGX Spark, Apple Silicon 경로</strong>를 마련한 데 있다. <a href="https://huggingface.co/FastVideo/FastVideo-FastH3-8-Step-V2">V2 모델 카드</a>, <a href="https://haoailab.com/blogs/fasth3-rtx/">개발팀 발표</a>.</p>
+<p>원본 H3의 세 구성 요소는 텍스트 인코더, 영상·오디오 잠재변수를 함께 처리하는 확산 트랜스포머, 영상·오디오를 복원하는 VAE다. 개발팀에 따르면 BF16 가중치 총량은 <strong>137.7GiB</strong>로, 32GB RTX 5090에 그대로 들어가지 않는다. 그래서 텍스트 인코더와 트랜스포머를 낮은 정밀도로 저장하고, 영상 VAE를 더 가벼운 디코더로 바꾸며, 일부 구성 요소를 호스트 메모리와 GPU 사이에서 이동시킨다. 이것이 &ldquo;소비자용 GPU에서 실행&quot;의 실제 의미다. <a href="https://haoailab.com/blogs/fasth3-rtx/">개발팀의 구성 요소·메모리 설명</a>.</p>
+<pre class="mermaid">flowchart TD
+    prompt["텍스트 프롬프트"] --> encoder["Qwen3-VL 텍스트 인코더"]
+    encoder --> dit["8단계 영상·오디오 DiT"]
+    dit --> vae["영상·오디오 디코더"]
+    vae --> clip["소리 포함 영상 파일"]
+    memory["GPU 메모리 한계"] --> quant["양자화·순차 로딩·오프로딩"]
+    quant --> encoder
+    quant --> dit
+    classDef inputTone fill:#c5dcef,stroke:#6e94b5,color:#333;
+    classDef processTone fill:#e0c8ef,stroke:#a27db8,color:#333;
+    classDef constraintTone fill:#fde8c0,stroke:#c9a85c,color:#333;
+    classDef outputTone fill:#c0ecd3,stroke:#79b293,color:#333;
+    class prompt inputTone;
+    class encoder,dit,vae,quant processTone;
+    class memory constraintTone;
+    class clip outputTone;</pre><h2 id="rtx-5090의-15초는-어떤-측정인가">RTX 5090의 &ldquo;15초&quot;는 어떤 측정인가</h2>
+<p>공식 벤치마크에서 <strong>FastH3 V2·NVFP4·RTX 5090 32GB</strong> 조합은 <strong>832×480 해상도의 5초 클립과 동기화된 오디오</strong>를 <strong>14.8초</strong>에 생성했다. X 게시물의 &ldquo;15초&quot;는 이를 반올림한 것으로 읽을 수 있다. 같은 장비에서 <strong>FastH3 Trim·NVFP4는 13.4초</strong>였으므로, 두 모델의 값을 섞으면 안 된다. 1344×768 조건에서는 각각 <strong>38.6초와 35.4초</strong>로 늘어난다. <a href="https://haoailab.com/blogs/fasth3-rtx/">공식 측정 표</a>, <a href="https://x.com/eternityspring/status/2107635413133447631">원본 X 게시물</a>.</p>
+<p>이 시간은 추론 단계만 떼어낸 숫자가 아니다. 개발팀은 <strong>서버가 준비된 상태에서 프롬프트 입력부터 완성 MP4까지</strong> 텍스트 인코딩, 8회 디노이징, 영상·오디오 디코딩, 내보내기를 모두 포함한 end-to-end 시간으로 정의한다. 두 프롬프트에서 각각 두 번 실행한 결과의 중앙값이다. 따라서 동일 모델이라도 콜드 스타트, 다운로드, 메모리 상황, 다른 해상도에서는 달라질 수 있다. 그리고 <strong>5초 분량을 14.8초에 생성</strong>한다는 말은 빠르다는 뜻이지, 생성 속도가 재생 시간보다 빠른 &ldquo;실시간&quot;을 의미하지 않는다. <a href="https://haoailab.com/blogs/fasth3-rtx/">공식 벤치마크 방법</a>.</p>
+<pre class="mermaid">flowchart TD
+    ready["준비된 RTX 5090 서버"] --> text["프롬프트 인코딩"]
+    text --> sample["8단계 디노이징"]
+    sample --> decode["영상·오디오 디코딩"]
+    decode --> export["MP4 내보내기"]
+    export --> result["V2: 5초 클립에 14.8초"]
+    classDef inputTone fill:#c5dcef,stroke:#6e94b5,color:#333;
+    classDef processTone fill:#e0c8ef,stroke:#a27db8,color:#333;
+    classDef outputTone fill:#c0ecd3,stroke:#79b293,color:#333;
+    class ready inputTone;
+    class text,sample,decode,export processTone;
+    class result outputTone;</pre><h2 id="fasth3-trim은-무엇을-줄였나">FastH3 Trim은 무엇을 줄였나</h2>
+<p>Trim은 V2의 단순한 저정밀도 파일 이름이 아니라, <strong>별도 실험 모델</strong>이다. 개발팀은 원본 H3 트랜스포머 50개 블록 중 영향이 작다고 측정한 <strong>8개를 제거해 42개</strong>로 만들고, 각 블록의 시간 단계 조건화 투영을 <strong>공유 rank-16 기저</strong>로 압축했다. 이어 8단계 DMD2로 학습했다. 모델 카드도 이 가지치기가 속도·크기를 줄이는 대신 품질 손실이 있을 수 있다고 명시한다. <a href="https://haoailab.com/blogs/fasth3-rtx/">개발팀의 Trim 설계 설명</a>, <a href="https://huggingface.co/FastVideo/FastVideo-FastH3-Trim-8-Step-FP8">Trim 모델 카드</a>.</p>
+<p>공식 발표의 &ldquo;<strong>4.2배 작다</strong>&ldquo;는 비교는 <strong>BF16 원본 H3의 전체 가중치</strong>와 <strong>NVFP4 구성의 Trim 전체 가중치</strong>를 대상으로 한다. 이를 &ldquo;VRAM도 정확히 4.2배 적게 쓴다&quot;거나 &ldquo;모든 모델 파일을 합쳐 8GB 이하&quot;라고 해석하면 안 된다. 개발팀은 NVFP4 Trim 구성 요소의 총 체크포인트 크기를 <strong>33.0GiB</strong>로 제시한다. 8GB 실행은 필요한 계층을 그때그때 GPU로 이동시키는 방식으로 가능해지는 것이지, 가중치 전체가 8GB에 상주하기 때문이 아니다. <a href="https://haoailab.com/blogs/fasth3-rtx/">공식 크기·오프로딩 설명</a>.</p>
+<pre class="mermaid">flowchart TD
+    base["원본 H3: 50개 블록"] --> prune["영향 작은 8개 블록 제거"]
+    prune --> trim["Trim: 42개 블록"]
+    trim --> lowrank["시간 조건화 rank-16 압축"]
+    lowrank --> quant["하드웨어별 NVFP4·FP8·INT6"]
+    quant --> tradeoff["크기·속도 개선 ↔ 품질 검토 필요"]
+    classDef inputTone fill:#c5dcef,stroke:#6e94b5,color:#333;
+    classDef processTone fill:#e0c8ef,stroke:#a27db8,color:#333;
+    classDef checkTone fill:#fde8c0,stroke:#c9a85c,color:#333;
+    classDef outputTone fill:#c0ecd3,stroke:#79b293,color:#333;
+    class base inputTone;
+    class prune,trim,lowrank,quant processTone;
+    class tradeoff checkTone;</pre><h2 id="8gb에서-실행은-실제-8gb-gpu-검증과-다르다">&ldquo;8GB에서 실행&quot;은 실제 8GB GPU 검증과 다르다</h2>
+<p>공식 표의 <strong>8GB 행</strong>은 <strong>RTX 4090의 사용 가능 GPU 메모리를 8GB로 제한</strong>해 측정한 값이다. 그 조건에서 <strong>V2는 결과가 없고</strong>, <strong>Trim·FP8은 5초·832×480 클립에 82.0초</strong>였다. 개발팀은 <strong>실제 메모리가 더 작은 카드에서는 느려질 것</strong>이라고 직접 주의한다. 따라서 &ldquo;8GB에서 동작 가능&quot;은 팀의 제한 환경 실험으로 뒷받침되지만, 특정 8GB 그래픽카드에서 같은 속도와 호환성이 확인됐다는 뜻은 아니다. <a href="https://haoailab.com/blogs/fasth3-rtx/">공식 측정 표와 한계</a>.</p>
+<p>하드웨어별 모델 파일도 다르다. <strong>RTX 5090 같은 Blackwell에는 NVFP4</strong>, <strong>RTX 4090과 더 낮은 VRAM 계층에는 FP8과 계층별 오프로딩</strong>, <strong>Apple Silicon에는 MLX INT6</strong> 경로가 안내된다. Trim FP8 모델 카드의 트랜스포머 파일만도 <strong>19.9GiB</strong>이므로, 8GB 환경에서는 시스템 RAM·전송·오프로딩 설정까지 함께 고려해야 한다. RTX 4090의 FP8 Trim은 제한 없는 24GB에서 <strong>43.9초</strong>, 8GB 제한 시 <strong>82.0초</strong>로 차이가 난다. <a href="https://haoailab.com/blogs/fasth3-rtx/">공식 발표의 하드웨어별 모델 안내</a>, <a href="https://huggingface.co/FastVideo/FastVideo-FastH3-Trim-8-Step-FP8">Trim FP8 모델 카드</a>.</p>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<ol>
+<li><strong>속도가 우선이면 모델과 정밀도를 함께 적는다.</strong> &ldquo;FastH3 15초&quot;가 아니라 &ldquo;V2·NVFP4·RTX 5090·832×480·5초·오디오 포함·웜 서버에서 14.8초&quot;처럼 기록해야 비교가 된다. <a href="https://haoailab.com/blogs/fasth3-rtx/">공식 벤치마크</a>.</li>
+<li><strong>품질이 우선이면 V2를 먼저 비교한다.</strong> 개발팀은 Trim을 실험 모델로 부르며 복잡한 장면의 세부 묘사가 V2보다 약할 수 있다고 설명한다. <a href="https://haoailab.com/blogs/fasth3-rtx/">공식 한계</a>.</li>
+<li><strong>8GB 카드라면 성공 가능성과 운영성을 분리한다.</strong> 팀의 8GB 수치는 메모리 제한 RTX 4090 실험이다. 자신의 카드에서는 가용 RAM, 오프로딩, 실제 생성 시간, 해상도별 품질을 직접 측정해야 한다. <a href="https://haoailab.com/blogs/fasth3-rtx/">공식 메모리 실험 설명</a>.</li>
+<li><strong>모델 카드의 사용 범위와 라이선스를 확인한다.</strong> V2 카드가 명시하는 범위는 텍스트→오디오·영상이며, FL2VA·Ref2VA는 증류되지 않았다. FastVideo 코드 저장소의 Apache-2.0과 모델 가중치에 적용되는 MiniMax H3 Community License도 구별해야 한다. <a href="https://huggingface.co/FastVideo/FastVideo-FastH3-8-Step-V2">V2 모델 카드</a>, <a href="https://github.com/hao-ai-lab/FastVideo">FastVideo 저장소</a>.</li>
+</ol>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li><strong>14.8초</strong>: RTX 5090에서 FastH3 V2·NVFP4가 5초·832×480 오디오 포함 영상을 완성한 팀의 end-to-end 측정값이다. <a href="https://haoailab.com/blogs/fasth3-rtx/">공식 발표</a>.</li>
+<li><strong>13.4초</strong>: 같은 조건의 FastH3 Trim 값이다. V2와 혼동하지 않는다. <a href="https://haoailab.com/blogs/fasth3-rtx/">공식 발표</a>.</li>
+<li><strong>8GB·82.0초</strong>: 실제 8GB 카드가 아니라 RTX 4090을 8GB로 제한한 Trim·FP8 실험값이다. <a href="https://haoailab.com/blogs/fasth3-rtx/">공식 발표</a>.</li>
+<li>Trim은 8개 블록을 제거하고 시간 조건화를 압축한 실험형 모델로, 속도와 품질 사이의 선택이 필요하다. <a href="https://huggingface.co/FastVideo/FastVideo-FastH3-Trim-8-Step-FP8">Trim 모델 카드</a>.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>X 게시물의 방향은 맞다. FastH3는 이제 소비자용 장비에서도 실행 경로가 있고, RTX 5090에서는 소리 포함 5초 영상을 약 15초에 만들었다. 다만 <strong>15초와 8GB는 서로 다른 설정의 결과</strong>다. 모델 이름, 정밀도, 해상도, 측정 장비, 오프로딩 조건을 함께 적어야 이 숫자를 자신의 작업 환경에 의미 있게 적용할 수 있다. <a href="https://x.com/eternityspring/status/2107635413133447631">원본 X 게시물</a>, <a href="https://haoailab.com/blogs/fasth3-rtx/">개발팀 발표</a>.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 10월 08일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/10/2026-10-08-opus-5-5-video-prompt-gallery-reproducibility/" rel="prev">
+        <span>Opus 5.5 데모 475개를 보는 법: 프롬프트 갤러리와 재현 가능성의 차이</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#무엇이-새로워졌나-원본-h3와-단일-장비-실행을-구분하기">무엇이 새로워졌나: 원본 H3와 단일 장비 실행을 구분하기</a></li>
+    <li><a href="#rtx-5090의-15초는-어떤-측정인가">RTX 5090의 &ldquo;15초&quot;는 어떤 측정인가</a></li>
+    <li><a href="#fasth3-trim은-무엇을-줄였나">FastH3 Trim은 무엇을 줄였나</a></li>
+    <li><a href="#8gb에서-실행은-실제-8gb-gpu-검증과-다르다">&ldquo;8GB에서 실행&quot;은 실제 8GB GPU 검증과 다르다</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/ai/" class="badge badge-secondary">Ai</a>
+    <a href="/tags/python/" class="badge badge-secondary">Python</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
