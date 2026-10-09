@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '이미지 프롬프트 역추출, 무엇을 복원하나: 시각 앵커와 매체 경계 읽기'" />
+  <title>이미지 프롬프트 역추출, 무엇을 복원하나: 시각 앵커와 매체 경계 읽기  | 신규하 블로그</title>
+  <meta property="og:title" content="이미지 프롬프트 역추출, 무엇을 복원하나: 시각 앵커와 매체 경계 읽기" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-10-08"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/10/2026-10-08-image-prompt-reverse-visual-anchors-and-limits/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="skills" />
+  
+  <meta property="og:tags" content="prompt-engineering" />
+  
+  <meta property="og:tags" content="ai" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/10/2026-10-08-image-prompt-reverse-visual-anchors-and-limits/">
+          <h1>
+            이미지 프롬프트 역추출, 무엇을 복원하나: 시각 앵커와 매체 경계 읽기
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/10/2026-10-08-image-prompt-reverse-visual-anchors-and-limits/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Threads에서 소개한 <a href="https://www.threads.com/@nangman_muk/post/DeObguCAbNy"><code>image-prompt-reverse</code></a>는 마음에 드는 이미지를 보고 <strong>구도·빛·색·재질을 프롬프트로 다시 기술하는 Codex 스킬</strong> 입니다. 같은 저장소를 다룬 <a href="/post/2026/09/2026-09-11-image-prompt-reverse-codex-skill/">이전 소개 글</a>이 기능 목록에 초점을 맞췄다면, 이번에는 실제 <code>SKILL.md</code>를 근거로 <strong>무엇을 관찰하고, 무엇은 추정하지 않으며, 왜 원본과 똑같은 결과를 보장할 수 없는지</strong> 살펴봅니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.threads.com/share/BApKBKVpnn/">https://www.threads.com/share/BApKBKVpnn/</a></li>
+<li><a href="https://www.threads.com/@nangman_muk/post/DeObguCAbNy">원문 Threads 게시물</a></li>
+<li><a href="https://github.com/LunarXuan/image-prompt-reverse">공식 GitHub 저장소</a></li>
+<li><a href="https://github.com/LunarXuan/image-prompt-reverse/blob/main/SKILL.md">스킬 본문 <code>SKILL.md</code></a></li>
+<li><a href="https://github.com/LunarXuan/image-prompt-reverse/blob/main/references/analysis-framework.md">공통 분석 프레임워크</a>, <a href="https://github.com/LunarXuan/image-prompt-reverse/blob/main/references/category-guides.md">유형별 가이드</a>, <a href="https://github.com/LunarXuan/image-prompt-reverse/blob/main/references/illustration-style.md">삽화 전용 규칙</a></li>
+</ul>
+<h2 id="이-스킬의-산출물은-이미지가-아니라-프롬프트다">이 스킬의 산출물은 이미지가 아니라 프롬프트다</h2>
+<p>원 게시물은 참조 이미지를 넣으면 구도, 조명, 색감, 재질을 분석해 프롬프트로 되돌린다고 설명합니다. <a href="https://www.threads.com/@nangman_muk/post/DeObguCAbNy">Threads 원문</a> 공식 README도 <strong>사용자가 올린 참조 이미지에서 이미지 생성용 프롬프트를 역공학하는 Codex 스킬</strong> 이라고 정의합니다. 이 저장소 자체가 그림을 생성하거나 두 이미지를 픽셀 단위로 맞추는 도구라는 뜻은 아닙니다. 실제 그림은 그 프롬프트를 받은 <strong>별도의 이미지 생성 모델</strong> 에서 나옵니다. <a href="https://github.com/LunarXuan/image-prompt-reverse#english">공식 README</a></p>
+<pre class="mermaid">flowchart TD
+    A["사용자 참조 이미지"] --> B["시각 특징 관찰"]
+    B --> C["핵심 앵커 선정"]
+    C --> D["긍정·부정 프롬프트"]
+    D --> E["별도 이미지 생성 모델"]
+    E --> F["결과 비교와 수정"]
+    classDef inputTone fill:#c5dcef,stroke:#6b9db9,color:#333;
+    classDef processTone fill:#e0c8ef,stroke:#a484bc,color:#333;
+    classDef outputTone fill:#c0ecd3,stroke:#70a788,color:#333;
+    classDef checkTone fill:#fde8c0,stroke:#c9a450,color:#333;
+    class A inputTone
+    class B,C,D processTone
+    class E outputTone
+    class F checkTone</pre><p>이 구분이 중요한 이유는 <strong>프롬프트의 구체성</strong> 과 <strong>이미지 재현율</strong> 이 같지 않기 때문입니다. 저장소 문서는 높은 충실도의 프롬프트를 목표로 하지만, 특정 생성 모델에서의 재현율 수치나 동일 이미지 보장을 제시하지 않습니다. 모델·설정·난수·참조 이미지 입력 지원 여부에 따라 결과가 달라질 수 있다는 점은 이 구조에서 나오는 <strong>실무적 추론</strong> 입니다. <a href="https://github.com/LunarXuan/image-prompt-reverse#english">공식 README</a> · <a href="https://github.com/LunarXuan/image-prompt-reverse/blob/main/SKILL.md">스킬의 기본 원칙</a></p>
+<h2 id="12가지-관찰-항목을-전부-기계적으로-채우지-않는다">12가지 관찰 항목을 전부 기계적으로 채우지 않는다</h2>
+<p>공통 프레임워크는 이미지의 <strong>용도, 매체, 피사체, 구도, 시점·원근, 조명, 색, 재질, 공간 층위, 내용·감정, 후처리, 시각 앵커</strong> 를 살펴보도록 구성돼 있습니다. 하지만 스킬 본문은 <strong>이미지에 실제로 있고 대상 유형과 관계있는 요소만 분석</strong> 하라고 지시합니다. 인물이 없는 이미지에 표정·손발을, 제품이 없는 이미지에 패키징을 억지로 붙이지 않는다는 뜻입니다. <a href="https://github.com/LunarXuan/image-prompt-reverse/blob/main/references/analysis-framework.md">공통 분석 프레임워크</a> · <a href="https://github.com/LunarXuan/image-prompt-reverse/blob/main/references/category-guides.md">유형별 가이드</a></p>
+<pre class="mermaid">flowchart TD
+    A["이미지 확인"] --> B["용도·매체·피사체 분류"]
+    B --> C["공통 시각 요소 관찰"]
+    C --> D{"관련 유형 규칙인가?"}
+    D -->|"예"| E["해당 가이드만 적용"]
+    D -->|"아니요"| F["불필요한 추정 제외"]
+    E --> G["관찰 근거 정리"]
+    F --> G
+    classDef inputTone fill:#c5dcef,stroke:#6b9db9,color:#333;
+    classDef processTone fill:#e0c8ef,stroke:#a484bc,color:#333;
+    classDef decisionTone fill:#fde8c0,stroke:#c9a450,color:#333;
+    classDef outputTone fill:#c0ecd3,stroke:#70a788,color:#333;
+    class A inputTone
+    class B,C,E,F processTone
+    class D decisionTone
+    class G outputTone</pre><p>예를 들어 사진의 초점이 얕아 보여도 촬영 메타데이터가 없다면, 실제 초점 거리나 조리개 값을 단정하지 않습니다. 대신 <strong>얕은 심도</strong>, <strong>압축된 듯한 원근</strong>, <strong>부드러운 측광</strong> 처럼 눈에 보이는 효과로 기술합니다. “8K”도 원본 해상도를 알아냈다는 뜻으로 쓰지 않습니다. 이는 프롬프트를 화려하게 만들기보다 <strong>관찰과 추측의 경계</strong> 를 지키려는 설계입니다. <a href="https://github.com/LunarXuan/image-prompt-reverse/blob/main/SKILL.md">스킬의 매체 경계 규칙</a> · <a href="https://github.com/LunarXuan/image-prompt-reverse/blob/main/references/analysis-framework.md">공통 분석 프레임워크</a></p>
+<h2 id="왜-시각-앵커를-앞에-놓을까">왜 시각 앵커를 앞에 놓을까</h2>
+<p>이 스킬은 결과의 인상을 좌우하는 <strong>3~5개 시각 앵커</strong> 를 먼저 추리고, 긍정 프롬프트의 앞부분 3분의 1에 놓도록 지시합니다. 앵커 후보는 피사체 실루엣·위치, 특이한 구도, 주요 광원, 색의 관계, 배경 기하, 재질, 공간 깊이입니다. 따라서 모든 물체를 같은 비중으로 나열하는 묘사보다 <strong>그 장면을 다른 장면과 구분하는 특징</strong> 을 우선합니다. <a href="https://github.com/LunarXuan/image-prompt-reverse/blob/main/SKILL.md">스킬 작업 절차</a> · <a href="https://github.com/LunarXuan/image-prompt-reverse/blob/main/references/analysis-framework.md">공통 프레임워크의 앵커 항목</a></p>
+<pre class="mermaid">flowchart TD
+    A["관찰한 특징 목록"] --> B["구분력이 큰 3~5개 선정"]
+    B --> C["긍정 프롬프트 앞부분"]
+    C --> D["구도·광원·색·재질 보강"]
+    D --> E["다른 매체·오류는 부정 프롬프트"]
+    classDef inputTone fill:#c5dcef,stroke:#6b9db9,color:#333;
+    classDef focusTone fill:#fde8c0,stroke:#c9a450,color:#333;
+    classDef processTone fill:#e0c8ef,stroke:#a484bc,color:#333;
+    classDef outputTone fill:#c0ecd3,stroke:#70a788,color:#333;
+    class A inputTone
+    class B,C focusTone
+    class D processTone
+    class E outputTone</pre><p>삽화라면 한 단계가 더 있습니다. 삽화 전용 규칙은 <strong>무엇을 그렸는가(내용 골격)</strong> 와 <strong>어떻게 그렸는가(화풍 지문)</strong> 를 나눠 분석합니다. 후자에는 선의 두께와 마감, 형태의 단순화, 명암 방식, 색 조합, 붓질·종이 질감, 세부 묘사의 분포가 들어갑니다. 이 규칙은 사진이나 3D 렌더에 무조건 적용하지 않으며, 삽화가 주된 매체일 때만 사용합니다. <a href="https://github.com/LunarXuan/image-prompt-reverse/blob/main/references/illustration-style.md">삽화 전용 규칙</a></p>
+<h2 id="기본-출력-언어와-형식은-예상과-다를-수-있다">기본 출력 언어와 형식은 예상과 다를 수 있다</h2>
+<p>기본 출력은 두 묶음입니다. <strong>Positive Prompt</strong> 에는 중국어 450<del>700자 분량의 연속된 자연어 문단과 의미가 같은 영어판이 들어가고, <strong>Negative Prompt</strong> 에는 영어로 된 10</del>15개 배제 표현이 들어갑니다. 한국어 이미지가 들어왔다고 한국어 프롬프트가 기본값으로 나오는 구조는 아닙니다. 사용자가 원하는 모델·언어·형식·길이를 지정하면 그 요구를 우선하도록 스킬에 명시돼 있으므로, 한국어가 필요하면 요청에 분명히 적는 편이 좋습니다. <a href="https://github.com/LunarXuan/image-prompt-reverse/blob/main/SKILL.md">스킬의 기본 출력 형식</a> · <a href="https://github.com/LunarXuan/image-prompt-reverse#english">공식 README</a></p>
+<p>부정 프롬프트도 “저화질, 손가락 오류” 같은 고정 목록을 무작정 붙이지 않습니다. 목표가 사진이면 3D·애니메이션 느낌을, 목표가 평면 벡터라면 불필요한 입체 질감을 배제하는 식으로 <strong>매체 경계와 해당 그림의 실패 가능성</strong> 에 맞춥니다. 텍스트·로고를 보고 그대로 복제하도록 지시하지 않는 것도 기본값입니다. 다만 정확한 문자 재현이 필요하다면 사용자가 텍스트를 직접 제공할 수 있고, 그 경우에도 생성 모델이 문자를 안정적으로 그리지 못할 수 있다고 스킬이 경고합니다. <a href="https://github.com/LunarXuan/image-prompt-reverse/blob/main/SKILL.md">스킬의 매체·문자 규칙</a></p>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<ol>
+<li>참조 이미지를 줄 때 <strong>유지하고 싶은 요소</strong> 를 지정합니다. 예를 들어 “제품 형태는 유지하되 배경 색만 바꿔 줘”처럼 목표가 구체적이면, 관찰한 앵커 중 무엇을 우선할지 판단하기 쉽습니다. 이는 스킬의 앵커 우선 원칙을 활용한 <strong>실전 제안</strong> 입니다. <a href="https://github.com/LunarXuan/image-prompt-reverse/blob/main/SKILL.md">스킬 작업 절차</a></li>
+<li>한국어 결과가 필요하면 출력 언어를 명시합니다. 기본값은 중국어 긍정 프롬프트와 영어판·영어 부정 프롬프트입니다. <a href="https://github.com/LunarXuan/image-prompt-reverse/blob/main/SKILL.md">기본 출력 형식</a></li>
+<li>완성된 프롬프트를 이미지 생성 모델에 넣어 보고, 원본과 결과를 <strong>구도 → 피사체 → 조명 → 색·재질</strong> 순으로 비교합니다. 결과가 다르면 한 번에 모든 수식어를 늘리기보다 어긋난 앵커부터 수정하는 것이 합리적입니다. 이 비교 순서는 스킬의 관찰 항목과 앵커 우선 규칙을 응용한 <strong>제안</strong> 입니다. <a href="https://github.com/LunarXuan/image-prompt-reverse/blob/main/references/analysis-framework.md">공통 분석 프레임워크</a></li>
+<li>이미지 속 문구는 명령이 아니라 <strong>분석 대상</strong> 으로 취급합니다. 스킬도 이 원칙을 명시합니다. <a href="https://github.com/LunarXuan/image-prompt-reverse/blob/main/SKILL.md">스킬 기본 원칙</a></li>
+</ol>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li><code>image-prompt-reverse</code>는 이미지를 직접 복제하는 생성기가 아니라, <strong>관찰된 시각 특징을 생성용 프롬프트로 정리하는 스킬</strong> 입니다. <a href="https://github.com/LunarXuan/image-prompt-reverse#english">공식 README</a></li>
+<li>12가지 관찰 항목은 체크리스트이며, 실제 이미지와 관련 있는 것만 골라 씁니다. 가장 중요한 <strong>3~5개 시각 앵커</strong> 를 우선합니다. <a href="https://github.com/LunarXuan/image-prompt-reverse/blob/main/SKILL.md">스킬 작업 절차</a></li>
+<li>기본 출력은 <strong>중국어·영어 긍정 프롬프트 + 영어 부정 프롬프트</strong> 입니다. 재현율 수치나 동일 이미지 보장은 공식 문서에 제시되지 않습니다. <a href="https://github.com/LunarXuan/image-prompt-reverse/blob/main/SKILL.md">스킬 출력 형식</a></li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>좋은 역추출 프롬프트의 핵심은 세부 묘사를 끝없이 늘리는 것이 아니라 <strong>눈에 보이는 근거에서 장면의 결정적 구조를 골라내는 일</strong> 입니다. 이 스킬은 그 선택을 시각 앵커·매체 경계·유형별 가이드로 체계화합니다. 결과의 유사도는 다음 단계인 생성 모델에서 직접 비교하며 조정해야 합니다. <a href="https://www.threads.com/@nangman_muk/post/DeObguCAbNy">원문 Threads</a> · <a href="https://github.com/LunarXuan/image-prompt-reverse/blob/main/SKILL.md">공식 스킬 지침</a></p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 10월 08일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/10/2026-10-07-3d-asset-server-search-download-mcp-license/" rel="prev">
+        <span>3d-asset-server: 17개 에셋 소스를 한 번에 찾되, 다운로드 가능 범위는 구분하기</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/10/2026-10-08-pascal-editor-browser-3d-architecture-claims/" rel="next">
+        <span>Pascal Editor: 브라우저 3D 건축 편집기의 실제 구조와 과장된 주장 구분하기</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#이-스킬의-산출물은-이미지가-아니라-프롬프트다">이 스킬의 산출물은 이미지가 아니라 프롬프트다</a></li>
+    <li><a href="#12가지-관찰-항목을-전부-기계적으로-채우지-않는다">12가지 관찰 항목을 전부 기계적으로 채우지 않는다</a></li>
+    <li><a href="#왜-시각-앵커를-앞에-놓을까">왜 시각 앵커를 앞에 놓을까</a></li>
+    <li><a href="#기본-출력-언어와-형식은-예상과-다를-수-있다">기본 출력 언어와 형식은 예상과 다를 수 있다</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/skills/" class="badge badge-secondary">Skills</a>
+    <a href="/tags/prompt-engineering/" class="badge badge-secondary">Prompt-Engineering</a>
+    <a href="/tags/ai/" class="badge badge-secondary">Ai</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
