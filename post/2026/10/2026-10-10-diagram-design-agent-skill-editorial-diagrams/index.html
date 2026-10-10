@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'diagram-design: AI 다이어그램이 똑같은 둥근 상자로 보일 때'" />
+  <title>diagram-design: AI 다이어그램이 똑같은 둥근 상자로 보일 때  | 신규하 블로그</title>
+  <meta property="og:title" content="diagram-design: AI 다이어그램이 똑같은 둥근 상자로 보일 때" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-10-10"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/10/2026-10-10-diagram-design-agent-skill-editorial-diagrams/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="skills" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/10/2026-10-10-diagram-design-agent-skill-editorial-diagrams/">
+          <h1>
+            diagram-design: AI 다이어그램이 똑같은 둥근 상자로 보일 때
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/10/2026-10-10-diagram-design-agent-skill-editorial-diagrams/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p><a href="https://x.com/lxfater/status/2108369386079662191">lxfater의 X 게시물</a>은 Claude가 그린 다이어그램이 평범한 둥근 상자에 머물러 Figma에서 다시 손보게 되는 문제를 소개합니다. 해결책으로 언급한 <code>diagram-design</code>은 배색·서체·배치 기준을 에이전트 스킬에 담은 오픈소스 프로젝트입니다. 이 글은 게시물의 짧은 소개를 <a href="https://github.com/cathrynlavery/diagram-design">프로젝트 공식 저장소</a>와 대조해, 무엇이 달라지고 언제 쓰는 것이 적합한지 살펴봅니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://x.com/lxfater/status/2108369386079662191">https://x.com/lxfater/status/2108369386079662191</a></li>
+<li><a href="https://github.com/cathrynlavery/diagram-design">diagram-design 공식 저장소</a></li>
+<li><a href="https://github.com/cathrynlavery/diagram-design/blob/main/skills/diagram-design/SKILL.md">diagram-design의 스킬 지침</a></li>
+<li><a href="https://github.com/cathrynlavery/diagram-design/blob/main/docs/cookbook.md">diagram-design 사용 가이드</a></li>
+</ul>
+<h2 id="문제는-그릴-수-있느냐보다-무엇을-덜-그릴지다">문제는 그릴 수 있느냐보다 무엇을 덜 그릴지다</h2>
+<p>게시물은 &ldquo;AI가 그린 흐름도가 너무 못생겼다&quot;는 문제에서 출발합니다. 제작자 역시 공식 README에서 Claude에 다이어그램을 요청할 때 사이트 디자인과 맞지 않는 일반적인 둥근 상자 결과를 받고, 이를 Figma에서 고치거나 아예 그림을 포기했다고 설명합니다. 해결 방향은 새로운 이미지 생성 모델이 아니라 <strong>다이어그램 제작 기준을 명시적인 스킬로 만드는 것</strong> 입니다. <a href="https://x.com/lxfater/status/2108369386079662191">원 게시물</a> · <a href="https://github.com/cathrynlavery/diagram-design">공식 README</a></p>
+<p>공식 스킬 지침은 우선 각 노드가 다른 개념을 나타내는지, 연결선이 실제 정보를 더하는지 따져 보라고 합니다. 강조색은 모든 상자에 칠하는 장식이 아니라 독자가 먼저 볼 한두 곳에 제한합니다. 이것은 &ldquo;더 화려하게&quot;보다 <strong>정보 위계와 불필요한 요소 제거</strong> 에 무게를 둔 설계입니다. <a href="https://github.com/cathrynlavery/diagram-design/blob/main/skills/diagram-design/SKILL.md">공식 스킬 지침의 디자인 철학</a></p>
+<pre class="mermaid">flowchart TD
+    A["설명할 내용"] --> B["핵심 개념 선택"]
+    B --> C["관계·강조점 결정"]
+    C --> D["배치·서체·색 적용"]
+    D --> E["독자가 읽는 도표"]
+    classDef inputTone fill:#c5dcef,stroke:#6b9db9,color:#333;
+    classDef processTone fill:#e0c8ef,stroke:#a484bc,color:#333;
+    classDef focusTone fill:#fde8c0,stroke:#c9a450,color:#333;
+    classDef outputTone fill:#c0ecd3,stroke:#70a788,color:#333;
+    class A inputTone
+    class B,C processTone
+    class D focusTone
+    class E outputTone</pre><p>이 Mermaid 그림은 <strong>이 글의 설명용 도표</strong> 입니다. <code>diagram-design</code>이 실제로 만들어 내는 결과물의 예시는 아닙니다. 두 출력 방식을 혼동하지 않도록 구분해야 합니다.</p>
+<h2 id="입력은-자연어-결과는-독립-html과-svg다">입력은 자연어, 결과는 독립 HTML과 SVG다</h2>
+<p>공식 README에 따르면 사용자는 아키텍처, 흐름도, 시퀀스, 사분면 등 원하는 정보를 자연어로 요청합니다. 에이전트가 유형과 구성을 정한 뒤 <strong>인라인 SVG가 들어 있는 독립 HTML 파일</strong> 을 작성하는 방식입니다. 필요하면 SVG나 PNG로 내보낼 수 있고, 기존 Mermaid·draw.io·Excalidraw 자료를 가져와 새 디자인으로 다시 그리는 경로도 제공합니다. 이는 원본 문법을 그대로 예쁘게 렌더링한다는 뜻이 아니라, 관계와 묶음을 읽어 <strong>재구성</strong> 한다는 뜻에 가깝습니다. <a href="https://github.com/cathrynlavery/diagram-design">공식 README의 출력·가져오기 설명</a></p>
+<pre class="mermaid">flowchart TD
+    A["자연어 설명"] --> C["스킬 지침"]
+    B["기존 다이어그램"] --> C
+    C --> D["의미 구조와 유형 선택"]
+    D --> E["브랜드 규칙 적용"]
+    E --> F["HTML + 인라인 SVG"]
+    F --> G["선택적 SVG·PNG 내보내기"]
+    classDef inputTone fill:#c5dcef,stroke:#6b9db9,color:#333;
+    classDef processTone fill:#e0c8ef,stroke:#a484bc,color:#333;
+    classDef outputTone fill:#c0ecd3,stroke:#70a788,color:#333;
+    class A,B inputTone
+    class C,D,E processTone
+    class F,G outputTone</pre><p>지침은 도식의 의미가 행동·상태·위험에 걸려 있다면 먼저 <strong>의미 패턴</strong> 을 고르고, 그다음 화면에 나타낼 <strong>시각 유형</strong> 을 선택하도록 안내합니다. 예를 들어 순서가 핵심인 상호작용은 시퀀스, 조건 분기가 핵심인 설명은 흐름도, 계층 관계는 트리와 같이 다른 문법이 필요합니다. 먼저 예쁜 색을 고르는 것이 아니라, 관계를 표현할 방식을 정한다는 점이 이 스킬의 핵심입니다. <a href="https://github.com/cathrynlavery/diagram-design/blob/main/skills/diagram-design/SKILL.md">공식 스킬 지침의 선택 절차</a></p>
+<h2 id="스타일-가이드는-결과의-일관성을-위한-제약이다">스타일 가이드는 결과의 일관성을 위한 제약이다</h2>
+<p>공식 README는 강조색을 한두 초점에만 쓰고, 얇은 선, 그림자 없는 외관, 일정한 간격 격자 등을 디자인 원칙으로 제시합니다. 또한 프로젝트의 첫 도표에서 기본 스타일을 그대로 브랜드 작업에 적용하지 않도록, 기존 스타일 가이드나 저장된 프로필을 확인하고 필요하면 온보딩하도록 스킬 지침을 둡니다. 따라서 &ldquo;한 번 설치하면 모든 브랜드에 자동으로 잘 맞는다&quot;는 주장보다 <strong>디자인 토큰을 정하고 재사용하도록 유도한다</strong> 는 설명이 정확합니다. <a href="https://github.com/cathrynlavery/diagram-design">공식 README의 디자인 시스템·첫 실행 안내</a> · <a href="https://github.com/cathrynlavery/diagram-design/blob/main/skills/diagram-design/SKILL.md">스킬 지침</a></p>
+<pre class="mermaid">flowchart TD
+    A["프로젝트 첫 도표"] --> B{"브랜드 스타일 지정?"}
+    B -->|"예"| C["저장된 토큰·프로필 적용"]
+    B -->|"아니요"| D["기본 스타일 또는 온보딩 선택"]
+    C --> E["도표 생성"]
+    D --> E
+    E --> F["가독성·겹침·잘림 점검"]
+    classDef inputTone fill:#c5dcef,stroke:#6b9db9,color:#333;
+    classDef decisionTone fill:#fde8c0,stroke:#c9a450,color:#333;
+    classDef processTone fill:#e0c8ef,stroke:#a484bc,color:#333;
+    classDef outputTone fill:#c0ecd3,stroke:#70a788,color:#333;
+    class A inputTone
+    class B decisionTone
+    class C,D,E processTone
+    class F outputTone</pre><p>공식 README는 결과 검증을 위해 <code>self_check.py</code> 실행 예시도 제공합니다. 다만 이런 검사만으로 <strong>정보의 정확성이나 미적 품질이 객관적으로 보증되는 것은 아닙니다.</strong> 겹침·잘림 같은 형식 문제를 자동 점검하고, 내용의 누락·강조의 타당성은 사람이 살펴보는 식으로 역할을 나누는 편이 합리적입니다. 마지막 문장은 공식 검증 범위를 바탕으로 한 실무적 해석입니다. <a href="https://github.com/cathrynlavery/diagram-design">공식 README의 확인 절차</a></p>
+<h2 id="mermaid를-버리는-도구인가">Mermaid를 버리는 도구인가</h2>
+<p>아닙니다. 프로젝트 README도 <strong>Git에서 자주 바뀌는 기술 문서에는 Mermaid가 더 적합하다</strong> 고 분명히 말합니다. Mermaid는 텍스트 차이를 검토하기 쉽고 GitHub에서 렌더링할 수 있습니다. 반면 이 스킬은 출판·발표처럼 완성된 시각 표현이 중요한 도표에 초점을 둡니다. HTML·SVG 결과는 직접 수정할 수 있지만, 다이어그램 전용 선언형 원본이나 드래그 가능한 캔버스와 동일하지 않습니다. 같은 요청을 다시 실행했을 때 배치가 달라질 수도 있다는 한계도 README가 명시합니다. <a href="https://github.com/cathrynlavery/diagram-design">공식 README의 비교와 한계</a></p>
+<pre class="mermaid">flowchart TD
+    A["도표의 주 사용처"] --> B{"변경 빈도와 편집 방식"}
+    B -->|"문서에서 자주 수정"| C["Mermaid 원본 유지"]
+    B -->|"발행용 시각물"| D["diagram-design 검토"]
+    C --> E["텍스트 diff·자동 렌더"]
+    D --> F["배치·브랜드 표현·시각 검수"]
+    classDef inputTone fill:#c5dcef,stroke:#6b9db9,color:#333;
+    classDef decisionTone fill:#fde8c0,stroke:#c9a450,color:#333;
+    classDef mermaidTone fill:#e0c8ef,stroke:#a484bc,color:#333;
+    classDef designTone fill:#c0ecd3,stroke:#70a788,color:#333;
+    class A inputTone
+    class B decisionTone
+    class C,E mermaidTone
+    class D,F designTone</pre><p>여기서 두 경로는 <strong>위아래의 분기</strong> 로 읽어야 합니다. 디자인 스킬이 Mermaid를 완전히 대체한다는 비교가 아니라, 최종 매체와 유지보수 방식에 따라 선택한다는 뜻입니다. 이 블로그 본문은 Hugo의 Mermaid 렌더링 규칙을 따르므로 설명용 그림을 Mermaid로 유지합니다.</p>
+<h2 id="설치-전에-알아둘-점">설치 전에 알아둘 점</h2>
+<p>공식 저장소는 Agent Skills 호환 도구에서 <code>npx skills add cathrynlavery/diagram-design</code> 설치 경로를 안내합니다. Claude Code용 플러그인 마켓플레이스 설치 경로도 별도로 제공합니다. 두 방식은 업데이트와 제공 명령의 범위가 다르므로, <strong>어떤 호스트에서 어떤 기능을 쓸지</strong> 먼저 확인해야 합니다. 이 글에서는 명령을 실행하거나 사용자 환경에 스킬을 설치하지 않았습니다. <a href="https://github.com/cathrynlavery/diagram-design">공식 README의 설치 설명</a></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>npx skills add cathrynlavery/diagram-design
+</span></span></code></pre></div><p>사용할 때는 &ldquo;아키텍처를 그려 줘&quot;에서 멈추지 말고 <strong>독자, 크기, 핵심 관계, 강조할 한두 지점, 브랜드 토큰</strong> 을 함께 지정하는 편이 좋습니다. 생성 후에는 요소 간 의미 관계, 글자 크기, 겹침, 내보낸 이미지의 가독성을 확인해야 합니다. 이는 공식 스킬이 의미 패턴과 스타일을 분리하고 검증 단계를 둔 이유에서 도출한 실무 지침입니다. <a href="https://github.com/cathrynlavery/diagram-design/blob/main/skills/diagram-design/SKILL.md">공식 스킬 지침</a></p>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<ol>
+<li><strong>문서 안에서 계속 고칠 도표</strong> 라면 Mermaid를 원본으로 유지하고, <strong>발표·출판용 최종 도표</strong> 에만 디자인 스킬을 검토합니다. <a href="https://github.com/cathrynlavery/diagram-design">공식 README</a></li>
+<li>스킬이 기존 Mermaid 자료를 가져올 수 있더라도, 변환 후에는 노드의 의미와 관계가 보존됐는지 원본과 대조합니다. <a href="https://github.com/cathrynlavery/diagram-design">가져오기 설명</a></li>
+<li>결과가 좋지 않으면 색상만 늘리기보다 정보량과 강조점을 먼저 줄입니다. <a href="https://github.com/cathrynlavery/diagram-design/blob/main/skills/diagram-design/SKILL.md">스킬의 디자인 철학</a></li>
+</ol>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>X 게시물의 &ldquo;AI용 그림 매뉴얼&quot;이라는 비유는 프로젝트가 <strong>명시적인 디자인 규칙을 스킬로 제공한다</strong> 는 점을 잘 짚습니다.</li>
+<li><code>diagram-design</code>의 주 출력은 독립 HTML과 인라인 SVG이며, 기존 도표를 시각적으로 재구성하는 기능도 있습니다.</li>
+<li>Mermaid의 텍스트 편집성과 Git diff는 여전히 장점입니다. 완성된 시각물과 자주 수정되는 문서는 목적이 다릅니다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>이 스킬의 가치는 다이어그램을 자동으로 &ldquo;예쁘게&rdquo; 만드는 약속보다, <strong>무엇을 보여 주고 무엇을 빼야 하는지</strong> 를 에이전트에 반복 가능한 기준으로 전달하는 데 있습니다. 목적이 분명한 도표부터 시험하고, 결과의 의미와 가독성은 마지막에 직접 검토하는 것이 좋습니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 10월 10일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/10/2026-10-10-rea-agent-reverse-engineering-evidence-workflow/" rel="prev">
+        <span>REA로 무엇이든 리버스 엔지니어링? 에이전트 분석 도구의 범위와 근거 읽는 법</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#문제는-그릴-수-있느냐보다-무엇을-덜-그릴지다">문제는 그릴 수 있느냐보다 무엇을 덜 그릴지다</a></li>
+    <li><a href="#입력은-자연어-결과는-독립-html과-svg다">입력은 자연어, 결과는 독립 HTML과 SVG다</a></li>
+    <li><a href="#스타일-가이드는-결과의-일관성을-위한-제약이다">스타일 가이드는 결과의 일관성을 위한 제약이다</a></li>
+    <li><a href="#mermaid를-버리는-도구인가">Mermaid를 버리는 도구인가</a></li>
+    <li><a href="#설치-전에-알아둘-점">설치 전에 알아둘 점</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/skills/" class="badge badge-secondary">Skills</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
