@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude Code로 영상 편집 자동화하기: 레퍼런스 분석부터 검수까지'" />
+  <title>Claude Code로 영상 편집 자동화하기: 레퍼런스 분석부터 검수까지  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude Code로 영상 편집 자동화하기: 레퍼런스 분석부터 검수까지" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-10-10"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/10/2026-10-10-claude-code-video-editing-rules-python-ffmpeg-workflow/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="skills" />
+  
+  <meta property="og:tags" content="automation" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/10/2026-10-10-claude-code-video-editing-rules-python-ffmpeg-workflow/">
+          <h1>
+            Claude Code로 영상 편집 자동화하기: 레퍼런스 분석부터 검수까지
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/10/2026-10-10-claude-code-video-editing-rules-python-ffmpeg-workflow/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p><a href="https://www.threads.com/share/BAQfXuXClm/">한 Threads 게시물</a>은 편집을 모르는 유튜버가 Claude Code로 영상을 만들었다며 제작 방법을 공개했다. 본문만 읽으면 &ldquo;딸깍 한 번&quot;처럼 보이지만, 작성자가 남긴 <a href="https://www.threads.com/@jachung__/post/DeG1x1IE1ve">후속 설명</a>을 따라가면 핵심은 <strong>기존 영상에서 편집 규칙을 추출하고, 그 규칙을 실행하는 프로그램을 만든 뒤, 결과를 반복 검수하는 작업 흐름</strong>이다.</p>
+<p>이 글은 게시물과 작성자 댓글에 공개된 절차를 재구성한 것이다. 실제 코드·원본 영상·완성 파일은 제공되지 않았으므로 특정 편집 품질이나 성능을 독립적으로 검증했다는 뜻은 아니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.threads.com/share/BAQfXuXClm/">원문 Threads 공유 링크</a> · <a href="https://www.threads.com/@jachung__/post/DeG10fBk6NM">원문 게시물</a></li>
+<li><a href="https://www.threads.com/@jachung__/post/DeG1yNvk4ps">작성자의 결과 설명</a></li>
+<li><a href="https://www.threads.com/@jachung__/post/DeG1x1IE1ve">작성자의 편집 규칙집·프로그램 설명</a></li>
+<li><a href="https://www.threads.com/@jachung__/post/DeG1x3IkwT9">작성자의 편집 순서 설명</a></li>
+<li><a href="https://www.threads.com/@jachung__/post/DeG1x4wE9uT">작성자의 검수·피드백·재사용 설명</a></li>
+<li><a href="https://www.threads.com/@jachung__/post/DeG1x6hEyiz">작성자의 레퍼런스 강조</a></li>
+<li><a href="https://code.claude.com/docs/en/skills">Claude Code 공식 스킬 문서</a></li>
+<li><a href="https://www.ffmpeg.org/ffmpeg.html">FFmpeg 공식 문서</a> · <a href="https://www.ffmpeg.org/ffmpeg-filters.html">필터 문서</a></li>
+</ul>
+<h2 id="1-먼저-좋은-편집을-규칙으로-바꾼다">1. 먼저 &lsquo;좋은 편집&rsquo;을 규칙으로 바꾼다</h2>
+<p>작성자는 참고할 유튜브 영상 <strong>3~4개</strong>를 제공하고, 컷 간격·자막의 글꼴과 위치·강조 순간·효과음과 배경음의 타이밍·자료화면·화면 확대·인트로와 아웃트로를 장면 단위로 분석해 <strong>편집 규칙집</strong>을 만들라고 제안한다. 마지막 댓글에서도 가장 중요한 입력으로 레퍼런스 영상을 꼽았다. 이는 모델에게 막연히 &ldquo;멋지게 편집해&quot;라고 말하는 것보다, 어떤 결과를 원하는지 관찰 가능한 기준으로 지정하는 방식이다. 다만 레퍼런스의 편집 스타일을 분석하는 것과 영상·음원·그래픽을 무단으로 재사용하는 것은 구분해야 한다. <a href="https://www.threads.com/@jachung__/post/DeG1x1IE1ve">편집 규칙 요청</a> · <a href="https://www.threads.com/@jachung__/post/DeG1x6hEyiz">레퍼런스 강조</a></p>
+<pre class="mermaid">flowchart TD
+    A["사용 권한이 있는 레퍼런스"] --> B["장면별 편집 요소 관찰"]
+    B --> C["컷·자막·음향·자료화면 규칙집"]
+    C --> D["새 영상에 적용할 기준"]
+    classDef inputTone fill:#c5dcef,stroke:#6b9fc1,color:#333
+    classDef processTone fill:#fde8c0,stroke:#c9a96c,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#72b28d,color:#333
+    class A inputTone
+    class B,C processTone
+    class D outputTone</pre><p>규칙집은 예컨대 &ldquo;강조 자막을 언제 쓰는가&rdquo;, &ldquo;말 없는 구간을 어느 정도까지 자르는가&rdquo;, &ldquo;자료화면의 출처를 어떻게 표시하는가&quot;처럼 판단 가능한 항목으로 나눠야 한다. <strong>정확한 숫자나 디자인 값은 원문에 공개되지 않았다.</strong> 따라서 다른 사람이 같은 결과를 재현하려면 자신의 레퍼런스를 직접 측정해 규칙을 채워야 한다.</p>
+<h2 id="2-전사와-교정-대본을-컷-편집의-기준으로-삼는다">2. 전사와 교정 대본을 컷 편집의 기준으로 삼는다</h2>
+<p>작성자가 제시한 순서는 <strong>원본 음성 전사 → 더듬음·반복·긴 침묵을 뺀 교정 대본 → 교정 대본에 남은 말만 컷 편집</strong>이다. 중요한 제약은 화자의 내용과 말투를 바꾸지 않는 것이다. 이는 생성 모델이 새로운 문장을 써서 영상을 바꾸는 작업이 아니라, 원래 녹화분 중 사용할 구간을 선택하는 작업으로 읽어야 한다. <a href="https://www.threads.com/@jachung__/post/DeG1x3IkwT9">작성자의 편집 순서</a></p>
+<pre class="mermaid">flowchart TD
+    A["원본 영상과 음성"] --> B["시간 정보를 가진 전사"]
+    B --> C["더듬음·반복·침묵 검토"]
+    C --> D["화자의 뜻을 보존한 교정 대본"]
+    D --> E["대본에 대응하는 원본 구간 선택"]
+    E --> F["컷 편집 결과"]
+    classDef inputTone fill:#c5dcef,stroke:#6b9fc1,color:#333
+    classDef processTone fill:#fde8c0,stroke:#c9a96c,color:#333
+    classDef checkTone fill:#e0c8ef,stroke:#a68ab8,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#72b28d,color:#333
+    class A inputTone
+    class B,C,E processTone
+    class D checkTone
+    class F outputTone</pre><p>실제로 구현한다면 각 문장에 원본 영상의 시작·끝 시간을 연결하고, 제거할 구간이 문장 일부를 잘라 의미를 왜곡하지 않는지 사람이 확인해야 한다. <strong>어떤 전사 모델이나 시간 정렬 도구를 사용했는지는 원문에 나오지 않는다.</strong> 그러므로 특정 모델을 썼다고 단정하거나, 자동 전사가 항상 컷 편집에 충분할 만큼 정확하다고 가정해서는 안 된다.</p>
+<h2 id="3-python과-ffmpeg는-편집-규칙을-실행하는-도구다">3. Python과 FFmpeg는 &lsquo;편집 규칙을 실행하는 도구&rsquo;다</h2>
+<p>작성자의 프롬프트는 규칙집대로 편집하는 <strong>Python + FFmpeg 프로그램</strong>을 만들고, 다음부터 한 문장으로 부를 수 있게 스킬로 저장하라고 요청한다. 이어 컷 편집 후 자막·강조 자막·효과음·배경음, 내용에 맞는 자료화면과 출처 표기를 넣고 MP4로 저장하도록 지시한다. <a href="https://www.threads.com/@jachung__/post/DeG1x1IE1ve">프로그램 요청</a> · <a href="https://www.threads.com/@jachung__/post/DeG1x3IkwT9">렌더링 순서</a></p>
+<pre class="mermaid">flowchart TD
+    A["교정 대본과 컷 구간"] --> B["Python 편집 계획 생성"]
+    C["편집 규칙집"] --> B
+    B --> D["FFmpeg로 컷·자막·음향·화면 합성"]
+    D --> E["MP4 후보 파일"]
+    classDef inputTone fill:#c5dcef,stroke:#6b9fc1,color:#333
+    classDef processTone fill:#fde8c0,stroke:#c9a96c,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#72b28d,color:#333
+    class A,C inputTone
+    class B,D processTone
+    class E outputTone</pre><p><a href="https://www.ffmpeg.org/ffmpeg.html">FFmpeg 공식 문서</a>는 입력 스트림을 선택·변환·인코딩하는 명령행 도구를 설명하고, <a href="https://www.ffmpeg.org/ffmpeg-filters.html">필터 문서</a>는 영상 합성, 자막, 오디오 처리를 위한 기능을 문서화한다. 다만 FFmpeg 자체가 &ldquo;좋은 컷&quot;을 판단해 주지는 않는다. 컷 구간과 스타일은 앞 단계의 규칙집·전사·편집 계획이 결정해야 한다. <a href="https://code.claude.com/docs/en/skills">Claude Code의 스킬</a>은 반복 작업의 지침과 리소스를 묶는 방식이지, 스킬 파일만 저장하면 영상 편집기가 저절로 완성된다는 뜻도 아니다.</p>
+<p>또한 원문 프롬프트의 &ldquo;필요한 도구를 직접 설치&quot;나 &ldquo;자료화면을 찾아 넣기&quot;는 편리하지만, 실제 운영에서는 <strong>설치 명령 확인</strong>, <strong>자료화면·음원 사용 권한 확인</strong>, <strong>출처 검증</strong>이 선행되어야 한다. 출처를 작게 표시하는 것만으로 이용 허락을 대신할 수는 없다.</p>
+<h2 id="4-렌더링-뒤에도-검수와-피드백이-남는다">4. 렌더링 뒤에도 검수와 피드백이 남는다</h2>
+<p>작성자는 완성 파일에서 <strong>자막 오타, 소리 끊김, 화면 멈춤, 개인정보 노출</strong>을 스스로 확인·수정하고 결과를 보고하도록 요청한다. 사용자가 아쉬운 점을 지적하면 규칙집에 추가해 다음 영상에 반영한다. &ldquo;구글 드라이브에 영상 올렸어, 편집해줘&quot;라는 재사용 명령도 제안하지만, 드라이브 연결이 없으면 연결 방법부터 안내하라는 조건을 붙였다. 즉, 단발성 생성보다 <strong>규칙집 → 실행 → 검수 → 규칙집 갱신</strong>의 반복이 핵심이다. <a href="https://www.threads.com/@jachung__/post/DeG1x4wE9uT">작성자의 검수·재사용 설명</a></p>
+<pre class="mermaid">flowchart TD
+    A["MP4 후보"] --> B["자막·오디오·프레임·개인정보 검사"]
+    B --> C{"사용자 확인 통과?"}
+    C -- "아니요" --> D["수정 사항을 규칙집에 기록"]
+    D --> E["다시 렌더링"]
+    E --> B
+    C -- "예" --> F["최종 파일 전달"]
+    classDef inputTone fill:#c5dcef,stroke:#6b9fc1,color:#333
+    classDef processTone fill:#fde8c0,stroke:#c9a96c,color:#333
+    classDef checkTone fill:#e0c8ef,stroke:#a68ab8,color:#333
+    classDef failTone fill:#ffc8c4,stroke:#c7837c,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#72b28d,color:#333
+    class A inputTone
+    class B,E processTone
+    class C checkTone
+    class D failTone
+    class F outputTone</pre><p>자동 검사는 실수를 줄일 수 있지만, 자막의 의미·자료화면의 적절성·개인정보 노출처럼 맥락이 중요한 항목은 <strong>게시 전 사람이 최종 재생하며 확인</strong>하는 편이 안전하다. 이는 원문에 나온 자기 검수 조건을 실제 게시 절차에 적용할 때의 권장 사항이다.</p>
+<h2 id="5-사례의-결과를-보편적-성능으로-읽지-않는다">5. 사례의 결과를 보편적 성능으로 읽지 않는다</h2>
+<p>작성자는 녹화 화면·원본·음성 등을 제공하고 편집점은 지정하지 않았으며, 첫 결과에서 수정할 부분이 없었다고 말한다. 또 게시한 영상이 자신의 최근 10개 영상 중 순위 2위였다고 덧붙인다. 이는 <strong>작성자의 자기 보고 사례</strong>이지, 모든 채널에서 한 번에 완성된다거나 자동 편집이 조회 성과를 높인다는 독립적 검증은 아니다. 결과에 영향을 준 레퍼런스 품질, 원본 상태, 수작업 개입 정도도 공개 자료만으로는 확정할 수 없다. <a href="https://www.threads.com/@jachung__/post/DeG1yNvk4ps">작성자의 결과 설명</a></p>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<ol>
+<li><strong>작게 시작한다.</strong> 사용 권한이 있는 짧은 원본과 레퍼런스 몇 개로 컷 편집·자막부터 시험한다.</li>
+<li><strong>규칙을 문서화한다.</strong> 취향을 추상적인 말 대신 관찰·측정 가능한 기준으로 적는다.</li>
+<li><strong>중간 산출물을 남긴다.</strong> 전사, 교정 대본, 컷 시간표, 자료화면 출처, 렌더링 설정을 분리해 검토한다.</li>
+<li><strong>권한을 확인한다.</strong> 외부 영상·음악·이미지와 클라우드 저장소의 접근 범위, 새 도구 설치 명령을 검토한다.</li>
+<li><strong>최종 재생을 생략하지 않는다.</strong> 자동 검수 후에도 사람이 자막, 소리, 화면, 개인정보를 확인한다.</li>
+</ol>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>사례의 핵심은 단일 프롬프트보다 <strong>레퍼런스 규칙집 → 전사·교정 → 컷 편집 → 효과·자료화면 → 검수</strong>의 파이프라인이다.</li>
+<li>Python과 FFmpeg는 정해진 편집 계획을 실행하고, Claude Code 스킬은 그 절차를 재사용하도록 돕는다.</li>
+<li>&ldquo;수정 없이 완성&quot;과 게시 성과는 작성자의 사례로만 받아들여야 한다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>이 사례가 보여 주는 가능성은 편집 감각 전체를 AI에 맡기는 것이 아니라, <strong>편집자의 암묵적 기준을 규칙집으로 만들고 반복 가능한 도구로 실행하는 것</strong>이다. 좋은 레퍼런스와 원본, 검증 가능한 중간 산출물, 사람의 최종 판단이 있어야 &ldquo;딸깍&quot;에 가까운 경험도 재현 가능해진다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 10월 10일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/automation">Automation</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/10/2026-10-10-diagram-design-agent-skill-editorial-diagrams/" rel="prev">
+        <span>diagram-design: AI 다이어그램이 똑같은 둥근 상자로 보일 때</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-먼저-좋은-편집을-규칙으로-바꾼다">1. 먼저 &lsquo;좋은 편집&rsquo;을 규칙으로 바꾼다</a></li>
+    <li><a href="#2-전사와-교정-대본을-컷-편집의-기준으로-삼는다">2. 전사와 교정 대본을 컷 편집의 기준으로 삼는다</a></li>
+    <li><a href="#3-python과-ffmpeg는-편집-규칙을-실행하는-도구다">3. Python과 FFmpeg는 &lsquo;편집 규칙을 실행하는 도구&rsquo;다</a></li>
+    <li><a href="#4-렌더링-뒤에도-검수와-피드백이-남는다">4. 렌더링 뒤에도 검수와 피드백이 남는다</a></li>
+    <li><a href="#5-사례의-결과를-보편적-성능으로-읽지-않는다">5. 사례의 결과를 보편적 성능으로 읽지 않는다</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude Code</a>
+    <a href="/tags/skills/" class="badge badge-secondary">Skills</a>
+    <a href="/tags/automation/" class="badge badge-secondary">Automation</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
