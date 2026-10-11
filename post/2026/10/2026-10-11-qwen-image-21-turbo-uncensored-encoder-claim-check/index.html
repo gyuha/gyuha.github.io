@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '&#39;무검열 Qwen-Image 2.1 Turbo&#39; 검증: 거부율은 줄었지만 이미지 결과는?'" />
+  <title>&#39;무검열 Qwen-Image 2.1 Turbo&#39; 검증: 거부율은 줄었지만 이미지 결과는?  | 신규하 블로그</title>
+  <meta property="og:title" content="&#39;무검열 Qwen-Image 2.1 Turbo&#39; 검증: 거부율은 줄었지만 이미지 결과는?" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-10-11"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/10/2026-10-11-qwen-image-21-turbo-uncensored-encoder-claim-check/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="ai" />
+  
+  <meta property="og:tags" content="llm" />
+  
+  <meta property="og:tags" content="security" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/10/2026-10-11-qwen-image-21-turbo-uncensored-encoder-claim-check/">
+          <h1>
+            &#39;무검열 Qwen-Image 2.1 Turbo&#39; 검증: 거부율은 줄었지만 이미지 결과는?
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/10/2026-10-11-qwen-image-21-turbo-uncensored-encoder-claim-check/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p><a href="https://x.com/CuiMao/status/2108796940322537939">한 X 게시물</a>은 &ldquo;검열 없는 Qwen-Image 2.1 Turbo&quot;라며 <a href="https://huggingface.co/AtomicChat/Qwen-Image-2.1-Turbo-Uncensored-GGUF">AtomicChat의 Hugging Face 저장소</a>를 소개한다. 이름만 보면 이미지 생성 모델의 필터를 제거한 새 버전처럼 들린다. 하지만 배포자의 모델 카드는 더 좁은 결론을 제시한다. <strong>변경된 것은 이미지 생성기 자체가 아니라 텍스트 인코더의 거부 방향이며, 배포자가 수행한 이미지 시험에서는 새로 허용된 결과가 관찰되지 않았다.</strong></p>
+<p>이 글은 설치법보다 <strong>무엇을 바꿨고 무엇이 실제로 달라졌는가</strong>를 다룬다. 이전에 정리한 <a href="/post/2026/10/2026-10-05-qwen-image-21-gguf-memory-uncensored-license/">다른 Qwen-Image 2.1 GGUF 변형의 메모리·라이선스 검토</a>와는 <strong>배포자와 변경 대상이 다른 모델</strong>이다. 아래 수치는 AtomicChat의 공개 시험 결과이며, 필자가 같은 조건에서 독립 재현한 값은 아니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://x.com/CuiMao/status/2108796940322537939">원문 X 게시물</a></li>
+<li><a href="https://huggingface.co/AtomicChat/Qwen-Image-2.1-Turbo-Uncensored-GGUF">AtomicChat의 변경된 인코더 모델 카드</a></li>
+<li><a href="https://huggingface.co/AtomicChat/Qwen-Image-2.1-Turbo-GGUF">AtomicChat의 Turbo 이미지 생성기 GGUF 카드</a></li>
+<li><a href="https://github.com/QwenLM/Qwen-Image-2.1">Qwen-Image 2.1 공식 저장소</a> · <a href="https://github.com/QwenLM/Qwen-Image-2.1/blob/main/LICENSE">Qwen Research License</a></li>
+</ul>
+<h2 id="1-저장소-이름과-실제-변경-대상은-다르다">1. 저장소 이름과 실제 변경 대상은 다르다</h2>
+<p>공식 <a href="https://github.com/QwenLM/Qwen-Image-2.1">Qwen-Image 2.1</a>은 이미지 생성용 <strong>7B 시각 모델</strong>, 프롬프트를 처리하는 <strong>Qwen3-VL-8B 텍스트 인코더</strong>, <strong>VAE</strong> 등으로 구성된다. 2026년 10월 공개된 Turbo 체크포인트는 공식 문서상 8단계 생성·편집을 지원한다. AtomicChat의 이 저장소는 그 전체를 다시 학습한 결과물이 아니라, <strong>Qwen3-VL 텍스트 인코더의 수정·양자화 GGUF 파일</strong>을 배포한다. 함께 사용할 이미지 생성기 GGUF는 <a href="https://huggingface.co/AtomicChat/Qwen-Image-2.1-Turbo-GGUF">별도 저장소</a>에 있다. <a href="https://github.com/QwenLM/Qwen-Image-2.1">공식 구조</a> · <a href="https://huggingface.co/AtomicChat/Qwen-Image-2.1-Turbo-Uncensored-GGUF">변경 대상</a></p>
+<pre class="mermaid">flowchart TD
+    A["프롬프트"] --> B["Qwen3-VL 텍스트 인코더<br>이 저장소에서 변경"]
+    B --> C["7B 이미지 생성기<br>변경 없음"]
+    C --> D["VAE<br>변경 없음"]
+    D --> E["최종 이미지"]
+    classDef inputTone fill:#c5dcef,stroke:#6b9fc1,color:#333
+    classDef changedTone fill:#fde8c0,stroke:#c9a96c,color:#333
+    classDef unchangedTone fill:#e0c8ef,stroke:#a68ab8,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#72b28d,color:#333
+    class A inputTone
+    class B changedTone
+    class C,D unchangedTone
+    class E outputTone</pre><p>모델 카드의 설명에 따르면 공개 가중치 기반 원래 파이프라인에는 제거할 별도 <strong>이미지 안전 검사기</strong>가 없었다. 배포자는 텍스트 인코더가 <em>채팅 모델로 답변할 때</em> 보이는 거부 경향의 표현을 약화시켰고, 이미지 생성기가 학습하지 못한 시각적 개념을 이 변경만으로 새로 넣을 수는 없다고 설명한다. 따라서 &ldquo;무검열&quot;을 <strong>모든 프롬프트에서 새로운 이미지를 얻는 기능</strong>으로 해석하면 부정확하다. 이는 배포자의 파이프라인 분석에 근거한 설명이며, 모든 실행 환경의 필터 유무를 독립적으로 검증한 것은 아니다. <a href="https://huggingface.co/AtomicChat/Qwen-Image-2.1-Turbo-Uncensored-GGUF">모델 카드의 변경 범위</a></p>
+<h2 id="2-채팅-거부율-감소와-이미지-생성-변화는-별개다">2. 채팅 거부율 감소와 이미지 생성 변화는 별개다</h2>
+<p>AtomicChat은 변경된 인코더를 <strong>채팅 모델로 평가</strong>했을 때, 보류된 영어 유해 요청 평가에서 거부 비율이 **88.9%에서 1.2%**로 내려갔다고 보고한다. 이는 텍스트 답변의 시작 부분을 기준으로 거부를 판정한 수치다. 같은 모델 카드에서 이미지 생성은 원본 인코더와 변경 인코더를 <strong>같은 이미지 생성기·시드</strong>로 비교했으며, 민감 주제 프롬프트 <strong>45개 중 결과 판정이 뒤집힌 사례가 0개</strong>였다고 밝힌다. 두 결과는 모순이 아니다. 하나는 <strong>텍스트 답변의 거부 행동</strong>, 다른 하나는 <strong>이미지 생성 결과</strong>를 측정했기 때문이다. <a href="https://huggingface.co/AtomicChat/Qwen-Image-2.1-Turbo-Uncensored-GGUF">AtomicChat의 측정 설명</a></p>
+<h3 id="채팅-모델로-썼을-때">채팅 모델로 썼을 때</h3>
+<pre class="mermaid">flowchart TD
+    A["유해 요청 평가 프롬프트"] --> B["원본 인코더의 텍스트 답변"]
+    A --> C["변경 인코더의 텍스트 답변"]
+    B --> D["거부 판정: 88.9%"]
+    C --> E["거부 판정: 1.2%"]
+    classDef inputTone fill:#c5dcef,stroke:#6b9fc1,color:#333
+    classDef processTone fill:#fde8c0,stroke:#c9a96c,color:#333
+    classDef resultTone fill:#e0c8ef,stroke:#a68ab8,color:#333
+    class A inputTone
+    class B,C processTone
+    class D,E resultTone</pre><h3 id="이미지-파이프라인에-넣었을-때">이미지 파이프라인에 넣었을 때</h3>
+<pre class="mermaid">flowchart TD
+    A["동일한 프롬프트·시드·이미지 생성기"] --> B["원본 인코더로 생성"]
+    A --> C["변경 인코더로 생성"]
+    B --> D["민감 주제 45건 비교"]
+    C --> D
+    D --> E["결과 판정 뒤집힘: 0건"]
+    classDef inputTone fill:#c5dcef,stroke:#6b9fc1,color:#333
+    classDef processTone fill:#fde8c0,stroke:#c9a96c,color:#333
+    classDef checkTone fill:#e0c8ef,stroke:#a68ab8,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#72b28d,color:#333
+    class A inputTone
+    class B,C processTone
+    class D checkTone
+    class E resultTone</pre><p><strong>0건은 &ldquo;어떤 이미지도 달라지지 않았다&quot;는 뜻이 아니다.</strong> 모델 카드는 픽셀·지각적 차이가 있었지만, 시험한 프롬프트에서 요청한 주제의 생성 여부가 바뀌지 않았다고 구분한다. 따라서 X 게시물의 표현은 <strong>채팅 인코더의 거부 경향 감소</strong>를 강조한 것으로는 이해할 수 있으나, <strong>이미지 생성에서 검열이 해제돼 새 결과가 나왔다</strong>는 증거로 읽어서는 안 된다. <a href="https://huggingface.co/AtomicChat/Qwen-Image-2.1-Turbo-Uncensored-GGUF">이미지 비교</a></p>
+<h2 id="3-공개-시험으로-말할-수-있는-범위">3. 공개 시험으로 말할 수 있는 범위</h2>
+<p>모델 카드는 이미지 시험이 <strong>민감 주제 45개, 중립 주제 48개, 시드 1개</strong>이며, 생성 여부의 예/아니요 판단에 <strong>비전 모델 판정자</strong>를 사용했다고 적는다. 채팅 거부율도 답변 첫머리를 기준으로 계산하므로 완곡한 거부를 놓칠 수 있다고 스스로 경고한다. 또한 첫 토큰 KL·잔존 방향에 관한 내부 검증 관문 두 개가 목표를 통과하지 못했다고 공개한다. 따라서 &ldquo;이 실험에서는 이미지 판정 변화가 없었다&quot;는 결론은 강하지만, <strong>모든 프롬프트·시드·샘플러·실행 도구에서 효과가 절대 없다는 증명은 아니다.</strong> <a href="https://huggingface.co/AtomicChat/Qwen-Image-2.1-Turbo-Uncensored-GGUF">한계와 검증 관문</a></p>
+<pre class="mermaid">flowchart TD
+    A["배포자 시험: 제한된 프롬프트와 시드"] --> B["채팅 거부율과 이미지 결과를 별도 측정"]
+    B --> C["관찰된 결과만 보고"]
+    C --> D["다른 환경으로 일반화할 때 추가 검증"]
+    classDef inputTone fill:#c5dcef,stroke:#6b9fc1,color:#333
+    classDef processTone fill:#fde8c0,stroke:#c9a96c,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#72b28d,color:#333
+    classDef cautionTone fill:#ffc8c4,stroke:#c7837c,color:#333
+    class A inputTone
+    class B processTone
+    class C resultTone
+    class D cautionTone</pre><p>배포자는 <strong>ComfyUI, Mac, 비-Turbo 이미지 생성기</strong>에서는 아직 시험하지 않았다고 명시한다. Hugging Face 페이지에 GGUF 파일이 있다는 사실과 해당 조합에서 이미지 워크플로가 검증됐다는 사실을 구분해야 한다. <a href="https://huggingface.co/AtomicChat/Qwen-Image-2.1-Turbo-Uncensored-GGUF">모델 카드의 제한 사항</a></p>
+<h2 id="4-로컬-실행-파일-라이선스-운영-책임을-분리한다">4. 로컬 실행 파일, 라이선스, 운영 책임을 분리한다</h2>
+<p>이 저장소의 모델 카드에는 인코더 GGUF를 <strong>BF16 16.39GB부터 여러 양자화 크기</strong>로 제공한다고 적혀 있다. 그러나 인코더 파일 하나의 크기가 전체 이미지 생성 파이프라인의 저장 공간이나 VRAM 요구량은 아니다. 실제 이미지 생성에는 <a href="https://huggingface.co/AtomicChat/Qwen-Image-2.1-Turbo-GGUF">Turbo 이미지 생성기 GGUF</a>와 VAE도 필요하다. 배포자가 공개한 실행 예시는 <code>stable-diffusion.cpp</code> 조합이며, 다른 프로그램에서의 성공을 자동으로 보증하지 않는다. <a href="https://huggingface.co/AtomicChat/Qwen-Image-2.1-Turbo-Uncensored-GGUF">파일 구성과 시험 환경</a></p>
+<p>라이선스도 구성요소별로 봐야 한다. 이 <strong>인코더 저장소</strong>는 <code>apache-2.0</code>으로 표시되지만, 함께 쓰는 <a href="https://huggingface.co/AtomicChat/Qwen-Image-2.1-Turbo-GGUF">Turbo 이미지 생성기 GGUF</a>는 <code>qwen-research</code>로 표시된다. <a href="https://github.com/QwenLM/Qwen-Image-2.1/blob/main/LICENSE">Qwen Research License</a>는 비상업적 연구·평가 사용과 별도 상업 라이선스 조건을 구분한다. 인코더의 저장소 태그 하나만 보고 조합 전체를 상업적으로 자유롭게 쓸 수 있다고 판단해서는 안 된다.</p>
+<pre class="mermaid">flowchart TD
+    A["인코더 파일 확인"] --> B["이미지 생성기·VAE 구성 확인"]
+    B --> C["각 구성요소의 라이선스 확인"]
+    C --> D["실행 환경과 사용 목적 확인"]
+    D --> E["안전·권한 통제 설계"]
+    classDef inputTone fill:#c5dcef,stroke:#6b9fc1,color:#333
+    classDef processTone fill:#fde8c0,stroke:#c9a96c,color:#333
+    classDef cautionTone fill:#ffc8c4,stroke:#c7837c,color:#333
+    class A inputTone
+    class B,C,D processTone
+    class E cautionTone</pre><p>안전성은 모델 이름이 대신 책임져 주지 않는다. 배포자 역시 변경된 인코더가 <strong>안전하거나 적법한 출력을 보장하지 않으며</strong>, 공개 서비스에는 별도 접근 통제와 정책 집행이 필요하다고 경고한다. 이미지 생성·편집에서는 당사자 동의, 실제 인물의 초상, 불법·착취적 콘텐츠 방지 같은 운영 통제를 따로 설계해야 한다. <a href="https://huggingface.co/AtomicChat/Qwen-Image-2.1-Turbo-Uncensored-GGUF">배포자의 책임 사용 고지</a></p>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<ol>
+<li><strong>모델 파일의 역할을 확인한다.</strong> 이 링크는 전체 이미지 모델이 아니라 변경된 텍스트 인코더를 배포한다.</li>
+<li><strong>측정 지표를 분리한다.</strong> 채팅 거부율 감소를 이미지 결과 개선으로 바꾸어 말하지 않는다.</li>
+<li><strong>재현 범위를 기록한다.</strong> 비교하려면 같은 프롬프트·시드·이미지 생성기·샘플러를 사용하고 출력 품질과 내용 판정을 따로 기록한다.</li>
+<li><strong>배포 조건을 확인한다.</strong> 인코더와 이미지 생성기의 라이선스, 실행 도구의 지원 범위, 콘텐츠 안전 통제를 각각 검토한다.</li>
+</ol>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>X 게시물이 가리키는 저장소는 <strong>Qwen3-VL 텍스트 인코더의 변경·양자화본</strong>이다. 이미지 생성기와 VAE는 별도다.</li>
+<li>배포자 시험에서 <strong>채팅 거부율은 크게 줄었지만</strong>, 이미지 프롬프트 <strong>45개 중 판정이 바뀐 것은 0개</strong>였다.</li>
+<li>이 결과는 제한된 프롬프트와 한 시드에서 나온 <strong>배포자의 관찰</strong>이다. 모든 조건의 불변성을 증명하지는 않는다.</li>
+<li><code>apache-2.0</code> 인코더 태그와 <code>qwen-research</code> 이미지 생성기 조건, 안전 운영 책임을 혼동하지 말아야 한다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>&ldquo;무검열 Qwen-Image&quot;라는 짧은 소개보다 모델 카드의 구분이 중요하다. <strong>텍스트 모델로서 거부를 덜 하는 인코더</strong>와 <strong>새로운 종류의 이미지를 만들어 내는 파이프라인</strong>은 같은 주장이 아니다. 현재 공개된 배포자 시험은 전자를 뒷받침하지만, 후자의 실질적인 개선은 보여 주지 않는다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 10월 11일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/10/2026-10-10-github-trending-openshell-cursor-hyperframes-anyps5-openrig-agent-reach/" rel="prev">
+        <span>10월 2주차 GitHub 트렌딩 5&#43;1: 에이전트 격리부터 영상 렌더링까지</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/10/2026-10-12-ten-github-repos-voice-slides-agent-skills-memory-selection/" rel="next">
+        <span>화제의 GitHub 저장소 10개, 무엇부터 써야 할까? 용도별 선택 가이드</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-저장소-이름과-실제-변경-대상은-다르다">1. 저장소 이름과 실제 변경 대상은 다르다</a></li>
+    <li><a href="#2-채팅-거부율-감소와-이미지-생성-변화는-별개다">2. 채팅 거부율 감소와 이미지 생성 변화는 별개다</a>
+      <ul>
+        <li><a href="#채팅-모델로-썼을-때">채팅 모델로 썼을 때</a></li>
+        <li><a href="#이미지-파이프라인에-넣었을-때">이미지 파이프라인에 넣었을 때</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-공개-시험으로-말할-수-있는-범위">3. 공개 시험으로 말할 수 있는 범위</a></li>
+    <li><a href="#4-로컬-실행-파일-라이선스-운영-책임을-분리한다">4. 로컬 실행 파일, 라이선스, 운영 책임을 분리한다</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/ai/" class="badge badge-secondary">Ai</a>
+    <a href="/tags/llm/" class="badge badge-secondary">LLM</a>
+    <a href="/tags/security/" class="badge badge-secondary">Security</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
