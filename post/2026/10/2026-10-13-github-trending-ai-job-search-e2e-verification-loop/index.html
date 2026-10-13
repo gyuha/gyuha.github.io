@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'AI가 만든 결과물, 무엇으로 검증할까? GitHub 도구 5개의 실전 경계'" />
+  <title>AI가 만든 결과물, 무엇으로 검증할까? GitHub 도구 5개의 실전 경계  | 신규하 블로그</title>
+  <meta property="og:title" content="AI가 만든 결과물, 무엇으로 검증할까? GitHub 도구 5개의 실전 경계" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-10-13"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/10/2026-10-13-github-trending-ai-job-search-e2e-verification-loop/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="agents" />
+  
+  <meta property="og:tags" content="testing" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/10/2026-10-13-github-trending-ai-job-search-e2e-verification-loop/">
+          <h1>
+            AI가 만든 결과물, 무엇으로 검증할까? GitHub 도구 5개의 실전 경계
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/10/2026-10-13-github-trending-ai-job-search-e2e-verification-loop/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p><a href="https://x.com/UniverseB1020/status/2109606535370305931">한 X 게시물</a>은 PPT, 음성, 취업 준비, E2E 테스트, 영상 제작에 쓰는 오픈소스 다섯 개를 소개한다. 분야는 달라도 공통 질문은 같다. <strong>AI가 무언가를 만들거나 조작한 뒤, 무엇을 근거로 결과를 믿을 것인가?</strong> 이 글은 프로젝트의 기능을 공식 저장소와 대조하고, 생성 단계와 검증 단계를 구분한다.</p>
+<p>원문의 GitHub 별 수와 일·주간 증가량은 게시 당시의 소개 수치다. 현재 수치나 성능·안정성의 증거로 사용하지 않는다. 프로젝트별 세부 기능도 변경될 수 있으므로 실제 도입 전에는 아래 공식 문서를 다시 확인해야 한다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://x.com/UniverseB1020/status/2109606535370305931">원문 X 게시물</a></li>
+<li><a href="https://github.com/hugohe3/ppt-master">1. ppt-master 공식 저장소</a></li>
+<li><a href="https://github.com/debpalash/VoiceStudio">2. VoiceStudio 공식 저장소</a></li>
+<li><a href="https://github.com/MadsLorentzen/ai-job-search">3. ai-job-search 공식 저장소</a></li>
+<li><a href="https://github.com/tester-army/e2e">4. tester-army/e2e 공식 저장소</a></li>
+<li><a href="https://github.com/heygen-com/hyperframes">5. HyperFrames 공식 저장소</a></li>
+</ul>
+<h2 id="다섯-프로젝트를-관통하는-흐름-생성과-통과-판정은-다르다">다섯 프로젝트를 관통하는 흐름: 생성과 통과 판정은 다르다</h2>
+<p><strong>ppt-master</strong>는 편집 가능한 발표 파일, <strong>VoiceStudio</strong>는 음성 콘텐츠, <strong>ai-job-search</strong>는 채용 공고에 맞춘 지원 자료, <strong>HyperFrames</strong>는 코드로 정의한 영상을 만든다. <strong>tester-army/e2e</strong>는 다른 성격이다. 앱을 실제로 조작하고 기대한 동작을 확인하는 테스트 도구다. 하지만 이 도구도 AI가 조작 절차를 찾아냈다는 사실과 테스트가 성공했다는 판정을 분리해야 한다. 이 분류는 <a href="https://github.com/tester-army/e2e">각 프로젝트의 설명</a>을 바탕으로 한 해석이다.</p>
+<pre class="mermaid">flowchart TD
+    A["원본 자료·앱·요구사항"] --> B["AI 생성 또는 에이전트 조작"]
+    B --> C["파일·음성·영상·실행 기록"]
+    C --> D{"독립적인 검증을 통과했나?"}
+    D -- "예" --> E["사용·제출·배포"]
+    D -- "아니요" --> F["수정 후 재검증"]
+    F --> B
+    classDef inputTone fill:#c5dcef,stroke:#6b9fc1,color:#333
+    classDef processTone fill:#fde8c0,stroke:#c9a96c,color:#333
+    classDef outputTone fill:#e0c8ef,stroke:#a687bf,color:#333
+    classDef checkTone fill:#ffc8c4,stroke:#c7837c,color:#333
+    classDef doneTone fill:#c0ecd3,stroke:#72b28d,color:#333
+    class A inputTone
+    class B,F processTone
+    class C outputTone
+    class D checkTone
+    class E doneTone</pre><p>이 관점에서 다섯 개를 같은 &ldquo;AI가 다 해 준다&quot;는 도구 목록으로 보면 중요한 차이를 놓친다. 산출물마다 <strong>사실 확인, 권리·동의, 기계적으로 판정할 수 있는 조건, 사람의 최종 판단</strong>이 서로 다르다.</p>
+<h2 id="ppt-master와-voicestudio-편집-가능성과-로컬-실행도-품질-보증은-아니다">ppt-master와 VoiceStudio: 편집 가능성과 로컬 실행도 품질 보증은 아니다</h2>
+<p><a href="https://github.com/hugohe3/ppt-master">ppt-master</a>는 자료와 지시를 바탕으로 <code>.pptx</code>를 생성하며, 저장소는 도형·차트·표 같은 <strong>편집 가능한 PowerPoint 객체</strong>와 애니메이션·발표 내레이션을 설명한다. 이는 한 장의 이미지로 굳어진 슬라이드보다 사후 수정에 유리하다. 그러나 원본 문서의 숫자가 맞는지, 차트와 본문이 일치하는지, 회사 템플릿에서 글자가 넘치지 않는지는 별도로 확인해야 한다. <a href="/post/2026/10/2026-10-12-ten-github-repos-voice-slides-agent-skills-memory-selection/">앞선 ppt-master 소개 글</a>에서도 이 구분을 다뤘다.</p>
+<p><a href="https://github.com/debpalash/VoiceStudio">VoiceStudio</a>는 로컬 우선 방식의 음성 복제·더빙·전사·오디오북 제작을 내세운다. &ldquo;로컬&quot;은 제작 흐름의 배치 방식이지 <strong>모든 모델의 사용 조건과 모든 언어의 결과 품질을 보증하는 단어는 아니다.</strong> 사용할 음성에 대한 동의를 얻고, 앱과 선택한 모델의 라이선스를 따로 확인하며, 전사·발음·화자 일관성을 실제 오디오로 점검해야 한다. 원문의 &ldquo;무료 ElevenLabs 대안&quot;은 활용 가능성을 표현한 것이지 비용·품질·기능의 완전한 동등성을 입증하지 않는다. <a href="/post/2026/10/2026-10-12-ten-github-repos-voice-slides-agent-skills-memory-selection/">기존 VoiceStudio 글</a>을 함께 참고할 수 있다.</p>
+<pre class="mermaid">flowchart TD
+    A["문서·대본·사용 허가된 음성"] --> B["슬라이드 또는 음성 생성"]
+    B --> C["편집 가능한 PPTX·오디오"]
+    C --> D["숫자·레이아웃·발음·권리 확인"]
+    classDef inputTone fill:#c5dcef,stroke:#6b9fc1,color:#333
+    classDef processTone fill:#fde8c0,stroke:#c9a96c,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#72b28d,color:#333
+    classDef checkTone fill:#ffc8c4,stroke:#c7837c,color:#333
+    class A inputTone
+    class B processTone
+    class C outputTone
+    class D checkTone</pre><h2 id="ai-job-search-지원서를-쓰기-전에-경력-사실부터-고정한다">ai-job-search: 지원서를 쓰기 전에 경력 사실부터 고정한다</h2>
+<p><a href="https://github.com/MadsLorentzen/ai-job-search">ai-job-search</a>는 Claude Code에서 실행하는 취업 지원 워크플로다. README의 중심 흐름은 <strong>자기 경력 프로필 작성 → 공고와의 적합성 평가 → 이력서·지원서 맞춤 작성 → PDF 생성과 확인</strong>이다. 단순히 공고를 붙여 넣고 자기소개서를 한 번 생성하는 도구가 아니다. 프로젝트는 작성자와 검토자의 역할을 나누고, 지원서 PDF를 시각적으로 살펴보며 <code>pdftotext</code>로 텍스트 계층도 확인하는 절차를 제시한다. 이는 사람이 읽는 외형과 채용 시스템이 추출하는 텍스트가 모두 중요하기 때문이다.</p>
+<pre class="mermaid">flowchart TD
+    A["검증한 경력·성과 프로필"] --> B["채용 공고 분석"]
+    B --> C["적합성·근거·공백 평가"]
+    C --> D["이력서·지원서 초안"]
+    D --> E["PDF 외형·텍스트 추출 확인"]
+    E --> F["본인의 사실 검토·제출 결정"]
+    classDef inputTone fill:#c5dcef,stroke:#6b9fc1,color:#333
+    classDef processTone fill:#fde8c0,stroke:#c9a96c,color:#333
+    classDef outputTone fill:#e0c8ef,stroke:#a687bf,color:#333
+    classDef checkTone fill:#ffc8c4,stroke:#c7837c,color:#333
+    classDef doneTone fill:#c0ecd3,stroke:#72b28d,color:#333
+    class A inputTone
+    class B,C,D processTone
+    class E checkTone
+    class F doneTone</pre><p>핵심 경계는 <strong>지원 가능성을 높이는 편집과 없는 경력을 만들어 내는 조작은 다르다</strong>는 점이다. <a href="https://github.com/MadsLorentzen/ai-job-search">README의 <code>/apply</code> 설명</a>은 공고의 키워드와 경력의 근거를 연결하되 근거가 없는 항목을 채우지 않는 접근을 강조한다. 초안의 프로젝트명·기간·수치·학력·자격을 원본 프로필과 대조하고, 지원자의 문장으로 최종 수정해야 한다. 이 과정은 탈락·합격을 예측하거나 보장하지 않는다.</p>
+<p>또한 저장소에 파일을 로컬로 보관한다는 설명과 <strong>Claude Code를 통한 모델 호출에서 데이터가 어디로 전달되는지</strong>는 별개다. 경력 정보, 연락처, 기업별 지원 내역은 민감할 수 있으므로 사용 중인 모델 제공자의 데이터 처리 조건을 확인하고, 공개 저장소에 원본을 올리지 않아야 한다. 프로젝트는 덴마크 채용 시장용 스킬을 포함하지만 핵심 워크플로는 국가에 고정되지 않도록 설명한다. 따라서 한국 채용 사이트까지 자동 지원한다고 해석해서는 안 된다. <a href="https://github.com/MadsLorentzen/ai-job-search">공식 README</a></p>
+<h2 id="tester-armye2e-에이전트의-조작과-테스트의-단언을-분리한다">tester-army/e2e: 에이전트의 조작과 테스트의 단언을 분리한다</h2>
+<p><a href="https://github.com/tester-army/e2e">tester-army/e2e</a>는 자연어 지시로 화면을 조작하는 <code>agent.act</code>, 에이전트 기반 확인을 표현하는 <code>agent.assert</code>, 그리고 <code>expect(screen.getByRole(...))</code> 같은 일반적인 단언을 함께 제시한다. 중요한 차이는 <strong>&ldquo;로그인 버튼을 찾아 눌렀다&quot;는 조작 기록과 &ldquo;로그인 후 대시보드가 보인다&quot;는 성공 판정이 다르다</strong>는 것이다. AI가 버튼을 찾게 하더라도 통과 조건은 가능한 한 관찰 가능한 UI 상태로 명시해야 회귀 테스트가 된다.</p>
+<pre class="mermaid">flowchart TD
+    A["사용자 시나리오"] --> B["agent.act로 UI 조작"]
+    B --> C["동작 기록·재실행"]
+    C --> D["agent.assert 또는 expect로 확인"]
+    D --> E{"기대 상태인가?"}
+    E -- "예" --> F["통과·기록 보존"]
+    E -- "아니요" --> G["실패 원인 조사"]
+    classDef inputTone fill:#c5dcef,stroke:#6b9fc1,color:#333
+    classDef processTone fill:#fde8c0,stroke:#c9a96c,color:#333
+    classDef checkTone fill:#e0c8ef,stroke:#a687bf,color:#333
+    classDef doneTone fill:#c0ecd3,stroke:#72b28d,color:#333
+    classDef failTone fill:#ffc8c4,stroke:#c7837c,color:#333
+    class A inputTone
+    class B,C processTone
+    class D,E checkTone
+    class F doneTone
+    class G failTone</pre><p><a href="https://github.com/tester-army/e2e">공식 README</a>에 따르면 조작을 기록해 변경이 없을 때는 모델 호출 없이 재실행할 수 있다. 이는 AI 탐색 비용과 실행의 변동성을 줄이려는 설계다. 다만 앱 구조가 달라졌거나 기록이 유효하지 않으면 재탐색과 테스트 수정이 필요할 수 있으므로, 기록 기능 자체가 테스트의 항상성을 보장하지는 않는다.</p>
+<p>웹 엔진은 Playwright 기반 브라우저를, 모바일 엔진은 iOS 시뮬레이터·Android 에뮬레이터 환경을 사용한다. <strong>한 프레임워크에서 웹·모바일을 다룬다</strong>는 말은 설정과 실행 환경까지 동일하다는 뜻이 아니다. 팀에서 도입한다면 먼저 작은 로그인 시나리오 하나를 각 환경에 따로 연결하고, 명시적 단언·실패 로그·재실행 동작을 확인하는 편이 좋다. 모델 제공자 설정에 따라 호출 비용도 달라질 수 있다. <a href="https://github.com/tester-army/e2e">공식 README</a></p>
+<h2 id="hyperframes-html로-영상을-정의해도-최종-화면은-봐야-한다">HyperFrames: HTML로 영상을 정의해도 최종 화면은 봐야 한다</h2>
+<p><a href="https://github.com/heygen-com/hyperframes">HeyGen의 HyperFrames</a>는 HTML·CSS·JavaScript로 화면과 시간에 따른 구성을 작성하고 영상으로 렌더링하는 도구다. 브라우저가 프레임을 만들고 인코딩 단계가 영상 파일을 내보내는 방식이므로, 에이전트가 <strong>코드로 수정 가능한 장면</strong>을 다루기에 적합하다. 이것이 한 번의 프롬프트로 고품질 영상을 자동 보장한다는 뜻은 아니다. 렌더링된 프레임의 잘림·자막 오탈자·길이·음성 동기화를 확인해야 한다. <a href="/post/2026/10/2026-10-10-github-trending-openshell-cursor-hyperframes-anyps5-openrig-agent-reach/">기존 HyperFrames 글</a>에서 다른 영상 도구와의 위치를 더 다뤘다.</p>
+<pre class="mermaid">flowchart TD
+    A["스토리보드·자료"] --> B["HTML·CSS·JS 장면 작성"]
+    B --> C["브라우저 프레임 렌더링"]
+    C --> D["영상 인코딩"]
+    D --> E["자막·타이밍·화면 검수"]
+    classDef inputTone fill:#c5dcef,stroke:#6b9fc1,color:#333
+    classDef processTone fill:#fde8c0,stroke:#c9a96c,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#72b28d,color:#333
+    classDef checkTone fill:#ffc8c4,stroke:#c7837c,color:#333
+    class A inputTone
+    class B,C,D processTone
+    class E checkTone</pre><h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<ol>
+<li><strong>만들려는 결과물 하나만 고른다.</strong> 발표 자료·음성·지원서·테스트·영상은 입력 데이터와 검수 방법이 다르다. 별점 순위 대신 현재 작업의 병목을 기준으로 선택한다.</li>
+<li><strong>생성 전에 기준을 적는다.</strong> 슬라이드는 원본 숫자, 음성은 사용 동의와 발음, 지원서는 검증된 경력, 테스트는 통과 상태, 영상은 자막·타이밍이 최소 기준이다.</li>
+<li><strong>AI 산출물과 판정 수단을 분리한다.</strong> PDF의 화면과 텍스트 추출, E2E의 UI 단언, 영상의 실제 재생처럼 결과물을 다른 방식으로 확인한다.</li>
+<li><strong>작은 샘플에서 비용과 권한을 확인한다.</strong> 로컬 우선 앱도 모델·가중치 라이선스가 다를 수 있고, 에이전트 기반 도구는 모델 호출·개인정보·실행 환경의 조건이 따로 붙는다.</li>
+</ol>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li><strong>ppt-master·VoiceStudio·HyperFrames</strong> 는 편집·제작의 출발점을 빠르게 만들지만 내용·권리·최종 품질의 검수는 남는다.</li>
+<li><strong>ai-job-search</strong> 는 사실에 근거한 경력 프로필에서 공고 분석·지원서 생성·PDF 확인까지 연결한다. 경력의 진실성과 제출 결정은 지원자의 책임이다.</li>
+<li><strong>tester-army/e2e</strong> 는 에이전트 조작과 명시적 테스트 판정을 함께 다룬다. 재실행 가능한 기록이 있어도 단언과 환경 설정을 생략할 수 없다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>이 다섯 프로젝트의 공통 가치는 &ldquo;AI가 끝까지 대신한다&quot;가 아니다. <strong>반복 작업을 줄이되, 결과를 확인할 기준을 더 분명하게 만든다</strong>는 데 있다. 도입 순서는 별점이 아니라 현재 문제, 필요한 데이터, 그리고 팀이 실제로 수행할 수 있는 검증 절차로 정하는 편이 안전하다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 10월 13일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/10/2026-10-13-codex-game-studio-unreal-claude-plugin-workflows/" rel="prev">
+        <span>Codex Game Studio와 언리얼 Claude Code 플러그인: 게임 제작 연결의 실제 범위</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/10/2026-10-13-one-ai-tool-thirty-minute-pilot-workflow/" rel="next">
+        <span>AI 도구 10개를 설치하기보다, 반복 업무 하나를 30분 실험하는 법</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#다섯-프로젝트를-관통하는-흐름-생성과-통과-판정은-다르다">다섯 프로젝트를 관통하는 흐름: 생성과 통과 판정은 다르다</a></li>
+    <li><a href="#ppt-master와-voicestudio-편집-가능성과-로컬-실행도-품질-보증은-아니다">ppt-master와 VoiceStudio: 편집 가능성과 로컬 실행도 품질 보증은 아니다</a></li>
+    <li><a href="#ai-job-search-지원서를-쓰기-전에-경력-사실부터-고정한다">ai-job-search: 지원서를 쓰기 전에 경력 사실부터 고정한다</a></li>
+    <li><a href="#tester-armye2e-에이전트의-조작과-테스트의-단언을-분리한다">tester-army/e2e: 에이전트의 조작과 테스트의 단언을 분리한다</a></li>
+    <li><a href="#hyperframes-html로-영상을-정의해도-최종-화면은-봐야-한다">HyperFrames: HTML로 영상을 정의해도 최종 화면은 봐야 한다</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+    <a href="/tags/testing/" class="badge badge-secondary">Testing</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
