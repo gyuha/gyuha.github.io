@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Docker Desktop 대신 Apple container와 Davit? 메모리·디스크 I/O 체감 뒤에 있는 차이'" />
+  <title>Docker Desktop 대신 Apple container와 Davit? 메모리·디스크 I/O 체감 뒤에 있는 차이  | 신규하 블로그</title>
+  <meta property="og:title" content="Docker Desktop 대신 Apple container와 Davit? 메모리·디스크 I/O 체감 뒤에 있는 차이" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-10-18"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/10/2026-10-18-apple-container-davit-docker-desktop-migration/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="docker" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/10/2026-10-18-apple-container-davit-docker-desktop-migration/">
+          <h1>
+            Docker Desktop 대신 Apple container와 Davit? 메모리·디스크 I/O 체감 뒤에 있는 차이
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/10/2026-10-18-apple-container-davit-docker-desktop-migration/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Mac에서 Docker Desktop을 제거하고 Apple의 <code>container</code> 도구를 쓰기 시작했더니 메모리 사용량이 줄고 디스크 I/O 체감이 좋아졌다는 <a href="https://x.com/schotek/status/2111377289615384597">X 게시물</a>이 있다. 작성자는 관리 UI로 <strong>Davit</strong>을 추천한다. 흥미로운 사례지만, 게시물에는 하드웨어·워크로드·Docker 설정·측정값이 없다. <strong>개인의 체감</strong>과 <strong>누구에게나 적용되는 성능 결론</strong>을 분리해 살펴볼 필요가 있다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://x.com/schotek/status/2111377289615384597">원본 X 게시물: Docker Desktop에서 Apple container로 이동한 경험</a></li>
+<li><a href="https://github.com/apple/container">Apple <code>container</code> 공식 저장소</a></li>
+<li><a href="https://github.com/apple/container/blob/main/docs/technical-overview.md">Apple <code>container</code> 기술 개요</a> · <a href="https://github.com/apple/container/blob/main/docs/volumes.md">볼륨 가이드</a></li>
+<li><a href="https://github.com/wouterdebie/davit">Davit 공식 저장소</a></li>
+<li><a href="https://docs.docker.com/desktop/features/networking/">Docker Desktop 네트워킹 문서</a> · <a href="https://docs.docker.com/desktop/features/vmm/">VM 관리자 문서</a></li>
+</ul>
+<h2 id="게시물이-말한-것과-말하지-않은-것">게시물이 말한 것과 말하지 않은 것</h2>
+<p>체코어로 작성된 원문은 Docker Desktop을 제거하고 Mac에서 Linux 개발 작업에 Apple의 컨테이너 도구를 사용한 뒤, <strong>메모리 부담이 내려갔고 디스크 작업의 I/O가 훨씬 낫다고 느꼈다</strong>고 전한다. 또한 UI 관리 도구로 Davit을 권한다. 하지만 구체적인 RAM 수치, I/O 작업 종류, 반복 횟수, 마운트 종류, 컨테이너 수는 제시하지 않는다. 따라서 &ldquo;Apple <code>container</code>가 Docker Desktop보다 항상 빠르다&quot;는 비교 시험으로 읽을 수 없다. <a href="https://x.com/schotek/status/2111377289615384597">원본 X 게시물</a></p>
+<p>특히 &ldquo;디스크 I/O&quot;는 하나의 지표가 아니다. 이미지 빌드, 컨테이너 내부 파일 처리, Mac 디렉터리의 바인드 마운트, 이름 있는 볼륨의 데이터베이스 쓰기는 서로 다른 경로를 거친다. Apple 공식 가이드도 <strong>호스트 폴더를 공유하는 바인드 마운트</strong>와 <strong>더 나은 I/O를 위한 이름 있는 볼륨</strong>을 구분한다. 원문만으로 어떤 경로가 개선됐는지 판단할 수 없는 이유다. <a href="https://github.com/apple/container/blob/main/docs/volumes.md">Apple 볼륨 가이드</a></p>
+<h2 id="같은-oci-이미지를-써도-실행-구조는-다르다">같은 OCI 이미지를 써도 실행 구조는 다르다</h2>
+<p>Docker Desktop은 Mac에서 Docker Engine을 <strong>Linux VM 안에</strong> 실행하고, 여러 컨테이너가 그 환경을 사용한다. Mac과 VM 사이의 파일·네트워크 연결에는 설정에 따라 백엔드 구성요소가 관여한다. 반면 Apple <code>container</code>는 <strong>컨테이너마다 별도의 경량 Linux VM</strong>을 띄운다. 두 방식 모두 Mac에서 Linux 워크로드를 돌리기 위해 가상화를 사용한다. &ldquo;Apple 네이티브&quot;라는 말이 Linux VM 없이 macOS 커널에서 컨테이너를 실행한다는 뜻은 아니다. <a href="https://docs.docker.com/desktop/features/networking/">Docker Desktop 네트워킹 문서</a> · <a href="https://github.com/apple/container/blob/main/docs/technical-overview.md">Apple 기술 개요</a></p>
+<p>Docker Desktop 구조:</p>
+<pre class="mermaid">flowchart TD
+    A["macOS"] --> B["Docker Desktop 백엔드"]
+    B --> C["공유 Linux VM · Docker Engine"]
+    C --> D["컨테이너 A"]
+    C --> E["컨테이너 B"]
+    classDef hostTone fill:#c5dcef,stroke:#6c9ec6,color:#333
+    classDef vmTone fill:#e0c8ef,stroke:#aa7bc6,color:#333
+    classDef appTone fill:#c0ecd3,stroke:#72b591,color:#333
+    class A,B hostTone
+    class C vmTone
+    class D,E appTone</pre><p>Apple <code>container</code> 구조:</p>
+<pre class="mermaid">flowchart TD
+    A["macOS · container-apiserver"] --> B["경량 Linux VM A"]
+    A --> C["경량 Linux VM B"]
+    B --> D["컨테이너 A"]
+    C --> E["컨테이너 B"]
+    classDef hostTone fill:#c5dcef,stroke:#6c9ec6,color:#333
+    classDef vmTone fill:#e0c8ef,stroke:#aa7bc6,color:#333
+    classDef appTone fill:#c0ecd3,stroke:#72b591,color:#333
+    class A hostTone
+    class B,C vmTone
+    class D,E appTone</pre><p>Apple의 기술 개요는 이 구조가 VM 수준의 격리를 제공하고 각 VM에 필요한 호스트 데이터만 마운트한다고 설명한다. 그러나 <strong>VM이 여러 개라고 반드시 메모리를 덜 쓰거나, 더 쓴다고 단정할 수 없다.</strong> 컨테이너 수와 실제 사용량에 따라 결과가 달라진다. Apple 문서는 VM 내부에서 해제된 메모리 페이지가 현재 호스트로 완전히 반환되지 않을 수 있어, 메모리 집약적 컨테이너를 많이 돌릴 때 재시작이 필요할 수 있다고도 밝힌다. <a href="https://github.com/apple/container/blob/main/docs/technical-overview.md">Apple 기술 개요</a></p>
+<p>Docker Desktop 쪽도 고정된 비교 대상이 아니다. 공식 문서는 VM 관리자 선택에 따라 동작이 다르며, 최신 Docker VMM에는 유휴 메모리 반환과 Mac–컨테이너 파일 I/O 개선을 위한 기능이 있다고 설명한다. 원문 작성자가 어떤 Docker Desktop 버전과 VM 관리자를 사용했는지 모르므로, 게시물의 체감을 <strong>아키텍처만의 효과</strong>로 귀속할 수 없다. <a href="https://docs.docker.com/desktop/features/vmm/">Docker VM 관리자 문서</a> · <a href="https://x.com/schotek/status/2111377289615384597">원본 X 게시물</a></p>
+<h2 id="davit은-무엇을-더하고-무엇을-대체하지-않나">Davit은 무엇을 더하고, 무엇을 대체하지 않나</h2>
+<p>Davit은 Apple <code>container</code> 플랫폼을 관리하는 <strong>SwiftUI 기반 macOS 앱</strong>이다. 프로젝트 설명에 따르면 <code>container-apiserver</code>와 XPC로 직접 통신하며, 컨테이너 목록·실행 상태·로그·자원 통계·이미지·볼륨·네트워크 등을 GUI에서 다룬다. CLI 바이너리를 호출하지 않는다는 뜻이지, <strong>Apple의 컨테이너 서비스 없이 독립 실행되는 엔진</strong>이라는 뜻은 아니다. <a href="https://github.com/wouterdebie/davit">Davit 공식 저장소</a></p>
+<pre class="mermaid">flowchart TD
+    A["사용자"] --> B["Davit GUI"]
+    B -->|"XPC API"| C["Apple container-apiserver"]
+    D["container CLI"] -->|"같은 플랫폼 API"| C
+    C --> E["이미지 · VM · 네트워크 · 볼륨"]
+    classDef userTone fill:#c5dcef,stroke:#6c9ec6,color:#333
+    classDef uiTone fill:#e0c8ef,stroke:#aa7bc6,color:#333
+    classDef engineTone fill:#fde8c0,stroke:#d4a85a,color:#333
+    classDef resourceTone fill:#c0ecd3,stroke:#72b591,color:#333
+    class A userTone
+    class B,D uiTone
+    class C engineTone
+    class E resourceTone</pre><p>Davit은 Compose 파일 가져오기와 자체 <code>Davit compose</code> 명령도 제공한다고 문서화한다. 그러나 이는 Apple <code>container</code>의 기본 명령도, Docker Compose의 모든 동작을 보증하는 기능도 아니다. Davit은 지원하지 않는 항목의 경고를 표시하고, 서비스 이름 조회를 위해 일부 상황에서 컨테이너의 <code>/etc/hosts</code>를 관리한다고 명시한다. 기존 <code>docker compose up</code> 워크플로를 무조건 그대로 바꿀 수 있다고 생각하지 말고, <strong>프로젝트의 Compose 파일과 네트워크 동작을 검증</strong>해야 한다. <a href="https://github.com/wouterdebie/davit">Davit 공식 저장소: Compose 설명</a></p>
+<h2 id="실제로-갈아타기-전에-확인할-네-가지">실제로 갈아타기 전에 확인할 네 가지</h2>
+<p>첫째, <strong>운영체제와 칩</strong>을 확인한다. Apple <code>container</code> 공식 저장소는 Apple silicon Mac을 요구하고 <strong>macOS 26을 지원 대상</strong>으로 명시한다. 기술 개요에는 macOS 15에서도 실행할 수 있으나 네트워크 등 기능 제한이 있고 해당 버전에서만 재현되는 문제를 지원하지 않는다고 적혀 있다. Davit의 macOS 15+ 실행 요건이 Apple 플랫폼의 macOS 15 공식 지원을 의미하지는 않는다. <a href="https://github.com/apple/container">Apple <code>container</code> README</a> · <a href="https://github.com/apple/container/blob/main/docs/technical-overview.md">Apple 기술 개요</a> · <a href="https://github.com/wouterdebie/davit">Davit 요건</a></p>
+<p>둘째, <strong>이미지와 데이터의 이동을 구분</strong>한다. Apple <code>container</code>는 OCI 호환 이미지를 가져오고 만들 수 있으므로 이미지 형식은 이전의 출발점이 된다. 하지만 DB 데이터가 저장된 Docker 볼륨이나 Mac 바인드 마운트 경로까지 자동으로 이전된다는 뜻은 아니다. 이름 있는 볼륨을 쓰는 서비스라면 먼저 백업·복원 방법을 확인해야 한다. <a href="https://github.com/apple/container">Apple <code>container</code> README</a> · <a href="https://github.com/apple/container/blob/main/docs/volumes.md">Apple 볼륨 가이드</a></p>
+<p>셋째, <strong>스크립트와 도구의 Docker 의존성</strong>을 찾는다. <code>docker</code> CLI, Docker API 소켓, Compose 파일, IDE 통합, 테스트 자동화가 프로젝트에 있다면 이미지 호환성과 워크플로 호환성을 별도로 검증해야 한다. Apple이 문서화한 기본 인터페이스는 <code>container</code> CLI와 자체 서비스 API이며, Davit의 Compose 기능은 별도의 구현이다. <a href="https://github.com/apple/container/blob/main/docs/technical-overview.md">Apple 기술 개요</a> · <a href="https://github.com/wouterdebie/davit">Davit 공식 저장소</a></p>
+<p>넷째, <strong>실제 워크로드로 같은 조건에서 측정</strong>한다. 같은 Mac·이미지 아키텍처·컨테이너 수·메모리 제한을 맞추고, 콜드/웜 시작, 내부 파일 I/O, 바인드 마운트 I/O, 이름 있는 볼륨 I/O를 나눠 반복한다. 호스트의 메모리 압박과 벽시계 시간, 지연 분포를 함께 기록해야 한다. 이는 원문에 없는 실험 설계 제안이지, Apple 또는 Docker의 우위를 입증한 결과가 아니다. <a href="https://x.com/schotek/status/2111377289615384597">원본 X 게시물</a> · <a href="https://github.com/apple/container/blob/main/docs/volumes.md">Apple 볼륨 가이드</a> · <a href="https://docs.docker.com/desktop/features/vmm/">Docker VM 관리자 문서</a></p>
+<pre class="mermaid">flowchart TD
+    A["현재 Docker 워크로드 목록"] --> B["칩 · macOS 버전 확인"]
+    B --> C["Compose · CLI · 소켓 의존성 확인"]
+    C --> D["데이터 백업 후 작은 서비스로 시험"]
+    D --> E["동일 조건 성능 · 기능 검증"]
+    E --> F{"기능과 성능 모두 수용?"}
+    F -->|"예"| G["점진적 이전"]
+    F -->|"아니요"| H["Docker Desktop 유지 · 설정 조정"]
+    classDef inputTone fill:#c5dcef,stroke:#6c9ec6,color:#333
+    classDef workTone fill:#e0c8ef,stroke:#aa7bc6,color:#333
+    classDef checkTone fill:#fde8c0,stroke:#d4a85a,color:#333
+    classDef goodTone fill:#c0ecd3,stroke:#72b591,color:#333
+    classDef altTone fill:#ffc8c4,stroke:#d98b83,color:#333
+    class A inputTone
+    class B,C,D,E workTone
+    class F checkTone
+    class G goodTone
+    class H altTone</pre><h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<ol>
+<li>X 게시물의 메모리·I/O 개선은 <strong>작성자의 경험</strong>으로 읽고, 내 환경의 예상 성능으로 옮기지 않는다.</li>
+<li>Apple silicon과 macOS 버전, Docker 의존 스크립트, 데이터 저장 경로를 먼저 점검한다.</li>
+<li>UI가 필요하면 Davit을 검토하되, Apple 플랫폼 위의 관리 도구라는 역할을 이해한다.</li>
+<li>기존 Docker Desktop의 VM 관리자와 파일 공유 설정도 비교 대상에 포함한다.</li>
+<li>전체 환경을 지우기 전에 한두 서비스로 기능·성능·복구를 검증한다.</li>
+</ol>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>Docker Desktop은 공유 Linux VM의 Docker Engine을 사용하고, Apple <code>container</code>는 컨테이너마다 경량 Linux VM을 사용한다.</li>
+<li>Davit은 Apple <code>container</code>의 GUI이며, Docker Engine의 완전한 대체품으로 동일시하면 안 된다.</li>
+<li>OCI 이미지 호환성은 Docker CLI·Compose·볼륨 데이터의 자동 호환성을 뜻하지 않는다.</li>
+<li>원문에는 비교 조건과 측정값이 없어 <strong>일반적인 성능 우위는 확인할 수 없다.</strong></li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>Apple <code>container</code>와 Davit은 Apple silicon Mac에서 Linux 컨테이너를 다루는 실질적인 선택지다. 다만 이전 여부는 SNS의 한 줄 성능 체감보다 <strong>내 프로젝트의 호환성, 데이터 이전, 동일 조건의 측정 결과</strong>로 결정해야 한다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 10월 18일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/infrastructure">Infrastructure</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/10/2026-10-18-pstack-official-plugin-cursor-claude-code-guide/" rel="prev">
+        <span>pstack 공식 플러그인 다시 읽기: Cursor·Claude Code 설치와 작업 라우팅</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/10/2026-10-18-spec-kit-codex-rework-claim-workflow/" rel="next">
+        <span>Codex에 GitHub Spec Kit을 붙이면 재작업이 90% 줄까? 명세 중심 개발의 실제 흐름</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#게시물이-말한-것과-말하지-않은-것">게시물이 말한 것과 말하지 않은 것</a></li>
+    <li><a href="#같은-oci-이미지를-써도-실행-구조는-다르다">같은 OCI 이미지를 써도 실행 구조는 다르다</a></li>
+    <li><a href="#davit은-무엇을-더하고-무엇을-대체하지-않나">Davit은 무엇을 더하고, 무엇을 대체하지 않나</a></li>
+    <li><a href="#실제로-갈아타기-전에-확인할-네-가지">실제로 갈아타기 전에 확인할 네 가지</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/docker/" class="badge badge-secondary">Docker</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
