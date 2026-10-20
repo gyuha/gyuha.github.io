@@ -1,0 +1,144 @@
+---
+title: "AI 주식 자동매매 오픈소스 4종: 분석보다 먼저 설계할 주문 안전장치"
+date: 2026-10-20T07:31:00+09:00
+draft: false
+categories:
+  - Engineering
+tags:
+  - agents
+  - data-engineering
+  - automation
+description: "TradingAgents·Qlib·한국투자증권 Open API·OpenBB를 개인용 자동매매 시스템에 결합할 때의 역할, 데이터·주문 경계, 백테스트 함정과 모의투자 중심 구축 순서를 검증한다."
+---
+
+"AI 종목 분석부터 자동 주문까지 오픈소스 네 개로 연결할 수 있을까?" [아트코딩 블로그 글](https://m.blog.naver.com/artcording/224447058207)은 TradingAgents, Qlib, 한국투자증권 Open Trading API, OpenBB를 조합한 개인용 시스템을 제안한다. 방향은 흥미롭지만, 네 저장소를 설치한다고 곧바로 수익을 내는 자동매매 제품이 완성되지는 않는다. **데이터의 시점, 주문 전 위험 심사, 체결 확인**을 별도 시스템으로 설계해야 한다.
+
+<!--more-->
+
+## Sources
+
+- [원문 네이버 블로그 글](https://m.blog.naver.com/artcording/224447058207) — 네 도구의 역할과 단계적 구축 제안. 일반 HTTP 추출(`scrapling-get`)로 본문을 확인했다.
+- [TradingAgents 공식 저장소](https://github.com/TauricResearch/TradingAgents) — 멀티 에이전트 분석, 지원 데이터·시장, 연구용 성격.
+- [Microsoft Qlib 공식 저장소](https://github.com/microsoft/qlib) — 데이터 준비, 모델 연구, 백테스트와 성과 평가.
+- [한국투자증권 Open Trading API 공식 저장소](https://github.com/koreainvestment/open-trading-api) 및 [개발자센터](https://apiportal.koreainvestment.com/) — 국내 주식 API, 인증·모의투자 설정, 예제 범위.
+- [OpenBB 공식 저장소](https://github.com/OpenBB-finance/OpenBB) — 금융 데이터 통합 플랫폼의 역할.
+
+## 네 프로젝트의 경계부터 나누기
+
+**TradingAgents** 는 재무·뉴스·시장·기술적 분석 역할을 나눈 LLM 에이전트가 의사결정 보고서를 만든다. 공식 README도 이를 **연구용 프레임워크**라고 명시하고 성과 변동 가능성을 경고한다. **Qlib** 는 시계열 데이터, 머신러닝 신호, 백테스트와 평가를 위한 연구 플랫폼이다. **한국투자증권 API** 는 국내 주식의 시세·주문·잔고 등 계좌 연결 지점이며, **OpenBB** 는 여러 데이터 소스를 다른 분석 환경에 공급하는 선택적 데이터 계층이다. 각 프로젝트의 결과 형식과 책임은 서로 다르다. [TradingAgents](https://github.com/TauricResearch/TradingAgents#tradingagents-framework), [Qlib](https://github.com/microsoft/qlib), [한국투자증권 API](https://github.com/koreainvestment/open-trading-api), [OpenBB](https://github.com/OpenBB-finance/OpenBB)
+
+```mermaid
+flowchart TD
+    A["시세·뉴스·재무 데이터"] --> B["분석 보고서·신호"]
+    B --> C["전략·백테스트"]
+    C --> D["독립적인 위험 심사"]
+    D --> E{"주문 허용?"}
+    E -->|"예"| F["증권사 주문 API"]
+    E -->|"아니요"| G["차단·기록"]
+    F --> H["주문 상태·체결 대조"]
+    classDef inputTone fill:#c5dcef,stroke:#6488a8,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#9873ae,color:#333
+    classDef decisionTone fill:#fde8c0,stroke:#b69a56,color:#333
+    classDef successTone fill:#c0ecd3,stroke:#6aa889,color:#333
+    classDef failureTone fill:#ffc8c4,stroke:#bf7975,color:#333
+    class A inputTone
+    class B,C,D processTone
+    class E decisionTone
+    class F,H successTone
+    class G failureTone
+```
+
+위 그림은 네 저장소가 제공하는 **완제품 구조가 아니라 이들을 연결할 때 필요한 설계안**이다. 특히 위험 심사·주문 상태 관리·대시보드는 개발자가 직접 통합해야 한다. 원문도 도구를 "잘 조합"해야 하고 별도의 개발·검증이 필요하다고 단서를 단다. 한국투자증권 저장소에는 이미 `strategy_builder`와 LEAN 기반 `backtester` 예제가 있으므로, 첫 버전부터 Qlib를 반드시 도입할 필요도 없다. OpenBB 역시 데이터 종류가 늘어난 뒤 추가해도 된다. [원문](https://m.blog.naver.com/artcording/224447058207), [한국투자증권 저장소의 AI 트레이딩 도구](https://github.com/koreainvestment/open-trading-api#24-ai-%ED%8A%B8%EB%A0%88%EC%9D%B4%EB%94%A9-%EB%8F%84%EA%B5%AC), [OpenBB의 데이터 계층 설명](https://github.com/OpenBB-finance/OpenBB)
+
+## 분석 보고서를 주문 명령으로 바로 바꾸면 안 되는 이유
+
+TradingAgents는 분석가·연구자·트레이더·위험관리자 역할의 보고서를 종합한다. 그러나 README의 기본 흐름에서 승인된 제안은 **시뮬레이션 거래소**로 보내며, 한국투자증권 계좌 주문과 직접 이어지는 기능을 의미하지 않는다. 또한 데이터 공급자에 따라 지원 시장과 과거 시점의 데이터 가용성이 다르다. 국내 종목에 적용하려면 종목 식별자, 거래소, 기업 재무·뉴스 공급원, 시간대가 실제로 맞는지 확인해야 한다. [TradingAgents의 역할과 시뮬레이션 설명](https://github.com/TauricResearch/TradingAgents#tradingagents-framework), [시장·종목 표기](https://github.com/TauricResearch/TradingAgents#markets-and-tickers)
+
+따라서 LLM의 긴 자연어 답변을 주문 API에 전달하지 말고, **분석 시각·데이터 출처·종목 코드·의견·불확실성·모델 버전**처럼 검증 가능한 필드로 정규화해야 한다. 이 필드는 원문이 제안한 결과 표준화 방향을 운영 관점에서 확장한 **설계 권고**다. 종목 코드가 매핑되지 않거나, 데이터가 오래되었거나, 신호의 근거를 재현할 수 없으면 주문 후보에서 제외한다. LLM의 분석 품질은 백테스트 및 모의투자에서 별도로 평가한다. [원문의 AI 분석 결과 처리 제안](https://m.blog.naver.com/artcording/224447058207), [TradingAgents의 연구용 고지](https://github.com/TauricResearch/TradingAgents)
+
+```mermaid
+flowchart TD
+    A["LLM 분석 보고서"] --> B["정해진 필드로 추출"]
+    B --> C["종목·시각·출처 검증"]
+    C --> D{"입력 유효?"}
+    D -->|"아니요"| E["후보 폐기·원인 기록"]
+    D -->|"예"| F["규칙 기반 전략에 전달"]
+    F --> G["위험 심사 전까지 주문 금지"]
+    classDef inputTone fill:#c5dcef,stroke:#6488a8,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#9873ae,color:#333
+    classDef decisionTone fill:#fde8c0,stroke:#b69a56,color:#333
+    classDef failureTone fill:#ffc8c4,stroke:#bf7975,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#6aa889,color:#333
+    class A inputTone
+    class B,C processTone
+    class D decisionTone
+    class E failureTone
+    class F,G outputTone
+```
+
+## 백테스트의 선행 조건은 데이터 품질
+
+Qlib의 `qrun` 워크플로는 데이터셋 구축, 모델 학습, 백테스트, 수익률·최대 낙폭 등 평가를 이어준다. 그러나 **한국 시장 데이터가 자동으로 준비되는 것은 아니다**. 현재 공식 README는 자체 공식 데이터셋 제공이 일시 중단되어 커뮤니티 데이터 또는 직접 준비한 데이터가 필요하다고 안내한다. OpenBB를 붙여도 제공업체별 라이선스·종목 범위·결측·수정 주가 문제를 대신 해결해 주지는 않는다. [Qlib의 데이터 준비 안내](https://github.com/microsoft/qlib#data-preparation), [Qlib의 백테스트 워크플로](https://github.com/microsoft/qlib#auto-quant-research-workflow), [OpenBB의 데이터 통합 설명](https://github.com/OpenBB-finance/OpenBB)
+
+백테스트에서는 **신호를 만든 시점에 실제로 알 수 있었던 데이터만** 입력하고, 신호 이후에 체결 가능한 가격으로 평가해야 한다. 과거 결과가 좋더라도 데이터 누수, 생존 종목만 남긴 표본, 수수료·세금·슬리피지 누락, 특정 장세에만 맞춘 과최적화가 있으면 실거래 성과를 설명하지 못한다. Qlib는 비용 포함·미포함 성과와 최대 낙폭을 구분해 보여주고, TradingAgents 역시 과거 시점의 재무정보 가용성 문제를 명시한다. **이동평균선 교차** 같은 단순 규칙은 파이프라인 검증용 예제로는 좋지만, 그 자체가 수익 전략이라는 뜻은 아니다. [Qlib 평가 예시](https://github.com/microsoft/qlib#auto-quant-research-workflow), [TradingAgents의 과거 재무정보 제한](https://github.com/TauricResearch/TradingAgents#fundamentals-as-filed), [원문의 예제 전략](https://m.blog.naver.com/artcording/224447058207)
+
+```mermaid
+flowchart TD
+    A["시점이 확인된 원천 데이터"] --> B["결측·수정·종목 이력 점검"]
+    B --> C["학습·검증 기간 분리"]
+    C --> D["체결 가정·비용 반영"]
+    D --> E["수익률·낙폭·거래 횟수 평가"]
+    E --> F["장세별 재검증·모의투자"]
+    classDef inputTone fill:#c5dcef,stroke:#6488a8,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#9873ae,color:#333
+    classDef checkTone fill:#fde8c0,stroke:#b69a56,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#6aa889,color:#333
+    class A inputTone
+    class B,C,D processTone
+    class E checkTone
+    class F outputTone
+```
+
+## 증권사 연결에서는 접수와 체결을 분리하기
+
+한국투자증권 저장소는 Python 3.11 이상과 `uv sync` 환경을 안내하고, `kis_devlp.yaml`에 앱키·앱시크릿·계좌 정보를 넣도록 한다. **모의투자 키와 실전투자 키를 별도로 준비**하며, 인증 예제의 `svr="vps"`와 `svr="prod"` 설정을 혼동하면 위험하다. 인증 파일은 공개 저장소에 올리지 않고 로그에서도 비밀값을 가려야 한다. [공식 설치·인증 안내](https://github.com/koreainvestment/open-trading-api#3-%EC%82%AC%EC%A0%84-%ED%99%98%EA%B2%BD%EC%84%A4%EC%A0%95-%EC%95%88%EB%82%B4)
+
+운영 설계상 "API 호출 성공"과 "주문 접수"와 "실제 체결"은 각각 다른 상태로 기록해야 한다. 모의 환경에서 시세 조회 → 잔고 조회 → 주문 전 한도 확인 → 주문 접수 → 미체결·부분 체결·취소 확인의 순서로 테스트한다. 통신 오류 뒤에 무조건 같은 주문을 다시 보내지 말고, 기존 주문 상태를 먼저 조회해 **중복 주문**을 막아야 한다. 이 상태 관리 방식은 원문이 강조한 미체결 관리·중복 방지를 구체화한 설계 권고다. [원문의 주문·체결 및 안전장치 설명](https://m.blog.naver.com/artcording/224447058207), [공식 API 기능 범위](https://github.com/koreainvestment/open-trading-api#22-%EC%A7%80%EC%9B%90%EB%90%98%EB%8A%94-%EC%A3%BC%EC%9A%94-api-%EC%B9%B4%ED%85%8C%EA%B3%A0%EB%A6%AC)
+
+```mermaid
+flowchart TD
+    A["검증된 주문 후보"] --> B["잔고·한도·미체결 조회"]
+    B --> C{"위험 한도 통과?"}
+    C -->|"아니요"| D["주문 차단·알림"]
+    C -->|"예"| E["모의 주문 전송"]
+    E --> F["접수 ID 저장"]
+    F --> G["체결·미체결 상태 대조"]
+    G --> H["기록·수동 중지 가능"]
+    classDef inputTone fill:#c5dcef,stroke:#6488a8,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#9873ae,color:#333
+    classDef decisionTone fill:#fde8c0,stroke:#b69a56,color:#333
+    classDef failureTone fill:#ffc8c4,stroke:#bf7975,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#6aa889,color:#333
+    class A inputTone
+    class B,E,F,G processTone
+    class C decisionTone
+    class D failureTone
+    class H outputTone
+```
+
+## 실전 적용 포인트: 한 번에 네 개를 붙이지 않기
+
+첫 단계는 **실전 주문을 비활성화한 상태에서** 한국투자증권 모의 계좌의 시세·잔고·주문 상태를 읽는 것이다. 다음으로 작은 규칙 기반 신호와 백테스트를 붙이고, 주문 전 한도·중복 방지·비상 정지·감사 로그를 만든다. 그 뒤에 TradingAgents 보고서를 주문이 아닌 **참고 분석**으로 추가하고, 데이터 통합이 병목이 될 때만 OpenBB를, 더 넓은 퀀트 연구가 필요할 때 Qlib를 도입하는 순서가 합리적이다. 이는 원문의 단계적 개발 제안과 공식 저장소별 기능을 바탕으로 한 **권장 구현 순서**다. [원문](https://m.blog.naver.com/artcording/224447058207), [한국투자증권 예제·전략 도구](https://github.com/koreainvestment/open-trading-api), [Qlib](https://github.com/microsoft/qlib)
+
+운영 화면에는 분석 의견보다 **현재 환경이 모의인지 실전인지**, 주문 가능 여부, 미체결 수량, 최신 체결, 위험 차단 사유, 마지막 데이터 시각, API 오류가 먼저 보여야 한다. 일일 리포트와 텔레그램·이메일 알림도 유용하지만, 알림 수신이 주문 제어를 대신해서는 안 된다. API 호출 제한과 토큰 만료, 장 운영 시간 같은 조건은 증권사 문서의 최신 안내를 기준으로 점검해야 한다. [원문의 대시보드·운영 제안](https://m.blog.naver.com/artcording/224447058207), [한국투자증권 개발자센터](https://apiportal.koreainvestment.com/)
+
+## 핵심 요약
+
+- 네 오픈소스는 **분석·연구·주문·데이터 통합**이라는 서로 다른 층을 담당하며, 자동 결합 제품이 아니다. [원문](https://m.blog.naver.com/artcording/224447058207), [공식 프로젝트 목록](https://github.com/koreainvestment/open-trading-api)
+- Qlib를 쓰려면 한국 시장 데이터의 공급·시점·품질을 따로 해결해야 한다. 공식 데이터셋도 현재 제한된다. [Qlib 데이터 안내](https://github.com/microsoft/qlib#data-preparation)
+- LLM 보고서를 즉시 주문하지 말고, 구조화·검증·백테스트·독립 위험 심사·모의 주문을 거쳐야 한다. [TradingAgents 연구용 고지](https://github.com/TauricResearch/TradingAgents), [원문의 위험 관리 제안](https://m.blog.naver.com/artcording/224447058207)
+- 한국투자증권의 모의·실전 인증을 구분하고 접수·체결·미체결을 별도 상태로 다뤄야 한다. [공식 설정 안내](https://github.com/koreainvestment/open-trading-api)
+
+## 결론
+
+이 구상의 난점은 AI 모델 선택이 아니라 **잘못된 데이터나 신호가 계좌의 실제 주문으로 이어지지 않게 하는 통제**에 있다. 이 글은 소프트웨어 설계·학습 자료이며 특정 종목의 매수·매도나 수익을 권유하지 않는다. 실제 거래에는 원금 손실 위험이 있다.

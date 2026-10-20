@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Blender Agent SDK: 애드온 없이 AI 에이전트가 3D 장면을 만드는 구조'" />
+  <title>Blender Agent SDK: 애드온 없이 AI 에이전트가 3D 장면을 만드는 구조  | 신규하 블로그</title>
+  <meta property="og:title" content="Blender Agent SDK: 애드온 없이 AI 에이전트가 3D 장면을 만드는 구조" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-10-20"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/10/2026-10-20-blender-agent-sdk-process-socket-operator-guide/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="agents" />
+  
+  <meta property="og:tags" content="python" />
+  
+  <meta property="og:tags" content="automation" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/10/2026-10-20-blender-agent-sdk-process-socket-operator-guide/">
+          <h1>
+            Blender Agent SDK: 애드온 없이 AI 에이전트가 3D 장면을 만드는 구조
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/10/2026-10-20-blender-agent-sdk-process-socket-operator-guide/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>&ldquo;AI 에이전트에게 눈사람을 만들어 달라고 하면 터미널에 3D 렌더링이 나온다.&rdquo; <a href="https://www.threads.com/share/_ltRRroZ7/">개발자의 Threads 게시물</a>이 소개한 <a href="https://github.com/yazzang-homelab/blender-agent-sdk">Blender Agent SDK</a>는 Blender에 애드온을 설치하는 대신, Python 프로그램이 Blender를 별도 프로세스로 실행하고 내부 브리지와 통신하는 도구다. 단순한 자연어 생성기가 아니라, 에이전트가 <strong>장면을 관찰하고, 가능한 동작을 찾고, 실행 결과를 이미지로 확인하는</strong> 작업 환경에 가깝다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.threads.com/share/_ltRRroZ7/">원문 Threads 게시물</a> — 본문과 개발자의 댓글에서 프로젝트 링크·MCP·CLI 설명을 확인했다. 동적 페이지라 일반 가져오기에서 본문이 빠져 브라우저 렌더링 방식으로 추출했다.</li>
+<li><a href="https://github.com/yazzang-homelab/blender-agent-sdk">Blender Agent SDK 저장소 및 README</a> — 구현 구조, 지원 범위, 설치법, 테스트·보안 정책의 1차 자료.</li>
+<li><a href="https://docs.blender.org/api/5.2/info_api_reference.html">Blender 5.2 Python API 안내</a> — 오퍼레이터가 이미 공개 Python API에 있다는 점을 확인하는 공식 자료.</li>
+<li><a href="https://docs.blender.org/api/main/info_advanced_blender_as_bpy.html">Blender의 Python 모듈 사용 안내</a> — 외부 Python에서 <code>bpy</code>를 사용하는 별도 접근법과 제약을 확인하는 공식 자료.</li>
+</ul>
+<h2 id="무엇을-해결하나-ai와-blender-사이의-지속적인-작업-공간">무엇을 해결하나: AI와 Blender 사이의 지속적인 작업 공간</h2>
+<p>일회성 Python 스크립트로 Blender를 실행하면 스크립트가 끝날 때 프로세스도 종료된다. 반면 장면을 대화 여러 턴에 걸쳐 수정하려면 <strong>동일한 Blender 세션을 유지하고</strong>, 현재 객체와 렌더 결과를 에이전트에게 되돌려줘야 한다. 프로젝트는 이를 <code>BlenderSession</code>과 관찰·탐색·조작 도구로 묶는다. 핵심은 MCP 자체가 아니라 Python SDK이며, MCP 서버와 CLI는 같은 기능을 이용하는 선택적 진입점이다. <a href="https://github.com/yazzang-homelab/blender-agent-sdk#work-on-a-scene-in-a-conversation">프로젝트 README의 세션·인터페이스 설명</a></p>
+<pre class="mermaid">flowchart TD
+    A["사용자 요청"] --> B["AI 에이전트"]
+    B --> C["도구 호출·결과 해석"]
+    C --> D["Blender 세션"]
+    D --> E["장면 수정·렌더"]
+    E --> F["이미지·장면 정보"]
+    F --> B
+    classDef inputTone fill:#c5dcef,stroke:#6488a8,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#9873ae,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#6aa889,color:#333
+    class A inputTone
+    class B,C,D,E processTone
+    class F outputTone</pre><h2 id="애드온-없는-연결은-어떻게-동작하나">애드온 없는 연결은 어떻게 동작하나</h2>
+<p><code>BlenderSession</code>은 Blender를 자식 프로세스로 띄우고 <code>--python</code> 인자로 작은 브리지 스크립트를 실행한다. 브리지는 <strong>Blender 내부의 Python 인터프리터</strong>에서 <code>bpy</code>를 사용한다. 외부 SDK와 브리지 사이에는 Linux·macOS에서 전용 Unix 소켓을, Windows에서는 세션 토큰으로 확인하는 <code>127.0.0.1</code> TCP를 사용한다. 따라서 사용자가 Blender 설정 화면에서 애드온을 설치할 필요는 없지만, <strong>Blender 실행 파일과 Python 패키지는 별도로 필요하다</strong>. <a href="https://github.com/yazzang-homelab/blender-agent-sdk#how-it-works">프로세스·전송 구조</a>, <a href="https://github.com/yazzang-homelab/blender-agent-sdk#install">설치 요구 사항</a></p>
+<pre class="mermaid">flowchart TD
+    A["에이전트·Python 코드"] --> B["BlenderSession"]
+    B --> C["자식 프로세스 실행"]
+    C --> D["Blender 내부 bridge.py"]
+    B <-->|"소켓·JSON"| D
+    D --> E["bpy로 장면 조작"]
+    E --> F["결과·예외·PNG 반환"]
+    F --> A
+    classDef agentTone fill:#c5dcef,stroke:#6488a8,color:#333
+    classDef bridgeTone fill:#e0c8ef,stroke:#9873ae,color:#333
+    classDef actionTone fill:#fde8c0,stroke:#b69a56,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#6aa889,color:#333
+    class A,B agentTone
+    class C,D bridgeTone
+    class E actionTone
+    class F resultTone</pre><p>헤드리스 기본 모드는 <code>-b</code>로 GUI 없이 실행하며, <code>screenshot</code>은 장면 카메라를 기준으로 렌더링한다. GUI 모드에서는 3D 뷰포트의 오프스크린 캡처도 가능하다. 헤드리스 모드에는 GUI의 실행 취소 스택이 없어서 SDK는 <code>.blend</code> 파일을 이용한 <code>checkpoint</code>·<code>restore</code>를 제공한다. 이 차이를 모르면 &ldquo;스크린샷&quot;과 &ldquo;되돌리기&quot;를 두 모드에서 똑같이 기대하기 쉽다. <a href="https://github.com/yazzang-homelab/blender-agent-sdk#background-vs-gui-sessions">README의 모드별 차이</a></p>
+<h2 id="2498개-오퍼레이터-숫자보다-중요한-것은-탐색실행-방식">2,498개 오퍼레이터: 숫자보다 중요한 것은 탐색·실행 방식</h2>
+<p>개발자는 REA·Ghidra로 Blender 5.2.2 바이너리를 분석하고 소스 및 런타임 RNA 정보와 대조했다고 설명한다. 프로젝트 기록상 바이너리에서 찾은 오퍼레이터 식별자는 2,247개였고, <strong>실행 중 등록된 오퍼레이터는 2,498개</strong>였다. SDK가 고정 목록 대신 실제 등록 목록을 대상으로 <code>search_operators</code>를 제공하는 이유다. <code>describe_operator</code>로 매개변수를 확인하고 <code>call_operator</code>로 실행할 수 있으며, <code>get_property</code>·<code>set_property</code>로 RNA 속성도 읽고 바꾼다. 단, 2,498개는 해당 버전의 등록 수이지 모든 오퍼레이터가 헤드리스 세션이나 모든 장면 상태에서 성공한다는 보장은 아니다. <a href="https://github.com/yazzang-homelab/blender-agent-sdk#reverse-engineering">README의 역분석 결과</a>, <a href="https://github.com/yazzang-homelab/blender-agent-sdk#tools">도구 목록</a></p>
+<pre class="mermaid">flowchart TD
+    A["작업 목표"] --> B["오퍼레이터 검색"]
+    B --> C["인자·열거값 확인"]
+    C --> D["현재 장면에서 실행"]
+    D --> E{"성공했나?"}
+    E -->|"예"| F["장면·이미지 관찰"]
+    E -->|"아니요"| G["오류·컨텍스트 수정"]
+    G --> B
+    classDef inputTone fill:#c5dcef,stroke:#6488a8,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#9873ae,color:#333
+    classDef decisionTone fill:#fde8c0,stroke:#b69a56,color:#333
+    classDef successTone fill:#c0ecd3,stroke:#6aa889,color:#333
+    classDef failureTone fill:#ffc8c4,stroke:#bf7975,color:#333
+    class A inputTone
+    class B,C,D processTone
+    class E decisionTone
+    class F successTone
+    class G failureTone</pre><p>여기서 <strong>역분석이 Blender 자동화의 필수 조건은 아니다</strong>. Blender 자체가 <code>bpy.ops</code>와 Python API를 공식 문서로 공개하고 있으며, <code>bpy</code>를 Python 모듈로 빌드·설치하는 접근법도 설명한다. 이 프로젝트에서 역분석은 기본 API를 새로 발견했다기보다, 내부 실행 경로와 헤드리스·GUI 동작 차이를 확인해 SDK 설계 근거로 활용한 작업이다. Blender 공식 문서는 오퍼레이터가 실행 컨텍스트에 의존할 수 있다고 명시한다. <a href="https://docs.blender.org/api/5.2/info_api_reference.html">공식 오퍼레이터 문서</a>, <a href="https://docs.blender.org/api/main/info_advanced_blender_as_bpy.html">Python 모듈 안내</a>, <a href="https://github.com/yazzang-homelab/blender-agent-sdk#reverse-engineering">프로젝트의 역분석 설명</a></p>
+<h2 id="결과를-어떻게-보나-sdkmcpcli">결과를 어떻게 보나: SDK·MCP·CLI</h2>
+<p>Python 코드에서는 <code>BlenderSession()</code>을 열어 오퍼레이터를 호출하고 <code>screenshot()</code>으로 PNG 바이트를 받는다. 저장소의 예제는 <code>mesh.primitive_monkey_add</code>로 객체를 만들고 수정자를 추가한 뒤 장면 정보와 렌더 이미지를 얻는다. 이 방식은 에이전트 프레임워크의 함수 호출 루프와 직접 결합할 때 적합하다. 저장소는 OpenAI·Anthropic 함수 호출 스키마와 <code>dispatch()</code>도 제공하지만, 실제 모델 호출 비용이나 렌더 시간을 자동으로 없애주는 것은 아니다. <a href="https://github.com/yazzang-homelab/blender-agent-sdk#plug-it-into-an-agent">SDK 예제와 에이전트 연결</a></p>
+<p>대화형 작업에서는 <code>blender-agent mcp</code>로 기존 MCP 호스트에 붙이거나, <code>blender-agent start</code> → <code>call</code> → <code>show</code> → <code>stop</code> 명령으로 백그라운드 세션을 유지한다. <code>show</code>는 렌더를 저장하고 터미널에 표시하며, <code>watch</code>는 새 이미지를 계속 보여준다. 갤러리 폴더의 <code>index.html</code>이나 선택적 HTTP 서버로도 결과를 볼 수 있다. 즉 원문의 &ldquo;터미널에서 3D 렌더링&quot;은 Blender GUI를 터미널 안에 넣는다는 뜻이 아니라, <strong>렌더된 이미지를 터미널에 표시</strong>한다는 뜻이다. <a href="https://github.com/yazzang-homelab/blender-agent-sdk#seeing-what-the-agent-did">README의 MCP·CLI·갤러리 설명</a></p>
+<h2 id="실전-적용-포인트-버전과-신뢰-경계">실전 적용 포인트: 버전과 신뢰 경계</h2>
+<p>저장소는 Python 3.10 이상과 <strong>별도 Blender 설치</strong>를 요구하며, CI의 전체 테스트 대상은 Blender 5.2.2의 Linux x64·Windows x64·macOS arm64다. 다른 Blender 버전은 저장소가 검증하지 않았다고 명시한다. 시작할 때는 자신의 Blender 경로와 버전을 확인하고, 간단한 장면 생성·스크린샷부터 재현하는 편이 안전하다. 원문의 눈사람 사례는 개발자의 시연 설명이며, 여기서는 동일한 환경에서 결과를 독립 재현하지 않았다. <a href="https://github.com/yazzang-homelab/blender-agent-sdk#install">설치·CI 범위</a>, <a href="https://www.threads.com/share/_ltRRroZ7/">원문 게시물</a></p>
+<p>보안 면에서 <code>exec_python</code>은 기본 비활성이고, 브리지도 에이전트가 임의 Python을 실행하는 경로를 제한한다고 설명한다. 그러나 프로젝트 스스로 <strong>파일시스템 샌드박스는 아니라고</strong> 경고한다. 일반 오퍼레이터만으로도 접근 가능한 파일을 읽거나 쓸 수 있으므로, 신뢰하지 않는 에이전트·파일을 다룰 때는 필요한 경로만 노출한 컨테이너 또는 VM에서 실행해야 한다. 외부에 갤러리를 노출하는 <code>--http-bind 0.0.0.0</code>도 네트워크 접근 범위를 검토한 뒤 써야 한다. <a href="https://github.com/yazzang-homelab/blender-agent-sdk#trust-model">README의 신뢰 모델</a>, <a href="https://github.com/yazzang-homelab/blender-agent-sdk#seeing-what-the-agent-did">갤러리 서버 옵션</a></p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>Blender Agent SDK는 <strong>애드온 설치 대신 자식 프로세스와 내부 Python 브리지</strong>로 Blender를 조작한다. <a href="https://github.com/yazzang-homelab/blender-agent-sdk#how-it-works">구현 구조</a></li>
+<li>관찰·탐색·조작·렌더 확인을 한 루프로 묶고, 순수 Python SDK 위에 선택적 MCP·CLI를 올렸다. <a href="https://github.com/yazzang-homelab/blender-agent-sdk#tools">도구와 인터페이스</a></li>
+<li>2,498개는 Blender 5.2.2 런타임 등록 오퍼레이터 수다. API 공개 여부나 개별 동작 성공 여부와 혼동하면 안 된다. <a href="https://github.com/yazzang-homelab/blender-agent-sdk#reverse-engineering">역분석 설명</a></li>
+<li>기본 실행 제한은 있지만 파일시스템 격리는 제공하지 않는다. 비신뢰 작업에는 별도 격리가 필요하다. <a href="https://github.com/yazzang-homelab/blender-agent-sdk#trust-model">신뢰 모델</a></li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>이 프로젝트의 강점은 &ldquo;AI가 3D를 만든다&quot;는 구호보다 <strong>에이전트가 Blender의 실제 상태를 확인하며 반복 수정할 수 있는 연결 방식</strong>에 있다. 다만 Blender 공식 API가 이미 존재한다는 점, 5.2.2 외 버전의 검증 공백, 파일 접근 권한이라는 현실적인 경계를 함께 봐야 한다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 10월 20일 07시 30분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/10/2026-10-20-cozyclay-3-previs-motion-ai-video-workflow/" rel="prev">
+        <span>CozyClay 3.0: 말로 3D 샷을 설계하고 AI 영상 렌더링으로 넘기는 법</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/10/2026-10-20-ai-stock-trading-four-open-source-integration-risk-gates/" rel="next">
+        <span>AI 주식 자동매매 오픈소스 4종: 분석보다 먼저 설계할 주문 안전장치</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#무엇을-해결하나-ai와-blender-사이의-지속적인-작업-공간">무엇을 해결하나: AI와 Blender 사이의 지속적인 작업 공간</a></li>
+    <li><a href="#애드온-없는-연결은-어떻게-동작하나">애드온 없는 연결은 어떻게 동작하나</a></li>
+    <li><a href="#2498개-오퍼레이터-숫자보다-중요한-것은-탐색실행-방식">2,498개 오퍼레이터: 숫자보다 중요한 것은 탐색·실행 방식</a></li>
+    <li><a href="#결과를-어떻게-보나-sdkmcpcli">결과를 어떻게 보나: SDK·MCP·CLI</a></li>
+    <li><a href="#실전-적용-포인트-버전과-신뢰-경계">실전 적용 포인트: 버전과 신뢰 경계</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+    <a href="/tags/python/" class="badge badge-secondary">Python</a>
+    <a href="/tags/automation/" class="badge badge-secondary">Automation</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
