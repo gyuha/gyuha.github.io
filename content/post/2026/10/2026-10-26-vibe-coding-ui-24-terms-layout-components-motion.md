@@ -1,0 +1,159 @@
+---
+title: "바이브 코딩 UI 용어 24개: 레이아웃·컴포넌트·효과를 정확히 요청하는 법"
+date: 2026-10-26T18:44:00+09:00
+draft: false
+categories:
+  - Web
+tags:
+  - vibe-coding
+  - prompt-engineering
+  - javascript
+description: "히어로 섹션부터 드로어와 스크롤 리빌까지, 영상의 UI 용어 24개를 용도·요청 문장·반응형·접근성 점검 기준으로 정리한다."
+---
+
+AI에게 “오른쪽에서 메뉴가 나오게 해줘”라고 해도 무언가는 만들 수 있다. 하지만 **“설정 버튼을 누르면 오른쪽 드로어를 열고, Escape와 닫기 버튼으로 닫아줘”** 라고 말하면 위치·트리거·종료 조건이 분명해진다. [코드깎는노인의 영상](https://youtu.be/mlhKEy-2bgI?si=ru6jk2bVHcARAs2z)은 바이브 코딩에 유용한 UI 용어 24개를 레이아웃, 컴포넌트, 효과로 나눠 보여준다. 이 글은 각 용어를 실제 요청 문장으로 바꾸고, 빠뜨리기 쉬운 모바일·키보드·모션 감소 조건을 더한다.
+
+<!--more-->
+
+## Sources
+
+- [원본 영상: 바이브코더가 반드시 알아야 할 필수 용어 24가지](https://youtu.be/mlhKEy-2bgI?si=ru6jk2bVHcARAs2z) — 한국어 자동 자막을 시간대별로 확인했다. 자막의 일부 용어 표기는 발음 때문에 잘못 전사되어 맥락에 맞게 바로잡았다.
+- [W3C WAI-ARIA APG: UI 패턴 목록](https://www.w3.org/WAI/ARIA/apg/patterns/)·[탭](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/)·[모달 다이얼로그](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/)·[캐러셀](https://www.w3.org/WAI/ARIA/apg/patterns/carousel/) — 키보드와 보조기술 동작의 기준.
+- [MDN: 접근성 미디어 쿼리](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Media_queries/Using_for_accessibility)·[`position: sticky`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/position)·[`scroll-snap-type`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-snap-type)·[`backdrop-filter`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/backdrop-filter) — 효과를 구현할 때 확인할 브라우저 동작.
+
+## 1. 용어만 말하지 말고 ‘동작 계약’을 함께 적는다
+
+영상의 결론은 [589~666초](https://youtu.be/mlhKEy-2bgI?t=589)에 나온다. “세련된 사이트”처럼 결과만 요구하기보다 **UI 용어 + 원하는 동작 + 적용 조건** 을 함께 지정하라는 것이다. 예컨대 드로어라면 열리는 방향뿐 아니라 어떤 버튼이 여는지, 바깥 클릭·Escape로 닫히는지, 좁은 화면에서는 어느 너비를 차지하는지까지 정한다. 용어를 많이 넣는 것보다 사용자가 무엇을 할 수 있어야 하는지를 밝히는 편이 중요하다.
+
+```mermaid
+flowchart TD
+    A["화면의 목적"] --> B["UI 패턴 이름"]
+    B --> C["사용자의 동작"]
+    C --> D["화면 크기·입력 방식 조건"]
+    D --> E["성공·실패 상태"]
+    E --> F["직접 검증할 기준"]
+    classDef purposeTone fill:#c5dcef,stroke:#6e94b5,color:#333
+    classDef patternTone fill:#e0c8ef,stroke:#a27db8,color:#333
+    classDef conditionTone fill:#fde8c0,stroke:#c9a85c,color:#333
+    classDef verifyTone fill:#c0ecd3,stroke:#79b293,color:#333
+    class A purposeTone
+    class B,C patternTone
+    class D,E conditionTone
+    class F verifyTone
+```
+
+아래 인용형 문장은 **영상을 바탕으로 다시 작성한 요청 예시** 다. 영상 속 문구를 그대로 옮긴 명령어가 아니며, 프로젝트 디자인 시스템과 구현 방식에 맞춰 수정해야 한다.
+
+## 2. 페이지의 뼈대를 정하는 레이아웃 7개
+
+영상은 [84~238초](https://youtu.be/mlhKEy-2bgI?t=84)에 큰 화면 구조를 먼저 설명한다. 레이아웃은 기능을 추가하기 전에 **정보의 우선순위와 화면 크기에 따른 배치** 를 정하는 단계다.
+
+1. **히어로 섹션(Hero section)** — 방문 직후 제품·서비스의 핵심을 보여주는 첫 영역이다. 영상은 제목, 짧은 설명, 제품 이미지와 방문자가 하길 원하는 핵심 행동인 **CTA 버튼** 을 함께 제시한다. CTA는 이 24개 중 별도 항목이 아니라 히어로를 구성하는 요소다. [영상 88초](https://youtu.be/mlhKEy-2bgI?t=88) <br>요청: “첫 화면에 한 줄 가치 제안, 보조 설명, 제품 이미지, ‘무료로 시작하기’ CTA를 넣고 CTA가 실제 가입 화면으로 연결되게 해줘.”
+2. **반응형 레이아웃(Responsive layout)** — 화면 폭과 입력 환경에 따라 배치를 바꾼다. 영상의 데스크톱 3열·태블릿 2열·모바일 1열은 **예시 요구사항** 이지 모든 사이트의 고정 규칙은 아니다. [영상 113초](https://youtu.be/mlhKEy-2bgI?t=113) <br>요청: “이 카드 영역을 넓은 화면에서는 3열, 중간 폭에서는 2열, 휴대폰에서는 1열로 배치하고 가로 스크롤이 생기지 않게 해줘.”
+3. **카드 레이아웃(Card layout)** — 반복되는 상품·글·기능을 독립된 단위로 묶는다. 카드 전체가 클릭 가능하다면 내부 버튼·링크와 상호작용이 충돌하지 않게 설계해야 한다. [영상 133초](https://youtu.be/mlhKEy-2bgI?t=133) <br>요청: “기능마다 제목, 설명, 아이콘과 자세히 보기 링크를 가진 카드를 만들고 키보드로 링크에 접근할 수 있게 해줘.”
+4. **벤토 그리드(Bento grid)** — 중요 항목은 크게, 보조 항목은 작게 배치하는 카드 그리드다. 시각적 크기가 중요한 정보를 제대로 반영하는지, 모바일에서 읽는 순서가 자연스러운지 확인해야 한다. [영상 156초](https://youtu.be/mlhKEy-2bgI?t=156) <br>요청: “핵심 기능 카드는 크게, 보조 기능 카드는 작게 배치하고 모바일에서는 원래 의미 순서대로 한 열에 쌓아줘.”
+5. **사이드바 레이아웃(Sidebar layout)** — 대시보드처럼 메뉴와 작업 영역을 나란히 둔다. 모바일에서는 고정 사이드바가 본문을 지나치게 좁히지 않도록 다른 탐색 방식이 필요하다. [영상 178초](https://youtu.be/mlhKEy-2bgI?t=178) <br>요청: “데스크톱에는 왼쪽 탐색, 오른쪽 본문을 배치하고 모바일에서는 탐색 버튼으로 메뉴를 열어줘.”
+6. **스티키 헤더(Sticky header)** — 스크롤해도 화면 상단의 탐색 영역을 유지한다. CSS의 `position: sticky`는 가장 가까운 스크롤 조상 등의 영향을 받으므로, 단순히 속성을 붙였는데 동작하지 않으면 부모의 `overflow`부터 확인한다. [영상 201초](https://youtu.be/mlhKEy-2bgI?t=201), [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/position) <br>요청: “상단 내비게이션을 스티키 헤더로 만들고 본문 제목을 가리지 않도록 높이와 여백을 맞춰줘.”
+7. **스플릿 레이아웃(Split layout)** — 이미지와 설명을 좌우에 배치하고 화면이 좁아지면 위아래로 쌓는다. ‘50:50’은 영상의 예시이지 필수 비율이 아니다. [영상 220초](https://youtu.be/mlhKEy-2bgI?t=220) <br>요청: “넓은 화면에서 이미지와 설명을 좌우로 보여주고 모바일에서는 이미지 다음에 설명이 오도록 세로로 배치해줘.”
+
+```mermaid
+flowchart TD
+    A["콘텐츠의 우선순위"] --> B{"화면의 성격"}
+    B -->|소개·판매| C["히어로·카드·벤토·스플릿"]
+    B -->|관리·탐색| D["사이드바·스티키 헤더"]
+    C --> E["반응형 재배치"]
+    D --> E
+    E --> F["모바일 읽기 순서 확인"]
+    classDef inputTone fill:#c5dcef,stroke:#6e94b5,color:#333
+    classDef choiceTone fill:#fde8c0,stroke:#c9a85c,color:#333
+    classDef structureTone fill:#e0c8ef,stroke:#a27db8,color:#333
+    classDef verifyTone fill:#c0ecd3,stroke:#79b293,color:#333
+    class A inputTone
+    class B choiceTone
+    class C,D,E structureTone
+    class F verifyTone
+```
+
+## 3. 사용자가 조작하는 컴포넌트 9개
+
+영상의 [251~422초](https://youtu.be/mlhKEy-2bgI?t=251)는 같은 공간에서 내용을 바꾸거나, 일시적으로 정보를 보여주거나, 작업 결과를 알리는 UI를 소개한다. 비슷해 보이는 부품이라도 **키보드·포커스·닫기 동작** 이 다르다. [W3C의 UI 패턴](https://www.w3.org/WAI/ARIA/apg/patterns/)은 구현 전에 확인할 기준이다.
+
+8. **탭(Tabs)** — 한 영역에서 개요·기능·요금처럼 다른 패널로 전환한다. 선택된 탭 상태와 연결된 패널을 시각적으로도, 보조기술에도 드러내야 한다. [영상 251초](https://youtu.be/mlhKEy-2bgI?t=251), [W3C 탭 패턴](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/) <br>요청: “개요·기능·요금 탭을 만들고 클릭과 키보드 전환 시 해당 패널만 표시하며 현재 선택 상태를 알려줘.”
+9. **아코디언(Accordion)** — 질문처럼 항목별 내용을 아래로 펼치고 접는다. 탭은 **서로 다른 패널을 교체**, 아코디언은 **해당 항목의 내용을 열고 닫는** 방식으로 구분한다. [영상 267초](https://youtu.be/mlhKEy-2bgI?t=267) <br>요청: “FAQ 질문을 버튼으로 만들고 클릭·Enter로 답변을 펼치거나 접으며 펼침 상태를 표시해줘.”
+10. **모달 다이얼로그(Modal dialog)** — 삭제 확인처럼 현재 작업의 응답이 필요한 창이다. 열릴 때 포커스를 적절히 옮기고, 내부에서 키보드 포커스가 논리적으로 순환하며, 닫으면 원래 맥락으로 돌아가야 한다. 배경을 어둡게 하는 막은 **오버레이/백드롭** 이며 별도 항목은 아니다. [영상 289초](https://youtu.be/mlhKEy-2bgI?t=289), [W3C 모달 패턴](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/) <br>요청: “삭제 버튼을 누르면 확인 모달을 열고 취소·Escape로 닫게 해줘. 실제 삭제는 확인을 누른 뒤에만 실행해줘.”
+11. **드로어(Drawer)** — 화면 가장자리에서 들어오는 보조 패널이다. 설정·필터에 유용하지만, 화면 중앙의 모달보다 덜 중요해 보인다는 이유만으로 포커스와 닫기 동작을 생략해선 안 된다. [영상 317초](https://youtu.be/mlhKEy-2bgI?t=317) <br>요청: “설정 버튼을 누르면 오른쪽 드로어가 열리고 닫기 버튼과 Escape로 닫히게 해줘. 모바일에서는 본문이 잘리지 않게 해줘.”
+12. **드롭다운(Dropdown)** — 버튼 아래에 정렬·선택 옵션을 보여준다. ‘메뉴’인지 ‘폼 선택 입력’인지에 따라 알맞은 요소와 키보드 동작이 달라진다. [영상 340초](https://youtu.be/mlhKEy-2bgI?t=340) <br>요청: “정렬 버튼에서 최신순·인기순·이름순을 고르게 하고 선택 결과가 목록에 반영되게 해줘.”
+13. **툴팁(Tooltip)** — 버튼·아이콘의 뜻을 짧게 설명한다. 영상도 마우스 호버뿐 아니라 **키보드 포커스** 시 표시하라고 한다. 긴 설명이나 필수 정보를 툴팁에만 숨기지 말자. [영상 355초](https://youtu.be/mlhKEy-2bgI?t=355) <br>요청: “도움말 아이콘에 짧은 툴팁을 붙이고 마우스 호버와 키보드 포커스에서 모두 보이게 해줘.”
+14. **토스트/스낵바(Toast/Snackbar)** — 저장 완료 같은 짧은 상태 메시지를 작업 흐름을 크게 막지 않고 알린다. 영상은 3초 뒤 사라지는 예시를 들지만, 중요한 내용을 너무 빨리 없애면 읽지 못할 수 있다. [영상 370초](https://youtu.be/mlhKEy-2bgI?t=370), [W3C 알림 지침](https://www.w3.org/WAI/ARIA/apg/patterns/alert/) <br>요청: “저장 성공 시 하단에 상태 메시지를 띄우고 보조기술에도 알리되, 오류 복구 안내는 읽을 수 있을 만큼 유지해줘.”
+15. **캐러셀(Carousel)** — 제한된 공간에서 후기·이미지를 순차적으로 보여준다. 좌우 버튼·터치 스와이프 외에도 키보드 조작과 자동 재생을 멈추는 방법을 고려한다. [영상 389초](https://youtu.be/mlhKEy-2bgI?t=389), [W3C 캐러셀 패턴](https://www.w3.org/WAI/ARIA/apg/patterns/carousel/) <br>요청: “후기 캐러셀에 이전·다음 버튼을 넣고 키보드로도 조작되게 해줘. 자동 넘김은 기본으로 켜지 마.”
+16. **스켈레톤 로딩(Skeleton loading)** — 데이터가 도착하기 전 실제 카드와 비슷한 윤곽을 보여준다. 로딩 상태가 끝없이 지속되지 않도록 오류·빈 결과 상태도 따로 설계해야 한다. [영상 405초](https://youtu.be/mlhKEy-2bgI?t=405) <br>요청: “목록을 불러오는 동안 카드 구조의 스켈레톤을 보여주고, 실패하면 재시도 버튼을, 결과가 없으면 빈 상태 안내를 표시해줘.”
+
+```mermaid
+flowchart TD
+    A["사용자 행동"] --> B{"필요한 반응"}
+    B -->|내용 전환| C["탭·아코디언"]
+    B -->|추가 작업| D["모달·드로어·드롭다운"]
+    B -->|정보·상태| E["툴팁·토스트·스켈레톤"]
+    B -->|여러 항목 탐색| F["캐러셀"]
+    C --> G["키보드·포커스·상태 확인"]
+    D --> G
+    E --> G
+    F --> G
+    classDef inputTone fill:#c5dcef,stroke:#6e94b5,color:#333
+    classDef choiceTone fill:#fde8c0,stroke:#c9a85c,color:#333
+    classDef componentTone fill:#e0c8ef,stroke:#a27db8,color:#333
+    classDef verifyTone fill:#c0ecd3,stroke:#79b293,color:#333
+    class A inputTone
+    class B choiceTone
+    class C,D,E,F componentTone
+    class G verifyTone
+```
+
+## 4. 화면의 움직임과 질감을 정하는 효과 8개
+
+[430~589초](https://youtu.be/mlhKEy-2bgI?t=430)의 효과들은 화면을 생동감 있게 만들 수 있지만, **기능을 이해하는 데 꼭 필요한 동작과 장식** 을 구분해야 한다. 움직임을 줄이도록 설정한 사용자에게는 불필요한 애니메이션을 약화하거나 제거해야 한다. [MDN 접근성 미디어 쿼리](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Media_queries/Using_for_accessibility)
+
+17. **호버 이펙트(Hover effect)** — 포인터를 올렸을 때 색·그림자·위치를 바꾼다. 터치 화면에는 호버가 없으므로 클릭 가능성은 기본 상태와 키보드 포커스에도 보여야 한다. [영상 430초](https://youtu.be/mlhKEy-2bgI?t=430) <br>요청: “카드에 미세한 그림자·상승 효과를 주되 키보드 포커스도 같은 수준으로 분명하게 표시해줘.”
+18. **스크롤 리빌(Scroll reveal)** — 요소가 화면에 들어올 때 나타나게 한다. 콘텐츠가 애니메이션 실패로 영원히 숨겨지지 않도록 기본 표시와 예외 상태를 설계한다. [영상 446초](https://youtu.be/mlhKEy-2bgI?t=446) <br>요청: “기능 섹션이 처음 보일 때 짧게 나타나게 하되 모션 감소 설정에서는 즉시 표시해줘.”
+19. **스태거 애니메이션(Stagger animation)** — 여러 카드가 약간의 시간차를 두고 나타난다. 영상의 0.1초 간격은 예시다. 항목이 많다면 전체 대기 시간이 길어지지 않게 제한한다. [영상 465초](https://youtu.be/mlhKEy-2bgI?t=465) <br>요청: “카드 4개를 짧은 간격으로 순서대로 표시하되 모션 감소 설정에서는 한 번에 보여줘.”
+20. **부드러운 전환(Smooth transition)** — 버튼·카드 상태의 색이나 그림자가 갑자기 바뀌지 않게 한다. 자막의 ‘200m’는 문맥상 **200밀리초 정도** 의 예시로 읽힌다. 모든 상태를 같은 속도로 애니메이션할 필요는 없다. [영상 481초](https://youtu.be/mlhKEy-2bgI?t=481) <br>요청: “버튼의 호버·포커스 상태에 짧은 전환을 넣고 클릭 가능 여부는 움직임 없이도 구분되게 해줘.”
+21. **글래스모피즘(Glassmorphism)** — 반투명 표면과 뒤쪽 흐림으로 유리 같은 질감을 낸다. `backdrop-filter`는 **요소 뒤의 픽셀** 에 효과를 주므로 일부 투명도가 필요하다. 배경 이미지가 달라져도 글자 대비가 유지되는지 검증해야 한다. [영상 501초](https://youtu.be/mlhKEy-2bgI?t=501), [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/backdrop-filter) <br>요청: “카드 배경에 약한 투명도와 블러를 주되 밝은·어두운 배경 모두에서 제목과 본문이 읽히게 해줘.”
+22. **패럴랙스 스크롤링(Parallax scrolling)** — 앞뒤 요소가 다른 속도로 움직여 깊이감을 만든다. 과하면 읽기와 멀미 문제를 일으킬 수 있어 배경 장식에만 약하게 쓰고 모션 감소·모바일 조건을 정한다. [영상 518초](https://youtu.be/mlhKEy-2bgI?t=518), [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Media_queries/Using_for_accessibility) <br>요청: “히어로의 장식 배경에만 약한 패럴랙스를 적용하고 모션 감소 설정과 모바일에서는 꺼줘.”
+23. **스크롤 스냅(Scroll snap)** — 스크롤을 놓으면 지정한 위치에 정렬되도록 한다. CSS의 `scroll-snap-type` 등으로 구현할 수 있지만, 긴 본문을 강제로 한 화면에 묶으면 읽기가 불편하다. [영상 544초](https://youtu.be/mlhKEy-2bgI?t=544), [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scroll-snap-type) <br>요청: “슬라이드형 소개 영역에만 스냅을 적용하고 일반 본문 스크롤은 방해하지 마.”
+24. **마이크로 인터랙션(Microinteraction)** — 저장·좋아요·선택 같은 작은 행동에 즉각적인 상태 피드백을 준다. 꾸밈보다 **요청 중·성공·실패** 가 구분되는 편이 중요하다. [영상 565초](https://youtu.be/mlhKEy-2bgI?t=565) <br>요청: “저장 버튼이 처리 중임을 표시하고 성공하면 체크 아이콘, 실패하면 오류와 재시도 버튼을 보여줘.”
+
+```mermaid
+flowchart TD
+    A["효과가 전달할 정보 정의"] --> B["기본 상태에서도 의미 전달"]
+    B --> C["움직임·질감 추가"]
+    C --> D["모션 감소 설정 확인"]
+    D --> E["키보드·터치·저성능 기기 점검"]
+    E --> F["읽기·조작이 어려우면 효과 축소"]
+    classDef intentTone fill:#c5dcef,stroke:#6e94b5,color:#333
+    classDef visualTone fill:#e0c8ef,stroke:#a27db8,color:#333
+    classDef checkTone fill:#fde8c0,stroke:#c9a85c,color:#333
+    classDef adjustTone fill:#c0ecd3,stroke:#79b293,color:#333
+    class A,B intentTone
+    class C visualTone
+    class D,E checkTone
+    class F adjustTone
+```
+
+## 5. 여러 용어를 한 번에 쓸 때의 실전 요청 예시
+
+영상은 [593~665초](https://youtu.be/mlhKEy-2bgI?t=593)에 모호한 “세련된 웹사이트” 요청을 **히어로·벤토 그리드·스티키 헤더·설정 드로어·호버·스크롤 리빌·스태거** 가 지정된 요청으로 바꾼다. 다만 모두 한 번에 넣으면 검증 범위가 커진다. 아래처럼 **레이아웃 → 상호작용 → 효과 → 확인 기준** 으로 나누어 구현·검토하면 문제가 생긴 위치를 찾기 쉽다.
+
+> “`[서비스]` 소개 페이지를 만들어줘. 첫 화면은 가치 제안과 가입 CTA가 있는 히어로, 핵심 기능은 중요도에 따라 크기가 다른 벤토 그리드로 구성해줘. 넓은 화면에서는 그리드가 여러 열이고 휴대폰에서는 읽기 순서대로 한 열로 쌓이게 해줘. 상단 내비게이션은 스티키 헤더로 하되 제목을 가리지 마. 설정 버튼을 누르면 오른쪽 드로어가 열리고 닫기 버튼·Escape로 닫히게 해줘. 카드의 호버와 스크롤 등장은 짧게 적용하되 모션 감소 설정에서는 제거해줘. 마지막에 데스크톱·모바일 스크린샷, 키보드 조작, 가로 스크롤 유무를 확인해줘.”
+
+이 문장은 24개 용어를 다 넣지 않는다. **사용자가 실제로 필요한 패턴만 골라** 동작과 검증 조건을 적는다. AI가 만들었다는 답만 받아들이지 말고 화면 크기를 바꿔 보고, 버튼을 눌러 보고, 키보드만으로 이동해 보고, 모션 감소 설정에서도 읽을 수 있는지 확인하자. [영상의 최종 조언](https://youtu.be/mlhKEy-2bgI?t=642)
+
+## 핵심 요약
+
+- **레이아웃 7개** 는 페이지 구조, **컴포넌트 9개** 는 사용자 조작, **효과 8개** 는 움직임과 질감을 설명한다.
+- 용어만 던지지 말고 **무엇을 눌렀을 때 어떻게 변하며, 어떻게 닫고 실패를 알리는지** 함께 적는다.
+- 모바일·키보드·포커스·모션 감소 조건을 요구사항에 포함해야 보기 좋은 시안이 실제로 쓸 수 있는 UI가 된다.
+- 영상의 숫자·열 수·애니메이션 시간은 예시다. 콘텐츠와 사용자에 맞춰 조정한다.
+
+## 결론
+
+이 24개 용어는 AI에게 주문을 거는 ‘마법의 단어’가 아니라 **원하는 화면을 서로 정확히 이해하기 위한 공통 언어** 다. 레이아웃 하나, 상호작용 하나, 효과 하나를 선택해 동작과 검증 기준까지 지정하면 모호한 “예쁘게 만들어줘”보다 수정하기 쉬운 결과를 얻을 수 있다.
