@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Blender Skills 94개로 게임 에셋 만들기: 스킬 라우팅과 MCP 실행의 경계'" />
+  <title>Blender Skills 94개로 게임 에셋 만들기: 스킬 라우팅과 MCP 실행의 경계  | 신규하 블로그</title>
+  <meta property="og:title" content="Blender Skills 94개로 게임 에셋 만들기: 스킬 라우팅과 MCP 실행의 경계" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-10-30"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/10/2026-10-30-blender-skills-94-mcp-game-asset-pipeline/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="skills" />
+  
+  <meta property="og:tags" content="mcp" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/10/2026-10-30-blender-skills-94-mcp-game-asset-pipeline/">
+          <h1>
+            Blender Skills 94개로 게임 에셋 만들기: 스킬 라우팅과 MCP 실행의 경계
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/10/2026-10-30-blender-skills-94-mcp-game-asset-pipeline/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p><a href="https://www.threads.com/share/BAOmHripD7/">Threads 글</a>은 Claude Code·Codex 등에서 쓰는 무료 Blender 스킬 94개를 소개한다. 핵심은 프롬프트 한 줄로 3D 모델을 보장한다는 뜻이 아니라, <strong>에셋 제작 절차를 스킬로 나누고 <code>blender-director</code>가 작업에 맞는 순서를 고른다</strong>는 점이다. 실제 Blender를 조작하려면 별도의 MCP 연결도 필요하다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.threads.com/share/BAOmHripD7/">원본 Threads 공유 글</a> — 본문과 작성자의 이어진 설명. 공유 링크가 <a href="https://www.threads.com/@dhdbtkd/post/DfEoRfVGQ80">원문</a>으로 연결되며, 공개 페이지를 HTTP로 읽고 Jina Reader로 이어진 글을 확인했다.</li>
+<li><a href="https://github.com/arjun988/blender-skills">Blender Skills 공식 저장소</a> — 스킬 수, 예시 파이프라인, 라이선스.</li>
+<li><a href="https://github.com/arjun988/blender-skills/blob/main/SKILLS_GUIDE.md">스킬 가이드</a> — 스킬 분류와 작업별 라우팅.</li>
+<li><a href="https://github.com/arjun988/blender-skills/blob/main/QUICKSTART.md">빠른 시작 안내</a> — 설치, 첫 프롬프트, 연결 검증.</li>
+<li><a href="https://github.com/arjun988/blender-skills/blob/main/docs/BLENDER_MCP_SETUP.md">Blender MCP 설정 안내</a> — 선행 조건과 Python 실행 주의.</li>
+<li><a href="https://github.com/ahujasid/mcp-for-blender">MCP for Blender 원본 저장소</a> — 커뮤니티 MCP 도구의 현재 기능과 보안 안내.</li>
+</ul>
+<h2 id="1-94개는-병렬-에이전트가-아니라-작업별-스킬이다">1. 94개는 병렬 에이전트가 아니라 작업별 스킬이다</h2>
+<p>원본 글은 하드서피스·소품·차량·환경·캐릭터 같은 모델링, 스컬핑·리토폴로지·UV·텍스처·리깅 같은 제작 단계, 다양한 화풍과 게임 장르, Unity·Unreal·Godot 내보내기를 나열한다. <a href="https://github.com/arjun988/blender-skills/blob/main/SKILLS_GUIDE.md">공식 스킬 가이드</a>의 목록도 같은 구성을 확인한다. 저장소가 말하는 <strong>94개</strong>는 작업 지침과 참고 자료로 된 스킬의 수다. 94명의 작업자가 자동으로 동시에 실행된다는 의미가 아니다.</p>
+<p><code>blender-director</code>는 요청을 읽고 전문 스킬을 조합하는 진입점이다. 예컨대 <a href="https://github.com/arjun988/blender-skills">공식 README의 SF 소총 예시</a>는 <code>hard-surface → uv-workflow → materials → asset-optimization → export-pipeline</code> 흐름을 제시한다. 이 순서는 모델을 만든 뒤 UV와 재질을 붙이고, 예산에 맞춰 최적화한 다음 엔진용 형식으로 내보내는 <strong>계획 예시</strong>다. 실제 폴리곤 수, 재질 품질, 엔진 호환성은 결과물을 별도로 검사해야 한다.</p>
+<pre class="mermaid">flowchart TD
+    A["에셋 요구사항"] --> B["blender-director: 작업 계획"]
+    B --> C["모델링·스타일 스킬"]
+    C --> D["UV·재질 스킬"]
+    D --> E["최적화·내보내기 스킬"]
+    E --> F["결과물 검증"]
+    classDef inputTone fill:#c5dcef,stroke:#6b9bc4,color:#333
+    classDef planTone fill:#e0c8ef,stroke:#a67dbb,color:#333
+    classDef workTone fill:#fde8c0,stroke:#c6a257,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#73b591,color:#333
+    class A inputTone
+    class B planTone
+    class C,D,E workTone
+    class F resultTone</pre><h2 id="2-작업별로-어느-스킬이-붙는가">2. 작업별로 어느 스킬이 붙는가</h2>
+<p>스킬은 특정 툴 조작 하나만 설명하지 않는다. <a href="https://github.com/arjun988/blender-skills/blob/main/SKILLS_GUIDE.md">스킬 가이드의 결정 트리</a>에 따르면 처음 만드는 에셋은 <code>blender-director</code>에서 모델링·스타일 스킬로 이어지고, 완성된 스컬프는 <code>retopology</code>, 토폴로지가 끝난 모델은 <code>uv-workflow → materials → lookdev</code>로 넘어간다. 출하 전에는 <code>asset-optimization</code>, <code>lod-pipeline</code>, <code>collision-proxy</code>와 엔진별 내보내기를 조합한다.</p>
+<p>원본에서 말하는 화풍도 각각 자동 생성 모델을 뜻하지 않는다. 로우폴리·PSX 공포·복셀 같은 <strong>시각적 제약</strong>을 해당 스킬이 작업 지침으로 제공한다. 장르 스킬 역시 소울라이크·생존·레이싱 등의 아트 디렉션을 보조한다. 구체적인 하위 스타일은 별도 스킬 파일이 아니라 참고 문서에 묶여 있을 수 있다. 따라서 원하는 장르가 목록에 있다고 해서 게임 전체나 완성 에셋이 보장되는 것은 아니다. <a href="https://github.com/arjun988/blender-skills/blob/main/SKILLS_GUIDE.md">스킬 가이드의 분류·하위 유형 안내</a></p>
+<pre class="mermaid">flowchart TD
+    A{"현재 작업 단계"} --> B["새 모델: director·모델링"]
+    A --> C["스컬프 완료: 리토폴로지"]
+    A --> D["토폴로지 완료: UV·재질"]
+    A --> E["출하 준비: LOD·충돌·내보내기"]
+    B --> F["Blender에서 확인"]
+    C --> F
+    D --> F
+    E --> F
+    classDef decisionTone fill:#c5dcef,stroke:#6b9bc4,color:#333
+    classDef workTone fill:#fde8c0,stroke:#c6a257,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#73b591,color:#333
+    class A decisionTone
+    class B,C,D,E workTone
+    class F resultTone</pre><h2 id="3-스킬-설치와-blender-조작은-서로-다른-단계다">3. 스킬 설치와 Blender 조작은 서로 다른 단계다</h2>
+<p><a href="https://github.com/arjun988/blender-skills">공식 README</a>는 Claude Code 프로젝트의 <code>.claude/skills/</code>로 스킬 디렉터리를 복사하는 방법을 제시하고, Codex·Cursor·Kiro용 경로도 안내한다. 그러나 <strong>스킬 파일을 복사하는 것만으로 Blender를 제어할 수는 없다</strong>. <a href="https://github.com/arjun988/blender-skills/blob/main/QUICKSTART.md">빠른 시작 안내</a>는 Blender MCP 애드온 연결, 클라이언트 재시작, 장면 정보 조회 테스트를 별도 단계로 둔다. 원본 작성자의 이어진 글도 이 차이를 명시한다.</p>
+<p><a href="https://github.com/arjun988/blender-skills/blob/main/docs/BLENDER_MCP_SETUP.md">프로젝트의 MCP 설정 안내</a>는 Blender 3.0+, Python 3.10+, <code>uv</code>를 선행 조건으로 적고 있다. 다만 실제 연동 대상인 <a href="https://github.com/ahujasid/mcp-for-blender">MCP for Blender</a>는 별도 커뮤니티 프로젝트이며 계속 바뀔 수 있다. 이 스킬 저장소의 설정 예시와 MCP 원본 저장소의 최신 설치·명령 이름이 다를 수 있으므로, <strong>실제 설치 시에는 양쪽의 현재 문서를 대조</strong>해야 한다. 블로그 글은 설치를 실행하거나 결과를 검증한 사용 후기가 아니다.</p>
+<pre class="mermaid">flowchart TD
+    A["에이전트에 스킬 설치"] --> B["작업 계획·지침 사용"]
+    C["Blender MCP 연결"] --> D["Blender 장면 도구 사용"]
+    B --> E{"MCP 연결 확인"}
+    D --> E
+    E --> F["장면 조회로 연결 시험"]
+    classDef setupTone fill:#c5dcef,stroke:#6b9bc4,color:#333
+    classDef planTone fill:#e0c8ef,stroke:#a67dbb,color:#333
+    classDef decisionTone fill:#fde8c0,stroke:#c6a257,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#73b591,color:#333
+    class A,C setupTone
+    class B,D planTone
+    class E decisionTone
+    class F resultTone</pre><h2 id="4-무료-스킬과-안전한-실행은-별개다">4. 무료 스킬과 안전한 실행은 별개다</h2>
+<p>스킬 팩은 <a href="https://github.com/arjun988/blender-skills/blob/main/LICENSE">MIT 라이선스</a>로 공개되어 있다. 저장소의 별 수는 시점에 따라 변하므로 선택 기준으로 삼기보다, 실제 스킬 내용과 필요한 MCP 권한을 검토하는 편이 낫다. 또한 스킬 팩이 무료여도 모델 사용료나 선택한 외부 생성 서비스 비용까지 무료인 것은 아니다.</p>
+<p>중요한 보안 경계는 MCP의 <code>execute_blender_code</code>다. <a href="https://github.com/arjun988/blender-skills/blob/main/docs/BLENDER_MCP_SETUP.md">스킬 팩 설정 문서</a>와 <a href="https://github.com/ahujasid/mcp-for-blender">MCP 원본 README</a>는 이 도구가 Blender 안에서 Python 코드를 실행할 수 있으므로 작업 파일을 먼저 저장하고 주의하라고 안내한다. 원본 Threads 댓글은 <code>BLENDER_MCP_SAFE_MODE=1</code>을 언급하지만, <strong>현재 확인한 두 저장소의 공개 설정·보안 안내에서는 그 환경 변수의 동작을 검증할 수 없었다</strong>. 따라서 해당 값이 파일 읽기·쓰기를 차단한다고 믿고 위험한 권한을 허용해서는 안 된다. 사용 중인 MCP 버전의 실제 구현과 설정을 먼저 확인해야 한다.</p>
+<p><a href="https://github.com/arjun988/blender-skills/blob/main/CHANGELOG.md">CHANGELOG</a>의 가장 최근 항목은 2026년 7월 10일 v1.3.0이며 스킬 수가 46개에서 94개로 늘었다고 기록한다. 이는 <strong>문서화된 릴리스 이력</strong>이지, 저장소의 모든 파일이 그날 이후 수정되지 않았다는 증거는 아니다.</p>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<ol>
+<li>복잡한 장면보다 <strong>단일 소품</strong>으로 시작한다. 예: “Unreal용 SF 상자, 삼각형 예산 1,500, PBR 재질, FBX 내보내기”. <a href="https://github.com/arjun988/blender-skills/blob/main/QUICKSTART.md">공식 빠른 시작의 예시</a>도 작은 게임 에셋을 첫 작업으로 제안한다.</li>
+<li>먼저 스킬이 인식되는지 확인하고, 그다음 MCP 연결 상태와 장면 조회를 각각 시험한다. 두 조건 중 하나라도 빠지면 설명만 출력될 수 있다.</li>
+<li>내보내기 뒤에는 Blender 장면만 보지 말고 <strong>엔진에서 재질·방향·크기·폴리곤 수</strong>를 검사한다. 스킬이 제안한 파이프라인과 실제 통과한 품질 기준을 구분한다.</li>
+<li>MCP가 실행할 Python 코드를 검토하고 <code>.blend</code> 파일을 백업한다. 검증되지 않은 환경 변수를 안전장치로 간주하지 않는다.</li>
+</ol>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>Blender Skills의 <strong>94개는 작업별 스킬 수</strong>이며, <code>blender-director</code>가 요청에 맞춰 조합한다.</li>
+<li><strong>스킬 설치는 계획·지침 제공</strong>, <strong>Blender MCP 연결은 실제 장면 조작</strong>이다.</li>
+<li>MIT 공개 여부와 실행 안전성은 별개다. MCP의 Python 실행 권한을 확인하고 결과물을 검증해야 한다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>이 프로젝트의 가치는 “한 줄로 완성 에셋을 보장”하는 데 있지 않다. 모델링부터 UV·재질·최적화·엔진 내보내기까지 <strong>빠뜨리기 쉬운 제작 단계를 구조화</strong>하는 데 있다. 도입할 때는 스킬 라우팅, MCP 연결, 실행 권한, 엔진 검증을 각각 확인해야 한다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 10월 30일 07시 14분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/10/2026-10-30-game-studios-openmausbot-ai-agents/" rel="prev">
+        <span>게임 개발 스튜디오와 메신저형 AI 봇: Game Studios·OpenMausBot의 다른 에이전트 설계</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-94개는-병렬-에이전트가-아니라-작업별-스킬이다">1. 94개는 병렬 에이전트가 아니라 작업별 스킬이다</a></li>
+    <li><a href="#2-작업별로-어느-스킬이-붙는가">2. 작업별로 어느 스킬이 붙는가</a></li>
+    <li><a href="#3-스킬-설치와-blender-조작은-서로-다른-단계다">3. 스킬 설치와 Blender 조작은 서로 다른 단계다</a></li>
+    <li><a href="#4-무료-스킬과-안전한-실행은-별개다">4. 무료 스킬과 안전한 실행은 별개다</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/skills/" class="badge badge-secondary">Skills</a>
+    <a href="/tags/mcp/" class="badge badge-secondary">Mcp</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '바이브 코딩의 회귀 버그, 형식 검증이 답일까? 증명 범위와 스킬의 실제 역할'" />
+  <title>바이브 코딩의 회귀 버그, 형식 검증이 답일까? 증명 범위와 스킬의 실제 역할  | 신규하 블로그</title>
+  <meta property="og:title" content="바이브 코딩의 회귀 버그, 형식 검증이 답일까? 증명 범위와 스킬의 실제 역할" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-10-29"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/10/2026-10-29-vibe-coding-regression-formal-verification-proof-skills/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="testing" />
+  
+  <meta property="og:tags" content="agents" />
+  
+  <meta property="og:tags" content="skills" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/10/2026-10-29-vibe-coding-regression-formal-verification-proof-skills/">
+          <h1>
+            바이브 코딩의 회귀 버그, 형식 검증이 답일까? 증명 범위와 스킬의 실제 역할
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/10/2026-10-29-vibe-coding-regression-formal-verification-proof-skills/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>AI로 코드를 빠르게 만들더라도 기능이 서로 얽히면 <strong>한 부분의 수정이 다른 부분을 깨뜨리는 회귀 버그</strong>가 생긴다. <a href="https://youtu.be/xAoB4EqzlyU">소스놀이터 영상</a>은 테스트만 늘리는 대신 형식 검증을 선택적으로 쓰자고 제안한다. 방향은 유용하지만, 영상에서 한 흐름으로 묶은 <strong>Anthropic·Theorem의 바이너리 증명</strong>과 <strong>일반 개발자가 설치하는 TLA+/Lean 스킬</strong>은 검증 대상과 보장 범위가 다르다. 숫자도 그대로 받아들이기보다 원문을 확인해야 한다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://youtu.be/xAoB4EqzlyU?si=b2pWKTvLmHrdsOel">원본 YouTube 영상</a> — 회귀 버그, 형식 검증, 공개 스킬, 비용과 적용 기준.</li>
+<li><a href="https://www.anthropic.com/research/formal-verification">Anthropic의 형식 검증 연구 발표</a> — 123개 라이브러리·239개 진입점의 정확한 의미와 증명 가정.</li>
+<li><a href="https://github.com/theorem-labs/oss-verify-proofs">Theorem OSS Verify 공개 증명 저장소</a> · <a href="https://theorem.dev/oss-verify/">신청 안내</a> — 공개 범위와 서비스 조건.</li>
+<li><a href="https://github.com/opum-ai/proof-skills">Opum AI Proof Skills</a> — TLA+/Lean 스킬의 사용 방식과 자체 평가.</li>
+<li><a href="https://github.com/michael-denyer/agent-formal-verify">Agent Formal Verify</a> — Codex에서도 쓸 수 있는 별도 커뮤니티 스킬.</li>
+</ul>
+<h2 id="1-회귀-버그-테스트가-필요한-이유와-테스트만으로-부족한-이유">1. 회귀 버그: 테스트가 필요한 이유와 테스트만으로 부족한 이유</h2>
+<p>영상은 작은 프로젝트가 몇 주·몇 달 동안 커지고 페이지와 기능이 서로 얽힐수록, 국소적인 수정이 이전 동작을 깨뜨릴 수 있다고 설명한다. 특히 파일 전달·작업 취소·재시작·운영체제별 실행처럼 <strong>상태와 순서가 결합된 기능</strong>을 본인의 프로그램 사례로 든다. 이는 영상 제작자의 경험담이며, 모든 바이브 코딩 프로젝트가 같은 속도로 망가진다는 일반 법칙은 아니다. <a href="https://youtu.be/xAoB4EqzlyU?t=16">영상 0:16~0:35</a>, <a href="https://youtu.be/xAoB4EqzlyU?t=445">7:25~8:23</a></p>
+<p>회귀 테스트는 이미 알려진 입력과 기대 결과를 다시 실행해 같은 문제가 되살아나는지 확인한다. 하지만 동시 요청, 지연, 취소, 재시도, 실패 복구가 섞이면 가능한 실행 순서가 급증한다. 영상의 &ldquo;10가지 순서만 있어도 10! = 3,628,800&quot;은 <strong>서로 다른 사건 10개를 모두 한 번씩 배열하는 경우</strong>에만 성립하는 예시다. 실제 시스템의 모든 경로가 반드시 그 수와 같다는 뜻은 아니지만, 순서에 의존하는 오류를 몇 개의 테스트 사례만으로 포괄하기 어렵다는 설명에는 적합하다. <a href="https://youtu.be/xAoB4EqzlyU?t=284">영상 4:44~5:44</a>, <a href="https://www.anthropic.com/research/formal-verification">Anthropic의 퍼징과 증명 비교</a></p>
+<pre class="mermaid">flowchart TD
+    A["기능 수정"] --> B["기존 회귀 테스트"]
+    B --> C["알려진 입력·경로 확인"]
+    C --> D["동시성·재시도·취소 결합"]
+    D --> E["새 실행 순서에서 오류 가능"]
+    E --> F["위험한 성질을 별도로 모델링"]
+    classDef inputTone fill:#c5dcef,stroke:#6e94b5,color:#333
+    classDef testTone fill:#c0ecd3,stroke:#79b293,color:#333
+    classDef riskTone fill:#ffc8c4,stroke:#c47d77,color:#333
+    classDef modelTone fill:#e0c8ef,stroke:#a27db8,color:#333
+    class A inputTone
+    class B,C testTone
+    class D,E riskTone
+    class F modelTone</pre><h2 id="2-anthropictheorem의-연구-239개-버그가-아니라-239개-진입점">2. Anthropic·Theorem의 연구: &ldquo;239개 버그&quot;가 아니라 &ldquo;239개 진입점&rdquo;</h2>
+<p>영상은 Anthropic과 Theorem이 <strong>123개 오픈소스 라이브러리의 239개 지점</strong>을 분석했다고 말한 뒤, 이를 &ldquo;239개 지점에서 버그를 발견하고 해결&quot;한 것처럼 설명한다. 공식 발표의 정확한 수치는 <strong>123개 라이브러리에 걸친 239개 퍼징 진입점에서, 발견한 크래시 유발 버그를 수정한 다음 비충돌 성질을 증명</strong>했다는 것이다. <strong>239는 버그 건수가 아니다.</strong> 발표는 증명 과정에서 &ldquo;수백 개의 버그&quot;가 드러났다고 설명하지만, 239개를 발견 버그 수로 제시하지 않는다. <a href="https://youtu.be/xAoB4EqzlyU?t=206">영상 3:26~3:58</a>, <a href="https://www.anthropic.com/research/formal-verification">Anthropic의 실험 결과·버그 설명</a></p>
+<p>방법도 단순히 &ldquo;모든 코드를 수학적으로 완벽히 증명&quot;한 것이 아니다. 기존 <strong>퍼징 테스트의 진입점</strong>을 RISC-V 실행 파일로 컴파일하고, 특정 크기 이하 입력에서 테스트가 크래시 없이 끝난다는 <strong>명시적 성질</strong>을 수학적 명세로 만든다. Claude가 증명을 작성하면 <strong>Rocq 증명 검사기</strong>가 명세에 맞는지 확인한다. 증명 중 실제 반례가 나오면 코드를 고치고, 바뀐 실행 파일과 명세에 대해 다시 증명하는 흐름이다. 이것이 무작위 입력을 많이 넣는 퍼징과 다른 지점이다. <a href="https://youtu.be/xAoB4EqzlyU?t=163">영상 2:43~3:26</a>, <a href="https://www.anthropic.com/research/formal-verification">Anthropic의 Turning tests into proofs</a></p>
+<pre class="mermaid">flowchart TD
+    A["기존 퍼징 진입점"] --> B["RISC-V 실행 파일"]
+    B --> C["비충돌 성질·환경 가정"]
+    C --> D["Claude가 증명 작성"]
+    D --> E["Rocq가 증명 검사"]
+    E --> F["반례면 수정·재증명"]
+    E --> G["통과면 명시된 성질만 보장"]
+    classDef inputTone fill:#c5dcef,stroke:#6e94b5,color:#333
+    classDef specTone fill:#e0c8ef,stroke:#a27db8,color:#333
+    classDef checkTone fill:#fde8c0,stroke:#c9a85c,color:#333
+    classDef failTone fill:#ffc8c4,stroke:#c47d77,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#79b293,color:#333
+    class A,B inputTone
+    class C,D specTone
+    class E checkTone
+    class F failTone
+    class G resultTone</pre><p><strong>보장의 경계가 중요하다.</strong> 공식 발표의 해당 증명은 <strong>단일 스레드·고정 메모리 예산·Linux의 정적 RISC-V 바이너리</strong>를 모델로 하고, <strong>64MB 이하 입력</strong>을 대상으로 한다. 실제 배포가 x86·ARM이나 다른 OS·동적 라이브러리를 쓴다면 같은 증명이 곧바로 그 환경의 모든 동작을 보장하지 않는다. 상품 가격 오류, 권한 설계 실수, 미검증 API 경로도 &ldquo;크래시가 없다&quot;는 성질 바깥일 수 있다. Anthropic 역시 &ldquo;형식 검증 = 버그 없음&quot;이 아니라고 분명히 쓴다. <a href="https://www.anthropic.com/research/formal-verification">Anthropic의 가정과 한계</a></p>
+<p>영상은 <strong>25개 라이브러리의 60개 지점</strong>이 공개됐다고 소개한다. 이 역시 당시 공개 범위를 가리키는 숫자다. 이 글을 작성하며 확인한 <a href="https://github.com/theorem-labs/oss-verify-proofs">공개 증명 저장소 README</a>는 <strong>26개 라이브러리, 61개 진입점</strong>이라고 적는다. 123개·239개는 연구 전체 결과, 26개·61개는 <strong>현재 공개된 증명 부분집합</strong>으로 구분해야 한다. 공개하지 않은 증명에는 미패치 버그 노출 우려가 있다는 것이 Anthropic의 설명이다. <a href="https://youtu.be/xAoB4EqzlyU?t=225">영상 3:45~3:57</a>, <a href="https://www.anthropic.com/research/formal-verification">Anthropic 공개 범위</a>, <a href="https://github.com/theorem-labs/oss-verify-proofs">Theorem 공개 저장소</a></p>
+<h2 id="3-티켓-동시성-문제에는-무엇을-증명해야-하나">3. 티켓 동시성 문제에는 무엇을 증명해야 하나</h2>
+<p>영상의 티켓 예시는 <strong>남은 좌석 10개에 다수가 동시에 접근하고, 결제 실패·취소·지연·재시도가 겹치는 상황</strong>이다. 이때 막으려는 위험은 &ldquo;어떤 입력에서도 프로그램이 크래시하지 않는다&quot;와 다르다. 예를 들어 <strong>확정된 예약 수가 재고를 넘지 않는다</strong>, <strong>같은 결제 요청이 중복 청구되지 않는다</strong>, <strong>취소된 예약이 뒤늦은 응답으로 다시 확정되지 않는다</strong> 같은 <strong>안전성 성질</strong>을 먼저 적어야 한다. 이는 영상 예시를 바탕으로 한 모델링 예시이지, 영상 속 실제 티켓 시스템의 검증 결과가 아니다. <a href="https://youtu.be/xAoB4EqzlyU?t=284">영상 4:44~5:44</a></p>
+<p>그다음 예약·결제·취소·타임아웃을 <strong>상태 전이</strong>로 만들고, 서로 다른 실행 순서에서도 성질이 유지되는지 모델 검사기로 확인한다. 반례가 나오면 &ldquo;사용자 A가 결제 대기 중일 때 사용자 B가 취소하고, 늦은 완료 알림이 도착한다&quot;처럼 깨지는 순서를 재현할 수 있다. 다만 모델에 <strong>실제 코드의 락·트랜잭션·메시지 재전송 정책</strong>이 빠져 있다면 모델 검사 통과가 운영 코드의 안전을 뜻하지 않는다. 코드와 모델의 대응 관계, 가정, 검사한 범위를 기록해야 한다. <a href="https://github.com/opum-ai/proof-skills">Proof Skills의 모델·코드 대응 및 반례 재현 설명</a>, <a href="https://github.com/michael-denyer/agent-formal-verify">Agent Formal Verify의 범위 설명</a></p>
+<pre class="mermaid">flowchart TD
+    A["예약·결제·취소 상태 정의"] --> B["불변식: 재고·중복 청구"]
+    B --> C["가능한 순서 모델 검사"]
+    C --> D["반례가 나오면 실제 코드에서 재현"]
+    D --> E["수정 후 모델·테스트 재실행"]
+    classDef inputTone fill:#c5dcef,stroke:#6e94b5,color:#333
+    classDef specTone fill:#e0c8ef,stroke:#a27db8,color:#333
+    classDef checkTone fill:#fde8c0,stroke:#c9a85c,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#79b293,color:#333
+    class A inputTone
+    class B specTone
+    class C checkTone
+    class D,E resultTone</pre><h2 id="4-무료-스킬과-연구용-증명-서비스를-혼동하지-말자">4. 무료 스킬과 연구용 증명 서비스를 혼동하지 말자</h2>
+<p>영상은 공개 대안으로 Claude Code의 <strong>Proof Skills</strong>와 Codex의 <strong>Agent Formal Verify</strong>를 말한다. <a href="https://github.com/opum-ai/proof-skills">Opum AI의 Proof Skills</a>는 TLA+로 동시 실행·상태 전이를 모델 검사하고 Lean 4로 수학적 성질을 증명하는 <strong>Claude Code용 공개 스킬</strong>이다. <a href="https://github.com/michael-denyer/agent-formal-verify">michael-denyer의 Agent Formal Verify</a>는 Claude Code·Codex·Pi에 설치할 수 있는 <strong>별도 커뮤니티 프로젝트</strong>로, TLA+/Lean 모델과 일부 Rust 코드의 Kani 검사를 사용한다. 둘 다 설치만 하면 모든 코드를 자동으로 완전 증명하는 버튼이 아니고, <strong>검증할 성질과 모델의 범위를 정해 도구를 실행하는 작업 흐름</strong>이다. 이 두 저장소는 Anthropic·Theorem의 239개 바이너리 증명 서비스와 동일한 제품이 아니다. <a href="https://youtu.be/xAoB4EqzlyU?t=258">영상 4:18~4:44</a>, <a href="https://github.com/opum-ai/proof-skills">Proof Skills README</a>, <a href="https://github.com/michael-denyer/agent-formal-verify">Agent Formal Verify README</a></p>
+<p>Theorem의 <a href="https://theorem.dev/oss-verify/">OSS Verify 신청 안내</a>는 <strong>자격을 갖춘 오픈소스 프로젝트에 무료</strong>로 바이너리 증명 파이프라인을 제공한다고 적는다. 프로젝트 관리자가 신청하고, 유지·사용 현황과 보안 중요도 등을 개별 심사한다. 따라서 영상의 &ldquo;신청 대상자에 한해 서비스&quot;는 대체로 맞지만, <strong>공개된 무료 스킬을 로컬에서 쓰는 것</strong>과 <strong>심사를 거쳐 Theorem의 대규모 증명 파이프라인을 받는 것</strong>은 별개다. <a href="https://youtu.be/xAoB4EqzlyU?t=259">영상 4:19~4:33</a>, <a href="https://theorem.dev/oss-verify/">Theorem OSS Verify</a></p>
+<h2 id="5-98-대-54는-모든-경우의-수-검증률이-아니다">5. 98% 대 54%는 &ldquo;모든 경우의 수 검증률&quot;이 아니다</h2>
+<p>영상은 Proof Skills를 쓰면 시간 <strong>2.4배</strong>, 토큰 <strong>2.2배</strong>가 들지만 검증 범위가 **54%에서 98%**로 증가한다고 말한다. <a href="https://github.com/opum-ai/proof-skills#evaluation">공식 README의 현재 평가 설명</a>은 <strong>의도적으로 버그를 심은 5개 사례</strong>에 같은 프롬프트를 적용한 뒤, 객관적 채점 항목의 평균이 **스킬 사용 98%, 미사용 54%**였다고 적는다. 두 구성 모두 심어 둔 버그는 찾고 고쳤으며, 스킬은 범위·반례·모델-코드 대응·증거 로그 같은 검증 산출물을 더 충실히 만들었다는 설명이다. 이 수치를 <strong>전체 가능한 실행 경로의 98%를 실제로 증명했다</strong>는 뜻으로 바꾸면 안 된다. <a href="https://youtu.be/xAoB4EqzlyU?t=363">영상 6:03~6:36</a>, <a href="https://github.com/opum-ai/proof-skills#evaluation">Proof Skills 평가</a></p>
+<p>README는 비용을 <strong>시간·토큰 약 2배</strong>로 요약한다. 영상의 2.4배·2.2배는 이 글에서 확인한 공개 README의 대표 수치로는 재확인되지 않아, 특정 실행이나 버전의 측정일 가능성을 남긴다. 어느 쪽이든 <strong>5개 예제로 얻은 프로젝트 자체 평가</strong>이지, 다양한 실제 코드베이스에서 같은 개선폭이 반복된다는 독립적인 증거는 아니다. 규모·모델·도구 설치·증명 난도에 따라 비용도 달라진다. <a href="https://youtu.be/xAoB4EqzlyU?t=366">영상 6:06~6:28</a>, <a href="https://github.com/opum-ai/proof-skills#evaluation">Proof Skills 평가와 비용</a></p>
+<h2 id="6-언제-도입할까-테스트를-버리지-말고-고위험-부분에-더한다">6. 언제 도입할까: 테스트를 버리지 말고 고위험 부분에 더한다</h2>
+<p>영상은 버튼·색상처럼 국소적인 UI 수정에는 형식 검증이 과하고, 여러 기능이 얽히거나 동시성이 강할 때 선택적으로 적용하자고 말한다. 실무적으로도 <strong>회귀 테스트 → 위험한 성질 정의 → 필요한 경우 모델 검사/증명 → 실제 코드 재현 → CI 재검증</strong> 순서가 합리적이다. 테스트는 이미 아는 경로와 실제 실행의 연결을 확인하고, 모델 검사는 명시한 범위의 가능한 상태 전이를 탐색한다. 서로 대체하기보다 역할을 나눈다. <a href="https://youtu.be/xAoB4EqzlyU?t=401">영상 6:41~7:24</a>, <a href="https://github.com/opum-ai/proof-skills">Proof Skills의 작업 흐름</a></p>
+<p>영상 후반의 <strong>AGENTS.md에 조건부 사용 지침을 둔다</strong>는 방법은 검증 비용을 조절하는 아이디어다. 다만 영상에서 말한 댓글의 정확한 지침 전문은 자막에 나오지 않으므로 이 글에서 복원하지 않는다. 지침만 추가해도 에이전트가 언제나 알맞은 성질을 선택하고, 검증 도구를 실제로 실행하며, 유효한 증거를 남긴다는 보장은 없다. 코드 경계·상태 전이·중요한 불변식을 사람이 정리하고 결과를 검토해야 한다. <a href="https://youtu.be/xAoB4EqzlyU?t=503">영상 8:23~9:13</a>, <a href="https://github.com/michael-denyer/agent-formal-verify">Agent Formal Verify의 범위·증거 설명</a></p>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<ol>
+<li><strong>하나의 사고 시나리오부터 시작한다.</strong> 예를 들어 &ldquo;재시도와 취소가 겹쳐도 한 주문이 두 번 청구되지 않는다&quot;처럼 성질을 구체화한다. <a href="https://youtu.be/xAoB4EqzlyU?t=284">영상의 동시성 예시</a>, <a href="https://github.com/opum-ai/proof-skills">Proof Skills의 사용 사례</a></li>
+<li><strong>모델과 실제 코드를 연결한다.</strong> 어떤 함수·트랜잭션·외부 서비스 응답을 모델에 포함하거나 제외했는지 적고, 반례를 실제 테스트로 재현한다. 모델만 통과시키고 운영 코드의 버그를 해결했다고 선언하지 않는다. <a href="https://github.com/opum-ai/proof-skills">Proof Skills의 산출물 설명</a>, <a href="https://github.com/michael-denyer/agent-formal-verify">Agent Formal Verify</a></li>
+<li><strong>검증 비용을 측정한다.</strong> 사용한 모델·토큰·소요 시간·증명 범위·실패 사례를 기록한 뒤, 위험 감소에 비해 비용이 큰 화면 수정에는 일반 테스트를 우선한다. <a href="https://youtu.be/xAoB4EqzlyU?t=361">영상의 비용·선택적 적용 논의</a>, <a href="https://github.com/opum-ai/proof-skills#evaluation">Proof Skills 평가</a></li>
+</ol>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>Anthropic·Theorem의 <strong>239는 버그 수가 아니라 증명한 진입점 수</strong>다. 증명은 특정 RISC-V 환경과 입력 범위에서 <strong>정해진 비충돌 성질</strong>을 대상으로 한다. <a href="https://youtu.be/xAoB4EqzlyU?t=206">영상 3:26</a>, <a href="https://www.anthropic.com/research/formal-verification">Anthropic 발표</a></li>
+<li>영상의 <strong>25개 라이브러리·60개 지점</strong> 공개 수치는 현재 <a href="https://github.com/theorem-labs/oss-verify-proofs">Theorem 저장소</a>의 <strong>26개·61개</strong>로 업데이트됐다.</li>
+<li>Proof Skills의 <strong>98% 대 54%는 5개 사례의 채점 항목 평균</strong>이다. 모든 가능한 경우를 그만큼 증명했다는 뜻은 아니다. <a href="https://youtu.be/xAoB4EqzlyU?t=384">영상 6:24</a>, <a href="https://github.com/opum-ai/proof-skills#evaluation">공식 평가</a></li>
+<li>형식 검증은 회귀 테스트를 없애는 도구가 아니라, <strong>동시성·상태 전이 같은 고위험 부분에 명시적 성질과 증거를 추가하는 방법</strong>이다. <a href="https://github.com/opum-ai/proof-skills">Proof Skills</a>, <a href="https://github.com/michael-denyer/agent-formal-verify">Agent Formal Verify</a></li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>바이브 코딩 프로젝트를 오래 유지하는 핵심은 &ldquo;모든 코드를 한 번에 완벽히 증명&quot;하는 데 있지 않다. <strong>무엇이 깨지면 안 되는지 먼저 명시하고</strong>, 테스트가 놓치는 위험한 상태·순서를 선택적으로 모델링하며, 증명 결과가 실제 코드와 운영 환경에 어느 범위까지 적용되는지 끝까지 확인하는 데 있다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 10월 29일 08시 07분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/engineering">Engineering</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/10/2026-10-28-hallmark-v2-ai-ui-design-skill-browser-audit/" rel="prev">
+        <span>AI 웹사이트가 다 비슷해 보인다면: Hallmark v2의 테마·디자인 검사·리디자인</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/10/2026-10-29-oh-my-hermes-dag-ulw-harness-evidence-guide/" rel="next">
+        <span>Oh My Hermes는 무엇을 더하나: DAG 작업 분할·모델 라우팅·검증 증거</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-회귀-버그-테스트가-필요한-이유와-테스트만으로-부족한-이유">1. 회귀 버그: 테스트가 필요한 이유와 테스트만으로 부족한 이유</a></li>
+    <li><a href="#2-anthropictheorem의-연구-239개-버그가-아니라-239개-진입점">2. Anthropic·Theorem의 연구: &ldquo;239개 버그&quot;가 아니라 &ldquo;239개 진입점&rdquo;</a></li>
+    <li><a href="#3-티켓-동시성-문제에는-무엇을-증명해야-하나">3. 티켓 동시성 문제에는 무엇을 증명해야 하나</a></li>
+    <li><a href="#4-무료-스킬과-연구용-증명-서비스를-혼동하지-말자">4. 무료 스킬과 연구용 증명 서비스를 혼동하지 말자</a></li>
+    <li><a href="#5-98-대-54는-모든-경우의-수-검증률이-아니다">5. 98% 대 54%는 &ldquo;모든 경우의 수 검증률&quot;이 아니다</a></li>
+    <li><a href="#6-언제-도입할까-테스트를-버리지-말고-고위험-부분에-더한다">6. 언제 도입할까: 테스트를 버리지 말고 고위험 부분에 더한다</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/testing/" class="badge badge-secondary">Testing</a>
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+    <a href="/tags/skills/" class="badge badge-secondary">Skills</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

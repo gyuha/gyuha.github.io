@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '게임 개발 스튜디오와 메신저형 AI 봇: Game Studios·OpenMausBot의 다른 에이전트 설계'" />
+  <title>게임 개발 스튜디오와 메신저형 AI 봇: Game Studios·OpenMausBot의 다른 에이전트 설계  | 신규하 블로그</title>
+  <meta property="og:title" content="게임 개발 스튜디오와 메신저형 AI 봇: Game Studios·OpenMausBot의 다른 에이전트 설계" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-10-30"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/10/2026-10-30-game-studios-openmausbot-ai-agents/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="agents" />
+  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/10/2026-10-30-game-studios-openmausbot-ai-agents/">
+          <h1>
+            게임 개발 스튜디오와 메신저형 AI 봇: Game Studios·OpenMausBot의 다른 에이전트 설계
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/10/2026-10-30-game-studios-openmausbot-ai-agents/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p><a href="https://youtu.be/3cMaHbezoxU">원본 쇼츠</a>는 두 오픈소스를 연달아 소개한다. <strong>Claude Code Game Studios</strong>는 게임 제작 과정을 역할별 에이전트로 조직하는 템플릿이고, <strong>OpenMausBot</strong>은 여러 AI 봇을 대화 상대처럼 다루는 데스크톱 앱이다. 둘 다 에이전트를 쓰지만 해결하려는 문제와 실행 환경은 다르다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://youtu.be/3cMaHbezoxU">원본 YouTube Shorts</a> — 영상의 소개 순서와 설명.</li>
+<li><a href="https://github.com/Donchitos/Claude-Code-Game-Studios">Claude Code Game Studios 공식 저장소</a> — 구성, 시작 방법, 게임 실행·스크린샷 검증 규칙.</li>
+<li><a href="https://github.com/milind-soni/OpenMausBot">OpenMausBot 공식 저장소</a> — CLI 연결, 컴퓨터 사용, 승인 카드, 플랫폼 지원과 데이터 저장 위치.</li>
+<li><a href="/post/2026/05/2026-05-03-claude-code-game-studios-hierarchy-collaboration/">기존 분석 글</a> — Game Studios의 조직 구조를 더 자세히 다룬 글. 당시 구성 숫자는 현재 README와 다를 수 있다.</li>
+</ul>
+<h2 id="1-같은-에이전트라도-중심-단위가-다르다">1. 같은 에이전트라도 중심 단위가 다르다</h2>
+<p>영상 <a href="https://youtu.be/3cMaHbezoxU?t=6">0:06~0:43</a>은 첫 프로젝트를 게임 개발팀처럼 소개하고, <a href="https://youtu.be/3cMaHbezoxU?t=45">0:45~1:21</a>은 두 번째 프로젝트를 메신저형 봇 앱으로 설명한다. 전자는 <strong>프로젝트 안의 업무 분장</strong>, 후자는 <strong>사용자가 대화하고 승인하는 인터페이스</strong>가 중심이다. 어느 쪽도 “AI 49개가 늘 동시에 실행된다”거나 “봇마다 독립된 컴퓨터가 기본 제공된다”는 뜻으로 읽으면 안 된다.</p>
+<pre class="mermaid">flowchart TD
+    A["사용자 목표"] --> B["Game Studios: 게임 프로젝트"]
+    B --> C["역할별 작업 분장"]
+    C --> D["실행·관찰·증거"]
+    classDef inputTone fill:#c5dcef,stroke:#6b9bc4,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#a67dbb,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#73b591,color:#333
+    class A inputTone
+    class B,C processTone
+    class D resultTone</pre><pre class="mermaid">flowchart TD
+    A["사용자 요청"] --> B["OpenMausBot: 봇 대화"]
+    B --> C["CLI·컴퓨터·앱 연결"]
+    C --> D["실행 전 승인과 결과 확인"]
+    classDef inputTone fill:#c5dcef,stroke:#6b9bc4,color:#333
+    classDef processTone fill:#fde8c0,stroke:#c6a257,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#73b591,color:#333
+    class A inputTone
+    class B,C processTone
+    class D resultTone</pre><h2 id="2-game-studios-숫자보다-위임검증-규칙">2. Game Studios: 숫자보다 위임·검증 규칙</h2>
+<p>영상은 <a href="https://youtu.be/3cMaHbezoxU?t=6">0:06~0:33</a>에 <strong>49개 에이전트와 74개 스킬</strong>, 디렉터→부서 리드→전문가의 계층, Unity·Unreal·Godot 지원을 강조한다. <a href="https://github.com/Donchitos/Claude-Code-Game-Studios">공식 README</a> 상단도 현재 49 agents·74 skills로 안내하지만, 저장소의 짧은 설명에는 72 skills가 남아 있다. <strong>구성 숫자는 버전과 표기 위치에 따라 달라질 수 있으므로</strong>, 설치 시점의 파일과 README를 기준으로 확인하는 편이 안전하다. 또한 에이전트 수는 역할 정의의 수이지 동시 실행 성능의 측정치가 아니다.</p>
+<p>이 템플릿에서 더 중요한 것은 완료 조건이다. <a href="https://github.com/Donchitos/Claude-Code-Game-Studios">README의 player-visible change 규칙</a>은 화면에 보이는 변경을 마쳤다고 하려면 게임을 실행해 관찰하고, 스크린샷을 <code>production/qa/evidence/</code>에 남기도록 요구한다. 코드 파싱만 통과한 상태와 실제 게임 화면을 확인한 상태를 구분하는 <strong>프로젝트의 작업 규칙</strong>이다. 모든 사용자 환경에서 자동으로 이 규칙이 지켜진다는 보증은 아니다.</p>
+<p>영상 <a href="https://youtu.be/3cMaHbezoxU?t=33">0:33~0:43</a>의 시작 흐름은 저장소를 복제하고 Claude Code를 프로젝트 루트에서 열어 <code>/start</code>를 사용하는 것이다. <a href="https://github.com/Donchitos/Claude-Code-Game-Studios">공식 안내</a>에 따르면 루트의 <code>CLAUDE.md</code>와 <code>project.yaml</code>이 핵심이며, 하위 폴더에서 시작하면 훅이나 권한 설정이 누락될 수 있다. 이 저장소는 완성 게임 배포본이 아니라 <strong>게임 제작 워크플로 템플릿</strong>이다.</p>
+<h2 id="3-openmausbot-대화형-인터페이스와-실행-권한의-분리">3. OpenMausBot: 대화형 인터페이스와 실행 권한의 분리</h2>
+<p>영상 <a href="https://youtu.be/3cMaHbezoxU?t=55">0:55~1:13</a>은 연락처처럼 봇을 만들고 Claude·Codex·Grok을 선택하는 사용 경험을 보여준다. <a href="https://github.com/milind-soni/OpenMausBot">공식 README</a>는 기존 <code>claude</code>, <code>codex</code>, <code>grok</code> CLI 로그인/구독을 사용하거나 직접 API 키를 넣는 경로를 설명한다. 따라서 <strong>CLI 경로에서는 별도 API 키 없이 시작할 수 있지만</strong>, 구독료나 모델 이용 비용까지 없어진다는 뜻은 아니다.</p>
+<p>컴퓨터와 외부 앱 사용도 선택한 연결 방식에 달려 있다. README에는 로컬 호스트 제어, 격리된 로컬 VM, 클라우드 Linux 컴퓨터 같은 경로가 나오며, 호스트 제어는 명시적 동의와 지원 환경이 필요하다. Gmail·Slack 같은 앱 연결은 추가 연동 설정이 필요할 수 있다. <strong>“봇마다 자기 컴퓨터와 모든 앱이 기본 제공된다”는 식으로 일반화하면 과장</strong>이다. 대화와 설정은 기본적으로 로컬 <code>~/.openmausbot</code>에 저장되지만, 모델 CLI나 선택적 클라우드·앱 연동을 쓰면 데이터가 외부 서비스로 전달될 수 있다. <a href="https://github.com/milind-soni/OpenMausBot">OpenMausBot README</a></p>
+<p>영상 <a href="https://youtu.be/3cMaHbezoxU?t=73">1:13~1:21</a>이 보여주는 파일 수정 승인 카드는 중요한 안전 장치다. 공식 README도 셸 명령과 파일 편집 등에 대한 인라인 승인 카드를 설명한다. 다만 <strong>승인 UI가 모든 위험을 자동 제거하지는 않는다</strong>. 연결한 CLI·컴퓨터·앱의 실제 권한과 승인 요청의 변경 범위를 사용자가 확인해야 한다. 배포 대상은 macOS, Windows, Ubuntu 24.04이며 플랫폼별 지원 범위에는 차이가 있다. 예를 들어 Ubuntu Wayland에서는 호스트 컴퓨터 제어가 비활성화된다. <a href="https://github.com/milind-soni/OpenMausBot">플랫폼 안내</a></p>
+<pre class="mermaid">flowchart TD
+    A["봇에 작업 요청"] --> B{"필요한 권한은?"}
+    B --> C["CLI 또는 컴퓨터·앱 연결"]
+    C --> D["명령·파일 수정 승인 확인"]
+    D --> E["결과와 외부 전송 범위 점검"]
+    classDef inputTone fill:#c5dcef,stroke:#6b9bc4,color:#333
+    classDef decisionTone fill:#fde8c0,stroke:#c6a257,color:#333
+    classDef actionTone fill:#e0c8ef,stroke:#a67dbb,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#73b591,color:#333
+    class A inputTone
+    class B,D decisionTone
+    class C actionTone
+    class E resultTone</pre><h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<ol>
+<li><strong>게임 프로젝트의 역할 분담과 QA 체계</strong>가 필요하면 Game Studios를 검토한다. 먼저 작은 변경 하나에 대해 실행 화면과 스크린샷 증거까지 남기는지 확인한다.</li>
+<li><strong>여러 모델 CLI를 대화형으로 운영</strong>하고 싶다면 OpenMausBot을 검토한다. 실제 사용 전 연결할 CLI 로그인, 컴퓨터 제어 범위, 앱 권한, 과금 경로를 각각 확인한다.</li>
+<li>두 프로젝트의 에이전트 수나 승인 기능을 <strong>품질·보안의 보증값</strong>으로 받아들이지 않는다. 작은 작업을 직접 돌려 결과와 권한 요청을 검증한다.</li>
+</ol>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>Game Studios는 <strong>게임 제작 조직과 검증 절차</strong>를 템플릿으로 만든다.</li>
+<li>OpenMausBot은 <strong>여러 AI 봇과 실행 도구를 대화·승인 UI로 연결</strong>한다.</li>
+<li>“49개 에이전트”, “API 키 불필요”, “로컬 저장”은 각각 <strong>동시 실행·무료 사용·외부 전송 없음</strong>을 의미하지 않는다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>두 프로젝트는 AI 에이전트의 서로 다른 병목을 다룬다. Game Studios는 <strong>누가 무엇을 만들고 어떻게 검증할지</strong>, OpenMausBot은 <strong>어떤 봇에게 작업을 맡기고 어느 권한을 승인할지</strong>에 집중한다. 영상은 출발점으로 유용하지만 실제 선택은 공식 문서의 실행 조건과 권한 경계를 확인한 뒤 해야 한다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 10월 30일 06시 50분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/10/2026-10-29-minimax-design-opus55-game-art-sprite-video-workflow/" rel="prev">
+        <span>Opus 5.5와 MiniMax Design으로 게임 에셋 만들기: 캐릭터·픽셀 시트·짧은 영상</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/10/2026-10-30-blender-skills-94-mcp-game-asset-pipeline/" rel="next">
+        <span>Blender Skills 94개로 게임 에셋 만들기: 스킬 라우팅과 MCP 실행의 경계</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-같은-에이전트라도-중심-단위가-다르다">1. 같은 에이전트라도 중심 단위가 다르다</a></li>
+    <li><a href="#2-game-studios-숫자보다-위임검증-규칙">2. Game Studios: 숫자보다 위임·검증 규칙</a></li>
+    <li><a href="#3-openmausbot-대화형-인터페이스와-실행-권한의-분리">3. OpenMausBot: 대화형 인터페이스와 실행 권한의 분리</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
