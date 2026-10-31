@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'AI로 PCB를 설계·검증하는 kicad-cli-extended: CLI 확장과 ERC·DRC의 경계'" />
+  <title>AI로 PCB를 설계·검증하는 kicad-cli-extended: CLI 확장과 ERC·DRC의 경계  | 신규하 블로그</title>
+  <meta property="og:title" content="AI로 PCB를 설계·검증하는 kicad-cli-extended: CLI 확장과 ERC·DRC의 경계" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-10-30"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/10/2026-10-30-kicad-cli-extended-ai-pcb-design-validation/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="ai" />
+  
+  <meta property="og:tags" content="automation" />
+  
+  <meta property="og:tags" content="testing" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/10/2026-10-30-kicad-cli-extended-ai-pcb-design-validation/">
+          <h1>
+            AI로 PCB를 설계·검증하는 kicad-cli-extended: CLI 확장과 ERC·DRC의 경계
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/10/2026-10-30-kicad-cli-extended-ai-pcb-design-validation/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p><a href="https://www.threads.com/share/_rhvC6c7-/">Threads 작성자</a>는 무료 오픈소스 도구로 AI 에이전트가 PCB를 설계·검증할 수 있다며 <a href="https://github.com/Hybirdss/kicad-cli-extended">kicad-cli-extended</a>를 공개했다. 핵심은 새로운 PCB 설계 엔진이 아니라, <strong>KiCad 10의 기존 CLI와 <code>pcbnew</code>를 AI 에이전트가 다루기 쉬운 명령·JSON 인터페이스로 확장</strong>한 것이다. 설계와 검사를 자동화할 수는 있지만, ERC·DRC 통과가 전기적 동작이나 제조 가능성을 보증하지는 않는다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.threads.com/share/_rhvC6c7-/">원본 Threads 공유 링크</a> · <a href="https://www.threads.com/@siya_dl/post/DfGtws7GlDY">연결된 원문과 작성자 댓글</a> — 브라우저로 공개 본문과 댓글을 확인했다.</li>
+<li><a href="https://github.com/Hybirdss/kicad-cli-extended">kicad-cli-extended 공식 저장소</a> — 기능, 설치, 예시, 벤치마크 방법, 라이선스.</li>
+<li><a href="https://docs.kicad.org/10.0/en/cli/cli.html">KiCad 10 공식 CLI 문서</a> — 원래 <code>kicad-cli</code>의 명령 범위와 ERC·DRC 인터페이스.</li>
+<li><a href="https://docs.kicad.org/master/en/pcbnew/pcbnew.html">KiCad 공식 PCB 편집기 문서</a> — DRC가 검사하는 설계 규칙과 설정 범위.</li>
+</ul>
+<h2 id="1-공식-kicad-cli와-무엇이-다른가">1. 공식 <code>kicad-cli</code>와 무엇이 다른가</h2>
+<p><a href="https://docs.kicad.org/10.0/en/cli/cli.html">KiCad 공식 CLI</a>는 회로도 ERC, PCB DRC, BOM·Gerber·드릴 파일 내보내기 등 자동화 명령을 이미 제공한다. 따라서 “공식 CLI로는 검증을 못 한다”는 뜻은 아니다. 차이는 <strong>AI가 회로도와 PCB를 단계적으로 수정하고, 수정 전후 상태를 비교·복구하며, 결과를 일관된 JSON으로 읽는 작업</strong>에 있다.</p>
+<p><a href="https://github.com/Hybirdss/kicad-cli-extended">프로젝트 README</a>에 따르면 <code>kce</code>는 공식 CLI 명령을 감싸면서 회로도 부품·배선·라벨 편집, 회로 의도에 따른 배치, 회로도에서 PCB 업데이트, 배치 점수·자동 라우팅, 제조 파일 패키징, 변경 비교, 체크포인트를 추가한다. 내부적으로는 실제 KiCad 10의 <code>kicad-cli</code>와 <code>pcbnew</code> Python 모듈을 사용하며, 기록한 파일을 KiCad 도구로 다시 읽어 저장 결과를 확인한다. <strong>독립적인 서드파티 프로젝트</strong>로, KiCad 공식 제품은 아니다.</p>
+<pre class="mermaid">flowchart TD
+    A["설계 요구사항·부품 데이터"] --> B["AI 에이전트"]
+    B --> C["kce 명령·JSON 응답"]
+    C --> D["KiCad CLI·pcbnew"]
+    D --> E["회로도·PCB 파일"]
+    E --> F["ERC·DRC·파일 재읽기"]
+    F --> G{"검사 결과"}
+    G -- "수정 필요" --> B
+    G -- "검사 통과" --> H["사람의 설계·제조 검토"]
+    classDef inputTone fill:#c5dcef,stroke:#6b9bc4,color:#333
+    classDef processTone fill:#fde8c0,stroke:#c6a257,color:#333
+    classDef checkTone fill:#e0c8ef,stroke:#a67dbb,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#73b591,color:#333
+    class A inputTone
+    class B,C,D,E processTone
+    class F,G checkTone
+    class H resultTone</pre><h2 id="2-mcp-대비-1400은-무엇을-측정한-숫자인가">2. “MCP 대비 1/400”은 무엇을 측정한 숫자인가</h2>
+<p>Threads의 <strong>최대 1/400 토큰</strong> 주장은 <a href="https://github.com/Hybirdss/kicad-cli-extended">저장소 벤치마크</a>의 특정 비교에서 나온다. <code>kce</code>의 항상 로드되는 스킬 앞부분은 <strong>157토큰</strong>, 비교 대상으로 선택한 한 KiCad MCP 서버의 전체 도구 정의는 <strong>63,420토큰</strong>이었다. 나누면 약 404배 차이가 난다. 즉 <strong>작업을 시작하기 전에 모델 문맥에 노출되는 도구 설명량</strong>의 비교다.</p>
+<p>이 숫자를 “PCB 한 장을 400배 적은 토큰으로 설계한다”거나 “MCP 호출보다 언제나 싸다”는 뜻으로 넓히면 안 된다. 같은 README에서 <code>kce</code>의 전체 <code>SKILL.md</code>는 3,737토큰, 전체 명령 참조는 필요할 때 읽는 11,238토큰이라고 밝힌다. 벤치마크의 개별 작업에서도 <code>kce</code>가 늘 적은 토큰을 쓴 것은 아니다. 예를 들어 저장소가 보고한 Gerber·드릴 출력 호출은 <code>kce</code> <strong>2,771토큰</strong>, 비교 대상 MCP 서버는 <strong>645토큰</strong>이다. 저자 측이 고른 도구와 데모 보드, 측정 방식에 따른 결과이며 독립적인 전체 세션 평가가 아니다.</p>
+<p>따라서 설계 의도는 “CLI가 본질적으로 MCP보다 우월하다”가 아니라, <strong>명령 하나와 필요할 때 읽는 스킬 문서로 초기 문맥 점유를 낮추는 방식</strong>이다. 반대로 CLI는 호출마다 프로세스가 시작될 수 있어 시간·상태 관리의 절충이 있다. 저장소는 이를 위한 상주 <code>serve</code> 워커도 제공한다.</p>
+<pre class="mermaid">flowchart TD
+    A["작업 시작 전 문맥"] --> B["kce: 짧은 스킬 앞부분"]
+    A --> C["비교 MCP: 전체 도구 정의"]
+    B --> D["필요한 명령 참조만 추가 로드"]
+    C --> E["도구 호출"]
+    D --> F["실제 작업 토큰·시간 측정"]
+    E --> F
+    F --> G["작업 종류별 결과는 달라짐"]
+    classDef inputTone fill:#c5dcef,stroke:#6b9bc4,color:#333
+    classDef processTone fill:#fde8c0,stroke:#c6a257,color:#333
+    classDef checkTone fill:#e0c8ef,stroke:#a67dbb,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#73b591,color:#333
+    class A inputTone
+    class B,C,D,E processTone
+    class F checkTone
+    class G resultTone</pre><h2 id="3-회로도에서-제조-파일까지의-실제-흐름">3. 회로도에서 제조 파일까지의 실제 흐름</h2>
+<p><a href="https://github.com/Hybirdss/kicad-cli-extended">README의 LED 보드 예시</a>는 2핀 전원 커넥터, 저항, LED를 놓고 핀에 네트 라벨을 붙인 뒤 ERC를 실행한다. 다음으로 보드 외곽선을 그리고, 회로도 정보를 PCB에 동기화하고, 배치·연결·DRC를 확인한 다음 제조 패키지를 만든다. 이는 <code>회로 의도 → 회로도 → PCB → 설계 검사 → 제조 출력</code>이라는 각 경계를 보여 주는 <strong>예시</strong>이지, 임의의 회로 사양을 넣으면 최적 보드가 자동 완성된다는 약속이 아니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>kce --json info doctor
+</span></span><span style="display:flex;"><span>kce --json check erc --fail-on-error
+</span></span><span style="display:flex;"><span>kce --json --dry-run pcb update --stable-uuids
+</span></span><span style="display:flex;"><span>kce --json pcb update --stable-uuids
+</span></span><span style="display:flex;"><span>kce --json pcb connectivity
+</span></span><span style="display:flex;"><span>kce --json check drc --fail-on-error
+</span></span><span style="display:flex;"><span>kce --json fab package --preset jlcpcb --fail-on-drc --no-step
+</span></span></code></pre></div><p>위 명령들은 <strong>이미 해당 프로젝트의 회로도·PCB 파일과 규칙이 준비된 상태</strong>를 전제로 한 순서 예시다. 새 프로젝트를 만드는 명령, 라이브러리 선택과 부품 배치, 외곽선 설정 등은 별도 단계다. 설치 역시 KiCad 10.x와 Python 3.10 이상이 선행 조건이며, 저장소는 <code>uv tool install git+https://github.com/Hybirdss/kicad-cli-extended</code>와 <code>kce --json info doctor</code>를 안내한다. 실제 실행 전에는 도구 버전과 대상 프로젝트를 확인해야 한다.</p>
+<p>안전한 편집에는 <strong>미리보기와 복구 지점</strong>이 중요하다. 저장소는 <code>--dry-run</code>으로 회로도→PCB 갱신의 부품 교체·패드 이동·기존 트랙 연결 영향을 먼저 살피고, <code>session checkpoint</code>로 수정 전 상태를 남기며, <code>project compare</code>로 허용하지 않은 변경을 찾아내는 흐름을 문서화한다. <code>run</code>의 다단계 계획은 사전 정의한 수용 조건을 만족하지 못하면 프로젝트 파일 변경을 되돌리도록 설계됐다. 그래도 변경 영향 범위를 사람이 확인하지 않은 채 실제 제조 파일을 내보내서는 안 된다.</p>
+<pre class="mermaid">flowchart TD
+    A["회로 의도·부품 데이터시트"] --> B["회로도 작성·수정"]
+    B --> C["ERC 검사"]
+    C --> D["변경 전 체크포인트"]
+    D --> E["PCB 동기화 미리보기"]
+    E --> F["배치·배선·영역 채우기"]
+    F --> G["연결·DRC·변경 비교"]
+    G --> H{"수용 조건 충족?"}
+    H -- "아니요" --> I["수정 또는 체크포인트 복구"]
+    I --> B
+    H -- "예" --> J["Gerber·드릴·BOM·CPL 검토"]
+    classDef inputTone fill:#c5dcef,stroke:#6b9bc4,color:#333
+    classDef processTone fill:#fde8c0,stroke:#c6a257,color:#333
+    classDef checkTone fill:#e0c8ef,stroke:#a67dbb,color:#333
+    classDef errorTone fill:#ffc8c4,stroke:#c57d78,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#73b591,color:#333
+    class A inputTone
+    class B,D,E,F processTone
+    class C,G,H checkTone
+    class I errorTone
+    class J resultTone</pre><h2 id="4-ercdrc-통과와-실물-검증은-다른-일이다">4. ERC·DRC 통과와 실물 검증은 다른 일이다</h2>
+<p><a href="https://docs.kicad.org/10.0/en/cli/cli.html">KiCad 공식 CLI 문서</a>에 따르면 ERC는 회로도의 전기 규칙 위반을, DRC는 PCB의 설계 규칙 위반을 보고한다. <a href="https://docs.kicad.org/master/en/pcbnew/pcbnew.html">PCB 편집기 문서</a>는 DRC가 <strong>보드 설정에 정의된 제약</strong>과 패드 연결을 검사한다고 설명한다. 따라서 규칙이 빠졌거나 심각도를 무시로 설정하면 검사 통과가 의미하는 범위도 좁아진다. 전원 예산, 실제 부품 핀맵, 열·신호 무결성, 제조사의 공정 한계, 조립 방향, 실물 동작은 별도 검토가 필요하다.</p>
+<p><code>kce</code> 저장소도 <strong>깨끗한 DRC가 제조사 규격 충족을 뜻하지 않는다</strong>고 경고한다. LED 예시는 벌거숭이 기판 출력이며, 조립품으로 주문하려면 공급업체 부품 번호를 확인하고 BOM·CPL을 제조사 뷰어에서 검토하라고 안내한다. Threads 작성자 역시 댓글에서 실물로 받아보면 다른 문제가 생길 수 있다고 인정했다. 그러므로 “AI가 검증했다”는 표현은 <strong>설정한 자동 검사와 파일 검증을 수행했다</strong>는 뜻으로 한정해야 한다.</p>
+<p>프로젝트는 <a href="https://github.com/Hybirdss/kicad-cli-extended/blob/main/LICENSE">GPL-3.0-or-later</a> 라이선스의 독립 오픈소스다. 도구 자체가 무료여도 KiCad 실행 환경, 에이전트 이용료, 부품·제조·실측 비용은 별개다. Threads 작성자가 댓글에 언급한 <a href="https://github.com/Hybirdss/altium-cli-extended">Altium용 동반 저장소</a>는 별도 프로젝트이므로 KiCad용 <code>kce</code>의 기능·검증 결과를 그대로 이전해 해석하면 안 된다.</p>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<ol>
+<li><strong>작은 데모로 시작한다.</strong> <code>info doctor</code>로 KiCad·Python·라이브러리를 확인한 뒤, 공식 README의 LED 보드 예시처럼 입력과 기대 결과가 명확한 프로젝트로 시험한다.</li>
+<li><strong>검사 실패를 명시적으로 처리한다.</strong> ERC·DRC에 <code>--fail-on-error</code> 같은 게이트를 붙이고, 위반 건수만 읽은 채 성공으로 넘기지 않는다.</li>
+<li><strong>변경 전후를 비교한다.</strong> 회로도 변경은 체크포인트와 <code>--dry-run</code>, PCB 동기화 결과의 패드·트랙 영향, <code>project compare</code>로 제한된 범위만 바뀌었는지 확인한다.</li>
+<li><strong>제조 단계는 별도 승인한다.</strong> Gerber·드릴·BOM·CPL과 부품 공급 상태를 제조사 규격·뷰어로 확인하고, 시제품을 실제 측정한다.</li>
+</ol>
+<h2 id="핵심-요약">핵심 요약</h2>
+<p><code>kicad-cli-extended</code>는 <strong>KiCad 10을 AI 에이전트가 명령형·JSON 방식으로 다루기 쉽게 만든 확장 도구</strong>다. “1/400”은 한 비교 조건의 초기 도구 정의 토큰 수이며, 전체 PCB 제작 비용이나 작업 토큰 절감을 뜻하지 않는다. ERC·DRC와 파일 재읽기는 중요한 자동화 게이트지만, 회로의 기능과 제조·조립 품질은 엔지니어의 검토 및 실물 시험이 필요하다.</p>
+<h2 id="결론">결론</h2>
+<p>이 프로젝트의 가치는 PCB 설계를 프롬프트 한 번으로 대체하는 데보다, <strong>반복 가능한 수정·검사·출력 절차를 에이전트가 실행하도록 만드는 데</strong> 있다. 작은 회로부터 명시적 검증 게이트를 세우고, 제조 전에 사람과 실물 테스트가 책임질 경계를 유지하는 방식으로 활용해야 한다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 10월 30일 23시 31분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/engineering">Engineering</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/10/2026-10-30-blender-mcp-studio-character-animation-workflow/" rel="prev">
+        <span>Blender MCP Studio로 캐릭터 영상 만들기: 설치부터 모델링·리깅·렌더까지</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/10/2026-10-31-aura-autopilot-game-playtesting-agent/" rel="next">
+        <span>Aura Autopilot으로 게임을 직접 플레이테스트하기: 조작 하네스·프로젝트 기억·검증의 경계</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-공식-kicad-cli와-무엇이-다른가">1. 공식 <code>kicad-cli</code>와 무엇이 다른가</a></li>
+    <li><a href="#2-mcp-대비-1400은-무엇을-측정한-숫자인가">2. “MCP 대비 1/400”은 무엇을 측정한 숫자인가</a></li>
+    <li><a href="#3-회로도에서-제조-파일까지의-실제-흐름">3. 회로도에서 제조 파일까지의 실제 흐름</a></li>
+    <li><a href="#4-ercdrc-통과와-실물-검증은-다른-일이다">4. ERC·DRC 통과와 실물 검증은 다른 일이다</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/ai/" class="badge badge-secondary">Ai</a>
+    <a href="/tags/automation/" class="badge badge-secondary">Automation</a>
+    <a href="/tags/testing/" class="badge badge-secondary">Testing</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
