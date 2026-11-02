@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Agent Sprite Forge 0.4 다시 보기: 스프라이트 생성·성능 수치·무료 경로의 네 가지 확인점'" />
+  <title>Agent Sprite Forge 0.4 다시 보기: 스프라이트 생성·성능 수치·무료 경로의 네 가지 확인점  | 신규하 블로그</title>
+  <meta property="og:title" content="Agent Sprite Forge 0.4 다시 보기: 스프라이트 생성·성능 수치·무료 경로의 네 가지 확인점" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-11-02"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/11/2026-11-02-agent-sprite-forge-v04-threads-four-claims-check/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="ai" />
+  
+  <meta property="og:tags" content="skills" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/11/2026-11-02-agent-sprite-forge-v04-threads-four-claims-check/">
+          <h1>
+            Agent Sprite Forge 0.4 다시 보기: 스프라이트 생성·성능 수치·무료 경로의 네 가지 확인점
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/11/2026-11-02-agent-sprite-forge-v04-threads-four-claims-check/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p><a href="https://www.threads.com/share/BBSaBskK7W/">Threads 글</a>은 <strong>Agent Sprite Forge 0.4</strong>를 “캐릭터 그림 한 장을 Godot·Aseprite용 동작 세트로 바꾸는 스킬”로 소개하며, 제작 흐름·성능 수치·API 없는 시작·설치를 네 가지로 설명한다. 이 저장소는 <a href="https://gyuha.com/post/2026/10/2026-10-07-agent-sprite-forge-master-still-to-game-sprites/">이전 글</a>에서 파이프라인을 자세히 다뤘다. 이번에는 새 Threads 글의 <strong>주장별 확인 범위와 실제 사용 시 빠지기 쉬운 조건</strong>에 집중한다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.threads.com/share/BBSaBskK7W/">원본 Threads 공유 링크</a> · <a href="https://www.threads.com/@think.5x/post/DfMd5ppn-np">연결된 원문과 작성자 댓글</a> — 브라우저로 공개 본문과 이어진 설명을 확인했다.</li>
+<li><a href="https://github.com/0x0funky/agent-sprite-forge">Agent Sprite Forge 공식 저장소</a> — 0.4 제작 흐름, 설치, 출력 형식과 제공자 경로.</li>
+<li><a href="https://github.com/0x0funky/agent-sprite-forge/blob/main/docs/validation-2026-10-06.md">0.4 실제 실행·측정 기록</a> — 여우 스프라이트와 배경 제거·동작 길이의 자체 측정.</li>
+<li><a href="https://github.com/0x0funky/agent-sprite-forge/blob/main/docs/known-limitations.md">공식 알려진 한계</a> — 생성 품질·플랫폼·엔진 가져오기 검증 범위.</li>
+</ul>
+<h2 id="1-그림-한-장에서-동작-세트는-승인과-클립-생성이-필요하다">1. “그림 한 장에서 동작 세트”는 승인과 클립 생성이 필요하다</h2>
+<p>Threads의 첫 번째 설명처럼 <code>generate2dsprite</code>로 <strong>기준 이미지 후보 세 장</strong>을 만들고 하나를 승인한 뒤, <code>video2dsprite</code>가 idle·walk·run·attack·jump·hurt 같은 동작을 다루는 흐름은 <a href="https://github.com/0x0funky/agent-sprite-forge#quickstart">공식 Quickstart</a>와 일치한다. 다만 한 장을 선택하면 프레임이 저절로 생기는 것이 아니다. <strong>동작마다 이미지→영상 클립을 별도로 생성</strong>하고, Python 도구가 배경 제거·위치 정렬·루프 구간·공격 타이밍·출력을 처리한다. <a href="https://www.threads.com/@think.5x/post/DfMd5ppn-np">Threads 작성자의 첫 번째 설명</a></p>
+<p>저장소는 발 접지점으로 달리기 속도를 계산하는 예시를 보여 준다. 이것은 특정 데모에서 발 미끄러짐을 줄이는 <strong>측정 기반 처리 방식</strong>이지 모든 캐릭터·모션에서 접지가 완벽하다는 보증은 아니다. 영상 모델이 빠른 팔다리나 점프에서 모양을 바꾸면 클립을 다시 만들고 사람 눈으로 검수해야 한다. <a href="https://github.com/0x0funky/agent-sprite-forge#whats-new-in-04--the-big-upgrade">공식 0.4 설명</a>, <a href="https://github.com/0x0funky/agent-sprite-forge/blob/main/docs/known-limitations.md">알려진 한계</a></p>
+<pre class="mermaid">flowchart TD
+    A["캐릭터 요구사항"] --> B["기준 이미지 후보 생성"]
+    B --> C{"사용자 승인"}
+    C -- "수정" --> B
+    C -- "승인" --> D["동작별 영상 클립 생성"]
+    D --> E["품질 검사·필요 시 재생성"]
+    E --> F["키잉·정렬·루프·리타이밍"]
+    F --> G["스프라이트와 메타데이터 출력"]
+    classDef inputTone fill:#c5dcef,stroke:#6b9bc4,color:#333
+    classDef decisionTone fill:#e0c8ef,stroke:#a67dbb,color:#333
+    classDef processTone fill:#fde8c0,stroke:#c6a257,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#73b591,color:#333
+    class A inputTone
+    class C decisionTone
+    class B,D,E,F processTone
+    class G resultTone</pre><h2 id="2-숫자는-실제-데모의-전후-측정이지-보편적-성능이-아니다">2. 숫자는 실제 데모의 전후 측정이지 보편적 성능이 아니다</h2>
+<p>Threads의 두 번째 설명에 나온 <strong>48×64 픽셀 여우 달리기 프레임의 색상 594<del>709개 → 16</del>19개</strong>, <strong>145프레임 키잉 시간 271초 → 44초</strong>, <strong>공격 모션 4.1초 → 0.7초</strong>는 <a href="https://github.com/0x0funky/agent-sprite-forge#whats-new-in-04--the-big-upgrade">저장소의 0.4 전후 측정</a>과 일치한다. 색상 감소는 제한된 팔레트와 이진 알파를 적용한 <strong>픽셀 마감</strong> 결과다. 키잉 시간은 해당 클립에 적용한 새 배경 제거 처리의 기록이고, 공격 길이는 느린 원샷을 게임에 맞게 다시 배치한 예시다.</p>
+<p>따라서 “모든 영상이 여섯 배 빨리 처리된다”거나 “모든 공격 동작이 0.7초가 된다”고 일반화할 수 없다. 0.4의 <a href="https://github.com/0x0funky/agent-sprite-forge/blob/main/docs/validation-2026-10-06.md">실행 기록</a>은 특정 캐릭터와 환경의 자체 검증 자료다. <strong>품질 검사 수치가 해부학, 캐릭터 정체성, 움직임의 매력을 자동으로 승인하지 않는다</strong>는 점도 공식 한계 문서가 명시한다.</p>
+<h2 id="3-api-키-없이-시작과-무료-영상-생성은-다르다">3. “API 키 없이 시작”과 “무료 영상 생성”은 다르다</h2>
+<p>Threads의 세 번째 설명대로 <code>route_media.py</code>는 <strong>설정한 제공자 API 키 → 로그인한 Codex·Grok CLI → 코드로 그리는 대안</strong> 순서로 경로를 찾는다. <a href="https://github.com/0x0funky/agent-sprite-forge#routes-and-providers">공식 제공자 안내</a>는 OpenAI·Gemini·xAI·BytePlus·fal.ai를 지원한다고 설명한다. API 키가 없어도 기준 이미지나 코드 그림을 시험할 수 있지만, <strong>동작별 이미지→영상 경로가 실제로 가능한지</strong>는 로그인한 CLI의 기능·사용량 또는 별도 영상 제공자에 달려 있다.</p>
+<p>즉 코드 그림 대안이 있다고 해서 <code>video2dsprite</code>가 자동으로 무료 영상 모델을 얻는 것은 아니다. CLI도 사용자의 구독·계정 한도를 소모할 수 있고, API 호출에는 비용이 붙을 수 있다. <a href="https://github.com/0x0funky/agent-sprite-forge">README</a>는 생성 경로와 사용량을 기록하며 예산·호출 상한을 설정할 수 있다고 설명한다. <strong>처음부터 전체 동작 세트 대신 한 동작만 시험</strong>해 예상 비용과 품질을 확인하는 편이 안전하다.</p>
+<pre class="mermaid">flowchart TD
+    A["이미지·영상 생성 요청"] --> B{"설정한 API 경로가 있는가?"}
+    B -- "예" --> C["제공자 API 사용·비용 확인"]
+    B -- "아니요" --> D{"로그인한 CLI가 해당 기능을 지원하는가?"}
+    D -- "예" --> E["CLI 구독·사용량 범위에서 실행"]
+    D -- "아니요" --> F["코드 그림 또는 생성 불가"]
+    C --> G["산출물·사용량 기록"]
+    E --> G
+    F --> G
+    classDef inputTone fill:#c5dcef,stroke:#6b9bc4,color:#333
+    classDef decisionTone fill:#e0c8ef,stroke:#a67dbb,color:#333
+    classDef processTone fill:#fde8c0,stroke:#c6a257,color:#333
+    classDef cautionTone fill:#ffc8c4,stroke:#c57d78,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#73b591,color:#333
+    class A inputTone
+    class B,D decisionTone
+    class C,E processTone
+    class F cautionTone
+    class G resultTone</pre><h2 id="4-설치-명령과-출력-형식은-맞지만-엔진-검수는-남는다">4. 설치 명령과 출력 형식은 맞지만 엔진 검수는 남는다</h2>
+<p>Threads의 네 번째 설명에 나온 <a href="https://github.com/0x0funky/agent-sprite-forge#quickstart">Claude Code 플러그인 설치</a>는 공식 README의 명령과 일치한다. Python에는 <code>numpy</code>, <code>Pillow</code>, <code>scipy</code>가 필요하고, 영상·스프라이트 세트 작업에는 <strong>ffmpeg 5.1 이상</strong>이 필요하다. <code>--sparse</code>는 플러그인 매니페스트와 스킬만 받는 방식이다. Codex·Grok은 같은 명령을 그대로 쓰는 것이 아니라 저장소를 클론한 뒤 각 호스트용 설치 스크립트를 사용한다.</p>
+<p>결과는 PNG 아틀라스와 <code>animation.json</code>, 알파 WebM, Godot <code>SpriteFrames</code>, Aseprite JSON, Tiled·LDtk용 맵 형식 등으로 <strong>내보낼 수 있다</strong>. 다만 <a href="https://github.com/0x0funky/agent-sprite-forge/blob/main/docs/known-limitations.md">알려진 한계</a>에 따르면 0.4 출력물의 <strong>실제 Godot·Aseprite 편집기 가져오기는 아직 검증되지 않았다.</strong> 파일 생성·디코딩 검사와 게임 엔진에서의 정상 애니메이션은 다른 단계다. 피벗, 프레임 순서, 투명도, 루프 타이밍을 프로젝트에서 직접 확인해야 한다.</p>
+<p>또한 저장소의 <a href="https://github.com/0x0funky/agent-sprite-forge/blob/main/LICENSE">MIT 라이선스</a>는 <strong>코드와 문서</strong>에 적용된다. 생성한 이미지·영상의 상업적 이용 조건은 선택한 모델 제공자의 약관과 입력 캐릭터의 권리에 따로 좌우된다.</p>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<ol>
+<li><strong>기준 이미지를 먼저 승인한다.</strong> 첫 결과를 곧바로 여섯 동작에 확장하면 외형 오류도 같이 증폭된다.</li>
+<li><strong>한 동작으로 경로를 점검한다.</strong> 이미지·영상 제공자, CLI 로그인, 예산·호출 상한을 확인한 뒤 idle 또는 walk만 시도한다.</li>
+<li><strong>자체 측정값을 자신의 환경에서 다시 잰다.</strong> 팔레트, 배경 제거 시간, 공격 타이밍은 샘플·설정·하드웨어에 따라 달라진다.</li>
+<li><strong>엔진에서 재생까지 확인한다.</strong> 내보낸 파일이 생성됐다는 것과 Godot·Aseprite에서 원하는 대로 재생되는 것은 다르다.</li>
+</ol>
+<h2 id="핵심-요약">핵심 요약</h2>
+<p>Threads의 네 가지 설명은 <strong>공식 0.4 README의 큰 흐름과 대체로 일치</strong>한다. 그러나 기준 이미지 승인과 동작별 영상 생성이 필요하고, 제시된 성능 수치는 특정 데모의 자체 측정이다. API 키가 없어도 시작할 수 있다는 말은 무료 영상 생성 보장이 아니며, 엔진별 출력 형식은 실제 편집기 가져오기 검수가 남아 있다.</p>
+<h2 id="결론">결론</h2>
+<p>Agent Sprite Forge는 캐릭터 애니메이션의 <strong>생성·후처리·내보내기 공정을 연결하는 스킬</strong>로 볼 만하다. 한 캐릭터·한 동작을 작은 비용으로 시험하고, 사람이 결과와 권리·엔진 호환성을 확인한 뒤 동작 세트를 늘리는 방식이 현실적이다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 11월 02일 07시 43분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/11/2026-11-02-indie-game-launch-registration-rating-threads-fact-check/" rel="prev">
+        <span>인디 게임 출시 전 신고와 등급분류: &#39;240만 원 절약&#39; Threads 글 검증</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/11/2026-11-02-openidea-rust-tauri-intellij-workflow-benchmark-check/" rel="next">
+        <span>OpenIDEA: Rust·Tauri로 옮긴 IntelliJ식 작업 흐름, 0.9초 벤치마크 읽는 법</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-그림-한-장에서-동작-세트는-승인과-클립-생성이-필요하다">1. “그림 한 장에서 동작 세트”는 승인과 클립 생성이 필요하다</a></li>
+    <li><a href="#2-숫자는-실제-데모의-전후-측정이지-보편적-성능이-아니다">2. 숫자는 실제 데모의 전후 측정이지 보편적 성능이 아니다</a></li>
+    <li><a href="#3-api-키-없이-시작과-무료-영상-생성은-다르다">3. “API 키 없이 시작”과 “무료 영상 생성”은 다르다</a></li>
+    <li><a href="#4-설치-명령과-출력-형식은-맞지만-엔진-검수는-남는다">4. 설치 명령과 출력 형식은 맞지만 엔진 검수는 남는다</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/ai/" class="badge badge-secondary">Ai</a>
+    <a href="/tags/skills/" class="badge badge-secondary">Skills</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

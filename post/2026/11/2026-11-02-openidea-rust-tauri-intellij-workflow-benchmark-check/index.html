@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'OpenIDEA: Rust·Tauri로 옮긴 IntelliJ식 작업 흐름, 0.9초 벤치마크 읽는 법'" />
+  <title>OpenIDEA: Rust·Tauri로 옮긴 IntelliJ식 작업 흐름, 0.9초 벤치마크 읽는 법  | 신규하 블로그</title>
+  <meta property="og:title" content="OpenIDEA: Rust·Tauri로 옮긴 IntelliJ식 작업 흐름, 0.9초 벤치마크 읽는 법" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-11-02"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/11/2026-11-02-openidea-rust-tauri-intellij-workflow-benchmark-check/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/11/2026-11-02-openidea-rust-tauri-intellij-workflow-benchmark-check/">
+          <h1>
+            OpenIDEA: Rust·Tauri로 옮긴 IntelliJ식 작업 흐름, 0.9초 벤치마크 읽는 법
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/11/2026-11-02-openidea-rust-tauri-intellij-workflow-benchmark-check/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>한 <a href="https://www.threads.com/share/BCRB2VVSWV/">Threads 게시물</a>은 IntelliJ IDEA의 작업 흐름을 Rust로 다시 만든 <strong>OpenIDEA</strong> 를 소개하며 프로젝트 열기 0.9초, 메모리 169MB를 강조한다. 인상적인 수치지만, IDE의 가치는 실행 속도뿐 아니라 언어 분석·디버깅·확장성까지 함께 봐야 한다. 공식 저장소를 기준으로 무엇이 확인되고 무엇은 아직 직접 시험해야 하는지 정리했다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.threads.com/share/BCRB2VVSWV/">원문 Threads 공유 링크</a> · <a href="https://www.threads.com/@githubprojects/post/DfMN4CFG9_J">실제 게시물</a> — 일반 웹 열기로 본문에 접근하지 못해 브라우저로 추출했다.</li>
+<li><a href="https://github.com/l0ng-ai/openidea">OpenIDEA 공식 GitHub 저장소와 README</a> — 기능 소개, 벤치마크 조건, 라이선스.</li>
+<li><a href="https://github.com/l0ng-ai/openidea/blob/main/package.json">OpenIDEA <code>package.json</code></a> — 프런트엔드·편집기 의존성과 개발 스크립트.</li>
+<li><a href="https://github.com/l0ng-ai/openidea/tree/main/perf/compare">OpenIDEA 성능 비교 도구</a> · <a href="https://github.com/l0ng-ai/openidea/releases">릴리스 페이지</a> — 재현 경로와 배포 패키지.</li>
+</ul>
+<h2 id="openidea가-복제하려는-것은-무엇인가">OpenIDEA가 복제하려는 것은 무엇인가</h2>
+<p>프로젝트의 목표는 IntelliJ IDEA의 소스 코드를 그대로 이식하는 것이 아니다. <a href="https://github.com/l0ng-ai/openidea">공식 README</a>는 키맵, 도구 창, Search Everywhere 같은 <strong>사용 흐름</strong> 을 Rust 코어를 가진 데스크톱 앱으로 제공한다고 설명한다. 편집기, 코드 인사이트, 디버거, Git, 터미널, 데이터베이스, HTTP 클라이언트를 한 화면에 묶고 60개 이상 언어를 다룬다고 소개한다. 프로젝트는 JetBrains와 무관하며, 저장소 라이선스는 Apache-2.0이다.</p>
+<pre class="mermaid">flowchart TD
+    A["IntelliJ식 작업 습관"] --> B["키맵·도구 창·통합 검색"]
+    B --> C["OpenIDEA 데스크톱 앱"]
+    C --> D["편집·코드 탐색"]
+    C --> E["디버깅·실행"]
+    C --> F["Git·터미널·DB·HTTP"]
+    classDef inputTone fill:#c5dcef,stroke:#6d9fc4,color:#333
+    classDef processTone fill:#fde8c0,stroke:#c9a867,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#67a785,color:#333
+    class A inputTone
+    class B,C processTone
+    class D,E,F outputTone</pre><p>저장소의 <a href="https://github.com/l0ng-ai/openidea/blob/main/package.json">패키지 설정</a>에는 React, CodeMirror 6, Tauri 2 API, xterm.js가 의존성으로 보인다. 따라서 &lsquo;Rust로 재작성&rsquo;을 <strong>모든 계층이 순수 Rust라는 뜻</strong> 으로 받아들이면 부정확하다. 사용자 인터페이스와 편집기에는 웹 기술이, 네이티브 앱 계층에는 Rust·Tauri가 사용되는 구성이다. 저장소의 <code>src</code>, <code>src-tauri</code>, <code>crates</code> 디렉터리도 이 분리를 보여준다.</p>
+<h2 id="09초와-169mb는-어떻게-측정됐나">0.9초와 169MB는 어떻게 측정됐나</h2>
+<p><a href="https://github.com/l0ng-ai/openidea#benchmark">공식 README의 비교</a>는 약 770개 파일의 Python 프로젝트 <code>freqtrade</code>를 <strong>웜 캐시</strong> 상태에서 열고 5회 실행의 중앙값을 사용했다. Windows 11, 32코어 AMD CPU, 62GB RAM 환경에서 OpenIDEA는 창 표시 0.9초·CPU 안정 상태 1.1초·전체 프로세스 USS 메모리 169MB, IntelliJ IDEA 2026.2.3은 각각 3.1초·13.2초·2,011MB로 보고됐다. 두 프로그램을 같은 관찰 방식으로 측정했다는 것이 프로젝트의 설명이다.</p>
+<pre class="mermaid">flowchart TD
+    A["Windows 11·동일 장비"] --> B["Python 프로젝트 약 770파일"]
+    B --> C["웜 캐시로 5회 실행"]
+    C --> D["중앙값 산출"]
+    D --> E["창 표시·CPU 안정·USS 비교"]
+    classDef inputTone fill:#c5dcef,stroke:#6d9fc4,color:#333
+    classDef processTone fill:#fde8c0,stroke:#c9a867,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#67a785,color:#333
+    class A,B inputTone
+    class C,D processTone
+    class E outputTone</pre><p>여기서 핵심은 <strong>같은 &lsquo;준비 완료&rsquo;가 같은 분석 완료를 뜻하지 않는다</strong> 는 점이다. README도 IntelliJ가 Python을 더 깊게 분석하므로 두 제품의 준비 상태는 동등한 작업량이 아니라고 직접 단서를 단다. 따라서 위 숫자는 특정 환경에서의 <strong>프로젝트 작성자 측정치</strong> 이지, 모든 OS·프로젝트에서의 보편적 우위나 IDE 기능 동등성을 입증하지 않는다. <a href="https://github.com/l0ng-ai/openidea/tree/main/perf/compare">비교 도구</a>가 공개돼 있으므로 자신의 저장소와 장비에서 재측정하는 것이 가장 낫다.</p>
+<h2 id="60개-이상-언어-지원을-해석하는-법">&lsquo;60개 이상 언어 지원&rsquo;을 해석하는 법</h2>
+<p>공식 소개의 60개 이상 언어는 폭넓은 언어 처리 범위를 말하지만, 각각이 IntelliJ 수준의 리팩터링·코드 분석·디버깅을 동일하게 제공한다는 뜻은 아니다. 기능이 필요한 언어별로 파일 열기와 문법 강조, 자동완성, 정의 이동, 진단, 실행 구성, 디버거를 <strong>따로</strong> 시험해야 한다. 새 IDE에 팀의 전체 작업 흐름을 옮기기 전에 확인해야 할 것도 이 부분이다.</p>
+<pre class="mermaid">flowchart TD
+    A["주력 언어로 실제 프로젝트 열기"] --> B["편집·탐색·진단 확인"]
+    B --> C["빌드·테스트·디버그 확인"]
+    C --> D["Git·터미널·DB 흐름 확인"]
+    D --> E{"기존 IDE의 필수 기능 충족?"}
+    E -->|예| F["보조 IDE로 도입 범위 확대"]
+    E -->|아니오| G["기존 IDE 유지·결함 기록"]
+    classDef inputTone fill:#c5dcef,stroke:#6d9fc4,color:#333
+    classDef processTone fill:#fde8c0,stroke:#c9a867,color:#333
+    classDef decisionTone fill:#e0c8ef,stroke:#a57ebd,color:#333
+    classDef successTone fill:#c0ecd3,stroke:#67a785,color:#333
+    classDef cautionTone fill:#ffc8c4,stroke:#c7837d,color:#333
+    class A inputTone
+    class B,C,D processTone
+    class E decisionTone
+    class F successTone
+    class G cautionTone</pre><h2 id="설치와-시험의-현실적인-순서">설치와 시험의 현실적인 순서</h2>
+<p><a href="https://github.com/l0ng-ai/openidea/releases">릴리스 페이지</a>는 Windows·macOS·Linux용 패키지를 제공한다. 직접 빌드하려면 <a href="https://github.com/l0ng-ai/openidea#build">README의 안내</a>에 따라 Rust 1.96, Node 22, pnpm, Tauri의 플랫폼별 필수 구성요소를 준비하고 <code>pnpm install</code> 뒤 <code>pnpm tauri dev</code>를 실행한다. 이는 소스 개발 경로이며, 일반적인 첫 시험에는 릴리스 패키지를 이용하는 편이 간단하다. 패키지 다운로드·실행 전에는 릴리스 출처와 자신의 OS·CPU 아키텍처를 확인해야 한다.</p>
+<p>실제 검증은 사용 중인 IntelliJ 프로젝트 하나를 정해 동일한 조건에서 비교하는 방식이 좋다. 첫 실행과 재실행을 나누고, 메모리 측정에는 앱의 모든 프로세스를 포함하며, 단순히 창이 뜬 시점과 인덱싱·진단을 사용할 수 있는 시점을 구분하자. 기존 플러그인이나 작업 환경을 그대로 이식할 수 있다고 가정하지 말고, 필수 기능을 하나씩 확인해야 한다.</p>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<ul>
+<li><strong>속도 검증:</strong> 공식 수치는 웜 캐시·소규모 Python 프로젝트·특정 Windows 장비의 결과로 기록한다. 자기 프로젝트에서는 콜드·웜 실행을 구분해 측정한다.</li>
+<li><strong>기능 검증:</strong> 가장 자주 쓰는 언어에서 코드 분석 깊이, 디버거, 테스트 실행, 리팩터링, 플러그인 의존도를 체크한다.</li>
+<li><strong>도입 판단:</strong> 새 도구를 기존 IDE의 즉시 교체품으로 보기보다 보조 편집기 또는 시험 환경에서 먼저 평가한다. <a href="https://github.com/l0ng-ai/openidea/releases">릴리스 변경 내역</a>도 확인한다.</li>
+</ul>
+<h2 id="핵심-요약">핵심 요약</h2>
+<p>OpenIDEA는 IntelliJ의 <strong>작업 흐름</strong> 을 Rust·Tauri 기반 앱에 재구성한 오픈소스 IDE다. 0.9초·169MB 수치는 공식 저장소의 특정 조건에서 나온 작성자 측정치이며, IntelliJ와 언어 분석 작업량이 같다는 의미는 아니다. 편집기와 UI에도 React·CodeMirror 같은 웹 기술이 쓰인다.</p>
+<h2 id="결론">결론</h2>
+<p>OpenIDEA는 가벼운 실행과 익숙한 IDE 구성에 관심이 있다면 시험해 볼 만하다. 다만 도입 결정은 홍보 숫자보다 <strong>자신의 프로젝트에서 필요한 언어 분석과 개발 흐름이 실제로 작동하는지</strong> 에 달려 있다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 11월 02일 08시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/11/2026-11-02-agent-sprite-forge-v04-threads-four-claims-check/" rel="prev">
+        <span>Agent Sprite Forge 0.4 다시 보기: 스프라이트 생성·성능 수치·무료 경로의 네 가지 확인점</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/11/2026-11-02-agent-desktop-accessibility-refs-cursor-overlay-shorts/" rel="next">
+        <span>Agent Desktop: AI가 데스크톱 앱을 클릭하는 방식, 접근성 트리와 커서 오버레이 구분하기</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#openidea가-복제하려는-것은-무엇인가">OpenIDEA가 복제하려는 것은 무엇인가</a></li>
+    <li><a href="#09초와-169mb는-어떻게-측정됐나">0.9초와 169MB는 어떻게 측정됐나</a></li>
+    <li><a href="#60개-이상-언어-지원을-해석하는-법">&lsquo;60개 이상 언어 지원&rsquo;을 해석하는 법</a></li>
+    <li><a href="#설치와-시험의-현실적인-순서">설치와 시험의 현실적인 순서</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
