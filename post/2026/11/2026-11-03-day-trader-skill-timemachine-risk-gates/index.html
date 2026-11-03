@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '클로드 단타 스킬 11개와 ‘1만 번 타임머신’: 시뮬레이션과 주문 승인의 실제 경계'" />
+  <title>클로드 단타 스킬 11개와 ‘1만 번 타임머신’: 시뮬레이션과 주문 승인의 실제 경계  | 신규하 블로그</title>
+  <meta property="og:title" content="클로드 단타 스킬 11개와 ‘1만 번 타임머신’: 시뮬레이션과 주문 승인의 실제 경계" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-11-03"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/11/2026-11-03-day-trader-skill-timemachine-risk-gates/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude" />
+  
+  <meta property="og:tags" content="skills" />
+  
+  <meta property="og:tags" content="automation" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/11/2026-11-03-day-trader-skill-timemachine-risk-gates/">
+          <h1>
+            클로드 단타 스킬 11개와 ‘1만 번 타임머신’: 시뮬레이션과 주문 승인의 실제 경계
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/11/2026-11-03-day-trader-skill-timemachine-risk-gates/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p><a href="https://youtube.com/shorts/EJDHuFTV4ug?si=TjP7ZKbYszyzBd5W">이 쇼츠</a>는 클로드 스킬 11개가 미국 주식 후보 탐색부터 주문 직전의 위험 검사까지 돕고, 이른바 &ldquo;타임머신&quot;으로 남은 장을 1만 번 돌려본다고 소개한다. 원 개발자의 <a href="https://github.com/Jakeschincariol/day-trader-skill">Day Trader Skill 저장소</a>를 대조하면 핵심은 미래를 맞히는 AI가 아니라 <strong>과거 5분 봉을 재조합한 시뮬레이션과 주문 전 체크리스트</strong> 다. 이 글은 소프트웨어 구조 분석이며 투자 조언이 아니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://youtube.com/shorts/EJDHuFTV4ug?si=TjP7ZKbYszyzBd5W">원본 유튜브 쇼츠</a> — <code>youtube-transcript-api</code>로 0~55초 자막을 확인했다. YouTube 전용 MCP가 연결되지 않아 대체 경로를 사용했다. 자막의 첫 문장과 마지막 문장은 인식 오류 가능성이 있어 분석에서 제외했다.</li>
+<li><a href="https://github.com/Jakeschincariol/day-trader-skill">Jake Schincariol의 Day Trader Skill 저장소</a>, <a href="https://github.com/Jakeschincariol/day-trader-skill/blob/main/trader-timemachine/SKILL.md">Time Machine 스킬</a>, <a href="https://github.com/Jakeschincariol/day-trader-skill/blob/main/trader-risk/SKILL.md">Risk 스킬</a>, <a href="https://github.com/Jakeschincariol/day-trader-skill/blob/main/trader-broker/SKILL.md">Broker 스킬</a> — 역할, 계산 방식, 주문 승인 설명의 1차 출처.</li>
+<li><a href="https://docs.alpaca.markets/us/docs/paper-trading">Alpaca 모의투자 문서</a>, <a href="https://docs.alpaca.markets/us/docs/orders-at-alpaca">Alpaca 주문 유형 문서</a> — 모의 체결과 손절 주문의 한계를 확인할 공식 자료.</li>
+</ul>
+<h2 id="11개-스킬은-한-번의-거래를-여러-단계로-나눈다">11개 스킬은 한 번의 거래를 여러 단계로 나눈다</h2>
+<p>영상은 미국 주식 약 5,900개를 훑고, 움직이기 시작한 종목의 뉴스·공시를 모은 뒤 진입·손절·목표 가격을 정한다고 압축한다. 원 저장소에서는 이 기능을 <code>trader-scanner</code>, <code>trader-news</code>, <code>trader-entry</code>, <code>trader-exit</code> 등으로 분리하고, 이어 <code>trader-timemachine</code>, <code>trader-budget</code>, <code>trader-risk</code>, <code>trader-broker</code>가 차례로 산출물을 읽는다. 나머지 <code>trader-alerts</code>, <code>trader-analyst</code>, <code>trader-pelosi</code>는 알림·실적·의회 거래 공시를 보조한다. &ldquo;11개&quot;는 각각 독립적으로 수익을 창출하는 에이전트 수가 아니라 <strong>기능별 스킬 폴더 수</strong> 다. <a href="https://youtu.be/EJDHuFTV4ug?t=5">영상 5~19초</a>, <a href="https://github.com/Jakeschincariol/day-trader-skill">원 저장소</a></p>
+<pre class="mermaid">flowchart TD
+    A["종목 목록·차트"] --> B["Scanner: 후보"]
+    B --> C["News: 뉴스·공시"]
+    C --> D["Entry·Exit: 진입·청산 계획"]
+    D --> E["Time Machine: 과거 봉 재조합"]
+    E --> F["Budget: 수량 계산"]
+    F --> G{"Risk: 한도 통과?"}
+    G -->|"아니요"| X["거래 보류"]
+    G -->|"예"| H["Broker: 주문표·승인"]
+    classDef dataTone fill:#c5dcef,stroke:#6d90ad,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#9a77ad,color:#333
+    classDef decisionTone fill:#fde8c0,stroke:#b99b5c,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#70a98b,color:#333
+    classDef blockedTone fill:#ffc8c4,stroke:#bc817b,color:#333
+    class A dataTone
+    class B,C,D,E,F processTone
+    class G decisionTone
+    class H outputTone
+    class X blockedTone</pre><p>저장소의 <code>scan.py universe</code> 설명에 나온 약 5,900개는 <strong>전체 후보군 규모</strong> 다. 저장소의 테슬라 시연에서는 별도로 231개 차트를 스캔했다고 적는다. 따라서 영상의 &ldquo;5,900개를 훑는다&quot;는 기능 범위를 가리키며, 제시된 테슬라 사례에서 5,900개 종목을 모두 실시간으로 분석했다는 뜻으로 읽으면 안 된다. 무료 Yahoo Finance 차트와 Nasdaq Trader 종목 목록 등 공개 데이터에 의존한다는 원 개발자의 설명도 데이터 지연·접속 제한을 고려하게 한다. <a href="https://youtu.be/EJDHuFTV4ug?t=10">영상 10~15초</a>, <a href="https://github.com/Jakeschincariol/day-trader-skill">원 저장소</a></p>
+<h2 id="타임머신의-1만-번은-1만-건의-검증-거래가-아니다">‘타임머신’의 1만 번은 1만 건의 검증 거래가 아니다</h2>
+<p>영상은 지난 60일의 5분 차트로 오늘 남은 장을 1만 번 돌려본다고 말한다. 원 개발자의 <a href="https://github.com/Jakeschincariol/day-trader-skill/blob/main/trader-timemachine/SKILL.md">Time Machine 설명</a>에 따르면, 먼저 계획일 이전의 완전한 장에서 시간대별 5분 봉을 모은다. 각 가상 경로는 같은 시간대 부근의 과거 봉을 무작위로 골라 현재 가격에 비율로 연결한다. 이후 손절가와 목표가 중 어느 쪽에 먼저 닿는지 계산한다. 시드값을 고정해 같은 입력으로 재현할 수 있지만, 1만 회를 실행해도 과거 약 60거래일의 정보 범위를 넘는 새 관측치가 생기는 것은 아니다. <a href="https://youtu.be/EJDHuFTV4ug?t=19">영상 19~25초</a>, <a href="https://github.com/Jakeschincariol/day-trader-skill/blob/main/trader-timemachine/SKILL.md">Time Machine 스킬</a></p>
+<pre class="mermaid">flowchart TD
+    A["과거 완전한 장의 5분 봉"] --> B["시간대별 봉 풀"]
+    B --> C["무작위 봉 재조합"]
+    C --> D["가상 잔여 장 1회"]
+    D --> E{"먼저 닿은 가격?"}
+    E -->|"목표"| F["목표 도달 집계"]
+    E -->|"손절"| G["손절 집계"]
+    E -->|"둘 다 아님"| H["장 종료 시 미결 집계"]
+    C --> I["설정된 횟수까지 반복"]
+    I --> E
+    classDef dataTone fill:#c5dcef,stroke:#6d90ad,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#9a77ad,color:#333
+    classDef decisionTone fill:#fde8c0,stroke:#b99b5c,color:#333
+    classDef goodTone fill:#c0ecd3,stroke:#70a98b,color:#333
+    classDef badTone fill:#ffc8c4,stroke:#bc817b,color:#333
+    class A,B dataTone
+    class C,D,I processTone
+    class E decisionTone
+    class F,H goodTone
+    class G badTone</pre><p>여기서 나오는 비율은 <strong>해당 재조합 규칙과 선택한 과거 구간을 조건으로 한 시뮬레이션 빈도</strong> 다. 뉴스, 거래 정지, 급격한 변동성 변화처럼 과거 봉에 없던 사건을 예측하지 못한다. 동일 봉이 목표와 손절을 모두 건드리면 구현상 손절을 먼저 집계하고, 갭으로 손절가를 넘어가도 계산상 손실을 일정하게 취급한다는 제한도 원 스킬에 적혀 있다. 수치가 정밀해 보여도 미래의 승률이나 최악 손실 보증으로 바꿔 읽을 수 없다. <a href="https://github.com/Jakeschincariol/day-trader-skill/blob/main/trader-timemachine/SKILL.md">Time Machine 스킬</a></p>
+<h2 id="테슬라-예시-두-종류의-숫자를-섞지-않는다">테슬라 예시: 두 종류의 숫자를 섞지 않는다</h2>
+<p>영상은 제작자가 제시한 테슬라 판정이 &ldquo;동전 던지기에 가깝다&quot;고 전한다. 원 저장소의 2026년 10월 19일 예시는 1만 회 가상 경로에서 <strong>목표 먼저 29.4%, 손절 먼저 25.5%, 장 종료까지 미결 45.1%</strong> 를 보고한다. 별도로 같은 진입 규칙이 과거 세션에서 발동한 <strong>33건 중 목표 13건, 손절 15건, 어느 쪽도 아닌 경우 5건</strong> 을 제시한다. 영상의 13·15라는 숫자는 1만 회 결과가 아니라 과거 33건의 재적용 결과다. 두 실험은 표본과 질문이 다르므로 서로 합쳐 승률처럼 계산하면 안 된다. <a href="https://youtu.be/EJDHuFTV4ug?t=25">영상 25~35초</a>, <a href="https://github.com/Jakeschincariol/day-trader-skill">원 저장소의 테슬라 예시</a></p>
+<pre class="mermaid">flowchart TD
+    A["테슬라 거래 계획"] --> B["가상 경로 1만 회"]
+    A --> C["과거 발동 사례 33건"]
+    B --> D["목표 29.4%·손절 25.5%·미결 45.1%"]
+    C --> E["목표 13건·손절 15건·미결 5건"]
+    D --> F["재조합 조건에서의 빈도"]
+    E --> G["과거 규칙 재적용 기록"]
+    classDef inputTone fill:#c5dcef,stroke:#6d90ad,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#9a77ad,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#70a98b,color:#333
+    class A inputTone
+    class B,C processTone
+    class D,E,F,G outputTone</pre><p>이 결과만으로 기대수익이나 실제 체결 확률을 판단할 수 없다. 예를 들어 미결 45.1%는 손익이 0이라는 뜻이 아니며, 실제 손절 주문은 지정한 가격에 반드시 체결되지 않는다. Alpaca도 손절 주문이 시장가 주문으로 바뀐 뒤 체결 가격을 보장하지 않는다고 설명한다. <a href="https://github.com/Jakeschincariol/day-trader-skill/blob/main/trader-timemachine/SKILL.md">Time Machine 스킬</a>, <a href="https://docs.alpaca.markets/us/docs/orders-at-alpaca">Alpaca 주문 유형</a></p>
+<h2 id="혼자-주문하지-않는다는-설정에-의존한다">‘혼자 주문하지 않는다’는 설정에 의존한다</h2>
+<p>영상은 기본이 모의투자이고 실제 주문까지 손실 한도 검사, 채팅 확인, 허용 버튼의 세 단계를 거친다고 설명한다. 원 저장소의 <code>trader-broker</code> 스킬도 위험 판정이 난 <strong>정확한 주문</strong> 의 지문을 확인하고, 채팅의 명시적 승인과 Claude의 도구 권한 카드에서 다시 허용하도록 안내한다. 다만 <code>ticket.py</code> 자체는 브로커에 주문을 보내는 코드가 아니라 주문표와 승인 기록을 만드는 코드다. 실제 주문은 연결된 브로커 도구가 맡으며, &ldquo;Needs approval&rdquo; 권한 설정을 지켜야 두 번째 사용자 확인이 나타난다. <a href="https://youtu.be/EJDHuFTV4ug?t=36">영상 36~43초</a>, <a href="https://github.com/Jakeschincariol/day-trader-skill/blob/main/trader-broker/SKILL.md">Broker 스킬</a></p>
+<pre class="mermaid">flowchart TD
+    A["주문 제안"] --> B["Risk: 한도·주문 지문"]
+    B --> C{"PASS?"}
+    C -->|"아니요"| X["차단"]
+    C -->|"예"| D["정확한 주문표 표시"]
+    D --> E["사용자 채팅 승인"]
+    E --> F["연결 도구 Allow once"]
+    F --> G["모의 계정 주문 요청"]
+    classDef inputTone fill:#c5dcef,stroke:#6d90ad,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#9a77ad,color:#333
+    classDef decisionTone fill:#fde8c0,stroke:#b99b5c,color:#333
+    classDef goodTone fill:#c0ecd3,stroke:#70a98b,color:#333
+    classDef badTone fill:#ffc8c4,stroke:#bc817b,color:#333
+    class A inputTone
+    class B,D,E,F processTone
+    class C decisionTone
+    class G goodTone
+    class X badTone</pre><p>따라서 &ldquo;절대 혼자 주문할 수 없다&quot;는 표현을 모든 환경에 대한 기술적 보증으로 받아들여서는 안 된다. 승인 과정은 스킬 지시와 도구 권한 설정에 의존하고, 브로커 도구에 다른 경로로 접근할 가능성까지 이 스킬만으로 배제할 수 없다. 실거래 키를 에이전트 환경에 넣지 않고 모의투자 키·엔드포인트를 따로 쓰는 편이 더 분명한 경계다. Alpaca의 모의투자는 주문을 실제 거래소로 보내지 않지만, 시장 충격·지연 슬리피지·호가 대기열 등을 완전히 재현하지는 않는다. <a href="https://github.com/Jakeschincariol/day-trader-skill/blob/main/trader-broker/SKILL.md">Broker 스킬</a>, <a href="https://docs.alpaca.markets/us/docs/paper-trading">Alpaca 모의투자</a></p>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<ol>
+<li><strong>먼저 소스와 데이터 경계를 확인한다.</strong> 5,900개 전체 후보군, 실제 스캔 수, 뉴스·차트 데이터의 시각을 구분한다. 비공식 무료 데이터는 브로커 자료와 다를 수 있다. <a href="https://github.com/Jakeschincariol/day-trader-skill">원 저장소</a></li>
+<li><strong>1만 회를 승률로 부르지 않는다.</strong> 재조합한 과거 봉의 빈도, 과거 규칙 발동 사례, 앞으로의 체결 결과를 서로 다른 수치로 기록한다. <a href="https://github.com/Jakeschincariol/day-trader-skill/blob/main/trader-timemachine/SKILL.md">Time Machine 스킬</a></li>
+<li><strong>위험 한도와 승인 경로를 테스트한다.</strong> <code>PASS</code> 판정의 주문 지문이 바뀌면 다시 검사하고, 연결 도구가 항상 사용자 승인을 요구하는지 확인한다. 가능하면 실거래 자격 증명은 아예 노출하지 않는다. <a href="https://github.com/Jakeschincariol/day-trader-skill/blob/main/trader-risk/SKILL.md">Risk 스킬</a>, <a href="https://github.com/Jakeschincariol/day-trader-skill/blob/main/trader-broker/SKILL.md">Broker 스킬</a></li>
+<li><strong>모의 손익을 실거래 기대수익으로 해석하지 않는다.</strong> 손절 가격과 체결 가격은 다를 수 있고, 모의 환경에는 실제 시장 비용과 미체결 조건의 일부가 빠진다. <a href="https://docs.alpaca.markets/us/docs/orders-at-alpaca">Alpaca 주문 유형</a>, <a href="https://docs.alpaca.markets/us/docs/paper-trading">Alpaca 모의투자</a></li>
+</ol>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>Day Trader Skill은 11개 스킬을 이어 후보 탐색부터 모의 주문 승인까지 흐름을 구성한다.</li>
+<li>&ldquo;타임머신 1만 번&quot;은 과거 5분 봉 재조합이며, 테슬라의 과거 발동 사례 33건과 다른 실험이다.</li>
+<li>테슬라 예시의 &ldquo;동전 던지기에 가까움&quot;은 수익을 보장하지 않는다는 경고에 가깝다.</li>
+<li>주문 전 세 단계는 유용한 운영 규칙이지만, 스킬 지시만으로 모든 브로커 접근을 강제 차단하는 보안 경계는 아니다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>이 쇼츠의 흥미로운 점은 AI가 단타의 정답을 찾았다는 데 있지 않다. 탐색, 계획, 과거 자료 재생, 수량 계산, 위험 판정, 사용자 승인을 <strong>서로 다른 단계로 보이게 만든 것</strong> 이다. 그 단계마다 데이터의 시점과 실패 동작을 검증하고, 실제 자금과 모의 환경을 분리해야 비로소 안전한 연구 도구로 다룰 수 있다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 11월 03일 01시 01분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/automation">Automation</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/11/2026-11-03-claude-five-skill-youtube-shorts-production-loop/" rel="prev">
+        <span>클로드 스킬 5개로 유튜브 쇼츠를 만든다는 사례: 제작 분업과 댓글 자동화의 검증 지점</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/11/2026-11-03-claude-code-ai-video-editor-workflow/" rel="next">
+        <span>클로드 코드로 AI 영상 편집자 만들기: 폴더·도구 5개·스토리보드 승인 흐름</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#11개-스킬은-한-번의-거래를-여러-단계로-나눈다">11개 스킬은 한 번의 거래를 여러 단계로 나눈다</a></li>
+    <li><a href="#타임머신의-1만-번은-1만-건의-검증-거래가-아니다">‘타임머신’의 1만 번은 1만 건의 검증 거래가 아니다</a></li>
+    <li><a href="#테슬라-예시-두-종류의-숫자를-섞지-않는다">테슬라 예시: 두 종류의 숫자를 섞지 않는다</a></li>
+    <li><a href="#혼자-주문하지-않는다는-설정에-의존한다">‘혼자 주문하지 않는다’는 설정에 의존한다</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude/" class="badge badge-secondary">Claude</a>
+    <a href="/tags/skills/" class="badge badge-secondary">Skills</a>
+    <a href="/tags/automation/" class="badge badge-secondary">Automation</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

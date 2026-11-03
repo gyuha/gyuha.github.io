@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '클로드 코드로 AI 영상 편집자 만들기: 폴더·도구 5개·스토리보드 승인 흐름'" />
+  <title>클로드 코드로 AI 영상 편집자 만들기: 폴더·도구 5개·스토리보드 승인 흐름  | 신규하 블로그</title>
+  <meta property="og:title" content="클로드 코드로 AI 영상 편집자 만들기: 폴더·도구 5개·스토리보드 승인 흐름" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-11-03"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/11/2026-11-03-claude-code-ai-video-editor-workflow/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+  <meta property="og:tags" content="automation" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/11/2026-11-03-claude-code-ai-video-editor-workflow/">
+          <h1>
+            클로드 코드로 AI 영상 편집자 만들기: 폴더·도구 5개·스토리보드 승인 흐름
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/11/2026-11-03-claude-code-ai-video-editor-workflow/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p><a href="https://youtube.com/shorts/oilrvcotD-8?si=dntEHKzgfxGJIHH4">이 쇼츠</a>는 클로드 데스크톱 앱에서 작업 폴더를 열고, 편집 도구와 참고 영상을 연결한 뒤, 원본 영상을 넣어 스토리보드를 먼저 검토하는 과정을 소개한다. 영상만으로는 화면에 표시된 다섯 도구의 이름과 프롬프트 전문을 확인하기 어렵지만, 제작자의 <a href="https://sdk-kim-builds.com/guides/claude-ai-video-editor-setup/">후속 가이드</a>가 이를 공개한다. 핵심은 &ldquo;한 번 요청하면 완성&quot;보다 <strong>입력 파일, 스타일 기준, 렌더 전 승인, 최종 검수</strong> 를 분리하는 데 있다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://youtube.com/shorts/oilrvcotD-8?si=dntEHKzgfxGJIHH4">원본 유튜브 쇼츠</a> — <code>youtube-transcript-api</code>로 자막을 확인했다. YouTube 전용 MCP가 연결되지 않아 자막 추출 경로를 사용했다. 영상 속 화면의 링크·프롬프트는 자막만으로 복원하지 않았다.</li>
+<li><a href="https://sdk-kim-builds.com/guides/claude-ai-video-editor-setup/">추가 레퍼런스: 영상 제작자의 AI 영상 편집자 가이드</a> — 쇼츠 화면에만 표시된 정보를 보완하는 제작자 원문. 세 폴더의 역할, 다섯 도구, 세 단계 프롬프트, 스타일 시트와 제작 중 겪은 문제를 확인했다.</li>
+<li><a href="https://github.com/heygen-com/hyperframes/blob/main/docs/introduction.mdx">HyperFrames 공식 소개</a>, <a href="https://www.remotion.dev/docs/license/faq">Remotion 라이선스 안내</a> — 도구 기능과 라이선스 조건을 확인하는 공식 자료.</li>
+</ul>
+<h2 id="먼저-폴더-세-개로-입력과-출력을-분리한다">먼저 폴더 세 개로 입력과 출력을 분리한다</h2>
+<p>영상은 <code>AI 영상 편집자</code>라는 작업 폴더 안에 <strong>원본 영상, 레퍼런스, 내보내기</strong> 폴더를 만들고, 클로드 앱의 새 대화에서 이 폴더를 선택하라고 안내한다. 제작자 가이드는 <code>원본 영상/</code>에는 촬영본, <code>레퍼런스/</code>에는 참고 영상과 스타일 문서, <code>내보내기/</code>에는 완성본을 두도록 설명한다. 폴더 이름 자체가 특별한 기능은 아니지만, 뒤에서 사용할 지시문의 경로와 일치해야 파일을 잘못 찾지 않는다. <a href="https://youtu.be/oilrvcotD-8?t=8">영상 8~26초</a>, <a href="https://sdk-kim-builds.com/guides/claude-ai-video-editor-setup/">제작자 가이드</a></p>
+<pre class="mermaid">flowchart TD
+    A["작업 폴더"] --> B["원본 영상: 촬영본"]
+    A --> C["레퍼런스: 참고 영상·스타일 시트"]
+    A --> D["내보내기: 완성본"]
+    B --> E["편집 작업"]
+    C --> E
+    E --> D
+    classDef rootTone fill:#c5dcef,stroke:#6d90ad,color:#333
+    classDef inputTone fill:#e0c8ef,stroke:#9a77ad,color:#333
+    classDef processTone fill:#fde8c0,stroke:#b99b5c,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#70a98b,color:#333
+    class A rootTone
+    class B,C inputTone
+    class E processTone
+    class D outputTone</pre><p>&ldquo;폴더를 선택했다&quot;는 것과 &ldquo;모든 명령 실행을 허용했다&quot;는 것은 다르다. 제작자 가이드는 폴더 접근 허용과 설치·실행 명령의 승인 창을 각각 설명한다. 특히 가이드는 세션에서 파일이 클라우드로 처리될 수 있다고 주의시키므로 회사 기밀 영상이나 비공개 자료를 넣기 전 데이터 처리 범위를 확인해야 한다. 승인이 중간에 멈추면 실제 파일을 읽지 못했는데도 대화만 이어질 수 있다. 이 경우 결과 파일이나 스토리보드의 존재를 확인하는 편이 안전하다. <a href="https://sdk-kim-builds.com/guides/claude-ai-video-editor-setup/">제작자 가이드</a></p>
+<h2 id="다섯-도구는-같은-편집기를-다섯-번-설치하는-것이-아니다">다섯 도구는 같은 편집기를 다섯 번 설치하는 것이 아니다</h2>
+<p>영상은 화면에 표시된 링크 다섯 개를 전달하라고만 말한다. 제작자 가이드에 명시된 도구는 <strong>Remotion, HyperFrames, FFmpeg, Whisper, yt-dlp</strong> 다. 역할은 각각 React 기반 영상 구성, HTML 기반 영상 구성, 영상 자르기·인코딩, 음성 전사, 참고 영상 수집이다. 다섯 도구를 항상 모두 써야 한 편이 나오는 것은 아니며, 영상의 형태와 필요한 작업에 따라 선택하는 편이 자연스럽다. HyperFrames의 공식 소개도 HTML 프로젝트를 프레임 단위로 렌더하는 방식을 설명한다. <a href="https://youtu.be/oilrvcotD-8?t=27">영상 27~31초</a>, <a href="https://sdk-kim-builds.com/guides/claude-ai-video-editor-setup/">제작자 가이드</a>, <a href="https://github.com/heygen-com/hyperframes/blob/main/docs/introduction.mdx">HyperFrames 공식 소개</a></p>
+<pre class="mermaid">flowchart TD
+    A["원본 영상"] --> B["Whisper: 말의 시간 정보"]
+    A --> C["FFmpeg: 컷·음성·인코딩"]
+    D["참고 영상 링크"] --> E["yt-dlp: 접근 가능한 영상 수집"]
+    E --> F["스타일 분석"]
+    B --> G["편집 계획"]
+    F --> G
+    G --> H["Remotion 또는 HyperFrames: 그래픽 구성"]
+    H --> C
+    C --> I["완성본"]
+    classDef inputTone fill:#c5dcef,stroke:#6d90ad,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#9a77ad,color:#333
+    classDef planTone fill:#fde8c0,stroke:#b99b5c,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#70a98b,color:#333
+    class A,D inputTone
+    class B,C,E,F,H processTone
+    class G planTone
+    class I outputTone</pre><p>설치 요청은 제3자 코드를 내려받아 실행할 수 있으므로 링크의 저장소 소유자와 명령을 확인해야 한다. 제작자 가이드는 영상 화면의 <code>hypergen/hyperframes</code> 주소가 404이며 실제 저장소는 <code>heygen-com/hyperframes</code>라고 정정한다. 또 Remotion은 공개 코드가 보여도 모든 조직이 무조건 무료로 쓰는 오픈소스가 아니다. 공식 라이선스 안내상 개인과 일정 규모 이하의 조직 등은 무료 조건에 해당할 수 있지만, 조직 규모와 사용 방식에 따라 회사 라이선스가 필요하다. <a href="https://sdk-kim-builds.com/guides/claude-ai-video-editor-setup/">제작자 가이드</a>, <a href="https://www.remotion.dev/docs/license/faq">Remotion 라이선스 FAQ</a></p>
+<h2 id="레퍼런스-35개는-학습-데이터보다-스타일-합의-자료다">레퍼런스 3~5개는 ‘학습 데이터’보다 스타일 합의 자료다</h2>
+<p>영상은 참고하고 싶은 크리에이터 영상이나 자신의 이전 영상 링크를 3~5개 주어 편집 스타일을 정하라고 한다. 제작자 가이드는 이를 자막 모양·색상·컷 리듬·효과음 등을 적은 <strong>브랜드 시트</strong> 로 저장하는 흐름을 제안한다. 여기서 &ldquo;스타일을 학습한다&quot;는 표현은 모델 가중치를 새로 학습한다는 뜻으로 확인되지 않는다. 참고 영상을 분석해 재사용 가능한 문서 규칙을 만든다는 의미로 읽는 것이 정확하다. <a href="https://youtu.be/oilrvcotD-8?t=31">영상 31~42초</a>, <a href="https://sdk-kim-builds.com/guides/claude-ai-video-editor-setup/">제작자 가이드</a></p>
+<pre class="mermaid">flowchart TD
+    A["참고 영상 3~5개"] --> B["공통 요소 추출"]
+    B --> C["브랜드 시트 초안"]
+    C --> D{"사용자 확인"}
+    D -->|"수정"| E["자막·색·리듬 규칙 보정"]
+    E --> C
+    D -->|"승인"| F["다음 편집의 기준 문서"]
+    classDef inputTone fill:#c5dcef,stroke:#6d90ad,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#9a77ad,color:#333
+    classDef decisionTone fill:#fde8c0,stroke:#b99b5c,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#70a98b,color:#333
+    class A inputTone
+    class B,C,E processTone
+    class D decisionTone
+    class F outputTone</pre><p>레퍼런스를 내려받거나 사용하는 권한은 별도로 확인해야 한다. 타인의 영상에서 편집 리듬을 참고하는 것과 그 영상·음악·상표를 결과물에 그대로 재사용하는 것은 다르다. 로그인이나 비공개 제한 때문에 참고 영상을 가져오지 못할 수도 있으며, 이때는 허가된 파일이나 직접 만든 예시를 제공하는 편이 낫다. 이는 영상의 &ldquo;링크만 주면 된다&quot;는 설명을 실제 작업 조건에 맞춰 제한한 적용상 주의점이다. <a href="https://youtu.be/oilrvcotD-8?t=33">영상 33~39초</a>, <a href="https://sdk-kim-builds.com/guides/claude-ai-video-editor-setup/">제작자 가이드</a></p>
+<h2 id="렌더-전에-스토리보드를-보는-것이-핵심-승인-지점이다">렌더 전에 스토리보드를 보는 것이 핵심 승인 지점이다</h2>
+<p>마지막 단계에서 촬영본을 <code>원본 영상/</code>에 넣고 컷 편집·자막·음악을 요청하되 <strong>먼저 스토리보드를 보여 달라</strong> 고 한다. 영상은 마음에 들지 않으면 편집자에게 말하듯 수정하라고 설명한다. 제작자 가이드도 실제로 첫 3초의 자막을 키우는 수정 요청을 예로 든다. 따라서 &ldquo;알아서 편집&quot;은 사람이 전혀 보지 않는 완전 자동 게시가 아니라, 초안을 보고 방향을 교정한 후 렌더하는 과정에 가깝다. <a href="https://youtu.be/oilrvcotD-8?t=42">영상 42~56초</a>, <a href="https://sdk-kim-builds.com/guides/claude-ai-video-editor-setup/">제작자 가이드</a></p>
+<pre class="mermaid">flowchart TD
+    A["원본 영상·스타일 시트"] --> B["컷·자막·음악 계획"]
+    B --> C["스토리보드 미리보기"]
+    C --> D{"사용자 승인?"}
+    D -->|"수정 요청"| B
+    D -->|"승인"| E["렌더·내보내기"]
+    E --> F["완성본 시청·오류 확인"]
+    F --> G{"게시 가능?"}
+    G -->|"아니요"| B
+    G -->|"예"| H["게시 후보"]
+    classDef inputTone fill:#c5dcef,stroke:#6d90ad,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#9a77ad,color:#333
+    classDef decisionTone fill:#fde8c0,stroke:#b99b5c,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#70a98b,color:#333
+    class A inputTone
+    class B,C,E,F processTone
+    class D,G decisionTone
+    class H outputTone</pre><p>스토리보드에는 컷 순서, 자막의 핵심 문장, 그래픽이 나올 위치 같은 의사결정을 담고, 완성본은 다시 실제 화면과 소리로 확인해야 한다. 자막이 얼굴을 가리는지, 음량이 튀는지, 저작권이 확인되지 않은 음악이 섞였는지 등은 문서만 보고 확정할 수 없다. 이는 영상의 작업 흐름에서 도출한 품질 검수 제안이다.</p>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<ol>
+<li><strong>폴더 접근과 명령 실행을 분리해 승인한다.</strong> 민감한 촬영본은 서비스의 파일 처리 방식을 확인하기 전 넣지 않는다. <a href="https://sdk-kim-builds.com/guides/claude-ai-video-editor-setup/">제작자 가이드</a></li>
+<li><strong>도구를 설치하기 전에 링크를 확인한다.</strong> 특히 영상의 HyperFrames 주소는 가이드에서 정정됐으며, Remotion 사용 조건은 조직마다 다르다. <a href="https://sdk-kim-builds.com/guides/claude-ai-video-editor-setup/">제작자 가이드</a>, <a href="https://www.remotion.dev/docs/license/faq">Remotion 라이선스 FAQ</a></li>
+<li><strong>스타일 시트를 파일로 남긴다.</strong> 매번 링크를 다시 해석시키기보다 자막·컷·색·음향 기준을 문서화하고 수정 피드백을 반영한다. <a href="https://youtu.be/oilrvcotD-8?t=33">영상 33~42초</a>, <a href="https://sdk-kim-builds.com/guides/claude-ai-video-editor-setup/">제작자 가이드</a></li>
+<li><strong>스토리보드 승인과 최종 재생 확인을 모두 수행한다.</strong> 렌더 전 방향을 고치고, 렌더 후에는 화면·음성·출처 문제를 실제 파일에서 확인한다. <a href="https://youtu.be/oilrvcotD-8?t=47">영상 47~55초</a></li>
+</ol>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>영상의 작업 순서는 <strong>폴더 연결 → 편집 도구 준비 → 레퍼런스 기반 스타일 시트 → 원본 투입 → 스토리보드 승인 → 렌더</strong> 다.</li>
+<li>다섯 도구의 이름은 영상 자막이 아닌 제작자 가이드에서 확인되며, 각자 역할과 라이선스 조건이 다르다.</li>
+<li>&ldquo;스타일 학습&quot;은 확인된 범위에서 브랜드 시트 작성이지 모델의 추가 학습이 아니다.</li>
+<li>폴더 접근, 제3자 코드 설치, 참고 영상 사용, 최종 게시에는 각각 별도의 검토가 필요하다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>이 사례의 재현 가능한 부분은 마법 같은 편집 명령 한 줄이 아니라 <strong>작업 공간과 승인 지점을 설계한 순서</strong> 다. 도구를 연결하기 전에 파일과 권한을 정리하고, 스타일 문서와 스토리보드로 편집 결정을 확인하면 AI 편집을 반복 가능한 제작 과정으로 바꿀 수 있다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 11월 03일 01시 15분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/automation">Automation</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/11/2026-11-03-day-trader-skill-timemachine-risk-gates/" rel="prev">
+        <span>클로드 단타 스킬 11개와 ‘1만 번 타임머신’: 시뮬레이션과 주문 승인의 실제 경계</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/11/2026-11-03-tripo-cli-godot-game-asset-toolkit/" rel="next">
+        <span>Tripo CLI로 Godot 게임 에셋 23개 만들기: AI 툴킷·크레딧·라이선스 검증</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#먼저-폴더-세-개로-입력과-출력을-분리한다">먼저 폴더 세 개로 입력과 출력을 분리한다</a></li>
+    <li><a href="#다섯-도구는-같은-편집기를-다섯-번-설치하는-것이-아니다">다섯 도구는 같은 편집기를 다섯 번 설치하는 것이 아니다</a></li>
+    <li><a href="#레퍼런스-35개는-학습-데이터보다-스타일-합의-자료다">레퍼런스 3~5개는 ‘학습 데이터’보다 스타일 합의 자료다</a></li>
+    <li><a href="#렌더-전에-스토리보드를-보는-것이-핵심-승인-지점이다">렌더 전에 스토리보드를 보는 것이 핵심 승인 지점이다</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude Code</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+    <a href="/tags/automation/" class="badge badge-secondary">Automation</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
