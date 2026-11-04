@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '타격감은 어떻게 만드는가: 히트 스톱부터 쇼크웨이브까지'" />
+  <title>타격감은 어떻게 만드는가: 히트 스톱부터 쇼크웨이브까지  | 신규하 블로그</title>
+  <meta property="og:title" content="타격감은 어떻게 만드는가: 히트 스톱부터 쇼크웨이브까지" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-11-05"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/11/2026-11-05-game-juice-hitstop-knockback-shockwave/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/11/2026-11-05-game-juice-hitstop-knockback-shockwave/">
+          <h1>
+            타격감은 어떻게 만드는가: 히트 스톱부터 쇼크웨이브까지
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/11/2026-11-05-game-juice-hitstop-knockback-shockwave/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>적의 체력은 줄어드는데 망치로 때린 느낌은 약할 수 있다. <a href="https://youtu.be/ToSc-hfQ7fM?t=0">밥따뚜의 게임 주스 시연</a> 은 같은 공격 장면에 피드백을 하나씩 더하며 타격감이 어떻게 달라지는지 보여준다. 핵심은 효과의 개수보다 <strong>충돌 순간에 시각·소리·움직임이 같은 사건을 말하도록 맞추는 것</strong> 이다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://youtube.com/shorts/ToSc-hfQ7fM?si=6gDVbgZKc1Zpf58u">원본 영상: 때리는 맛 없는 게임, 이것만 켜 보세요 | 히트 스톱 · 넉백 · 쇼크웨이브</a></li>
+<li><a href="https://docs.godotengine.org/en/stable/tutorials/shaders/screen-reading_shaders.html">Godot 공식 문서: 화면 읽기 셰이더</a></li>
+<li><a href="https://docs.unity3d.com/Packages/com.unity.cinemachine@2.6/manual/CinemachineImpulse.html">Unity 공식 문서: Cinemachine Impulse</a></li>
+<li><a href="https://docs.unity3d.com/ScriptReference/AudioSource-pitch.html">Unity 공식 문서: AudioSource.pitch</a></li>
+</ul>
+<p>이 글은 영상의 한국어 자동 자막에 나온 연출을 기준으로 한다. 엔진을 특정하지 않은 설계 예시는 <strong>시연의 구조를 설명하기 위한 제안</strong> 이며, 영상 제작자의 실제 코드라고 주장하지 않는다.</p>
+<h2 id="1-체력-감소와-타격감은-다른-신호다">1. 체력 감소와 타격감은 다른 신호다</h2>
+<p><a href="https://youtu.be/ToSc-hfQ7fM?t=7">영상 첫 장면</a> 에서 팔라딘의 공격은 오크의 체력을 줄이지만 충격은 잘 느껴지지 않는다. 체력 값은 게임 상태의 변화를 알려준다. 반면 타격감은 <strong>충돌이 발생했다는 시간적 신호</strong>, <strong>힘이 전달됐다는 공간적 신호</strong>, <strong>피해가 생겼다는 결과 신호</strong> 를 함께 전달해야 살아난다. 여기서 흔히 말하는 게임 주스는 판정 규칙을 바꾸기보다 그 결과를 감각적으로 읽히게 하는 연출을 가리킨다. <a href="https://youtu.be/ToSc-hfQ7fM?t=0">영상 00:00–00:15</a></p>
+<p>이 효과들을 별도의 타이머에서 제각각 재생하면 서로 어긋날 수 있다. 아래는 영상의 순서를 <strong>타격 확정 이벤트 하나에 연결해 보는 설계 예시</strong> 다. 실제 엔진에서는 피해 판정과 연출 재생을 구분하고, 빗나간 공격에 피격 피드백이 뜨지 않도록 해야 한다. <a href="https://youtu.be/ToSc-hfQ7fM?t=15">영상 00:15–01:04</a></p>
+<pre class="mermaid">flowchart TD
+    A["공격 판정"] --> B{"실제 충돌?"}
+    B -->|"아니요"| C["피격 연출 없음"]
+    B -->|"예"| D["피해 상태 확정"]
+    D --> E["타격 시점 이벤트"]
+    E --> F["짧은 정지·피격 플래시"]
+    E --> G["넉백·소리"]
+    E --> H["흔들림·파편·숫자"]
+    E --> I["필요 시 쇼크웨이브"]
+    classDef inputTone fill:#c5dcef,stroke:#6e93b5,color:#333
+    classDef decisionTone fill:#fde8c0,stroke:#bb9a58,color:#333
+    classDef failureTone fill:#ffc8c4,stroke:#bc8580,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#a077bd,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#77ad8c,color:#333
+    class A inputTone
+    class B decisionTone
+    class C failureTone
+    class D,E processTone
+    class F,G,H,I resultTone</pre><h2 id="2-충돌-순간을-강조하는-히트-스톱과-피격-플래시">2. 충돌 순간을 강조하는 히트 스톱과 피격 플래시</h2>
+<p><a href="https://youtu.be/ToSc-hfQ7fM?t=15">첫 번째 효과는 히트 스톱</a> 이다. 망치가 닿는 순간 진행을 아주 잠깐 멈추면 공격이 상대에게 걸린 듯한 무게가 생긴다. 자동 자막에는 멈춤 길이가 &ldquo;0.1초쯤 1초쯤&quot;으로 불분명하게 전사된다. 맥락상 <strong>아주 짧은 정지</strong> 가 요점이며, 정확한 권장 시간을 이 영상만으로 확정하지 않겠다. 너무 오래 멈추면 오히려 입력이 끊긴 것처럼 느껴진다는 주의도 영상 후반에 나온다. <a href="https://youtu.be/ToSc-hfQ7fM?t=15">영상 00:15–00:25</a> · <a href="https://youtu.be/ToSc-hfQ7fM?t=88">영상 01:28–01:35</a></p>
+<p><a href="https://youtu.be/ToSc-hfQ7fM?t=25">두 번째 효과는 피격 대상의 흰색 플래시</a> 다. 공격이 실제로 닿았다는 사실을 한눈에 알려준다. 히트 스톱이 시간의 강조라면 플래시는 대상을 강조한다. 구현할 때는 피해를 받은 대상만 잠깐 밝게 보이게 하고 원래 외형으로 돌아오도록 구성할 수 있다. 이 구현 방식은 영상에 나온 효과를 옮기기 위한 일반적인 설계 예시다. <a href="https://youtu.be/ToSc-hfQ7fM?t=25">영상 00:25–00:32</a></p>
+<pre class="mermaid">flowchart TD
+    A["망치가 적에게 닿음"] --> B["짧게 진행을 멈춤"]
+    B --> C["맞은 적만 밝게 표시"]
+    C --> D["원래 속도·외형으로 복귀"]
+    classDef inputTone fill:#c5dcef,stroke:#6e93b5,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#a077bd,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#77ad8c,color:#333
+    class A inputTone
+    class B,C processTone
+    class D resultTone</pre><h2 id="3-힘의-방향을-보여주는-넉백과-소리">3. 힘의 방향을 보여주는 넉백과 소리</h2>
+<p><a href="https://youtu.be/ToSc-hfQ7fM?t=32">세 번째 효과는 넉백</a> 이다. 적이 뒤로 살짝 밀리면 힘이 어느 방향으로 전달됐는지가 보인다. 넉백의 방향은 공격 지점과 피격 대상의 위치 관계를 반영해야 읽기 쉽다. 다만 이동 거리나 물리 계산 방식은 영상에서 제시하지 않으므로 고정값을 권장하지 않는다. <a href="https://youtu.be/ToSc-hfQ7fM?t=32">영상 00:32–00:36</a></p>
+<p><a href="https://youtu.be/ToSc-hfQ7fM?t=36">네 번째는 효과음</a> 이다. 영상은 소리가 망치가 닿는 순간보다 조금만 늦어도 분리되어 들리고, 동일한 소리를 계속 반복하면 단조로우므로 높낮이를 약간 바꿀 수 있다고 말한다. 구현할 때도 소리를 공격 버튼을 누른 때가 아니라 <strong>실제 충돌이 확정된 때</strong> 에 재생하는 편이 이 시연의 의도에 맞는다. 예를 들어 Unity의 <code>AudioSource.pitch</code>는 재생 소리의 높낮이를 바꾸는 속성이다. 그러나 음높이 변화의 정확한 범위는 영상에서 제시하지 않는다. <a href="https://youtu.be/ToSc-hfQ7fM?t=36">영상 00:36–00:49</a> · <a href="https://docs.unity3d.com/ScriptReference/AudioSource-pitch.html">Unity 공식 문서</a></p>
+<pre class="mermaid">flowchart TD
+    A["피격 확정"] --> B["공격 방향 계산"]
+    B --> C["대상을 뒤로 이동"]
+    A --> D["접촉 순간 효과음 재생"]
+    D --> E["작은 음높이 변화"]
+    C --> F["힘이 보이고 들리는 타격"]
+    E --> F
+    classDef inputTone fill:#c5dcef,stroke:#6e93b5,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#a077bd,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#77ad8c,color:#333
+    class A inputTone
+    class B,C,D,E processTone
+    class F resultTone</pre><h2 id="4-카메라-흔들림-파편-데미지-숫자의-역할">4. 카메라 흔들림, 파편, 데미지 숫자의 역할</h2>
+<p><a href="https://youtu.be/ToSc-hfQ7fM?t=49">다섯 번째 효과인 화면 흔들림</a> 은 타격이 화면 전체에 전달된 것처럼 느끼게 한다. 영상은 매 타격마다 크게 흔들지 말고 <strong>강한 공격에만 짧게</strong> 사용하라고 경고한다. Unity의 Cinemachine Impulse처럼 충돌 이벤트에 따라 카메라 반응을 일으키는 도구를 사용할 수 있지만, 어떤 엔진에서든 흔들림의 강도와 빈도를 조절해야 한다. 시각적 흔들림이 불편한 플레이어를 위해 강도 축소 또는 끄기 설정을 고려하는 것도 실무적인 확장 제안이다. <a href="https://youtu.be/ToSc-hfQ7fM?t=49">영상 00:49–00:55</a> · <a href="https://docs.unity3d.com/Packages/com.unity.cinemachine@2.6/manual/CinemachineImpulse.html">Unity 공식 문서</a></p>
+<p><a href="https://youtu.be/ToSc-hfQ7fM?t=55">여섯 번째는 충돌 지점의 파편과 데미지 숫자</a> 다. 파편은 <strong>어디에서 충돌했는지</strong>, 숫자는 <strong>피해 결과가 무엇인지</strong> 전달한다. 영상은 두 요소를 더했을 때 세게 때린 정도가 보인다고 설명한다. 따라서 효과를 화면 아무 곳에 띄우기보다 실제 충돌 위치와 피해 판정에 연결하는 것이 논리적이다. 이는 시연을 구현으로 옮긴 판단이며, 특정 파티클 수나 숫자 표시 시간은 영상에 없다. <a href="https://youtu.be/ToSc-hfQ7fM?t=55">영상 00:55–01:01</a></p>
+<pre class="mermaid">flowchart TD
+    A["타격 이벤트"] --> B{"공격 강도"}
+    B -->|"일반"| C["절제된 피격 표시"]
+    B -->|"강함"| D["짧은 카메라 반응"]
+    A --> E["충돌 위치에 파편"]
+    A --> F["실제 피해량 숫자"]
+    C --> G["화면 부담 조절"]
+    D --> G
+    E --> G
+    F --> G
+    classDef inputTone fill:#c5dcef,stroke:#6e93b5,color:#333
+    classDef decisionTone fill:#fde8c0,stroke:#bb9a58,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#a077bd,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#77ad8c,color:#333
+    class A inputTone
+    class B decisionTone
+    class C,D,E,F processTone
+    class G resultTone</pre><h2 id="5-쇼크웨이브는-원의-가장자리에서만-화면을-왜곡한다">5. 쇼크웨이브는 원의 가장자리에서만 화면을 왜곡한다</h2>
+<p><a href="https://youtu.be/ToSc-hfQ7fM?t=60">마지막 효과는 쇼크웨이브</a> 다. 피격 지점에서 원형 물결이 퍼지며 화면이 잠깐 일렁인다. 영상은 이를 셰이더로 구현한다고 설명한다. 개념적으로는 피격 지점에서 현재 픽셀까지의 거리를 구하고, <strong>커지는 원의 둘레 근처</strong> 에 있는 픽셀을 바깥 방향으로 조금 옮겨 읽으면 된다. 원 안쪽 전체를 균일하게 밀어내는 것과 달리 가장자리에 국소적인 파동이 생긴다. 실제 화면 텍스처를 읽어 왜곡하는 구현은 엔진별 렌더링 규칙을 따라야 한다. Godot의 화면 읽기 셰이더 문서는 화면 텍스처와 <code>SCREEN_UV</code> 사용 방식을 설명한다. <a href="https://youtu.be/ToSc-hfQ7fM?t=60">영상 01:00–01:17</a> · <a href="https://docs.godotengine.org/en/stable/tutorials/shaders/screen-reading_shaders.html">Godot 공식 문서</a></p>
+<p><a href="https://youtu.be/ToSc-hfQ7fM?t=77">영상은 마지막 일격</a> 에 잠깐 느린 재생과 더 큰 쇼크웨이브를 함께 보여준다. 모든 타격에 최대 강도의 화면 왜곡을 넣기보다 <strong>마무리 공격에 대비를 집중</strong> 하는 방식이다. 다음 도식은 영상의 설명을 개념 수준에서 풀어 쓴 것이며, 완성된 셰이더 코드나 성능 수치를 뜻하지 않는다. <a href="https://youtu.be/ToSc-hfQ7fM?t=77">영상 01:17–01:22</a></p>
+<pre class="mermaid">flowchart TD
+    A["충돌 지점"] --> B["시간에 따라 원 반경 증가"]
+    B --> C["원 둘레 픽셀 선택"]
+    C --> D["바깥쪽 좌표로 화면 읽기"]
+    D --> E["짧은 공기 파동처럼 보임"]
+    F["마지막 일격"] --> G["일시적 느린 재생"]
+    G --> B
+    classDef inputTone fill:#c5dcef,stroke:#6e93b5,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#a077bd,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#77ad8c,color:#333
+    class A,F inputTone
+    class B,C,D,G processTone
+    class E resultTone</pre><h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<p>이 영상에서 가장 유용한 실험 방법은 <strong>같은 공격을 유지한 채 효과를 하나씩 켜고 끄는 것</strong> 이다. 먼저 체력 감소만 있는 기준 장면을 확보한다. 다음으로 히트 스톱, 플래시, 넉백, 소리, 카메라, 파편·숫자, 쇼크웨이브를 차례로 더해 어떤 신호가 개선되는지 직접 플레이하며 확인한다. 영상 제작자는 자동 전후 비교와 직접 때려볼 수 있는 시연을 만들었다고 말하지만, 자동 자막에는 데모 사이트의 주소가 없어 이 글에서 특정 URL을 추측해 제시하지 않는다. <a href="https://youtu.be/ToSc-hfQ7fM?t=82">영상 01:22–01:58</a></p>
+<p>효과를 전부 강하게 켜는 것은 목표가 아니다. 긴 히트 스톱은 끊김으로, 잦은 화면 흔들림은 피로감으로 받아들여질 수 있다. <strong>일반 타격과 강한 타격의 차이를 남기고</strong>, 소리·빛·움직임이 같은 접촉 순간을 가리키는지 확인해야 한다. 이처럼 연출의 이름을 구분해 두면 AI 코딩 도구에도 &ldquo;히트 스톱을 추가해 줘&quot;보다 <strong>어느 판정 시점에, 어떤 효과를, 어떻게 비교할지</strong> 더 구체적으로 요청할 수 있다. <a href="https://youtu.be/ToSc-hfQ7fM?t=88">영상 01:28–01:48</a></p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li><strong>히트 스톱과 플래시</strong> 는 충돌의 시간과 피격 대상을 강조한다. 히트 스톱의 정확한 길이는 자동 자막만으로 확정할 수 없다. <a href="https://youtu.be/ToSc-hfQ7fM?t=15">영상 00:15–00:32</a></li>
+<li><strong>넉백과 효과음</strong> 은 힘의 방향과 접촉 순간을 전달한다. 소리가 충돌과 어긋나면 효과가 분리되어 느껴진다. <a href="https://youtu.be/ToSc-hfQ7fM?t=32">영상 00:32–00:49</a></li>
+<li><strong>카메라 흔들림, 파편, 데미지 숫자</strong> 는 강도·위치·결과를 보여주되 화면 부담을 조절해야 한다. <a href="https://youtu.be/ToSc-hfQ7fM?t=49">영상 00:49–01:00</a></li>
+<li><strong>쇼크웨이브</strong> 는 커지는 원의 둘레를 따라 화면을 잠깐 왜곡하고, 마지막 일격에 더 크게 활용할 수 있다. <a href="https://youtu.be/ToSc-hfQ7fM?t=60">영상 01:00–01:22</a></li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>같은 그림과 공격이라도 피드백의 타이밍과 강도가 달라지면 타격감은 크게 달라진다. 이 영상의 실천적 메시지는 효과를 무조건 쌓으라는 것이 아니라, <strong>하나씩 켜고 직접 때려보며 필요한 정도를 찾으라</strong> 는 것이다. 구현에서도 판정 이벤트를 기준으로 효과를 연결하고, 과한 정지나 흔들림은 줄이는 편이 좋다. <a href="https://youtu.be/ToSc-hfQ7fM?t=82">영상 01:22–01:40</a></p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 11월 05일 08시 20분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/engineering">Engineering</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/11/2026-11-05-stageshow-product-demo-ui-skill/" rel="prev">
+        <span>Stageshow: AI 제품 데모 UI에서 가짜 티를 줄이는 설계와 검증</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-체력-감소와-타격감은-다른-신호다">1. 체력 감소와 타격감은 다른 신호다</a></li>
+    <li><a href="#2-충돌-순간을-강조하는-히트-스톱과-피격-플래시">2. 충돌 순간을 강조하는 히트 스톱과 피격 플래시</a></li>
+    <li><a href="#3-힘의-방향을-보여주는-넉백과-소리">3. 힘의 방향을 보여주는 넉백과 소리</a></li>
+    <li><a href="#4-카메라-흔들림-파편-데미지-숫자의-역할">4. 카메라 흔들림, 파편, 데미지 숫자의 역할</a></li>
+    <li><a href="#5-쇼크웨이브는-원의-가장자리에서만-화면을-왜곡한다">5. 쇼크웨이브는 원의 가장자리에서만 화면을 왜곡한다</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+    
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

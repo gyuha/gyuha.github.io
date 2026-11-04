@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Stageshow: AI 제품 데모 UI에서 가짜 티를 줄이는 설계와 검증'" />
+  <title>Stageshow: AI 제품 데모 UI에서 가짜 티를 줄이는 설계와 검증  | 신규하 블로그</title>
+  <meta property="og:title" content="Stageshow: AI 제품 데모 UI에서 가짜 티를 줄이는 설계와 검증" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-11-05"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/11/2026-11-05-stageshow-product-demo-ui-skill/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="skills" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/11/2026-11-05-stageshow-product-demo-ui-skill/">
+          <h1>
+            Stageshow: AI 제품 데모 UI에서 가짜 티를 줄이는 설계와 검증
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/11/2026-11-05-stageshow-product-demo-ui-skill/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>AI가 만든 제품 데모는 요소가 많아도 실제 제품처럼 보이지 않을 때가 있다. <a href="https://youtu.be/dfkCiMHS5f8?t=0">찐AI의 Stageshow 소개 영상</a> 은 이 문제를 화면의 정보량, 구도, 움직임을 설계하는 방식으로 풀어낸다. Stageshow는 앱의 실제 동작을 녹화하는 도구가 아니라, <strong>제품을 닮은 UI 일러스트와 짧은 애니메이션을 만드는 에이전트 스킬과 React 키트</strong> 다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://youtube.com/shorts/dfkCiMHS5f8?si=pOQAaoSE25rB5Qb9">원본 영상: AI가 만든 가짜 UI, 진짜 제품처럼! Stageshow 스킬</a></li>
+<li><a href="https://benji.org/stageshow">Stageshow 제작자 소개 페이지</a></li>
+<li><a href="https://github.com/benjitaylor/skills/blob/main/stageshow/README.md">Stageshow 공식 저장소와 README</a></li>
+<li><a href="https://github.com/benjitaylor/skills/blob/main/stageshow/SKILL.md">Stageshow 공식 SKILL.md</a></li>
+</ul>
+<p>영상의 한국어 자동 자막을 시간대별로 확인하고 공식 문서와 대조했다. 아래에서 영상의 시연 결과와 스킬의 설계 지침을 구분한다.</p>
+<h2 id="1-가짜처럼-보이는-화면의-다섯-가지-실패">1. 가짜처럼 보이는 화면의 다섯 가지 실패</h2>
+<p><a href="https://youtu.be/dfkCiMHS5f8?t=7">영상은 실패 유형을 다섯 가지로 정리</a> 한다. <strong>Too much</strong> 는 숫자와 실제 문구를 모든 칸에 채워 과밀해진 화면이다. <strong>Wireframe</strong> 은 회색 덩어리와 버튼 몇 개만 남아 제품으로 읽히지 않는 화면이다. <strong>Boxed</strong> 는 창 전체를 작은 카드 안에 가둬 스크린샷을 붙인 것처럼 보이는 구도다. <strong>Flat</strong> 은 모든 요소의 시각적 무게가 같아 시선이 머물 곳이 없는 상태다. <strong>Bland</strong> 는 요청한 제품의 색과 성격이 빠진 무난한 회색 UI다. 이 분류는 제작자의 <a href="https://github.com/benjitaylor/skills/blob/main/stageshow/SKILL.md">공식 SKILL.md</a> 에도 명시되어 있다. <a href="https://youtu.be/dfkCiMHS5f8?t=7">영상 00:07–00:14</a></p>
+<p>해법은 요소를 무작정 삭제하는 것이 아니다. 문서의 핵심 원칙은 <strong>실제 제품으로 읽히되, 보는 사람이 필요한 부분만 남기고, 의도적으로 화면을 잡으며, 모든 움직임에 원인을 두는 것</strong> 이다. 이야기의 중심이 되는 부분에는 알아볼 수 있는 실제 문구를 쓰고 주변은 간략화한다. 화면의 바탕과 창 구조까지 지워버리면 다시 와이어프레임이 된다. <a href="https://youtu.be/dfkCiMHS5f8?t=14">영상 00:14–00:27</a> · <a href="https://github.com/benjitaylor/skills/blob/main/stageshow/SKILL.md">공식 SKILL.md</a></p>
+<pre class="mermaid">flowchart TD
+    A["AI가 만든 데모 화면"] --> B{"무엇이 어색한가?"}
+    B --> C["과밀·와이어프레임"]
+    B --> D["상자형·평평한 구도"]
+    B --> E["제품 개성 부족"]
+    C --> F["핵심 문구만 남기고 맥락 유지"]
+    D --> G["주인공을 키우고 의도적으로 자르기"]
+    E --> H["실제 제품의 색·형태 반영"]
+    F --> I["결과가 읽히는 데모"]
+    G --> I
+    H --> I
+    classDef inputTone fill:#c5dcef,stroke:#6e93b5,color:#333
+    classDef decisionTone fill:#fde8c0,stroke:#bb9a58,color:#333
+    classDef problemTone fill:#ffc8c4,stroke:#bc8580,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#a077bd,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#77ad8c,color:#333
+    class A inputTone
+    class B decisionTone
+    class C,D,E problemTone
+    class F,G,H processTone
+    class I resultTone</pre><h2 id="2-같은-요청의-전후-비교는-무엇을-보여주나">2. 같은 요청의 전후 비교는 무엇을 보여주나</h2>
+<p><a href="https://youtu.be/dfkCiMHS5f8?t=27">영상은 분석 대시보드, 팀 채팅 앱, 벤토 그리드 예시</a> 를 스킬 적용 전후로 보여준다. 진행자의 설명은 숫자가 빽빽한 화면보다 중심 정보가 살아 있는 화면이 더 제품처럼 보인다는 것이다. 이는 영상의 <strong>시각적 시연</strong> 이지, 사용성 점수나 전환율을 측정한 실험은 아니다. 세 예시의 정확한 코드나 입력 프롬프트가 영상 자막에 모두 공개된 것은 아니므로 재현 성능까지 단정할 수 없다. <a href="https://youtu.be/dfkCiMHS5f8?t=27">영상 00:27–00:42</a></p>
+<p>공식 스킬은 데모가 놓일 매체와 크기부터 정하고, <strong>주인공이 되는 창 또는 기기, 보여줄 한 가지 동작, 결과 장면, 생략 가능한 요소</strong> 를 먼저 계획하도록 한다. 이어 제품의 디자인 토큰을 키트에 맞추고, 가장 가까운 완성 예제를 출발점으로 삼아 구도와 화면의 밀도를 비교한다. 한 화면에 실제로 읽히는 문구는 대체로 <strong>3~7개</strong> 만 두도록 권한다. 이것은 모든 UI 요소가 3~7개여야 한다는 뜻이 아니라, 독자의 시선을 붙잡는 <strong>실제 텍스트의 예산</strong> 이다. <a href="https://youtu.be/dfkCiMHS5f8?t=21">영상 00:21–00:27</a> · <a href="https://github.com/benjitaylor/skills/blob/main/stageshow/SKILL.md">공식 SKILL.md</a></p>
+<pre class="mermaid">flowchart TD
+    A["데모가 놓일 위치·크기"] --> B["주인공 화면과 결과 선택"]
+    B --> C["제품 디자인 토큰 적용"]
+    C --> D["가까운 골드 예제 복사·변형"]
+    D --> E["핵심 문구 3~7개 선별"]
+    E --> F["최종 구도에서 가독성 확인"]
+    classDef inputTone fill:#c5dcef,stroke:#6e93b5,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#a077bd,color:#333
+    classDef checkTone fill:#fde8c0,stroke:#bb9a58,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#77ad8c,color:#333
+    class A inputTone
+    class B,C,D,E processTone
+    class F resultTone</pre><h2 id="3-스킬react-키트예제검사-스크립트의-역할">3. 스킬·React 키트·예제·검사 스크립트의 역할</h2>
+<p><a href="https://youtu.be/dfkCiMHS5f8?t=42">영상은 스킬과 React 키트, 여러 골드 예제, 프레임 검사 스크립트</a> 를 함께 소개한다. 공식 저장소에서도 <code>SKILL.md</code>는 제작 판단과 순서를 가르치고, <code>kit/</code>은 <code>Stage</code>, <code>Window</code> 같은 재사용 가능한 React 구성 요소와 스타일을 제공한다. <code>examples/</code>는 완성도 기준이 되는 장면을, <code>teaching/</code>은 잘못된 구성과 교정된 구성을 보여준다. <code>scripts/film.mjs</code>는 화면을 촬영해 접촉 시트와 검증 결과를 만드는 도구다. <a href="https://youtu.be/dfkCiMHS5f8?t=42">영상 00:42–00:48</a> · <a href="https://github.com/benjitaylor/skills/blob/main/stageshow/README.md">공식 README</a></p>
+<p>중요한 경계가 있다. 키트의 커서 동작은 <strong>실제 앱의 버튼을 자동으로 누르는 브라우저 테스트가 아니다</strong>. 예제에서 클릭은 커서가 누르는 모습을 그리고, 상태 변경은 연출된 장면을 바꾼다. 따라서 마케팅용 제품 일러스트·설명 애니메이션에는 적합하지만, 실제 서비스가 정상 작동한다는 증거로 사용하면 안 된다. 그런 증거가 필요하다면 별도로 실제 앱을 실행·조작·기록해야 한다. <a href="https://github.com/benjitaylor/skills/blob/main/stageshow/README.md">공식 README</a> · <a href="https://github.com/benjitaylor/skills/blob/main/stageshow/SKILL.md">공식 SKILL.md</a></p>
+<pre class="mermaid">flowchart TD
+    A["SKILL.md: 제작 기준"] --> B["examples: 구도 출발점"]
+    B --> C["kit: React 장면 구성"]
+    C --> D["scripts/film.mjs: 프레임 촬영"]
+    D --> E["눈으로 최종 동작 검토"]
+    classDef guideTone fill:#c5dcef,stroke:#6e93b5,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#a077bd,color:#333
+    classDef checkTone fill:#fde8c0,stroke:#bb9a58,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#77ad8c,color:#333
+    class A guideTone
+    class B,C processTone
+    class D checkTone
+    class E resultTone</pre><h2 id="4-짧은-데모의-비트와-프레임-검증">4. 짧은 데모의 비트와 프레임 검증</h2>
+<p><a href="https://youtu.be/dfkCiMHS5f8?t=48">영상 마지막</a> 은 <code>npx skills add</code> 설치 방식과 Claude Code·Codex·Gemini에서의 사용, <strong>3<del>5비트·10</del>16초</strong> 구성 지침을 언급한다. 제작자 페이지의 정확한 설치 명령은 <code>npx skills add benjitaylor/skills --skill stageshow</code>다. 이는 스킬을 추가하는 명령이지, 앱의 기존 UI를 자동으로 분석해 완성 영상을 내보내는 단일 명령은 아니다. 호스트별 스킬 로딩 방식과 실행 환경도 확인해야 한다. <a href="https://youtu.be/dfkCiMHS5f8?t=48">영상 00:48–00:58</a> · <a href="https://benji.org/stageshow">제작자 페이지</a></p>
+<p>공식 지침은 짧은 이야기에서 <strong>동작마다 원인이 보이도록</strong> 한다. 커서가 무엇을 눌렀는지, 그 결과 어떤 패널이나 값이 달라졌는지, 결과를 읽을 시간이 있는지 점검한다. 애니메이션을 만들었다면 정지 장면만 확인하지 말고 전체 루프와 모바일 폭을 촬영해야 한다. <code>film.mjs</code>의 <code>--gate</code>는 프레임 검사와 접촉 시트를 제공하지만, 공식 문서도 자동 검사를 통과한 결과를 사람이 직접 다시 보라고 한다. <a href="https://youtu.be/dfkCiMHS5f8?t=54">영상 00:54–00:58</a> · <a href="https://github.com/benjitaylor/skills/blob/main/stageshow/SKILL.md">공식 SKILL.md</a> · <a href="https://github.com/benjitaylor/skills/blob/main/stageshow/README.md">공식 README</a></p>
+<pre class="mermaid">flowchart TD
+    A["장면 계획"] --> B["3~5비트로 동작 구성"]
+    B --> C["결과 장면 유지"]
+    C --> D["전체 루프·모바일 폭 촬영"]
+    D --> E{"자동 검사 통과?"}
+    E -->|"아니요"| F["오류 수정 후 재촬영"]
+    E -->|"예"| G["사람이 프레임·루프 검토"]
+    classDef inputTone fill:#c5dcef,stroke:#6e93b5,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#a077bd,color:#333
+    classDef decisionTone fill:#fde8c0,stroke:#bb9a58,color:#333
+    classDef failureTone fill:#ffc8c4,stroke:#bc8580,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#77ad8c,color:#333
+    class A inputTone
+    class B,C,D processTone
+    class E decisionTone
+    class F failureTone
+    class G resultTone</pre><h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<p>작은 기능 카드 하나로 시작한다면, <strong>실제로 전달할 제품 특징 한 가지</strong> 를 고른 뒤 최종 표시 크기와 핵심 문구를 정한다. 가까운 골드 예제를 복사해 제품의 색·글꼴·아이콘으로 바꾸고, 결과가 보이는 정지 프레임을 먼저 완성한다. 움직임은 그다음에 추가하며, 클릭과 상태 변화의 인과관계가 보이는지 확인한다. 이는 공식 스킬의 제작 순서를 작은 작업으로 압축한 적용 제안이다. <a href="https://github.com/benjitaylor/skills/blob/main/stageshow/SKILL.md">공식 SKILL.md</a> · <a href="https://youtu.be/dfkCiMHS5f8?t=14">영상 00:14–00:27</a></p>
+<p>최종 검수에서는 <strong>데스크톱과 좁은 폭, 정지 프레임과 루프, 자동 검사와 육안 검토</strong> 를 각각 확인한다. 원본 제품과 닮은 시각 자료를 만들더라도, 실제 동작을 보여줘야 하는 데모라면 연출된 UI와 실서비스 화면을 혼동하지 않도록 표시해야 한다. <a href="https://github.com/benjitaylor/skills/blob/main/stageshow/README.md">공식 README</a> · <a href="https://youtu.be/dfkCiMHS5f8?t=42">영상 00:42–00:58</a></p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>Stageshow는 제품을 닮은 <strong>연출용 UI</strong> 를 만드는 스킬과 React 키트다. 실제 앱 자동 조작이나 기능 테스트 도구는 아니다. <a href="https://youtu.be/dfkCiMHS5f8?t=0">영상 00:00</a> · <a href="https://github.com/benjitaylor/skills/blob/main/stageshow/README.md">공식 README</a></li>
+<li>실패 유형은 과밀, 와이어프레임, 상자형 구도, 평평한 계층, 제품 개성 부족의 다섯 가지다. <a href="https://youtu.be/dfkCiMHS5f8?t=7">영상 00:07</a> · <a href="https://github.com/benjitaylor/skills/blob/main/stageshow/SKILL.md">공식 SKILL.md</a></li>
+<li>스킬은 대체로 <strong>3~7개의 실제 문구</strong>, 애니메이션은 <strong>3<del>5비트·10</del>16초</strong> 를 가이드한다. 절대적인 UI 요소 수 제한이나 성과 보장은 아니다. <a href="https://youtu.be/dfkCiMHS5f8?t=21">영상 00:21</a> · <a href="https://youtu.be/dfkCiMHS5f8?t=54">영상 00:54</a></li>
+<li>예제에서 시작해 프레임을 촬영·검사하고, 마지막에는 사람이 화면과 움직임을 직접 확인한다. <a href="https://youtu.be/dfkCiMHS5f8?t=42">영상 00:42</a> · <a href="https://github.com/benjitaylor/skills/blob/main/stageshow/README.md">공식 README</a></li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>Stageshow가 줄이려는 &ldquo;가짜 티&quot;는 단순히 그림의 해상도 문제가 아니다. <strong>무엇을 보여줄지, 어떤 크기로 자를지, 클릭 뒤 무엇이 바뀌어야 하는지</strong> 를 정하지 않은 데모가 어색해진다. 공식 예제와 검사 스크립트는 그 판단을 돕지만, 마지막 품질 판단과 실제 제품 동작의 검증까지 대신하지는 않는다. <a href="https://youtu.be/dfkCiMHS5f8?t=0">영상 00:00–00:58</a> · <a href="https://github.com/benjitaylor/skills/blob/main/stageshow/SKILL.md">공식 SKILL.md</a></p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 11월 05일 08시 01분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/11/2026-11-05-pstack-agent-verification-poteto-mode/" rel="prev">
+        <span>Pstack의 핵심은 무인 병합이 아니라 검증 가능한 에이전트 작업</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/11/2026-11-05-game-juice-hitstop-knockback-shockwave/" rel="next">
+        <span>타격감은 어떻게 만드는가: 히트 스톱부터 쇼크웨이브까지</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-가짜처럼-보이는-화면의-다섯-가지-실패">1. 가짜처럼 보이는 화면의 다섯 가지 실패</a></li>
+    <li><a href="#2-같은-요청의-전후-비교는-무엇을-보여주나">2. 같은 요청의 전후 비교는 무엇을 보여주나</a></li>
+    <li><a href="#3-스킬react-키트예제검사-스크립트의-역할">3. 스킬·React 키트·예제·검사 스크립트의 역할</a></li>
+    <li><a href="#4-짧은-데모의-비트와-프레임-검증">4. 짧은 데모의 비트와 프레임 검증</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/skills/" class="badge badge-secondary">Skills</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
