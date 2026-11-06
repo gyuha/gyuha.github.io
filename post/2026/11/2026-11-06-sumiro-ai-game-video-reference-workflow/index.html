@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '영상 한 편에서 플레이 가능한 게임까지: Sumiro의 AI 제작 흐름 검증'" />
+  <title>영상 한 편에서 플레이 가능한 게임까지: Sumiro의 AI 제작 흐름 검증  | 신규하 블로그</title>
+  <meta property="og:title" content="영상 한 편에서 플레이 가능한 게임까지: Sumiro의 AI 제작 흐름 검증" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-11-06"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/11/2026-11-06-sumiro-ai-game-video-reference-workflow/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="ai" />
+  
+  <meta property="og:tags" content="agents" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/11/2026-11-06-sumiro-ai-game-video-reference-workflow/">
+          <h1>
+            영상 한 편에서 플레이 가능한 게임까지: Sumiro의 AI 제작 흐름 검증
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/11/2026-11-06-sumiro-ai-game-video-reference-workflow/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Shikhar는 <a href="https://x.com/xikhar/status/2117776295534997818">X 스레드</a> 에서 AI 도구를 사용해 24시간 안에 오리지널 게임 <strong>Sumiro</strong>를 만들었다고 밝혔다. 흥미로운 점은 영상 생성 모델이 게임을 한 번에 만들어 준 것이 아니라, <strong>원하는 게임의 영상을 먼저 레퍼런스로 만들고 그것을 다시 3D 자산과 플레이 가능한 장면으로 재구성했다</strong> 는 제작 순서다. 24시간과 &ldquo;완전한 게임&quot;은 작성자의 자체 설명이며, 외부의 독립적인 제작 시간 검증이나 상용 출시를 뜻하지 않는다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://x.com/xikhar/status/2117776295534997818">원본 X 스레드: Shikhar의 24시간 AI 게임 제작 기록</a></li>
+<li><a href="https://xikhar.github.io/sumiro/">작성자가 공개한 Sumiro 데모</a></li>
+<li><a href="https://fal.ai/blog/introducing-flux-3-max-by-fal">fal의 FLUX 3 Max 소개</a></li>
+<li><a href="https://www.tripo3d.ai/help/features/how-to-use-the-image-to-3d-feature">Tripo 공식 문서: 이미지에서 3D 모델 만들기</a></li>
+<li><a href="https://www.blender.org/features/animation/">Blender 공식 기능 안내: 애니메이션과 리깅</a></li>
+<li><a href="https://threejs.org/manual/pages/creating-a-scene.html">Three.js 공식 문서: 장면 만들기</a></li>
+</ul>
+<p>원본 게시물과 이어진 대화는 X의 공개 임베드·게시물 데이터와 읽기 전용 페이지 추출을 대조해 확인했다. 스레드의 여섯 단계는 작성자의 작업 기록이며, 서비스 문서는 각 도구의 <strong>가능한 역할</strong> 만 교차 확인한다. 실제 작업 시간, 모든 생성물의 독창성, 게임의 완성도까지 독립 검증한 자료는 아니다.</p>
+<h2 id="1-영상은-결과물이-아니라-세계관-레퍼런스였다">1. 영상은 결과물이 아니라 세계관 레퍼런스였다</h2>
+<p>작성자는 첫 단계에서 fal의 <strong>FLUX 3 Max</strong> 로 영상을 만들고, 그것을 게임의 외형·세계·캐릭터를 위한 공통 레퍼런스로 사용했다고 설명한다. FLUX 3 Max가 영상 생성 모델이라는 점은 <a href="https://fal.ai/blog/introducing-flux-3-max-by-fal">fal의 공식 발표</a> 로도 확인된다. 하지만 <strong>영상 파일을 입력하자 자동으로 3D 게임이 완성된 것</strong> 은 아니다. 다음 단계에서 영상의 스크린샷을 뽑아 자산을 다시 만드는 별도 작업이 이어졌다. <a href="https://x.com/xikhar/status/2117776295534997818">작성자의 1~2단계 설명</a></p>
+<p>한 영상으로 시각적 목표를 먼저 고정하면 캐릭터, 배경, 레벨이 서로 다른 방향으로 만들어지는 일을 줄일 수 있다. 다만 이는 이 사례에서 읽을 수 있는 <strong>작업 설계상의 해석</strong> 이다. 영상이 실제 플레이 규칙, 충돌 판정, 카메라 동작을 명세하지는 않으므로 이를 게임 코드로 옮기는 과정은 따로 필요하다. <a href="https://x.com/xikhar/status/2117776295534997818">작성자의 작업 스레드</a></p>
+<pre class="mermaid">flowchart TD
+    A["게임의 시각적 아이디어"] --> B["FLUX 3 Max 참고 영상"]
+    B --> C["장면별 스크린샷"]
+    C --> D["모델·배경·캐릭터 제작 기준"]
+    D --> E["실제 3D 장면과 규칙 구현"]
+    classDef inputTone fill:#c5dcef,stroke:#6e93b5,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#a077bd,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#77ad8c,color:#333
+    class A inputTone
+    class B,C,D processTone
+    class E outputTone</pre><h2 id="2-blender와-threejs로-장면을-다시-만들었다">2. Blender와 Three.js로 장면을 다시 만들었다</h2>
+<p>두 번째 단계에서 작성자는 <strong>영상 스크린샷을 참고해 Blender에서 자산을 다시 만들고 Three.js 장면에 배치</strong> 했다고 한다. Claude Code에서는 여러 에이전트가 제작과 확인을 병렬로 수행했다고 설명한다. 여기서 Blender는 3D 자산 제작·수정에, Three.js는 브라우저에서 장면을 구성하고 렌더링하는 데 쓰인 것으로 읽힌다. Three.js 공식 문서도 장면·카메라·렌더러를 별도 구성 요소로 설명한다. 병렬 에이전트의 구체적인 수와 비용, 성공률은 스레드에 제시되지 않았다. <a href="https://x.com/xikhar/status/2117776295534997818">작성자의 2단계 설명</a> · <a href="https://threejs.org/manual/pages/creating-a-scene.html">Three.js 공식 문서</a></p>
+<p>이 단계는 <strong>이미지를 그대로 3D 공간에 붙여 놓는 것</strong> 과 다르다. 화면에 보이는 물체를 모델로 구성하고, 플레이어가 움직일 수 있도록 위치와 크기를 잡으며, 카메라에서 읽히는 장면으로 배치해야 한다. 다만 작성자가 각 소품을 어떤 방식으로 모델링했는지는 공개된 짧은 스레드만으로 전부 재현할 수 없다. 아래 도식은 그 역할 분리를 설명하는 개념도다. <a href="https://x.com/xikhar/status/2117776295534997818">작성자의 2단계 설명</a></p>
+<pre class="mermaid">flowchart TD
+    A["영상에서 추출한 장면"] --> B["Blender에서 3D 자산 구성"]
+    B --> C["Three.js 장면에 배치"]
+    C --> D["카메라·조명·플레이 공간 점검"]
+    D --> E["브라우저에서 보이는 월드"]
+    classDef inputTone fill:#c5dcef,stroke:#6e93b5,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#a077bd,color:#333
+    classDef checkTone fill:#fde8c0,stroke:#bb9a58,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#77ad8c,color:#333
+    class A inputTone
+    class B,C processTone
+    class D checkTone
+    class E outputTone</pre><h2 id="3-캐릭터는-이미지3d-변환애니메이션을-나눠-제작">3. 캐릭터는 이미지·3D 변환·애니메이션을 나눠 제작</h2>
+<p>세 번째 단계에서는 참고 영상에서 캐릭터를 캡처하고, <strong>GPT Image로 네 방향의 모습을 만든 뒤 Tripo에서 3D 모델로 변환</strong> 했다고 한다. 이후 Opus를 이용해 옷감 물리와 애니메이션을 더했다고 설명한다. Tripo가 이미지 입력으로 3D 모델을 생성하는 기능을 제공한다는 사실은 <a href="https://www.tripo3d.ai/help/features/how-to-use-the-image-to-3d-feature">공식 도움말</a> 에서 확인된다. 반면 이 게임에 사용된 구체적인 모델 버전, 리깅 설정, 옷감 시뮬레이션 파라미터는 스레드에 없다. <a href="https://x.com/xikhar/status/2117776295534997818">작성자의 3단계 설명</a></p>
+<p>중요한 것은 <strong>외형 참조와 움직이는 캐릭터가 별도 산출물</strong> 이라는 점이다. 여러 방향의 이미지는 3D 형태의 기준이 될 수 있지만, 플레이어가 조작하는 캐릭터에는 애니메이션과 게임 내 동작 연결이 필요하다. Blender도 리깅·애니메이션 기능을 제공하지만, 작성자의 모든 애니메이션이 Blender에서 처리됐다고까지 단정하지 않는다. <a href="https://x.com/xikhar/status/2117776295534997818">작성자의 3단계 설명</a> · <a href="https://www.blender.org/features/animation/">Blender 공식 기능 안내</a></p>
+<pre class="mermaid">flowchart TD
+    A["영상 속 캐릭터 캡처"] --> B["GPT Image로 네 방향 참조"]
+    B --> C["Tripo로 3D 모델 생성"]
+    C --> D["옷감·애니메이션 작업"]
+    D --> E["게임 속 조작과 시각 검수"]
+    classDef inputTone fill:#c5dcef,stroke:#6e93b5,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#a077bd,color:#333
+    classDef checkTone fill:#fde8c0,stroke:#bb9a58,color:#333
+    class A inputTone
+    class B,C,D processTone
+    class E checkTone</pre><h2 id="4-레벨을-늘리기-전에-플레이-가능한-프로토타입부터">4. 레벨을 늘리기 전에 플레이 가능한 프로토타입부터</h2>
+<p>작성자의 네 번째 단계는 화려한 자산을 더 만드는 일이 아니라 <strong>첫 프로토타입을 직접 플레이해 작동 여부를 확인하는 것</strong> 이다. 그다음에야 기존 미술 스타일을 바탕으로 GPT Image가 레벨별 콘셉트 이미지를 만들었다고 한다. 작성자는 한 레벨에 최대 8장의 이미지를 사용했다고 설명하지만, 이 숫자는 이 프로젝트의 사례이지 다른 게임의 일반적인 권장량이 아니다. <a href="https://x.com/xikhar/status/2117776295534997818">작성자의 4~5단계 설명</a></p>
+<p>이 순서는 병렬 에이전트 작업에서 특히 중요하다. 이동·카메라·충돌·목표 같은 기본 규칙이 깨진 상태로 여러 레벨을 확장하면 같은 결함을 모든 장면에 복제할 수 있다. 따라서 <strong>한 레벨에서 조작 가능한 경로를 검증한 뒤</strong> 콘셉트 이미지를 바탕으로 나머지를 확장하는 것이 이 스레드의 핵심 운영 원칙으로 읽힌다. 이는 작성자가 설명한 작업 순서로부터 도출한 해석이며, 특정 테스트 프레임워크를 사용했다는 주장은 아니다. <a href="https://x.com/xikhar/status/2117776295534997818">작성자의 4~6단계 설명</a></p>
+<pre class="mermaid">flowchart TD
+    A["첫 플레이 가능한 장면"] --> B{"직접 플레이가 되는가?"}
+    B -->|"아니요"| C["기본 동작 수정"]
+    C --> A
+    B -->|"예"| D["레벨별 콘셉트 이미지"]
+    D --> E["3D 레벨 확장"]
+    E --> F["플레이·버그 보고·수정"]
+    F --> E
+    classDef inputTone fill:#c5dcef,stroke:#6e93b5,color:#333
+    classDef decisionTone fill:#fde8c0,stroke:#bb9a58,color:#333
+    classDef failureTone fill:#ffc8c4,stroke:#bc8580,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#a077bd,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#77ad8c,color:#333
+    class A inputTone
+    class B decisionTone
+    class C failureTone
+    class D,E processTone
+    class F outputTone</pre><h2 id="5-공개-데모와-남아-있는-한계">5. 공개 데모와 남아 있는 한계</h2>
+<p>작성자는 여섯 번째 단계에서 <strong>각 콘셉트를 플레이 가능한 3D 레벨로 만들고</strong>, 직접 플레이하며 버그를 보고하면 에이전트가 수정·개선하는 루프를 반복했다고 말한다. 후속 설명에서는 퍼즐, 파쿠르, 플랫폼 이동을 핵심 조작으로 꼽고, 진행하면서 전투도 등장한다고 덧붙였다. <a href="https://xikhar.github.io/sumiro/">Sumiro 공개 페이지</a> 의 존재는 확인했지만, 이 글을 위해 전체 레벨을 끝까지 플레이하거나 제작 시간을 독립 검증하지는 않았다. <a href="https://x.com/xikhar/status/2117776295534997818">원본 스레드와 작성자의 후속 설명</a></p>
+<p>작성자는 게시물의 시연 영상도 Claude가 직접 플레이하면서 녹화했기 때문에 움직임이 다소 뻣뻣하게 보일 수 있다고 설명했다. 음악의 완성도에도 아쉬움을 인정하며 24시간 제약 안에서는 별도 음악 제작 작업을 충분히 하지 못했다고 했다. 이 발언은 <strong>AI가 제작 과정의 여러 일을 처리해도 오디오 품질과 실제 플레이 감각은 따로 검수해야 한다</strong> 는 한계를 보여준다. <a href="https://x.com/xikhar/status/2117776295534997818">작성자의 후속 설명</a></p>
+<p>&ldquo;누구나 게임을 만들 수 있다&quot;는 문장은 접근성에 대한 작성자의 평가로 읽어야 한다. 이 사례에는 여러 유료 가능성이 있는 생성 서비스와 3D 제작 도구, 반복 플레이·버그 보고가 포함된다. 결과물의 상업적 사용 권한이나 비용은 사용한 각 서비스의 조건과 생성 자산의 출처를 따로 확인해야 한다. <strong>24시간 안에 플레이 가능한 개인 실험을 만들었다는 주장</strong> 과 <strong>출시 가능한 완성 게임을 검증했다는 주장</strong> 은 같지 않다. <a href="https://x.com/xikhar/status/2117776295534997818">원본 스레드</a> · <a href="https://www.tripo3d.ai/help/features/how-to-use-the-image-to-3d-feature">Tripo 공식 도움말</a></p>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<p>이 사례를 따라 해 본다면 먼저 <strong>참고 영상이 담당할 일과 게임 엔진이 담당할 일</strong> 을 분리해야 한다. 영상은 세계관·색·카메라 분위기의 기준이고, 3D 자산·조작·충돌·레벨 구성은 별도 구현이다. 한 장면만 플레이 가능하게 만든 뒤 이동과 상호작용을 검증하고, 그 다음에 여러 레벨의 콘셉트와 자산 제작을 병렬화한다. 이는 작성자의 여섯 단계를 재사용 가능한 작업 순서로 재구성한 제안이다. <a href="https://x.com/xikhar/status/2117776295534997818">작성자의 작업 스레드</a></p>
+<p>검수 기준도 단계마다 다르게 둔다. <strong>참고 영상</strong> 은 시각적 일관성, <strong>3D 모델</strong> 은 실루엣과 애니메이션, <strong>첫 프로토타입</strong> 은 조작 가능성, <strong>확장 레벨</strong> 은 진행과 버그, <strong>최종 데모</strong> 는 실제 플레이 감각과 소리를 본다. 원본 스레드에는 재현 가능한 전체 프롬프트, 비용 명세, 자동화 스크립트가 텍스트로 모두 제공되지 않으므로 이 글에서 임의로 보충하지 않았다. <a href="https://x.com/xikhar/status/2117776295534997818">원본 스레드</a></p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li><strong>24시간 제작</strong> 은 작성자의 자체 보고다. 공개 데모는 있지만 상용 출시 수준이나 제작 시간을 독립 검증한 근거는 아니다. <a href="https://x.com/xikhar/status/2117776295534997818">원본 게시물</a> · <a href="https://xikhar.github.io/sumiro/">데모</a></li>
+<li><strong>FLUX 3 Max 영상</strong> 은 게임의 시각적 레퍼런스였고, 스크린샷을 참고해 Blender 자산과 Three.js 장면을 다시 만들었다. <a href="https://x.com/xikhar/status/2117776295534997818">원본 스레드</a> · <a href="https://fal.ai/blog/introducing-flux-3-max-by-fal">fal 공식 소개</a></li>
+<li><strong>캐릭터</strong> 는 GPT Image의 네 방향 이미지, Tripo의 3D 변환, 별도의 물리·애니메이션 작업으로 나뉘었다. <a href="https://x.com/xikhar/status/2117776295534997818">원본 스레드</a> · <a href="https://www.tripo3d.ai/help/features/how-to-use-the-image-to-3d-feature">Tripo 공식 도움말</a></li>
+<li><strong>첫 프로토타입을 플레이한 후 레벨을 확장</strong> 하고, 플레이·버그 보고·에이전트 수정을 반복했다. <a href="https://x.com/xikhar/status/2117776295534997818">원본 스레드</a></li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>Sumiro 사례가 보여주는 것은 &ldquo;영상 하나가 곧 게임이 된다&quot;는 마법이 아니다. <strong>레퍼런스 영상으로 방향을 정하고, 3D로 다시 만들고, 일찍 플레이해 실패를 찾고, 수정하며 확장하는 제작 루프</strong> 다. AI가 자산과 코드를 빠르게 만들 수 있어도 무엇을 플레이 가능하다고 볼지 결정하고 확인하는 단계는 남는다. <a href="https://x.com/xikhar/status/2117776295534997818">원본 스레드</a></p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 11월 06일 22시 01분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/11/2026-11-05-ai-game-assets-four-tools-part-two/" rel="prev">
+        <span>AI 게임 리소스 오픈소스 8가지 2편: 스프라이트·도트·확산 모델</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-영상은-결과물이-아니라-세계관-레퍼런스였다">1. 영상은 결과물이 아니라 세계관 레퍼런스였다</a></li>
+    <li><a href="#2-blender와-threejs로-장면을-다시-만들었다">2. Blender와 Three.js로 장면을 다시 만들었다</a></li>
+    <li><a href="#3-캐릭터는-이미지3d-변환애니메이션을-나눠-제작">3. 캐릭터는 이미지·3D 변환·애니메이션을 나눠 제작</a></li>
+    <li><a href="#4-레벨을-늘리기-전에-플레이-가능한-프로토타입부터">4. 레벨을 늘리기 전에 플레이 가능한 프로토타입부터</a></li>
+    <li><a href="#5-공개-데모와-남아-있는-한계">5. 공개 데모와 남아 있는 한계</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/ai/" class="badge badge-secondary">Ai</a>
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
