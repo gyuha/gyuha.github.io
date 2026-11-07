@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude Code로 설명용 릴스 만들기: 애니메이션 스킬 6개의 역할과 한계'" />
+  <title>Claude Code로 설명용 릴스 만들기: 애니메이션 스킬 6개의 역할과 한계  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude Code로 설명용 릴스 만들기: 애니메이션 스킬 6개의 역할과 한계" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-11-07"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/11/2026-11-07-claude-animation-skills-reels-workflow/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="skills" />
+  
+  <meta property="og:tags" content="automation" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/11/2026-11-07-claude-animation-skills-reels-workflow/">
+          <h1>
+            Claude Code로 설명용 릴스 만들기: 애니메이션 스킬 6개의 역할과 한계
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/11/2026-11-07-claude-animation-skills-reels-workflow/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p><a href="https://www.threads.com/share/BAa69dKH68">동영 김의 Threads 글</a> 은 혼자 설명용 릴스를 만드는 사람을 위해 Claude Code용 영상 스킬 여섯 가지를 소개한다. 링크된 <a href="https://github.com/artemnovitckii/claude-animation-skills">공식 저장소</a> 의 핵심은 AI가 완성된 영상 파일을 바로 생성하는 것이 아니라, <strong>장면 명세와 애니메이션 코드를 만들고 로컬에서 렌더링·검수하는 제작 흐름</strong> 이다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.threads.com/share/BAa69dKH68">원본 Threads 게시물</a></li>
+<li><a href="https://github.com/artemnovitckii/claude-animation-skills">claude-animation-skills 공식 저장소와 README</a></li>
+<li><a href="https://github.com/artemnovitckii/claude-animation-skills/blob/main/install.sh">공식 설치 스크립트</a></li>
+</ul>
+<p>Threads의 기능 요약은 저장소 README와 대조했다. 출력 속도와 사용성은 프로젝트 작성자의 설명이며, 이 글에서 별도의 영상 품질·성능 시험을 한 것은 아니다.</p>
+<h2 id="1-여섯-스킬은-같은-영상-템플릿이-아니다">1. 여섯 스킬은 같은 영상 템플릿이 아니다</h2>
+<p>공식 README는 스킬을 결과물에 따라 여섯 가지로 구분한다. <code>/graph</code>는 선 그래프와 숫자 변화, <code>/map-route</code>는 도시 지도 위 이동 경로, <code>/breakdown</code>은 제품의 3D 분해도, <code>/minimalistic-graphics</code>는 흑백 선·점 그래픽을 만든다. 이 네 가지는 <strong>짧은 명세로 구동하는 빠른 스킬</strong> 이다. <a href="https://github.com/artemnovitckii/claude-animation-skills">공식 README의 스킬 목록</a></p>
+<p>반면 <code>/stick-figure</code>는 막대 인물과 전환·음향을 활용한 설명 릴스, <code>/zach-d-films</code>는 3D 캐릭터·소품·효과를 활용한 설명 릴스를 목표로 한다. 이 둘은 단순한 그래프 수치 교체가 아니라 대본, 음성, 장면별 연출을 다루는 <strong>제작 엔진</strong> 에 가깝다. 이름이 특정 영상 스타일을 떠올리게 하더라도 공식 README는 <code>/zach-d-films</code>가 Zack D. Films와 제휴한 프로젝트는 아니라고 명시한다. <a href="https://github.com/artemnovitckii/claude-animation-skills">공식 README</a></p>
+<pre class="mermaid">flowchart TD
+    A["설명할 내용"] --> B{"필요한 화면 형식"}
+    B --> C["수치 변화 → graph"]
+    B --> D["이동 경로 → map-route"]
+    B --> E["물체 구조 → breakdown"]
+    B --> F["짧은 문구 → minimalistic-graphics"]
+    B --> G["인물 중심 이야기 → stick-figure"]
+    B --> H["3D 상황극 → zach-d-films"]
+    classDef inputTone fill:#c5dcef,stroke:#6e93b5,color:#333
+    classDef checkTone fill:#fde8c0,stroke:#bb9a58,color:#333
+    classDef quickTone fill:#c0ecd3,stroke:#77ad8c,color:#333
+    classDef engineTone fill:#e0c8ef,stroke:#a077bd,color:#333
+    class A inputTone
+    class B checkTone
+    class C,D,E,F quickTone
+    class G,H engineTone</pre><h2 id="2-네-가지-빠른-스킬은-명세--렌더--안전영역-검토-흐름이다">2. 네 가지 빠른 스킬은 &lsquo;명세 → 렌더 → 안전영역 검토&rsquo; 흐름이다</h2>
+<p>빠른 스킬에서는 Claude Code가 요청을 작은 JSON 명세로 정리하고, 스킬의 <code>build.py</code>가 HTML 템플릿과 렌더러를 이용해 영상을 만든다. 공식 README가 밝힌 출력 규격은 <strong>1080×1920 세로 MP4, 30fps</strong> 이며, 프레임을 모은 연락 시트(<code>sheet.jpg</code>)에는 인스타그램 안전영역 표시가 들어간다. 따라서 Threads 글의 &lsquo;안전영역 검토 이미지&rsquo;는 자동으로 업로드 성공을 보장하는 검증서가 아니라, 텍스트·주요 요소가 가려지는지 제작자가 확인할 수 있는 <strong>시각적 검수 자료</strong> 로 이해하는 편이 정확하다. <a href="https://github.com/artemnovitckii/claude-animation-skills">공식 README의 사용법·구현 구조</a></p>
+<p>README는 2D 빠른 스킬의 렌더링을 약 10초, 3D 빠른 스킬을 약 1분 30초로 소개한다. 이는 프로젝트의 안내값이지 사용자의 컴퓨터에서 보장되는 시간이 아니다. 영상 품질도 입력 데이터와 문구의 길이, 화면 배치, 렌더 환경에 따라 별도로 확인해야 한다. <a href="https://github.com/artemnovitckii/claude-animation-skills">공식 README</a></p>
+<pre class="mermaid">flowchart TD
+    A["예: 0에서 10만까지 성장한 수치"] --> B["Claude가 그래프 JSON 명세 작성"]
+    B --> C["스킬 템플릿·로컬 렌더러 실행"]
+    C --> D["세로형 MP4와 연락 시트 출력"]
+    D --> E["안전영역·숫자·가독성 확인"]
+    E --> F["문구·타이밍 수정 후 재렌더"]
+    classDef inputTone fill:#c5dcef,stroke:#6e93b5,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#a077bd,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#77ad8c,color:#333
+    classDef checkTone fill:#fde8c0,stroke:#bb9a58,color:#333
+    class A inputTone
+    class B,C processTone
+    class D outputTone
+    class E,F checkTone</pre><h2 id="3-인물-설명-영상-두-가지는-한-번의-명령으로-끝나지-않는다">3. 인물 설명 영상 두 가지는 한 번의 명령으로 끝나지 않는다</h2>
+<p><code>/stick-figure</code>와 <code>/zach-d-films</code>는 예제 프로젝트를 바탕으로 대본을 짜고, 음성을 만들거나 준비된 음성을 받아 단어별 타이밍을 맞춘 뒤, 장면을 코드로 제작한다. 중간 프레임을 점검하고 마지막에 영상을 렌더링하는 흐름이다. 공식 README는 이 두 가지를 <strong>작업 세션을 잡고 진행할 것</strong> 으로 안내하며, 빠른 스킬처럼 명세 하나로 즉시 완성된다고 설명하지 않는다. <a href="https://github.com/artemnovitckii/claude-animation-skills">공식 README의 Use·How it&rsquo;s built</a></p>
+<p>기본 엔진과 렌더러는 로컬에서 동작한다. 음성과 단어 타이밍 기능을 쓰려면 설치 시 <code>--voice</code> 옵션으로 관련 모델을 별도 준비해야 하며, README는 첫 다운로드 분량을 약 1GB로 소개한다. &lsquo;API 키가 필요 없다&rsquo;는 것은 이 공식 기본 경로에 관한 설명이지, 사용자가 연결할 수 있는 모든 외부 서비스까지 무료라는 뜻은 아니다. <a href="https://github.com/artemnovitckii/claude-animation-skills">공식 README의 설치 안내</a></p>
+<pre class="mermaid">flowchart TD
+    A["설명할 주제와 대본"] --> B["음성 제작 또는 기존 음성 입력"]
+    B --> C["단어별 타이밍·장면 설계"]
+    C --> D["캐릭터·소품·전환을 코드로 구현"]
+    D --> E["정지 프레임과 자막 검수"]
+    E --> F["로컬 렌더링과 최종 확인"]
+    classDef inputTone fill:#c5dcef,stroke:#6e93b5,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#a077bd,color:#333
+    classDef checkTone fill:#fde8c0,stroke:#bb9a58,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#77ad8c,color:#333
+    class A inputTone
+    class B,C,D processTone
+    class E checkTone
+    class F outputTone</pre><h2 id="4-설치-전에-확인할-환경과-호출-방식">4. 설치 전에 확인할 환경과 호출 방식</h2>
+<p>공식 README 기준 지원 환경은 <strong>macOS 또는 Linux</strong>, 필요 도구는 <strong>ffmpeg, Node.js 18 이상, Python 3.9 이상</strong> 이다. 저장소를 복제해 <code>./install.sh</code>를 실행하면 스킬 폴더를 <code>~/.claude/skills/</code>에 연결하고, 렌더링에 필요한 일회성 설정을 진행한다. 설치 스크립트는 같은 이름의 경로가 이미 일반 파일·디렉터리로 존재하면 덮어쓰지 않고 건너뛰도록 작성되어 있다. 기존 스킬이 있다면 설치 출력부터 확인해야 한다. <a href="https://github.com/artemnovitckii/claude-animation-skills">공식 README</a> · <a href="https://github.com/artemnovitckii/claude-animation-skills/blob/main/install.sh">설치 스크립트</a></p>
+<p>설치 후에는 Claude Code에서 <code>/graph ...</code>처럼 호출할 수 있다. 공식 README에는 플러그인 설치 경로도 소개되지만, 플러그인 스킬 명령은 <code>/animation-skills:graph</code>처럼 이름 공간이 붙는다. 작성자가 끝까지 시험했다고 밝힌 방식은 저장소 복제 경로이므로, 처음 따라 할 때는 두 설치 방식을 섞지 않는 편이 혼동을 줄인다. <a href="https://github.com/artemnovitckii/claude-animation-skills">공식 README의 Install·Use</a></p>
+<pre class="mermaid">flowchart TD
+    A["macOS·Linux 환경 확인"] --> B["ffmpeg·Node.js·Python 준비"]
+    B --> C["저장소 복제와 install.sh 실행"]
+    C --> D{"음성 기반 릴스인가?"}
+    D -- "예" --> E["voice 모델 추가 설치"]
+    D -- "아니요" --> F["빠른 스킬 호출"]
+    E --> G["설명 영상 제작 세션"]
+    F --> H["출력 영상과 연락 시트 검수"]
+    G --> H
+    classDef inputTone fill:#c5dcef,stroke:#6e93b5,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#a077bd,color:#333
+    classDef checkTone fill:#fde8c0,stroke:#bb9a58,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#77ad8c,color:#333
+    class A inputTone
+    class B,C,E,F,G processTone
+    class D checkTone
+    class H outputTone</pre><h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<ol>
+<li><strong>첫 시험은 <code>/graph</code>처럼 데이터가 명확한 스킬로 시작한다.</strong> 수치와 문구가 정확히 표시되는지, 1080×1920 화면에서 작은 글씨가 읽히는지 확인하기 좋다.</li>
+<li><strong>장면 유형에 맞는 스킬을 고른다.</strong> 경로 설명은 <code>/map-route</code>, 제품 구조는 <code>/breakdown</code>, 서사가 필요한 설명은 인물형 엔진이 더 자연스럽다. 이 선택은 공식 기능 목록을 바탕으로 한 활용 제안이다.</li>
+<li><strong>연락 시트를 끝까지 검수한다.</strong> 안전영역뿐 아니라 숫자, 오탈자, 자막 길이, 전환 타이밍을 확인한다. 자동 렌더링과 콘텐츠 정확성은 별개다.</li>
+<li><strong>음성형 릴스는 시간을 따로 잡는다.</strong> 음성 준비와 단어 타이밍, 컷별 연출 수정이 필요하므로 빠른 스킬의 소요 시간을 그대로 기대하지 않는다.</li>
+</ol>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>여섯 스킬 중 <strong>네 가지는 JSON 명세 기반 빠른 렌더링</strong>, 두 가지는 대본·음성·장면을 다루는 설명 영상 엔진이다.</li>
+<li>빠른 스킬은 <strong>1080×1920·30fps MP4</strong> 와 안전영역 표시 연락 시트를 출력한다.</li>
+<li>설치에는 로컬 개발 도구가 필요하고, 음성형 스킬에는 추가 모델 다운로드가 필요하다.</li>
+<li>완성도는 자동 출력만으로 보장되지 않으므로 <strong>숫자·자막·안전영역을 사람이 확인</strong> 해야 한다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>이 프로젝트는 릴스 제작을 &lsquo;프롬프트 한 줄로 영상 생성&rsquo;보다 <strong>주제에 맞는 스킬 선택 → 명세·코드 제작 → 로컬 렌더링 → 프레임 검수</strong> 의 반복 작업으로 다룬다. 혼자 설명 영상을 만드는 사람에게 유용한 출발점이지만, 짧은 그래프 영상과 음성·서사가 들어간 설명 릴스의 작업량은 구분해서 기대해야 한다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 11월 07일 08시 35분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/11/2026-11-07-rea-video-reverse-engineer-video-workflow/" rel="prev">
+        <span>영상의 제작 과정을 거꾸로 읽는 REA-Video: 장면 분석부터 재현 계획까지</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/11/2026-11-07-npc-random-schedule-smart-object/" rel="next">
+        <span>NPC가 제자리에서 벗어나게 하려면: 랜덤 배회·일과표·스마트 오브젝트 비교</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#1-여섯-스킬은-같은-영상-템플릿이-아니다">1. 여섯 스킬은 같은 영상 템플릿이 아니다</a></li>
+    <li><a href="#2-네-가지-빠른-스킬은-명세--렌더--안전영역-검토-흐름이다">2. 네 가지 빠른 스킬은 &lsquo;명세 → 렌더 → 안전영역 검토&rsquo; 흐름이다</a></li>
+    <li><a href="#3-인물-설명-영상-두-가지는-한-번의-명령으로-끝나지-않는다">3. 인물 설명 영상 두 가지는 한 번의 명령으로 끝나지 않는다</a></li>
+    <li><a href="#4-설치-전에-확인할-환경과-호출-방식">4. 설치 전에 확인할 환경과 호출 방식</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude Code</a>
+    <a href="/tags/skills/" class="badge badge-secondary">Skills</a>
+    <a href="/tags/automation/" class="badge badge-secondary">Automation</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
