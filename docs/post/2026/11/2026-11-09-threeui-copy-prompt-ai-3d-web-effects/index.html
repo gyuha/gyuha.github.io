@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'ThreeUI의 Copy Prompt로 3D 웹 효과 붙이기: 라이선스·성능·AI 지시서 읽는 법'" />
+  <title>ThreeUI의 Copy Prompt로 3D 웹 효과 붙이기: 라이선스·성능·AI 지시서 읽는 법  | 신규하 블로그</title>
+  <meta property="og:title" content="ThreeUI의 Copy Prompt로 3D 웹 효과 붙이기: 라이선스·성능·AI 지시서 읽는 법" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-11-09"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/11/2026-11-09-threeui-copy-prompt-ai-3d-web-effects/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+  <meta property="og:tags" content="javascript" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/11/2026-11-09-threeui-copy-prompt-ai-3d-web-effects/">
+          <h1>
+            ThreeUI의 Copy Prompt로 3D 웹 효과 붙이기: 라이선스·성능·AI 지시서 읽는 법
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/11/2026-11-09-threeui-copy-prompt-ai-3d-web-effects/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>멋진 3D 스크롤 효과를 직접 만들려면 WebGL, 셰이더, 애니메이션, 반응형 레이아웃을 함께 다뤄야 한다. 개발자 김뽑희의 쇼츠는 <strong>ThreeUI</strong>에서 효과를 고르고 <code>Copy Prompt</code>를 눌러 AI 코딩 도구에 전달한 뒤, 첫 화면에 적용하는 흐름을 소개한다. 핵심은 프롬프트 한 줄이 아니라, 에이전트가 참고할 구현 지시서와 라이선스·성능 조건을 함께 전달하는 데 있다. <a href="https://youtu.be/Wbex8KoNryw?t=0">영상 00:00</a>, <a href="https://github.com/MengTo/threeui">ThreeUI Community 저장소</a></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://youtube.com/shorts/Wbex8KoNryw?si=RGcZz9EipVtNOawJ">원본 쇼츠: 이 사이트 스크롤, 복사해서 AI한테 붙여넣기</a> — 개발자 김뽑희. 한국어 자동 생성 자막을 확인했고 주요 주장에 시간 링크를 붙였다.</li>
+<li><a href="https://threeui.com/browse">ThreeUI 공식 사이트</a> — 효과 미리보기와 Copy Prompt 인터페이스.</li>
+<li><a href="https://github.com/MengTo/threeui">ThreeUI Community GitHub</a> — 공개 소스, Community 구성, 설치 범위.</li>
+<li><a href="https://github.com/MengTo/threeui/blob/main/ASSET-LICENSES.md">ThreeUI Asset Licenses</a> — 코드·이미지·폰트·Three.js·원격 미디어의 라이선스 범위.</li>
+<li><a href="https://threeui.com/pricing">ThreeUI 공식 가격 페이지</a> — 유료 구성과 가격은 변동될 수 있으므로 사용 시점에 재확인.</li>
+</ul>
+<h2 id="threeui는-효과-코드--구현-지시서-카탈로그다">ThreeUI는 “효과 코드 + 구현 지시서” 카탈로그다</h2>
+<p>영상은 ThreeUI를 3D 효과 모음으로 소개한다. 마음에 드는 효과를 열고 상단의 <code>Copy Prompt</code>를 누른 뒤, 사용 중인 AI 코딩 도구에 붙여 넣고 사이트 첫 화면에 추가해 달라고 요청한다. <a href="https://youtu.be/Wbex8KoNryw?t=8">영상 00:08</a>, <a href="https://youtu.be/Wbex8KoNryw?t=16">영상 00:16</a></p>
+<p>공식 Community 저장소는 ThreeUI가 단순한 이미지 갤러리가 아니라 React·Three.js 기반 구현과 컨트롤, 변형, 소스 탭을 포함한다고 설명한다. 따라서 에이전트에 넘기는 것은 “이런 느낌으로 만들어 줘”라는 추상적인 요구가 아니라, 특정 효과를 프로젝트에 넣고 수정·검증하기 위한 입력이다. <a href="https://github.com/MengTo/threeui">ThreeUI README</a></p>
+<pre class="mermaid">flowchart TD
+    A["ThreeUI 효과 탐색"] --> B["라이브 미리보기·변형 확인"]
+    B --> C["Copy Prompt 또는 소스 선택"]
+    C --> D["AI 코딩 도구에 전달"]
+    D --> E["프로젝트 첫 화면에 통합"]
+    E --> F["브라우저·모바일 검증"]
+    classDef browseTone fill:#c5dcef,stroke:#6d90ad,color:#333
+    classDef inputTone fill:#fde8c0,stroke:#b99b5c,color:#333
+    classDef buildTone fill:#e0c8ef,stroke:#9a77ad,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#70a98b,color:#333
+    class A,B browseTone
+    class C inputTone
+    class D,E buildTone
+    class F resultTone</pre><h2 id="copy-prompt에서-가장-중요한-문장은-무엇인가">Copy Prompt에서 가장 중요한 문장은 무엇인가</h2>
+<p>쇼츠가 강조하는 지점은 프롬프트의 내용이다. 미리보기를 보고 비슷하게 다시 만들라는 설명보다, 원본 코드와 구현 조건을 그대로 따르도록 지시하는 문장이 포함되어 있다는 것이다. <a href="https://youtu.be/Wbex8KoNryw?t=28">영상 00:28</a>, <a href="https://youtu.be/Wbex8KoNryw?t=36">영상 00:36</a></p>
+<p>이런 지시서는 보통 다음 네 가지를 묶어야 효과가 있다.</p>
+<ol>
+<li><strong>구현 범위:</strong> 어떤 컴포넌트·페이지·파일을 추가하는가.</li>
+<li><strong>행동 계약:</strong> 스크롤, 마우스, 터치, 리사이즈 때 무엇이 변하는가.</li>
+<li><strong>환경 계약:</strong> React·Three.js 버전, 에셋 경로, 이미 설치된 의존성은 무엇인가.</li>
+<li><strong>검증 계약:</strong> 데스크톱·모바일, 고해상도 화면, <code>prefers-reduced-motion</code>, 탭 비활성화, WebGL 실패를 어떻게 확인하는가.</li>
+</ol>
+<p>따라서 프롬프트를 그대로 붙여 넣기보다 프로젝트 구조와 충돌하는 부분을 먼저 바꿔야 한다. “원본 코드 그대로”라는 문장은 해당 소스의 라이선스와 파일 경로를 지키라는 뜻이지, 프로젝트의 모든 규칙을 무시하라는 뜻이 아니다. <a href="https://youtu.be/Wbex8KoNryw?t=36">영상 00:36</a></p>
+<pre class="mermaid">flowchart TD
+    A["Copy Prompt"] --> B["구현 범위"]
+    A --> C["행동 계약"]
+    A --> D["환경 계약"]
+    A --> E["검증 계약"]
+    B --> F["프로젝트 규칙과 대조"]
+    C --> F
+    D --> F
+    E --> F
+    F --> G["승인된 통합 계획"]
+    classDef promptTone fill:#c5dcef,stroke:#6d90ad,color:#333
+    classDef contractTone fill:#e0c8ef,stroke:#9a77ad,color:#333
+    classDef checkTone fill:#fde8c0,stroke:#b99b5c,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#70a98b,color:#333
+    class A promptTone
+    class B,C,D,E contractTone
+    class F checkTone
+    class G resultTone</pre><h2 id="무료-community와-유료-pro를-분리해서-읽기">무료 Community와 유료 Pro를 분리해서 읽기</h2>
+<p>쇼츠는 카드에 <code>Pro</code>가 붙은 효과는 유료이고, <code>Free</code> 효과는 무료라고 설명하며 영상 시점의 연간 가격으로 199달러를 언급한다. 가격과 구성은 바뀔 수 있으므로 결제 전 공식 가격 페이지를 확인해야 한다. <a href="https://youtu.be/Wbex8KoNryw?t=49">영상 00:49</a>, <a href="https://threeui.com/pricing">ThreeUI 가격 페이지</a></p>
+<p>GitHub의 Community README는 공개 버전에 Community 컴포넌트와 변형, 구현 소스가 포함되고 Pro·Beta 구현은 포함되지 않는다고 명시한다. Asset Licenses는 Community 코드와 ThreeUI가 만든 이미지·텍스처·장면 자산의 범위, 포함된 폰트의 SIL Open Font License, Three.js의 MIT 라이선스를 각각 구분한다. <a href="https://github.com/MengTo/threeui">ThreeUI README</a>, <a href="https://github.com/MengTo/threeui/blob/main/ASSET-LICENSES.md">Asset Licenses</a></p>
+<p>라이선스는 카드의 <code>Free</code> 표기만 보고 판단하면 안 된다. 다음을 확인해야 한다.</p>
+<ul>
+<li>사용하는 컴포넌트가 Community인지 Pro인지</li>
+<li>코드·이미지·텍스처·폰트가 각각 어떤 라이선스인지</li>
+<li>공식 사이트의 원격 썸네일·미리보기 영상을 그대로 재배포하는지</li>
+<li>MIT 라이선스의 저작권·허가 고지를 보존했는지</li>
+<li>유료 소스의 사용 권한과 프로젝트 배포 조건이 충족되는지</li>
+</ul>
+<p>영상은 무료 효과가 공개 라이선스라 상업 사이트에도 쓸 수 있다고 설명하지만, 실제 배포 전에는 해당 컴포넌트와 자산의 최신 라이선스 파일을 읽어야 한다. <a href="https://youtu.be/Wbex8KoNryw?t=55">영상 00:55</a></p>
+<pre class="mermaid">flowchart TD
+    A["선택한 ThreeUI 효과"] --> B{"Community인가?"}
+    B -->|"예"| C["코드·자산 라이선스 확인"]
+    B -->|"아니오"| D["Pro 약관·구매 권한 확인"]
+    C --> E["폰트·Three.js·원격 미디어 분리"]
+    D --> E
+    E --> F["배포물 고지·출처 기록"]
+    classDef sourceTone fill:#c5dcef,stroke:#6d90ad,color:#333
+    classDef decisionTone fill:#fde8c0,stroke:#b99b5c,color:#333
+    classDef licenseTone fill:#e0c8ef,stroke:#9a77ad,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#70a98b,color:#333
+    class A sourceTone
+    class B decisionTone
+    class C,D,E licenseTone
+    class F resultTone</pre><h2 id="3d-효과는-첫-화면의-성능-예산을-먹는다">3D 효과는 첫 화면의 성능 예산을 먹는다</h2>
+<p>쇼츠는 소개한 무료 효과가 그림 15장과 약 3.4MB를 포함해 무거울 수 있다고 말하며, 사이트 전체에 깔기보다 첫 화면 하나에 쓰는 편이 좋다고 조언한다. <a href="https://youtu.be/Wbex8KoNryw?t=66">영상 01:06</a>, <a href="https://youtu.be/Wbex8KoNryw?t=72">영상 01:12</a></p>
+<p>파일 크기는 시작점일 뿐이다. Three.js와 WebGL 효과는 GPU 프레임 시간, 텍스처 메모리, 초기 셰이더 컴파일, 모바일 발열과 배터리까지 영향을 준다. 첫 화면에 3D를 넣을 때는 다음 순서를 지키는 것이 안전하다.</p>
+<ol>
+<li>정적 이미지나 CSS 대체 화면을 먼저 준비한다.</li>
+<li>효과를 지연 로드하고 뷰포트에 들어올 때 초기화한다.</li>
+<li>화면이 보이지 않거나 탭이 백그라운드면 애니메이션을 줄이거나 멈춘다.</li>
+<li><code>prefers-reduced-motion</code> 사용자는 정적 상태나 짧은 전환으로 대체한다.</li>
+<li>중급 모바일 기기에서 첫 콘텐츠 표시 시간과 프레임 시간을 측정한다.</li>
+</ol>
+<pre class="mermaid">flowchart TD
+    A["3D 효과 선택"] --> B["파일·텍스처 크기 확인"]
+    B --> C["지연 로드·뷰포트 진입"]
+    C --> D["WebGL 렌더링"]
+    D --> E{"기기·접근성 조건"}
+    E -->|"일반 환경"| F["애니메이션 유지"]
+    E -->|"저사양·감소 모션"| G["정적·저강도 대체"]
+    F --> H["프레임·배터리 측정"]
+    G --> H
+    classDef inputTone fill:#c5dcef,stroke:#6d90ad,color:#333
+    classDef loadTone fill:#e0c8ef,stroke:#9a77ad,color:#333
+    classDef decisionTone fill:#fde8c0,stroke:#b99b5c,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#70a98b,color:#333
+    class A,B inputTone
+    class C,D loadTone
+    class E decisionTone
+    class F,G,H resultTone</pre><h2 id="ai-코딩-도구에-넣을-때의-안전한-요청-구조">AI 코딩 도구에 넣을 때의 안전한 요청 구조</h2>
+<p>ThreeUI 프롬프트를 붙여 넣고 “첫 화면에 넣어 줘”라고만 요청하면, 에이전트가 기존 레이아웃·번들·라우팅을 깨뜨릴 수 있다. 다음처럼 요청을 단계로 나누는 편이 좋다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>1. 현재 프로젝트의 프레임워크와 첫 화면 진입 파일을 먼저 확인한다.
+</span></span><span style="display:flex;"><span>2. ThreeUI 컴포넌트의 라이선스와 필요한 파일을 기록한다.
+</span></span><span style="display:flex;"><span>3. 기존 스타일·라우팅·빌드 규칙을 바꾸지 않는 통합 계획을 제시한다.
+</span></span><span style="display:flex;"><span>4. 컴포넌트를 별도 모듈로 추가하고, 원본 자산 경로를 유지한다.
+</span></span><span style="display:flex;"><span>5. 데스크톱·모바일·prefers-reduced-motion·WebGL 실패를 검증한다.
+</span></span><span style="display:flex;"><span>6. 변경 파일, 번들 크기, 실행 방법과 남은 위험을 요약한다.
+</span></span></code></pre></div><p>이 요청은 AI에게 미리보기의 분위기를 흉내 내라고 하는 대신, 실제 코드와 검증 계약을 프로젝트 안에 통합하도록 유도한다. 특히 원본 코드와 자산을 복사한 뒤 상대 경로가 깨지는 경우가 많으므로, 로컬 파일·CDN·원격 미디어의 출처를 각각 확인해야 한다. <a href="https://github.com/MengTo/threeui">ThreeUI README</a></p>
+<h2 id="실전-적용-포인트">실전 적용 포인트</h2>
+<ol>
+<li><strong>무료 Community 효과 하나만 고른다.</strong> 여러 3D 효과를 동시에 넣지 말고 첫 화면에서 제품 메시지를 강화하는 하나를 선택한다. <a href="https://youtu.be/Wbex8KoNryw?t=55">영상 00:55</a></li>
+<li><strong>Copy Prompt를 프로젝트 명세로 변환한다.</strong> 구현 파일, 의존성, 에셋 경로, 반응형·접근성·검증 조건을 현재 저장소에 맞게 수정한다.</li>
+<li><strong>라이선스를 파일 단위로 기록한다.</strong> 코드·이미지·폰트·원격 미디어를 분리하고 배포물에 필요한 고지를 남긴다. <a href="https://github.com/MengTo/threeui/blob/main/ASSET-LICENSES.md">Asset Licenses</a></li>
+<li><strong>3D를 지연 로드한다.</strong> 첫 화면이 아닌 아래 구간의 효과는 Intersection Observer 같은 진입 조건 뒤에 초기화하고, 정적 폴백을 준비한다.</li>
+<li><strong>모바일과 감소 모션을 먼저 테스트한다.</strong> 데스크톱에서 멋져 보여도 GPU 메모리·프레임 저하·멀미 문제가 있을 수 있다.</li>
+<li><strong>유료 기능을 무료 소스로 착각하지 않는다.</strong> <code>Pro</code> 카드, CLI, MCP와 Community npm 소스의 권한을 각각 확인한다. <a href="https://threeui.com/pricing">ThreeUI 가격 페이지</a></li>
+</ol>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>ThreeUI의 <code>Copy Prompt</code>는 단순한 디자인 설명이 아니라 컴포넌트 구현과 검증을 에이전트에 전달하는 작업 지시서다. <a href="https://youtu.be/Wbex8KoNryw?t=28">영상 00:28</a></li>
+<li>Community와 Pro는 소스·자산·사용 권한이 다르므로 카드 표기와 최신 라이선스를 확인해야 한다. <a href="https://github.com/MengTo/threeui">ThreeUI README</a></li>
+<li>3D 효과는 이미지 용량뿐 아니라 WebGL 프레임 시간, GPU 메모리, 배터리, 접근성까지 고려해야 한다. <a href="https://youtu.be/Wbex8KoNryw?t=66">영상 01:06</a></li>
+<li>가장 안전한 도입 순서는 효과 하나 선택 → 라이선스 기록 → 별도 모듈 통합 → 모바일·감소 모션·WebGL 실패 검증이다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>ThreeUI가 줄여 주는 것은 3D 효과를 처음부터 설계하는 시간이지, 프론트엔드 검증을 없애는 일이 아니다. <code>Copy Prompt</code>를 프로젝트 명세로 번역하고, Community·Pro 라이선스와 원격 자산의 경계를 확인한 뒤, 첫 화면의 성능 예산 안에서 하나의 효과만 운영하자. 그러면 AI 코딩 도구는 막연한 “멋진 3D” 생성기가 아니라, 검증 가능한 시각 컴포넌트를 통합하는 구현 파트너가 된다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 11월 09일 11시 10분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/web">Web</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/11/2026-11-09-deepseek-v4-pro-qwen35-9b-heretic-model-card/" rel="prev">
+        <span>무검열 9B 모델의 성능 주장을 읽는 법: DeepSeek 증류·Heretic ARA·로컬 추론</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/11/2026-11-09-scenario-agent-skills-game-assets/" rel="next">
+        <span>Scenario Agent Skills로 게임 이미지·영상·3D 자산 만들기</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#threeui는-효과-코드--구현-지시서-카탈로그다">ThreeUI는 “효과 코드 + 구현 지시서” 카탈로그다</a></li>
+    <li><a href="#copy-prompt에서-가장-중요한-문장은-무엇인가">Copy Prompt에서 가장 중요한 문장은 무엇인가</a></li>
+    <li><a href="#무료-community와-유료-pro를-분리해서-읽기">무료 Community와 유료 Pro를 분리해서 읽기</a></li>
+    <li><a href="#3d-효과는-첫-화면의-성능-예산을-먹는다">3D 효과는 첫 화면의 성능 예산을 먹는다</a></li>
+    <li><a href="#ai-코딩-도구에-넣을-때의-안전한-요청-구조">AI 코딩 도구에 넣을 때의 안전한 요청 구조</a></li>
+    <li><a href="#실전-적용-포인트">실전 적용 포인트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+    <a href="/tags/javascript/" class="badge badge-secondary">Javascript</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made with by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+  $(function () {
+    if (window.VANTA) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
