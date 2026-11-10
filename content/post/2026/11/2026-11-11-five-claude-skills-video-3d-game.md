@@ -1,0 +1,169 @@
+---
+title: "영상·3D·게임 제작을 바꾸는 Claude 스킬 5가지의 역할 분담"
+date: 2026-11-11T11:20:00+09:00
+draft: false
+categories:
+  - Developer Tools
+tags:
+  - claude-code
+  - agents
+  - skills
+description: "Threads에서 추천한 OpenMontage, GSAP Skills, Anatomy, awesome-gamedev-agent-skills, sprite-gen을 공식 저장소 기준으로 비교한다. 기능·설치·라이선스·모델 비용을 구분해 영상·3D·게임 제작에 맞는 조합을 제안한다."
+---
+
+Claude Code로 영상이나 게임을 만들 때 결과를 좌우하는 것은 모델 이름만이 아니다. 에이전트가 어떤 도구를 어떤 순서로 사용해야 하는지 알려 주는 **스킬**이 작업의 품질과 재현성을 결정한다. [Threads 게시물](https://www.threads.com/share/BAWQpjnOaW)은 영상·모션·3D 설명 그림·게임 제작에 유용한 오픈소스 스킬 다섯 가지를 추렸고, 이 글은 각 공식 저장소의 기능·라이선스·설치 조건을 기준으로 사용처를 정리한다.
+
+<!--more-->
+
+## Sources
+
+- [입력 Threads 게시물](https://www.threads.com/share/BAWQpjnOaW)
+- [OpenMontage](https://github.com/Open-Montage-app/OpenMontage)
+- [GSAP Skills](https://github.com/greensock/gsap-skills)
+- [Anatomy](https://github.com/wheresryan22/anatomy)
+- [awesome-gamedev-agent-skills](https://github.com/gamedev-skills/awesome-gamedev-agent-skills)
+- [sprite-gen](https://github.com/aldegad/sprite-gen)
+
+## 다섯 스킬은 서로 다른 제작 계층을 담당한다
+
+다섯 저장소를 한꺼번에 설치한다고 같은 기능이 중복되는 것은 아니다. OpenMontage는 조사·대본·자산·편집·렌더를 묶는 최상위 영상 파이프라인이고, GSAP Skills는 웹·모션 타임라인의 구현 지침이다. Anatomy는 기술 개념을 설명하는 인터랙티브 SVG/WebGL 그림, awesome-gamedev-agent-skills는 게임 엔진별 작업 라우터, sprite-gen은 한 장의 캐릭터 그림을 게임용 애니메이션 아틀라스로 바꾸는 제작 도구다.
+
+```mermaid
+flowchart TD
+    A["제작 목표"] --> B{"어떤 결과물인가?"}
+    B -->|"영상 전체"| C["OpenMontage"]
+    B -->|"웹 모션·스크롤"| D["GSAP Skills"]
+    B -->|"기술 설명 그림"| E["Anatomy"]
+    B -->|"게임 코드·엔진"| F["GameDev Skills Router"]
+    B -->|"2D 캐릭터 아틀라스"| G["sprite-gen"]
+    C --> H["완성 영상"]
+    D --> H
+    E --> I["SVG·HTML·React 설명 그림"]
+    F --> J["엔진별 게임 프로젝트"]
+    G --> J
+    classDef inputTone fill:#c5dcef,stroke:#6d90ad,color:#333
+    classDef skillTone fill:#e0c8ef,stroke:#9a77ad,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#70a98b,color:#333
+    class A,B inputTone
+    class C,D,E,F,G skillTone
+    class H,I,J outputTone
+```
+
+따라서 선택 순서는 “인기 순위”가 아니라 출력물과 편집 경계에서 정해야 한다. 웹페이지의 스크롤 애니메이션만 필요하면 GSAP만으로 충분하고, Unity 게임을 만들면서 캐릭터 스프라이트가 필요하면 게임 스킬 라우터와 sprite-gen을 조합하는 식이다.
+
+## 1. OpenMontage: 조사부터 최종 영상까지
+
+OpenMontage는 AI 코딩 어시스턴트를 영상 제작 스튜디오로 바꾸는 AGPL-3.0 프로젝트다. 저장소는 12개 제작 파이프라인, 52개 도구, 400개 이상의 에이전트 스킬을 제공한다고 설명하며, 익스플레이너·토킹 헤드·팟캐스트·다큐멘터리·현지화·시네마틱 티저 등을 다룬다. 무료 스톡과 공개 아카이브의 실제 영상을 찾아 편집할 수 있고, Remotion·HyperFrames·FFmpeg 등을 상황에 맞게 선택한다.
+
+에이전트는 먼저 웹 검색으로 사실을 조사하고, 파이프라인 매니페스트와 단계별 감독 스킬을 읽은 뒤, Python 도구를 호출한다. 이후 비용·대안·결정 로그를 저장하고, 사전 구성 검증과 렌더 후 `ffprobe`·프레임·오디오 분석을 통과해야 최종 결과를 제시한다. 단순 이미지 슬라이드가 아니라 실제 영상 소스를 검색·편집할 수 있다는 점이 차별점이다.
+
+```mermaid
+flowchart TD
+    A["영상 브리프"] --> B["웹 조사·사실 검증"]
+    B --> C["대본·샷·자산 계획"]
+    C --> D["도구·비용·공급자 선택"]
+    D --> E["Remotion·HyperFrames·FFmpeg 렌더"]
+    E --> F["ffprobe·프레임·오디오 자체 리뷰"]
+    F --> G{"품질 게이트 통과?"}
+    G -->|"아니오"| C
+    G -->|"예"| H["최종 영상"]
+    classDef inputTone fill:#c5dcef,stroke:#6d90ad,color:#333
+    classDef processTone fill:#e0c8ef,stroke:#9a77ad,color:#333
+    classDef gateTone fill:#fde8c0,stroke:#b99b5c,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#70a98b,color:#333
+    class A inputTone
+    class B,C,D,E,F processTone
+    class G gateTone
+    class H outputTone
+```
+
+라이선스는 다섯 후보 중 가장 주의해야 한다. 저장소 코드가 AGPL-3.0이므로 수정·배포 방식과 결합물의 공개 의무를 프로젝트 정책과 함께 검토해야 한다. 또한 영상에 포함하는 스톡·아카이브·음성·음악의 라이선스는 OpenMontage 자체 라이선스와 별개다. 유료 생성 모델을 쓰지 않는 경로도 있지만, Pexels·Unsplash 같은 일부 공급자 키나 외부 모델 비용이 필요할 수 있다.
+
+## 2. GSAP Skills: 타임라인과 ScrollTrigger를 에이전트에게 가르치기
+
+`greensock/gsap-skills`는 GSAP 팀이 직접 관리하는 MIT 라이선스 스킬이다. 핵심 API, 타임라인, ScrollTrigger, 플러그인, React/Vue/Svelte, vanilla JS, 성능 패턴을 에이전트가 올바르게 사용하도록 지침을 제공한다. GSAP은 Webflow 인수 이후 과거 Club GSAP 플러그인을 포함해 모든 플러그인을 무료로 제공한다고 README에 적고 있다.
+
+권장 설치는 다음과 같다.
+
+```bash
+npx skills add https://github.com/greensock/gsap-skills
+```
+
+Claude Code에서는 `/plugin marketplace add greensock/gsap-skills` 후 플러그인을 설치할 수 있다. 이 스킬의 역할은 영상을 자동으로 만들어 주는 것이 아니라, 에이전트가 `gsap.timeline()`과 ScrollTrigger의 생명주기·정리·프레임워크 연동을 틀리지 않도록 하는 것이다. 이미 다른 애니메이션 라이브러리를 선택한 프로젝트라면 에이전트가 GSAP으로 강제 전환하지 않도록 범위를 명확히 적어야 한다.
+
+## 3. Anatomy: 기술 개념을 움직이는 기계로 설명하기
+
+Anatomy는 MIT 라이선스의 에이전트 스킬로, 추상적인 기술 개념을 실제로 작동하는 등각 투영 기계로 표현한다. 저장소 예시처럼 캐시 키가 모든 핀이 맞아야 돌아가는 자물쇠가 되거나, 하나의 GPU 컨텍스트가 여러 캔버스를 서비스하는 구조가 갠트리 플로터로 표현된다. 결과물은 SVG, WebGL 효과, 선택적 3D 모션을 포함한 인터랙티브 그림이며, 표시되는 값과 움직이는 부품이 같은 작은 모델에서 나오도록 설계된다.
+
+```mermaid
+flowchart TD
+    A["기술 개념·데이터"] --> B["물리적 비유 설계"]
+    B --> C["등각 SVG 부품"]
+    C --> D["WebGL 셰이더·선택적 3D"]
+    D --> E["공유 모델 기반 모션·수치"]
+    E --> F["HTML·SVG·React 결과"]
+    classDef inputTone fill:#c5dcef,stroke:#6d90ad,color:#333
+    classDef designTone fill:#e0c8ef,stroke:#9a77ad,color:#333
+    classDef renderTone fill:#fde8c0,stroke:#b99b5c,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#70a98b,color:#333
+    class A inputTone
+    class B,C designTone
+    class D,E renderTone
+    class F outputTone
+```
+
+Anatomy는 문서·블로그·랜딩 페이지에서 개념을 시각화할 때 유용하지만, 생성된 그림이 공학 시뮬레이션이나 실제 수치 모델의 인증 결과는 아니다. 모델·레이블·동작이 설명과 일치하는지 사람이 검토하고, WebGL과 실험적 3D 모드가 대상 브라우저에서 동작하는지 확인해야 한다. 설치는 `npx skills add wheresryan22/anatomy --skill anatomy`이며 Node.js와 에이전트별 설치 위치를 확인해야 한다.
+
+## 4. awesome-gamedev-agent-skills: 엔진별 스킬 라우터
+
+`gamedev-skills/awesome-gamedev-agent-skills`는 Apache-2.0 라이선스의 77개 게임 개발 스킬 묶음이다. Godot, Unity, Unreal, Ebitengine, Phaser, PixiJS, three.js, Bevy, pygame, LÖVE, Defold, Roblox를 지원하며, 사용자가 모든 스킬을 직접 고르는 대신 라우터가 엔진과 작업을 감지해 필요한 `SKILL.md`만 불러온다.
+
+스킬은 아트 디렉션, 절차 생성, UI, 테스트, 엔진별 API처럼 서로 다른 관심사를 분리하고, 엔진 버전을 명시한 문서와 validator를 사용한다. 따라서 새 게임을 시작할 때 “Unity로 인벤토리 UI를 만들고 저장 테스트를 추가해 줘”처럼 엔진·작업·검증 기준을 함께 주면 라우터의 장점을 살릴 수 있다. 77개 파일을 모두 컨텍스트에 넣는 번들이 아니라 필요할 때 선택적으로 로드하는 방식이라는 점이 핵심이다.
+
+```mermaid
+flowchart TD
+    A["게임 요청"] --> B["엔진·작업 감지"]
+    B --> C["Godot·Unity·Unreal·Web 등 선택"]
+    C --> D["해당 SKILL.md 로드"]
+    D --> E["버전·아트·코드·테스트 규칙 적용"]
+    E --> F["게임 코드·에셋·검증"]
+    classDef inputTone fill:#c5dcef,stroke:#6d90ad,color:#333
+    classDef routeTone fill:#e0c8ef,stroke:#9a77ad,color:#333
+    classDef ruleTone fill:#fde8c0,stroke:#b99b5c,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#70a98b,color:#333
+    class A inputTone
+    class B,C routeTone
+    class D,E ruleTone
+    class F outputTone
+```
+
+## 5. sprite-gen: 한 장의 그림을 게임용 아틀라스로 바꾸기
+
+`aldegad/sprite-gen`은 Apache-2.0 라이선스의 Codex·Claude 스킬이다. 한 장의 캐릭터 그림을 상태별 행(row)으로 구성하고, 알파 배경을 정리하고, 프레임을 추출해 런타임 아틀라스나 투명 모션 루프로 만든다. 저장소는 단순히 “sprite sheet를 생성해 달라”고 요청하면 얼굴 변화·배경 잔여물·프레임 드리프트·그리드 이탈이 생길 수 있으므로, 컴포넌트 행과 정리·검증 단계를 분리했다고 설명한다.
+
+이미지 생성은 내장 이미지 모델이 아니라 Codex·Grok·OpenAI 등의 공급자와 사용자의 로그인/API 키를 사용한다. 따라서 Apache-2.0 코드 라이선스와 생성 모델의 구독·API 과금, 결과 이미지의 모델별 사용 조건을 따로 확인해야 한다. Python 3.11 이상이 필요하고, 한국어 README도 제공된다.
+
+## 설치 순서와 비용 판단
+
+스레드가 제안한 `npx skills add <저장소>`는 GSAP Skills, Anatomy, 게임 스킬 묶음에 적합한 공통 설치 경로다. OpenMontage는 별도 데스크톱/CLI 설치와 Python·FFmpeg·렌더 도구 구성이 필요하고, sprite-gen은 Python 환경과 이미지·영상 생성 공급자 인증이 필요하다. 따라서 다섯 개를 한 번에 설치하기보다 다음처럼 결과물에 맞춰 시작하는 편이 낫다.
+
+1. **웹 모션**: GSAP Skills부터 설치하고 프로젝트의 프레임워크·브라우저 타깃을 명시한다.
+2. **기술 문서 시각화**: Anatomy를 설치하고 그림이 설명하는 모델과 검증 수치를 먼저 정의한다.
+3. **게임 프로토타입**: awesome-gamedev-agent-skills를 설치해 엔진과 테스트 규칙을 고정한다.
+4. **캐릭터 애니메이션**: sprite-gen을 추가하고 이미지 공급자 비용·라이선스를 확인한다.
+5. **영상 제작**: OpenMontage를 마지막에 붙여 조사·대본·자산·편집·렌더 파이프라인을 연결한다.
+
+이 조합은 “오픈소스이므로 무료”라는 오해를 피해야 한다. 저장소 라이선스는 스킬 코드의 권한이고, 모델 호출·스톡 API·음악·영상 자산·배포 플랫폼에는 별도 비용과 조건이 있다. 특히 OpenMontage의 AGPL-3.0과 나머지 MIT/Apache-2.0의 의무가 다르므로 회사 프로젝트의 배포 방식과 법무 검토 범위를 먼저 정해야 한다.
+
+## 핵심 요약
+
+- OpenMontage는 조사부터 최종 영상 리뷰까지 맡는 AGPL-3.0 제작 파이프라인이다.
+- GSAP Skills는 GSAP 타임라인·ScrollTrigger·플러그인을 에이전트가 올바르게 구현하도록 돕는 MIT 스킬이다.
+- Anatomy는 기술 개념을 SVG·WebGL·3D 등각 기계로 설명하며, 결과의 정확성은 사람이 검토해야 한다.
+- awesome-gamedev-agent-skills는 77개 엔진·작업 스킬을 라우팅하는 Apache-2.0 묶음이다.
+- sprite-gen은 한 장의 그림을 상태 행·알파 정리·프레임 추출·런타임 아틀라스로 변환하는 Apache-2.0 스킬이다.
+- 코드 라이선스와 모델/API·스톡·음악·생성 결과의 사용 조건은 서로 별개다.
+
+## 결론
+
+다섯 스킬은 “Claude에게 무엇이든 시키는 프롬프트 모음”이 아니라 영상·모션·설명 그림·게임·스프라이트라는 제작 계층별 운영 지침이다. 먼저 목표 출력물과 편집 경계를 정하고 필요한 스킬만 설치하면 컨텍스트와 비용을 줄이면서도 결과 검증을 체계화할 수 있다. 반대로 라이선스와 외부 모델 비용을 확인하지 않고 모두 묶으면 오픈소스라는 장점보다 배포 단계의 법적·운영 리스크가 커진다.
