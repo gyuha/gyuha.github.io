@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude Code에서 Fable Advisor로 모델 비용을 줄이는 구조'" />
+  <title>Claude Code에서 Fable Advisor로 모델 비용을 줄이는 구조  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude Code에서 Fable Advisor로 모델 비용을 줄이는 구조" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-11-14"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/11/2026-11-14-claude-code-advisor-model-routing/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="agents" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/11/2026-11-14-claude-code-advisor-model-routing/">
+          <h1>
+            Claude Code에서 Fable Advisor로 모델 비용을 줄이는 구조
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/11/2026-11-14-claude-code-advisor-model-routing/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>강한 모델을 모든 턴에 사용하는 대신, 대부분의 작업은 저렴한 모델이 처리하고 어려운 결정만 더 강한 모델에 넘기는 방법이 있다. X 게시물은 이를 “Fable 5.2가 생각하고, Sonnet 5.5가 만들고, Opus 5.5가 검토하고, Haiku 5.5가 하위 작업을 조정한다”는 구조로 소개한다.</p>
+<p>핵심은 Fable을 주 모델로 계속 돌리지 않고 <strong>Claude Code의 advisor 기능으로 필요한 순간에만 호출하는 것</strong>이다. X 게시물의 비용 절감 수치와 198회 실험 결과는 원문 작성자의 주장으로 표시하고, 실제 설정과 모델 호환성은 Anthropic 공식 문서를 기준으로 설명한다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://x.com/angeldot_/status/2121262061170692468?a=Kj5hNZFnJcoAX0C1rE8&amp;s=35">X 원문 — Fable·Sonnet·Opus·Haiku 모델 라우팅</a> (FxTwitter API·X oEmbed로 본문 추출)</li>
+<li><a href="https://code.claude.com/docs/en/advisor">Claude Code 공식 문서 — advisor 도구</a></li>
+<li><a href="https://www.anthropic.com/claude-opus-5-5">Anthropic — Claude Opus 5.5 소개</a></li>
+<li><a href="https://docs.anthropic.com/en/docs/claude-code/cli-usage">Claude Code 공식 CLI 문서</a></li>
+</ul>
+<h2 id="모델을-한-줄로-배치하면">모델을 한 줄로 배치하면</h2>
+<p>X 게시물의 제안은 모델마다 역할을 분리한다.</p>
+<ul>
+<li><strong>Fable 5.2</strong>: 계획을 닫기 전, 같은 오류가 반복될 때, 완료 선언 전에 조언한다.</li>
+<li><strong>Sonnet 5.5</strong>: 일반적인 코딩과 파일 변경을 수행하는 주 실행 모델이다.</li>
+<li><strong>Opus 5.5</strong>: 별도의 검토자 또는 더 강한 advisor로 복잡한 판단을 확인한다.</li>
+<li><strong>Haiku 5.5</strong>: 조사·검색·요약처럼 병렬화하기 쉬운 하위 작업을 맡긴다.</li>
+</ul>
+<p>공식 advisor 문서가 보장하는 것은 “주 모델이 작업을 수행하고, 더 강한 모델을 의사결정 시점에 서버 측 advisor로 호출한다”는 구조다. advisor는 전체 대화와 도구 호출 결과를 읽고 조언을 반환하며, Claude Code가 언제 호출할지 결정한다. X 게시물의 “항상 이 순서로 네 모델이 실행된다”는 표현은 이 공식 기능 위에 subagent·검토 프롬프트를 추가한 운영 패턴으로 이해하는 편이 정확하다. (<a href="https://code.claude.com/docs/en/advisor">Claude Code advisor 공식 문서</a>)</p>
+<pre class="mermaid">flowchart TD
+    A["사용자 작업"] --> B["Sonnet 5.5\n주 실행 모델"]
+    B --> C{"어려운 결정인가?"}
+    C -->|"예"| D["Fable 5.2\nadvisor 조언"]
+    C -->|"아니오"| E["계속 실행"]
+    D --> E
+    E --> F["Opus 5.5\n선택적 독립 검토"]
+    B --> G["Haiku 5.5\n하위 조사·병렬 작업"]
+    G --> B
+    F --> H["최종 결과"]
+    E --> H
+    classDef inputTone fill:#c5dcef,stroke:#4b78a8,color:#333
+    classDef mainTone fill:#c0ecd3,stroke:#4d9362,color:#333
+    classDef advisorTone fill:#e0c8ef,stroke:#7b4fa3,color:#333
+    classDef subTone fill:#fde8c0,stroke:#b88728,color:#333
+    class A inputTone
+    class B,E,H mainTone
+    class C,D,F advisorTone
+    class G subTone</pre><h2 id="advisor는-언제-호출되는가">Advisor는 언제 호출되는가</h2>
+<p>공식 문서에 따르면 advisor는 접근 방식을 확정하기 전, 같은 오류가 반복될 때, 작업 완료를 선언하기 전에 호출되는 경향이 있다. 호출 시점은 고정 규칙이 아니라 모델이 결정하며, 프롬프트에서 “계속하기 전에 advisor에게 검토를 요청하라”고 명시할 수도 있다. ( <a href="https://code.claude.com/docs/en/advisor#when-claude-consults-the-advisor">Advisor 호출 시점</a>)</p>
+<p>이 방식은 짧은 파일 수정처럼 계획 비용이 작은 작업보다 대규모 리팩터링, 반복 디버깅, 독립적인 완료 검사가 필요한 작업에 적합하다. 매 턴 강한 모델을 실행하는 대신 대부분의 턴을 Sonnet으로 처리하고, 실패 확률이 높은 경계에서만 Fable이나 Opus를 부른다.</p>
+<pre class="mermaid">sequenceDiagram
+    participant U as 사용자
+    participant S as Sonnet 주 모델
+    participant F as Fable advisor
+    participant O as Opus 검토
+    U->>S: 작업 요청
+    S->>S: 계획·도구 실행
+    S->>F: 어려운 결정 또는 반복 오류 상담
+    F-->>S: 조언 반환
+    S->>S: 조언 반영 후 구현
+    S->>O: 독립 검토 요청(선택)
+    O-->>S: 결함·개선점 반환
+    S-->>U: 결과·검증 증거</pre><h2 id="claude-code에서-advisor-설정하기">Claude Code에서 advisor 설정하기</h2>
+<p>공식 문서는 세 가지 설정 방법을 제공한다.</p>
+<h3 id="세션-안에서-advisor">세션 안에서 <code>/advisor</code></h3>
+<p>대화 중 <code>/advisor</code>를 입력하면 사용 가능한 advisor 모델을 고를 수 있다. 예를 들어 <code>/advisor fable</code> 또는 <code>/advisor opus</code>처럼 지정하며, <code>/advisor off</code>로 끌 수 있다. 선택은 사용자 설정의 <code>advisorModel</code>에 저장되어 이후 세션에도 적용될 수 있다. (<a href="https://code.claude.com/docs/en/advisor#use-the-advisor-command"><code>/advisor</code> 명령</a>)</p>
+<h3 id="사용자-설정-파일">사용자 설정 파일</h3>
+<p>모든 프로젝트에 기본 advisor를 적용하려면 사용자 설정에 다음과 같이 둔다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;advisorModel&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;fable&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><p>실제 설정 파일의 위치와 기존 옵션은 설치 방식과 Claude Code 버전에 따라 다를 수 있으므로, 현재 공식 설정 문서를 확인하고 기존 파일을 백업한 뒤 수정해야 한다. (<a href="https://code.claude.com/docs/en/advisor#set-advisormodel-in-settings">설정 방법</a>)</p>
+<h3 id="한-세션에서만---advisor">한 세션에서만 <code>--advisor</code></h3>
+<p>저장된 설정을 바꾸지 않고 한 번만 advisor를 사용하려면 다음처럼 실행한다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>claude --advisor fable
+</span></span></code></pre></div><p>Fable 5.2 advisor는 Claude Code v2.1.321 이상을 요구한다. 공식 문서는 <code>claude update</code>로 최신 버전을 설치할 수 있다고 안내하지만, 업데이트 전에 현재 프로젝트와 설정을 백업하고 변경 로그를 확인하는 것이 안전하다. (<a href="https://docs.anthropic.com/en/docs/claude-code/cli-usage">CLI 문서</a>, <a href="https://code.claude.com/docs/en/advisor#choose-an-advisor-model">모델 호환성</a>)</p>
+<pre class="mermaid">flowchart TD
+    A["advisor 설정"] --> B{"적용 범위"}
+    B -->|"현재 세션"| C["claude --advisor fable"]
+    B -->|"현재 대화"| D["/advisor fable"]
+    B -->|"모든 사용자 프로젝트"| E["advisorModel 설정"]
+    C --> F["호환성 검사"]
+    D --> F
+    E --> F
+    F --> G{"주 모델이 지원하는가?"}
+    G -->|"예"| H["advisor 활성화"]
+    G -->|"아니오"| I["advisor 없이 실행·오류 확인"]
+    classDef inputTone fill:#c5cfe4,stroke:#4b78a8,color:#333
+    classDef configTone fill:#e0c8ef,stroke:#7b4fa3,color:#333
+    classDef checkTone fill:#fde8c0,stroke:#b88728,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#4d9362,color:#333
+    class A,B inputTone
+    class C,D,E configTone
+    class F,G checkTone
+    class H,I resultTone</pre><h2 id="모델-호환성과-fable--sonnet의-실제-의미">모델 호환성과 “Fable + Sonnet”의 실제 의미</h2>
+<p>Advisor는 아무 모델 조합이나 허용하지 않는다. 공식 호환성 표에서 Sonnet 5.5 주 모델은 Fable, Opus 5 이상, Sonnet 5.5를 advisor로 사용할 수 있다. Opus 5.5 주 모델은 Fable 또는 Opus 5 이상을 advisor로 쓸 수 있다. Fable 5.2 주 모델은 Fable 계열만 advisor로 허용된다. (<a href="https://code.claude.com/docs/en/advisor#choose-an-advisor-model">호환 모델 표</a>)</p>
+<p>따라서 X 게시물의 “Sonnet이 만들고 Fable이 조언한다”는 조합은 공식 문서의 지원 범위와 맞는다. 반면 “Opus가 매번 리뷰한다”와 “Haiku가 항상 swarm을 조정한다”는 부분은 advisor 기능이 자동으로 보장하는 동작이 아니다. Opus 검토는 명시적인 검토 단계나 별도 subagent로 설계해야 하고, Haiku 병렬 조사는 Claude Code의 subagent 설정과 작업 분해가 필요하다.</p>
+<h2 id="비용-절감은-호출-빈도와-작업-분해의-함수다">비용 절감은 호출 빈도와 작업 분해의 함수다</h2>
+<p>X 게시물은 Fable을 의사결정 시점에만 호출하면 약 3.4배 저렴해지고, Haiku가 Fable보다 토큰 비용이 80배 낮다고 주장한다. 또 Anthropic의 198개 사례에서 advisor 호출 시점을 지시하는 한 줄이 없으면 advisor가 한 번도 호출되지 않았다고 말한다. 이 숫자들은 X 게시물 작성자의 실험·해석으로, 이 글에서 독립적으로 재현하거나 Anthropic 공식 문서에서 확인한 수치는 아니다.</p>
+<p>공식 문서가 확인해 주는 일반 원칙은 advisor 호출마다 advisor 모델의 토큰 비용이 추가되고, 호출은 매 턴이 아니라 의사결정 시점에 일어난다는 점이다. 따라서 총비용은 다음 요소에 의해 결정된다.</p>
+<ul>
+<li>주 모델의 전체 입력·출력 토큰</li>
+<li>advisor 호출 횟수와 전체 대화 재전달 비용</li>
+<li>advisor 모델의 입력·출력 단가 또는 구독 사용량</li>
+<li>Haiku subagent가 실제로 처리한 병렬 작업량</li>
+<li>실패 재시도와 검토 루프의 횟수</li>
+</ul>
+<pre class="mermaid">flowchart TD
+    A["전체 작업 비용"] --> B["주 모델 토큰"]
+    A --> C["advisor 호출 수"]
+    A --> D["advisor 컨텍스트 토큰"]
+    A --> E["subagent 작업량"]
+    A --> F["재시도·검토 횟수"]
+    B --> G["라우팅 실험"]
+    C --> G
+    D --> G
+    E --> G
+    F --> G
+    G --> H["품질 대비 비용 측정"]
+    classDef costTone fill:#fde8c0,stroke:#b88728,color:#333
+    classDef factorTone fill:#c5dcef,stroke:#4b78a8,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#4d9362,color:#333
+    class A,G costTone
+    class B,C,D,E,F factorTone
+    class H resultTone</pre><p>Anthropic은 Opus 5.5 페이지에서 모델 비용과 속도, 코딩 벤치마크를 공개하지만, X 게시물의 전체 4모델 조합 비용을 보증하지 않는다. 자신의 저장소에서 동일한 작업 세트를 고정하고 <code>advisor off</code>, <code>advisor fable</code>, <code>advisor opus</code>를 각각 실행해 성공률·토큰·시간·재작업 횟수를 비교해야 한다. (<a href="https://www.anthropic.com/claude-opus-5-5#performance-and-cost-effectiveness">Opus 5.5 공식 비용·성능</a>)</p>
+<h2 id="haiku-swarm을-안전하게-붙이는-법">Haiku swarm을 안전하게 붙이는 법</h2>
+<p>Haiku를 하위 에이전트에 쓰는 목적은 연구·검색·파일 목록화·테스트 로그 요약처럼 서로 독립적인 작업을 병렬 처리하는 것이다. 최종 설계 판단이나 권한 상승을 Haiku에게 맡기지 않고, 주 모델이 결과를 취합해 검증한다.</p>
+<p>각 subagent의 출력 형식을 고정하면 조정 비용이 줄어든다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;task&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;조사한 사실&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;evidence&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">[</span><span style="color:#0a3069">&#34;파일 경로 또는 URL&#34;</span><span style="color:#1f2328">],</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;uncertainty&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">[</span><span style="color:#0a3069">&#34;확인하지 못한 부분&#34;</span><span style="color:#1f2328">],</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;next_action&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;주 에이전트가 할 일&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><p>병렬화할 수 없는 작업을 억지로 나누면 오히려 컨텍스트 병합과 충돌 해결 비용이 커진다. 하위 에이전트는 읽기·분석 중심으로 시작하고, 쓰기 권한과 외부 전송 권한은 주 에이전트나 사람 승인 뒤에 두는 것이 좋다.</p>
+<h2 id="advisorsubagentopusplan의-차이">advisor·subagent·opusplan의 차이</h2>
+<p>공식 문서는 advisor가 두 번째 모델의 조언을 같은 대화에 돌려주는 기능이고, subagent는 별도 작업을 수행하는 실행 단위이며, <code>opusplan</code>은 계획 단계와 실행 단계에 다른 모델을 쓰는 사전 설정이라고 구분한다. (<a href="https://code.claude.com/docs/en/advisor#how-the-advisor-compares-with-opusplan-and-subagents">advisor 비교</a>)</p>
+<p>선택 기준은 다음과 같다.</p>
+<ul>
+<li><strong>Advisor</strong>: 현재 대화 전체를 읽고 중요한 결정에 두 번째 의견을 받을 때</li>
+<li><strong>Subagent</strong>: 독립적인 조사·테스트·파일 분석을 병렬 처리할 때</li>
+<li><strong>Opusplan</strong>: 계획 품질을 높인 뒤 Sonnet 등으로 실행 모델을 전환할 때</li>
+<li><strong>주 모델 전환</strong>: 모든 턴에서 최고 품질이 필요할 때</li>
+</ul>
+<pre class="mermaid">flowchart TD
+    A["추가 모델이 필요한 이유"] --> B{"필요한 형태"}
+    B -->|"두 번째 의견"| C["Advisor"]
+    B -->|"독립 병렬 작업"| D["Subagent"]
+    B -->|"계획·실행 분리"| E["Opusplan"]
+    B -->|"모든 턴 최고 품질"| F["주 모델 전환"]
+    classDef inputTone fill:#c5dcef,stroke:#4b78a8,color:#333
+    classDef choiceTone fill:#e0c8ef,stroke:#7b4fa3,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#4d9362,color:#333
+    class A inputTone
+    class B choiceTone
+    class C,D,E,F resultTone</pre><h2 id="운영-체크리스트">운영 체크리스트</h2>
+<ol>
+<li><code>claude update</code> 전에 현재 버전과 설정을 기록한다.</li>
+<li>작은 작업에서 <code>/advisor fable</code> 호출 로그가 실제로 남는지 확인한다.</li>
+<li>주 모델·advisor·subagent의 모델 ID와 비용을 기록한다.</li>
+<li>advisor가 읽는 전체 대화에 비밀정보가 포함되지 않도록 정리한다.</li>
+<li>파일 쓰기·삭제·배포는 승인 모드로 제한한다.</li>
+<li>동일한 평가 작업 세트로 advisor 설정 전후를 비교한다.</li>
+<li>품질이 오르지 않으면 강한 모델을 추가하기보다 호출 조건과 검증 단계를 조정한다.</li>
+</ol>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>Claude Code advisor는 주 모델이 중요한 순간에 더 강한 모델의 조언을 받게 하는 실험적 기능이다.</li>
+<li>Sonnet 5.5 + Fable advisor 조합은 공식 호환성 표에 포함된다.</li>
+<li>advisor는 매 턴 실행되지 않고 모델이 결정한 시점에 호출되므로, 짧은 작업보다 장기·복합 작업에 적합하다.</li>
+<li>X 게시물의 3.4배 비용 절감, 80배 단가 차이, 198회 실험 수치는 원문 작성자의 주장으로 별도 검증이 필요하다.</li>
+<li>Opus 검토와 Haiku swarm은 advisor만 켠다고 자동으로 생기지 않으며, subagent와 검증 루프를 별도로 설계해야 한다.</li>
+<li>비용은 모델 단가뿐 아니라 호출 횟수, 전체 대화 재전달, 재시도, 병렬 작업량을 함께 측정해야 한다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>모델 라우팅의 목표는 “항상 가장 싼 모델”이나 “항상 가장 강한 모델”이 아니다. 일상적인 구현은 Sonnet이 맡고, 어려운 판단은 Fable·Opus에 에스컬레이션하며, 독립적인 조사는 Haiku로 나누는 <strong>품질 대비 비용 최적화</strong>가 목표다. advisor 호출이 실제로 품질을 높이는지와 비용을 줄이는지는 자신의 작업 세트와 로그로 확인해야 한다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 11월 14일 13시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/11/2026-11-14-agent-harness-graph-engineering/" rel="prev">
+        <span>Agent = Model &#43; Harness: 에이전트를 신뢰할 수 있는 시스템으로 만드는 법</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/11/2026-11-14-minimax-h3-image-quantized-local-generation/" rel="next">
+        <span>MiniMax-H3-Image를 6GB대로 줄여 로컬에서 돌리는 양자화의 의미</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#모델을-한-줄로-배치하면">모델을 한 줄로 배치하면</a></li>
+    <li><a href="#advisor는-언제-호출되는가">Advisor는 언제 호출되는가</a></li>
+    <li><a href="#claude-code에서-advisor-설정하기">Claude Code에서 advisor 설정하기</a>
+      <ul>
+        <li><a href="#세션-안에서-advisor">세션 안에서 <code>/advisor</code></a></li>
+        <li><a href="#사용자-설정-파일">사용자 설정 파일</a></li>
+        <li><a href="#한-세션에서만---advisor">한 세션에서만 <code>--advisor</code></a></li>
+      </ul>
+    </li>
+    <li><a href="#모델-호환성과-fable--sonnet의-실제-의미">모델 호환성과 “Fable + Sonnet”의 실제 의미</a></li>
+    <li><a href="#비용-절감은-호출-빈도와-작업-분해의-함수다">비용 절감은 호출 빈도와 작업 분해의 함수다</a></li>
+    <li><a href="#haiku-swarm을-안전하게-붙이는-법">Haiku swarm을 안전하게 붙이는 법</a></li>
+    <li><a href="#advisorsubagentopusplan의-차이">advisor·subagent·opusplan의 차이</a></li>
+    <li><a href="#운영-체크리스트">운영 체크리스트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+
+<script>
+  $(function () {
+    if (window.VANTA && document.getElementById('waves')) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

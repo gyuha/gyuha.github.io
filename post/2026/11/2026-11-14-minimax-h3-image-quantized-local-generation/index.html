@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'MiniMax-H3-Image를 6GB대로 줄여 로컬에서 돌리는 양자화의 의미'" />
+  <title>MiniMax-H3-Image를 6GB대로 줄여 로컬에서 돌리는 양자화의 의미  | 신규하 블로그</title>
+  <meta property="og:title" content="MiniMax-H3-Image를 6GB대로 줄여 로컬에서 돌리는 양자화의 의미" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-11-14"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/11/2026-11-14-minimax-h3-image-quantized-local-generation/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="ai" />
+  
+  <meta property="og:tags" content="llm" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/11/2026-11-14-minimax-h3-image-quantized-local-generation/">
+          <h1>
+            MiniMax-H3-Image를 6GB대로 줄여 로컬에서 돌리는 양자화의 의미
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/11/2026-11-14-minimax-h3-image-quantized-local-generation/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>대형 이미지 생성 모델은 품질이 좋아도 개인 장비에서 실행하기 어렵다. X 게시물은 MiniMax-H3-Image의 원본 가중치가 약 68.65GB인 상황에서 커뮤니티가 Q4·Q2 계열 GGUF를 만들어 약 10.78GB·6.4GB 수준까지 줄였다고 소개한다. 핵심은 모델을 작게 “압축”했다는 사실보다, <strong>양자화된 모델·텍스트 인코더·런타임을 함께 고려하면 로컬 실행의 문턱이 달라진다</strong>는 점이다.</p>
+<p>이 글은 X 게시물의 주장을 MiniMax 공식 모델 카드와 Hugging Face Diffusers 문서로 교차검증한다. 다운로드 수와 특정 커뮤니티 파일의 VRAM 수치는 시점에 따라 바뀌므로, 현재 수치로 고정하지 않고 구조와 측정 방법을 중심으로 설명한다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://x.com/EngMoElgaraihy/status/2121301347563651247?a=bcAg7WpPMxaaLPtVhVI&amp;s=35">X 원문 — MiniMax-H3-Image 커뮤니티 양자화 소개</a> (FxTwitter·VxTwitter API로 본문 추출)</li>
+<li><a href="https://huggingface.co/MiniMaxAI/MiniMax-H3-Image">MiniMax-H3-Image 공식 모델 카드</a></li>
+<li><a href="https://github.com/MiniMax-AI/MiniMax-H3-Image">MiniMax-H3-Image 공식 GitHub README</a></li>
+<li><a href="https://huggingface.co/docs/diffusers/main/en/api/pipelines/minimax_h3_image">Hugging Face Diffusers — MiniMax-H3-Image 파이프라인</a></li>
+<li><a href="https://huggingface.co/unsloth/MiniMax-H3-Image-GGUF">unsloth/MiniMax-H3-Image-GGUF 커뮤니티 양자화</a></li>
+<li><a href="https://github.com/MiniMax-AI/awesome-minimax-h3-integration/blob/main/docs/run-h3-locally.md">MiniMax-AI — 로컬 실행 통합 가이드</a></li>
+</ul>
+<h2 id="minimax-h3-image는-어떤-모델인가">MiniMax-H3-Image는 어떤 모델인가</h2>
+<p>공식 모델 카드는 MiniMax-H3-Image를 텍스트-이미지 생성과 이미지 편집에 사용하는 모델로 소개한다. Diffusion Transformer는 33.1B 파라미터의 단일 스트림 구조이며, 50개 레이어·hidden size 5376·56개 attention head·FFN size 14336·3D 멀티모달 RoPE를 사용한다. ( <a href="https://huggingface.co/MiniMaxAI/MiniMax-H3-Image">공식 모델 카드</a>, <a href="https://github.com/MiniMax-AI/MiniMax-H3-Image">GitHub README</a>)</p>
+<p>공식 BF16 DiT 파일 크기는 약 68.65GB다. 여기에 Qwen3-VL 기반 텍스트 인코더와 VAE, 런타임 메모리, KV·버퍼가 더해지므로 “가중치 파일이 68GB”와 “실행에 68GB VRAM만 필요”는 같은 말이 아니다. 반대로 GGUF 양자화 파일이 6.4GB라고 해도 텍스트 인코더와 CPU RAM·VRAM 오프로딩을 포함한 실제 요구량은 더 커질 수 있다.</p>
+<pre class="mermaid">flowchart TD
+    A["MiniMax-H3-Image"] --> B["33.1B DiT 가중치"]
+    A --> C["Qwen3-VL 텍스트 인코더"]
+    A --> D["VAE·설정·런타임 버퍼"]
+    B --> E["양자화 대상"]
+    E --> F["GGUF·FP8·NVFP4 등"]
+    C --> G["실제 실행 메모리"]
+    D --> G
+    F --> G
+    classDef modelTone fill:#e0c8ef,stroke:#7b4fa3,color:#333
+    classDef componentTone fill:#c5dcef,stroke:#4b78a8,color:#333
+    classDef quantTone fill:#fde8c0,stroke:#b88728,color:#333
+    classDef runtimeTone fill:#c0ecd3,stroke:#4d9362,color:#333
+    class A modelTone
+    class B,C,D componentTone
+    class E,F quantTone
+    class G runtimeTone</pre><h2 id="양자화는-무엇을-줄이는가">양자화는 무엇을 줄이는가</h2>
+<p>양자화는 가중치의 표현 정밀도를 낮춰 저장 공간과 메모리 대역폭을 줄이는 방법이다. 16비트 BF16 값을 4비트 또는 2비트에 가까운 표현으로 바꾸면 파일 크기는 크게 줄지만, 모든 값의 정밀도가 같게 보존되는 것은 아니다. 블록별 스케일·제로포인트·중요도 행렬 같은 보조 정보가 들어가며, 구현마다 실제 용량과 품질이 달라진다.</p>
+<p>커뮤니티 GGUF 저장소에는 Q6·Q4·Q2 계열 파일과 혼합 정밀도 파일이 함께 올라온다. 예를 들어 unsloth 저장소는 MiniMax-H3-Image용 GGUF가 원본 BF16 DiT를 담을 수 없는 GPU와 Apple Silicon·CPU에서 사용되도록 설계됐다고 설명한다. MiniMax 공식 통합 가이드는 GGUF가 공식 MiniMax 릴리스가 아니라 커뮤니티 변환임을 명시한다. ( <a href="https://huggingface.co/unsloth/MiniMax-H3-Image-GGUF">unsloth GGUF</a>, <a href="https://github.com/MiniMax-AI/awesome-minimax-h3-integration/blob/main/docs/run-h3-locally.md">공식 로컬 실행 가이드</a>)</p>
+<pre class="mermaid">flowchart TD
+    A["BF16 원본"] --> B["정밀도 선택"]
+    B --> C["Q8·Q6: 품질 우선"]
+    B --> D["Q4: 균형"]
+    B --> E["Q2: 메모리 우선"]
+    C --> F["큰 파일·높은 메모리"]
+    D --> G["실용적 로컬 실행"]
+    E --> H["작은 파일·품질 손실 위험"]
+    classDef sourceTone fill:#c5dcef,stroke:#4b78a8,color:#333
+    classDef choiceTone fill:#e0c8ef,stroke:#7b4fa3,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#4d9362,color:#333
+    classDef riskTone fill:#ffc8c4,stroke:#b45b5b,color:#333
+    class A sourceTone
+    class B,C,D,E choiceTone
+    class F,G outputTone
+    class H riskTone</pre><h3 id="파일-크기와-vram은-다르다">파일 크기와 VRAM은 다르다</h3>
+<p>X 게시물은 Q4를 약 10.78GB, Q2_K를 약 6.4GB로 소개한다. 이 값은 특정 커뮤니티 변환 파일의 디스크 크기 또는 가중치 규모를 가리키는 것으로 이해해야 하며, 모든 장비에서 해당 VRAM만으로 실행된다는 보장은 아니다. 텍스트 인코더가 별도로 로드되고, 해상도가 높을수록 중간 활성값과 작업 버퍼가 증가하기 때문이다.</p>
+<p>실행 가능 여부는 다음 합으로 판단한다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>필요 메모리 ≈ 양자화된 DiT + 텍스트 인코더 + VAE + 활성값 + 런타임 버퍼
+</span></span></code></pre></div><p>따라서 8GB GPU에서 Q2 파일이 “다운로드 가능”하다는 것과 8GB VRAM에서 4K 이미지를 “원활하게 생성”한다는 것은 다르다. CPU 오프로딩이나 unified memory를 활용할 수 있지만 속도와 시스템 RAM 여유를 함께 측정해야 한다.</p>
+<h2 id="16mp-네이티브-생성과-해상도-선택">16MP 네이티브 생성과 해상도 선택</h2>
+<p>공식 모델 카드와 Diffusers 문서는 H3-Image가 업스케일러를 거치지 않고 약 16메가픽셀 이미지를 직접 생성할 수 있다고 설명한다. 권장 크기는 정사각형 4096×4096, 4:3 4736×3552, 3:2 5024×3360, 16:9 5472×3072, 21:9 6272×2688이며, 세로 방향은 폭과 높이를 바꾼다. ( <a href="https://huggingface.co/docs/diffusers/main/en/api/pipelines/minimax_h3_image">Diffusers 공식 문서</a>, <a href="https://huggingface.co/MiniMaxAI/MiniMax-H3-Image">공식 모델 카드</a>)</p>
+<p>“4K를 한 번에 만든다”는 장점은 선명도뿐 아니라 후처리 단계를 줄이는 데 있다. 그러나 해상도가 커지면 GPU 메모리·생성 시간·파일 크기가 함께 늘어난다. 로컬 테스트에서는 먼저 1024~2048급으로 프롬프트와 참조 조합을 검증하고, 최종 후보만 권장 고해상도로 생성하는 것이 안전하다.</p>
+<pre class="mermaid">flowchart TD
+    A["프롬프트·참조 실험"] --> B["낮은 해상도 초안"]
+    B --> C{"구도·인물·스타일 통과"}
+    C -->|"아니오"| A
+    C -->|"예"| D["권장 16MP 해상도"]
+    D --> E["최종 생성"]
+    E --> F["색상·저장·배포 검사"]
+    classDef inputTone fill:#c5dcef,stroke:#4b78a8,color:#333
+    classDef draftTone fill:#fde8c0,stroke:#b88728,color:#333
+    classDef decisionTone fill:#e0c8ef,stroke:#7b4fa3,color:#333
+    classDef finalTone fill:#c0ecd3,stroke:#4d9362,color:#333
+    class A,B inputTone
+    class C decisionTone
+    class D,E,F finalTone</pre><h2 id="6단계-샘플링의-의미">6단계 샘플링의 의미</h2>
+<p>Diffusers 문서는 H3-Image 체크포인트가 <code>sample_sigmas</code>에 따라 6단계로 샘플링하며, 일반적인 <code>num_inference_steps</code>를 임의로 설정하는 방식이 아니라고 설명한다. X 게시물의 “6단계·CFG 불필요” 주장은 이 모델의 특수한 샘플링 설계와 연결된다. (<a href="https://huggingface.co/docs/diffusers/main/en/api/pipelines/minimax_h3_image">Diffusers API 문서</a>)</p>
+<p>단계 수가 적다는 것은 한 장을 빠르게 만들 가능성이 있다는 뜻이지, 전체 파이프라인이 항상 빠르다는 뜻은 아니다. 텍스트 인코더 로딩, 참조 이미지 처리, 디스크·메모리 이동, 고해상도 활성값 계산이 총 시간을 결정한다. 따라서 “6 steps”만 보고 다른 확산 모델의 20~50단계와 단순 비교하면 안 된다.</p>
+<h2 id="참조-이미지와-편집의-활용">참조 이미지와 편집의 활용</h2>
+<p>공식 모델 카드에는 참조 이미지와 이미지 편집 예제가 포함되어 있으며, 4096×4096 같은 고해상도에서 참조를 사용한 결과를 보여 준다. X 게시물은 최대 16개의 참조 이미지를 사용해 캐릭터 일관성을 유지할 수 있다고 설명하지만, 실제 지원 개수와 품질은 사용한 인터페이스·프롬프트·메모리 구성에 따라 확인해야 한다.</p>
+<p>참조 이미지를 많이 넣을수록 일관성이 항상 좋아지는 것은 아니다. 서로 다른 포즈·조명·스타일이 충돌하면 모델이 어떤 특징을 우선할지 불분명해진다. 실무에서는 다음처럼 단계적으로 늘린다.</p>
+<ol>
+<li>캐릭터 기준 이미지 1장으로 얼굴·의상·색을 고정한다.</li>
+<li>포즈나 구도를 위한 두 번째 이미지를 추가한다.</li>
+<li>결과가 안정적일 때만 배경·소품·스타일 이미지를 추가한다.</li>
+<li>각 참조의 역할을 프롬프트에 명시한다.</li>
+</ol>
+<pre class="mermaid">flowchart TD
+    A["기준 캐릭터 1장"] --> B["포즈 참조 추가"]
+    B --> C["구도·배경 참조 추가"]
+    C --> D["스타일·소품 참조 추가"]
+    D --> E["일관성·충돌 검사"]
+    E --> F{"품질 통과"}
+    F -->|"아니오"| G["참조 수·역할 축소"]
+    F -->|"예"| H["최종 생성"]
+    G --> B
+    classDef refTone fill:#c5dcef,stroke:#4b78a8,color:#333
+    classDef checkTone fill:#fde8c0,stroke:#b88728,color:#333
+    classDef decisionTone fill:#e0c8ef,stroke:#7b4fa3,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#4d9362,color:#333
+    class A,B,C,D refTone
+    class E checkTone
+    class F decisionTone
+    class G,H resultTone</pre><h2 id="로컬-실행-경로-comfyuiggufmlx">로컬 실행 경로: ComfyUI·GGUF·MLX</h2>
+<p>X 게시물은 ComfyUI용 GGUF와 Mac용 MLX 가중치를 함께 언급한다. 커뮤니티 파일은 같은 모델을 다른 런타임의 메모리·커널 형식에 맞게 변환한 것이다. ComfyUI에서는 노드·워크플로·텍스트 인코더·VAE가 맞아야 하며, MLX에서는 Apple Silicon의 unified memory와 해당 변환 형식을 지원하는 코드를 사용해야 한다.</p>
+<p>MiniMax 공식 통합 문서는 GGUF 변환이 공식 배포물과 다르다는 점을 강조한다. 따라서 다운로드 전 저장소의 변환 방식, 사용 중인 ComfyUI 커스텀 노드, 모델 라이선스, 텍스트 인코더 요구사항을 확인해야 한다. “GGUF 파일 하나”만 내려받아 바로 동작한다고 가정하면 실패하기 쉽다. (<a href="https://github.com/MiniMax-AI/awesome-minimax-h3-integration/blob/main/docs/run-h3-locally.md">공식 로컬 실행 가이드</a>)</p>
+<pre class="mermaid">flowchart TD
+    A["MiniMax-H3-Image"] --> B{"런타임 선택"}
+    B -->|"CUDA·ComfyUI"| C["GGUF + 노드 + VAE + 인코더"]
+    B -->|"Apple Silicon"| D["MLX 변환 + unified memory"]
+    B -->|"공식 Diffusers"| E["BF16/FP8 파이프라인"]
+    C --> F["메모리·커널 호환 검사"]
+    D --> F
+    E --> F
+    F --> G["저해상도 테스트"]
+    G --> H["최종 해상도·품질 측정"]
+    classDef modelTone fill:#e0c8ef,stroke:#7b4fa3,color:#333
+    classDef routeTone fill:#c5dcef,stroke:#4b78a8,color:#333
+    classDef checkTone fill:#fde8c0,stroke:#b88728,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#4d9362,color:#333
+    class A modelTone
+    class B,C,D,E routeTone
+    class F,G checkTone
+    class H resultTone</pre><h2 id="품질성능라이선스-체크리스트">품질·성능·라이선스 체크리스트</h2>
+<ul>
+<li><strong>품질</strong>: Q2·Q3에서 텍스트 렌더링, 얼굴, 미세 질감, 색 띠 현상을 원본과 비교한다.</li>
+<li><strong>메모리</strong>: 파일 크기뿐 아니라 텍스트 인코더·VAE·활성값·오프로딩을 포함한 피크 메모리를 기록한다.</li>
+<li><strong>속도</strong>: 단계 수가 아니라 총 준비 시간부터 최종 저장까지의 wall-clock 시간을 잰다.</li>
+<li><strong>재현성</strong>: 모델 커밋, 양자화 저장소 커밋, 런타임·노드 버전, seed와 해상도를 함께 기록한다.</li>
+<li><strong>보안</strong>: 커뮤니티 모델과 커스텀 노드는 격리 환경에서 검사하고, 출처가 불명확한 스크립트를 그대로 실행하지 않는다.</li>
+<li><strong>라이선스</strong>: 원본 모델·양자화 파생물·생성 서비스의 라이선스와 상업적 사용 조건을 각각 확인한다.</li>
+</ul>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>MiniMax-H3-Image는 33.1B 파라미터 DiT와 텍스트 인코더·VAE로 구성된 대형 이미지 생성·편집 모델이다.</li>
+<li>공식 BF16 DiT는 약 68.65GB지만, 커뮤니티 GGUF 양자화는 Q4·Q2 계열의 파일 크기를 크게 낮춘다.</li>
+<li>파일 크기와 실제 VRAM 요구량은 다르며, 텍스트 인코더·VAE·활성값·오프로딩을 함께 계산해야 한다.</li>
+<li>공식 문서는 약 16MP 네이티브 출력, 다양한 종횡비, 6단계 샘플링을 지원한다고 설명한다.</li>
+<li>6단계라고 해서 전체 생성 시간이 항상 짧은 것은 아니며, 고해상도와 참조 이미지 수가 메모리·시간을 늘린다.</li>
+<li>ComfyUI GGUF와 MLX는 커뮤니티 변환·런타임 호환성을 확인한 뒤 사용해야 한다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>MiniMax-H3-Image의 양자화는 거대한 모델을 무조건 작은 모델로 바꾸는 마법이 아니다. 정밀도와 품질의 일부를 교환해, 적절한 런타임·메모리·해상도 조합에서 더 많은 개발자가 실험할 수 있게 만드는 공학적 선택이다. 먼저 낮은 해상도와 높은 정밀도에서 파이프라인을 검증하고, 그다음 Q4·Q2와 고해상도 설정을 비교하는 순서가 안전하다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 11월 14일 15시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/11/2026-11-14-claude-code-advisor-model-routing/" rel="prev">
+        <span>Claude Code에서 Fable Advisor로 모델 비용을 줄이는 구조</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/11/2026-11-15-treg-agent-ugc-video-pipeline/" rel="next">
+        <span>Treg로 만드는 에이전트 기반 UGC 광고 영상 파이프라인</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#minimax-h3-image는-어떤-모델인가">MiniMax-H3-Image는 어떤 모델인가</a></li>
+    <li><a href="#양자화는-무엇을-줄이는가">양자화는 무엇을 줄이는가</a>
+      <ul>
+        <li><a href="#파일-크기와-vram은-다르다">파일 크기와 VRAM은 다르다</a></li>
+      </ul>
+    </li>
+    <li><a href="#16mp-네이티브-생성과-해상도-선택">16MP 네이티브 생성과 해상도 선택</a></li>
+    <li><a href="#6단계-샘플링의-의미">6단계 샘플링의 의미</a></li>
+    <li><a href="#참조-이미지와-편집의-활용">참조 이미지와 편집의 활용</a></li>
+    <li><a href="#로컬-실행-경로-comfyuiggufmlx">로컬 실행 경로: ComfyUI·GGUF·MLX</a></li>
+    <li><a href="#품질성능라이선스-체크리스트">품질·성능·라이선스 체크리스트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/ai/" class="badge badge-secondary">Ai</a>
+    <a href="/tags/llm/" class="badge badge-secondary">Llm</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+
+<script>
+  $(function () {
+    if (window.VANTA && document.getElementById('waves')) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
