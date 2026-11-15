@@ -1,0 +1,236 @@
+/* :: Home masthead — the archive's record strip */
+
+$masthead-ground: #010205;
+$signal-color: #3fa4ff;
+$header-offset: 55px;
+$strip-ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+.archive-masthead {
+  background-color: $masthead-ground;
+  padding: 104px 0 18px;
+
+  &__title {
+    margin: 0 0 22px;
+    font-size: 1.6em;
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: $color-white;
+    &:hover {
+      color: $color-white;
+    }
+  }
+
+  & ::selection {
+    background-color: $signal-color;
+    color: $masthead-ground;
+  }
+}
+
+/* The axis header: the archive's total and its span, on one baseline. */
+.archive-axis {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0 0 9px;
+  line-height: 1.2;
+
+  &__total {
+    font-size: 15px;
+    font-weight: 700;
+    color: $color-white;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  &__range {
+    font-size: 11px;
+    color: $color-nav-bar-text;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+}
+
+.archive-strip {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  height: 56px;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+
+  &__year {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 6px;
+    flex: var(--months) 1 0;
+    height: 100%;
+    min-width: 0;
+  }
+
+  &__bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  &__bar {
+    flex: 1 1 0;
+    height: var(--bar);
+    min-height: 5px;
+    background-color: rgba(255, 255, 255, 0.42);
+    transform-origin: bottom;
+    animation: strip-rise 620ms $strip-ease both;
+    animation-delay: calc(var(--i, 0) * 4ms);
+  }
+
+  &__bar--empty {
+    min-height: 0;
+    background-color: transparent;
+    animation: none;
+  }
+
+  &__bar--now {
+    background-color: $signal-color;
+  }
+
+  &__year-bar {
+    display: none;
+  }
+
+  &__year-label {
+    font-size: 11px;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    color: $color-nav-bar-text;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__year:first-child &__year-label {
+    text-align: left;
+  }
+
+  &__year:last-child &__year-label {
+    text-align: right;
+  }
+}
+
+@keyframes strip-rise {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .archive-strip__bar {
+    animation: none;
+  }
+}
+
+/* :: Month ledger (home) */
+
+.ledger {
+  padding-top: 8px;
+
+  &__head {
+    position: sticky;
+    top: $header-offset;
+    z-index: 200;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 18px 0 0;
+    padding: 10px 0 8px;
+    background-color: $color-white;
+    border-bottom: 1px solid $header-line-color;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.4;
+    color: $heading-color;
+    &:hover {
+      color: $heading-color;
+    }
+  }
+
+  &__month {
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__count {
+    font-size: 12.5px;
+    font-weight: 400;
+    color: $text-color;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .post-list-title:focus-visible {
+    outline: 2px solid $hover-color;
+    outline-offset: 3px;
+  }
+
+  & ::selection {
+    background-color: rgba(63, 164, 255, 0.28);
+    color: $heading-color;
+  }
+}
+
+@media #{$breakpoint-xs} {
+  .archive-masthead {
+    padding: 96px 0 16px;
+
+    &__title {
+      font-size: 1.45em;
+      margin-bottom: 18px;
+    }
+  }
+
+  .archive-axis {
+    margin-bottom: 8px;
+
+    &__range {
+      font-size: 11px;
+    }
+  }
+
+  .archive-strip {
+    gap: 8px;
+    height: 52px;
+
+    /* Nine year columns stay legible; ninety-seven month slots do not. */
+    &__year {
+      flex: 1 1 0;
+    }
+
+    &__bars {
+      display: none;
+    }
+
+    &__year-bar {
+      display: block;
+      height: var(--bar);
+      max-height: calc(100% - 17px);
+      min-height: 3px;
+      background-color: rgba(255, 255, 255, 0.42);
+      transform-origin: bottom;
+      animation: strip-rise 620ms $strip-ease both;
+    }
+
+    &__year:last-child &__year-bar {
+      background-color: $signal-color;
+    }
+  }
+
+  .ledger__head {
+    margin-top: 16px;
+  }
+}

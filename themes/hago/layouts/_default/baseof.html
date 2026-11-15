@@ -2,7 +2,12 @@
 <html lang="{{ .Site.LanguageCode }}">
   {{- partial "head.html" . -}}
   <body>
-    {{- partial "header.html" . -}} {{- partial "title_bar.html" . -}}
+    {{- partial "header.html" . -}}
+    {{- if .IsHome -}}
+      {{- partial "home_masthead.html" . -}}
+    {{- else -}}
+      {{- partial "title_bar.html" . -}}
+    {{- end -}}
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-12 col-lg-8 mt-3">

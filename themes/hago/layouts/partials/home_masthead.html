@@ -1,0 +1,80 @@
+{{- /*
+  Home masthead — the archive's own record strip.
+  Renders the whole post archive as a month-by-month density field,
+  computed at build time. No runtime JS.
+*/ -}}
+{{- $posts := where .Site.RegularPages "Section" "post" -}}
+{{- $total := len $posts -}}
+{{- $groups := $posts.GroupByDate "2006-01" -}}
+{{- $counts := dict -}}
+{{- $max := 1 -}}
+{{- $peakKey := "" -}}
+{{- range $groups -}}
+  {{- $n := len .Pages -}}
+  {{- $counts = merge $counts (dict .Key $n) -}}
+  {{- if gt $n $max -}}
+    {{- $max = $n -}}
+    {{- $peakKey = .Key -}}
+  {{- end -}}
+{{- end -}}
+{{- $newestKey := (index $groups 0).Key -}}
+{{- $oldestKey := (index $groups (sub (len $groups) 1)).Key -}}
+{{- $endT := time.AsTime (printf "%s-01" $newestKey) -}}
+{{- $startT := time.AsTime (printf "%s-01" $oldestKey) -}}
+{{- $startIndex := add (mul $startT.Year 12) (int $startT.Month) -}}
+{{- $endIndex := add (mul $endT.Year 12) (int $endT.Month) -}}
+{{- $yearTotals := dict -}}
+{{- range $groups -}}
+  {{- $y := substr .Key 0 4 -}}
+  {{- $yearTotals = merge $yearTotals (dict $y (add (index $yearTotals $y | default 0) (len .Pages))) -}}
+{{- end -}}
+{{- $maxYear := 1 -}}
+{{- range $y, $n := $yearTotals -}}
+  {{- if gt $n $maxYear -}}{{- $maxYear = $n -}}{{- end -}}
+{{- end -}}
+
+<section class="archive-masthead">
+  <div class="container">
+    <h1 class="archive-masthead__title">{{ .Site.Params.subtitle }}</h1>
+
+    <p class="archive-axis">
+      <span class="archive-axis__total">{{ $total }}편</span>
+      <span class="archive-axis__range">{{ $startT.Format "2006" }}–{{ $endT.Format "2006" }} · 최다 {{ $max }}편 ({{ replace $peakKey "-" "." }})</span>
+    </p>
+
+    <div class="archive-strip" role="img" aria-label="{{ $total }}편의 기록. {{ $startT.Format "2006" }}년부터 {{ $endT.Format "2006" }}년까지 월별 분포. 가장 많은 달은 {{ replace $peakKey "-" "." }}으로 {{ $max }}편.">
+      {{- $idx := 0 -}}
+      {{- range $y := seq $startT.Year $endT.Year -}}
+        {{- $months := slice -}}
+        {{- range $m := seq 1 12 -}}
+          {{- $mi := add (mul $y 12) $m -}}
+          {{- if and (ge $mi $startIndex) (le $mi $endIndex) -}}
+            {{- $months = $months | append $m -}}
+          {{- end -}}
+        {{- end -}}
+        {{- with $months }}
+        <div class="archive-strip__year" style="--months:{{ len . }}">
+          <div class="archive-strip__bars">
+            {{- range . -}}
+              {{- $key := printf "%d-%02d" $y . -}}
+              {{- $n := index $counts $key | default 0 -}}
+              {{- $mi := add (mul $y 12) . -}}
+              {{- if eq $n 0 -}}
+              <span class="archive-strip__bar archive-strip__bar--empty"></span>
+              {{- else -}}
+              {{- $pct := div (mul $n 100) $max -}}
+              {{- if lt $pct 8 }}{{ $pct = 8 }}{{ end -}}
+              <span class="archive-strip__bar{{ if lt $mi $endIndex }} archive-strip__bar--past{{ else }} archive-strip__bar--now{{ end }}" style="--bar:{{ $pct }}%; --i:{{ $idx }}" title="{{ replace $key "-" "." }} · {{ $n }}편"></span>
+              {{- end -}}
+              {{- $idx = add $idx 1 -}}
+            {{- end -}}
+          </div>
+          {{- $yearPct := div (mul (index $yearTotals (printf "%d" $y) | default 0) 100) $maxYear -}}
+          <span class="archive-strip__year-bar" style="--bar:{{ $yearPct }}%"></span>
+          <span class="archive-strip__year-label">{{ $y }}</span>
+        </div>
+        {{- end -}}
+      {{- end }}
+    </div>
+  </div>
+</section>

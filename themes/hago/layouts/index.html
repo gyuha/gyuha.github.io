@@ -1,9 +1,25 @@
 {{ define "main" }}
-<!-- posts -->
-{{ range .Paginator.Pages }} {{ .Render "summary"}} {{ end }}
-<!-- pagination -->
+{{- /* Month-grouped ledger. Counts come from the whole archive, not the page slice. */ -}}
+{{- $counts := dict -}}
+{{- range (where .Site.RegularPages "Section" "post").GroupByDate "2006-01" -}}
+  {{- $counts = merge $counts (dict .Key (len .Pages)) -}}
+{{- end -}}
+<div class="ledger">
+  {{- range .Paginator.Pages.GroupByDate "2006-01" }}
+  <section class="ledger__group">
+    {{- $monthTotal := index $counts .Key | default 0 -}}
+    {{- $shown := len .Pages -}}
+    <h2 class="ledger__head">
+      <span class="ledger__month">{{ replace .Key "-" "." }}</span>
+      <span class="ledger__count">{{ if gt $monthTotal $shown }}{{ $shown }} / {{ $monthTotal }}편{{ else }}{{ $monthTotal }}편{{ end }}</span>
+    </h2>
+    <div class="ledger__rows">
+      {{- range .Pages }}{{ .Render "summary" }}{{ end }}
+    </div>
+  </section>
+  {{- end }}
+</div>
 {{ partial "pagination.html" . }}
-<!-- posts end -->
 {{ end }} {{ define "side" }}
 <!-- category -->
 {{- partial "side_category.html" . -}}
