@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog '유튜브 자동화를 직접 구축하는 오픈 소스 5가지'" />
+  <title>유튜브 자동화를 직접 구축하는 오픈 소스 5가지  | 신규하 블로그</title>
+  <meta property="og:title" content="유튜브 자동화를 직접 구축하는 오픈 소스 5가지" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-11-16"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/11/2026-11-16-youtube-automation-open-source-top5/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="automation" />
+  
+  <meta property="og:tags" content="video-generation" />
+  
+  <meta property="og:tags" content="python" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/11/2026-11-16-youtube-automation-open-source-top5/">
+          <h1>
+            유튜브 자동화를 직접 구축하는 오픈 소스 5가지
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/11/2026-11-16-youtube-automation-open-source-top5/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>유튜브 쇼츠 자동화는 단순히 대본을 생성하는 문제가 아닙니다. 주제 탐색, 대본 검수, 음성 합성, 영상 소재 선택, 자막 타이밍, 세로 화면 합성, 업로드까지 여러 단계를 안정적으로 이어야 합니다. Threads의 목록은 이 흐름을 서로 다른 방식으로 구현한 오픈 소스 5가지를 소개합니다. 저장소 README를 기준으로 보면, 다섯 프로젝트는 같은 “자동 생성”이라는 이름 아래에서도 <strong>로컬 파이프라인</strong>, <strong>웹 UI</strong>, <strong>에이전트형 제작 스튜디오</strong>, <strong>완전 자동 업로드</strong>로 역할이 나뉩니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>원문 Threads: <a href="https://www.threads.com/share/BAjT0pRi6H">H2S SOUND의 유튜브 자동화 오픈 소스 TOP 5</a></li>
+<li><a href="https://github.com/Dark2C/Viral-Faceless-Shorts-Generator">Viral Faceless Shorts Generator</a></li>
+<li><a href="https://github.com/harry0703/MoneyPrinterTurbo">MoneyPrinterTurbo</a></li>
+<li><a href="https://github.com/OpenMontageInc/OpenMontage">OpenMontage</a></li>
+<li><a href="https://github.com/AbdullahNaveed/ai-shorts-generator">AI Shorts Generator</a></li>
+<li><a href="https://github.com/mzu-2410z/yt-automation">YT Automation</a></li>
+</ul>
+<h2 id="한눈에-보는-다섯-가지-접근">한눈에 보는 다섯 가지 접근</h2>
+<table>
+  <thead>
+      <tr>
+          <th>프로젝트</th>
+          <th>강점</th>
+          <th>기본 흐름</th>
+          <th>운영 성격</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Viral Faceless Shorts Generator</td>
+          <td>트렌드부터 렌더까지 컨테이너화</td>
+          <td>Google Trends → Gemini → Piper → Aeneas → FFmpeg</td>
+          <td>Docker 기반 웹 UI</td>
+      </tr>
+      <tr>
+          <td>MoneyPrinterTurbo</td>
+          <td>기능 폭과 입력·출력 선택지</td>
+          <td>주제 → 대본·소재·음성·자막·음악 → 영상</td>
+          <td>WebUI·CLI·Docker</td>
+      </tr>
+      <tr>
+          <td>OpenMontage</td>
+          <td>에이전트형 영상 제작 지식과 파이프라인</td>
+          <td>리서치 → 대본 → 편집·생성·검수</td>
+          <td>AGPL-3.0, 다중 파이프라인</td>
+      </tr>
+      <tr>
+          <td>AI Shorts Generator</td>
+          <td>AI 시각 자료와 무료 스톡 혼합</td>
+          <td>주제 → 스크립트 → 시각·음성 → 캡션</td>
+          <td>Python 로컬 대시보드</td>
+      </tr>
+      <tr>
+          <td>YT Automation</td>
+          <td>로컬 생성과 YouTube 업로드</td>
+          <td>주제 → Llama 3.3 → Kokoro → FFmpeg → YouTube API</td>
+          <td>Windows 중심 완전 자동화</td>
+      </tr>
+  </tbody>
+</table>
+<p>프로젝트마다 “자동”의 범위가 다르므로 저장소를 고를 때는 생성 품질보다 <strong>내가 통제하려는 단계가 어디인지</strong>를 먼저 정해야 합니다.</p>
+<pre class="mermaid">flowchart TD
+    topic["주제·키워드"] --> research["트렌드·리서치"]
+    research --> script["대본 생성"]
+    script --> review{"사람 검수"}
+    review -->|"수정"| script
+    review -->|"승인"| voice["음성 합성"]
+    voice --> captions["자막 타이밍"]
+    captions --> visuals["소재·시각 생성"]
+    visuals --> render["세로 영상 렌더"]
+    render --> publish["업로드·성과 측정"]
+
+    classDef inputTone fill:#e0c8ef,stroke:#8b6aa8,color:#333
+    classDef processTone fill:#c5dcef,stroke:#6f9fc5,color:#333
+    classDef reviewTone fill:#ffc8c4,stroke:#bd7772,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#68a47b,color:#333
+    class topic inputTone
+    class research,script,voice,captions,visuals,render processTone
+    class review reviewTone
+    class publish outputTone</pre><h2 id="1-viral-faceless-shorts-generator-단계를-분리한-docker-파이프라인">1. Viral Faceless Shorts Generator: 단계를 분리한 Docker 파이프라인</h2>
+<p><a href="https://github.com/Dark2C/Viral-Faceless-Shorts-Generator">Viral Faceless Shorts Generator</a>는 Google Trends나 사용자 주제에서 시작해 Gemini로 제목·설명·본문을 만들고, 승인된 대본을 Piper TTS·Aeneas·FFmpeg로 영상화합니다. README는 대본을 사람이 승인한 뒤에만 렌더링하는 단계를 명시하며, <code>trendscraper</code>, <code>piper</code>, <code>speechalign</code>, <code>nginx</code> 등을 Docker Compose로 분리합니다.</p>
+<pre class="mermaid">flowchart TD
+    trends["Google Trends 또는 사용자 주제"] --> gemini["Gemini 대본 생성"]
+    gemini --> approve["대본 검토·승인"]
+    approve --> piper["Piper TTS"]
+    piper --> aeneas["Aeneas 강제 정렬"]
+    aeneas --> ffmpeg["FFmpeg 합성"]
+    background["/videos 배경 클립"] --> ffmpeg
+    ffmpeg --> mp4["세로·가로·정사각형 MP4"]
+
+    classDef inputTone fill:#e0c8ef,stroke:#8b6aa8,color:#333
+    classDef processTone fill:#c5dcef,stroke:#6f9fc5,color:#333
+    classDef reviewTone fill:#ffc8c4,stroke:#bd7772,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#68a47b,color:#333
+    class trends,background inputTone
+    class gemini,piper,aeneas,ffmpeg processTone
+    class approve reviewTone
+    class mp4 outputTone</pre><p>이 구조는 단계별 교체가 쉽다는 장점이 있습니다. 반면 Google Gemini API 키와 배경 영상을 준비해야 하고, 여러 컨테이너와 음성·정렬 런타임을 관리해야 합니다. “한 번 클릭”은 웹 트리거를 뜻하지, 콘텐츠 품질 검수까지 사라진다는 뜻은 아닙니다.</p>
+<h2 id="2-moneyprinterturbo-가장-넓은-기능-표면">2. MoneyPrinterTurbo: 가장 넓은 기능 표면</h2>
+<p><a href="https://github.com/harry0703/MoneyPrinterTurbo">MoneyPrinterTurbo</a>는 주제나 키워드에서 스크립트·소재·자막·배경 음악을 조합해 HD 쇼츠를 만드는 올인원 프로젝트입니다. README는 Windows·macOS·Linux를 지원하고, Python 3.11 이상·Docker·WebUI·CLI 경로를 제공합니다. 음성은 Edge TTS, Gemini, MiniMax, ElevenLabs 등 여러 공급자를 선택할 수 있고, 결과를 TikTok·Instagram·YouTube Shorts에 게시하는 기능도 포함합니다.</p>
+<pre class="mermaid">flowchart TD
+    subject["주제·키워드"] --> planner["대본·문단 구성"]
+    planner --> material["스톡·AI 영상 소재"]
+    planner --> narration["TTS 또는 업로드 음성"]
+    narration --> subtitle["자막 생성·스타일"]
+    material --> compose["영상 편집·배경 음악"]
+    subtitle --> compose
+    compose --> export["9:16·16:9·1:1 출력"]
+    export --> social["선택적 SNS 게시"]
+
+    classDef inputTone fill:#e0c8ef,stroke:#8b6aa8,color:#333
+    classDef processTone fill:#c5dcef,stroke:#6f9fc5,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#68a47b,color:#333
+    class subject inputTone
+    class planner,material,narration,subtitle,compose processTone
+    class export,social outputTone</pre><p>MoneyPrinterTurbo는 기능이 많은 만큼 설정과 공급자 키 관리가 복잡합니다. 최신 릴리스의 README는 API 인증, Docker 설정, Redis 동시성, 생성 작업 추적과 같은 운영 이슈도 다루고 있습니다. 비용과 약관이 서로 다른 여러 공급자를 연결하므로, 자동화 전에 사용할 모델·TTS·소재 제공자와 과금 상한을 고정하는 편이 안전합니다.</p>
+<h2 id="3-openmontage-에이전트를-영상-제작자로-확장">3. OpenMontage: 에이전트를 영상 제작자로 확장</h2>
+<p><a href="https://github.com/OpenMontageInc/OpenMontage">OpenMontage</a>는 일반적인 “주제 입력 → MP4 출력” 도구보다 큽니다. GitHub 설명은 12개 제작 파이프라인, 100개 이상의 도구, 700개 이상의 에이전트 스킬·제작 지식 파일을 제공한다고 설명합니다. Claude·Cursor·Copilot 같은 코딩 에이전트가 리서치, 스토리보드, 생성형 미디어, Remotion·FFmpeg 합성을 단계별로 수행하도록 하는 영상 제작 시스템입니다.</p>
+<pre class="mermaid">flowchart TD
+    brief["제작 브리프"] --> research["리서치·자료 수집"]
+    research --> storyboard["대본·스토리보드"]
+    storyboard --> assets["이미지·영상·음성 에셋"]
+    assets --> compose["Remotion·FFmpeg 조합"]
+    compose --> qa["렌더 검수·수정"]
+    qa --> deliver["플랫폼별 최종본"]
+
+    classDef inputTone fill:#e0c8ef,stroke:#8b6aa8,color:#333
+    classDef processTone fill:#c5dcef,stroke:#6f9fc5,color:#333
+    classDef reviewTone fill:#ffc8c4,stroke:#bd7772,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#68a47b,color:#333
+    class brief inputTone
+    class research,storyboard,assets,compose processTone
+    class qa reviewTone
+    class deliver outputTone</pre><p>이 프로젝트는 콘텐츠 공장이라기보다 <strong>에이전트가 반복 가능한 제작 절차를 따르게 하는 지식·도구 묶음</strong>에 가깝습니다. 따라서 영상 한 편을 빨리 뽑는 것보다 시리즈의 스타일, 씬 규칙, 검수 절차를 코드로 관리하고 싶은 팀에 적합합니다. AGPL-3.0 라이선스이므로 사내 수정본을 서비스로 제공하거나 재배포할 때 라이선스 의무를 먼저 검토해야 합니다.</p>
+<h2 id="4-ai-shorts-generator-ai-시각-자료와-무료-스톡의-혼합">4. AI Shorts Generator: AI 시각 자료와 무료 스톡의 혼합</h2>
+<p><a href="https://github.com/AbdullahNaveed/ai-shorts-generator">AI Shorts Generator</a>는 하나의 주제를 캡션이 포함된 세로 영상으로 바꾸는 Python 파이프라인입니다. README에 따르면 Flux 기반 AI 이미지와 Wan 기반 모션 클립을 fal.ai에서 생성하거나, Pexels·Pixabay의 무료 스톡 영상을 가져올 수 있습니다. AI 음성, 단어 단위 캡션, 배경 음악, 워터마크, 로컬 리뷰 대시보드와 플랫폼별 제목·설명·해시태그 출력을 제공합니다.</p>
+<p>이 프로젝트의 핵심은 매번 영상을 생성하지 않고 <strong>재사용 가능한 시각 소재 라이브러리</strong>를 만들 수 있다는 점입니다. 같은 의미의 장면을 저장해 다음 영상에서 다시 매칭하면 생성 비용과 대기 시간을 줄일 수 있습니다. 단, fal.ai·스톡 사이트의 사용량과 라이선스 조건은 별도이므로 무료 코드와 무료 콘텐츠를 혼동하면 안 됩니다.</p>
+<h2 id="5-yt-automation-로컬-생성부터-업로드까지">5. YT Automation: 로컬 생성부터 업로드까지</h2>
+<p><a href="https://github.com/mzu-2410z/yt-automation">YT Automation</a>은 Windows PC에서 주제를 입력하면 Llama 3.3 70B(Groq)가 대본을 만들고, Kokoro TTS가 로컬 음성을 생성하고, Pexels 소재와 FFmpeg·Pillow가 1080×1920 영상을 만든 뒤 YouTube Data API로 업로드하는 구조입니다. 저장소는 각 단계를 약 5분 이내의 로컬 흐름으로 설명하며 MIT 라이선스를 사용합니다.</p>
+<pre class="mermaid">sequenceDiagram
+    participant User as 사용자
+    participant LLM as Groq Llama
+    participant TTS as Kokoro 로컬 TTS
+    participant Stock as Pexels
+    participant FFMPEG as FFmpeg/Pillow
+    participant YouTube as YouTube API
+    User->>LLM: 주제 입력
+    LLM-->>TTS: 대본
+    TTS-->>FFMPEG: 음성 파일
+    Stock-->>FFMPEG: 배경 소재
+    FFMPEG-->>YouTube: 1080x1920 MP4
+    YouTube-->>User: 업로드 결과</pre><p>외부 유료 영상 생성 서비스 없이 로컬 음성을 쓰는 점은 비용 예측에 유리하지만, Groq·Pexels·YouTube API의 키와 쿼터, OAuth 토큰은 여전히 필요합니다. 업로드 자동화는 편리한 만큼 제목·설명·공개 범위·썸네일·중복 콘텐츠를 게시 전에 검수하는 안전장치를 두어야 합니다.</p>
+<h2 id="어떤-프로젝트부터-선택할까">어떤 프로젝트부터 선택할까</h2>
+<pre class="mermaid">flowchart TD
+    start["목표 확인"] --> docker{"Docker 기반 분리형 파이프라인?"}
+    docker -->|"예"| viral["Viral Faceless Shorts"]
+    docker -->|"아니오"| breadth{"WebUI·공급자·출력 기능이 많이 필요한가?"}
+    breadth -->|"예"| mpt["MoneyPrinterTurbo"]
+    breadth -->|"아니오"| agent{"에이전트가 제작 절차를 조율해야 하는가?"}
+    agent -->|"예"| montage["OpenMontage"]
+    agent -->|"아니오"| visuals{"AI 시각 생성과 스톡 혼합이 핵심인가?"}
+    visuals -->|"예"| ai["AI Shorts Generator"]
+    visuals -->|"아니오"| upload["로컬 생성·자동 업로드가 핵심인가?"]
+    upload -->|"예"| yt["YT Automation"]
+    upload -->|"아니오"| prototype["가장 작은 파이프라인부터 실험"]
+
+    classDef decisionTone fill:#fde8c0,stroke:#c49a4d,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#68a47b,color:#333
+    classDef startTone fill:#e0c8ef,stroke:#8b6aa8,color:#333
+    class start startTone
+    class docker,breadth,agent,visuals,upload decisionTone
+    class viral,mpt,montage,ai,yt,prototype resultTone</pre><h3 id="공통-운영-체크리스트">공통 운영 체크리스트</h3>
+<ul>
+<li><strong>대본 승인 단계</strong>: 사실 오류, 과장된 제목, 타인의 콘텐츠를 베끼는 표현을 사람이 확인합니다.</li>
+<li><strong>소재 라이선스</strong>: 배경 영상·음악·폰트·음성 모델의 상업 이용과 재배포 조건을 기록합니다.</li>
+<li><strong>비용 상한</strong>: LLM·TTS·영상 생성 API의 월 한도와 영상당 상한을 설정합니다.</li>
+<li><strong>비밀 관리</strong>: API 키를 <code>.env</code>와 시크릿 저장소로 관리하고 저장소·로그에 남기지 않습니다.</li>
+<li><strong>업로드 검수</strong>: 자동 게시 대신 비공개 또는 예약 업로드로 시작해 중복·저작권·정책 위반을 확인합니다.</li>
+<li><strong>관찰 가능성</strong>: 입력 주제, 사용 모델, 프롬프트, 소재 URL, 렌더 결과를 실행 ID와 함께 보관합니다.</li>
+</ul>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>다섯 프로젝트는 모두 쇼츠 자동화를 다루지만, 자동화 범위와 운영 방식이 다릅니다.</li>
+<li>Viral Faceless Shorts Generator는 Trends→Gemini→TTS→자막 정렬→FFmpeg를 Docker로 분리합니다.</li>
+<li>MoneyPrinterTurbo는 WebUI·CLI·Docker와 다양한 LLM·TTS·영상 제공자를 한 프로젝트에 모읍니다.</li>
+<li>OpenMontage는 에이전트가 영상 제작 지식과 파이프라인을 반복 실행하게 하는 스튜디오형 접근입니다.</li>
+<li>AI Shorts Generator는 AI 시각 생성과 Pexels·Pixabay 스톡을 섞고, 소재를 재사용하는 흐름을 제공합니다.</li>
+<li>YT Automation은 Groq·Kokoro·Pexels·FFmpeg·YouTube API를 이용한 로컬 중심 자동 업로드 파이프라인입니다.</li>
+<li>자동 게시보다 먼저 대본 승인, 라이선스 기록, 비용 상한, 키 보호, 비공개 업로드를 운영 규칙으로 만드는 것이 중요합니다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>유튜브 자동화의 핵심은 “버튼 하나로 영상을 만든다”가 아니라, 반복 가능한 제작 단계를 어디까지 신뢰하고 어디에서 사람이 검수할지를 정하는 것입니다. 처음에는 YT Automation처럼 작은 로컬 루프나 Viral Faceless Shorts Generator처럼 단계가 분리된 구조로 시작하고, 시리즈 제작과 팀 협업이 필요해지면 MoneyPrinterTurbo나 OpenMontage로 확장하는 방식이 현실적입니다. 도구를 선택하기 전에 한 편의 영상이 아니라 <strong>10편을 같은 품질과 비용으로 만들 수 있는가</strong>를 테스트해야 합니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 11월 16일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/automation">Automation</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/11/2026-11-15-treg-agent-ugc-video-pipeline/" rel="prev">
+        <span>Treg로 만드는 에이전트 기반 UGC 광고 영상 파이프라인</span>
+      </a>
+    </li>
+     
+    <li>
+      <a href="https://gyuha.com/post/2026/11/2026-11-16-ai-video-production-pipeline-omni-qwen-vrew/" rel="next">
+        <span>생성형 AI로 1분 53초 영상을 만드는 제작 파이프라인</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#한눈에-보는-다섯-가지-접근">한눈에 보는 다섯 가지 접근</a></li>
+    <li><a href="#1-viral-faceless-shorts-generator-단계를-분리한-docker-파이프라인">1. Viral Faceless Shorts Generator: 단계를 분리한 Docker 파이프라인</a></li>
+    <li><a href="#2-moneyprinterturbo-가장-넓은-기능-표면">2. MoneyPrinterTurbo: 가장 넓은 기능 표면</a></li>
+    <li><a href="#3-openmontage-에이전트를-영상-제작자로-확장">3. OpenMontage: 에이전트를 영상 제작자로 확장</a></li>
+    <li><a href="#4-ai-shorts-generator-ai-시각-자료와-무료-스톡의-혼합">4. AI Shorts Generator: AI 시각 자료와 무료 스톡의 혼합</a></li>
+    <li><a href="#5-yt-automation-로컬-생성부터-업로드까지">5. YT Automation: 로컬 생성부터 업로드까지</a></li>
+    <li><a href="#어떤-프로젝트부터-선택할까">어떤 프로젝트부터 선택할까</a>
+      <ul>
+        <li><a href="#공통-운영-체크리스트">공통 운영 체크리스트</a></li>
+      </ul>
+    </li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/automation/" class="badge badge-secondary">Automation</a>
+    <a href="/tags/video-generation/" class="badge badge-secondary">Video-Generation</a>
+    <a href="/tags/python/" class="badge badge-secondary">Python</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+
+<script>
+  $(function () {
+    if (window.VANTA && document.getElementById('waves')) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>

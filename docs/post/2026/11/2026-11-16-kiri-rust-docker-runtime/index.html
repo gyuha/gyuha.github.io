@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Docker Desktop을 대체하는 Rust 컨테이너 런타임 Kiri의 구조'" />
+  <title>Docker Desktop을 대체하는 Rust 컨테이너 런타임 Kiri의 구조  | 신규하 블로그</title>
+  <meta property="og:title" content="Docker Desktop을 대체하는 Rust 컨테이너 런타임 Kiri의 구조" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-11-16"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/11/2026-11-16-kiri-rust-docker-runtime/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="docker" />
+  
+  <meta property="og:tags" content="rust" />
+  
+  <meta property="og:tags" content="productivity" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/11/2026-11-16-kiri-rust-docker-runtime/">
+          <h1>
+            Docker Desktop을 대체하는 Rust 컨테이너 런타임 Kiri의 구조
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/11/2026-11-16-kiri-rust-docker-runtime/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Docker Desktop은 편리하지만, 데스크톱 VM과 여러 데몬 계층이 만들어 내는 시작 지연과 리소스 사용량이 부담이 될 수 있습니다. Threads에 소개된 <strong>Kiri</strong>는 이 문제를 Rust로 만든 단일 컨테이너 런타임과 Docker Engine API 호환 계층으로 풀어 보려는 오픈 소스 프로젝트입니다. 핵심은 새로운 명령어를 강요하는 것이 아니라, 기존 <code>docker</code>, Compose, buildx와 IDE가 계속 같은 방식으로 동작하도록 엔진만 교체하는 것입니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>원문 Threads: <a href="https://www.threads.com/share/BAefi24iCI">Github Projects의 Kiri 소개</a></li>
+<li>공식 저장소: <a href="https://github.com/libracoder/kiri">libracoder/kiri</a></li>
+<li>공식 문서: <a href="https://docs.runkiri.com/">Kiri Docs</a></li>
+<li>아키텍처 설명: <a href="https://github.com/libracoder/kiri/blob/main/docs/development.md">Kiri development guide</a></li>
+</ul>
+<h2 id="kiri가-해결하려는-문제">Kiri가 해결하려는 문제</h2>
+<p>Kiri는 Docker 이미지를 실행하는 컨테이너 런타임이며, macOS·Windows·Linux를 대상으로 합니다. 공식 저장소는 Kiri를 Docker Desktop과 OrbStack의 경량 대안으로 소개하고, Docker CLI·Compose·buildx를 그대로 사용할 수 있다고 설명합니다 (<a href="https://github.com/libracoder/kiri">README</a>). macOS에서는 Linux 컨테이너를 하나의 경량 VM 안에서 실행하고, Linux에서는 호스트 커널 위에서 직접 실행하는 방식입니다 (<a href="https://docs.runkiri.com/">Kiri Docs</a>).</p>
+<pre class="mermaid">flowchart TD
+    cli["기존 Docker CLI"] --> context["kiri Docker context"]
+    compose["Docker Compose"] --> context
+    buildx["Docker buildx"] --> context
+    ide["IDE·Docker API 클라이언트"] --> context
+    context --> api["Docker Engine API"]
+    api --> daemon["Rust 기반 Kiri daemon"]
+    daemon --> runtime["컨테이너 실행"]
+
+    classDef clientTone fill:#c5dcef,stroke:#6f9fc5,color:#333
+    classDef gatewayTone fill:#fde8c0,stroke:#c49a4d,color:#333
+    classDef runtimeTone fill:#c0ecd3,stroke:#68a47b,color:#333
+    class cli,compose,buildx,ide clientTone
+    class context,api gatewayTone
+    class daemon,runtime runtimeTone</pre><h3 id="80배-빠르다는-표현을-어떻게-읽어야-할까">“80배 빠르다”는 표현을 어떻게 읽어야 할까</h3>
+<p>Threads 원문은 Docker Desktop보다 컨테이너 시작이 약 80배 빠르다고 소개합니다. 이 수치는 게시물의 요약 표현이므로 일반적인 모든 워크로드에 적용되는 보편적 보장으로 해석하면 안 됩니다. Kiri 공식 사이트는 동일한 Apple Silicon 환경에서 같은 CPU·메모리 제한과 warm image를 사용한 비교 결과를 별도로 공개합니다. 예를 들어 <code>docker run --rm alpine true</code>의 중앙값은 Kiri 22ms, Docker Desktop 178ms로 제시되어 있습니다 (<a href="https://runkiri.com/docker-runtime/">공식 성능 비교</a>). 저장소 README에는 다른 측정 조건과 수치도 있으므로, 실제 도입 전에는 자신의 이미지·파일 공유·네트워크 조건으로 <code>kiri bench</code>를 다시 실행해야 합니다 (<a href="https://github.com/libracoder/kiri#numbers">README Numbers</a>).</p>
+<h2 id="운영체제별-실행-모델">운영체제별 실행 모델</h2>
+<p>Kiri의 호환성은 운영체제에 따라 내부 구현이 달라진다는 점을 전제로 합니다.</p>
+<pre class="mermaid">flowchart TD
+    os{"실행 환경"} --> mac["macOS"]
+    os --> win["Windows"]
+    os --> linux["Linux"]
+    mac --> vm["경량 Linux VM"]
+    win --> wsl["WSL2 기반 환경"]
+    linux --> host["호스트 커널"]
+    vm --> engine["Kiri daemon + guest agent"]
+    wsl --> engine
+    host --> engine
+    engine --> containers["Linux 컨테이너"]
+
+    classDef decisionTone fill:#e0c8ef,stroke:#8b6aa8,color:#333
+    classDef platformTone fill:#c5dcef,stroke:#6f9fc5,color:#333
+    classDef engineTone fill:#fde8c0,stroke:#c49a4d,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#68a47b,color:#333
+    class os decisionTone
+    class mac,win,linux platformTone
+    class vm,wsl,host,engine engineTone
+    class containers outputTone</pre><ul>
+<li><strong>macOS</strong>: Kiri가 관리하는 Linux VM에서 컨테이너를 실행합니다. 공식 개발 문서는 Apple Virtualization.framework를 사용하고, 커스텀 커널과 guest agent를 포함한다고 설명합니다.</li>
+<li><strong>Windows</strong>: 공식 README 기준으로 WSL2를 통해 실행하는 설치 경로를 제공합니다.</li>
+<li><strong>Linux</strong>: 별도 VM 없이 호스트 커널에서 Kiri daemon이 컨테이너를 실행합니다. 공식 Linux 문서는 <code>kiri.service</code>와 <code>/run/kiri/docker.sock</code>을 제공한다고 안내합니다 (<a href="https://docs.runkiri.com/linux/">Linux docs</a>).</li>
+</ul>
+<p>따라서 “VM이 없다”는 말은 플랫폼 전체에 동일하게 적용되지 않습니다. macOS에서는 VM이 여전히 필요하지만, Kiri가 VM의 생명주기와 컨테이너 엔진을 한 묶음으로 관리해 사용자가 Docker Desktop의 여러 계층을 직접 다루지 않도록 합니다.</p>
+<h2 id="내부-아키텍처-dockerdcontainerdrunc를-한-데몬으로">내부 아키텍처: dockerd·containerd·runc를 한 데몬으로</h2>
+<p>Kiri의 설계 포인트는 Docker Engine API를 외부 호환면으로 유지하면서 내부 실행 경로를 단순화하는 것입니다. 개발 문서에 따르면 macOS의 Docker CLI·Compose·buildx는 Unix socket을 통해 Kiri daemon에 연결하고, daemon은 vsock으로 guest agent에 요청을 전달합니다. guest agent는 PID 1로서 컨테이너 실행·출력 전달·포트·DNS 등을 담당합니다 (<a href="https://github.com/libracoder/kiri/blob/main/docs/development.md">development.md</a>).</p>
+<pre class="mermaid">sequenceDiagram
+    participant C as Docker CLI
+    participant D as Kiri daemon
+    participant G as Guest agent
+    participant R as Container
+    C->>D: Docker Engine API over socket
+    D->>G: vsock request
+    G->>R: clone3 + namespaces + cgroup
+    R-->>G: stdout, stderr, exit code
+    G-->>D: stream output and status
+    D-->>C: API-compatible response</pre><p>저장소의 개발 문서는 컨테이너를 <code>clone3</code>로 새 네임스페이스와 cgroup에 넣고, overlayfs·<code>pivot_root</code>·capability·seccomp를 조합한다고 설명합니다. 또한 일반적인 Docker 스택의 <code>runc</code>, shim, dockerd를 사용하지 않는다고 명시합니다. 이는 “명령어 호환”과 “내부 구현 호환”을 구분해야 한다는 뜻입니다. 기존 CLI가 작동해도 모든 Docker Desktop 확장 기능이나 운영 도구가 자동으로 동일하게 동작한다고 가정해서는 안 됩니다.</p>
+<h3 id="이미지와-빌드의-흐름">이미지와 빌드의 흐름</h3>
+<p>Kiri는 Dockerfile과 Compose 파일을 새 형식으로 바꾸지 않습니다. 공식 빌드 문서에 따르면 <code>docker build</code>, <code>docker buildx build</code>, <code>docker compose build</code>가 Kiri가 관리하는 BuildKit으로 전달되고, 결과 이미지는 Kiri에 로드되어 바로 실행됩니다 (<a href="https://docs.runkiri.com/docker/builds/">Builds</a>).</p>
+<pre class="mermaid">flowchart TD
+    files["Dockerfile·compose.yaml"] --> command["docker build / compose build"]
+    command --> buildx["buildx 또는 Docker API"]
+    buildx --> buildkit["Kiri가 관리하는 BuildKit"]
+    buildkit --> image["이미지 레이어·캐시"]
+    image --> run["kiri context에서 실행"]
+
+    classDef inputTone fill:#e0c8ef,stroke:#8b6aa8,color:#333
+    classDef processTone fill:#c5dcef,stroke:#6f9fc5,color:#333
+    classDef storageTone fill:#fde8c0,stroke:#c49a4d,color:#333
+    classDef outputTone fill:#c0ecd3,stroke:#68a47b,color:#333
+    class files inputTone
+    class command,buildx,buildkit processTone
+    class image storageTone
+    class run outputTone</pre><p>빌드 캐시가 유지되는 위치와 이미지 로딩 정책은 성능에 직접 영향을 주므로, CI에서는 Kiri의 기본 캐시가 러너 수명보다 오래 유지되는지 확인해야 합니다. 로컬 개발과 CI의 엔진이 다르면 빌드 재현성과 캐시 적중률도 달라질 수 있습니다.</p>
+<h2 id="설치와-전환-방법">설치와 전환 방법</h2>
+<p>공식 README는 macOS 14 이상, Windows 10·11의 WSL2, Ubuntu·Fedora 계열 Linux 설치 패키지를 안내합니다 (<a href="https://github.com/libracoder/kiri#install">설치 표</a>). 첫 실행 시 <code>kiri</code> Docker context를 만들고, 기존 Docker CLI가 있다면 다음처럼 테스트할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker --context kiri run --rm alpine <span style="color:#6639ba">echo</span> hello
+</span></span><span style="display:flex;"><span>docker --context kiri compose up -d
+</span></span><span style="display:flex;"><span>docker context use kiri
+</span></span><span style="display:flex;"><span>docker context use default
+</span></span></code></pre></div><p>Kiri 공식 문서는 Docker Desktop이나 OrbStack에서 이미지·볼륨·컨테이너를 가져오는 <code>kiri import</code> 흐름도 안내합니다. 다만 운영 데이터가 있는 환경에서는 가져오기 전 백업과 롤백 경로를 확인해야 합니다. 특히 볼륨 파일 권한, bind mount 성능, 네트워크 이름 해석, GPU·USB 패스스루는 엔진마다 차이가 날 수 있습니다.</p>
+<h2 id="도입-전-검증-체크리스트">도입 전 검증 체크리스트</h2>
+<pre class="mermaid">flowchart TD
+    install["Kiri 설치"] --> smoke["alpine smoke test"]
+    smoke --> compose["대표 Compose 스택"]
+    compose --> mounts["볼륨·bind mount 검증"]
+    mounts --> network["포트·DNS·프록시 검증"]
+    network --> bench["kiri bench와 실제 작업 측정"]
+    bench --> decision{"롤백 가능한가?"}
+    decision -->|"예"| adopt["팀 기본 context로 채택"]
+    decision -->|"아니오"| pilot["파일럿 범위 유지"]
+
+    classDef stepTone fill:#c5dcef,stroke:#6f9fc5,color:#333
+    classDef verifyTone fill:#fde8c0,stroke:#c49a4d,color:#333
+    classDef decisionTone fill:#ffc8c4,stroke:#bd7772,color:#333
+    classDef resultTone fill:#c0ecd3,stroke:#68a47b,color:#333
+    class install,smoke,compose stepTone
+    class mounts,network,bench verifyTone
+    class decision decisionTone
+    class adopt,pilot resultTone</pre><p>검증 순서는 “빠르다”는 벤치마크보다 중요합니다. 먼저 대표 컨테이너가 뜨는지 확인하고, 실제 서비스의 Compose·볼륨·네트워크를 재현한 다음, 개발자들이 매일 쓰는 <code>build</code>, <code>exec</code>, 로그 스트리밍, 파일 동기화 시간을 측정해야 합니다. 이 과정에서 문제가 생기면 Docker context만 되돌려 기존 엔진으로 복귀할 수 있어야 합니다.</p>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>Kiri는 Rust로 작성된 Docker 호환 컨테이너 런타임이며, 기존 Docker CLI·Compose·buildx를 유지하는 것을 목표로 합니다.</li>
+<li>macOS는 경량 Linux VM, Linux는 호스트 커널, Windows는 WSL2 기반으로 실행 모델이 다릅니다.</li>
+<li>Docker Engine API를 Kiri daemon이 받고, guest agent가 <code>clone3</code>·네임스페이스·cgroup으로 컨테이너를 실행합니다.</li>
+<li><code>docker build</code>와 Compose 빌드는 Kiri가 관리하는 BuildKit과 캐시를 사용합니다.</li>
+<li>Threads의 “80배” 주장은 게시물의 요약 표현입니다. 공식 벤치마크의 조건·수치와 자신의 워크로드를 분리해 검증해야 합니다.</li>
+<li>도입 전에는 볼륨, 네트워크, 파일 동기화, 권한, GPU·특수 장치, 롤백을 반드시 테스트해야 합니다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>Kiri의 흥미로운 점은 Docker 생태계를 버리는 대신 <strong>호환 가능한 API와 CLI를 유지한 채 실행 계층을 다시 설계</strong>했다는 데 있습니다. Rust 단일 데몬, 경량 VM, 직접적인 컨테이너 초기화가 실제 개발 속도를 높일지는 워크로드에 따라 달라지지만, Docker Desktop의 무거운 기본값에 답답함을 느끼는 개발자라면 작은 테스트 프로젝트부터 Kiri context를 병행해 볼 만합니다. 성능 숫자보다 중요한 기준은 팀의 Compose 파일과 개발 도구를 수정하지 않고도 빠르게 전환하고, 문제가 생겼을 때 즉시 기존 context로 돌아갈 수 있는가입니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 11월 16일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/infrastructure">Infrastructure</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/11/2026-11-16-patch-ai-game-asset-mcp-platform/" rel="prev">
+        <span>Patch: AI 코딩 에이전트로 게임을 만들고 무료 에셋까지 가져오는 플랫폼</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#kiri가-해결하려는-문제">Kiri가 해결하려는 문제</a>
+      <ul>
+        <li><a href="#80배-빠르다는-표현을-어떻게-읽어야-할까">“80배 빠르다”는 표현을 어떻게 읽어야 할까</a></li>
+      </ul>
+    </li>
+    <li><a href="#운영체제별-실행-모델">운영체제별 실행 모델</a></li>
+    <li><a href="#내부-아키텍처-dockerdcontainerdrunc를-한-데몬으로">내부 아키텍처: dockerd·containerd·runc를 한 데몬으로</a>
+      <ul>
+        <li><a href="#이미지와-빌드의-흐름">이미지와 빌드의 흐름</a></li>
+      </ul>
+    </li>
+    <li><a href="#설치와-전환-방법">설치와 전환 방법</a></li>
+    <li><a href="#도입-전-검증-체크리스트">도입 전 검증 체크리스트</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/docker/" class="badge badge-secondary">Docker</a>
+    <a href="/tags/rust/" class="badge badge-secondary">Rust</a>
+    <a href="/tags/productivity/" class="badge badge-secondary">Productivity</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+
+<script>
+  $(function () {
+    if (window.VANTA && document.getElementById('waves')) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
