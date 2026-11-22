@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Sulphur-3 공개: MiniMax H3 기반 영상 모델을 ComfyUI에서 실행하는 법'" />
+  <title>Sulphur-3 공개: MiniMax H3 기반 영상 모델을 ComfyUI에서 실행하는 법  | 신규하 블로그</title>
+  <meta property="og:title" content="Sulphur-3 공개: MiniMax H3 기반 영상 모델을 ComfyUI에서 실행하는 법" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-11-22"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/11/2026-11-22-sulphur-3-minimax-h3-comfyui/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="ai" />
+  
+  <meta property="og:tags" content="workflow" />
+  
+  <meta property="og:tags" content="llm" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/11/2026-11-22-sulphur-3-minimax-h3-comfyui/">
+          <h1>
+            Sulphur-3 공개: MiniMax H3 기반 영상 모델을 ComfyUI에서 실행하는 법
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/11/2026-11-22-sulphur-3-minimax-h3-comfyui/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>MiniMax H3 기반의 비검열 영상 생성 파인튜닝 모델 <strong>Sulphur-3</strong>가 공개되었습니다. X 게시물은 일반 체크포인트와 W4A8 양자화판, ComfyUI용 보정 노드와 워크플로를 안내하고 있고, Hugging Face 모델 카드는 <code>s3.safetensors</code>를 기본 실행 파일로, <code>quantized/</code> 아래에 낮은 VRAM용 선택지를 제공합니다. 이 글은 공개 파일을 어떻게 구분하고 ComfyUI에 연결할지, 그리고 “무검열”이라는 표현을 사용할 때 어떤 책임을 함께 고려해야 하는지 정리합니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>원문 X 게시물: <a href="https://x.com/mapte_fireball/status/2124152041136422916?a=0l5OPoKI8iXcCBgi1bM&amp;s=35">mapte_fireball의 Sulphur-3 공개 안내</a></li>
+<li>Sulphur-3 모델 카드: <a href="https://huggingface.co/SulphurAI/Sulphur-3">SulphurAI/Sulphur-3</a></li>
+<li>MiniMax H3 공식 모델 카드: <a href="https://huggingface.co/MiniMaxAI/MiniMax-H3">MiniMaxAI/MiniMax-H3</a></li>
+<li>MiniMax H3 공식 저장소: <a href="https://github.com/Mini-Max-H3/MiniMax-H3">Mini-Max-H3/MiniMax-H3</a></li>
+</ul>
+<p>X 게시물의 본문은 2026년 11월 21일 작성되었으며, 일반판 40.2GB와 W4A8판 11.4GB라는 수치를 제시합니다. 이 글에서는 해당 용량을 게시물의 주장으로 표시하고, 파일의 역할과 라이선스는 Hugging Face 모델 카드로 교차 확인했습니다. 모델 저장소의 파일 구성과 용량은 업데이트될 수 있습니다.</p>
+<h2 id="sulphur-3는-무엇인가">Sulphur-3는 무엇인가</h2>
+<p>Hugging Face 모델 카드는 Sulphur 3를 <strong>MiniMax H3 기반의 비검열 영상 생성 모델</strong>이라고 설명합니다. 모델 메타데이터의 base model도 <code>MiniMaxAI/MiniMax-H3</code>로 지정되어 있습니다. 따라서 완전히 새로운 영상 생성 아키텍처라기보다 H3의 입력·출력 파이프라인과 호환되는 파인튜닝 계열로 이해하는 것이 정확합니다. <a href="https://huggingface.co/SulphurAI/Sulphur-3">Sulphur-3 모델 카드</a></p>
+<p>MiniMax H3 자체는 텍스트·이미지·비디오·오디오를 함께 다루는 멀티모달 시스템이며, 공식 카드에는 오디오가 포함된 4~15초 영상, 다양한 종횡비, 24FPS와 32kHz 스테레오 오디오 출력이 기재되어 있습니다. Sulphur-3가 이런 H3 기반 파이프라인에서 동작한다는 점은 확인되지만, Sulphur-3가 모든 H3 기능과 품질을 동일하게 보장한다는 뜻은 아닙니다. <a href="https://huggingface.co/MiniMaxAI/MiniMax-H3">MiniMax H3 공식 모델 카드</a></p>
+<pre class="mermaid">flowchart TD
+    A[텍스트·이미지·오디오 입력] --> B[MiniMax H3 파이프라인]
+    B --> C[Sulphur-3 파인튜닝 가중치]
+    C --> D[영상·오디오 생성]
+    D --> E[ComfyUI에서 후처리·검수]
+    classDef inputTone fill:#c5dcef,stroke:#6d9dc4,color:#333;
+    classDef baseTone fill:#e0c8ef,stroke:#9475ad,color:#333;
+    classDef modelTone fill:#fde8c0,stroke:#c49a3a,color:#333;
+    classDef outputTone fill:#c0ecd3,stroke:#6ca67d,color:#333;
+    class A inputTone;
+    class B baseTone;
+    class C modelTone;
+    class D,E outputTone;</pre><h2 id="공개-파일을-어떻게-고를까">공개 파일을 어떻게 고를까</h2>
+<p>모델 카드가 안내하는 기본 선택은 <code>s3.safetensors</code>입니다. “일반 MiniMax H3 모델처럼 실행하면 된다”는 설명과 함께, 이 파일만으로 시작할 수 있다고 적혀 있습니다.</p>
+<ul>
+<li><strong><code>s3.safetensors</code></strong>: 일반 실행을 위한 권장 체크포인트</li>
+<li><strong><code>quantized/s3_w4a8.safetensors</code></strong>: 낮은 VRAM을 위한 W4A8 양자화 선택지</li>
+<li><strong><code>quantized/s3_raw_w4a8.safetensors</code>·<code>s3_raw_int8.safetensors</code></strong>: raw 계열 양자화 파일</li>
+<li><strong><code>s3_raw.safetensors</code></strong>: RL LoRA가 포함되지 않은 raw 변형</li>
+<li><strong><code>s3_ref2va.safetensors</code></strong>: Ref2VA 변형이며 모델 카드가 학습되지 않은 변형으로 표시</li>
+<li><strong><code>s3_corrector.safetensors</code></strong>: 선택형 보정기</li>
+<li><strong><code>S3_ComfyUI.zip</code></strong>: corrector에 필요한 ComfyUI 노드와 워크플로</li>
+</ul>
+<p>양자화는 파일 크기만 줄이는 옵션이 아니라 정밀도와 메모리 사용 방식이 달라지는 선택입니다. 먼저 하드웨어의 VRAM과 실행 가능한 워크플로를 확인하고, 품질 비교가 필요하면 같은 프롬프트·시드·프레임 조건으로 일반판과 양자화판을 측정하세요.</p>
+<pre class="mermaid">flowchart TD
+    A[하드웨어 VRAM 확인] --> B{일반 체크포인트가 적재되는가?}
+    B -->|예| C[s3.safetensors로 기준 결과 생성]
+    B -->|아니오| D[quantized/s3_w4a8 검토]
+    C --> E{보정이 필요한가?}
+    D --> E
+    E -->|예| F[s3_corrector + ComfyUI 노드]
+    E -->|아니오| G[기본 H3 워크플로 유지]
+    F --> H[동일 조건 품질·속도 비교]
+    G --> H
+    classDef hardwareTone fill:#c5dcef,stroke:#6d9dc4,color:#333;
+    classDef choiceTone fill:#fde8c0,stroke:#c49a3a,color:#333;
+    classDef modelTone fill:#e0c8ef,stroke:#9475ad,color:#333;
+    classDef resultTone fill:#c0ecd3,stroke:#6ca67d,color:#333;
+    class A hardwareTone;
+    class B,E choiceTone;
+    class C,D,F,G modelTone;
+    class H resultTone;</pre><h2 id="comfyui에서-corrector를-사용하는-구조">ComfyUI에서 corrector를 사용하는 구조</h2>
+<p>모델 카드에 따르면 corrector는 <strong>선택 사항</strong>입니다. <code>s3</code>를 일반 MiniMax H3 모델처럼 실행한 뒤 문제가 없으면 보정기를 사용하지 않아도 됩니다. 사용하기로 했다면 <code>S3_ComfyUI.zip</code>에 포함된 노드와 워크플로를 설치하고, <code>s3_corrector.safetensors</code>를 다음 경로에 둡니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>ComfyUI/
+</span></span><span style="display:flex;"><span>└── models/
+</span></span><span style="display:flex;"><span>    └── h3_correctors/
+</span></span><span style="display:flex;"><span>        └── s3_corrector.safetensors
+</span></span></code></pre></div><p>권장 적용 순서는 다음과 같습니다.</p>
+<ol>
+<li>ComfyUI와 MiniMax H3용 기본 노드가 정상 실행되는지 먼저 확인합니다.</li>
+<li>Hugging Face에서 <code>s3.safetensors</code>를 내려받아 일반 H3 워크플로로 짧은 샘플을 생성합니다.</li>
+<li>필요할 때만 <code>S3_ComfyUI.zip</code>의 노드와 워크플로를 추가합니다.</li>
+<li><code>s3_corrector.safetensors</code>를 <code>models/h3_correctors/</code>에 복사합니다.</li>
+<li>같은 입력으로 corrector 적용 전후를 비교하고, 결과가 좋아지는 경우에만 기본 워크플로로 채택합니다.</li>
+</ol>
+<pre class="mermaid">flowchart TD
+    A[ComfyUI 설치·기본 H3 확인] --> B[s3.safetensors 로드]
+    B --> C[짧은 테스트 생성]
+    C --> D{보정 필요?}
+    D -->|아니오| E[기본 워크플로 사용]
+    D -->|예| F[S3_ComfyUI.zip 설치]
+    F --> G[s3_corrector를 h3_correctors에 배치]
+    G --> H[corrector 워크플로 실행]
+    H --> I[전후 결과·메모리·시간 비교]
+    I --> J{품질·안정성 개선?}
+    J -->|예| K[워크플로 고정]
+    J -->|아니오| E
+    classDef setupTone fill:#c5dcef,stroke:#6d9dc4,color:#333;
+    classDef modelTone fill:#e0c8ef,stroke:#9475ad,color:#333;
+    classDef decisionTone fill:#fde8c0,stroke:#c49a3a,color:#333;
+    classDef resultTone fill:#c0ecd3,stroke:#6ca67d,color:#333;
+    class A,B,C setupTone;
+    class F,G,H modelTone;
+    class D,J decisionTone;
+    class E,I,K resultTone;</pre><p>Corrector는 H3 계열의 다른 모델에도 동작할 수 있다고 모델 카드가 설명하지만, 모든 체크포인트에서 같은 효과를 보장한다고 해석하면 안 됩니다. 모델·노드·ComfyUI 버전을 기록하고, 오류가 발생하면 corrector를 제거한 최소 구성부터 다시 확인하세요.</p>
+<h2 id="무검열-모델을-사용할-때의-책임">“무검열” 모델을 사용할 때의 책임</h2>
+<p>“비검열”은 모델이 특정 안전 필터를 기본으로 적용하지 않는다는 의미이지, 모든 출력이 합법적이거나 안전하다는 의미가 아닙니다. 공개 모델을 로컬에서 실행할 때도 다음을 지켜야 합니다.</p>
+<ul>
+<li>실제 인물의 동의 없는 성적·사생활 침해 콘텐츠를 만들지 않습니다.</li>
+<li>미성년자 성적 묘사, 폭력 선동, 명예훼손, 불법 복제 등 금지된 용도로 사용하지 않습니다.</li>
+<li>공개·상업 배포 전에는 관할 지역의 법률과 플랫폼 정책을 확인합니다.</li>
+<li>생성된 인물·장면이 실제 사건이나 사람으로 오인될 수 있으면 합성 콘텐츠임을 표시합니다.</li>
+<li>팀 환경에서는 입력 프롬프트와 출력 파일 접근 권한을 제한하고, 민감한 자료를 외부 서비스에 업로드하지 않습니다.</li>
+</ul>
+<p>모델 카드의 라이선스는 MiniMax H3 Community License를 따릅니다. Sulphur-3 저장소의 <code>LICENSE</code>와 기반 모델의 라이선스를 모두 읽고, 상업적 사용·재배포·콘텐츠 제한을 확인해야 합니다. “오픈 웨이트”라는 이유만으로 MIT나 완전 자유 라이선스로 간주하면 안 됩니다. <a href="https://huggingface.co/SulphurAI/Sulphur-3/blob/main/LICENSE">Sulphur-3 라이선스</a> · <a href="https://huggingface.co/MiniMaxAI/MiniMax-H3">MiniMax H3 라이선스 안내</a></p>
+<h2 id="재현-가능한-테스트-방법">재현 가능한 테스트 방법</h2>
+<p>모델을 평가할 때는 “한 번 잘 나온 영상”보다 조건을 고정한 비교가 중요합니다.</p>
+<ol>
+<li>프롬프트와 부정 프롬프트를 파일로 저장합니다.</li>
+<li>해상도, 길이, FPS, 시드, 샘플러와 ComfyUI 커밋을 기록합니다.</li>
+<li>일반판·W4A8판·corrector 적용판을 같은 조건으로 실행합니다.</li>
+<li>생성 시간, peak VRAM, 프레임 누락, 오디오 동기화, 깜빡임을 기록합니다.</li>
+<li>최종 배포본에는 모델 버전과 라이선스, 사용한 외부 노드를 함께 적습니다.</li>
+</ol>
+<pre class="mermaid">flowchart TD
+    A[프롬프트·시드 고정] --> B[일반판 실행]
+    A --> C[W4A8 실행]
+    A --> D[corrector 적용 실행]
+    B --> E[품질·속도·VRAM 측정]
+    C --> E
+    D --> E
+    E --> F[라이선스·안전 검토]
+    F --> G[재현 정보와 함께 배포 판단]
+    classDef inputTone fill:#c5dcef,stroke:#6d9dc4,color:#333;
+    classDef runTone fill:#e0c8ef,stroke:#9475ad,color:#333;
+    classDef measureTone fill:#fde8c0,stroke:#c49a3a,color:#333;
+    classDef releaseTone fill:#c0ecd3,stroke:#6ca67d,color:#333;
+    class A inputTone;
+    class B,C,D runTone;
+    class E,F measureTone;
+    class G releaseTone;</pre><h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>Sulphur-3는 MiniMax H3 기반의 비검열 영상 생성 파인튜닝 모델입니다.</li>
+<li>기본 시작점은 <code>s3.safetensors</code>이며, 낮은 VRAM에서는 <code>quantized/s3_w4a8.safetensors</code>를 검토할 수 있습니다.</li>
+<li><code>s3_corrector.safetensors</code>와 <code>S3_ComfyUI.zip</code>은 선택형 보정 구성입니다.</li>
+<li>corrector는 <code>ComfyUI/models/h3_correctors/</code>에 배치하고, 적용 전후를 같은 조건으로 비교해야 합니다.</li>
+<li>X 게시물이 제시한 40.2GB·11.4GB는 게시물 수치이며, 저장소 파일과 버전이 바뀔 수 있습니다.</li>
+<li>MiniMax H3 Community License와 Sulphur-3 저장소의 라이선스를 함께 확인해야 합니다.</li>
+<li>비검열 모델은 법률·플랫폼 정책·동의·개인정보 보호를 지키는 범위에서 사용해야 합니다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>Sulphur-3의 실질적인 장점은 H3의 영상·오디오 생성 파이프라인을 유지하면서, 커뮤니티가 조정한 체크포인트와 ComfyUI 보정 흐름을 선택할 수 있다는 데 있습니다. 먼저 기본 <code>s3.safetensors</code>로 최소 워크플로를 검증하고, VRAM이 부족할 때 양자화판을 비교한 뒤, 필요할 때만 corrector를 추가하세요. 모델 버전·노드·라이선스·생성 조건을 기록하는 습관이 있어야 로컬 생성 결과를 안전하고 재현 가능하게 운영할 수 있습니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 11월 22일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/11/2026-11-21-modern-web-guidance-ai-coding-agents/" rel="prev">
+        <span>AI가 만든 낡은 웹 코드를 고치는 법: Modern Web Guidance와 legacy-scan</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#sulphur-3는-무엇인가">Sulphur-3는 무엇인가</a></li>
+    <li><a href="#공개-파일을-어떻게-고를까">공개 파일을 어떻게 고를까</a></li>
+    <li><a href="#comfyui에서-corrector를-사용하는-구조">ComfyUI에서 corrector를 사용하는 구조</a></li>
+    <li><a href="#무검열-모델을-사용할-때의-책임">“무검열” 모델을 사용할 때의 책임</a></li>
+    <li><a href="#재현-가능한-테스트-방법">재현 가능한 테스트 방법</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/ai/" class="badge badge-secondary">Ai</a>
+    <a href="/tags/workflow/" class="badge badge-secondary">Workflow</a>
+    <a href="/tags/llm/" class="badge badge-secondary">Llm</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+
+<script>
+  $(function () {
+    if (window.VANTA && document.getElementById('waves')) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
