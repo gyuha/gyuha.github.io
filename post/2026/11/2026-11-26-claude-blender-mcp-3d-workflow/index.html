@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Claude가 Blender를 직접 만지는 방법: MCP 3D 워크플로와 안전한 자동화'" />
+  <title>Claude가 Blender를 직접 만지는 방법: MCP 3D 워크플로와 안전한 자동화  | 신규하 블로그</title>
+  <meta property="og:title" content="Claude가 Blender를 직접 만지는 방법: MCP 3D 워크플로와 안전한 자동화" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-11-26"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/11/2026-11-26-claude-blender-mcp-3d-workflow/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="claude-code" />
+  
+  <meta property="og:tags" content="mcp" />
+  
+  <meta property="og:tags" content="agents" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/11/2026-11-26-claude-blender-mcp-3d-workflow/">
+          <h1>
+            Claude가 Blender를 직접 만지는 방법: MCP 3D 워크플로와 안전한 자동화
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/11/2026-11-26-claude-blender-mcp-3d-workflow/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>Blender를 열고 메뉴를 하나씩 누르는 대신 “던전에서 금 항아리를 지키는 로우폴리 용을 만들어 줘”라고 말하면 장면이 생성되는 시대가 왔습니다. 핵심은 이미지 생성이 아니라, Claude가 Blender의 Python API와 장면 데이터를 직접 조작하도록 <strong>Model Context Protocol(MCP)</strong> 로 연결하는 것입니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>원본 쇼츠: <a href="https://youtube.com/shorts/A7Xcz7lkR1M">말 한 줄에 3D 용이 뚝딱</a></li>
+<li>MCP for Blender 공식 저장소: <a href="https://github.com/ahujasid/mcp-for-blender">ahujasid/mcp-for-blender</a></li>
+<li>MCP for Blender 공식 사이트: <a href="https://www.mcp-for-blender.com/">mcp-for-blender.com</a></li>
+<li>Blender Agent Skills: <a href="https://github.com/EL4CTEO/blender-skills">EL4CTEO/blender-skills</a></li>
+<li>Blender 공식 사이트: <a href="https://www.blender.org/">Blender</a></li>
+</ul>
+<p>쇼츠의 시연·성능 사례는 영상 설명과 자동 자막을 기준으로 정리했고, 설치 명령과 보안 주의사항은 MCP for Blender 공식 README를 확인했습니다. MCP for Blender는 Blender Foundation이 만든 공식 기능이 아닌 커뮤니티 서드파티 통합 도구입니다.</p>
+<h2 id="mcp-for-blender의-구조">MCP for Blender의 구조</h2>
+<p>MCP for Blender는 Claude Desktop·Claude Code·Codex·Cursor 같은 MCP 클라이언트와 Blender 애드온 사이에 소켓 서버를 둡니다. Claude는 MCP 도구를 호출하고, 서버는 Blender 안에서 Python 코드를 실행해 오브젝트·재질·카메라·렌더를 변경합니다. 애드온은 기본적으로 <code>localhost</code>에서만 수신하므로 같은 컴퓨터 안에서 연결하는 구성이 기본입니다. <a href="https://youtu.be/A7Xcz7lkR1M?t=8">쇼츠 0:08</a></p>
+<pre class="mermaid">flowchart TD
+    A[사용자 자연어 요청] --> B[Claude / MCP 클라이언트]
+    B --> C[MCP for Blender 서버]
+    C --> D[Blender 애드온 소켓]
+    D --> E[Blender Python API]
+    E --> F[오브젝트·재질·카메라·렌더]
+    F --> G[스크린샷·상태·결과 반환]
+    G --> B
+    classDef inputTone fill:#c5dcef,stroke:#6d9dc4,color:#333;
+    classDef bridgeTone fill:#fde8c0,stroke:#c49a3a,color:#333;
+    classDef blenderTone fill:#e0c8ef,stroke:#9475ad,color:#333;
+    classDef resultTone fill:#c0ecd3,stroke:#6ca67d,color:#333;
+    class A inputTone;
+    class B,C,D bridgeTone;
+    class E,F blenderTone;
+    class G resultTone;</pre><p>공식 README는 오브젝트 생성·수정·삭제, 재질 제어, 여러 각도와 와이어프레임을 통한 시각 검증, Blender Python 실행을 주요 기능으로 제시합니다. 따라서 “모델 하나를 만들고 끝”이 아니라 생성→검사→수정 루프를 구성할 수 있습니다.</p>
+<h2 id="설치와-연결">설치와 연결</h2>
+<p>공식 Quickstart는 macOS·Linux에서 다음 설치 스크립트를 사용하고, Windows에서는 PowerShell 설치 스크립트를 제공합니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># macOS / Linux</span>
+</span></span><span style="display:flex;"><span>curl -LsSf https://www.mcp-for-blender.com/install.sh <span style="color:#1f2328">|</span> sh
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># uv가 이미 있다면</span>
+</span></span><span style="display:flex;"><span>uvx mcp-for-blender setup
+</span></span></code></pre></div><p>설치 도구는 Claude Desktop, Claude Code, Codex, Cursor, VS Code 등 MCP 클라이언트를 찾아 <code>blender</code> 엔트리를 추가하고 Blender 애드온을 설치합니다. 자동 설치를 쓰지 않으려면 Claude Code에서 <code>claude mcp add blender uvx mcp-for-blender</code>로 서버를 등록할 수 있습니다. 설치 후 AI 앱을 완전히 종료했다가 다시 열고 Blender의 애드온을 활성화해야 합니다.</p>
+<pre class="mermaid">flowchart TD
+    A[Blender 설치] --> B[uv 설치]
+    B --> C[uvx mcp-for-blender setup]
+    C --> D[MCP 클라이언트 선택]
+    D --> E[Blender 애드온 설치·활성화]
+    E --> F[AI 앱 재시작]
+    F --> G[Blender에서 MCP 서버 시작]
+    G --> H[자연어 작업 요청]
+    classDef setupTone fill:#c5dcef,stroke:#6d9dc4,color:#333;
+    classDef installTone fill:#fde8c0,stroke:#c49a3a,color:#333;
+    classDef connectTone fill:#e0c8ef,stroke:#9475ad,color:#333;
+    classDef doneTone fill:#c0ecd3,stroke:#6ca67d,color:#333;
+    class A,B setupTone;
+    class C,D,E installTone;
+    class F,G connectTone;
+    class H doneTone;</pre><p>Blender를 연 뒤 3D 뷰포트에서 <code>N</code>을 눌러 MCP for Blender 탭을 열고 서버를 시작합니다. 공식 문서는 MCP 서버 인스턴스를 여러 클라이언트에서 동시에 띄우지 말라고 안내합니다.</p>
+<h2 id="잘하는-일과-아직-어려운-일">잘하는 일과 아직 어려운 일</h2>
+<p>쇼츠는 “3D를 전혀 몰라도 한 줄에 용과 금 항아리 던전이 만들어진다”고 시연합니다. 이미지 한 장을 입력해 숲속 오두막을 3D로 재구성하고 여러 각도에서 확인하는 흐름도 소개합니다. <a href="https://youtu.be/A7Xcz7lkR1M?t=0">쇼츠 0:00</a> 이런 작업은 오브젝트 배치, 카메라 설정, 기본 재질, 반복 렌더처럼 명령으로 분해하기 쉬운 단계에서 특히 효과적입니다.</p>
+<p>반면 유명 Blender 강사의 테스트에서는 처음부터 만드는 3D 여우 모델에 구멍이 생기거나 면이 종잇장처럼 얇아지는 문제가 있었다고 설명합니다. AI가 생성한 메시의 토폴로지·두께·노멀·리깅을 전문가 수준으로 보장하지는 않는다는 뜻입니다. <a href="https://youtu.be/A7Xcz7lkR1M?t=14">쇼츠 0:14</a></p>
+<p>AI가 잘 처리하는 영역은 이미 만든 캐릭터를 게임에서 걷게 만드는 리깅·애니메이션 연결, 카메라 배치, 반복적인 재질·렌더 설정 같은 후처리입니다. 생성 모델링과 후처리 자동화의 난이도가 다르므로, 완성품을 한 번에 요구하기보다 단계별 결과를 저장하며 진행하는 편이 좋습니다. <a href="https://youtu.be/A7Xcz7lkR1M?t=24">쇼츠 0:24</a></p>
+<h2 id="blender-agent-skills로-품질-지식을-주입하기">Blender Agent Skills로 품질 지식을 주입하기</h2>
+<p><code>blender-skills</code>는 Blender 5.2 LTS 이상을 대상으로 모델링, UV, PBR 재질, 베이킹, 리깅, 애니메이션, 최적화, 엔진별 내보내기, QA를 에이전트 스킬로 묶은 커뮤니티 저장소입니다. 같은 모델이라도 스킬을 먼저 읽힌 경우 담요가 판자처럼 굳지 않고 주름지게 표현되는 사례가 영상에 나옵니다. <a href="https://youtu.be/A7Xcz7lkR1M?t=35">쇼츠 0:35</a></p>
+<p>공식 README는 28개의 스킬을 제공하고, 각 스크립트를 실제 Blender에서 테스트했다고 설명합니다. Claude Code 플러그인으로 설치하거나 저장소를 복제해 <code>~/.claude/skills</code>와 <code>~/.agents/skills</code>에 설치할 수 있습니다. 모든 스킬을 한꺼번에 주입하기보다 작업에 필요한 <code>blender-scene-setup</code>, <code>blender-retopology-uv</code>, <code>blender-character-rigging</code>, <code>blender-asset-qa</code>처럼 목적별 스킬을 선택하는 편이 컨텍스트 관리에 유리합니다.</p>
+<pre class="mermaid">flowchart TD
+    A[자연어 3D 요청] --> B[blender-core 라우팅]
+    B --> C[모델링·재질·리깅 스킬 선택]
+    C --> D[Blender Python 실행]
+    D --> E[asset QA·렌더 검증]
+    E --> F{문제 발견?}
+    F -->|예| G[해당 스킬로 수정]
+    G --> E
+    F -->|아니오| H[내보내기·게임 엔진 전달]
+    classDef inputTone fill:#c5dcef,stroke:#6d9dc4,color:#333;
+    classDef skillTone fill:#e0c8ef,stroke:#9475ad,color:#333;
+    classDef executeTone fill:#fde8c0,stroke:#c49a3a,color:#333;
+    classDef checkTone fill:#ffc8c4,stroke:#b76b6b,color:#333;
+    classDef resultTone fill:#c0ecd3,stroke:#6ca67d,color:#333;
+    class A inputTone;
+    class B,C skillTone;
+    class D executeTone;
+    class E,F,G checkTone;
+    class H resultTone;</pre><p>스킬은 모델의 지식 자체를 바꾸는 것이 아니라, 작업 순서·Blender 5.x API 규칙·검수 체크리스트를 컨텍스트에 제공하는 방식입니다. 따라서 스킬을 사용해도 메시 품질이나 게임 엔진 호환성을 실제 파일로 검증해야 합니다.</p>
+<h2 id="여러-ai를-평가자로-두는-반복-개선-루프">여러 AI를 평가자로 두는 반복 개선 루프</h2>
+<p>쇼츠는 한국의 한 유튜버가 AI 여섯 개와 채점 AI를 함께 사용해 항공모함 모델을 반복 개선한 사례도 소개합니다. 10점 만점에 3.8점이던 결과가 아홉 번째 판에서 7.9점까지 올라갔다는 수치는 해당 시연의 사례이며, 일반적인 품질 보장값은 아닙니다. <a href="https://youtu.be/A7Xcz7lkR1M?t=46">쇼츠 0:46</a></p>
+<p>이 방식의 핵심은 모델을 많이 붙이는 것이 아니라 <strong>평가 기준을 먼저 고정하는 것</strong>입니다. 실루엣, 부품 누락, 스케일, 재질, 카메라 구도, 게임 엔진에서의 폴리곤 예산처럼 측정 가능한 항목을 정하고, 생성 모델과 평가 모델을 분리하면 한 모델의 자기평가 편향을 줄일 수 있습니다.</p>
+<pre class="mermaid">flowchart TD
+    A[요구사항·평가 기준] --> B[생성 AI가 Blender 장면 작성]
+    B --> C[렌더·다각도 캡처]
+    C --> D[평가 AI·QA 스킬]
+    D --> E{기준 통과?}
+    E -->|아니오| F[구체적 수정 피드백]
+    F --> B
+    E -->|예| G[버전 저장·내보내기]
+    classDef inputTone fill:#c5dcef,stroke:#6d9dc4,color:#333;
+    classDef generateTone fill:#e0c8ef,stroke:#9475ad,color:#333;
+    classDef inspectTone fill:#fde8c0,stroke:#c49a3a,color:#333;
+    classDef feedbackTone fill:#ffc8c4,stroke:#b76b6b,color:#333;
+    classDef doneTone fill:#c0ecd3,stroke:#6ca67d,color:#333;
+    class A inputTone;
+    class B generateTone;
+    class C,D inspectTone;
+    class E,F feedbackTone;
+    class G doneTone;</pre><h2 id="안전하게-사용하기">안전하게 사용하기</h2>
+<h3 id="작업-파일을-먼저-저장">작업 파일을 먼저 저장</h3>
+<p>MCP for Blender의 <code>execute_blender_code</code>는 Blender 안에서 임의의 Python 코드를 실행할 수 있습니다. 공식 README도 사용 전에 항상 작업을 저장하라고 경고합니다. 자동화가 편리해도 저장되지 않은 장면에서 대규모 스크립트를 실행하지 말고, 버전별 <code>.blend</code> 파일을 남기세요.</p>
+<h3 id="safe-mode-켜기">Safe mode 켜기</h3>
+<p><code>BLENDER_MCP_SAFE_MODE=1</code>을 설정하면 파일 직접 읽기·쓰기, 다른 프로그램 실행, 네트워크 접근, 지속성 코드를 차단하고 모델링·재질·렌더·저장 같은 일반 Blender 작업은 허용합니다.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">&#34;mcpServers&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&#34;blender&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0550ae">&#34;command&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;uvx&#34;</span><span style="color:#1f2328">,</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0550ae">&#34;args&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">[</span><span style="color:#0a3069">&#34;mcp-for-blender&#34;</span><span style="color:#1f2328">],</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0550ae">&#34;env&#34;</span><span style="color:#1f2328">:</span> <span style="color:#1f2328">{</span><span style="color:#0550ae">&#34;BLENDER_MCP_SAFE_MODE&#34;</span><span style="color:#1f2328">:</span> <span style="color:#0a3069">&#34;1&#34;</span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><h3 id="원격-연결은-localhost-밖으로-열지-않기">원격 연결은 localhost 밖으로 열지 않기</h3>
+<p>애드온 소켓에는 인증과 암호화가 없고, 포트에 접근할 수 있는 클라이언트가 Blender에서 Python을 실행할 수 있습니다. 따라서 기본 <code>localhost</code>를 유지하고, 원격 연결이 꼭 필요하면 신뢰할 수 있는 사설 네트워크와 방화벽 또는 SSH 터널을 사용해야 합니다. 공개 인터넷에 포트를 노출하면 안 됩니다.</p>
+<h3 id="텔레메트리-확인">텔레메트리 확인</h3>
+<p>공식 README에 따르면 기본적으로 익명 설치 ID·세션 ID·도구 이름·성공 여부·실행 시간·버전·운영체제·타임스탬프가 수집될 수 있습니다. 프롬프트·생성 코드·스크린샷·장면 데이터는 별도 동의 없이는 수집하지 않는다고 설명하며, 완전히 끄려면 MCP 환경에 <code>DISABLE_TELEMETRY=true</code>를 설정할 수 있습니다.</p>
+<h2 id="처음-시도할-작업">처음 시도할 작업</h2>
+<p>처음부터 복잡한 캐릭터를 만들기보다 다음처럼 결과와 검증 기준이 명확한 작업부터 시작하는 편이 좋습니다.</p>
+<ol>
+<li>Blender에서 새 파일을 저장합니다.</li>
+<li>MCP for Blender를 <code>localhost</code>로 연결하고 Safe mode를 켭니다.</li>
+<li>“던전 안에 금 항아리를 지키는 로우폴리 용을 만들고, 카메라 3개로 렌더해 각도를 확인해 줘”라고 요청합니다.</li>
+<li>오브젝트 수·재질·카메라·렌더 결과를 확인합니다.</li>
+<li><code>.blend</code>와 렌더 결과를 별도 버전으로 저장합니다.</li>
+<li>필요하면 Blender Agent Skills의 QA·최적화 스킬을 추가해 노멀, 떠 있는 부품, 폴리곤 예산을 검사합니다.</li>
+</ol>
+<h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>MCP for Blender는 Claude와 Blender 사이에서 Python 기반 장면 조작을 연결하는 서드파티 MCP 통합입니다.</li>
+<li>자연어로 오브젝트·재질·카메라·렌더를 만들고, 여러 각도 캡처로 결과를 검증할 수 있습니다.</li>
+<li>새 모델 생성보다 리깅·애니메이션·재질·반복 후처리에서 안정적인 생산성 향상을 기대하기 쉽습니다.</li>
+<li>Blender Agent Skills는 모델링부터 QA·게임 엔진 내보내기까지의 작업 지식과 체크리스트를 제공합니다.</li>
+<li><code>BLENDER_MCP_SAFE_MODE=1</code>, 저장 선행, localhost 유지, 원격 포트 차단이 기본 안전 수칙입니다.</li>
+<li>텔레메트리 수집 범위와 라이선스·서드파티 플러그인 조건을 설치 전에 확인해야 합니다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>Claude와 Blender의 결합은 “AI가 예쁜 3D 모델을 한 번에 완성한다”는 마법보다, Blender의 반복적인 조작과 검수 단계를 자연어·스크립트·스킬로 연결하는 자동화에 가깝습니다. 생성 품질이 불안정한 영역은 사람이 기준을 정하고, AI는 장면 구성·후처리·검증·내보내기를 반복하게 하세요. 저장·Safe mode·localhost라는 세 가지 안전장치를 지킨다면 3D를 잘 모르는 사람도 작은 장면부터 이 워크플로를 시험할 수 있습니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 11월 26일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/developer-tools">Developer Tools</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/11/2026-11-26-reanimate-claude-animation-reverse-engineering/" rel="prev">
+        <span>reanimate: Claude Code로 웹 애니메이션을 프레임 단위로 재현하는 방법</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#mcp-for-blender의-구조">MCP for Blender의 구조</a></li>
+    <li><a href="#설치와-연결">설치와 연결</a></li>
+    <li><a href="#잘하는-일과-아직-어려운-일">잘하는 일과 아직 어려운 일</a></li>
+    <li><a href="#blender-agent-skills로-품질-지식을-주입하기">Blender Agent Skills로 품질 지식을 주입하기</a></li>
+    <li><a href="#여러-ai를-평가자로-두는-반복-개선-루프">여러 AI를 평가자로 두는 반복 개선 루프</a></li>
+    <li><a href="#안전하게-사용하기">안전하게 사용하기</a>
+      <ul>
+        <li><a href="#작업-파일을-먼저-저장">작업 파일을 먼저 저장</a></li>
+        <li><a href="#safe-mode-켜기">Safe mode 켜기</a></li>
+        <li><a href="#원격-연결은-localhost-밖으로-열지-않기">원격 연결은 localhost 밖으로 열지 않기</a></li>
+        <li><a href="#텔레메트리-확인">텔레메트리 확인</a></li>
+      </ul>
+    </li>
+    <li><a href="#처음-시도할-작업">처음 시도할 작업</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/claude-code/" class="badge badge-secondary">Claude-Code</a>
+    <a href="/tags/mcp/" class="badge badge-secondary">Mcp</a>
+    <a href="/tags/agents/" class="badge badge-secondary">Agents</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+
+<script>
+  $(function () {
+    if (window.VANTA && document.getElementById('waves')) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
