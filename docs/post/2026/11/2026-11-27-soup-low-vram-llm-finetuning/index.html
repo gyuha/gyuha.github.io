@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="ko-KR"><head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Gyuha blog 'Soup으로 4GB GPU에서 8B LLM 파인튜닝하기: 레이어 스트리밍의 원리'" />
+  <title>Soup으로 4GB GPU에서 8B LLM 파인튜닝하기: 레이어 스트리밍의 원리  | 신규하 블로그</title>
+  <meta property="og:title" content="Soup으로 4GB GPU에서 8B LLM 파인튜닝하기: 레이어 스트리밍의 원리" />
+  
+  <meta property="og:type" content="article" />
+  <meta property="article:published_time" content="2026-11-27"> 
+  <meta property="og:url" content="https://gyuha.com/post/2026/11/2026-11-27-soup-low-vram-llm-finetuning/" />
+  <meta property="og:site_name" content="신규하 블로그" />
+   <meta property="og:image" content="https://gyuha.com/images/thumbnail.png">  
+  <meta property="og:tags" content="llm" />
+  
+  <meta property="og:tags" content="python" />
+  
+  <meta property="og:tags" content="productivity" />
+  
+
+  
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" /> <link rel="stylesheet" href="/vendor/magnific-popup/magnific-popup.css" /> <link rel="stylesheet" href="/vendor/wow/animate.css" /> <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<header class="header-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg">
+          
+          <a class="navbar-brand" href='/'>
+            <img src="/img/logo-title.png" alt="Logo" />
+          </a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href='/'>블로그</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/categories'>카테고리</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href='/tags'>태그</a>
+              </li>
+            </ul>
+            
+            <div id="search-wrapper">
+              <form action='/search/' method="get">
+                <input type="search" placeholder='검색어' name="q" class="search">
+                <i class="fa fa-search search-trigger" aria-hidden="true"></i>
+              </form>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="top-area">
+  <div class="top-video top-video-small ">
+    <div id="waves" class="video"></div>
+    <div class="container">
+      <div class="title-message">
+        
+        <a href="https://gyuha.com/post/2026/11/2026-11-27-soup-low-vram-llm-finetuning/">
+          <h1>
+            Soup으로 4GB GPU에서 8B LLM 파인튜닝하기: 레이어 스트리밍의 원리
+          </h1>
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 mt-3">
+
+<div class="post-title">
+  <a href="https://gyuha.com/post/2026/11/2026-11-27-soup-low-vram-llm-finetuning/">
+    <div class="post-meta">
+      <time></time>
+    </div>
+  </a>
+</div>
+<section class="post-content">
+  
+  <p>대규모 언어 모델을 직접 파인튜닝하려면 GPU 메모리, 양자화, LoRA, 데이터 형식과 학습 스크립트를 모두 준비해야 합니다. 영상에서 소개한 오픈소스 <strong>Soup</strong> 은 이 복잡한 과정을 YAML 설정과 <code>soup train</code> 명령으로 묶고, 레이어 스트리밍으로 모델 전체를 GPU에 올리지 않는 방식을 실험합니다. 덕분에 4GB 노트북 GPU에서 8B 모델의 QLoRA 학습을 시도할 수 있지만, “작은 GPU에서도 무료로 빠르게 학습된다”는 뜻과는 다릅니다.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>원본 쇼츠: <a href="https://youtube.com/shorts/7SXe9P8Quc8">노트북 GPU 4GB로 8B 모델 학습?</a></li>
+<li>공식 저장소: <a href="https://github.com/MakazhanAlpamys/Soup">MakazhanAlpamys/Soup</a></li>
+<li>공식 문서: <a href="https://trysoup.dev/">trysoup.dev</a></li>
+</ul>
+<p>영상의 설명·자동 자막을 기준으로 핵심 주장을 정리하고, 설치 명령·레이어 스트리밍 구조·측정 조건·현재 모델 제한은 공식 README와 Soup 문서를 교차 확인했습니다. 영상 설명의 실험 수치는 제작자가 제공한 기록이며, 모든 하드웨어에서 보장되는 수치가 아닙니다.</p>
+<h2 id="soup이-줄이는-파인튜닝-설정-비용">Soup이 줄이는 파인튜닝 설정 비용</h2>
+<p>영상은 일반적인 LLM 파인튜닝이 클라우드 GPU 임대, 학습 스크립트 작성, 메모리 오류 디버깅을 요구한다고 설명합니다. Soup은 모델과 데이터 위치, 작업 종류를 YAML에 적고 <code>soup train</code>을 실행하는 흐름으로 배치 크기, GPU 감지, 양자화, LoRA 어댑터 설정을 자동화합니다. <a href="https://youtu.be/7SXe9P8Quc8?t=10">쇼츠 0:10</a></p>
+<p>공식 Quick Start도 <code>pip install &quot;soup-cli[train]&quot;</code> → <code>soup init --template chat</code> → <code>soup train --config soup.yaml</code> 순서를 제시합니다. 결과물은 기본 모델을 다시 저장한 파일이 아니라 학습된 LoRA 어댑터이므로, 원본 모델과 어댑터를 함께 사용하거나 필요하면 GGUF 등으로 내보냅니다. <a href="https://trysoup.dev/#from-an-empty-folder-to-a-model-you-can-talk-to">공식 Quick Start</a></p>
+<pre class="mermaid">flowchart TD
+    A[기본 모델] --> B[soup.yaml]
+    C[학습 데이터] --> B
+    B --> D[soup train --config soup.yaml]
+    D --> E[GPU 감지·양자화·배치 설정]
+    E --> F[LoRA 파인튜닝]
+    F --> G[output/ LoRA 어댑터]
+    G --> H[soup chat / serve / export]
+    classDef inputTone fill:#c5dcef,stroke:#6d9dc4,color:#333;
+    classDef configTone fill:#fde8c0,stroke:#c49a3a,color:#333;
+    classDef processTone fill:#e0c8ef,stroke:#9475ad,color:#333;
+    classDef outputTone fill:#c0ecd3,stroke:#6ca67d,color:#333;
+    class A,C inputTone;
+    class B configTone;
+    class D,E,F processTone;
+    class G,H outputTone;</pre><h2 id="4gb-gpu가-가능한-이유-레이어-스트리밍">4GB GPU가 가능한 이유: 레이어 스트리밍</h2>
+<p>8B 모델을 일반적인 방식으로 학습하면 모델 가중치와 활성값, 옵티마이저·어댑터 버퍼가 한꺼번에 GPU 메모리를 사용합니다. 영상은 Soup이 모델을 통째로 올리는 대신 한 디코더 레이어를 GPU로 보내 학습하고, 다음 레이어로 교체한다고 설명합니다. <a href="https://youtu.be/7SXe9P8Quc8?t=35">쇼츠 0:35</a></p>
+<p>공식 README는 이를 <code>stream_layers: true</code>인 베타 기능으로 명시합니다. 고정된 기본 모델은 레이어 단위로 GPU에 도착하므로 peak VRAM이 모델 전체 크기보다 “현재 레이어와 버퍼, 어댑터, 임베딩·헤드”의 합에 가까워집니다. 대신 매 레이어를 주고받는 전송 비용 때문에 메모리를 줄이는 대가로 속도가 느려질 수 있습니다. <a href="https://github.com/MakazhanAlpamys/Soup#layer-streaming-beta">레이어 스트리밍 공식 설명</a></p>
+<pre class="mermaid">flowchart TD
+    A[CPU RAM에 고정된 기본 모델] --> B[레이어 1을 GPU로 전송]
+    B --> C[활성값 계산·LoRA 업데이트]
+    C --> D[레이어 1 반환 또는 해제]
+    D --> E[레이어 2 전송]
+    E --> F[계산·업데이트 반복]
+    F --> G[마지막 레이어까지 완료]
+    H[GPU 메모리] -.-> I[현재 레이어 + 버퍼 + 어댑터]
+    classDef hostTone fill:#c5dcef,stroke:#6d9dc4,color:#333;
+    classDef streamTone fill:#fde8c0,stroke:#c49a3a,color:#333;
+    classDef gpuTone fill:#e0c8ef,stroke:#9475ad,color:#333;
+    classDef doneTone fill:#c0ecd3,stroke:#6ca67d,color:#333;
+    class A hostTone;
+    class B,D,E,F streamTone;
+    class C,H,I gpuTone;
+    class G doneTone;</pre><p>레이어 스트리밍은 VRAM을 “없애는” 기술이 아닙니다. GPU에는 여전히 한 레이어와 학습에 필요한 임시 버퍼가 들어가며, CPU RAM과 PCIe 전송·계산 시간이 추가됩니다. 따라서 작은 GPU에서 실행 가능해지는 대신, 같은 학습을 더 빠르게 수행한다는 의미는 아닙니다.</p>
+<h2 id="공식-측정값과-영상-실험을-분리해서-읽기">공식 측정값과 영상 실험을 분리해서 읽기</h2>
+<p>공식 README의 한 측정은 Llama-3.1-8B-Instruct를 NF4와 LoRA로 학습할 때 RTX 3050 Laptop 4GB에서 peak 3.32GB를 기록했다고 설명합니다. README는 이 수치가 v0.72.2, batch 1, sequence 512 조건이며, 레이어 스트리밍은 베타이고 <code>stream_layers: true</code>로 명시적으로 켜야 한다고 적습니다. <a href="https://github.com/MakazhanAlpamys/Soup#layer-streaming-beta">공식 벤치마크</a></p>
+<p>영상 설명에는 제작자가 Google Cloud L4를 4.00GB로 제한해 <code>proof-4gb</code> 노트북을 재현했고, 짧은 256토큰 문장에서 최고 1.78GB, 최신판 재실행에서 1.53GB를 측정했다고 적혀 있습니다. 이는 실제 4GB 노트북에서 측정한 공식 README 값과 조건이 다르므로, 두 값을 하나의 일반적인 성능 보장으로 합치면 안 됩니다. <a href="https://youtube.com/shorts/7SXe9P8Quc8">영상 설명·실험 기록</a></p>
+<pre class="mermaid">flowchart TD
+    A[측정 결과 읽기] --> B{어떤 조건인가?}
+    B -->|공식 README| C[RTX 3050 4GB<br>NF4·LoRA·batch 1·seq 512]
+    B -->|영상 재현| D[L4를 4GB로 제한<br>짧은 256토큰 문장]
+    C --> E[3.32GB peak 사례]
+    D --> F[1.78GB / 1.53GB 사례]
+    E --> G[조건이 다르므로 직접 비교 금지]
+    F --> G
+    classDef inputTone fill:#c5dcef,stroke:#6d9dc4,color:#333;
+    classDef conditionTone fill:#fde8c0,stroke:#c49a3a,color:#333;
+    classDef resultTone fill:#e0c8ef,stroke:#9475ad,color:#333;
+    classDef cautionTone fill:#ffc8c4,stroke:#b86f6b,color:#333;
+    class A,B inputTone;
+    class C,D conditionTone;
+    class E,F resultTone;
+    class G cautionTone;</pre><h2 id="최소-설정-예시">최소 설정 예시</h2>
+<p>공식 문서의 템플릿은 모델, 작업(<code>sft</code>), 데이터 경로와 형식, 학습 단계의 스트리밍·4비트·배치·LoRA를 YAML로 표현합니다. 아래 예시는 구조를 보여 주기 위한 것이며, 모델 접근 권한과 데이터 형식은 실행 전에 자신의 환경에 맞춰 확인해야 합니다. <a href="https://trysoup.dev/#step-2-write-the-config">공식 설정 예시</a></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#0550ae">base</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>meta-llama/Llama-3.1-8B-Instruct<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#0550ae">task</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>sft<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#0550ae">data</span><span style="color:#1f2328">:</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#0550ae">train</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>./data/train.jsonl<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#0550ae">format</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>alpaca<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#0550ae">max_length</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span><span style="color:#0550ae">512</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#0550ae">training</span><span style="color:#1f2328">:</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#0550ae">stream_layers</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span><span style="color:#cf222e">true</span><span style="color:#fff">   </span><span style="color:#57606a"># 베타, 메모리 절약</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#0550ae">quantization</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>4bit  <span style="color:#fff"> </span><span style="color:#57606a"># NF4</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#0550ae">batch_size</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span><span style="color:#0550ae">1</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#0550ae">lora</span><span style="color:#1f2328">:</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span><span style="color:#0550ae">r</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span><span style="color:#0550ae">16</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">    </span><span style="color:#0550ae">target_modules</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span><span style="color:#1f2328">[</span>q_proj, v_proj]<span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#0550ae">output</span><span style="color:#1f2328">:</span><span style="color:#fff"> </span>./output<span style="color:#fff">
+</span></span></span></code></pre></div><p>실행 전에는 <code>soup doctor --config soup.yaml</code>로 설정과 하드웨어를 점검하는 편이 좋습니다. 공식 문서는 자동 batch 설정을 무조건 허용하지 않고, 레이어 스트리밍이 실제로 맞지 않는 실행을 사전 검사하도록 설계되어 있다고 설명합니다. <a href="https://github.com/MakazhanAlpamys/Soup#layer-streaming-beta">공식 레이어 스트리밍 설정</a></p>
+<pre class="mermaid">flowchart TD
+    A[soup.yaml 작성] --> B[soup doctor --config]
+    B --> C{메모리·모델·데이터 검증}
+    C -->|실패| D[모델 크기·길이·양자화 조정]
+    D --> B
+    C -->|통과| E[soup train --config soup.yaml]
+    E --> F[LoRA 어댑터 저장]
+    F --> G[soup chat 또는 soup serve]
+    classDef configTone fill:#c5dcef,stroke:#6d9dc4,color:#333;
+    classDef checkTone fill:#fde8c0,stroke:#c49a3a,color:#333;
+    classDef failTone fill:#ffc8c4,stroke:#b86f6b,color:#333;
+    classDef successTone fill:#c0ecd3,stroke:#6ca67d,color:#333;
+    class A configTone;
+    class B,C checkTone;
+    class D failTone;
+    class E,F,G successTone;</pre><h2 id="loraqlora와-메모리-절약의-관계">LoRA·QLoRA와 메모리 절약의 관계</h2>
+<p>Soup의 4GB 사례는 단순히 모델을 4비트로 줄인 결과가 아닙니다. NF4 같은 4비트 양자화로 기본 가중치 저장 공간을 줄이고, LoRA로 전체 가중치를 업데이트하지 않으며, 레이어 스트리밍으로 GPU에 올라가는 기본 모델의 범위를 줄이는 조합입니다. 어느 한 요소만으로 공식 수치를 설명하면 안 됩니다. <a href="https://youtu.be/7SXe9P8Quc8?t=39">쇼츠 39: 레이어 스트리밍 설명</a></p>
+<p>그 결과 학습되는 것은 작은 LoRA 어댑터이며, 원본 모델의 지식을 모두 다시 저장하는 완전한 체크포인트가 아닙니다. 배포할 때는 어댑터를 원본 모델과 함께 로드하거나, Soup의 <code>serve</code>·<code>export</code> 명령으로 OpenAI 호환 API나 GGUF 같은 형식으로 변환할 수 있습니다. <a href="https://trysoup.dev/#step-5-use-the-adapter">공식 출력·서빙 안내</a></p>
+<pre class="mermaid">flowchart TD
+    A[기본 모델 가중치] --> B[4비트 NF4 저장]
+    B --> C[레이어 스트리밍으로 VRAM 전송]
+    D[LoRA 저랭크 행렬] --> E[학습 가능한 파라미터]
+    C --> F[순전파·역전파]
+    E --> F
+    F --> G[LoRA 어댑터만 저장]
+    G --> H[원본 + 어댑터로 추론]
+    G --> I[serve / GGUF export]
+    classDef baseTone fill:#c5dcef,stroke:#6d9dc4,color:#333;
+    classDef memoryTone fill:#fde8c0,stroke:#c49a3a,color:#333;
+    classDef trainTone fill:#e0c8ef,stroke:#9475ad,color:#333;
+    classDef outputTone fill:#c0ecd3,stroke:#6ca67d,color:#333;
+    class A,D baseTone;
+    class B,C memoryTone;
+    class E,F trainTone;
+    class G,H,I outputTone;</pre><h2 id="현재-확인되는-제한사항">현재 확인되는 제한사항</h2>
+<p>공식 문서에서 레이어 스트리밍은 여전히 BETA이며, 4GB 측정은 특정 모델·양자화·배치·시퀀스 길이에 묶여 있습니다. README는 8B 모델의 4GB 측정이 supervised fine-tuning 사례이며, 선호 최적화(DPO 등)는 추가 레이어 읽기 비용이 있고 4GB 카드에서 같은 속도를 주장하지 않는다고 명시합니다. <a href="https://github.com/MakazhanAlpamys/Soup#layer-streaming-beta">공식 제한·측정 조건</a></p>
+<p>또한 4GB로 실행된다고 해서 모든 8B 모델과 데이터셋이 들어가는 것은 아닙니다. 긴 <code>max_length</code>, 큰 배치, 다른 아키텍처, 비지원 학습 작업은 메모리와 시간이 달라집니다. 공식 문서는 현재 레이어 스트리밍 경로에서 SFT·DPO·ORPO·SimPO·KTO·BCO·IPO를 지원하고 GRPO·PPO는 지원하지 않는다고 안내합니다. <a href="https://github.com/MakazhanAlpamys/Soup#layer-streaming-beta">지원 작업 목록</a></p>
+<pre class="mermaid">flowchart TD
+    A[4GB GPU 목표] --> B{실행 조건 확인}
+    B --> C[모델 아키텍처]
+    B --> D[양자화·LoRA]
+    B --> E[sequence length·batch]
+    B --> F[학습 작업 지원 여부]
+    C --> G{doctor 통과?}
+    D --> G
+    E --> G
+    F --> G
+    G -->|아니오| H[조건 축소·다른 GPU·클라우드 검토]
+    G -->|예| I[베타 스트리밍 시험]
+    classDef goalTone fill:#c5dcef,stroke:#6d9dc4,color:#333;
+    classDef checkTone fill:#fde8c0,stroke:#c49a3a,color:#333;
+    classDef riskTone fill:#ffc8c4,stroke:#b86f6b,color:#333;
+    classDef successTone fill:#c0ecd3,stroke:#6ca67d,color:#333;
+    class A goalTone;
+    class B,C,D,E,F,G checkTone;
+    class H riskTone;
+    class I successTone;</pre><h2 id="핵심-요약">핵심 요약</h2>
+<ul>
+<li>Soup은 YAML 한 개와 <code>soup train</code> 명령으로 LLM 파인튜닝의 설정·검증·출력 과정을 단순화합니다.</li>
+<li>4GB 사례는 NF4 4비트 양자화, LoRA, 레이어 스트리밍을 함께 사용한 결과입니다.</li>
+<li>레이어 스트리밍은 고정된 기본 모델을 한 레이어씩 GPU에 보내 VRAM을 줄이지만, 전송 비용 때문에 속도가 느려질 수 있습니다.</li>
+<li>공식 README의 3.32GB 수치와 영상 제작자의 1.78GB·1.53GB 수치는 하드웨어와 토큰 길이가 다르므로 직접 비교하면 안 됩니다.</li>
+<li><code>stream_layers: true</code>는 베타 기능이며, 모델·시퀀스 길이·학습 작업에 따라 실행 가능 여부가 달라집니다.</li>
+<li>결과물은 LoRA 어댑터이며, 원본 모델과 함께 사용하거나 <code>serve</code>·<code>export</code>로 배포할 수 있습니다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>Soup의 핵심은 비싼 GPU를 마법처럼 대체하는 것이 아니라, <strong>메모리 사용량을 모델 전체가 아닌 현재 레이어 중심으로 재구성하는 것</strong>입니다. 4GB GPU에서도 8B 모델 파인튜닝을 실험할 수 있다는 점은 로컬 AI의 진입 장벽을 낮추지만, 속도·데이터 길이·지원 작업·베타 상태를 함께 고려해야 합니다. 먼저 작은 데이터와 짧은 시퀀스로 <code>soup doctor</code>와 시험 학습을 실행하고, 측정 조건을 기록한 뒤 실제 프로젝트에 적용하는 것이 가장 안전한 접근입니다.</p>
+</section>
+<time>
+  <i class="far fa-clock"></i>
+  2026년 11월 27일 00시 00분
+</time>
+ 
+<i class="far fa-folder"></i>
+<a href="https://gyuha.com//categories/ai">AI</a>
+ 
+<div class="post-comment">
+  <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "gyuha-blog" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+<hr class="summary-sep" />
+<div class="recommend-articles">
+  <h3>
+    추천 글
+  </h3>
+  <ul>
+    
+    <li>
+      <a href="https://gyuha.com/post/2026/11/2026-11-26-claude-blender-mcp-3d-workflow/" rel="prev">
+        <span>Claude가 Blender를 직접 만지는 방법: MCP 3D 워크플로와 안전한 자동화</span>
+      </a>
+    </li>
+     
+  </ul>
+</div>
+ 
+        </div>
+
+        <div id="sidebar" class="col-12 col-md-8 col-lg-4">
+          <div class="post-sidebar-area">
+<div id="post-toc" class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-list"></i>
+    목차
+  </div>
+  <div class="widget-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#soup이-줄이는-파인튜닝-설정-비용">Soup이 줄이는 파인튜닝 설정 비용</a></li>
+    <li><a href="#4gb-gpu가-가능한-이유-레이어-스트리밍">4GB GPU가 가능한 이유: 레이어 스트리밍</a></li>
+    <li><a href="#공식-측정값과-영상-실험을-분리해서-읽기">공식 측정값과 영상 실험을 분리해서 읽기</a></li>
+    <li><a href="#최소-설정-예시">최소 설정 예시</a></li>
+    <li><a href="#loraqlora와-메모리-절약의-관계">LoRA·QLoRA와 메모리 절약의 관계</a></li>
+    <li><a href="#현재-확인되는-제한사항">현재 확인되는 제한사항</a></li>
+    <li><a href="#핵심-요약">핵심 요약</a></li>
+    <li><a href="#결론">결론</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+<div class="sidebar-widget-area">
+  <div class="title">
+    <i class="fa fa-tag"></i>
+    태그
+  </div>
+  <div class="widget-content">
+     
+    <a href="/tags/llm/" class="badge badge-secondary">LLM</a>
+    <a href="/tags/python/" class="badge badge-secondary">Python</a>
+    <a href="/tags/productivity/" class="badge badge-secondary">Productivity</a>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+<footer class="footer-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="footer-single-widget">
+          <div class="copywrite-text mt-30">
+            <p>
+              Copyright &copy;
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              All rights reserved
+            </p>
+            <p>Made by Gyuha</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="/vendor/jquery-2.2.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/native-console.js"></script>
+<script src="/vendor/jquery.easing.1.3.js"></script>
+<script src="/vendor/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/active.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+</script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+
+<script>
+  $(function () {
+    if (window.VANTA && document.getElementById('waves')) window.VANTA.NET({
+      el: '#waves',
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      scaleMobile: 1.00,
+      color: 0x3fa4ff
+    })
+  })
+  document.addEventListener('DOMContentLoaded', function () {
+    const toc = document.querySelector('#TableOfContents');
+    const content = document.querySelector('.post-content');
+    if (!toc || !content) {
+      return;
+    }
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+    
+    toc.querySelectorAll('a').forEach(link => {
+      link.classList.add('toc-item');
+    });
+
+    
+    headers.forEach((header, index) => {
+      if (!header.id) {
+        header.id = `section-${index}`;
+      }
+    });
+
+    
+    function highlightTocItem() {
+      const scrollPosition = window.scrollY;
+      const tocItems = toc.querySelectorAll('.toc-item');
+
+      
+      let activeIndex = -1;
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].getBoundingClientRect().top >= 0) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      
+      tocItems.forEach(item => item.classList.remove('active'));
+
+      
+      if (activeIndex !== -1) {
+        const activeHeader = headers[activeIndex];
+        const activeLink = toc.querySelector(`a[href="#${activeHeader.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      } else if (scrollPosition + window.innerHeight >= document.documentElement.scrollHeight) {
+        
+        tocItems[tocItems.length - 1].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', highlightTocItem);
+    highlightTocItem(); 
+  });
+
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    const codeBlocks = document.querySelectorAll('.post-content pre:not(.mermaid)');
+    
+    codeBlocks.forEach(function(block) {
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.title = '복사';
+      copyButton.innerHTML = '<i class="far fa-copy"></i>';
+      
+      
+      copyButton.addEventListener('click', function() {
+        
+        const code = block.querySelector('code');
+        const text = code ? code.textContent : block.textContent;
+        
+        
+        navigator.clipboard.writeText(text).then(function() {
+          
+          copyButton.innerHTML = '<i class="fas fa-check"></i>';
+          copyButton.classList.add('copied');
+          
+          
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(function(err) {
+          console.error('복사 실패:', err);
+          copyButton.innerHTML = '<i class="fas fa-times"></i>';
+          setTimeout(function() {
+            copyButton.innerHTML = '<i class="far fa-copy"></i>';
+          }, 2000);
+        });
+      });
+      
+      
+      block.appendChild(copyButton);
+    });
+  });
+</script>
+
+
+
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3XN21838ZJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-3XN21838ZJ");
+</script>
+ 
+</body>
+</html>
